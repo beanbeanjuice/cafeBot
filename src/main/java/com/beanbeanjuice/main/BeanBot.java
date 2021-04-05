@@ -111,6 +111,7 @@ public class BeanBot {
         commandManager.addCommand(new QueueCommand());
         commandManager.addCommand(new RepeatCommand());
         commandManager.addCommand(new SkipCommand());
+        commandManager.addCommand(new StopCommand());
 
         jdaBuilder.addEventListeners(new Listener());
 
