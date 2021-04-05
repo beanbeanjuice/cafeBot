@@ -50,6 +50,9 @@ dependencies {
 
     // Logback
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+
+    // SQL Connection.
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.2'
 }
 
 test {
