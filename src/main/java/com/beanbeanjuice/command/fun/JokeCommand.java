@@ -16,10 +16,17 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * A command used for sending jokes.
+ *
+ * @author beanbeanjuice
+ */
 public class JokeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
+
+        event.getMessage().delete().queue();
 
         WebUtils.ins.getJSONObject("https://apis.duncte123.me/joke").async((json) -> {
             if (!json.get("success").asBoolean()) {
