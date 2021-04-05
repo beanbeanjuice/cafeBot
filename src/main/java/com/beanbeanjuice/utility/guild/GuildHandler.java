@@ -3,6 +3,7 @@ package com.beanbeanjuice.utility.guild;
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
@@ -43,8 +44,9 @@ public class GuildHandler {
             while (resultSet.next()) {
                 String guildID = String.valueOf(resultSet.getLong(1));
                 String prefix = resultSet.getString(2);
+                String moderatorRoleID = String.valueOf(resultSet.getLong(3));
 
-                guildDatabase.put(guildID, new CustomGuild(guildID, prefix));
+                guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID));
             }
         } catch (SQLException e) {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database: " + e.getMessage());
@@ -68,6 +70,7 @@ public class GuildHandler {
             statement.setString(1, newPrefix);
 
             statement.execute();
+            updateGuildCache();
             return true;
         } catch (SQLException e) {
             BeanBot.getLogManager().log(CustomGuild.class, LogLevel.ERROR, "Unable to reach the SQL database.");
@@ -161,13 +164,14 @@ public class GuildHandler {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "INSERT INTO beanbot.guild_information " +
-                "(guild_id, prefix) " +
-                "VALUES (?,?);";
+                "(guild_id, prefix, moderator_role_id) " +
+                "VALUES (?,?,?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
             statement.setLong(1, Long.parseLong(guildID));
             statement.setString(2, BeanBot.getPrefix());
+            statement.setLong(3, 0L);
 
             statement.execute();
             return true;
@@ -175,6 +179,46 @@ public class GuildHandler {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
             return false;
         }
+    }
+
+    /**
+     * Updates the moderator {@link Role} for the {@link Guild}.
+     * @param guildID The ID of the {@link Guild} to have the {@link Role} updated.
+     * @param roleID The ID of the {@link Role} to set as the moderator {@link Role}.
+     * @return Whether or not updating the moderator {@link Role} was successful.
+     */
+    @NotNull
+    public Boolean updateGuildModeratorRole(@NotNull String guildID, @NotNull String roleID) {
+
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "UPDATE beanbot.guild_information " +
+                "SET moderator_role_id = (?) " +
+                "WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(roleID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            updateGuildCache();
+            return true;
+        } catch (SQLException e) {
+            BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+            return false;
+        }
+
+    }
+
+    /**
+     * Updates the moderator {@link Role} for the {@link Guild}.
+     * @param guild The {@link Guild} to have the {@link Role} updated.
+     * @param role The {@link Role} to set as the moderator {@link Role}.
+     * @return Whether or not updating the moderator {@link Role} was successful.
+     */
+    @NotNull
+    public Boolean updateGuildModeratorRole(@NotNull Guild guild, @NotNull Role role) {
+        return updateGuildModeratorRole(guild.getId(), role.getId());
     }
 
     /**
@@ -195,6 +239,16 @@ public class GuildHandler {
     @NotNull
     public CustomGuild getCustomGuild(@NotNull String guildID) {
         return guildDatabase.get(guildID);
+    }
+
+    /**
+     * Gets a {@link CustomGuild}.
+     * @param guild The {@link Guild} of the {@link CustomGuild}.
+     * @return The {@link CustomGuild}.
+     */
+    @NotNull
+    public CustomGuild getCustomGuild(@NotNull Guild guild) {
+        return getCustomGuild(guild.getId());
     }
 
     /**
