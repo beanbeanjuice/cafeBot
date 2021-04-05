@@ -94,6 +94,7 @@ public class NowPlayingCommand implements ICommand {
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("np");
+        arrayList.add("nowplaying");
         return arrayList;
     }
 

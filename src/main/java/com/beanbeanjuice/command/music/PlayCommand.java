@@ -117,7 +117,6 @@ public class PlayCommand implements ICommand {
         }
 
         PlayerManager.getInstance().loadAndPlay(channel, link, isSpotifyPlaylist);
-        event.getMessage().delete().queue();
 
     }
 
