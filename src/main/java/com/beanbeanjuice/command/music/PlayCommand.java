@@ -25,6 +25,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+/**
+ * The command used for playing a song.
+ *
+ * @author beanbeanjuice
+ */
 public class PlayCommand implements ICommand {
 
     private boolean isSpotifyPlaylist = false;

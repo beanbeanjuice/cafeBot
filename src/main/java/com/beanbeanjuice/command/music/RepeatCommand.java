@@ -6,9 +6,6 @@ import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -20,11 +17,11 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * The command used for seeing which song is currently playing.
+ * The command used for repeating the current song.
  *
  * @author beanbeanjuice
  */
-public class NowPlayingCommand implements ICommand {
+public class RepeatCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
@@ -39,67 +36,64 @@ public class NowPlayingCommand implements ICommand {
             return;
         }
 
-        // TODO: This might not be needed
         if (selfVoiceState.inVoiceChannel()) {
-
-            GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
-            AudioPlayer audioPlayer = musicManager.audioPlayer;
-            final AudioTrack audioTrack = audioPlayer.getPlayingTrack();
-
-            if (audioTrack == null) {
-                event.getChannel().sendMessage(noTrackPlaying()).queue();
+            if (!event.getMember().getVoiceState().inVoiceChannel()) {
+                event.getChannel().sendMessage(user.getAsMention()).queue(e -> {
+                    e.delete().queue();
+                });
+                event.getChannel().sendMessage(mustBeInVoiceChannelEmbed()).queue();
                 return;
             }
 
-            final AudioTrackInfo info = audioTrack.getInfo();
-            event.getChannel().sendMessage(nowPlaying(info.title, info.author, info.uri)).queue();
+            GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
+            final boolean newRepeating = !musicManager.scheduler.repeating;
+            musicManager.scheduler.repeating = newRepeating;
+
+            if (newRepeating) {
+                event.getChannel().sendMessage(successEmbed("Song repeating has now been turned on.")).queue();
+            } else {
+                event.getChannel().sendMessage(successEmbed("Song repeating has now been turned off.")).queue();
+            }
+
 
         }
-
-    }
-
-    private MessageEmbed nowPlaying(String title, String author, String url) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-
-        embedBuilder.setAuthor("Now Playing", url);
-        String message = String.format("`%s` by `%s`", title, author);
-        embedBuilder.setDescription(message);
-        embedBuilder.setColor(Color.cyan);
-
-        return embedBuilder.build();
-    }
-
-    private MessageEmbed noTrackPlaying() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-
-        embedBuilder.setDescription("There is no track currently playing.");
-        embedBuilder.setColor(Color.orange);
-
-        return embedBuilder.build();
     }
 
     private MessageEmbed botMustBeInVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setDescription("I'm not currently playing music.");
+        embedBuilder.setDescription("I'm not currently in a voice channel.");
         embedBuilder.setColor(Color.red);
+        return embedBuilder.build();
+    }
+
+    private MessageEmbed mustBeInVoiceChannelEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setDescription("Sorry, you must be in a voice channel to use this command.");
+        embedBuilder.setColor(Color.red);
+        return embedBuilder.build();
+    }
+
+    private MessageEmbed successEmbed(String message) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setDescription(message);
+        embedBuilder.setColor(Color.green);
+
         return embedBuilder.build();
     }
 
     @Override
     public String getName() {
-        return "now-playing";
+        return "repeat";
     }
 
     @Override
     public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("np");
-        return arrayList;
+        return new ArrayList<>();
     }
 
     @Override
     public String getDescription() {
-        return "Shows which song is currently playing.";
+        return "Repeat the current song playing.";
     }
 
     @Override
@@ -111,4 +105,5 @@ public class NowPlayingCommand implements ICommand {
     public CategoryType getCategoryType() {
         return CategoryType.MUSIC;
     }
+
 }

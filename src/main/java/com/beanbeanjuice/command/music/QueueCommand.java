@@ -18,6 +18,11 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The command used for seeing the song queue.
+ *
+ * @author beanbeanjuice
+ */
 public class QueueCommand implements ICommand {
 
     @Override
