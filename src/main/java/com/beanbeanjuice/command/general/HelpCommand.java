@@ -15,13 +15,12 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.ArrayList;
 
+/**
+ * A general help command.
+ *
+ * @author beanbeanjuice
+ */
 public class HelpCommand implements ICommand {
-
-    private CommandManager manager;
-
-    public HelpCommand(CommandManager manager) {
-        this.manager = manager;
-    }
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
@@ -50,7 +49,7 @@ public class HelpCommand implements ICommand {
             embedBuilder.setAuthor("PLAY Command");
             embedBuilder.addField("Usage", prefix + "play", false);
 
-            ICommand command = manager.getCommand("play");
+            ICommand command = BeanBot.getCommandManager().getCommand("play");
 
             builder = new StringBuilder();
             builder.append("`");
@@ -77,7 +76,7 @@ public class HelpCommand implements ICommand {
 
                 int count = 1;
 
-                for (ICommand command : manager.getCommands()) {
+                for (ICommand command : BeanBot.getCommandManager().getCommands()) {
 
                     if (command.getCategoryType().equals(categoryType)) {
 
@@ -98,7 +97,7 @@ public class HelpCommand implements ICommand {
 
         }
 
-        ICommand command = manager.getCommand(search);
+        ICommand command = BeanBot.getCommandManager().getCommand(search);
 
         if (command == null) {
             channel.sendMessage("Nothing found for " + search).queue();

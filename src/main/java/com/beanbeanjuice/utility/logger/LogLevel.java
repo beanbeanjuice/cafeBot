@@ -4,6 +4,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
+/**
+ * A static class to be used with the {@link LogManager}.
+ *
+ * @author beanbeanjuice
+ */
 public enum LogLevel {
 
     TEST(Color.blue, "TEST", "TEST", "https://homepages.cae.wisc.edu/~ece533/images/lena.png"),

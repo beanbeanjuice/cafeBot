@@ -2,8 +2,6 @@ package com.beanbeanjuice.utility.guild;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
-import com.beanbeanjuice.utility.logger.LogManager;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,21 +10,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * A class used for handling {@link Guild Guilds}.
+ *
+ * @author beanbeanjuice
+ */
 public class GuildHandler {
-
-    private JDA jda;
-    private Connection connection;
     private HashMap<String, CustomGuild> guildDatabase;
-    private LogManager logManager;
-    private String botPrefix;
 
-    public GuildHandler(@NotNull JDA jda, @NotNull Connection connection,
-                        @NotNull LogManager logManager, @NotNull String botPrefix) {
+    /**
+     * Creates a new {@link GuildHandler} object.
+     */
+    public GuildHandler() {
         guildDatabase = new HashMap<>();
-        this.jda = jda;
-        this.connection = connection;
-        this.logManager = logManager;
-        this.botPrefix = botPrefix;
 
         checkGuilds();
     }
@@ -36,6 +32,8 @@ public class GuildHandler {
      */
     public void updateGuildCache() {
         guildDatabase.clear();
+
+        Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM beanbot.guild_information;";
 
         try {
@@ -46,10 +44,10 @@ public class GuildHandler {
                 String guildID = String.valueOf(resultSet.getLong(1));
                 String prefix = resultSet.getString(2);
 
-                guildDatabase.put(guildID, new CustomGuild(guildID, prefix, this));
+                guildDatabase.put(guildID, new CustomGuild(guildID, prefix));
             }
         } catch (SQLException e) {
-            logManager.log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database: " + e.getMessage());
+            BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database: " + e.getMessage());
         }
     }
 
@@ -62,6 +60,7 @@ public class GuildHandler {
     @NotNull
     public Boolean updateGuildPrefix(@NotNull String guildID, @NotNull String newPrefix) {
 
+        Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information SET prefix = (?) WHERE guild_id = " + guildID + ";";
 
         try {
@@ -95,7 +94,7 @@ public class GuildHandler {
 
         updateGuildCache();
 
-        List<Guild> guildsHasBot = jda.getGuilds();
+        List<Guild> guildsHasBot = BeanBot.getJDA().getGuilds();
         ArrayList<String> guildsIDHasBot = new ArrayList<>();
 
         // Adds any guild that the bot is in but not in the database.
@@ -125,6 +124,8 @@ public class GuildHandler {
      */
     @NotNull
     public Boolean removeGuild(@NotNull String guildID) {
+
+        Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "DELETE FROM beanbot.guild_information " +
                 "WHERE guild_id = (?);";
 
@@ -133,10 +134,9 @@ public class GuildHandler {
             statement.setString(1, guildID);
 
             statement.execute();
-            updateGuildCache();
             return true;
         } catch (SQLException e) {
-            logManager.log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+            BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
             return false;
         }
     }
@@ -158,6 +158,8 @@ public class GuildHandler {
      */
     @NotNull
     public Boolean addGuild(@NotNull String guildID) {
+
+        Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "INSERT INTO beanbot.guild_information " +
                 "(guild_id, prefix) " +
                 "VALUES (?,?);";
@@ -165,13 +167,12 @@ public class GuildHandler {
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
             statement.setLong(1, Long.parseLong(guildID));
-            statement.setString(2, botPrefix);
+            statement.setString(2, BeanBot.getPrefix());
 
             statement.execute();
-            updateGuildCache();
             return true;
         } catch (SQLException e) {
-            logManager.log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+            BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
             return false;
         }
     }
@@ -203,7 +204,7 @@ public class GuildHandler {
      */
     @NotNull
     public Guild getGuild(@NotNull String guildID) {
-        return jda.getGuildById(guildID);
+        return BeanBot.getJDA().getGuildById(guildID);
     }
 
     /**

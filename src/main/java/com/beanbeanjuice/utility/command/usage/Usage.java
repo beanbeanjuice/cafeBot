@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 /**
  * A class used for containing {@link CommandUsage}.
+ *
+ * @author beanbeanjuice
  */
 public class Usage {
 
@@ -33,7 +35,7 @@ public class Usage {
      * @param name The name of the {@link com.beanbeanjuice.utility.command.ICommand ICommand}.
      * @param required Whether or not the {@link CommandUsage} is required.
      */
-    public void addUsage(CommandType type, String name, boolean required) {
+    public void addUsage(@NotNull CommandType type, @NotNull String name, @NotNull Boolean required) {
         usages.add(new CommandUsage(name, required, type));
 
         if (required) {
@@ -54,7 +56,7 @@ public class Usage {
      * @return The {@link com.beanbeanjuice.utility.command.usage.types.CommandErrorType} for the {@link com.beanbeanjuice.utility.command.ICommand ICommand}.
      */
     @NotNull
-    public CommandErrorType getERROR(ArrayList<String> args) {
+    public CommandErrorType getERROR(@NotNull ArrayList<String> args) {
         int count = 0;
         boolean incorrect;
 
@@ -103,39 +105,6 @@ public class Usage {
                 }
             }
 
-//            switch (type) {
-//                case LINK: {
-//                    incorrect = !isLink(args.get(count));
-//                    System.out.println(incorrect);
-//                    if (incorrect) {
-//                        incorrectIndex = count;
-//                        errorType = ERROR_TYPE.LINK;
-//                        System.out.println(getErrorType().getDescription());
-//                        return getErrorType();
-//                    }
-//
-//                }
-//                case NUMBER: {
-//                    incorrect = !isNumber(args.get(count));
-//                    System.out.println("number 1");
-//                    if (incorrect) {
-//                        incorrectIndex = count;
-//                        errorType = ERROR_TYPE.NUMBER;
-//                        return getErrorType();
-//                    }
-//
-//                }
-//                case USER: {
-//                    incorrect = !isUser(args.get(count));
-//                    if (incorrect) {
-//                        incorrectIndex = count;
-//                        errorType = ERROR_TYPE.USER;
-//                        return getErrorType();
-//                    }
-//
-//                }
-//            }
-
             if (args.size() - 1 == count) {
                 return CommandErrorType.SUCCESS;
             }
@@ -167,7 +136,7 @@ public class Usage {
      * @return Whether or not the {@link String} is a link.
      */
     @NotNull
-    private Boolean isLink(String string) {
+    private Boolean isLink(@NotNull String string) {
 
         try {
             new URL(string).toURI();
@@ -183,7 +152,7 @@ public class Usage {
      * @return Whether or not the {@link String} is a number.
      */
     @NotNull
-    private Boolean isNumber(String string) {
+    private Boolean isNumber(@NotNull String string) {
         if (string == null) {
             return false;
         }
@@ -203,7 +172,7 @@ public class Usage {
      * @return Whether or not the {@link net.dv8tion.jda.api.entities.User User} is a {@link net.dv8tion.jda.api.entities.User User}.
      */
     @NotNull
-    private Boolean isUser(String userID) {
+    private Boolean isUser(@NotNull String userID) {
         userID = userID.replace("<@!", "");
         userID = userID.replace(">", "");
 

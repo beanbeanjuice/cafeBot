@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * A usage class for handling the types.
+ *
+ * @author beanbeanjuice
  */
 public class CommandUsage {
 
@@ -18,7 +20,7 @@ public class CommandUsage {
      * @param isRequired Whether or not the {@link CommandUsage} is required.
      * @param type The {@link CommandType} of the {@link CommandUsage}.
      */
-    public CommandUsage(String name, boolean isRequired, CommandType type) {
+    public CommandUsage(@NotNull String name, @NotNull Boolean isRequired, @NotNull CommandType type) {
         this.name = name;
         this.isRequired = isRequired;
         this.type = type;

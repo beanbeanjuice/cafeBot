@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Used for when something goes wrong with {@link com.beanbeanjuice.utility.webhook.Webhook Webhook}.
+ *
+ * @author beanbeanjuice
  */
 public class WebhookException extends RuntimeException {
 

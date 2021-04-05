@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * An enum used for handling {@link com.beanbeanjuice.utility.command.ICommand ICommand} types.
+ *
+ * @author beanbeanjuice
  */
 public enum CommandType {
 

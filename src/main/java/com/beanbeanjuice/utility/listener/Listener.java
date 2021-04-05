@@ -1,9 +1,6 @@
 package com.beanbeanjuice.utility.listener;
 
 import com.beanbeanjuice.main.BeanBot;
-import com.beanbeanjuice.utility.command.CommandManager;
-import com.beanbeanjuice.utility.guild.GuildHandler;
-import me.duncte123.botcommons.BotCommons;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -22,19 +19,6 @@ import javax.annotation.Nonnull;
  */
 public class Listener extends ListenerAdapter {
 
-    private GuildHandler guildHandler;
-    private String botPrefix;
-    private CommandManager commandManager;
-
-    public Listener(@NotNull String botPrefix, @NotNull CommandManager commandManager) {
-        this.botPrefix = botPrefix;
-        this.commandManager = commandManager;
-    }
-
-    public void setGuildHandler(GuildHandler guildHandler) {
-        this.guildHandler = guildHandler;
-    }
-
     @Override
     public void onReady(@Nonnull ReadyEvent event) {
 
@@ -42,18 +26,21 @@ public class Listener extends ListenerAdapter {
 
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
-        guildHandler.updateGuildCache();
+        BeanBot.getGuildHandler().removeGuild(event.getGuild());
+        BeanBot.getGuildHandler().checkGuilds();
     }
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
-        guildHandler.updateGuildCache();
 
         TextChannel channel = event.getGuild().getDefaultChannel();
 
         if (channel != null) {
             event.getGuild().getDefaultChannel().sendMessage("The barista has arrived!").queue();
         }
+
+        BeanBot.getGuildHandler().addGuild(event.getGuild());
+        BeanBot.getGuildHandler().checkGuilds();
     }
 
     @Override
@@ -65,16 +52,16 @@ public class Listener extends ListenerAdapter {
             return;
         }
 
-        String prefix = guildHandler.getCustomGuild(event.getGuild().getId()).getPrefix();
+        String prefix = BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getPrefix();
 
         if (prefix == null) {
-            prefix = botPrefix;
+            prefix = BeanBot.getPrefix();
         }
 
         String raw = event.getMessage().getContentRaw();
 
         if (raw.startsWith(prefix)) {
-            commandManager.handle(event, prefix);
+            BeanBot.getCommandManager().handle(event, prefix);
         }
     }
 }
