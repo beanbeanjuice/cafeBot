@@ -2,6 +2,8 @@ package com.beanbeanjuice.main;
 
 import com.beanbeanjuice.command.general.HelpCommand;
 import com.beanbeanjuice.command.general.PingCommand;
+import com.beanbeanjuice.command.music.NowPlayingCommand;
+import com.beanbeanjuice.command.music.PlayCommand;
 import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
@@ -9,6 +11,10 @@ import com.beanbeanjuice.utility.listener.Listener;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
 import com.beanbeanjuice.utility.sql.SQLServer;
+import com.wrapper.spotify.SpotifyApi;
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
+import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -18,10 +24,12 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.apache.hc.core5.http.ParseException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.security.auth.login.LoginException;
+import java.io.IOException;
 
 /**
  * The main {@link BeanBot} class.
@@ -49,6 +57,12 @@ public class BeanBot {
 
     // Command Stuff
     private static CommandManager commandManager;
+
+    // Spotify Stuff
+    private static SpotifyApi spotifyApi;
+    private static ClientCredentialsRequest clientCredentialsRequest;
+    private static final String SPOTIFY_API_CLIENT_ID = "b955ba0137d141a1807107fd0a256257";
+    private static final String SPOTIFY_API_CLIENT_SECRET = "706b6417f9ba4d68919ae1f46dcbd84e";
 
     // SQL Stuff
     private static SQLServer sqlServer;
@@ -93,6 +107,9 @@ public class BeanBot {
         commandManager.addCommand(new HelpCommand());
         commandManager.addCommand(new PingCommand());
 
+        commandManager.addCommand(new NowPlayingCommand());
+        commandManager.addCommand(new PlayCommand());
+
         jdaBuilder.addEventListeners(new Listener());
 
         jda = jdaBuilder.build().awaitReady();
@@ -104,11 +121,36 @@ public class BeanBot {
 
         logManager.log(BeanBot.class, LogLevel.SUCCESS, "The bot is online!");
 
+        // Connecting to the Spotify API
+        spotifyApi = new SpotifyApi.Builder()
+                .setClientId(SPOTIFY_API_CLIENT_ID)
+                .setClientSecret(SPOTIFY_API_CLIENT_SECRET)
+                .build();
+
+        clientCredentialsRequest = spotifyApi.clientCredentials().build();
+
+        try {
+            final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
+            spotifyApi.setAccessToken(clientCredentials.getAccessToken());
+            logManager.log(BeanBot.class, LogLevel.INFO, "Spotify Access Token Expires In: " + clientCredentials.getExpiresIn());
+            logManager.log(BeanBot.class, LogLevel.SUCCESS, "Successfully connected to the Spotify API!");
+        } catch (IOException | SpotifyWebApiException | ParseException e) {
+            logManager.log(BeanBot.class, LogLevel.ERROR, e.getMessage());
+        }
+
         logManager.setGuild(homeGuild);
         logManager.setLogChannel(homeGuildLogChannel);
         guildHandler = new GuildHandler();
 
         generalHelper = new GeneralHelper();
+    }
+
+    /**
+     * @return The current {@link SpotifyApi}.
+     */
+    @Nullable
+    public static SpotifyApi getSpotifyApi() {
+        return spotifyApi;
     }
 
     /**
