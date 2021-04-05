@@ -24,6 +24,9 @@ public class HelpCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
+
+        event.getMessage().delete().queue();
+
         TextChannel channel = event.getChannel();
         EmbedBuilder embedBuilder = new EmbedBuilder();
         StringBuilder builder = new StringBuilder();
