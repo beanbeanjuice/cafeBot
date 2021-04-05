@@ -4,6 +4,7 @@ import com.beanbeanjuice.command.general.HelpCommand;
 import com.beanbeanjuice.command.general.PingCommand;
 import com.beanbeanjuice.command.music.NowPlayingCommand;
 import com.beanbeanjuice.command.music.PlayCommand;
+import com.beanbeanjuice.command.music.QueueCommand;
 import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
@@ -109,6 +110,7 @@ public class BeanBot {
 
         commandManager.addCommand(new NowPlayingCommand());
         commandManager.addCommand(new PlayCommand());
+        commandManager.addCommand(new QueueCommand());
 
         jdaBuilder.addEventListeners(new Listener());
 
