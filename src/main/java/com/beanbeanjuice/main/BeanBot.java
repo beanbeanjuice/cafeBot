@@ -90,7 +90,7 @@ public class BeanBot {
 
         // Listeners and Commands
         commandManager = new CommandManager();
-        commandManager.addCommand(new HelpCommand(commandManager));
+        commandManager.addCommand(new HelpCommand());
         commandManager.addCommand(new PingCommand());
 
         jdaBuilder.addEventListeners(new Listener());
