@@ -1,5 +1,6 @@
 package com.beanbeanjuice.main;
 
+import com.beanbeanjuice.command.fun.JokeCommand;
 import com.beanbeanjuice.command.general.HelpCommand;
 import com.beanbeanjuice.command.general.PingCommand;
 import com.beanbeanjuice.command.music.*;
@@ -112,6 +113,8 @@ public class BeanBot {
         commandManager.addCommand(new RepeatCommand());
         commandManager.addCommand(new SkipCommand());
         commandManager.addCommand(new StopCommand());
+
+        commandManager.addCommand(new JokeCommand());
 
         jdaBuilder.addEventListeners(new Listener());
 
