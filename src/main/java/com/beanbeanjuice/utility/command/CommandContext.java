@@ -1,5 +1,6 @@
 package com.beanbeanjuice.utility.command;
 
+import com.beanbeanjuice.main.BeanBot;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -12,13 +13,14 @@ import java.util.ArrayList;
 
 /**
  * A class used for handling the contexts for the {@link ICommand}.
+ *
+ * @author beanbeanjuice
  */
 public class CommandContext {
 
     private final GuildMessageReceivedEvent event;
     private final ArrayList<String> arguments;
     private final String prefix;
-    private final JDA jda;
 
     /**
      * Creates a new instance of the {@link CommandContext} object.
@@ -26,11 +28,10 @@ public class CommandContext {
      * @param arguments The arguments for the {@link GuildMessageReceivedEvent}.
      * @param prefix The bot's prefix.
      */
-    public CommandContext(GuildMessageReceivedEvent event, ArrayList<String> arguments, String prefix, JDA jda) {
+    public CommandContext(@NotNull GuildMessageReceivedEvent event, @NotNull ArrayList<String> arguments, @NotNull String prefix) {
         this.event = event;
         this.arguments = arguments;
         this.prefix = prefix;
-        this.jda = jda;
     }
 
     /**
@@ -51,7 +52,7 @@ public class CommandContext {
 
     @Nullable
     public ShardManager getShardManager() {
-        return jda.getShardManager();
+        return BeanBot.getJDA().getShardManager();
     }
 
     /**

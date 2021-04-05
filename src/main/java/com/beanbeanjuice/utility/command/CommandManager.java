@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 
 /**
  * A class used for handling {@link ICommand}.
+ *
+ * @author beanbeanjuice
  */
 public class CommandManager {
 
@@ -30,7 +32,7 @@ public class CommandManager {
      * Adds a new {@link ICommand} to be listened for.
      * @param command The {@link ICommand} to be added.
      */
-    public void addCommand(ICommand command) {
+    public void addCommand(@NotNull ICommand command) {
         boolean nameFound = this.commands.stream().anyMatch((it) -> it.getName().equalsIgnoreCase(command.getName()));
 
         if (nameFound) {
@@ -46,7 +48,7 @@ public class CommandManager {
      * @return The {@link ICommand} that contains that.
      */
     @Nullable
-    public ICommand getCommand(String search) {
+    public ICommand getCommand(@NotNull String search) {
         String searchLower = search.toLowerCase();
 
         for (ICommand command : this.commands) {
@@ -72,7 +74,7 @@ public class CommandManager {
      * @param event The {@link GuildMessageReceivedEvent} to be checked.
      * @param prefix THe prefix that was run during the {@link GuildMessageReceivedEvent}.
      */
-    public void handle(GuildMessageReceivedEvent event, String prefix) {
+    public void handle(@NotNull GuildMessageReceivedEvent event, @NotNull String prefix) {
         String[] split = event.getMessage().getContentRaw()
                 .replaceFirst("(?i)" + Pattern.quote(prefix), "")
                 .split("\\s+");
@@ -90,7 +92,7 @@ public class CommandManager {
 
                 event.getChannel().sendTyping().queue();
 
-                CommandContext ctx = new CommandContext(event, args, prefix, event.getJDA());
+                CommandContext ctx = new CommandContext(event, args, prefix);
 
                 command.handle(ctx, args, event.getAuthor(), event);
             } else {
@@ -109,7 +111,7 @@ public class CommandManager {
      * @return The {@link MessageEmbed} to be sent.
      */
     @NotNull
-    private MessageEmbed indexMessageEmbed(CommandErrorType errorType, int incorrectIndex, ArrayList<String> args) {
+    private MessageEmbed indexMessageEmbed(@NotNull CommandErrorType errorType, @NotNull Integer incorrectIndex, @NotNull ArrayList<String> args) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
         embedBuilder.addField(errorType.name(), errorType.getDescription(), true);

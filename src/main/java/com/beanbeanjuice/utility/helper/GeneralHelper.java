@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.helper;
 
-import net.dv8tion.jda.api.JDA;
+import com.beanbeanjuice.main.BeanBot;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,16 +14,6 @@ import java.util.Random;
  * @author beanbeanjuice
  */
 public class GeneralHelper {
-
-    private final JDA jda;
-
-    /**
-     * Creates a new {@link GeneralHelper} object.
-     * @param jda The {@link JDA} that has been created in the {@link com.beanbeanjuice.main.BeanBot BeanBot} class.
-     */
-    public GeneralHelper(JDA jda) {
-        this.jda = jda;
-    }
 
     /**
      * @return A random {@link Color}.
@@ -50,7 +40,7 @@ public class GeneralHelper {
         userID = userID.replace(">", "");
         System.out.println(userID);
 
-        return jda.getUserById(userID);
+        return BeanBot.getJDA().getUserById(userID);
     }
 
     /**

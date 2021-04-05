@@ -16,6 +16,8 @@ import java.util.TimeZone;
 
 /**
  * A class used for logging.
+ *
+ * @author beanbeanjuice
  */
 public class LogManager {
 

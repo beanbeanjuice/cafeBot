@@ -13,6 +13,11 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.ArrayList;
 
+/**
+ * A general ping command to show bot information.
+ *
+ * @author beanbeanjuice
+ */
 public class PingCommand implements ICommand {
 
     @Override

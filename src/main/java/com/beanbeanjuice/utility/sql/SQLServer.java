@@ -9,6 +9,8 @@ import java.util.Properties;
 
 /**
  * Class for creating a {@link SQLServer} object.
+ *
+ * @author beanbeanjuice
  */
 public class SQLServer {
 

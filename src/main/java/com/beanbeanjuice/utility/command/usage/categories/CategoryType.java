@@ -1,5 +1,12 @@
 package com.beanbeanjuice.utility.command.usage.categories;
 
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * A static class used for handling command category types.
+ *
+ * @author beanbeanjuice
+ */
 public enum CategoryType {
 
     MODERATION("Commands used for moderation.", "https://pbs.twimg.com/media/DtvXNI9XcAUQ2Bs.png"),
@@ -11,7 +18,7 @@ public enum CategoryType {
     private final String message;
     private final String link;
 
-    CategoryType(String message, String link) {
+    CategoryType(@NotNull String message, @NotNull String link) {
         this.message = message;
         this.link = link;
     }

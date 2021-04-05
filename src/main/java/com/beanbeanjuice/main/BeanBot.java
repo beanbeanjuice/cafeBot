@@ -18,11 +18,19 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.security.auth.login.LoginException;
 
+/**
+ * The main {@link BeanBot} class.
+ *
+ * @author beanbeanjuice
+ */
 public class BeanBot {
 
+    // General Bot Info
     private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.P05jVyf4YhLXAdBnxxqFH1X4gBs";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
@@ -38,7 +46,6 @@ public class BeanBot {
 
     // Guild Manager Stuff
     private static GuildHandler guildHandler;
-    private static Listener listener;
 
     // Command Stuff
     private static CommandManager commandManager;
@@ -86,8 +93,7 @@ public class BeanBot {
         commandManager.addCommand(new HelpCommand(commandManager));
         commandManager.addCommand(new PingCommand());
 
-        listener = new Listener(BOT_PREFIX, commandManager);
-        jdaBuilder.addEventListeners(listener);
+        jdaBuilder.addEventListeners(new Listener());
 
         jda = jdaBuilder.build().awaitReady();
 
@@ -100,34 +106,65 @@ public class BeanBot {
 
         logManager.setGuild(homeGuild);
         logManager.setLogChannel(homeGuildLogChannel);
-        guildHandler = new GuildHandler(jda, sqlServer.getConnection(), logManager, BOT_PREFIX);
-        listener.setGuildHandler(guildHandler);
+        guildHandler = new GuildHandler();
 
-        generalHelper = new GeneralHelper(jda);
+        generalHelper = new GeneralHelper();
     }
 
+    /**
+     * @return The current {@link GeneralHelper}.
+     */
+    @Nullable
     public static GeneralHelper getGeneralHelper() {
         return generalHelper;
     }
 
+    /**
+     * @return The current {@link GuildHandler}.
+     */
+    @Nullable
     public static GuildHandler getGuildHandler() {
         return guildHandler;
     }
 
+    /**
+     * @return The current {@link JDA}.
+     */
+    @Nullable
     public static JDA getJDA() {
         return jda;
     }
 
+    /**
+     * @return The bot's default prefix.
+     */
+    @NotNull
     public static String getPrefix() {
         return BOT_PREFIX;
     }
 
+    /**
+     * @return The current {@link LogManager}.
+     */
+    @Nullable
     public static LogManager getLogManager() {
         return logManager;
     }
 
+    /**
+     * @return The current {@link SQLServer}.
+     */
+    @Nullable
     public static SQLServer getSQLServer() {
         return sqlServer;
+    }
+
+    /**
+     * @return The current {@link CommandManager}.
+     */
+    @Nullable
+    public static CommandManager getCommandManager() {
+        return commandManager;
     }
 
 }

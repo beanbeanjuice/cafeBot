@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * An enum used for handling {@link com.beanbeanjuice.utility.command.ICommand ICommand} errors.
+ *
+ * @author beanbeanjuice
  */
 public enum CommandErrorType {
 
@@ -20,7 +22,7 @@ public enum CommandErrorType {
      * Creates a new instance of the {@link CommandErrorType}.
      * @param description The error message.
      */
-    CommandErrorType(String description) {
+    CommandErrorType(@NotNull String description) {
         this.description = description;
     }
 
