@@ -167,8 +167,8 @@ public class GuildHandler {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "INSERT INTO beanbot.guild_information " +
-                "(guild_id, prefix, moderator_role_id, twitch_channel_id, twitch_channels) " +
-                "VALUES (?,?,?,?,?);";
+                "(guild_id, prefix, moderator_role_id, twitch_channel_id, twitch_channels, muted_role_id) " +
+                "VALUES (?,?,?,?,?,?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -177,6 +177,7 @@ public class GuildHandler {
             statement.setLong(3, 0L);
             statement.setLong(4, 0L);
             statement.setString(5, "");
+            statement.setLong(6, 0L);
 
             statement.execute();
             return true;
