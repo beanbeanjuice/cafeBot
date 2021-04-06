@@ -5,6 +5,7 @@ import com.beanbeanjuice.command.fun.JokeCommand;
 import com.beanbeanjuice.command.general.HelpCommand;
 import com.beanbeanjuice.command.general.PingCommand;
 import com.beanbeanjuice.command.moderation.ChangePrefixCommand;
+import com.beanbeanjuice.command.moderation.KickCommand;
 import com.beanbeanjuice.command.moderation.SetModeratorRoleCommand;
 import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.twitch.AddTwitchChannelCommand;
@@ -129,6 +130,7 @@ public class BeanBot {
 
         commandManager.addCommand(new SetModeratorRoleCommand());
         commandManager.addCommand(new ChangePrefixCommand());
+        commandManager.addCommand(new KickCommand());
 
         commandManager.addCommand(new SetLiveChannelCommand());
         commandManager.addCommand(new AddTwitchChannelCommand());
