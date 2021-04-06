@@ -79,28 +79,52 @@ public class GeneralHelper {
     /**
      * Checks if the specified {@link Member} is an administrator or has the moderator role.
      * @param member The {@link Member} to be checked.
-     * @param channel The {@link TextChannel} the {@link GuildMessageReceivedEvent} is in.
-     * @param permission The {@link Permission} to check for.
+     * @param guild The {@link Guild} the {@link Member} is in.
+     * @param event The {@link GuildMessageReceivedEvent} that was sent.
      * @return Whether or not the {@link Member} can run the command.
      */
     @NotNull
-    public Boolean isModerator(@NotNull Member member, @NotNull TextChannel channel, @NotNull Permission permission) {
+    public Boolean isModerator(@NotNull Member member, @NotNull Guild guild, @NotNull GuildMessageReceivedEvent event) {
 
         if (member.hasPermission(Permission.ADMINISTRATOR)) {
             return true;
         }
 
-//        CustomGuild customGuild = BeanBot.getGuildHandler().getCustomGuild(guild);
+        CustomGuild customGuild = BeanBot.getGuildHandler().getCustomGuild(guild);
 
-        // TODO: Possibly use this in the future.
-//        if (customGuild.getModeratorRole() == null) {
-//            EmbedBuilder embedBuilder = new EmbedBuilder();
-//            embedBuilder.setAuthor("No Moderator Role Set");
-//            embedBuilder.setColor(Color.red);
-//            embedBuilder.setDescription("No moderator role has been set. Please check the help command for more information.");
-//            event.getChannel().sendMessage(embedBuilder.build()).queue();
-//            return false;
-//        }
+        if (customGuild.getModeratorRole() == null) {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setAuthor("No Moderator Role Set");
+            embedBuilder.setColor(Color.red);
+            embedBuilder.setDescription("No moderator role has been set. Please check the help command for more information.");
+            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            return false;
+        }
+
+        if (!member.getRoles().contains(customGuild.getModeratorRole())) {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setAuthor("No Permission");
+            embedBuilder.setColor(Color.red);
+            embedBuilder.setDescription("You don't have permission to run this command.");
+            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Compares a {@link Permission} for a {@link Member}.
+     * @param member The {@link Member} to be checked.
+     * @param channel The {@link TextChannel} the message was sent in.
+     * @param permission The {@link Permission} to check for.
+     * @return Whether or not the {@link Member} has the {@link Permission}.
+     */
+    @NotNull
+    public Boolean checkPermission(@NotNull Member member, @NotNull TextChannel channel, @NotNull Permission permission) {
+
+        if (member.hasPermission(Permission.ADMINISTRATOR)) {
+            return true;
+        }
 
         if (!member.hasPermission(permission)) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -114,8 +138,9 @@ public class GeneralHelper {
     }
 
     /**
-     * @return The SQLServerError {@link MessageEmbed}.
+     * @return The SQL Server Error {@link MessageEmbed}.
      */
+    @NotNull
     public MessageEmbed sqlServerError() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.red);
