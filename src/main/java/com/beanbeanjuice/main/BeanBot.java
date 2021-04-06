@@ -7,6 +7,10 @@ import com.beanbeanjuice.command.general.PingCommand;
 import com.beanbeanjuice.command.moderation.ChangePrefixCommand;
 import com.beanbeanjuice.command.moderation.SetModeratorRoleCommand;
 import com.beanbeanjuice.command.music.*;
+import com.beanbeanjuice.command.twitch.AddTwitchChannelCommand;
+import com.beanbeanjuice.command.twitch.GetTwitchChannelsCommand;
+import com.beanbeanjuice.command.twitch.RemoveTwitchChannelCommand;
+import com.beanbeanjuice.command.twitch.SetLiveChannelCommand;
 import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
@@ -67,6 +71,9 @@ public class BeanBot {
     private static final String SPOTIFY_API_CLIENT_ID = "b955ba0137d141a1807107fd0a256257";
     private static final String SPOTIFY_API_CLIENT_SECRET = "706b6417f9ba4d68919ae1f46dcbd84e";
 
+    // Twitch Stuff
+    private static final String TWITCH_ACCESS_TOKEN = "9gzoertfh164plpbpz2vtd6iqqtmnq";
+
     // SQL Stuff
     private static SQLServer sqlServer;
     private static final String SQL_URL = "beanbeanjuice.com";
@@ -123,6 +130,11 @@ public class BeanBot {
         commandManager.addCommand(new SetModeratorRoleCommand());
         commandManager.addCommand(new ChangePrefixCommand());
 
+        commandManager.addCommand(new SetLiveChannelCommand());
+        commandManager.addCommand(new AddTwitchChannelCommand());
+        commandManager.addCommand(new RemoveTwitchChannelCommand());
+        commandManager.addCommand(new GetTwitchChannelsCommand());
+
         jdaBuilder.addEventListeners(new Listener());
 
         jda = jdaBuilder.build().awaitReady();
@@ -156,6 +168,14 @@ public class BeanBot {
         guildHandler = new GuildHandler();
 
         generalHelper = new GeneralHelper();
+    }
+
+    /**
+     * @return The current Twitch Access Token
+     */
+    @NotNull
+    public static String getTwitchAccessToken() {
+        return TWITCH_ACCESS_TOKEN;
     }
 
     /**
