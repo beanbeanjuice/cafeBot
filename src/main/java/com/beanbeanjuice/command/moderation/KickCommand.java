@@ -28,7 +28,7 @@ public class KickCommand implements ICommand {
 
         event.getMessage().delete().queue();
 
-        if (!BeanBot.getGeneralHelper().isModerator(event.getMember(), event.getChannel(), Permission.KICK_MEMBERS)) {
+        if (!BeanBot.getGeneralHelper().checkPermission(event.getMember(), event.getChannel(), Permission.KICK_MEMBERS)) {
             return;
         }
 
