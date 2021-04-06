@@ -36,9 +36,6 @@ public class TwitchChannelNamesHandler {
             }
         }
 
-
-
-        // TODO: Eventually use a SQL database.
         twitchChannelNames.add(twitchChannelName.toLowerCase());
         customGuild.getTwitchListener().addStream(twitchChannelName);
         return true;
@@ -55,7 +52,6 @@ public class TwitchChannelNamesHandler {
         for (String string : getTwitchChannelNames()) {
             if (string.equalsIgnoreCase(twitchChannelName)) {
 
-                // TODO: Eventually use a SQL database.
                 twitchChannelNames.remove(twitchChannelName.toLowerCase());
                 customGuild.getTwitchListener().removeStream(twitchChannelName);
                 return true;
@@ -72,7 +68,6 @@ public class TwitchChannelNamesHandler {
      */
     @NotNull
     public ArrayList<String> getTwitchChannelNames() {
-        // TODO: Eventually use a SQL database.
         return twitchChannelNames;
     }
 }
