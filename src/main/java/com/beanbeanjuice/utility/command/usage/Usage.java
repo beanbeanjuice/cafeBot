@@ -103,6 +103,13 @@ public class Usage {
                     errorType = CommandErrorType.USER;
                     return getErrorType();
                 }
+            } else if (type.equals(CommandType.ROLE)) {
+                incorrect = !isRole(args.get(count));
+                if (incorrect) {
+                    incorrectIndex = count;
+                    errorType = CommandErrorType.ROLE;
+                    return getErrorType();
+                }
             }
 
             if (args.size() - 1 == count) {
@@ -178,6 +185,25 @@ public class Usage {
 
         try {
             BeanBot.getJDA().getUserById(userID);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks whether or not the provided {@link String} is a {@link net.dv8tion.jda.api.entities.User User}.
+     * @param roleID The ID of the {@link net.dv8tion.jda.api.entities.Role Role}.
+     * @return Whether or not the specified {@link String} is a {@link net.dv8tion.jda.api.entities.Role Role}.
+     */
+    @NotNull
+    private Boolean isRole(@NotNull String roleID) {
+        roleID = roleID.replace("<@!", "");
+        roleID = roleID.replace(">", "");
+
+        try {
+            BeanBot.getJDA().getRoleById(roleID);
         } catch (NumberFormatException e) {
             return false;
         }
