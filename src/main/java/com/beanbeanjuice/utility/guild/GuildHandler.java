@@ -188,6 +188,46 @@ public class GuildHandler {
     }
 
     /**
+     * Updates the muted {@link Role} in the specified {@link Guild}.
+     * @param guildID The ID of the {@link Guild} to have the {@link Role} updated in.
+     * @param roleID The ID of the {@link Role} to be given to the muted {@link net.dv8tion.jda.api.entities.Member Member}.
+     * @return Whether or not updating the {@link Role} in the database was successful.
+     */
+    @NotNull
+    public Boolean updateGuildMutedRole(@NotNull String guildID, @NotNull String roleID) {
+
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "UPDATE beanbot.guild_information " +
+                "SET muted_role_id = (?) " +
+                "WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(roleID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            updateGuildCache();
+            return true;
+        } catch (SQLException e) {
+            BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+            return false;
+        }
+
+    }
+
+    /**
+     * Updates the muted {@link Role} in the specified {@link Guild}.
+     * @param guild The {@link Guild} to have the {@link Role} updated in.
+     * @param role The {@link Role} to be given to muted {@link net.dv8tion.jda.api.entities.Member Member}.
+     * @return Whether or not updating the {@link Role} in the database was successful.
+     */
+    @NotNull
+    public Boolean updateGuildMutedRole(@NotNull Guild guild, @NotNull Role role) {
+        return updateGuildMutedRole(guild.getId(), role.getId());
+    }
+
+    /**
      * Updates the moderator {@link Role} for the {@link Guild}.
      * @param guildID The ID of the {@link Guild} to have the {@link Role} updated.
      * @param roleID The ID of the {@link Role} to set as the moderator {@link Role}.
