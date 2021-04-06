@@ -7,6 +7,7 @@ import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -27,7 +28,7 @@ public class BanCommand implements ICommand {
 
         event.getMessage().delete().queue();
 
-        if (!BeanBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
+        if (!BeanBot.getGeneralHelper().checkPermission(event.getMember(), event.getChannel(), Permission.BAN_MEMBERS)) {
             return;
         }
 
