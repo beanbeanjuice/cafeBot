@@ -1,7 +1,11 @@
 package com.beanbeanjuice.utility.helper;
 
 import com.beanbeanjuice.main.BeanBot;
-import net.dv8tion.jda.api.entities.User;
+import com.beanbeanjuice.utility.guild.CustomGuild;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,6 +54,70 @@ public class GeneralHelper {
      */
     public void pmUser(User user, String message) {
         user.openPrivateChannel().flatMap(channel -> channel.sendMessage(message)).queue();
+    }
+
+    /**
+     * Checks if a specified {@link Member} is an administrator.
+     * @param member The {@link Member} to be checked.
+     * @param event The {@link GuildMessageReceivedEvent} that was sent.
+     * @return Whether or not the {@link Member} is an administrator.
+     */
+    @NotNull
+    public Boolean isAdministrator(@NotNull Member member, @NotNull GuildMessageReceivedEvent event) {
+        if (member.hasPermission(Permission.ADMINISTRATOR)) {
+            return true;
+        }
+
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor("No Permission");
+        embedBuilder.setColor(Color.red);
+        embedBuilder.setDescription("You don't have permission to run this command. You must be an administrator");
+        event.getChannel().sendMessage(embedBuilder.build()).queue();
+        return false;
+    }
+
+    /**
+     * Checks if the specified {@link Member} is an administrator or has the moderator role.
+     * @param member The {@link Member} to be checked.
+     * @param guild The {@link Guild} the {@link Member} is in.
+     * @param event The {@link GuildMessageReceivedEvent} that was sent.
+     * @return Whether or not the {@link Member} can run the command.
+     */
+    @NotNull
+    public Boolean isModerator(@NotNull Member member, @NotNull Guild guild, @NotNull GuildMessageReceivedEvent event) {
+
+        if (member.hasPermission(Permission.ADMINISTRATOR)) {
+            return true;
+        }
+
+        CustomGuild customGuild = BeanBot.getGuildHandler().getCustomGuild(guild);
+
+        if (customGuild.getModeratorRole() == null) {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setAuthor("No Moderator Role Set");
+            embedBuilder.setColor(Color.red);
+            embedBuilder.setDescription("No moderator role has been set. Please check the help command for more information.");
+            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            return false;
+        }
+
+        if (!member.getRoles().contains(customGuild.getModeratorRole())) {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setAuthor("No Permission");
+            embedBuilder.setColor(Color.red);
+            embedBuilder.setDescription("You don't have permission to run this command.");
+            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            return false;
+        }
+        return true;
+    }
+
+    public MessageEmbed sqlServerError() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setColor(Color.red);
+        embedBuilder.setAuthor("Connection Error");
+        embedBuilder.setDescription("The bot is unable to connect to the SQL database. Please try again later.");
+        return embedBuilder.build();
     }
 
 }
