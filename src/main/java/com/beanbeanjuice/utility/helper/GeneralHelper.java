@@ -112,6 +112,35 @@ public class GeneralHelper {
         return true;
     }
 
+    /**
+     * Compares a {@link Permission} for a {@link Member}.
+     * @param member The {@link Member} to be checked.
+     * @param channel The {@link TextChannel} the message was sent in.
+     * @param permission The {@link Permission} to check for.
+     * @return Whether or not the {@link Member} has the {@link Permission}.
+     */
+    @NotNull
+    public Boolean checkPermission(@NotNull Member member, @NotNull TextChannel channel, @NotNull Permission permission) {
+
+        if (member.hasPermission(Permission.ADMINISTRATOR)) {
+            return true;
+        }
+
+        if (!member.hasPermission(permission)) {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setAuthor("No Permission");
+            embedBuilder.setColor(Color.red);
+            embedBuilder.setDescription("You don't have the permission `" + permission.getName() + "` to run this command.");
+            channel.sendMessage(embedBuilder.build()).queue();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @return The SQL Server Error {@link MessageEmbed}.
+     */
+    @NotNull
     public MessageEmbed sqlServerError() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.red);
