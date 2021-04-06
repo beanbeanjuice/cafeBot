@@ -62,11 +62,17 @@ public class CustomGuild {
 
     }
 
+    /**
+     * @return The {@link TwitchListener} for the specified {@link Guild}.
+     */
     @NotNull
     public TwitchListener getTwitchListener() {
         return twitchListener;
     }
 
+    /**
+     * @return The {@link TwitchChannelNamesHandler} for the specified {@link Guild}.
+     */
     @NotNull
     public TwitchChannelNamesHandler getTwitchChannelNamesHandler() {
         return twitchChannelNamesHandler;
