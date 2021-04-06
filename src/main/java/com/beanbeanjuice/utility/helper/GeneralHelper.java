@@ -48,6 +48,20 @@ public class GeneralHelper {
     }
 
     /**
+     * Gets a {@link Role} from the ID.
+     * @param roleID The ID of the {@link Role}.
+     * @return The {@link Role}.
+     */
+    @Nullable
+    public Role getRole(@NotNull String roleID) {
+        roleID = roleID.replace("<@!", "");
+        roleID = roleID.replace(">", "");
+        System.out.println(roleID);
+
+        return BeanBot.getJDA().getRoleById(roleID);
+    }
+
+    /**
      * Private message's a specified {@link User}.
      * @param user The {@link User} to be messaged.
      * @param message The contents of the message.
