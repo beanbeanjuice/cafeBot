@@ -127,6 +127,7 @@ public class BeanBot {
         commandManager.addCommand(new JokeCommand());
 
         commandManager.addCommand(new SetModeratorRoleCommand());
+        commandManager.addCommand(new SetMutedRoleCommand());
         commandManager.addCommand(new ChangePrefixCommand());
         commandManager.addCommand(new KickCommand());
         commandManager.addCommand(new BanCommand());

@@ -42,23 +42,22 @@ public class GeneralHelper {
     public User getUser(@NotNull String userID) {
         userID = userID.replace("<@!", "");
         userID = userID.replace(">", "");
-        System.out.println(userID);
 
         return BeanBot.getJDA().getUserById(userID);
     }
 
     /**
      * Gets a {@link Role} from the ID.
+     * @param guild The {@link Guild} that contains the {@link Role}.
      * @param roleID The ID of the {@link Role}.
      * @return The {@link Role}.
      */
     @Nullable
-    public Role getRole(@NotNull String roleID) {
-        roleID = roleID.replace("<@!", "");
+    public Role getRole(@NotNull Guild guild, @NotNull String roleID) {
+        roleID = roleID.replace("<@&", "");
         roleID = roleID.replace(">", "");
-        System.out.println(roleID);
 
-        return BeanBot.getJDA().getRoleById(roleID);
+        return guild.getRoleById(roleID);
     }
 
     /**

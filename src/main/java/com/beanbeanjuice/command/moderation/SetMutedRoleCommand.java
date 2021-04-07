@@ -30,9 +30,9 @@ public class SetMutedRoleCommand implements ICommand {
 
         event.getMessage().delete().queue();
 
-        Role role = BeanBot.getGeneralHelper().getRole(args.get(0));
+        Role role = BeanBot.getGeneralHelper().getRole(event.getGuild(), args.get(0));
 
-        if (!BeanBot.getGuildHandler().updateGuildModeratorRole(event.getGuild(), role)) {
+        if (!BeanBot.getGuildHandler().updateGuildMutedRole(event.getGuild(), role)) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError());
             return;
         }
@@ -71,6 +71,6 @@ public class SetMutedRoleCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return null;
+        return CategoryType.MODERATION;
     }
 }
