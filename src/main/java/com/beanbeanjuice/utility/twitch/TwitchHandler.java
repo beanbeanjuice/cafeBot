@@ -29,14 +29,11 @@ public class TwitchHandler {
      */
     @NotNull
     public Boolean addTwitchToGuild(@NotNull String guildID, @NotNull Twitch twitch) {
-
         if (twitchListenerDatabase.get(guildID) == null) {
             twitchListenerDatabase.put(guildID, twitch);
             return true;
         }
-
         return false;
-
     }
 
     /**
