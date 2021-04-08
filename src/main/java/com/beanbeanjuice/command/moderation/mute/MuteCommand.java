@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation;
+package com.beanbeanjuice.command.moderation.mute;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.command.CommandContext;
