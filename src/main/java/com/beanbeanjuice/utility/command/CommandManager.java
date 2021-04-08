@@ -86,7 +86,7 @@ public class CommandManager {
 
             Usage usage = command.getUsage();
             ArrayList<String> args = new ArrayList<>(Arrays.asList(split).subList(1, split.length));
-            CommandErrorType errorType = usage.getERROR(args);
+            CommandErrorType errorType = usage.getERROR(args, event.getGuild());
 
             if (errorType.equals(CommandErrorType.SUCCESS)) {
 
