@@ -19,6 +19,7 @@ import com.beanbeanjuice.utility.listener.Listener;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
 import com.beanbeanjuice.utility.sql.SQLServer;
+import com.beanbeanjuice.utility.twitch.TwitchHandler;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
@@ -74,6 +75,7 @@ public class BeanBot {
 
     // Twitch Stuff
     private static final String TWITCH_ACCESS_TOKEN = "9gzoertfh164plpbpz2vtd6iqqtmnq";
+    private static TwitchHandler twitchHandler;
 
     // SQL Stuff
     private static SQLServer sqlServer;
@@ -90,6 +92,8 @@ public class BeanBot {
     private static GeneralHelper generalHelper;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
+
+        twitchHandler = new TwitchHandler();
         sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
         sqlServer.startConnection();
 
@@ -175,6 +179,14 @@ public class BeanBot {
         guildHandler = new GuildHandler();
 
         generalHelper = new GeneralHelper();
+    }
+
+    /**
+     * @return The current {@link TwitchHandler}.
+     */
+    @NotNull
+    public static TwitchHandler getTwitchHandler() {
+        return twitchHandler;
     }
 
     /**

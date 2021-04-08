@@ -1,24 +1,28 @@
-package com.beanbeanjuice.utility.listener.twitch;
+package com.beanbeanjuice.utility.twitch;
 
-import com.beanbeanjuice.utility.guild.CustomGuild;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * A class used to handle Twitch channel names.
+ *
+ * @author beanbeanjuice
+ */
 public class TwitchChannelNamesHandler {
 
     private ArrayList<String> twitchChannelNames;
-    private CustomGuild customGuild;
+    private Twitch twitch;
 
     /**
      * Creates a new instance of the {@link TwitchChannelNamesHandler} object.
      */
-    public TwitchChannelNamesHandler(CustomGuild customGuild) {
-        this.customGuild = customGuild;
+    public TwitchChannelNamesHandler(Twitch twitch) {
+        this.twitch = twitch;
         twitchChannelNames = new ArrayList<>();
 
         for (String twitchChannelName : getTwitchChannelNames()) {
-            customGuild.getTwitchListener().addStream(twitchChannelName);
+            twitch.getTwitchListener().addStream(twitchChannelName);
         }
     }
 
@@ -29,7 +33,6 @@ public class TwitchChannelNamesHandler {
      */
     @NotNull
     public Boolean addTwitchChannelName(@NotNull String twitchChannelName) {
-
         for (String string : getTwitchChannelNames()) {
             if (string.equalsIgnoreCase(twitchChannelName)) {
                 return false;
@@ -37,7 +40,7 @@ public class TwitchChannelNamesHandler {
         }
 
         twitchChannelNames.add(twitchChannelName.toLowerCase());
-        customGuild.getTwitchListener().addStream(twitchChannelName);
+        twitch.getTwitchListener().addStream(twitchChannelName);
         return true;
     }
 
@@ -48,19 +51,14 @@ public class TwitchChannelNamesHandler {
      */
     @NotNull
     public Boolean removeTwitchChannelName(@NotNull String twitchChannelName) {
-
         for (String string : getTwitchChannelNames()) {
             if (string.equalsIgnoreCase(twitchChannelName)) {
-
                 twitchChannelNames.remove(twitchChannelName.toLowerCase());
-                customGuild.getTwitchListener().removeStream(twitchChannelName);
+                twitch.getTwitchListener().removeStream(twitchChannelName);
                 return true;
-
             }
         }
-
         return false;
-
     }
 
     /**
