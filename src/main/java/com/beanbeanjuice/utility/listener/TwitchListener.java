@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.listener.twitch;
+package com.beanbeanjuice.utility.listener;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;

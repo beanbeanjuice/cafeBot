@@ -23,6 +23,8 @@ public class RemoveTwitchChannelCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
+        event.getMessage().delete().queue();
+
         if (!BeanBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
             return;
         }
