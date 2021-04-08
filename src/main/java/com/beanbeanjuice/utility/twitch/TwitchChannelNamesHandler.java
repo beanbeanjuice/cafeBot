@@ -4,6 +4,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * A class used to handle Twitch channel names.
+ *
+ * @author beanbeanjuice
+ */
 public class TwitchChannelNamesHandler {
 
     private ArrayList<String> twitchChannelNames;
@@ -28,7 +33,6 @@ public class TwitchChannelNamesHandler {
      */
     @NotNull
     public Boolean addTwitchChannelName(@NotNull String twitchChannelName) {
-
         for (String string : getTwitchChannelNames()) {
             if (string.equalsIgnoreCase(twitchChannelName)) {
                 return false;
@@ -47,19 +51,14 @@ public class TwitchChannelNamesHandler {
      */
     @NotNull
     public Boolean removeTwitchChannelName(@NotNull String twitchChannelName) {
-
         for (String string : getTwitchChannelNames()) {
             if (string.equalsIgnoreCase(twitchChannelName)) {
-
                 twitchChannelNames.remove(twitchChannelName.toLowerCase());
                 twitch.getTwitchListener().removeStream(twitchChannelName);
                 return true;
-
             }
         }
-
         return false;
-
     }
 
     /**

@@ -127,17 +127,12 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean containsChannel(String twitchChannel) {
-
         for (String channel : twitchChannels) {
-
             if (channel.equalsIgnoreCase(twitchChannel)) {
                 return true;
             }
-
         }
-
         return false;
-
     }
 
     /**
@@ -148,7 +143,6 @@ public class CustomGuild {
     @NotNull
     public Boolean addTwitchChannel(String twitchChannel) {
         twitchChannels.add(twitchChannel.toLowerCase());
-
         StringBuilder stringBuilder = new StringBuilder();
 
         for (String string : twitchChannels) {
@@ -156,9 +150,7 @@ public class CustomGuild {
         }
 
         BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().addTwitchChannelName(twitchChannel);
-
         return BeanBot.getGuildHandler().updateTwitchChannels(guildID, stringBuilder.toString());
-
     }
 
     /**
@@ -168,9 +160,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean removeTwitchChannel(String twitchChannel) {
-
         twitchChannels.remove(twitchChannel.toLowerCase());
-
         StringBuilder stringBuilder = new StringBuilder();
 
         for (String string : twitchChannels) {
@@ -178,9 +168,7 @@ public class CustomGuild {
         }
 
         BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().removeTwitchChannelName(twitchChannel);
-
         return BeanBot.getGuildHandler().updateTwitchChannels(guildID, stringBuilder.toString());
-
     }
 
     /**
