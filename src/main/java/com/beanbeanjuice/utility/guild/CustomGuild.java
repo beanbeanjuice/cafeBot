@@ -1,9 +1,10 @@
 package com.beanbeanjuice.utility.guild;
 
 import com.beanbeanjuice.main.BeanBot;
-import com.beanbeanjuice.utility.listener.twitch.TwitchChannelNamesHandler;
-import com.beanbeanjuice.utility.listener.twitch.TwitchListener;
-import com.beanbeanjuice.utility.listener.twitch.TwitchMessageEventHandler;
+import com.beanbeanjuice.utility.twitch.Twitch;
+import com.beanbeanjuice.utility.twitch.TwitchChannelNamesHandler;
+import com.beanbeanjuice.utility.listener.TwitchListener;
+import com.beanbeanjuice.utility.twitch.TwitchMessageEventHandler;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -27,10 +28,6 @@ public class CustomGuild {
     private ArrayList<String> twitchChannels;
     private String mutedRoleID;
 
-    private TwitchListener twitchListener;
-    private TwitchChannelNamesHandler twitchChannelNamesHandler;
-    private TwitchMessageEventHandler twitchMessageEventHandler;
-
     /**
      * Creates a new {@link CustomGuild} object.
      * @param guildID The ID of the {@link Guild}.
@@ -49,33 +46,18 @@ public class CustomGuild {
         this.twitchChannels = new ArrayList<>(Arrays.asList(twitchChannels.split(",")));
         this.mutedRoleID = mutedRoleID;
 
-        twitchListener = new TwitchListener();
-        twitchChannelNamesHandler = new TwitchChannelNamesHandler(this);
-
-        twitchListener.addEventHandler(new TwitchMessageEventHandler(guildID, liveChannelID));
-
-        if (!this.twitchChannels.isEmpty()) {
-            for (String channel : this.twitchChannels) {
-                twitchChannelNamesHandler.addTwitchChannelName(channel);
-            }
+        if (BeanBot.getTwitchHandler().getTwitch(guildID) == null) {
+            BeanBot.getTwitchHandler().addTwitchToGuild(guildID, new Twitch(this.guildID, this.liveChannelID, this.twitchChannels));
         }
 
     }
 
     /**
-     * @return The {@link TwitchListener} for the specified {@link Guild}.
+     * @return The {@link Twitch} associated with the {@link Guild}.
      */
     @NotNull
-    public TwitchListener getTwitchListener() {
-        return twitchListener;
-    }
-
-    /**
-     * @return The {@link TwitchChannelNamesHandler} for the specified {@link Guild}.
-     */
-    @NotNull
-    public TwitchChannelNamesHandler getTwitchChannelNamesHandler() {
-        return twitchChannelNamesHandler;
+    public Twitch getTwitch() {
+        return BeanBot.getTwitchHandler().getTwitch(guildID);
     }
 
     /**
@@ -173,6 +155,8 @@ public class CustomGuild {
             stringBuilder.append(string).append(",");
         }
 
+        BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().addTwitchChannelName(twitchChannel);
+
         return BeanBot.getGuildHandler().updateTwitchChannels(guildID, stringBuilder.toString());
 
     }
@@ -192,6 +176,8 @@ public class CustomGuild {
         for (String string : twitchChannels) {
             stringBuilder.append(string).append(",");
         }
+
+        BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().removeTwitchChannelName(twitchChannel);
 
         return BeanBot.getGuildHandler().updateTwitchChannels(guildID, stringBuilder.toString());
 
