@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -45,7 +46,16 @@ public class MuteCommand implements ICommand {
 
         Member punishee = event.getGuild().getMember(BeanBot.getGeneralHelper().getUser(args.get(0)));
 
-        event.getGuild().addRoleToMember(punishee, mutedRole).queue();
+        try {
+            event.getGuild().addRoleToMember(punishee, mutedRole).queue();
+        } catch (HierarchyException e) {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setAuthor("Hierarchy Error");
+            embedBuilder.setColor(Color.red);
+            embedBuilder.setDescription("The bot needs to have a higher role than the user you are trying to mute!");
+            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            return;
+        }
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Muted User");
