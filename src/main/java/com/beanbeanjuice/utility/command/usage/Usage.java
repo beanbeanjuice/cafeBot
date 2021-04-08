@@ -3,6 +3,8 @@ package com.beanbeanjuice.utility.command.usage;
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.command.usage.types.CommandErrorType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,10 +55,11 @@ public class Usage {
 
     /**
      * @param args The {@link com.beanbeanjuice.utility.command.ICommand ICommand} arguments.
+     * @param guild The {@link Guild} that sent the command.
      * @return The {@link com.beanbeanjuice.utility.command.usage.types.CommandErrorType} for the {@link com.beanbeanjuice.utility.command.ICommand ICommand}.
      */
     @NotNull
-    public CommandErrorType getERROR(@NotNull ArrayList<String> args) {
+    public CommandErrorType getERROR(@NotNull ArrayList<String> args, @NotNull Guild guild) {
         int count = 0;
         boolean incorrect;
 
@@ -101,6 +104,13 @@ public class Usage {
                 if (incorrect) {
                     incorrectIndex = count;
                     errorType = CommandErrorType.USER;
+                    return getErrorType();
+                }
+            } else if (type.equals(CommandType.ROLE)) {
+                incorrect = !isRole(guild, args.get(count));
+                if (incorrect) {
+                    incorrectIndex = count;
+                    errorType = CommandErrorType.ROLE;
                     return getErrorType();
                 }
             }
@@ -178,6 +188,25 @@ public class Usage {
 
         try {
             BeanBot.getJDA().getUserById(userID);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks whether or not the provided {@link String} is a {@link net.dv8tion.jda.api.entities.User User}.
+     * @param roleID The ID of the {@link net.dv8tion.jda.api.entities.Role Role}.
+     * @return Whether or not the specified {@link String} is a {@link net.dv8tion.jda.api.entities.Role Role}.
+     */
+    @NotNull
+    private Boolean isRole(@NotNull Guild guild, @NotNull String roleID) {
+        roleID = roleID.replace("<@&", "");
+        roleID = roleID.replace(">", "");
+
+        try {
+            guild.getRoleById(roleID);
         } catch (NumberFormatException e) {
             return false;
         }

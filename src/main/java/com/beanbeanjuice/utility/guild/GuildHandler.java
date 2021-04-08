@@ -48,8 +48,9 @@ public class GuildHandler {
                 String moderatorRoleID = String.valueOf(resultSet.getLong(3));
                 String twitchChannelID = resultSet.getString(4);
                 String twitchChannels = resultSet.getString(5);
+                String mutedRoleID = String.valueOf(resultSet.getLong(6));
 
-                guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID, twitchChannelID, twitchChannels));
+                guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID, twitchChannelID, twitchChannels, mutedRoleID));
             }
         } catch (SQLException e) {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
@@ -167,8 +168,8 @@ public class GuildHandler {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "INSERT INTO beanbot.guild_information " +
-                "(guild_id, prefix, moderator_role_id, twitch_channel_id, twitch_channels) " +
-                "VALUES (?,?,?,?,?);";
+                "(guild_id, prefix, moderator_role_id, twitch_channel_id, twitch_channels, muted_role_id) " +
+                "VALUES (?,?,?,?,?,?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -177,6 +178,7 @@ public class GuildHandler {
             statement.setLong(3, 0L);
             statement.setLong(4, 0L);
             statement.setString(5, "");
+            statement.setLong(6, 0L);
 
             statement.execute();
             return true;
@@ -184,6 +186,46 @@ public class GuildHandler {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to add Guild to SQL database: " + e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * Updates the muted {@link Role} in the specified {@link Guild}.
+     * @param guildID The ID of the {@link Guild} to have the {@link Role} updated in.
+     * @param roleID The ID of the {@link Role} to be given to the muted {@link net.dv8tion.jda.api.entities.Member Member}.
+     * @return Whether or not updating the {@link Role} in the database was successful.
+     */
+    @NotNull
+    public Boolean updateGuildMutedRole(@NotNull String guildID, @NotNull String roleID) {
+
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "UPDATE beanbot.guild_information " +
+                "SET muted_role_id = (?) " +
+                "WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(roleID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            updateGuildCache();
+            return true;
+        } catch (SQLException e) {
+            BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+            return false;
+        }
+
+    }
+
+    /**
+     * Updates the muted {@link Role} in the specified {@link Guild}.
+     * @param guild The {@link Guild} to have the {@link Role} updated in.
+     * @param role The {@link Role} to be given to muted {@link net.dv8tion.jda.api.entities.Member Member}.
+     * @return Whether or not updating the {@link Role} in the database was successful.
+     */
+    @NotNull
+    public Boolean updateGuildMutedRole(@NotNull Guild guild, @NotNull Role role) {
+        return updateGuildMutedRole(guild.getId(), role.getId());
     }
 
     /**
