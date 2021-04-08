@@ -12,6 +12,7 @@ public enum CommandErrorType {
     NUMBER ("A number is required."),
     USER ("A user is required."),
     LINK ("A link is required."),
+    ROLE ("A role is required."),
     SUCCESS ("Successful command."),
     TOO_MANY_ARGUMENTS ("There are too many arguments."),
     NOT_ENOUGH_ARGUMENTS ("There are not enough arguments.");
