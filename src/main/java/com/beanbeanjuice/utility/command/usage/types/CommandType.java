@@ -12,7 +12,8 @@ public enum CommandType {
     NUMBER ("NUMBER"),
     USER ("USER"),
     TEXT ("TEXT"),
-    LINK ("LINK");
+    LINK ("LINK"),
+    ROLE ("ROLE");
 
     private final String description;
 
