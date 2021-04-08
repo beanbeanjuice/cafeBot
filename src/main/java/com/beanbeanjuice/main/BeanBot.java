@@ -132,6 +132,7 @@ public class BeanBot {
         commandManager.addCommand(new KickCommand());
         commandManager.addCommand(new BanCommand());
         commandManager.addCommand(new ClearChatCommand());
+        commandManager.addCommand(new MuteCommand());
 
         commandManager.addCommand(new SetLiveChannelCommand());
         commandManager.addCommand(new AddTwitchChannelCommand());
