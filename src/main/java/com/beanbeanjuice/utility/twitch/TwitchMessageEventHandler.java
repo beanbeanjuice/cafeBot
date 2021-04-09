@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.listener.twitch;
+package com.beanbeanjuice.utility.twitch;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;

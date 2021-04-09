@@ -1,9 +1,10 @@
 package com.beanbeanjuice.utility.guild;
 
 import com.beanbeanjuice.main.BeanBot;
-import com.beanbeanjuice.utility.listener.twitch.TwitchChannelNamesHandler;
-import com.beanbeanjuice.utility.listener.twitch.TwitchListener;
-import com.beanbeanjuice.utility.listener.twitch.TwitchMessageEventHandler;
+import com.beanbeanjuice.utility.twitch.Twitch;
+import com.beanbeanjuice.utility.twitch.TwitchChannelNamesHandler;
+import com.beanbeanjuice.utility.listener.TwitchListener;
+import com.beanbeanjuice.utility.twitch.TwitchMessageEventHandler;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -25,45 +26,48 @@ public class CustomGuild {
     private String moderatorRoleID;
     private String liveChannelID;
     private ArrayList<String> twitchChannels;
-
-    private TwitchListener twitchListener;
-    private TwitchChannelNamesHandler twitchChannelNamesHandler;
-    private TwitchMessageEventHandler twitchMessageEventHandler;
+    private String mutedRoleID;
 
     /**
      * Creates a new {@link CustomGuild} object.
-     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild}.
-     * @param prefix The bot's prefix for the {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @param guildID The ID of the {@link Guild}.
+     * @param prefix The prefix the bot will use for the {@link Guild}.
+     * @param moderatorRoleID The ID of the moderator {@link Role} for the {@link Guild}.
+     * @param liveChannelID The ID of the {@link TextChannel} to send twitch notifications to in the {@link Guild}.
+     * @param twitchChannels The {@link ArrayList<String>} of twitch channels for the {@link Guild}.
+     * @param mutedRoleID The ID of the muted {@link Role} for the {@link Guild}.
      */
     public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID, @NotNull String liveChannelID,
-                       @NotNull String twitchChannels) {
+                       @NotNull String twitchChannels, @NotNull String mutedRoleID) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
         this.liveChannelID = liveChannelID;
         this.twitchChannels = new ArrayList<>(Arrays.asList(twitchChannels.split(",")));
+        this.mutedRoleID = mutedRoleID;
 
-        twitchListener = new TwitchListener();
-        twitchChannelNamesHandler = new TwitchChannelNamesHandler(this);
-
-        twitchListener.addEventHandler(new TwitchMessageEventHandler(guildID, liveChannelID));
-
-        if (!this.twitchChannels.isEmpty()) {
-            for (String channel : this.twitchChannels) {
-                twitchChannelNamesHandler.addTwitchChannelName(channel);
-            }
+        if (BeanBot.getTwitchHandler().getTwitch(guildID) == null) {
+            BeanBot.getTwitchHandler().addTwitchToGuild(guildID, new Twitch(this.guildID, this.liveChannelID, this.twitchChannels));
         }
 
     }
 
+    /**
+     * @return The {@link Twitch} associated with the {@link Guild}.
+     */
     @NotNull
-    public TwitchListener getTwitchListener() {
-        return twitchListener;
+    public Twitch getTwitch() {
+        return BeanBot.getTwitchHandler().getTwitch(guildID);
     }
 
+    /**
+     * Update the muted {@link Role} for the {@link Guild}.
+     * @param mutedRoleID The ID of the muted {@link Role}.
+     * @return Whether or not the {@link Role} was successfully updated in the database.
+     */
     @NotNull
-    public TwitchChannelNamesHandler getTwitchChannelNamesHandler() {
-        return twitchChannelNamesHandler;
+    public Boolean updateMutedRole(String mutedRoleID) {
+        return BeanBot.getGuildHandler().updateGuildMutedRole(guildID, mutedRoleID);
     }
 
     /**
@@ -93,7 +97,19 @@ public class CustomGuild {
     }
 
     /**
-     * @return The {@link Role ModeratorRole} for the current {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @return The muted {@link Role} for the current {@link Guild}.
+     */
+    @Nullable
+    public Role getMutedRole() {
+        try {
+            return BeanBot.getGuildHandler().getGuild(guildID).getRoleById(mutedRoleID);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    /**
+     * @return The moderator {@link Role} for the current {@link Guild}.
      */
     @Nullable
     public Role getModeratorRole() {
@@ -111,17 +127,12 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean containsChannel(String twitchChannel) {
-
         for (String channel : twitchChannels) {
-
             if (channel.equalsIgnoreCase(twitchChannel)) {
                 return true;
             }
-
         }
-
         return false;
-
     }
 
     /**
@@ -132,15 +143,14 @@ public class CustomGuild {
     @NotNull
     public Boolean addTwitchChannel(String twitchChannel) {
         twitchChannels.add(twitchChannel.toLowerCase());
-
         StringBuilder stringBuilder = new StringBuilder();
 
         for (String string : twitchChannels) {
             stringBuilder.append(string).append(",");
         }
 
+        BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().addTwitchChannelName(twitchChannel);
         return BeanBot.getGuildHandler().updateTwitchChannels(guildID, stringBuilder.toString());
-
     }
 
     /**
@@ -150,17 +160,15 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean removeTwitchChannel(String twitchChannel) {
-
         twitchChannels.remove(twitchChannel.toLowerCase());
-
         StringBuilder stringBuilder = new StringBuilder();
 
         for (String string : twitchChannels) {
             stringBuilder.append(string).append(",");
         }
 
+        BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().removeTwitchChannelName(twitchChannel);
         return BeanBot.getGuildHandler().updateTwitchChannels(guildID, stringBuilder.toString());
-
     }
 
     /**
