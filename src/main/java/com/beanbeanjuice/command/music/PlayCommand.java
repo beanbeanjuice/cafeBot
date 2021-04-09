@@ -40,6 +40,7 @@ public class PlayCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
         event.getMessage().delete().queue();
+        BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
 
         final TextChannel channel = event.getChannel();
         final Member self = ctx.getSelfMember();
@@ -52,15 +53,15 @@ public class PlayCommand implements ICommand {
 
         if (!selfVoiceState.inVoiceChannel()) {
             if (!event.getMember().getVoiceState().inVoiceChannel()) {
-                event.getChannel().sendMessage(user.getAsMention()).queue(e -> {
-                    e.delete().queue();
-                }); // TODO: Delete later?
-                event.getChannel().sendMessage(botMustBeInVoiceChannelEmbed()).queue();
+                event.getChannel().sendMessage(userMustBeInVoiceChannelEmbed()).queue();
                 return;
             }
 
             // Join the channel and play music and say you joined
             ctx.getGuild().getAudioManager().openAudioConnection(event.getMember().getVoiceState().getChannel());
+
+            // Start listening for the audio connection.
+            BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).startAudioChecking();
         } else if (!event.getMember().getVoiceState().getChannel().equals(selfVoiceState.getChannel())) {
             event.getChannel().sendMessage(userMustBeInSameVoiceChannelEmbed()).queue();
             return;
@@ -113,11 +114,15 @@ public class PlayCommand implements ICommand {
                 }
             }
 
-
         }
-
         PlayerManager.getInstance().loadAndPlay(channel, link, isSpotifyPlaylist);
+    }
 
+    private MessageEmbed userMustBeInVoiceChannelEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setDescription("Sorry, you must be in a voice channel to use this command.");
+        embedBuilder.setColor(Color.red);
+        return embedBuilder.build();
     }
 
     private MessageEmbed emptySpotifyPlaylist() {

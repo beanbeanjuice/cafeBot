@@ -1,5 +1,6 @@
 package com.beanbeanjuice.command.music;
 
+import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -27,32 +28,30 @@ public class StopCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
         event.getMessage().delete().queue();
+        BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
 
         final Member self = ctx.getSelfMember();
         final GuildVoiceState selfVoiceState = self.getVoiceState();
 
         if (!selfVoiceState.inVoiceChannel()) {
+            event.getChannel().sendMessage(botMustBeInVoiceChannelEmbed()).queue();
+            return;
+        }
+
+        if (!event.getMember().getVoiceState().inVoiceChannel()) {
             event.getChannel().sendMessage(userMustBeInVoiceChannelEmbed()).queue();
             return;
         }
 
-        if (selfVoiceState.inVoiceChannel()) {
-            if (!event.getMember().getVoiceState().inVoiceChannel()) {
-                event.getChannel().sendMessage(user.getAsMention()).queue(e -> {
-                    e.delete().queue();
-                });
-                event.getChannel().sendMessage(botMustBeInVoiceChannelEmbed()).queue();
-                return;
-            }
+        GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
+        musicManager.scheduler.player.stopTrack();
+        musicManager.scheduler.queue.clear();
+        ctx.getGuild().getAudioManager().closeAudioConnection();
 
-            GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
-            musicManager.scheduler.player.stopTrack();
-            musicManager.scheduler.queue.clear();
-            ctx.getGuild().getAudioManager().closeAudioConnection();
-            event.getChannel().sendMessage(successEmbed()).queue();
+        // Stop listening for the audio connection and leave.
+        BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).stopAudioChecking();
+        event.getChannel().sendMessage(successEmbed()).queue();
 
-            return;
-        }
     }
 
     private MessageEmbed botMustBeInVoiceChannelEmbed() {
