@@ -32,27 +32,21 @@ public class StopCommand implements ICommand {
         final GuildVoiceState selfVoiceState = self.getVoiceState();
 
         if (!selfVoiceState.inVoiceChannel()) {
+            event.getChannel().sendMessage(botMustBeInVoiceChannelEmbed()).queue();
+            return;
+        }
+
+        if (!event.getMember().getVoiceState().inVoiceChannel()) {
             event.getChannel().sendMessage(userMustBeInVoiceChannelEmbed()).queue();
             return;
         }
 
-        if (selfVoiceState.inVoiceChannel()) {
-            if (!event.getMember().getVoiceState().inVoiceChannel()) {
-                event.getChannel().sendMessage(user.getAsMention()).queue(e -> {
-                    e.delete().queue();
-                });
-                event.getChannel().sendMessage(botMustBeInVoiceChannelEmbed()).queue();
-                return;
-            }
+        GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
+        musicManager.scheduler.player.stopTrack();
+        musicManager.scheduler.queue.clear();
+        ctx.getGuild().getAudioManager().closeAudioConnection();
+        event.getChannel().sendMessage(successEmbed()).queue();
 
-            GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
-            musicManager.scheduler.player.stopTrack();
-            musicManager.scheduler.queue.clear();
-            ctx.getGuild().getAudioManager().closeAudioConnection();
-            event.getChannel().sendMessage(successEmbed()).queue();
-
-            return;
-        }
     }
 
     private MessageEmbed botMustBeInVoiceChannelEmbed() {
