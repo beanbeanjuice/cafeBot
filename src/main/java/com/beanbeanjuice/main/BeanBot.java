@@ -15,6 +15,8 @@ import com.beanbeanjuice.command.twitch.SetLiveChannelCommand;
 import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
+import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
+import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
 import com.beanbeanjuice.utility.listener.Listener;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
@@ -24,11 +26,10 @@ import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
 import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
@@ -39,6 +40,9 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * The main {@link BeanBot} class.
@@ -48,7 +52,7 @@ import java.io.IOException;
 public class BeanBot {
 
     // General Bot Info
-    private static final String BOT_TOKEN = "Nzg3MTYyNjE5NTA0NDkyNTU0.X9Q8UQ.m5dSjJtpIiIXSg_d7yaz5SXb-rs";
+    private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.NeaUaBDNzZro3kHsdzTljAoznls";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
 
@@ -80,9 +84,9 @@ public class BeanBot {
     // SQL Stuff
     private static SQLServer sqlServer;
     private static final String SQL_URL = "beanbeanjuice.com";
-    private static final String SQL_PORT = "4000";
+    private static final String SQL_PORT = "4001";
     private static final String SQL_USERNAME = "root";
-    private static final String SQL_PASSWORD = "gHDf]Tf~8T^VuZisn%6ktgukr*ci~!";
+    private static final String SQL_PASSWORD = "XEuE@*mHB-P4huC^RgcfXLTJXA8Hq.";
     private static final boolean SQL_ENCRYPT = true;
 
     // Logging
@@ -90,6 +94,8 @@ public class BeanBot {
 
     // Other
     private static GeneralHelper generalHelper;
+    private static Timer spotifyTimer;
+    private static TimerTask spotifyTimerTask;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
 
@@ -158,6 +164,36 @@ public class BeanBot {
         logManager.log(BeanBot.class, LogLevel.SUCCESS, "The bot is online!");
 
         // Connecting to the Spotify API
+        connectToSpotifyAPI();
+        startSpotifyTimer();
+
+        logManager.setGuild(homeGuild);
+        logManager.setLogChannel(homeGuildLogChannel);
+        guildHandler = new GuildHandler();
+
+        generalHelper = new GeneralHelper();
+    }
+
+    /**
+     * Starts the re-establishing of a Spotify Key Timer.
+     */
+    public static void startSpotifyTimer() {
+        spotifyTimer = new Timer();
+        spotifyTimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                connectToSpotifyAPI();
+                logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection");
+            }
+        };
+        spotifyTimer.scheduleAtFixedRate(spotifyTimerTask, 3000000, 3000000);
+    }
+
+    /**
+     * Connects to the Spotify API
+     */
+    public static void connectToSpotifyAPI() {
         spotifyApi = new SpotifyApi.Builder()
                 .setClientId(SPOTIFY_API_CLIENT_ID)
                 .setClientSecret(SPOTIFY_API_CLIENT_SECRET)
@@ -173,12 +209,6 @@ public class BeanBot {
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             logManager.log(BeanBot.class, LogLevel.ERROR, e.getMessage());
         }
-
-        logManager.setGuild(homeGuild);
-        logManager.setLogChannel(homeGuildLogChannel);
-        guildHandler = new GuildHandler();
-
-        generalHelper = new GeneralHelper();
     }
 
     /**
