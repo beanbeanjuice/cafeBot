@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -40,6 +41,16 @@ public class CommandManager {
         }
 
         commands.add(command);
+    }
+
+    /**
+     * Adds a new {@link ICommand} to be listened for.
+     * @param commands The {@link ICommand} to be added.
+     */
+    public void addCommands(@NotNull ICommand... commands) {
+        for (ICommand command : commands) {
+            addCommand(command);
+        }
     }
 
     /**
@@ -99,7 +110,11 @@ public class CommandManager {
                 event.getChannel().sendMessage(indexMessageEmbed(errorType, usage.getIncorrectIndex(), args)).queue();
             }
         } else {
-            // TODO: Tell user that command wasn't found?
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setColor(Color.red);
+            embedBuilder.setAuthor("Command Not Found");
+            embedBuilder.setDescription("The command you are trying to run has not been found...");
+            event.getChannel().sendMessage(embedBuilder.build()).queue();
         }
     }
 
