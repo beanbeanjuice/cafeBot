@@ -48,7 +48,7 @@ import java.io.IOException;
 public class BeanBot {
 
     // General Bot Info
-    private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.P05jVyf4YhLXAdBnxxqFH1X4gBs";
+    private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.NeaUaBDNzZro3kHsdzTljAoznls";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
 
@@ -71,10 +71,10 @@ public class BeanBot {
     private static SpotifyApi spotifyApi;
     private static ClientCredentialsRequest clientCredentialsRequest;
     private static final String SPOTIFY_API_CLIENT_ID = "b955ba0137d141a1807107fd0a256257";
-    private static final String SPOTIFY_API_CLIENT_SECRET = "706b6417f9ba4d68919ae1f46dcbd84e";
+    private static final String SPOTIFY_API_CLIENT_SECRET = "ecc6abba4a4548b3bb53c37b9fcffb76";
 
     // Twitch Stuff
-    private static final String TWITCH_ACCESS_TOKEN = "9gzoertfh164plpbpz2vtd6iqqtmnq";
+    private static final String TWITCH_ACCESS_TOKEN = "r2iu2i9jt5pwz3yt7spvilzd8fnxsd";
     private static TwitchHandler twitchHandler;
 
     // SQL Stuff
@@ -82,7 +82,7 @@ public class BeanBot {
     private static final String SQL_URL = "beanbeanjuice.com";
     private static final String SQL_PORT = "4001";
     private static final String SQL_USERNAME = "root";
-    private static final String SQL_PASSWORD = "Hawaii&Florida12345";
+    private static final String SQL_PASSWORD = "XEuE@*mHB-P4huC^RgcfXLTJXA8Hq.";
     private static final boolean SQL_ENCRYPT = true;
 
     // Logging
@@ -103,7 +103,7 @@ public class BeanBot {
         logManager.log(BeanBot.class, LogLevel.SUCCESS, "Starting bot!", true, false);
 
         jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
-        jdaBuilder.setActivity(Activity.playing("beanbeanjuice is testing this."));
+        jdaBuilder.setActivity(Activity.playing("fuck you sprout."));
 
         jdaBuilder.enableIntents(GatewayIntent.GUILD_PRESENCES);
         jdaBuilder.enableIntents(GatewayIntent.GUILD_MEMBERS);
