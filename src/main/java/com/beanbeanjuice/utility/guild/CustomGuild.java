@@ -1,18 +1,19 @@
 package com.beanbeanjuice.utility.guild;
 
 import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
+import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
 import com.beanbeanjuice.utility.twitch.Twitch;
 import com.beanbeanjuice.utility.twitch.TwitchChannelNamesHandler;
 import com.beanbeanjuice.utility.listener.TwitchListener;
 import com.beanbeanjuice.utility.twitch.TwitchMessageEventHandler;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * A {@link CustomGuild} that contains {@link net.dv8tion.jda.api.entities.Guild Guild} information.
@@ -27,6 +28,10 @@ public class CustomGuild {
     private String liveChannelID;
     private ArrayList<String> twitchChannels;
     private String mutedRoleID;
+
+    private Timer timer;
+    private TimerTask timerTask;
+    private TextChannel lastMusicChannel;
 
     /**
      * Creates a new {@link CustomGuild} object.
@@ -50,6 +55,79 @@ public class CustomGuild {
             BeanBot.getTwitchHandler().addTwitchToGuild(guildID, new Twitch(this.guildID, this.liveChannelID, this.twitchChannels));
         }
 
+    }
+
+    /**
+     * Sets the last channel the music commands were sent in.
+     * @param lastMusicChannel The {@link TextChannel} of the last music command.
+     */
+    public void setLastMusicChannel(TextChannel lastMusicChannel) {
+        this.lastMusicChannel = lastMusicChannel;
+    }
+
+    /**
+     * Starts checking for an {@link net.dv8tion.jda.internal.audio.AudioConnection AudioConnection} in the current {@link Guild}.
+     */
+    public void startAudioChecking() {
+        timer = new Timer();
+        timerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+
+                Guild guild = BeanBot.getGuildHandler().getGuild(guildID);
+                Member selfMember = guild.getSelfMember();
+                GuildVoiceState selfVoiceState = selfMember.getVoiceState();
+
+                ArrayList<Member> membersInVoiceChannel = new ArrayList<>(selfVoiceState.getChannel().getMembers());
+                membersInVoiceChannel.remove(selfMember);
+                GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(BeanBot.getGuildHandler().getGuild(guildID));
+
+                // Checking if the bot is alone in the VC.
+                if (membersInVoiceChannel.isEmpty()) {
+                    EmbedBuilder embedBuilder = new EmbedBuilder();
+                    embedBuilder.setAuthor("Music Bot");
+                    embedBuilder.setDescription("Leaving the voice channel as it is empty...");
+                    embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+                    sendMessageInLastMusicChannel(embedBuilder.build());
+                    musicManager.scheduler.player.stopTrack();
+                    musicManager.scheduler.queue.clear();
+                    guild.getAudioManager().closeAudioConnection();
+                    timer.cancel();
+                    return;
+                }
+
+
+                if (musicManager.scheduler.queue.isEmpty() && musicManager.audioPlayer.getPlayingTrack() == null) {
+                    guild.getAudioManager().closeAudioConnection();
+                    EmbedBuilder embedBuilder = new EmbedBuilder();
+                    embedBuilder.setAuthor("Music Bot");
+                    embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+                    embedBuilder.setDescription("Leaving the voice channel as the music queue is empty...");
+                    sendMessageInLastMusicChannel(embedBuilder.build());
+                    guild.getAudioManager().closeAudioConnection();
+                    timer.cancel();
+                    return;
+                }
+            }
+        };
+
+        timer.scheduleAtFixedRate(timerTask, 1000, 30000);
+    }
+
+    private void sendMessageInLastMusicChannel(MessageEmbed embed) {
+        try {
+            lastMusicChannel.sendMessage(embed).queue();
+        } catch (NullPointerException ignored) {}
+    }
+
+    /**
+     * Stops checking for an {@link net.dv8tion.jda.internal.audio.AudioConnection AudioConnection} in the current {@link Guild}.
+     */
+    public void stopAudioChecking() {
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 
     /**
