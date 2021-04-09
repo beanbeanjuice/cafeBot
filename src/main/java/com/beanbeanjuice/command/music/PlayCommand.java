@@ -52,10 +52,7 @@ public class PlayCommand implements ICommand {
 
         if (!selfVoiceState.inVoiceChannel()) {
             if (!event.getMember().getVoiceState().inVoiceChannel()) {
-                event.getChannel().sendMessage(user.getAsMention()).queue(e -> {
-                    e.delete().queue();
-                }); // TODO: Delete later?
-                event.getChannel().sendMessage(botMustBeInVoiceChannelEmbed()).queue();
+                event.getChannel().sendMessage(userMustBeInVoiceChannelEmbed()).queue();
                 return;
             }
 
@@ -113,11 +110,15 @@ public class PlayCommand implements ICommand {
                 }
             }
 
-
         }
-
         PlayerManager.getInstance().loadAndPlay(channel, link, isSpotifyPlaylist);
+    }
 
+    private MessageEmbed userMustBeInVoiceChannelEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setDescription("Sorry, you must be in a voice channel to use this command.");
+        embedBuilder.setColor(Color.red);
+        return embedBuilder.build();
     }
 
     private MessageEmbed emptySpotifyPlaylist() {
