@@ -40,6 +40,7 @@ public class PlayCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
         event.getMessage().delete().queue();
+        BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
 
         final TextChannel channel = event.getChannel();
         final Member self = ctx.getSelfMember();
@@ -58,6 +59,9 @@ public class PlayCommand implements ICommand {
 
             // Join the channel and play music and say you joined
             ctx.getGuild().getAudioManager().openAudioConnection(event.getMember().getVoiceState().getChannel());
+
+            // Start listening for the audio connection.
+            BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).startAudioChecking();
         } else if (!event.getMember().getVoiceState().getChannel().equals(selfVoiceState.getChannel())) {
             event.getChannel().sendMessage(userMustBeInSameVoiceChannelEmbed()).queue();
             return;
