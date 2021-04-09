@@ -1,5 +1,6 @@
 package com.beanbeanjuice.command.music;
 
+import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -27,6 +28,7 @@ public class StopCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
         event.getMessage().delete().queue();
+        BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
 
         final Member self = ctx.getSelfMember();
         final GuildVoiceState selfVoiceState = self.getVoiceState();
@@ -45,6 +47,9 @@ public class StopCommand implements ICommand {
         musicManager.scheduler.player.stopTrack();
         musicManager.scheduler.queue.clear();
         ctx.getGuild().getAudioManager().closeAudioConnection();
+
+        // Stop listening for the audio connection and leave.
+        BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).stopAudioChecking();
         event.getChannel().sendMessage(successEmbed()).queue();
 
     }
