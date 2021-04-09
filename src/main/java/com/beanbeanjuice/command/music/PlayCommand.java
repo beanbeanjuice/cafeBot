@@ -54,7 +54,7 @@ public class PlayCommand implements ICommand {
             if (!event.getMember().getVoiceState().inVoiceChannel()) {
                 event.getChannel().sendMessage(user.getAsMention()).queue(e -> {
                     e.delete().queue();
-                });
+                }); // TODO: Delete later?
                 event.getChannel().sendMessage(botMustBeInVoiceChannelEmbed()).queue();
                 return;
             }

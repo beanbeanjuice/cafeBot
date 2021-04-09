@@ -4,10 +4,9 @@ import com.beanbeanjuice.command.fun.MemeCommand;
 import com.beanbeanjuice.command.fun.JokeCommand;
 import com.beanbeanjuice.command.general.HelpCommand;
 import com.beanbeanjuice.command.general.PingCommand;
-import com.beanbeanjuice.command.moderation.BanCommand;
-import com.beanbeanjuice.command.moderation.ChangePrefixCommand;
-import com.beanbeanjuice.command.moderation.KickCommand;
-import com.beanbeanjuice.command.moderation.SetModeratorRoleCommand;
+import com.beanbeanjuice.command.moderation.*;
+import com.beanbeanjuice.command.moderation.mute.MuteCommand;
+import com.beanbeanjuice.command.moderation.mute.UnMuteCommand;
 import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.twitch.AddTwitchChannelCommand;
 import com.beanbeanjuice.command.twitch.GetTwitchChannelsCommand;
@@ -20,6 +19,7 @@ import com.beanbeanjuice.utility.listener.Listener;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
 import com.beanbeanjuice.utility.sql.SQLServer;
+import com.beanbeanjuice.utility.twitch.TwitchHandler;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
@@ -48,7 +48,7 @@ import java.io.IOException;
 public class BeanBot {
 
     // General Bot Info
-    private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.P05jVyf4YhLXAdBnxxqFH1X4gBs";
+    private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.NeaUaBDNzZro3kHsdzTljAoznls";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
 
@@ -71,17 +71,18 @@ public class BeanBot {
     private static SpotifyApi spotifyApi;
     private static ClientCredentialsRequest clientCredentialsRequest;
     private static final String SPOTIFY_API_CLIENT_ID = "b955ba0137d141a1807107fd0a256257";
-    private static final String SPOTIFY_API_CLIENT_SECRET = "706b6417f9ba4d68919ae1f46dcbd84e";
+    private static final String SPOTIFY_API_CLIENT_SECRET = "ecc6abba4a4548b3bb53c37b9fcffb76";
 
     // Twitch Stuff
-    private static final String TWITCH_ACCESS_TOKEN = "9gzoertfh164plpbpz2vtd6iqqtmnq";
+    private static final String TWITCH_ACCESS_TOKEN = "r2iu2i9jt5pwz3yt7spvilzd8fnxsd";
+    private static TwitchHandler twitchHandler;
 
     // SQL Stuff
     private static SQLServer sqlServer;
     private static final String SQL_URL = "beanbeanjuice.com";
     private static final String SQL_PORT = "4001";
     private static final String SQL_USERNAME = "root";
-    private static final String SQL_PASSWORD = "Hawaii&Florida12345";
+    private static final String SQL_PASSWORD = "XEuE@*mHB-P4huC^RgcfXLTJXA8Hq.";
     private static final boolean SQL_ENCRYPT = true;
 
     // Logging
@@ -91,6 +92,8 @@ public class BeanBot {
     private static GeneralHelper generalHelper;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
+
+        twitchHandler = new TwitchHandler();
         sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
         sqlServer.startConnection();
 
@@ -100,7 +103,7 @@ public class BeanBot {
         logManager.log(BeanBot.class, LogLevel.SUCCESS, "Starting bot!", true, false);
 
         jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
-        jdaBuilder.setActivity(Activity.playing("beanbeanjuice is testing this."));
+        jdaBuilder.setActivity(Activity.playing("fuck you sprout."));
 
         jdaBuilder.enableIntents(GatewayIntent.GUILD_PRESENCES);
         jdaBuilder.enableIntents(GatewayIntent.GUILD_MEMBERS);
@@ -130,9 +133,13 @@ public class BeanBot {
         commandManager.addCommand(new JokeCommand());
 
         commandManager.addCommand(new SetModeratorRoleCommand());
+        commandManager.addCommand(new SetMutedRoleCommand());
         commandManager.addCommand(new ChangePrefixCommand());
         commandManager.addCommand(new KickCommand());
         commandManager.addCommand(new BanCommand());
+        commandManager.addCommand(new ClearChatCommand());
+        commandManager.addCommand(new MuteCommand());
+        commandManager.addCommand(new UnMuteCommand());
 
         commandManager.addCommand(new SetLiveChannelCommand());
         commandManager.addCommand(new AddTwitchChannelCommand());
@@ -172,6 +179,14 @@ public class BeanBot {
         guildHandler = new GuildHandler();
 
         generalHelper = new GeneralHelper();
+    }
+
+    /**
+     * @return The current {@link TwitchHandler}.
+     */
+    @NotNull
+    public static TwitchHandler getTwitchHandler() {
+        return twitchHandler;
     }
 
     /**

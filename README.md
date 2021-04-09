@@ -4,15 +4,15 @@ A bot that has an expanding list of commands for your use on discord.
 
 ## Getting Started
 
-All you need to do is invite the server to your discord and to `~help`!
+All you need to do is invite the server to your discord and to `!!help`!
 
 ### Commands
 ```
-~help
-~meme
-~joke
-~ping
-~set-log-channel
+!!help
+!!meme
+!!joke
+!!ping
+!!set-log-channel
 ```
 
 ### Prerequisites
