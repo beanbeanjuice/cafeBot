@@ -103,7 +103,7 @@ public class BeanBot {
         logManager.log(BeanBot.class, LogLevel.SUCCESS, "Starting bot!", true, false);
 
         jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
-        jdaBuilder.setActivity(Activity.playing("fuck you sprout."));
+        jdaBuilder.setActivity(Activity.playing("The Barista - Default Command: !!help"));
 
         jdaBuilder.enableIntents(GatewayIntent.GUILD_PRESENCES);
         jdaBuilder.enableIntents(GatewayIntent.GUILD_MEMBERS);
