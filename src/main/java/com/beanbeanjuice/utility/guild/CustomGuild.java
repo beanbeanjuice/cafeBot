@@ -4,10 +4,6 @@ import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
 import com.beanbeanjuice.utility.twitch.Twitch;
-import com.beanbeanjuice.utility.twitch.TwitchChannelNamesHandler;
-import com.beanbeanjuice.utility.listener.TwitchListener;
-import com.beanbeanjuice.utility.twitch.TwitchMessageEventHandler;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import org.jetbrains.annotations.NotNull;
@@ -74,7 +70,6 @@ public class CustomGuild {
 
             @Override
             public void run() {
-
                 Guild guild = BeanBot.getGuildHandler().getGuild(guildID);
                 Member selfMember = guild.getSelfMember();
                 GuildVoiceState selfVoiceState = selfMember.getVoiceState();
@@ -97,7 +92,7 @@ public class CustomGuild {
                     return;
                 }
 
-
+                // Checks if the bot is currently playing something and if the queue is empty.
                 if (musicManager.scheduler.queue.isEmpty() && musicManager.audioPlayer.getPlayingTrack() == null) {
                     guild.getAudioManager().closeAudioConnection();
                     EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -111,10 +106,13 @@ public class CustomGuild {
                 }
             }
         };
-
         timer.scheduleAtFixedRate(timerTask, 1000, 30000);
     }
 
+    /**
+     * Sends a message in the specified last music {@link TextChannel}.
+     * @param embed The {@link MessageEmbed} to be sent.
+     */
     private void sendMessageInLastMusicChannel(MessageEmbed embed) {
         try {
             lastMusicChannel.sendMessage(embed).queue();
