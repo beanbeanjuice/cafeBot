@@ -15,8 +15,6 @@ import com.beanbeanjuice.command.twitch.SetLiveChannelCommand;
 import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
-import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
-import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
 import com.beanbeanjuice.utility.listener.Listener;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
@@ -26,7 +24,6 @@ import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
 import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -40,7 +37,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -52,7 +48,7 @@ import java.util.TimerTask;
 public class BeanBot {
 
     // General Bot Info
-    private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.NeaUaBDNzZro3kHsdzTljAoznls";
+    private static final String BOT_TOKEN = "Nzg3MTYyNjE5NTA0NDkyNTU0.X9Q8UQ.m5dSjJtpIiIXSg_d7yaz5SXb-rs";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
 
@@ -84,9 +80,9 @@ public class BeanBot {
     // SQL Stuff
     private static SQLServer sqlServer;
     private static final String SQL_URL = "beanbeanjuice.com";
-    private static final String SQL_PORT = "4001";
+    private static final String SQL_PORT = "4000";
     private static final String SQL_USERNAME = "root";
-    private static final String SQL_PASSWORD = "XEuE@*mHB-P4huC^RgcfXLTJXA8Hq.";
+    private static final String SQL_PASSWORD = "gHDf]Tf~8T^VuZisn%6ktgukr*ci~!";
     private static final boolean SQL_ENCRYPT = true;
 
     // Logging
