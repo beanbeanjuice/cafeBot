@@ -17,7 +17,7 @@ task buildWithDependencies(type: Jar) {
 
 group 'com.beanbeanjuice'
 mainClassName = 'com.beanbeanjuice.main.BeanBot'
-version '1.0.3'
+version '1.0.4'
 
 repositories {
 
@@ -55,7 +55,7 @@ dependencies {
     implementation 'se.michaelthelin.spotify:spotify-web-api-java:6.5.2'
 
     // Web Utils
-    implementation group: 'me.duncte123', name: 'botCommons', version: '2.0.122'
+    implementation 'me.duncte123:botCommons:2.0.122'
 
     // JSON
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.1'

@@ -181,6 +181,7 @@ public class BeanBot {
             public void run() {
                 connectToSpotifyAPI();
                 logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection");
+                sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
             }
         };
         spotifyTimer.scheduleAtFixedRate(spotifyTimerTask, 3000000, 3000000);
