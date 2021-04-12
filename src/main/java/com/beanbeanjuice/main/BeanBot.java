@@ -94,8 +94,8 @@ public class BeanBot {
 
     // Other
     private static GeneralHelper generalHelper;
-    private static Timer spotifyTimer;
-    private static TimerTask spotifyTimerTask;
+    private static Timer refreshTimer;
+    private static TimerTask refreshTimerTask;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
 
@@ -165,7 +165,7 @@ public class BeanBot {
 
         // Connecting to the Spotify API
         connectToSpotifyAPI();
-        startSpotifyTimer();
+        startRefreshTimer();
 
         logManager.setGuild(homeGuild);
         logManager.setLogChannel(homeGuildLogChannel);
@@ -177,17 +177,18 @@ public class BeanBot {
     /**
      * Starts the re-establishing of a Spotify Key Timer.
      */
-    public static void startSpotifyTimer() {
-        spotifyTimer = new Timer();
-        spotifyTimerTask = new TimerTask() {
+    public static void startRefreshTimer() {
+        refreshTimer = new Timer();
+        refreshTimerTask = new TimerTask() {
 
             @Override
             public void run() {
                 connectToSpotifyAPI();
                 logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection");
+                sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
             }
         };
-        spotifyTimer.scheduleAtFixedRate(spotifyTimerTask, 3000000, 3000000);
+        refreshTimer.scheduleAtFixedRate(refreshTimerTask, 3000000, 3000000);
     }
 
     /**
