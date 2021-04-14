@@ -107,15 +107,18 @@ public class BeanBot {
         jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
         jdaBuilder.setActivity(Activity.playing("The Barista v1.0.6 - Default Command: !!help"));
 
-        jdaBuilder.enableIntents(GatewayIntent.GUILD_PRESENCES);
-        jdaBuilder.enableIntents(GatewayIntent.GUILD_MEMBERS);
-        jdaBuilder.enableIntents(GatewayIntent.GUILD_VOICE_STATES);
-        jdaBuilder.enableIntents(GatewayIntent.GUILD_BANS);
-        jdaBuilder.enableIntents(GatewayIntent.GUILD_EMOJIS);
-        jdaBuilder.enableCache(CacheFlag.ACTIVITY);
-        jdaBuilder.enableCache(CacheFlag.CLIENT_STATUS);
-        jdaBuilder.enableCache(CacheFlag.EMOTE);
-        jdaBuilder.enableCache(CacheFlag.VOICE_STATE);
+        jdaBuilder.enableIntents(
+                GatewayIntent.GUILD_PRESENCES,
+                GatewayIntent.GUILD_VOICE_STATES,
+                GatewayIntent.GUILD_BANS,
+                GatewayIntent.GUILD_EMOJIS
+        );
+        jdaBuilder.enableCache(
+                CacheFlag.ACTIVITY,
+                CacheFlag.CLIENT_STATUS,
+                CacheFlag.EMOTE,
+                CacheFlag.VOICE_STATE
+        );
         jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
         jdaBuilder.setChunkingFilter(ChunkingFilter.ALL);
 
