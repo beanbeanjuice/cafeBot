@@ -74,6 +74,11 @@ public class PlayerManager {
 
                 musicManager.scheduler.queue(audioTrack);
 
+                BeanBot.getLogManager().log(this.getClass(), LogLevel.TEST, audioTrack.getIdentifier());
+                BeanBot.getLogManager().log(this.getClass(), LogLevel.TEST, audioTrack.getInfo().identifier);
+                BeanBot.getLogManager().log(this.getClass(), LogLevel.TEST, "" + audioTrack.getInfo().isStream);
+                BeanBot.getLogManager().log(this.getClass(), LogLevel.TEST, audioTrack.getInfo().uri);
+
                 EmbedBuilder embedBuilder = new EmbedBuilder();
                 embedBuilder.setAuthor("Added Song to Queue");
 
