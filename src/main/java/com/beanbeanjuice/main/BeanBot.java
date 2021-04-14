@@ -102,7 +102,7 @@ public class BeanBot {
         logManager = new LogManager("Log Manager", homeGuild, homeGuildLogChannel);
 
         logManager.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
-        logManager.log(BeanBot.class, LogLevel.SUCCESS, "Starting bot!", true, false);
+        logManager.log(BeanBot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
         jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
         jdaBuilder.setActivity(Activity.playing("The Barista v1.0.3 - Default Command: !!help"));
@@ -157,7 +157,7 @@ public class BeanBot {
         logManager.setGuild(homeGuild);
         logManager.setLogChannel(homeGuildLogChannel);
 
-        logManager.log(BeanBot.class, LogLevel.SUCCESS, "The bot is online!");
+        logManager.log(BeanBot.class, LogLevel.OKAY, "The bot is online!");
 
         // Connecting to the Spotify API
         connectToSpotifyAPI();
@@ -202,7 +202,7 @@ public class BeanBot {
             final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
             spotifyApi.setAccessToken(clientCredentials.getAccessToken());
             logManager.log(BeanBot.class, LogLevel.INFO, "Spotify Access Token Expires In: " + clientCredentials.getExpiresIn());
-            logManager.log(BeanBot.class, LogLevel.SUCCESS, "Successfully connected to the Spotify API!");
+            logManager.log(BeanBot.class, LogLevel.OKAY, "Successfully connected to the Spotify API!");
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             logManager.log(BeanBot.class, LogLevel.ERROR, e.getMessage());
         }
