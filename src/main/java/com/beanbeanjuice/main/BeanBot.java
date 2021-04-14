@@ -121,32 +121,35 @@ public class BeanBot {
 
         // Listeners and Commands
         commandManager = new CommandManager();
-        commandManager.addCommand(new HelpCommand());
-        commandManager.addCommand(new PingCommand());
 
-        commandManager.addCommand(new NowPlayingCommand());
-        commandManager.addCommand(new PlayCommand());
-        commandManager.addCommand(new QueueCommand());
-        commandManager.addCommand(new RepeatCommand());
-        commandManager.addCommand(new SkipCommand());
-        commandManager.addCommand(new StopCommand());
+        commandManager.addCommands(
+                new HelpCommand(),
+                new PingCommand(),
 
-        commandManager.addCommand(new MemeCommand());
-        commandManager.addCommand(new JokeCommand());
+                new NowPlayingCommand(),
+                new PlayCommand(),
+                new QueueCommand(),
+                new RepeatCommand(),
+                new SkipCommand(),
+                new StopCommand(),
 
-        commandManager.addCommand(new SetModeratorRoleCommand());
-        commandManager.addCommand(new SetMutedRoleCommand());
-        commandManager.addCommand(new ChangePrefixCommand());
-        commandManager.addCommand(new KickCommand());
-        commandManager.addCommand(new BanCommand());
-        commandManager.addCommand(new ClearChatCommand());
-        commandManager.addCommand(new MuteCommand());
-        commandManager.addCommand(new UnMuteCommand());
+                new MemeCommand(),
+                new JokeCommand(),
 
-        commandManager.addCommand(new SetLiveChannelCommand());
-        commandManager.addCommand(new AddTwitchChannelCommand());
-        commandManager.addCommand(new RemoveTwitchChannelCommand());
-        commandManager.addCommand(new GetTwitchChannelsCommand());
+                new SetModeratorRoleCommand(),
+                new SetMutedRoleCommand(),
+                new ChangePrefixCommand(),
+                new KickCommand(),
+                new BanCommand(),
+                new ClearChatCommand(),
+                new MuteCommand(),
+                new UnMuteCommand(),
+
+                new SetLiveChannelCommand(),
+                new AddTwitchChannelCommand(),
+                new RemoveTwitchChannelCommand(),
+                new GetTwitchChannelsCommand()
+        );
 
         jdaBuilder.addEventListeners(new Listener());
 
