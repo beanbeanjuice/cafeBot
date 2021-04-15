@@ -32,7 +32,6 @@ import java.util.ArrayList;
  */
 public class PlayCommand implements ICommand {
 
-    private boolean isSpotifyPlaylist = false;
     private int playlistCount = 0;
     private String playlistName = "";
 
@@ -80,42 +79,71 @@ public class PlayCommand implements ICommand {
                 link = link.replace("track/", "");
                 link = link.split("\\?")[0];
 
-                GetTrackRequest getTrackRequest = BeanBot.getSpotifyApi().getTrack(link).build();
-                link = getTrack_Sync(getTrackRequest);
+                Track track;
+
+                try {
+                    track = BeanBot.getSpotifyApi().getTrack(link).build().execute();
+                } catch (SpotifyWebApiException | IOException | ParseException e) {
+                    // TODO: Unable to get spotify song.
+                    return;
+                }
+
+                link = "ytsearch:" + getLinkFromSpotifyTrack(track);
+                PlayerManager.getInstance().loadAndPlay(channel, link, false);
+                return;
 
             } else if (link.startsWith("playlist/")) {
 
                 link = link.replace("playlist/", "");
                 link = link.split("\\?")[0];
 
-                GetPlaylistRequest getPlaylistRequest = BeanBot.getSpotifyApi().getPlaylist(link).build();
-
-                isSpotifyPlaylist = true;
-
+                Playlist playlist;
                 try {
-
-                    PlaylistTrack[] playlistTracks = getPlaylist_Sync(getPlaylistRequest);
-
-                    for (PlaylistTrack playlistTrack : playlistTracks) {
-
-                        Track track = (Track) playlistTrack.getTrack();
-
-                        link = "ytsearch:" + track.getName() + " by " + track.getArtists()[0].getName();
-
-                        PlayerManager.getInstance().loadAndPlay(channel, link, isSpotifyPlaylist);
-                    }
-
-                    event.getChannel().sendMessage(loadedPlaylist()).queue();
-                    return;
-                } catch (NullPointerException e) {
-                    event.getChannel().sendMessage(emptySpotifyPlaylist()).queue();
-                    BeanBot.getLogManager().log(PlayCommand.class, LogLevel.ERROR, "Spotify Rate Limit");
+                    playlist = BeanBot.getSpotifyApi().getPlaylist(link).build().execute();
+                } catch (SpotifyWebApiException | IOException | ParseException e) {
+                    // TODO: Unable to get spotify playlist.
                     return;
                 }
+
+                playlistName = playlist.getName();
+                playlistCount = playlist.getTracks().getTotal();
+
+                // Get the Track from every song in the playlist.
+                PlaylistTrack[] playlistTracksUnconverted = playlist.getTracks().getItems();
+
+                for (PlaylistTrack playlistTrack : playlistTracksUnconverted) {
+
+                    Track track = (Track) playlistTrack.getTrack();
+
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append(track.getName()).append(" by ")
+                            .append(track.getArtists()[0].getName());
+
+                    if (track.getArtists().length > 1) {
+                        stringBuilder.append(" and ").append(track.getArtists()[1].getName());
+                    }
+
+                    PlayerManager.getInstance().loadAndPlay(channel, "ytsearch:" + stringBuilder.toString(), true);
+                }
+                event.getChannel().sendMessage(loadedPlaylist()).queue();
+                return;
             }
 
         }
-        PlayerManager.getInstance().loadAndPlay(channel, link, isSpotifyPlaylist);
+        PlayerManager.getInstance().loadAndPlay(channel, link, false);
+    }
+
+    private String getLinkFromSpotifyTrack(Track track) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(track.getName()).append(" by ")
+                .append(track.getArtists()[0].getName());
+
+        if (track.getArtists().length > 1) {
+            stringBuilder.append(" and ")
+                    .append(track.getArtists()[1].getName());
+        }
+
+        return stringBuilder.toString();
     }
 
     private MessageEmbed userMustBeInVoiceChannelEmbed() {
@@ -138,7 +166,7 @@ public class PlayCommand implements ICommand {
         embedBuilder.setAuthor("Added Playlist to Queue");
         embedBuilder.addField("Tracks", String.valueOf(playlistCount), true);
         embedBuilder.addField("Playlist Name", "`" + playlistName + "`", true);
-        embedBuilder.setColor(Color.green);
+        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 
