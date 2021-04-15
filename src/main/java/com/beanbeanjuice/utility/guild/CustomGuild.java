@@ -106,7 +106,7 @@ public class CustomGuild {
                 }
             }
         };
-        timer.scheduleAtFixedRate(timerTask, 10000, 60000);
+        timer.scheduleAtFixedRate(timerTask, 30000, 60000);
     }
 
     /**
