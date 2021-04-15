@@ -31,13 +31,11 @@ public class PlayerManager {
      * Creates a new instance of the {@link PlayerManager} object.
      */
     public PlayerManager() {
-
         this.musicManagers = new HashMap<>();
         this.audioPlayerManager = new DefaultAudioPlayerManager();
 
         AudioSourceManagers.registerRemoteSources(this.audioPlayerManager);
         AudioSourceManagers.registerLocalSource(this.audioPlayerManager);
-
     }
 
     /**
@@ -73,11 +71,6 @@ public class PlayerManager {
                 }
 
                 musicManager.scheduler.queue(audioTrack);
-
-                BeanBot.getLogManager().log(this.getClass(), LogLevel.TEST, audioTrack.getIdentifier());
-                BeanBot.getLogManager().log(this.getClass(), LogLevel.TEST, audioTrack.getInfo().identifier);
-                BeanBot.getLogManager().log(this.getClass(), LogLevel.TEST, "" + audioTrack.getInfo().isStream);
-                BeanBot.getLogManager().log(this.getClass(), LogLevel.TEST, audioTrack.getInfo().uri);
 
                 EmbedBuilder embedBuilder = new EmbedBuilder();
                 embedBuilder.setAuthor("Added Song to Queue");
@@ -123,20 +116,24 @@ public class PlayerManager {
                     return;
                 }
 
-                EmbedBuilder embedBuilder = new EmbedBuilder();
-                embedBuilder.setDescription("No matches found.");
-                embedBuilder.setColor(Color.red);
-                embedBuilder.setFooter("The link provided may not be a video: " + trackURL);
-                channel.sendMessage(embedBuilder.build()).queue();
+                if (!isSpotifyPlaylist) {
+                    EmbedBuilder embedBuilder = new EmbedBuilder();
+                    embedBuilder.setDescription("No matches found.");
+                    embedBuilder.setColor(Color.red);
+                    embedBuilder.setFooter("The link provided may not be a video: " + trackURL);
+                    channel.sendMessage(embedBuilder.build()).queue();
+                }
             }
 
             @Override
             public void loadFailed(FriendlyException e) {
-                EmbedBuilder embedBuilder = new EmbedBuilder();
-                embedBuilder.setDescription("Video failed to load.");
-                embedBuilder.setColor(Color.red);
-                embedBuilder.setFooter("The link provided may not be a video: " + trackURL);
-                channel.sendMessage(embedBuilder.build()).queue();
+                if (!isSpotifyPlaylist) {
+                    EmbedBuilder embedBuilder = new EmbedBuilder();
+                    embedBuilder.setDescription("Video failed to load.");
+                    embedBuilder.setColor(Color.red);
+                    embedBuilder.setFooter("The link provided may not be a video: " + trackURL);
+                    channel.sendMessage(embedBuilder.build()).queue();
+                }
             }
         });
     }
@@ -148,7 +145,6 @@ public class PlayerManager {
         if (INSTANCE == null) {
             INSTANCE = new PlayerManager();
         }
-
         return INSTANCE;
     }
 
