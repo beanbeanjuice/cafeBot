@@ -1,5 +1,7 @@
 package com.beanbeanjuice.utility.lavaplayer;
 
+import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
@@ -29,13 +31,11 @@ public class PlayerManager {
      * Creates a new instance of the {@link PlayerManager} object.
      */
     public PlayerManager() {
-
         this.musicManagers = new HashMap<>();
         this.audioPlayerManager = new DefaultAudioPlayerManager();
 
         AudioSourceManagers.registerRemoteSources(this.audioPlayerManager);
         AudioSourceManagers.registerLocalSource(this.audioPlayerManager);
-
     }
 
     /**
@@ -57,7 +57,6 @@ public class PlayerManager {
      * A method used for loading and playing music.
      * @param channel The {@link TextChannel} that received the song playing message.
      * @param trackURL The link for the track to be played.
-     * @param isSpotifyPlaylist Whether or not the link posted is a Spotify Playlist link.
      */
     public void loadAndPlay(TextChannel channel, String trackURL, boolean isSpotifyPlaylist) {
         final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
@@ -65,24 +64,26 @@ public class PlayerManager {
         this.audioPlayerManager.loadItemOrdered(musicManager, trackURL, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack audioTrack) {
+
+                if (isSpotifyPlaylist) {
+                    musicManager.scheduler.queue(audioTrack);
+                    return;
+                }
+
                 musicManager.scheduler.queue(audioTrack);
 
-                if (!isSpotifyPlaylist) {
-                    EmbedBuilder embedBuilder = new EmbedBuilder();
-                    embedBuilder.setAuthor("Added Song to Queue");
+                EmbedBuilder embedBuilder = new EmbedBuilder();
+                embedBuilder.setAuthor("Added Song to Queue");
 
-                    String message = "`" +
-                            audioTrack.getInfo().title +
-                            "` by `" +
-                            audioTrack.getInfo().author +
-                            "`";
-                    embedBuilder.setDescription(message);
-                    embedBuilder.setColor(Color.green);
+                String message = "`" +
+                        audioTrack.getInfo().title +
+                        "` by `" +
+                        audioTrack.getInfo().author +
+                        "`";
+                embedBuilder.setDescription(message);
+                embedBuilder.setColor(Color.green);
 
-                    channel.sendMessage(embedBuilder.build()).queue();
-                } else {
-                    // Do nothing. This will be handled by the command.
-                }
+                channel.sendMessage(embedBuilder.build()).queue();
             }
 
             @Override
@@ -108,20 +109,31 @@ public class PlayerManager {
 
             @Override
             public void noMatches() {
-                EmbedBuilder embedBuilder = new EmbedBuilder();
-                embedBuilder.setDescription("No matches found.");
-                embedBuilder.setColor(Color.red);
-                embedBuilder.setFooter("The link provided may not be a video.");
-                channel.sendMessage(embedBuilder.build()).queue();
+
+                if (isSpotifyPlaylist && trackURL.contains("ytsearch:")) {
+                    loadAndPlay(channel, trackURL, true);
+                    BeanBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Getting Song from Playlist", false, false);
+                    return;
+                }
+
+                if (!isSpotifyPlaylist) {
+                    EmbedBuilder embedBuilder = new EmbedBuilder();
+                    embedBuilder.setDescription("No matches found.");
+                    embedBuilder.setColor(Color.red);
+                    embedBuilder.setFooter("The link provided may not be a video: " + trackURL);
+                    channel.sendMessage(embedBuilder.build()).queue();
+                }
             }
 
             @Override
             public void loadFailed(FriendlyException e) {
-                EmbedBuilder embedBuilder = new EmbedBuilder();
-                embedBuilder.setDescription("Video failed to load.");
-                embedBuilder.setColor(Color.red);
-                embedBuilder.setFooter("The link provided may not be a video.");
-                channel.sendMessage(embedBuilder.build()).queue();
+                if (!isSpotifyPlaylist) {
+                    EmbedBuilder embedBuilder = new EmbedBuilder();
+                    embedBuilder.setDescription("Video failed to load.");
+                    embedBuilder.setColor(Color.red);
+                    embedBuilder.setFooter("The link provided may not be a video: " + trackURL);
+                    channel.sendMessage(embedBuilder.build()).queue();
+                }
             }
         });
     }
@@ -133,7 +145,6 @@ public class PlayerManager {
         if (INSTANCE == null) {
             INSTANCE = new PlayerManager();
         }
-
         return INSTANCE;
     }
 
