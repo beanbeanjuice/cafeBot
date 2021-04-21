@@ -37,6 +37,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -187,6 +188,13 @@ public class BeanBot {
             public void run() {
                 connectToSpotifyAPI();
                 logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection");
+
+                try {
+                    sqlServer.getConnection().close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
                 sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
             }
         };
