@@ -17,7 +17,7 @@ task buildWithDependencies(type: Jar) {
 
 group 'com.beanbeanjuice'
 mainClassName = 'com.beanbeanjuice.main.BeanBot'
-version '1.0.6'
+version '1.0.8'
 
 repositories {
 
