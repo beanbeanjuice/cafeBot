@@ -3,6 +3,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
+
 public class SQLServerTest {
 
     private static SQLServer sqlServer;
@@ -14,10 +16,15 @@ public class SQLServerTest {
 
     @Test
     @DisplayName("Testing the SQL Server Class")
-    public void test1() {
+    public void test1() throws SQLException {
 
         sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
+        Assertions.assertTrue(sqlServer.startConnection());
+        Assertions.assertTrue(sqlServer.testConnection());
 
+        sqlServer.getConnection().close();
+
+        sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
         Assertions.assertTrue(sqlServer.startConnection());
         Assertions.assertTrue(sqlServer.testConnection());
 
