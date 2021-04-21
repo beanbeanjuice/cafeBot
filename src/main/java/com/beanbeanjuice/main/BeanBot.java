@@ -37,6 +37,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -48,7 +49,7 @@ import java.util.TimerTask;
 public class BeanBot {
 
     // General Bot Info
-    private static final String BOT_TOKEN = "Nzg3MTYyNjE5NTA0NDkyNTU0.X9Q8UQ.m5dSjJtpIiIXSg_d7yaz5SXb-rs";
+    private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.NeaUaBDNzZro3kHsdzTljAoznls";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
 
@@ -80,9 +81,9 @@ public class BeanBot {
     // SQL Stuff
     private static SQLServer sqlServer;
     private static final String SQL_URL = "beanbeanjuice.com";
-    private static final String SQL_PORT = "4000";
+    private static final String SQL_PORT = "4001";
     private static final String SQL_USERNAME = "root";
-    private static final String SQL_PASSWORD = "gHDf]Tf~8T^VuZisn%6ktgukr*ci~!";
+    private static final String SQL_PASSWORD = "XEuE@*mHB-P4huC^RgcfXLTJXA8Hq.";
     private static final boolean SQL_ENCRYPT = true;
 
     // Logging
@@ -102,51 +103,57 @@ public class BeanBot {
         logManager = new LogManager("Log Manager", homeGuild, homeGuildLogChannel);
 
         logManager.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
-        logManager.log(BeanBot.class, LogLevel.SUCCESS, "Starting bot!", true, false);
+        logManager.log(BeanBot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
         jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
-        jdaBuilder.setActivity(Activity.playing("The Barista v1.0.5 - Default Command: !!help"));
+        jdaBuilder.setActivity(Activity.playing("The Barista v1.0.6 - Default Command: !!help"));
 
-        jdaBuilder.enableIntents(GatewayIntent.GUILD_PRESENCES);
-        jdaBuilder.enableIntents(GatewayIntent.GUILD_MEMBERS);
-        jdaBuilder.enableIntents(GatewayIntent.GUILD_VOICE_STATES);
-        jdaBuilder.enableIntents(GatewayIntent.GUILD_BANS);
-        jdaBuilder.enableIntents(GatewayIntent.GUILD_EMOJIS);
-        jdaBuilder.enableCache(CacheFlag.ACTIVITY);
-        jdaBuilder.enableCache(CacheFlag.CLIENT_STATUS);
-        jdaBuilder.enableCache(CacheFlag.EMOTE);
-        jdaBuilder.enableCache(CacheFlag.VOICE_STATE);
+        jdaBuilder.enableIntents(
+                GatewayIntent.GUILD_PRESENCES,
+                GatewayIntent.GUILD_VOICE_STATES,
+                GatewayIntent.GUILD_BANS,
+                GatewayIntent.GUILD_EMOJIS
+        );
+        jdaBuilder.enableCache(
+                CacheFlag.ACTIVITY,
+                CacheFlag.CLIENT_STATUS,
+                CacheFlag.EMOTE,
+                CacheFlag.VOICE_STATE
+        );
         jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
         jdaBuilder.setChunkingFilter(ChunkingFilter.ALL);
 
         // Listeners and Commands
         commandManager = new CommandManager();
-        commandManager.addCommand(new HelpCommand());
-        commandManager.addCommand(new PingCommand());
 
-        commandManager.addCommand(new NowPlayingCommand());
-        commandManager.addCommand(new PlayCommand());
-        commandManager.addCommand(new QueueCommand());
-        commandManager.addCommand(new RepeatCommand());
-        commandManager.addCommand(new SkipCommand());
-        commandManager.addCommand(new StopCommand());
+        commandManager.addCommands(
+                new HelpCommand(),
+                new PingCommand(),
 
-        commandManager.addCommand(new MemeCommand());
-        commandManager.addCommand(new JokeCommand());
+                new NowPlayingCommand(),
+                new PlayCommand(),
+                new QueueCommand(),
+                new RepeatCommand(),
+                new SkipCommand(),
+                new StopCommand(),
 
-        commandManager.addCommand(new SetModeratorRoleCommand());
-        commandManager.addCommand(new SetMutedRoleCommand());
-        commandManager.addCommand(new ChangePrefixCommand());
-        commandManager.addCommand(new KickCommand());
-        commandManager.addCommand(new BanCommand());
-        commandManager.addCommand(new ClearChatCommand());
-        commandManager.addCommand(new MuteCommand());
-        commandManager.addCommand(new UnMuteCommand());
+                new MemeCommand(),
+                new JokeCommand(),
 
-        commandManager.addCommand(new SetLiveChannelCommand());
-        commandManager.addCommand(new AddTwitchChannelCommand());
-        commandManager.addCommand(new RemoveTwitchChannelCommand());
-        commandManager.addCommand(new GetTwitchChannelsCommand());
+                new SetModeratorRoleCommand(),
+                new SetMutedRoleCommand(),
+                new ChangePrefixCommand(),
+                new KickCommand(),
+                new BanCommand(),
+                new ClearChatCommand(),
+                new MuteCommand(),
+                new UnMuteCommand(),
+
+                new SetLiveChannelCommand(),
+                new AddTwitchChannelCommand(),
+                new RemoveTwitchChannelCommand(),
+                new GetTwitchChannelsCommand()
+        );
 
         jdaBuilder.addEventListeners(new Listener());
 
@@ -157,7 +164,7 @@ public class BeanBot {
         logManager.setGuild(homeGuild);
         logManager.setLogChannel(homeGuildLogChannel);
 
-        logManager.log(BeanBot.class, LogLevel.SUCCESS, "The bot is online!");
+        logManager.log(BeanBot.class, LogLevel.OKAY, "The bot is online!");
 
         // Connecting to the Spotify API
         connectToSpotifyAPI();
@@ -181,6 +188,13 @@ public class BeanBot {
             public void run() {
                 connectToSpotifyAPI();
                 logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection");
+
+                try {
+                    sqlServer.getConnection().close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
                 sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
             }
         };
@@ -202,7 +216,7 @@ public class BeanBot {
             final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
             spotifyApi.setAccessToken(clientCredentials.getAccessToken());
             logManager.log(BeanBot.class, LogLevel.INFO, "Spotify Access Token Expires In: " + clientCredentials.getExpiresIn());
-            logManager.log(BeanBot.class, LogLevel.SUCCESS, "Successfully connected to the Spotify API!");
+            logManager.log(BeanBot.class, LogLevel.OKAY, "Successfully connected to the Spotify API!");
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             logManager.log(BeanBot.class, LogLevel.ERROR, e.getMessage());
         }

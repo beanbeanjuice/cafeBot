@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
@@ -78,7 +79,26 @@ public class LogManager {
 
         Time time = new Time(Calendar.getInstance(TimeZone.getDefault()));
 
-        LoggerFactory.getLogger(c).info(message);
+        Logger logger = LoggerFactory.getLogger(c);
+
+        switch (logLevel) {
+            case INFO, LOADING, OKAY -> {
+                logger.info(message);
+            }
+
+            case WARN -> {
+                logger.warn(message);
+            }
+
+            case DEBUG -> {
+                logger.debug(message);
+            }
+
+            case ERROR -> {
+                logger.error(message);
+            }
+
+        }
 
         if (logToWebhook) {
             logToWebhook(c, logLevel, message, time);
