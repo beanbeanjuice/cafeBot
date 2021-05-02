@@ -28,6 +28,13 @@ public class SQLServerTest {
         Assertions.assertTrue(sqlServer.startConnection());
         Assertions.assertTrue(sqlServer.testConnection());
 
+        Assertions.assertTrue(sqlServer.checkConnection());
+        sqlServer.getConnection().close();
+        Assertions.assertFalse(sqlServer.checkConnection());
+
+        sqlServer.startConnection();
+        Assertions.assertTrue(sqlServer.checkConnection());
+
     }
 
 }

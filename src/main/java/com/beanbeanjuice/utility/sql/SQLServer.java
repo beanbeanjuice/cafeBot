@@ -5,6 +5,9 @@ import org.jetbrains.annotations.Nullable;
 import org.mariadb.jdbc.Driver;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 /**
@@ -90,6 +93,19 @@ public class SQLServer {
     @Nullable
     public Connection getConnection() {
         return connection;
+    }
+
+    /**
+     * Checks the SQL {@link Connection}.
+     * @return Whether or not the sqlConnection is opened.
+     */
+    @NotNull
+    public Boolean checkConnection() {
+        try {
+            return !connection.isClosed();
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
 }
