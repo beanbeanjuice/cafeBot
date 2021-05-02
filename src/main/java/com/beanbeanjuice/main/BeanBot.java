@@ -58,8 +58,8 @@ public class BeanBot {
     private static Guild homeGuild;
     private static final String HOME_GUILD_ID = "798830792938881024";
     private static TextChannel homeGuildLogChannel;
-    private static final String HOME_GUILD_LOG_CHANNEL_ID = "799005537542471751";
-    private static final String HOME_GUILD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/800609733278171197/314ISBsWKDfxdnOEHp6UYd1GKGjhJea3a0tHXmYVai5B5ScTNoo2b4_4tNzfUUbT0_4h";
+    private static final String HOME_GUILD_LOG_CHANNEL_ID = "838259190853140511";
+    private static final String HOME_GUILD_WEBHOOK_URL = "https://discord.com/api/webhooks/838258983365640252/9wxcQljLRfKh8tBbPtYjsinQCNxT5xvEBqd7afBVtw-Gxy5C-lKsp1tni0pbauVanq4v";
 
     private static final String BOT_PREFIX = "!!";
 
@@ -112,7 +112,8 @@ public class BeanBot {
                 GatewayIntent.GUILD_PRESENCES,
                 GatewayIntent.GUILD_VOICE_STATES,
                 GatewayIntent.GUILD_BANS,
-                GatewayIntent.GUILD_EMOJIS
+                GatewayIntent.GUILD_EMOJIS,
+                GatewayIntent.GUILD_MEMBERS
         );
         jdaBuilder.enableCache(
                 CacheFlag.ACTIVITY,
@@ -192,12 +193,22 @@ public class BeanBot {
                 logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection");
 
                 try {
-                    sqlServer.getConnection().close();
-                } catch (SQLException e) {
-                    logManager.log(this.getClass(), LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage());
-                }
+                    logManager.log(this.getClass(), LogLevel.INFO, "Refreshing MySQL Connection...");
+                    sqlServer.getConnection().close(); // Closes the SQL Connection
+                    sqlServer.startConnection(); // Reopens the SQL Connection
 
-                sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
+                    // If the SQL Connection is still closed, then it must throw an sql exception.
+                    if (!sqlServer.checkConnection()) {
+                        throw new SQLException("The connection is still closed.");
+                    }
+
+                    logManager.log(this.getClass(), LogLevel.OKAY, "Successfully refreshed the MySQL Connection!", true, false);
+                } catch (SQLException e) {
+                    logManager.log(this.getClass(), LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage(), true, false);
+
+                    sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
+                    sqlServer.startConnection();
+                }
             }
         };
         refreshTimer.scheduleAtFixedRate(refreshTimerTask, 3000000, 3000000);
