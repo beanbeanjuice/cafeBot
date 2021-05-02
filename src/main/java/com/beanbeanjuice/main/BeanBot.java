@@ -195,8 +195,13 @@ public class BeanBot {
                 try {
                     logManager.log(this.getClass(), LogLevel.INFO, "Refreshing MySQL Connection...");
                     sqlServer.getConnection().close();
+                    sqlServer.startConnection();
+                    logManager.log(this.getClass(), LogLevel.OKAY, "Successfully refreshed the MySQL Connection!", true, false);
                 } catch (SQLException e) {
                     logManager.log(this.getClass(), LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage(), true, false);
+
+                    sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
+                    sqlServer.startConnection();
                 }
             }
         };
