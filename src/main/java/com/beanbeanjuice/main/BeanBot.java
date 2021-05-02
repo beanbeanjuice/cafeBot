@@ -304,4 +304,12 @@ public class BeanBot {
         return commandManager;
     }
 
+    /**
+     * @return The current Bot Version as a {@link String}.
+     */
+    @NotNull
+    public static String getBotVersion() {
+        return BOT_VERSION;
+    }
+
 }
