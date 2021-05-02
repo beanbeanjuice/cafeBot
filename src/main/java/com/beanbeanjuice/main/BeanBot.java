@@ -193,12 +193,11 @@ public class BeanBot {
                 logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection");
 
                 try {
+                    logManager.log(this.getClass(), LogLevel.INFO, "Refreshing MySQL Connection...");
                     sqlServer.getConnection().close();
                 } catch (SQLException e) {
                     logManager.log(this.getClass(), LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage(), true, false);
                 }
-
-                sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
             }
         };
         refreshTimer.scheduleAtFixedRate(refreshTimerTask, 3000000, 3000000);
