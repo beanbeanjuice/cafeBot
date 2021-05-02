@@ -49,7 +49,8 @@ import java.util.TimerTask;
 public class BeanBot {
 
     // General Bot Info
-    private static final String BOT_TOKEN = "Nzg3MTYyNjE5NTA0NDkyNTU0.X9Q8UQ.m5dSjJtpIiIXSg_d7yaz5SXb-rs";
+    private static final String BOT_VERSION = "v1.0.8";
+    private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.NeaUaBDNzZro3kHsdzTljAoznls";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
 
@@ -57,8 +58,8 @@ public class BeanBot {
     private static Guild homeGuild;
     private static final String HOME_GUILD_ID = "798830792938881024";
     private static TextChannel homeGuildLogChannel;
-    private static final String HOME_GUILD_LOG_CHANNEL_ID = "799005537542471751";
-    private static final String HOME_GUILD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/800609733278171197/314ISBsWKDfxdnOEHp6UYd1GKGjhJea3a0tHXmYVai5B5ScTNoo2b4_4tNzfUUbT0_4h";
+    private static final String HOME_GUILD_LOG_CHANNEL_ID = "838259190853140511";
+    private static final String HOME_GUILD_WEBHOOK_URL = "https://discord.com/api/webhooks/838258983365640252/9wxcQljLRfKh8tBbPtYjsinQCNxT5xvEBqd7afBVtw-Gxy5C-lKsp1tni0pbauVanq4v";
 
     private static final String BOT_PREFIX = "!!";
 
@@ -106,7 +107,6 @@ public class BeanBot {
         logManager.log(BeanBot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
         jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
-        jdaBuilder.setActivity(Activity.playing("The Barista v1.0.7 - Default Command: !!help"));
 
         jdaBuilder.enableIntents(
                 GatewayIntent.GUILD_PRESENCES,
@@ -176,6 +176,8 @@ public class BeanBot {
         guildHandler = new GuildHandler();
 
         generalHelper = new GeneralHelper();
+
+        jda.getPresence().setActivity(Activity.playing("!! | beanBot " + BOT_VERSION + " - Currently in " + jda.getGuilds().size() + " servers!"));
     }
 
     /**
@@ -191,12 +193,22 @@ public class BeanBot {
                 logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection");
 
                 try {
-                    sqlServer.getConnection().close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+                    logManager.log(this.getClass(), LogLevel.INFO, "Refreshing MySQL Connection...");
+                    sqlServer.getConnection().close(); // Closes the SQL Connection
+                    sqlServer.startConnection(); // Reopens the SQL Connection
 
-                sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
+                    // If the SQL Connection is still closed, then it must throw an sql exception.
+                    if (!sqlServer.checkConnection()) {
+                        throw new SQLException("The connection is still closed.");
+                    }
+
+                    logManager.log(this.getClass(), LogLevel.OKAY, "Successfully refreshed the MySQL Connection!", true, false);
+                } catch (SQLException e) {
+                    logManager.log(this.getClass(), LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage(), true, false);
+
+                    sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
+                    sqlServer.startConnection();
+                }
             }
         };
         refreshTimer.scheduleAtFixedRate(refreshTimerTask, 3000000, 3000000);
@@ -301,6 +313,14 @@ public class BeanBot {
     @Nullable
     public static CommandManager getCommandManager() {
         return commandManager;
+    }
+
+    /**
+     * @return The current Bot Version as a {@link String}.
+     */
+    @NotNull
+    public static String getBotVersion() {
+        return BOT_VERSION;
     }
 
 }
