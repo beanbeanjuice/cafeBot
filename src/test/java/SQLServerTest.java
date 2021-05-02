@@ -19,14 +19,14 @@ public class SQLServerTest {
     public void test1() throws SQLException {
 
         sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
-        Assertions.assertTrue(sqlServer.startConnection());
         Assertions.assertTrue(sqlServer.testConnection());
+        Assertions.assertTrue(sqlServer.startConnection());
 
         sqlServer.getConnection().close();
 
         sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
-        Assertions.assertTrue(sqlServer.startConnection());
         Assertions.assertTrue(sqlServer.testConnection());
+        Assertions.assertTrue(sqlServer.startConnection());
 
         Assertions.assertTrue(sqlServer.checkConnection());
         sqlServer.getConnection().close();
