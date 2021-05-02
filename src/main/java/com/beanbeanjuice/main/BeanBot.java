@@ -49,6 +49,7 @@ import java.util.TimerTask;
 public class BeanBot {
 
     // General Bot Info
+    private static final String BOT_VERSION = "v1.0.8";
     private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.NeaUaBDNzZro3kHsdzTljAoznls";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
@@ -175,7 +176,7 @@ public class BeanBot {
 
         generalHelper = new GeneralHelper();
 
-        jda.getPresence().setActivity(Activity.playing("!! | beanBot v1.0.8 - Currently in " + jda.getGuilds().size() + " servers!"));
+        jda.getPresence().setActivity(Activity.playing("!! | beanBot " + BOT_VERSION + " - Currently in " + jda.getGuilds().size() + " servers!"));
     }
 
     /**
