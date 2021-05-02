@@ -78,6 +78,8 @@ public class ClearChatCommand implements ICommand {
                         try {
                             event.getChannel().deleteMessages(msgs).queue();
                         } catch (IllegalArgumentException e) {
+                            // Catches the Message Error if it is Older than 2 Weeks
+                            // TODO: Eventually find a way around this.
                             event.getChannel().sendMessage(oldMessageError(String.valueOf(messageAmount))).queue();
                         }
                     }
