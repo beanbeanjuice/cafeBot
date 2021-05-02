@@ -49,7 +49,7 @@ import java.util.TimerTask;
 public class BeanBot {
 
     // General Bot Info
-    private static final String BOT_VERSION = "v1.0.8";
+    private static final String BOT_VERSION = "v1.0.9";
     private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.NeaUaBDNzZro3kHsdzTljAoznls";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
@@ -82,9 +82,9 @@ public class BeanBot {
     // SQL Stuff
     private static SQLServer sqlServer;
     private static final String SQL_URL = "beanbeanjuice.com";
-    private static final String SQL_PORT = "4000";
+    private static final String SQL_PORT = "4001";
     private static final String SQL_USERNAME = "root";
-    private static final String SQL_PASSWORD = "gHDf]Tf~8T^VuZisn%6ktgukr*ci~!";
+    private static final String SQL_PASSWORD = "XEuE@*mHB-P4huC^RgcfXLTJXA8Hq.";
     private static final boolean SQL_ENCRYPT = true;
 
     // Logging
