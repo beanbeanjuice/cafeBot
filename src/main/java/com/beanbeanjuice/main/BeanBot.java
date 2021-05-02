@@ -193,7 +193,7 @@ public class BeanBot {
                 logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection");
 
                 try {
-                    logManager.log(this.getClass(), LogLevel.INFO, "Refreshing MySQL Connection...");
+                    logManager.log(BeanBot.class, LogLevel.INFO, "Refreshing MySQL Connection...");
                     sqlServer.getConnection().close(); // Closes the SQL Connection
                     sqlServer.startConnection(); // Reopens the SQL Connection
 
@@ -202,9 +202,9 @@ public class BeanBot {
                         throw new SQLException("The connection is still closed.");
                     }
 
-                    logManager.log(this.getClass(), LogLevel.OKAY, "Successfully refreshed the MySQL Connection!", true, false);
+                    logManager.log(BeanBot.class, LogLevel.OKAY, "Successfully refreshed the MySQL Connection!", true, false);
                 } catch (SQLException e) {
-                    logManager.log(this.getClass(), LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage(), true, false);
+                    logManager.log(BeanBot.class, LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage(), true, false);
 
                     sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
                     sqlServer.startConnection();
