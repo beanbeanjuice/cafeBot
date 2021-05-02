@@ -5,6 +5,9 @@ import org.jetbrains.annotations.Nullable;
 import org.mariadb.jdbc.Driver;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 /**
@@ -30,13 +33,11 @@ public class SQLServer {
      * @param password The password associated with the SQL database.
      */
     public SQLServer(@NotNull String url, @NotNull String port, @NotNull Boolean encrypt, @NotNull String username, @NotNull String password) {
-
         this.url = url;
         this.port = port;
         this.encrypt = encrypt;
         this.username = username;
         this.password = password;
-
     }
 
     /**
@@ -45,10 +46,8 @@ public class SQLServer {
      */
     @NotNull
     private String getConvertedURL() {
-
         String convertedURL = "jdbc:mysql://address=(host=%s)(port=%s)(encrypt=%s)";
         return String.format(convertedURL, url, port, encrypt);
-
     }
 
     /**
@@ -57,7 +56,6 @@ public class SQLServer {
      */
     @NotNull
     public Boolean startConnection() {
-
         Properties properties = new Properties(2);
         properties.setProperty("user", username);
         properties.setProperty("password", password);
@@ -72,7 +70,7 @@ public class SQLServer {
 
     /**
      * Tests the SQL {@link Connection}.
-     * @return Whether or not the SQL {@link Connection} was successful.
+     * @return Whether or not the SQL {@link Connection} can be established.
      */
     @NotNull
     public Boolean testConnection() {
@@ -95,6 +93,19 @@ public class SQLServer {
     @Nullable
     public Connection getConnection() {
         return connection;
+    }
+
+    /**
+     * Checks the SQL {@link Connection}.
+     * @return Whether or not the current sql {@link Connection} is open.
+     */
+    @NotNull
+    public Boolean checkConnection() {
+        try {
+            return !connection.isClosed();
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
 }

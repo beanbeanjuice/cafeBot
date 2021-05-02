@@ -17,7 +17,7 @@ task buildWithDependencies(type: Jar) {
 
 group 'com.beanbeanjuice'
 mainClassName = 'com.beanbeanjuice.main.BeanBot'
-version '1.0.7'
+version '1.0.8'
 
 repositories {
 
@@ -63,7 +63,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
 
     // Logback
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
 
     // SQL Connection.
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.2'
