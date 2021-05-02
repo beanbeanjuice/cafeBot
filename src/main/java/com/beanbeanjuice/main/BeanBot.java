@@ -107,6 +107,7 @@ public class BeanBot {
         logManager.log(BeanBot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
         jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
+        jdaBuilder.setActivity(Activity.playing("The barista is starting up..."));
 
         jdaBuilder.enableIntents(
                 GatewayIntent.GUILD_PRESENCES,
@@ -190,10 +191,10 @@ public class BeanBot {
             @Override
             public void run() {
                 connectToSpotifyAPI();
-                logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection");
+                logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection", true, false);
 
                 try {
-                    logManager.log(BeanBot.class, LogLevel.INFO, "Refreshing MySQL Connection...");
+                    logManager.log(BeanBot.class, LogLevel.INFO, "Refreshing MySQL Connection...", true, false);
                     sqlServer.getConnection().close(); // Closes the SQL Connection
                     sqlServer.startConnection(); // Reopens the SQL Connection
 
