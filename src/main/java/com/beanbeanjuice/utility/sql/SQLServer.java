@@ -70,7 +70,7 @@ public class SQLServer {
 
     /**
      * Tests the SQL {@link Connection}.
-     * @return Whether or not the SQL {@link Connection} was successful.
+     * @return Whether or not the SQL {@link Connection} can be established.
      */
     @NotNull
     public Boolean testConnection() {
@@ -97,7 +97,7 @@ public class SQLServer {
 
     /**
      * Checks the SQL {@link Connection}.
-     * @return Whether or not the sqlConnection is opened.
+     * @return Whether or not the current sql {@link Connection} is open.
      */
     @NotNull
     public Boolean checkConnection() {
