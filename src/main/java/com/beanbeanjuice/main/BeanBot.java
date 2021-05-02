@@ -107,6 +107,7 @@ public class BeanBot {
         logManager.log(BeanBot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
         jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
+        jdaBuilder.setActivity(Activity.playing("The barista is starting up..."));
 
         jdaBuilder.enableIntents(
                 GatewayIntent.GUILD_PRESENCES,
