@@ -49,6 +49,7 @@ import java.util.TimerTask;
 public class BeanBot {
 
     // General Bot Info
+    private static final String BOT_VERSION = "v1.0.8";
     private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.NeaUaBDNzZro3kHsdzTljAoznls";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
@@ -106,7 +107,6 @@ public class BeanBot {
         logManager.log(BeanBot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
         jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
-        jdaBuilder.setActivity(Activity.playing("The Barista v1.0.8 - Default Command: !!help"));
 
         jdaBuilder.enableIntents(
                 GatewayIntent.GUILD_PRESENCES,
@@ -175,6 +175,8 @@ public class BeanBot {
         guildHandler = new GuildHandler();
 
         generalHelper = new GeneralHelper();
+
+        jda.getPresence().setActivity(Activity.playing("!! | beanBot " + BOT_VERSION + " - Currently in " + jda.getGuilds().size() + " servers!"));
     }
 
     /**
@@ -300,6 +302,14 @@ public class BeanBot {
     @Nullable
     public static CommandManager getCommandManager() {
         return commandManager;
+    }
+
+    /**
+     * @return The current Bot Version as a {@link String}.
+     */
+    @NotNull
+    public static String getBotVersion() {
+        return BOT_VERSION;
     }
 
 }
