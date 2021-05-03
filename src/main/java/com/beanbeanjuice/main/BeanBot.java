@@ -49,8 +49,8 @@ import java.util.TimerTask;
 public class BeanBot {
 
     // General Bot Info
-    private static final String BOT_VERSION = "v1.0.8";
-    private static final String BOT_TOKEN = "Nzg3MTYyNjE5NTA0NDkyNTU0.X9Q8UQ.m5dSjJtpIiIXSg_d7yaz5SXb-rs";
+    private static final String BOT_VERSION = "v1.0.9";
+    private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.NeaUaBDNzZro3kHsdzTljAoznls";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
 
@@ -82,9 +82,9 @@ public class BeanBot {
     // SQL Stuff
     private static SQLServer sqlServer;
     private static final String SQL_URL = "beanbeanjuice.com";
-    private static final String SQL_PORT = "4000";
+    private static final String SQL_PORT = "4001";
     private static final String SQL_USERNAME = "root";
-    private static final String SQL_PASSWORD = "gHDf]Tf~8T^VuZisn%6ktgukr*ci~!";
+    private static final String SQL_PASSWORD = "XEuE@*mHB-P4huC^RgcfXLTJXA8Hq.";
     private static final boolean SQL_ENCRYPT = true;
 
     // Logging
@@ -107,6 +107,7 @@ public class BeanBot {
         logManager.log(BeanBot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
         jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
+        jdaBuilder.setActivity(Activity.playing("The barista is starting up..."));
 
         jdaBuilder.enableIntents(
                 GatewayIntent.GUILD_PRESENCES,
@@ -190,10 +191,10 @@ public class BeanBot {
             @Override
             public void run() {
                 connectToSpotifyAPI();
-                logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection");
+                logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection", true, false);
 
                 try {
-                    logManager.log(this.getClass(), LogLevel.INFO, "Refreshing MySQL Connection...");
+                    logManager.log(BeanBot.class, LogLevel.INFO, "Refreshing MySQL Connection...", true, false);
                     sqlServer.getConnection().close(); // Closes the SQL Connection
                     sqlServer.startConnection(); // Reopens the SQL Connection
 
@@ -202,9 +203,9 @@ public class BeanBot {
                         throw new SQLException("The connection is still closed.");
                     }
 
-                    logManager.log(this.getClass(), LogLevel.OKAY, "Successfully refreshed the MySQL Connection!", true, false);
+                    logManager.log(BeanBot.class, LogLevel.OKAY, "Successfully refreshed the MySQL Connection!", true, false);
                 } catch (SQLException e) {
-                    logManager.log(this.getClass(), LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage(), true, false);
+                    logManager.log(BeanBot.class, LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage(), true, false);
 
                     sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
                     sqlServer.startConnection();
