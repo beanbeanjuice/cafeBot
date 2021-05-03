@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.twitch;
 
 import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.philippheuer.events4j.simple.domain.EventSubscriber;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
@@ -38,6 +39,9 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
     @EventSubscriber
     public void printChannelLive(@NotNull ChannelGoLiveEvent event) {
         System.out.println(event.getChannel().getName() + " is now online at https://www.twitch.tv/" + event.getChannel().getName());
+
+        // TODO: Remove This Later
+        BeanBot.getLogManager().log(this.getClass(), LogLevel.INFO, (event.getChannel().getName() + " is now online at https://www.twitch.tv/" + event.getChannel().getName()), true, false);
 
         TextChannel liveChannel = BeanBot.getGuildHandler().getGuild(guildID).getTextChannelById(liveChannelID);
 
