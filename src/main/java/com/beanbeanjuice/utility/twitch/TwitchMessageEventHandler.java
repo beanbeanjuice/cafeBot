@@ -33,7 +33,7 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
     }
 
     /**
-     * @param event Where to send the {@link ChannelGoLiveEvent}.
+     * @param event The {@link ChannelGoLiveEvent}.
      */
     @EventSubscriber
     public void printChannelLive(@NotNull ChannelGoLiveEvent event) {
