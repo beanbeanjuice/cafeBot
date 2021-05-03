@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -74,7 +75,13 @@ public class ClearChatCommand implements ICommand {
                     if (messageAmount > 1) {
                         msgs = history.retrievePast(messageAmount).complete();
                         msgs.remove(e);
-                        event.getChannel().deleteMessages(msgs).queue();
+                        try {
+                            event.getChannel().deleteMessages(msgs).queue();
+                        } catch (IllegalArgumentException e) {
+                            // Catches the Message Error if it is Older than 2 Weeks
+                            // TODO: Eventually find a way around this.
+                            event.getChannel().sendMessage(oldMessageError(String.valueOf(messageAmount))).queue();
+                        }
                     }
 
                     try {
@@ -90,6 +97,14 @@ public class ClearChatCommand implements ICommand {
             timer.schedule(timerTask, 0);
         });
 
+    }
+
+    private MessageEmbed oldMessageError(String amount) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor("Error Deleting Messages");
+        embedBuilder.setDescription("Unable to delete `" + amount + "` because the messages are older than 2 weeks.");
+        embedBuilder.setColor(Color.red);
+        return embedBuilder.build();
     }
 
     private MessageEmbed messageEmbed(String amount) {

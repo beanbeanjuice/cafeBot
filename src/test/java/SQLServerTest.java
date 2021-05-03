@@ -9,9 +9,9 @@ public class SQLServerTest {
 
     private static SQLServer sqlServer;
     private static final String SQL_URL = "beanbeanjuice.com";
-    private static final String SQL_PORT = "4000";
+    private static final String SQL_PORT = "4001";
     private static final String SQL_USERNAME = "root";
-    private static final String SQL_PASSWORD = "gHDf]Tf~8T^VuZisn%6ktgukr*ci~!";
+    private static final String SQL_PASSWORD = "XEuE@*mHB-P4huC^RgcfXLTJXA8Hq.";
     private static final boolean SQL_ENCRYPT = true;
 
     @Test

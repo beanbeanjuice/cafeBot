@@ -71,7 +71,7 @@ TEST
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+I use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/beanbeanjuice/beanBot/tags). 
 
 ## Authors
 
@@ -81,7 +81,7 @@ See also the list of [contributors](https://github.com/beanbeanjuice/beanBot/con
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GPL-3.0 License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
 
