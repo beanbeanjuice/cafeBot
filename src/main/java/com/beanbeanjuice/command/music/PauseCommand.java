@@ -7,13 +7,10 @@ import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
-import com.beanbeanjuice.utility.logger.LogLevel;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
