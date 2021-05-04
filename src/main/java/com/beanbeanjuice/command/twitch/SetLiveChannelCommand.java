@@ -28,7 +28,7 @@ public class SetLiveChannelCommand implements ICommand {
             return;
         }
 
-        if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).updateTwitchChannel(event.getChannel().getId())) {
+        if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).updateTwitchDiscordChannel(event.getChannel().getId())) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setColor(Color.red);
             embedBuilder.setDescription("Unable to set the current channel to the twitch live channel.");

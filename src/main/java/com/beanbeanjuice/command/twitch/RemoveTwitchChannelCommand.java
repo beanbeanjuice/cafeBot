@@ -32,7 +32,7 @@ public class RemoveTwitchChannelCommand implements ICommand {
         if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).removeTwitchChannel(args.get(0))) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setColor(Color.red);
-            embedBuilder.setDescription("Unable to remove the twitch channel.");
+            embedBuilder.setDescription("Unable to remove the twitch channel. The twitch channel may not be added.");
             embedBuilder.setAuthor("Error Removing Twitch Channel");
             event.getChannel().sendMessage(embedBuilder.build()).queue();
             return;
