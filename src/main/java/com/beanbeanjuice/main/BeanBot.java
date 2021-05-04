@@ -134,8 +134,10 @@ public class BeanBot {
 
                 new NowPlayingCommand(),
                 new PlayCommand(),
+                new PauseCommand(),
                 new QueueCommand(),
                 new RepeatCommand(),
+                new ShuffleCommand(),
                 new SkipCommand(),
                 new StopCommand(),
 
