@@ -137,6 +137,7 @@ public class BeanBot {
                 new PauseCommand(),
                 new QueueCommand(),
                 new RepeatCommand(),
+                new ShuffleCommand(),
                 new SkipCommand(),
                 new StopCommand(),
 
