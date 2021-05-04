@@ -219,6 +219,8 @@ public class CustomGuild {
     @NotNull
     public Boolean addTwitchChannel(String twitchChannel) {
 
+        twitchChannel = twitchChannel.toLowerCase();
+
         if (twitchChannels.contains(twitchChannel)) {
             return false;
         }
@@ -235,6 +237,8 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean removeTwitchChannel(String twitchChannel) {
+
+        twitchChannel = twitchChannel.toLowerCase();
 
         if (!twitchChannels.contains(twitchChannel)) {
             return false;
