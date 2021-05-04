@@ -32,7 +32,7 @@ public class AddTwitchChannelCommand implements ICommand {
         if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).addTwitchChannel(args.get(0))) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setColor(Color.red);
-            embedBuilder.setDescription("Unable to add the twitch channel.");
+            embedBuilder.setDescription("Unable to add the twitch channel. The channel may already be added.");
             embedBuilder.setAuthor("Error Adding Twitch Channel");
             event.getChannel().sendMessage(embedBuilder.build()).queue();
             return;

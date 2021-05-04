@@ -47,13 +47,35 @@ public class GuildHandler {
                 String prefix = resultSet.getString(2);
                 String moderatorRoleID = String.valueOf(resultSet.getLong(3));
                 String twitchChannelID = resultSet.getString(4);
-                String twitchChannels = resultSet.getString(5);
-                String mutedRoleID = String.valueOf(resultSet.getLong(6));
+                String mutedRoleID = String.valueOf(resultSet.getLong(5));
+                ArrayList<String> twitchChannels = getTwitchChannels(guildID);
 
                 guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID, twitchChannelID, twitchChannels, mutedRoleID));
             }
         } catch (SQLException e) {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
+        }
+    }
+
+    public ArrayList<String> getTwitchChannels(String guildID) {
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM beanbot.guild_twitch WHERE guild_id = ?;";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(guildID));
+            ResultSet resultSet = statement.executeQuery();
+
+            ArrayList<String> twitchNames = new ArrayList<>();
+
+            while (resultSet.next()) {
+                twitchNames.add(resultSet.getString(2));
+            }
+
+            return twitchNames;
+        } catch (SQLException e) {
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to retrieve twitch channels from database.", true, false);
+            return new ArrayList<>();
         }
     }
 
@@ -168,8 +190,8 @@ public class GuildHandler {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "INSERT INTO beanbot.guild_information " +
-                "(guild_id, prefix, moderator_role_id, twitch_channel_id, twitch_channels, muted_role_id) " +
-                "VALUES (?,?,?,?,?,?);";
+                "(guild_id, prefix, moderator_role_id, twitch_channel_id, muted_role_id) " +
+                "VALUES (?,?,?,?,?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -177,8 +199,7 @@ public class GuildHandler {
             statement.setString(2, BeanBot.getPrefix());
             statement.setLong(3, 0L);
             statement.setLong(4, 0L);
-            statement.setString(5, "");
-            statement.setLong(6, 0L);
+            statement.setLong(5, 0L);
 
             statement.execute();
             return true;
@@ -269,53 +290,92 @@ public class GuildHandler {
     }
 
     /**
-     * Updates the twitch channels for the specified {@link Guild}.
-     * @param guildID The ID of the {@link Guild} to be updated.
-     * @param twitchChannels The twitch channels to be updated.
-     * @return Whether or not the twitch channels were successfully updated.
+     * Adds a twitch channel for a specified {@link Guild}.
+     * @param guildID The ID of the specified {@link Guild}.
+     * @param twitchChannel Thw twitch channel to be added.
+     * @return Whether or not adding the twitch channel was successful.
      */
     @NotNull
-    public Boolean updateTwitchChannels(@NotNull String guildID, @NotNull String twitchChannels) {
+    public Boolean addTwitchChannel(@NotNull String guildID, @NotNull String twitchChannel) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.guild_information " +
-                "SET twitch_channels = (?) " +
-                "WHERE guild_id = (?);";
+        String arguments = "INSERT INTO beanbot.guild_twitch " +
+                "(guild_id, twitch_channel) " +
+                "VALUES (?,?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setString(1, twitchChannels);
-            statement.setLong(2, Long.parseLong(guildID));
+            statement.setLong(1, Long.parseLong(guildID));
+            statement.setString(2, twitchChannel);
 
             statement.execute();
             updateGuildCache();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to reach the SQL database.");
             return false;
         }
 
     }
 
     /**
-     * Updates the twitch channels for the specified {@link Guild}.
-     * @param guild The {@link Guild} specified.
-     * @param twitchChannels The twitch channels to be added.
-     * @return Whether or not the twitch channels was successfully updated.
+     * Adds a twitch channel for a specified {@link Guild}.
+     * @param guild The specified {@link Guild}.
+     * @param twitchChannel The twitch channel to be added.
+     * @return Whether or not adding the twitch channel was successful.
      */
     @NotNull
-    public Boolean updateTwitchChannels(@NotNull Guild guild, @NotNull String twitchChannels) {
-        return updateTwitchChannels(guild.getId(), twitchChannels);
+    public Boolean addTwitchChannel(@NotNull Guild guild, @NotNull String twitchChannel) {
+        return addTwitchChannel(guild.getId(), twitchChannel);
+    }
+
+    /**
+     * Remove a twitch channel for a specified {@link Guild}.
+     * @param guildID The ID of the specified {@link Guild}.
+     * @param twitchChannel The twitch channel to be removed.
+     * @return Whether or not removing the twitch channel was successful.
+     */
+    @NotNull
+    public Boolean removeTwitchChannel(@NotNull String guildID, @NotNull String twitchChannel) {
+
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "DELETE FROM beanbot.guild_twitch " +
+                "WHERE guild_id = (?) AND twitch_channel = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(guildID));
+            statement.setString(2, twitchChannel);
+
+            statement.execute();
+            updateGuildCache();
+            return true;
+        } catch (SQLException e) {
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to reach the SQL database.");
+            return false;
+        }
+
+    }
+
+    /**
+     * Removes a twitch channel for a specified {@link Guild}.
+     * @param guild The specified {@link Guild}.
+     * @param twitchChannel The twitch channel to be removed.
+     * @return Whether or not removing the twitch channel was successful.
+     */
+    @NotNull
+    public Boolean removeTwitchChannel(@NotNull Guild guild, @NotNull String twitchChannel) {
+        return removeTwitchChannel(guild.getId(), twitchChannel);
     }
 
     /**
      * Update the Twitch Notification Channel for the specified {@link Guild}.
      * @param guildID The ID for the {@link Guild} specified.
      * @param textChannelID The ID for the {@link TextChannel} specified.
-     * @return
+     * @return Whether or not updating was successful.
      */
     @NotNull
-    public Boolean updateTwitchChannel(@NotNull String guildID, @NotNull String textChannelID) {
+    public Boolean updateTwitchDiscordChannel(@NotNull String guildID, @NotNull String textChannelID) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information " +
@@ -344,8 +404,8 @@ public class GuildHandler {
      * @return Whether or not it was successfully updated.
      */
     @NotNull
-    public Boolean updateTwitchChannel(@NotNull Guild guild, @NotNull TextChannel textChannel) {
-        return updateTwitchChannel(guild.getId(), textChannel.getId());
+    public Boolean updateTwitchDiscordChannel(@NotNull Guild guild, @NotNull TextChannel textChannel) {
+        return updateTwitchDiscordChannel(guild.getId(), textChannel.getId());
     }
 
     /**
