@@ -39,12 +39,12 @@ public class CustomGuild {
      * @param mutedRoleID The ID of the muted {@link Role} for the {@link Guild}.
      */
     public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID, @NotNull String liveChannelID,
-                       @NotNull String twitchChannels, @NotNull String mutedRoleID) {
+                       @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
         this.liveChannelID = liveChannelID;
-        this.twitchChannels = new ArrayList<>(Arrays.asList(twitchChannels.split(",")));
+        this.twitchChannels = twitchChannels;
         this.mutedRoleID = mutedRoleID;
 
         if (BeanBot.getTwitchHandler().getTwitch(guildID) == null) {
@@ -218,15 +218,16 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean addTwitchChannel(String twitchChannel) {
-        twitchChannels.add(twitchChannel.toLowerCase());
-        StringBuilder stringBuilder = new StringBuilder();
 
-        for (String string : twitchChannels) {
-            stringBuilder.append(string).append(",");
+        twitchChannel = twitchChannel.toLowerCase();
+
+        if (twitchChannels.contains(twitchChannel)) {
+            return false;
         }
 
+        twitchChannels.add(twitchChannel.toLowerCase());
         BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().addTwitchChannelName(twitchChannel);
-        return BeanBot.getGuildHandler().updateTwitchChannels(guildID, stringBuilder.toString());
+        return BeanBot.getGuildHandler().addTwitchChannel(guildID, twitchChannel);
     }
 
     /**
@@ -236,15 +237,16 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean removeTwitchChannel(String twitchChannel) {
-        twitchChannels.remove(twitchChannel.toLowerCase());
-        StringBuilder stringBuilder = new StringBuilder();
 
-        for (String string : twitchChannels) {
-            stringBuilder.append(string).append(",");
+        twitchChannel = twitchChannel.toLowerCase();
+
+        if (!twitchChannels.contains(twitchChannel)) {
+            return false;
         }
 
+        twitchChannels.remove(twitchChannel.toLowerCase());
         BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().removeTwitchChannelName(twitchChannel);
-        return BeanBot.getGuildHandler().updateTwitchChannels(guildID, stringBuilder.toString());
+        return BeanBot.getGuildHandler().removeTwitchChannel(guildID, twitchChannel);
     }
 
     /**
@@ -253,8 +255,8 @@ public class CustomGuild {
      * @return Whether or not the channel was successfully updated.
      */
     @NotNull
-    public Boolean updateTwitchChannel(String newLiveChannelID) {
-        return BeanBot.getGuildHandler().updateTwitchChannel(guildID, newLiveChannelID);
+    public Boolean updateTwitchDiscordChannel(String newLiveChannelID) {
+        return BeanBot.getGuildHandler().updateTwitchDiscordChannel(guildID, newLiveChannelID);
     }
 
 }
