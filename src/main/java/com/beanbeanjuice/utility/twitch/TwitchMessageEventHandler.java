@@ -38,8 +38,6 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
      */
     @EventSubscriber
     public void printChannelLive(@NotNull ChannelGoLiveEvent event) {
-        System.out.println(event.getChannel().getName() + " is now online at https://www.twitch.tv/" + event.getChannel().getName());
-
         // TODO: Remove This Later. This executes.
         BeanBot.getLogManager().log(this.getClass(), LogLevel.INFO, (event.getChannel().getName() + " is now online at https://www.twitch.tv/" + event.getChannel().getName()), true, false);
 
@@ -48,7 +46,7 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
         try {
             liveChannel.sendMessage("@everyone, " + event.getChannel().getName() + ", is now live on " +
                     "https://www.twitch.tv/" + event.getChannel().getName()).embed(liveEmbed(event)).queue();
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException ignored) {} // If the live channel no longer exists, then just don't print the message.
     }
 
     /**
