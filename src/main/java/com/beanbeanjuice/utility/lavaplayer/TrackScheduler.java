@@ -4,7 +4,11 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -14,12 +18,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TrackScheduler extends AudioEventAdapter {
 
     public final AudioPlayer player;
-    public final BlockingQueue<AudioTrack> queue;
+    public BlockingQueue<AudioTrack> queue;
+    public BlockingQueue<AudioTrack> unshuffledQueue;
     public boolean repeating = false;
+    public boolean shuffle = false;
 
     public TrackScheduler(AudioPlayer player) {
         this.player = player;
         this.queue = new LinkedBlockingQueue<>();
+        this.unshuffledQueue = new LinkedBlockingQueue<>();
     }
 
     /**
@@ -43,7 +50,13 @@ public class TrackScheduler extends AudioEventAdapter {
      * Moves to the next {@link AudioTrack}.
      */
     public void nextTrack() {
-        this.player.startTrack(this.queue.poll(), false);
+
+        AudioTrack nextTrack = this.queue.poll();
+        this.player.startTrack(nextTrack, false);
+
+        if (shuffle) {
+            this.unshuffledQueue.poll();
+        }
     }
 
     /**
@@ -53,6 +66,40 @@ public class TrackScheduler extends AudioEventAdapter {
     public void queue(AudioTrack track) {
         if (!this.player.startTrack(track, true)) {
             this.queue.offer(track);
+        }
+    }
+
+    /**
+     * Sets whether or not the queue should be shuffled.
+     * @param shuffleState The state of shuffling.
+     */
+    public void setShuffle(@NotNull Boolean shuffleState) {
+        shuffle = shuffleState;
+
+        if (shuffle) {
+            unshuffledQueue.clear();
+
+            ArrayList<AudioTrack> tempUnshuffledQueue = new ArrayList<>(queue);
+
+            for (AudioTrack audioTrack : tempUnshuffledQueue) {
+                unshuffledQueue.offer(audioTrack);
+            }
+
+            ArrayList<AudioTrack> tempQueue = new ArrayList<>(queue);
+            Collections.shuffle(tempQueue);
+            queue.clear();
+
+            for (AudioTrack audioTrack : tempQueue) {
+                queue.offer(audioTrack);
+            }
+        } else {
+            queue.clear();
+
+            ArrayList<AudioTrack> tempQueue = new ArrayList<>(unshuffledQueue);
+
+            for (AudioTrack audioTrack : tempQueue) {
+                queue.offer(audioTrack);
+            }
         }
     }
 
