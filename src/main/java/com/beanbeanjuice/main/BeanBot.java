@@ -49,8 +49,8 @@ import java.util.TimerTask;
 public class BeanBot {
 
     // General Bot Info
-    private static final String BOT_VERSION = "v1.0.9";
-    private static final String BOT_TOKEN = "Nzg3MTYyNjE5NTA0NDkyNTU0.X9Q8UQ.m5dSjJtpIiIXSg_d7yaz5SXb-rs";
+    private static final String BOT_VERSION = "v1.1.0";
+    private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.NeaUaBDNzZro3kHsdzTljAoznls";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
 
@@ -134,8 +134,10 @@ public class BeanBot {
 
                 new NowPlayingCommand(),
                 new PlayCommand(),
+                new PauseCommand(),
                 new QueueCommand(),
                 new RepeatCommand(),
+                new ShuffleCommand(),
                 new SkipCommand(),
                 new StopCommand(),
 

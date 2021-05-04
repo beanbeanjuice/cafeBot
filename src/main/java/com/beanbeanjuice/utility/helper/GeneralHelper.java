@@ -162,4 +162,34 @@ public class GeneralHelper {
         return embedBuilder.build();
     }
 
+    /**
+     * Creates an error {@link MessageEmbed}.
+     * @param title The title for the {@link MessageEmbed}.
+     * @param description The description for the {@link MessageEmbed}.
+     * @return The created {@link MessageEmbed}.
+     */
+    @NotNull
+    public MessageEmbed errorEmbed(@NotNull String title, @NotNull String description) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor(title);
+        embedBuilder.setDescription(description);
+        embedBuilder.setColor(Color.red);
+        return embedBuilder.build();
+    }
+
+    /**
+     * Creates a success {@link MessageEmbed}.
+     * @param title The title for the {@link MessageEmbed}.
+     * @param description The description for the {@link MessageEmbed}.
+     * @return The creates {@link MessageEmbed}.
+     */
+    @NotNull
+    public MessageEmbed successEmbed(@NotNull String title, @NotNull String description) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor(title);
+        embedBuilder.setDescription(description);
+        embedBuilder.setColor(getRandomColor());
+        return embedBuilder.build();
+    }
+
 }
