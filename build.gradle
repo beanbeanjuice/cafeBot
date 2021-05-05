@@ -17,7 +17,7 @@ task buildWithDependencies(type: Jar) {
 
 group 'com.beanbeanjuice'
 mainClassName = 'com.beanbeanjuice.main.BeanBot'
-version 'v1.1.0'
+version 'v1.1.1'
 
 repositories {
 
@@ -26,10 +26,6 @@ repositories {
 
     // Repository used for the DiscordJDA.
     jcenter()
-
-    maven {
-        url 'https://jitpack.io'
-    }
 
     maven {
         url 'https://m2.dv8tion.net/releases'
