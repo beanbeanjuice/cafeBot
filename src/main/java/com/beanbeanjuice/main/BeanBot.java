@@ -50,6 +50,8 @@ import java.util.TimerTask;
 public class BeanBot {
 
     // File Information
+    // -- 'beta.json' -> Beta Bot Information
+    // -- 'release.json' -> Release Bot Information
     private static final String FILE_INFO = "beta.json";
 
     // General Bot Info
