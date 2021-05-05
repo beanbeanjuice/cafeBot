@@ -28,10 +28,6 @@ repositories {
     jcenter()
 
     maven {
-        url 'https://jitpack.io'
-    }
-
-    maven {
         url 'https://m2.dv8tion.net/releases'
     }
 
