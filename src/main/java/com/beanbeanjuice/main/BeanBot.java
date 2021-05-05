@@ -50,7 +50,7 @@ public class BeanBot {
 
     // General Bot Info
     private static final String BOT_VERSION = "v1.1.1";
-    private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.NeaUaBDNzZro3kHsdzTljAoznls";
+    private static final String BOT_TOKEN = "Nzg3MTYyNjE5NTA0NDkyNTU0.X9Q8UQ.m5dSjJtpIiIXSg_d7yaz5SXb-rs";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
 
@@ -82,9 +82,9 @@ public class BeanBot {
     // SQL Stuff
     private static SQLServer sqlServer;
     private static final String SQL_URL = "beanbeanjuice.com";
-    private static final String SQL_PORT = "4001";
+    private static final String SQL_PORT = "4000";
     private static final String SQL_USERNAME = "root";
-    private static final String SQL_PASSWORD = "XEuE@*mHB-P4huC^RgcfXLTJXA8Hq.";
+    private static final String SQL_PASSWORD = "gHDf]Tf~8T^VuZisn%6ktgukr*ci~!";
     private static final boolean SQL_ENCRYPT = true;
 
     // Logging
