@@ -19,12 +19,6 @@ Generic
 Music
 Twitch
 ```
-!!help
-!!meme
-!!joke
-!!ping
-!!set-log-channel
-```
 
 ### Prerequisites
 
