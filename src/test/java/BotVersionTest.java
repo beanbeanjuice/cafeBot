@@ -8,7 +8,7 @@ public class BotVersionTest {
     @Test
     @DisplayName("Bot Version Test")
     public void test() {
-        Assertions.assertEquals(BeanBot.getBotVersion(), "v1.1.1", "Bot Version Incorrect!");
+        Assertions.assertEquals(BeanBot.getBotVersion(), "v1.1.2", "Bot Version Incorrect!");
     }
 
 }

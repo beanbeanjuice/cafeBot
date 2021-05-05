@@ -49,7 +49,7 @@ import java.util.TimerTask;
 public class BeanBot {
 
     // General Bot Info
-    private static final String BOT_VERSION = "v1.1.1";
+    private static final String BOT_VERSION = "v1.1.2";
     private static final String BOT_TOKEN = "Nzk4OTc4NDE3OTk0NDk4MDYx.X_84ow.NeaUaBDNzZro3kHsdzTljAoznls";
     private static JDA jda;
     private static JDABuilder jdaBuilder;
