@@ -66,10 +66,13 @@ public class CustomGuild {
      */
     public void startAudioChecking() {
         timer = new Timer();
+        final int[] seconds = {0};
+        int secondsToLeave = 300;
         timerTask = new TimerTask() {
 
             @Override
             public void run() {
+                seconds[0] += 1;
                 Guild guild = BeanBot.getGuildHandler().getGuild(guildID);
                 Member selfMember = guild.getSelfMember();
                 GuildVoiceState selfVoiceState = selfMember.getVoiceState();
@@ -79,7 +82,7 @@ public class CustomGuild {
                 GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(BeanBot.getGuildHandler().getGuild(guildID));
 
                 // Checking if the bot is alone in the VC.
-                if (membersInVoiceChannel.isEmpty()) {
+                if (membersInVoiceChannel.isEmpty() && seconds[0] < secondsToLeave) {
                     EmbedBuilder embedBuilder = new EmbedBuilder();
                     embedBuilder.setAuthor("Music Bot");
                     embedBuilder.setDescription("Leaving the voice channel as it is empty...");
@@ -93,7 +96,7 @@ public class CustomGuild {
                 }
 
                 // Checks if the bot is currently playing something and if the queue is empty.
-                if (musicManager.scheduler.queue.isEmpty() && musicManager.audioPlayer.getPlayingTrack() == null) {
+                if (musicManager.scheduler.queue.isEmpty() && musicManager.audioPlayer.getPlayingTrack() == null && seconds[0] < secondsToLeave) {
                     guild.getAudioManager().closeAudioConnection();
                     EmbedBuilder embedBuilder = new EmbedBuilder();
                     embedBuilder.setAuthor("Music Bot");
@@ -104,9 +107,11 @@ public class CustomGuild {
                     timer.cancel();
                     return;
                 }
+
+                seconds[0] = 0;
             }
         };
-        timer.scheduleAtFixedRate(timerTask, 30000, 60000);
+        timer.scheduleAtFixedRate(timerTask, 1000, 1000);
     }
 
     /**
