@@ -46,7 +46,7 @@ public class GuildHandler {
                 String guildID = String.valueOf(resultSet.getLong(1));
                 String prefix = resultSet.getString(2);
                 String moderatorRoleID = String.valueOf(resultSet.getLong(3));
-                String twitchChannelID = resultSet.getString(4);
+                String twitchChannelID = String.valueOf(resultSet.getLong(4));
                 String mutedRoleID = String.valueOf(resultSet.getLong(5));
                 ArrayList<String> twitchChannels = getTwitchChannels(guildID);
 
