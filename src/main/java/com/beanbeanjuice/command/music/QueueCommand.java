@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -28,8 +29,6 @@ public class QueueCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
-        event.getMessage().delete().queue();
         BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
 
         GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
@@ -43,11 +42,10 @@ public class QueueCommand implements ICommand {
         int trackCount = Math.min(queue.size(), 20);
         final ArrayList<AudioTrack> trackList = new ArrayList<>(queue);
         event.getChannel().sendMessage(queueEmbed(trackList, trackCount)).queue();
-
-
     }
 
-    private MessageEmbed queueEmbed(ArrayList<AudioTrack> trackList, int trackCount) {
+    @NotNull
+    private MessageEmbed queueEmbed(@NotNull ArrayList<AudioTrack> trackList, @NotNull Integer trackCount) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Current Queue");
 
@@ -77,7 +75,8 @@ public class QueueCommand implements ICommand {
         return embedBuilder.build();
     }
 
-    private String formatTime(long timeInMillis) {
+    @NotNull
+    private String formatTime(@NotNull Long timeInMillis) {
         final long hours = timeInMillis / TimeUnit.HOURS.toMillis(1);
         final long minutes = timeInMillis / TimeUnit.MINUTES.toMillis(1);
         final long seconds = timeInMillis % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
@@ -85,6 +84,7 @@ public class QueueCommand implements ICommand {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
+    @NotNull
     private MessageEmbed emptyQueueEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
 

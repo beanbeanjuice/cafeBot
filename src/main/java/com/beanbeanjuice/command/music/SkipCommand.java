@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -27,8 +28,6 @@ public class SkipCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
-        event.getMessage().delete().queue();
         BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
 
         final Member self = ctx.getSelfMember();
@@ -58,12 +57,10 @@ public class SkipCommand implements ICommand {
 
             musicManager.scheduler.nextTrack();
             event.getChannel().sendMessage(successEmbed()).queue();
-
-
         }
-
     }
 
+    @NotNull
     private MessageEmbed botMustBeInVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription("I'm not currently in a voice channel.");
@@ -71,6 +68,7 @@ public class SkipCommand implements ICommand {
         return embedBuilder.build();
     }
 
+    @NotNull
     private MessageEmbed noTrackPlayingEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
@@ -80,6 +78,7 @@ public class SkipCommand implements ICommand {
         return embedBuilder.build();
     }
 
+    @NotNull
     private MessageEmbed mustBeInVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription("Sorry, you must be in a voice channel to use this command.");
@@ -87,6 +86,7 @@ public class SkipCommand implements ICommand {
         return embedBuilder.build();
     }
 
+    @NotNull
     private MessageEmbed successEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription("Successfully skipped the track.");
