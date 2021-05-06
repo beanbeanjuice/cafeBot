@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,9 +26,6 @@ public class JokeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
-        event.getMessage().delete().queue();
-
         WebUtils.ins.getJSONObject("https://apis.duncte123.me/joke").async((json) -> {
             if (!json.get("success").asBoolean()) {
                 event.getChannel().sendMessage(cannotGetJSONEmbed()).queue();
@@ -42,26 +40,23 @@ public class JokeCommand implements ICommand {
 
             event.getChannel().sendMessage(messageEmbed(title, url, body)).queue();
         });
-
     }
 
-    private MessageEmbed messageEmbed(String title, String url, String body) {
+    @NotNull
+    private MessageEmbed messageEmbed(@NotNull String title, @NotNull String url, @NotNull String body) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-
         embedBuilder.setAuthor(title, url);
         embedBuilder.setDescription(body);
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-
         return embedBuilder.build();
     }
 
+    @NotNull
     private MessageEmbed cannotGetJSONEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-
         embedBuilder.setAuthor("Error");
         embedBuilder.setColor(Color.red);
         embedBuilder.setDescription("Unable to get JSON.");
-
         return embedBuilder.build();
     }
 
