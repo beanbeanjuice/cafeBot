@@ -50,7 +50,6 @@ public class BanCommand implements ICommand {
         }
 
         event.getChannel().sendMessage(successfulBanEmbed(punishee, user, reason.toString())).queue();
-
     }
 
     @NotNull
