@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ public class RepeatCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
         String commandName = args.get(0).toLowerCase();
 
         if (!commandName.equals("song") && !commandName.equals("playlist")) {
@@ -38,7 +38,6 @@ public class RepeatCommand implements ICommand {
             return;
         }
 
-        event.getMessage().delete().queue();
         BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
 
         final Member self = ctx.getSelfMember();
@@ -90,11 +89,10 @@ public class RepeatCommand implements ICommand {
                     event.getChannel().sendMessage(successEmbed("Playlist repeating has now been turned off.")).queue();
                 }
             }
-
-
         }
     }
 
+    @NotNull
     private MessageEmbed botMustBeInVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription("I'm not currently in a voice channel.");
@@ -102,6 +100,7 @@ public class RepeatCommand implements ICommand {
         return embedBuilder.build();
     }
 
+    @NotNull
     private MessageEmbed mustBeInVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription("Sorry, you must be in a voice channel to use this command.");
@@ -109,7 +108,8 @@ public class RepeatCommand implements ICommand {
         return embedBuilder.build();
     }
 
-    private MessageEmbed successEmbed(String message) {
+    @NotNull
+    private MessageEmbed successEmbed(@NotNull String message) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription(message);
         embedBuilder.setColor(Color.green);

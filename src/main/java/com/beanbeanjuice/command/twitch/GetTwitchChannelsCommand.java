@@ -20,9 +20,6 @@ public class GetTwitchChannelsCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
-        event.getMessage().delete().queue();
-
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
         embedBuilder.setAuthor("List of Current Twitch Channels");
@@ -41,7 +38,6 @@ public class GetTwitchChannelsCommand implements ICommand {
         stringBuilder.append("`");
         embedBuilder.setDescription(stringBuilder.toString());
         event.getChannel().sendMessage(embedBuilder.build()).queue();
-
     }
 
     @Override

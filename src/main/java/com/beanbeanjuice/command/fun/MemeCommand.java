@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,9 +26,6 @@ public class MemeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
-        event.getMessage().delete().queue();
-
         WebUtils.ins.getJSONObject("https://apis.duncte123.me/meme").async((json) -> {
             if (!json.get("success").asBoolean()) {
                 event.getChannel().sendMessage(cannotGetJSONEmbed()).queue();
@@ -42,25 +40,22 @@ public class MemeCommand implements ICommand {
 
             event.getChannel().sendMessage(messageEmbed(title, url, image)).queue();
         });
-
     }
 
+    @NotNull
     private MessageEmbed cannotGetJSONEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-
         embedBuilder.setDescription("Unable to get JSON.");
         embedBuilder.setColor(Color.red);
-
         return embedBuilder.build();
     }
 
-    private MessageEmbed messageEmbed(String title, String url, String image) {
+    @NotNull
+    private MessageEmbed messageEmbed(@NotNull String title, @NotNull String url, @NotNull String image) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-
         embedBuilder.setAuthor(title, url);
         embedBuilder.setImage(image);
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-
         return embedBuilder.build();
     }
 

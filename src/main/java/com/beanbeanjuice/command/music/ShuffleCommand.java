@@ -23,9 +23,6 @@ public class ShuffleCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
-        event.getMessage().delete().queue();
-
         BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
 
         Member self = ctx.getSelfMember();
@@ -70,7 +67,6 @@ public class ShuffleCommand implements ICommand {
                     "The current queue has been unshuffled!"
             )).queue();
         }
-
     }
 
     @Override
