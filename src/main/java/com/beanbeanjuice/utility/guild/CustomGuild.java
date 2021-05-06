@@ -3,6 +3,7 @@ package com.beanbeanjuice.utility.guild;
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.twitch.Twitch;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -72,6 +73,8 @@ public class CustomGuild {
 
             @Override
             public void run() {
+                boolean voicePassed = false;
+                boolean queuePassed = false;
                 seconds[0] += 1;
                 Guild guild = BeanBot.getGuildHandler().getGuild(guildID);
                 Member selfMember = guild.getSelfMember();
@@ -82,7 +85,7 @@ public class CustomGuild {
                 GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(BeanBot.getGuildHandler().getGuild(guildID));
 
                 // Checking if the bot is alone in the VC.
-                if (membersInVoiceChannel.isEmpty() && seconds[0] < secondsToLeave) {
+                if (membersInVoiceChannel.isEmpty() && seconds[0] >= secondsToLeave) {
                     EmbedBuilder embedBuilder = new EmbedBuilder();
                     embedBuilder.setAuthor("Music Bot");
                     embedBuilder.setDescription("Leaving the voice channel as it is empty...");
@@ -95,8 +98,11 @@ public class CustomGuild {
                     return;
                 }
 
+                // This means that they are in a Voice Channel.
+                voicePassed = !membersInVoiceChannel.isEmpty();
+
                 // Checks if the bot is currently playing something and if the queue is empty.
-                if (musicManager.scheduler.queue.isEmpty() && musicManager.audioPlayer.getPlayingTrack() == null && seconds[0] < secondsToLeave) {
+                if (musicManager.scheduler.queue.isEmpty() && musicManager.audioPlayer.getPlayingTrack() == null && seconds[0] >= secondsToLeave) {
                     guild.getAudioManager().closeAudioConnection();
                     EmbedBuilder embedBuilder = new EmbedBuilder();
                     embedBuilder.setAuthor("Music Bot");
@@ -108,7 +114,14 @@ public class CustomGuild {
                     return;
                 }
 
-                seconds[0] = 0;
+                // This means that there are songs in the queue and a song is currently playing.
+                if (!musicManager.scheduler.queue.isEmpty() || musicManager.audioPlayer.getPlayingTrack() != null) {
+                    queuePassed = true;
+                }
+
+                if (voicePassed && queuePassed) {
+                    seconds[0] = 0;
+                }
             }
         };
         timer.scheduleAtFixedRate(timerTask, 1000, 1000);
