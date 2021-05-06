@@ -7,9 +7,11 @@ import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,40 +25,43 @@ public class SetModeratorRoleCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
         if (!BeanBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
-
-        event.getMessage().delete().queue();
 
         String argument = args.get(0).replace("<@&", "").replace(">", "");
 
         Role role = event.getGuild().getRoleById(argument);
 
         if (role == null) {
-
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setColor(Color.red);
-            embedBuilder.setAuthor("Unknown Role");
-            embedBuilder.setDescription("`" + argument + "` is not a role.");
-
-            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            event.getChannel().sendMessage(unknownRoleEmbed(argument)).queue();
             return;
-
         }
 
         if (!BeanBot.getGuildHandler().updateGuildModeratorRole(event.getGuild(), role)) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError());
+            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
+        event.getChannel().sendMessage(successfulRoleChangeEmbed(role)).queue();
+    }
+
+    @NotNull
+    private MessageEmbed successfulRoleChangeEmbed(@NotNull Role role) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setColor(Color.green);
+        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
         embedBuilder.setAuthor("Successfully changed the Moderator Role");
         embedBuilder.setDescription("Successfully changed the moderator role to " + role.getAsMention());
-        event.getChannel().sendMessage(embedBuilder.build()).queue();
+        return embedBuilder.build();
+    }
 
+    @NotNull
+    private MessageEmbed unknownRoleEmbed(@NotNull String roleName) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setColor(Color.red);
+        embedBuilder.setAuthor("Unknown Role");
+        embedBuilder.setDescription("`" + roleName + "` is not a role.");
+        return embedBuilder.build();
     }
 
     @Override
