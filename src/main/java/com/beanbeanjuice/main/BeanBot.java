@@ -52,7 +52,7 @@ public class BeanBot {
     // File Information
     // -- 'beta.json' -> Beta Bot Information
     // -- 'release.json' -> Release Bot Information
-    private static final String FILE_INFO = "beta.json";
+    private static final String FILE_INFO = "release.json";
 
     // General Bot Info
     private static final String BOT_VERSION = JSONHelper.getValue(FILE_INFO, "bot", "version").textValue();
