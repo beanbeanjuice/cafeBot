@@ -9,10 +9,14 @@ import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -28,94 +32,56 @@ public class HelpCommand implements ICommand {
         event.getMessage().delete().queue();
 
         TextChannel channel = event.getChannel();
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        StringBuilder builder = new StringBuilder();
         String prefix = ctx.getPrefix();
 
+        // Checking if the arguments is empty.
         if (args.isEmpty()) {
-            int count = 1;
-
-            for (CategoryType categoryType : CategoryType.values()) {
-                builder.append(count++).append(".").append("`").append(categoryType.toString());
-
-                builder.append("`\n");
-            }
-
-            embedBuilder.addField("**Command Categories**", builder.toString(), true);
-            embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-            channel.sendMessage(embedBuilder.build()).queue();
-
+            channel.sendMessage(categoryEmbed()).queue(); // Sends the list of categories.
             return;
         }
 
+        // Checking if the argument is equal to the "play" command.
         if (args.get(0).equalsIgnoreCase("play")) {
-            embedBuilder.setAuthor("PLAY Command");
-            embedBuilder.addField("Usage", prefix + "play", false);
-
-            ICommand command = BeanBot.getCommandManager().getCommand("play");
-
-            builder = new StringBuilder();
-            builder.append("`");
-            for (int i = 0; i < command.getAliases().size(); i++) {
-                builder.append(command.getAliases().get(i));
-                if (i != command.getAliases().size() - 1) {
-                    builder.append(", ");
-                }
-            }
-            builder.append("`");
-            embedBuilder.addField("Usage", "`1. <DESCRIPTION:Any text/link>:<TYPE:LINK/TEXT>:<OPTIONAL>`", false);
-            embedBuilder.addField("Command Aliases", builder.toString(), false);
-            embedBuilder.addField("Command Description", command.getDescription(), false);
-            embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            event.getChannel().sendMessage(playCommandEmbed(prefix)).queue(); // Sends a custom play command embed.
             return;
         }
 
         String search = args.get(0);
 
+        // Goes through each category. If the first argument is equal to the name, then print commands for that category.
         for (CategoryType categoryType : CategoryType.values()) {
-
             if (categoryType.toString().equalsIgnoreCase(search)) {
-
-                int count = 1;
-
-                for (ICommand command : BeanBot.getCommandManager().getCommands()) {
-
-                    if (command.getCategoryType().equals(categoryType)) {
-
-                        builder.append(count++).append(".").append("`").append(prefix).append(command.getName());
-
-                        builder.append("`\n");
-                    }
-                }
-
-                embedBuilder.addField("**Commands in " + categoryType.toString() + "**", builder.toString(), true);
-                embedBuilder.setThumbnail(categoryType.getLink());
-                embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-
-                channel.sendMessage(embedBuilder.build()).queue();
+                channel.sendMessage(searchCategoriesEmbed(prefix, categoryType)).queue();
                 return;
-
             }
-
         }
 
         ICommand command = BeanBot.getCommandManager().getCommand(search);
 
+        // Checks to see if any commands exist for that command.
         if (command == null) {
-            channel.sendMessage("Nothing found for " + search).queue();
+            channel.sendMessage(noCommandFoundEmbed(search)).queue();
             return;
         }
 
         // Logic to show command and optional parameters.
-        builder.append("`").append(prefix).append(command.getName());
+        channel.sendMessage(commandEmbed(prefix, command)).queue();
+
+    }
+
+    @NotNull
+    private MessageEmbed commandEmbed(@NotNull String prefix, @NotNull ICommand command) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("`").append(prefix).append(command.getName());
         StringBuilder paramBuilder = new StringBuilder();
         embedBuilder.setAuthor(command.getName().toUpperCase() + " Command");
         ArrayList<CommandUsage> usages = command.getUsage().getUsages();
         paramBuilder.append("`");
 
         for (int i = 0; i < usages.size(); i++) {
-            builder.append(" <").append("Parameter ").append(i + 1).append(">");
+            stringBuilder.append(" <").append("Parameter ").append(i + 1).append(">");
 
             CommandUsage usage = usages.get(i);
             paramBuilder.append(i+1).append(". ").append("<DESCRIPTION:").append(usage.getName()).append(">:")
@@ -127,33 +93,103 @@ public class HelpCommand implements ICommand {
                 paramBuilder.append("<OPTIONAL>\n");
             }
         }
-        builder.append("`");
+        stringBuilder.append("`");
         paramBuilder.append("`");
 
-        embedBuilder.addField("Usage", builder.toString(), false);
+        embedBuilder.addField("Usage", stringBuilder.toString(), false);
 
         if (!usages.isEmpty()) {
             embedBuilder.addField("Parameters", paramBuilder.toString(), false);
         }
 
         if (!command.getAliases().isEmpty()) {
-            builder = new StringBuilder();
-            builder.append("`");
+            stringBuilder = new StringBuilder();
+            stringBuilder.append("`");
             for (int i = 0; i < command.getAliases().size(); i++) {
-                builder.append(command.getAliases().get(i));
+                stringBuilder.append(command.getAliases().get(i));
                 if (i != command.getAliases().size() - 1) {
-                    builder.append(", ");
+                    stringBuilder.append(", ");
                 }
             }
-            builder.append("`");
-            embedBuilder.addField("Command Aliases", builder.toString(), false);
+            stringBuilder.append("`");
+            embedBuilder.addField("Command Aliases", stringBuilder.toString(), false);
         }
 
         embedBuilder.addField("Command Description", command.getDescription(), false);
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        return embedBuilder.build();
+    }
 
-        channel.sendMessage(embedBuilder.build()).queue();
+    @NotNull
+    private MessageEmbed searchCategoriesEmbed(@NotNull String prefix, @NotNull CategoryType categoryType) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
+        int count = 1;
 
+        for (ICommand command : BeanBot.getCommandManager().getCommands()) {
+
+            if (command.getCategoryType().equals(categoryType)) {
+
+                stringBuilder.append(count++).append(".").append("`").append(prefix).append(command.getName());
+
+                stringBuilder.append("`\n");
+            }
+        }
+
+        embedBuilder.addField("**Commands in " + categoryType.toString() + "**", stringBuilder.toString(), true);
+        embedBuilder.setThumbnail(categoryType.getLink());
+        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        return embedBuilder.build();
+    }
+
+    @NotNull
+    private MessageEmbed playCommandEmbed(@NotNull String prefix) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        embedBuilder.setAuthor("PLAY Command");
+        embedBuilder.addField("Usage", prefix + "play", false);
+
+        ICommand command = BeanBot.getCommandManager().getCommand("play");
+
+        stringBuilder.append("`");
+        for (int i = 0; i < command.getAliases().size(); i++) {
+            stringBuilder.append(command.getAliases().get(i));
+            if (i != command.getAliases().size() - 1) {
+                stringBuilder.append(", ");
+            }
+        }
+        stringBuilder.append("`");
+        embedBuilder.addField("Usage", "`1. <DESCRIPTION:Any text/link>:<TYPE:LINK/TEXT>:<OPTIONAL>`", false);
+        embedBuilder.addField("Command Aliases", stringBuilder.toString(), false);
+        embedBuilder.addField("Command Description", command.getDescription(), false);
+        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        return embedBuilder.build();
+    }
+
+    private MessageEmbed categoryEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
+        int count = 1;
+
+        for (CategoryType categoryType : CategoryType.values()) {
+            stringBuilder.append(count++).append(".").append("`").append(categoryType.toString());
+
+            stringBuilder.append("`\n");
+        }
+
+        embedBuilder.addField("**Command Categories**", stringBuilder.toString(), true);
+        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        return embedBuilder.build();
+    }
+
+    @NotNull
+    private MessageEmbed noCommandFoundEmbed(@NotNull String commandName) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor("No Command Found");
+        embedBuilder.setDescription("No command has been found for `" + commandName + "`.");
+        embedBuilder.setColor(Color.red);
+        return embedBuilder.build();
     }
 
     @Override
