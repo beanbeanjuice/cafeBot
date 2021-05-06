@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -31,7 +32,6 @@ public class ClearChatCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
         if (!BeanBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
             return;
         }
@@ -96,10 +96,10 @@ public class ClearChatCommand implements ICommand {
 
             timer.schedule(timerTask, 0);
         });
-
     }
 
-    private MessageEmbed oldMessageError(String amount) {
+    @NotNull
+    private MessageEmbed oldMessageError(@NotNull String amount) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Error Deleting Messages");
         embedBuilder.setDescription("Unable to delete `" + amount + "` because the messages are older than 2 weeks.");
@@ -107,7 +107,8 @@ public class ClearChatCommand implements ICommand {
         return embedBuilder.build();
     }
 
-    private MessageEmbed messageEmbed(String amount) {
+    @NotNull
+    private MessageEmbed messageEmbed(@NotNull String amount) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Deleting Messages");
         embedBuilder.setDescription("Deleting `" + amount + "` messages... this may take a while...");

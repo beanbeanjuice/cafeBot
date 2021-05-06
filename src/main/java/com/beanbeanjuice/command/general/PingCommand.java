@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -22,16 +23,14 @@ public class PingCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
-        event.getMessage().delete().queue();
-
         BeanBot.getJDA().getRestPing().queue(
                 (ping) -> event.getChannel()
                         .sendMessage(messageEmbed(ping, BeanBot.getJDA().getGatewayPing())).queue()
         );
     }
 
-    private MessageEmbed messageEmbed(Long botPing, Long gatewayPing) {
+    @NotNull
+    private MessageEmbed messageEmbed(@NotNull Long botPing, @NotNull Long gatewayPing) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(getName() + "!");
         embedBuilder.addField("Rest Ping", botPing.toString(), true);

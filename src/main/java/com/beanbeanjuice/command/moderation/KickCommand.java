@@ -9,9 +9,11 @@ import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,9 +27,6 @@ public class KickCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
-        event.getMessage().delete().queue();
-
         if (!BeanBot.getGeneralHelper().checkPermission(event.getMember(), event.getChannel(), Permission.KICK_MEMBERS)) {
             return;
         }
@@ -46,22 +45,30 @@ public class KickCommand implements ICommand {
         try {
             punishee.kick(reason.toString()).queue();
         } catch (HierarchyException e) {
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setColor(Color.red);
-            embedBuilder.setAuthor("Unable to Kick User");
-            embedBuilder.setDescription("The user you are trying to kick has a higher role than the bot.");
-            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            event.getChannel().sendMessage(hierarchyErrorEmbed()).queue();
             return;
         }
 
+        event.getChannel().sendMessage(successfulKickEmbed(punishee, user, reason.toString())).queue();
+    }
+
+    @NotNull
+    private MessageEmbed successfulKickEmbed(@NotNull Member punishee, @NotNull User user, @NotNull String reason) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
         embedBuilder.setAuthor("User Kicked");
-        embedBuilder.setDescription("`" + punishee.getEffectiveName() + "` has been kicked for `" + reason.toString() + "`.");
+        embedBuilder.setDescription("`" + punishee.getEffectiveName() + "` has been kicked for `" + reason + "`.");
         embedBuilder.addField("Kicked By:", user.getAsMention(), true);
+        return embedBuilder.build();
+    }
 
-        event.getChannel().sendMessage(embedBuilder.build()).queue();
-
+    @NotNull
+    private MessageEmbed hierarchyErrorEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setColor(Color.red);
+        embedBuilder.setAuthor("Unable to Kick User");
+        embedBuilder.setDescription("The user you are trying to kick has a higher role than the bot.");
+        return embedBuilder.build();
     }
 
     @Override
