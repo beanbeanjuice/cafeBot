@@ -15,6 +15,7 @@ import com.beanbeanjuice.command.twitch.SetLiveChannelCommand;
 import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
+import com.beanbeanjuice.utility.helper.JSONHelper;
 import com.beanbeanjuice.utility.listener.Listener;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
@@ -48,18 +49,23 @@ import java.util.TimerTask;
  */
 public class BeanBot {
 
+    // File Information
+    // -- 'beta.json' -> Beta Bot Information
+    // -- 'release.json' -> Release Bot Information
+    private static final String FILE_INFO = "beta.json";
+
     // General Bot Info
-    private static final String BOT_VERSION = "v1.1.1";
-    private static final String BOT_TOKEN = "Nzg3MTYyNjE5NTA0NDkyNTU0.X9Q8UQ.m5dSjJtpIiIXSg_d7yaz5SXb-rs";
+    private static final String BOT_VERSION = JSONHelper.getValue(FILE_INFO, "bot", "version").textValue();
+    private static final String BOT_TOKEN = JSONHelper.getValue(FILE_INFO, "bot", "token").textValue();
     private static JDA jda;
     private static JDABuilder jdaBuilder;
 
     // Logging Stuff
     private static Guild homeGuild;
-    private static final String HOME_GUILD_ID = "798830792938881024";
+    private static final String HOME_GUILD_ID = JSONHelper.getValue(FILE_INFO, "bot", "guild_id").textValue();
     private static TextChannel homeGuildLogChannel;
-    private static final String HOME_GUILD_LOG_CHANNEL_ID = "838259190853140511";
-    private static final String HOME_GUILD_WEBHOOK_URL = "https://discord.com/api/webhooks/838258983365640252/9wxcQljLRfKh8tBbPtYjsinQCNxT5xvEBqd7afBVtw-Gxy5C-lKsp1tni0pbauVanq4v";
+    private static final String HOME_GUILD_LOG_CHANNEL_ID = JSONHelper.getValue(FILE_INFO, "bot", "guild_log_channel_id").textValue();;
+    private static final String HOME_GUILD_WEBHOOK_URL = JSONHelper.getValue(FILE_INFO, "bot", "guild_webhook_url").textValue();;
 
     private static final String BOT_PREFIX = "!!";
 
@@ -72,20 +78,20 @@ public class BeanBot {
     // Spotify Stuff
     private static SpotifyApi spotifyApi;
     private static ClientCredentialsRequest clientCredentialsRequest;
-    private static final String SPOTIFY_API_CLIENT_ID = "b955ba0137d141a1807107fd0a256257";
-    private static final String SPOTIFY_API_CLIENT_SECRET = "ecc6abba4a4548b3bb53c37b9fcffb76";
+    private static final String SPOTIFY_API_CLIENT_ID = JSONHelper.getValue(FILE_INFO, "spotify", "id").textValue();
+    private static final String SPOTIFY_API_CLIENT_SECRET = JSONHelper.getValue(FILE_INFO, "spotify", "secret").textValue();
 
     // Twitch Stuff
-    private static final String TWITCH_ACCESS_TOKEN = "r2iu2i9jt5pwz3yt7spvilzd8fnxsd";
+    private static final String TWITCH_ACCESS_TOKEN = JSONHelper.getValue(FILE_INFO, "twitch", "access_token").textValue();
     private static TwitchHandler twitchHandler;
 
     // SQL Stuff
     private static SQLServer sqlServer;
-    private static final String SQL_URL = "beanbeanjuice.com";
-    private static final String SQL_PORT = "4000";
-    private static final String SQL_USERNAME = "root";
-    private static final String SQL_PASSWORD = "gHDf]Tf~8T^VuZisn%6ktgukr*ci~!";
-    private static final boolean SQL_ENCRYPT = true;
+    private static final String SQL_URL = JSONHelper.getValue(FILE_INFO, "mysql", "url").textValue();
+    private static final String SQL_PORT = JSONHelper.getValue(FILE_INFO, "mysql", "port").textValue();
+    private static final String SQL_USERNAME = JSONHelper.getValue(FILE_INFO, "mysql", "username").textValue();
+    private static final String SQL_PASSWORD = JSONHelper.getValue(FILE_INFO, "mysql", "password").textValue();
+    private static final boolean SQL_ENCRYPT = JSONHelper.getValue(FILE_INFO, "mysql", "encrypt").booleanValue();
 
     // Logging
     private static LogManager logManager;
