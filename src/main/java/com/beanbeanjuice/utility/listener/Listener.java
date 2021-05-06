@@ -1,7 +1,6 @@
 package com.beanbeanjuice.utility.listener;
 
 import com.beanbeanjuice.main.BeanBot;
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;
