@@ -48,7 +48,7 @@ public class MuteCommand implements ICommand {
             return;
         }
 
-        event.getChannel().sendMessage(successfulMuteEmbed()).queue();
+        event.getChannel().sendMessage(successfulMuteEmbed(punishee)).queue();
     }
 
     @NotNull
@@ -61,7 +61,7 @@ public class MuteCommand implements ICommand {
     }
 
     @NotNull
-    public MessageEmbed successfulMuteEmbed() {
+    public MessageEmbed successfulMuteEmbed(@NotNull Member punishee) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Muted User");
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
