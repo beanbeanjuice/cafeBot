@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -29,8 +30,6 @@ public class NowPlayingCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
-        event.getMessage().delete().queue();
         BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
 
         final Member self = ctx.getSelfMember();
@@ -56,29 +55,27 @@ public class NowPlayingCommand implements ICommand {
             event.getChannel().sendMessage(nowPlaying(info.title, info.author, info.uri)).queue();
 
         }
-
     }
 
-    private MessageEmbed nowPlaying(String title, String author, String url) {
+    @NotNull
+    private MessageEmbed nowPlaying(@NotNull String title, @NotNull String author, @NotNull String url) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-
         embedBuilder.setAuthor("Now Playing", url);
         String message = String.format("`%s` by `%s`", title, author);
         embedBuilder.setDescription(message);
         embedBuilder.setColor(Color.cyan);
-
         return embedBuilder.build();
     }
 
+    @NotNull
     private MessageEmbed noTrackPlaying() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-
         embedBuilder.setDescription("There is no track currently playing.");
         embedBuilder.setColor(Color.orange);
-
         return embedBuilder.build();
     }
 
+    @NotNull
     private MessageEmbed botMustBeInVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription("I'm not currently playing music.");

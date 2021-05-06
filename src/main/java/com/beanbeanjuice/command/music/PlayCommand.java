@@ -18,6 +18,8 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.apache.hc.core5.http.ParseException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.IOException;
@@ -37,8 +39,6 @@ public class PlayCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
-        event.getMessage().delete().queue();
         BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
 
         final TextChannel channel = event.getChannel();
@@ -133,7 +133,8 @@ public class PlayCommand implements ICommand {
         PlayerManager.getInstance().loadAndPlay(channel, link, false);
     }
 
-    private String getLinkFromSpotifyTrack(Track track) {
+    @NotNull
+    private String getLinkFromSpotifyTrack(@NotNull Track track) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(track.getName()).append(" by ")
                 .append(track.getArtists()[0].getName());
@@ -142,10 +143,10 @@ public class PlayCommand implements ICommand {
             stringBuilder.append(" and ")
                     .append(track.getArtists()[1].getName());
         }
-
         return stringBuilder.toString();
     }
 
+    @NotNull
     private MessageEmbed userMustBeInVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription("Sorry, you must be in a voice channel to use this command.");
@@ -153,6 +154,7 @@ public class PlayCommand implements ICommand {
         return embedBuilder.build();
     }
 
+    @NotNull
     private MessageEmbed emptySpotifyPlaylist() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Empty Spotify Playlist");
@@ -161,6 +163,7 @@ public class PlayCommand implements ICommand {
         return embedBuilder.build();
     }
 
+    @NotNull
     private MessageEmbed loadedPlaylist() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Added Playlist to Queue");
@@ -170,6 +173,7 @@ public class PlayCommand implements ICommand {
         return embedBuilder.build();
     }
 
+    @Nullable
     private String getTrack_Sync(GetTrackRequest getTrackRequest) {
         try {
             final Track track = getTrackRequest.execute();
@@ -180,6 +184,7 @@ public class PlayCommand implements ICommand {
         }
     }
 
+    @Nullable
     private PlaylistTrack[] getPlaylist_Sync(GetPlaylistRequest getPlaylistRequest) {
         try {
             final Playlist playlist = getPlaylistRequest.execute();
@@ -192,6 +197,7 @@ public class PlayCommand implements ICommand {
         }
     }
 
+    @NotNull
     private MessageEmbed userMustBeInSameVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription("Sorry, you must be in a voice channel to use this command.");
@@ -199,6 +205,7 @@ public class PlayCommand implements ICommand {
         return embedBuilder.build();
     }
 
+    @NotNull
     private MessageEmbed botMustBeInVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription("I'm not currently in a voice channel.");
@@ -206,6 +213,7 @@ public class PlayCommand implements ICommand {
         return embedBuilder.build();
     }
 
+    @NotNull
     private MessageEmbed emptyArgsEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
@@ -214,7 +222,8 @@ public class PlayCommand implements ICommand {
         return embedBuilder.build();
     }
 
-    private boolean isURL(String url) {
+    @NotNull
+    private Boolean isURL(String url) {
         try {
             new URI(url);
             return true;
