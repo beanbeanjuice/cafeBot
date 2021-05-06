@@ -50,12 +50,10 @@ public class Time {
         } else if (calendar.get(Calendar.MONTH) <= 9) {
             Q = "3";
             QQQQ = "3rd quarter";
-        } else if (calendar.get(Calendar.MONTH) <= 12) {
+        } else {
+            calendar.get(Calendar.MONTH);
             Q = "4";
             QQQQ = "4th quarter";
-        } else {
-            Q = "-1";
-            QQQQ = "UNKNOWN";
         }
 
         fields.put("Q", Q);
