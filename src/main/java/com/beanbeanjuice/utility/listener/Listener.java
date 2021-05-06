@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.listener;
 
 import com.beanbeanjuice.main.BeanBot;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -28,6 +29,7 @@ public class Listener extends ListenerAdapter {
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
         BeanBot.getGuildHandler().removeGuild(event.getGuild());
         BeanBot.getGuildHandler().checkGuilds();
+        updateGuildPresence();
     }
 
     @Override
@@ -41,6 +43,14 @@ public class Listener extends ListenerAdapter {
 
         BeanBot.getGuildHandler().addGuild(event.getGuild());
         BeanBot.getGuildHandler().checkGuilds();
+        updateGuildPresence();
+    }
+
+    private void updateGuildPresence() {
+        BeanBot.getJDA().getPresence().setActivity(
+                Activity.playing(
+                        "!! | beanBot " + BeanBot.getBotVersion() + " - Currently in " +
+                                BeanBot.getJDA().getGuilds().size() + " servers!"));
     }
 
     @Override
