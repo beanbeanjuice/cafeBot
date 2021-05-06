@@ -1,6 +1,7 @@
 # beanBot for Discord
 
 A bot that has an expanding list of commands for your use on discord.
+**WARNING** This is *very much* still in beta.
 
 ## Getting Started
 
@@ -24,7 +25,7 @@ Twitch
 
 Well... for one. You need a discord server, and the bot needs administrative access. Other than that, that's pretty much it!
 
-### Installing
+## Installation
 
 Head over to my [website](https://www.beanbeanjuice.com/beanBot.html) and follow the steps from there!
 
