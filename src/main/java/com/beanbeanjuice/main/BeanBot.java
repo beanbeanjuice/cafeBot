@@ -186,6 +186,13 @@ public class BeanBot {
 
         generalHelper = new GeneralHelper();
 
+        updateGuildPresence();
+    }
+
+    /**
+     * Updates the presence for the {@link JDA}.
+     */
+    public static void updateGuildPresence() {
         jda.getPresence().setActivity(Activity.playing("!! | beanBot " + BOT_VERSION + " - Currently in " + jda.getGuilds().size() + " servers!"));
     }
 

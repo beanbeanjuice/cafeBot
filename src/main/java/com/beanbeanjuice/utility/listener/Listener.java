@@ -29,7 +29,7 @@ public class Listener extends ListenerAdapter {
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
         BeanBot.getGuildHandler().removeGuild(event.getGuild());
         BeanBot.getGuildHandler().checkGuilds();
-        updateGuildPresence();
+        BeanBot.updateGuildPresence(); // Updates the amount of servers in the status.
     }
 
     @Override
@@ -43,14 +43,7 @@ public class Listener extends ListenerAdapter {
 
         BeanBot.getGuildHandler().addGuild(event.getGuild());
         BeanBot.getGuildHandler().checkGuilds();
-        updateGuildPresence();
-    }
-
-    private void updateGuildPresence() {
-        BeanBot.getJDA().getPresence().setActivity(
-                Activity.playing(
-                        "!! | beanBot " + BeanBot.getBotVersion() + " - Currently in " +
-                                BeanBot.getJDA().getGuilds().size() + " servers!"));
+        BeanBot.updateGuildPresence(); // Updates the amount of servers in the status.
     }
 
     @Override
