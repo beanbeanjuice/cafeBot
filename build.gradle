@@ -35,14 +35,14 @@ repositories {
 
 dependencies {
 
-    // JUnit, for unit testing.
+    // JUnit, for Unit Testing
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine'
 
-    // Jetbrains Annotations.
+    // Jetbrains Annotations
     implementation group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
 
-    // Discord JDA, for Discord things.
+    // Discord JDA, for Discord things
     implementation group: 'net.dv8tion', name: 'JDA', version: '4.2.1_262'
 
     // Twitch Connections
@@ -65,8 +65,13 @@ dependencies {
     // Logback
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 
-    // SQL Connection.
+    // SQL Connection
     implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.2'
+
+    // Jackson for JSON
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.3'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.3'
+
 }
 
 test {
