@@ -52,7 +52,7 @@ public class UnMuteCommand implements ICommand {
     }
 
     @NotNull
-    public MessageEmbed successfulUnmuteEmbed(@NotNull Member punishee) {
+    private MessageEmbed successfulUnmuteEmbed(@NotNull Member punishee) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Unmuted User");
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
@@ -61,7 +61,7 @@ public class UnMuteCommand implements ICommand {
     }
 
     @NotNull
-    public MessageEmbed noMutedRoleEmbed() {
+    private MessageEmbed noMutedRoleEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.red);
         embedBuilder.setAuthor("Error Un-Muting User");
@@ -70,7 +70,7 @@ public class UnMuteCommand implements ICommand {
     }
 
     @NotNull
-    public MessageEmbed hierarchyErrorEmbed() {
+    private MessageEmbed hierarchyErrorEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Hierarchy Error");
         embedBuilder.setColor(Color.red);
