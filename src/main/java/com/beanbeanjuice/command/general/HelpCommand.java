@@ -2,14 +2,12 @@ package com.beanbeanjuice.command.general;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.command.CommandContext;
-import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.CommandUsage;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -28,9 +26,6 @@ public class HelpCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
-        event.getMessage().delete().queue();
-
         TextChannel channel = event.getChannel();
         String prefix = ctx.getPrefix();
 
@@ -66,7 +61,6 @@ public class HelpCommand implements ICommand {
 
         // Logic to show command and optional parameters.
         channel.sendMessage(commandEmbed(prefix, command)).queue();
-
     }
 
     @NotNull
