@@ -38,9 +38,6 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
      */
     @EventSubscriber
     public void printChannelLive(@NotNull ChannelGoLiveEvent event) {
-        // TODO: Remove This Later. This executes.
-        BeanBot.getLogManager().log(this.getClass(), LogLevel.INFO, (event.getChannel().getName() + " is now online at https://www.twitch.tv/" + event.getChannel().getName()), true, false);
-
         TextChannel liveChannel = BeanBot.getGuildHandler().getGuild(guildID).getTextChannelById(liveChannelID);
 
         try {
@@ -63,7 +60,6 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
         embedBuilder.setImage(event.getStream().getThumbnailUrl(320, 180));
         embedBuilder.addField("Game", event.getStream().getGameName(), true);
         embedBuilder.addField("Viewers", String.valueOf(event.getStream().getViewerCount()), true);
-
         return embedBuilder.build();
     }
 
