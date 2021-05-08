@@ -3,7 +3,6 @@ package com.beanbeanjuice.utility.guild;
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
-import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.twitch.Twitch;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -48,10 +47,20 @@ public class CustomGuild {
         this.twitchChannels = twitchChannels;
         this.mutedRoleID = mutedRoleID;
 
+        // Checks if a Listener has already been created for that guild.
+        // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
         if (BeanBot.getTwitchHandler().getTwitch(guildID) == null) {
-            BeanBot.getTwitchHandler().addTwitchToGuild(guildID, new Twitch(this.guildID, this.liveChannelID, this.twitchChannels));
+            BeanBot.getTwitchHandler().addTwitchToGuild(guildID, new Twitch(this.guildID, this.twitchChannels));
         }
 
+    }
+
+    /**
+     * @return The {@link String} ID of the live channel to send messages.
+     */
+    @NotNull
+    public String getLiveChannelID() {
+        return liveChannelID;
     }
 
     /**

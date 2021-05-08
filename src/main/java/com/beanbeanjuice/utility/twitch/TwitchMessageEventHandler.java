@@ -1,7 +1,6 @@
 package com.beanbeanjuice.utility.twitch;
 
 import com.beanbeanjuice.main.BeanBot;
-import com.beanbeanjuice.utility.logger.LogLevel;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.philippheuer.events4j.simple.domain.EventSubscriber;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
@@ -21,16 +20,13 @@ import java.awt.*;
 public class TwitchMessageEventHandler extends SimpleEventHandler {
 
     private String guildID;
-    private String liveChannelID;
 
     /**
      * Creates a new {@link TwitchMessageEventHandler} object.
      * @param guildID The ID of the {@link Guild} for the message to be sent in.
-     * @param liveChannelID The ID of the {@link net.dv8tion.jda.api.entities.TextChannel TextChannel} for the message to be sent in.
      */
-    public TwitchMessageEventHandler(@NotNull String guildID, @NotNull String liveChannelID) {
+    public TwitchMessageEventHandler(@NotNull String guildID) {
         this.guildID = guildID;
-        this.liveChannelID = liveChannelID;
     }
 
     /**
@@ -38,9 +34,7 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
      */
     @EventSubscriber
     public void printChannelLive(@NotNull ChannelGoLiveEvent event) {
-        // TODO: Remove This Later. This executes.
-        BeanBot.getLogManager().log(this.getClass(), LogLevel.INFO, (event.getChannel().getName() + " is now online at https://www.twitch.tv/" + event.getChannel().getName()), true, false);
-
+        String liveChannelID = BeanBot.getGuildHandler().getCustomGuild(guildID).getLiveChannelID();
         TextChannel liveChannel = BeanBot.getGuildHandler().getGuild(guildID).getTextChannelById(liveChannelID);
 
         try {
@@ -63,7 +57,6 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
         embedBuilder.setImage(event.getStream().getThumbnailUrl(320, 180));
         embedBuilder.addField("Game", event.getStream().getGameName(), true);
         embedBuilder.addField("Viewers", String.valueOf(event.getStream().getViewerCount()), true);
-
         return embedBuilder.build();
     }
 

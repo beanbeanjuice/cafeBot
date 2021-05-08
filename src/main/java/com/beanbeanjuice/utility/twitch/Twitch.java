@@ -19,14 +19,13 @@ public class Twitch {
     /**
      * Creates a new {@link Twitch} instance.
      * @param guildID The ID of the {@link Guild}.
-     * @param liveChannelID The ID of the {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
      * @param twitchChannels The {@link ArrayList<String>} of Twitch Channels.
      */
-    public Twitch(@NotNull String guildID, @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels) {
+    public Twitch(@NotNull String guildID, @NotNull ArrayList<String> twitchChannels) {
         twitchListener = new TwitchListener();
         twitchChannelNamesHandler = new TwitchChannelNamesHandler(this);
 
-        twitchListener.addEventHandler(new TwitchMessageEventHandler(guildID, liveChannelID));
+        twitchListener.addEventHandler(new TwitchMessageEventHandler(guildID));
 
         if (!twitchChannels.isEmpty()) {
             for (String channel : twitchChannels) {
