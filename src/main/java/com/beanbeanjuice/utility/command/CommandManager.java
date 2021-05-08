@@ -100,11 +100,7 @@ public class CommandManager {
             CommandErrorType errorType = usage.getERROR(args, event.getGuild());
 
             if (errorType.equals(CommandErrorType.SUCCESS)) {
-
-                event.getChannel().sendTyping().queue();
-
                 CommandContext ctx = new CommandContext(event, args, prefix);
-
                 command.handle(ctx, args, event.getAuthor(), event);
             } else {
                 event.getChannel().sendMessage(indexMessageEmbed(errorType, usage.getIncorrectIndex(), args)).queue();
