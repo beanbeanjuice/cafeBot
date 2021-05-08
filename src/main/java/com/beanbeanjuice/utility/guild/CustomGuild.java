@@ -3,7 +3,6 @@ package com.beanbeanjuice.utility.guild;
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
-import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.twitch.Twitch;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
