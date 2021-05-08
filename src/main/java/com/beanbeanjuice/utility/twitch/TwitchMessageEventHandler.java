@@ -1,7 +1,6 @@
 package com.beanbeanjuice.utility.twitch;
 
 import com.beanbeanjuice.main.BeanBot;
-import com.beanbeanjuice.utility.logger.LogLevel;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.philippheuer.events4j.simple.domain.EventSubscriber;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
