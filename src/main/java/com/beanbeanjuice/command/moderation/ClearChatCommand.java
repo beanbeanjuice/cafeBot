@@ -6,17 +6,20 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.guild.CustomGuild;
+import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
+import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.MessageHistory;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.ContextException;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,92 +30,131 @@ import java.util.TimerTask;
  */
 public class ClearChatCommand implements ICommand {
 
-    private Timer timer;
-    private TimerTask timerTask;
-
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        if (!BeanBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
+        // Checking if they are a moderator.
+        if (!BeanBot.getGeneralHelper().checkPermission(event.getMember(), event.getChannel(), Permission.MESSAGE_MANAGE)) {
             return;
         }
 
-        if (Integer.parseInt(args.get(0)) == 1) {
-            event.getMessage().delete().queue();
+        int amount = Integer.parseInt(args.get(0));
+
+        // Checking if they are only deleting 1 message.
+        if (amount == 1) {
+            event.getChannel().sendMessage(moreThanOneEmbed()).queue();
             return;
         }
 
-        event.getChannel().sendMessage(messageEmbed(args.get(0))).queue(e -> {
-            timer = new Timer();
-            timerTask = new TimerTask() {
+        // Sees if the amount is too many.
+        if (amount > 99) {
+            event.getChannel().sendMessage(tooManyMessagesEmbed()).queue();
+            return;
+        }
 
-                int messageAmount = Integer.parseInt(args.get(0));
+        if (BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).containsTextChannelDeletingMessages(event.getChannel())) {
+            event.getChannel().sendMessage(alreadyDeletingMessagesEmbed()).queue();
+            return;
+        }
 
-                @Override
-                public void run() {
+        // Send message that it is deleting, save the message and exclude it from being deleted.
+        event.getChannel().sendMessage(beginDeletionEmbed(Integer.parseInt(args.get(0)))).queue(e -> {
 
-                    MessageHistory history = new MessageHistory(event.getChannel());
-                    List<Message> msgs;
-
-                    while (messageAmount > 100) {
-                        msgs = history.retrievePast(100).complete();
-                        msgs.remove(e);
-
-                        if (msgs.isEmpty()) {
-                            timer.cancel();
-                            messageAmount = 0;
-                            break;
-                        }
-
-                        event.getChannel().deleteMessages(msgs).queue();
-                        messageAmount -= 100;
-                        try {
-                            Thread.sleep(30000);
-                        } catch (InterruptedException interruptedException) {
-                            interruptedException.printStackTrace();
-                        }
-                    }
-
-                    if (messageAmount > 1) {
-                        msgs = history.retrievePast(messageAmount).complete();
-                        msgs.remove(e);
-                        try {
-                            event.getChannel().deleteMessages(msgs).queue();
-                        } catch (IllegalArgumentException e) {
-                            // Catches the Message Error if it is Older than 2 Weeks
-                            // TODO: Eventually find a way around this.
-                            event.getChannel().sendMessage(oldMessageError(String.valueOf(messageAmount))).queue();
-                        }
-                    }
-
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException interruptedException) {
-                        interruptedException.printStackTrace();
-                    }
-                    e.delete().queue();
-                    timer.cancel();
-                }
-            };
-
-            timer.schedule(timerTask, 0);
+            // +1 is needed because it removes the one just sent.
+            event.getChannel().getHistory().retrievePast(amount+1).queue(messages -> {
+                messages.remove(e);
+                startMessagesDeletionsEmbed(amount);
+                startMessagesDeletions(new ArrayList<>(messages), e);
+            });
         });
+
     }
 
-    @NotNull
-    private MessageEmbed oldMessageError(@NotNull String amount) {
+    private MessageEmbed alreadyDeletingMessagesEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Error Deleting Messages");
-        embedBuilder.setDescription("Unable to delete `" + amount + "` because the messages are older than 2 weeks.");
+        embedBuilder.setAuthor("Already Deleting Messages");
+        embedBuilder.setDescription("You are already deleting messages in this channel. " +
+                "Please use this command in another channel or wait for this action to stop.");
         embedBuilder.setColor(Color.red);
         return embedBuilder.build();
     }
 
-    @NotNull
-    private MessageEmbed messageEmbed(@NotNull String amount) {
+    private MessageEmbed tooManyMessagesEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Deleting Messages");
-        embedBuilder.setDescription("Deleting `" + amount + "` messages... this may take a while...");
+        embedBuilder.setAuthor("Too Many Messages");
+        embedBuilder.setDescription("You must select a number between `2` and `99`.");
+        embedBuilder.setColor(Color.red);
+        return embedBuilder.build();
+    }
+
+    private MessageEmbed startMessagesDeletionsEmbed(@NotNull Integer messageCount) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor("Starting Deletion");
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setDescription("Starting deletion of `" + messageCount + "` messages. This may take a while...");
+        return embedBuilder.build();
+    }
+
+    private void startMessagesDeletions(@NotNull ArrayList<Message> messages, @NotNull Message deletionMessage) {
+
+        TextChannel textChannel = deletionMessage.getTextChannel();
+        int messageCount = messages.size();
+        CustomGuild guild = BeanBot.getGuildHandler().getCustomGuild(deletionMessage.getGuild());
+
+        guild.addTextChannelToDeletingMessages(deletionMessage.getTextChannel());
+
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+
+            int count = 0;
+
+            @Override
+            public void run() {
+
+                // Go through each message and delete it individually.
+                try {
+                    messages.get(count++).delete().queue();
+                } catch (ErrorResponseException | NullPointerException e) {
+
+                }
+
+                // If the messages is empty, cancel it.
+                if (count == messageCount) {
+                    timer.cancel(); // Cancel the timer.
+                    deletionMessage.delete().queue(); // Delete the deletion message.
+                    textChannel.sendMessage(completedDeletionEmbed(messageCount)).queue(e -> {
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException ignored) {}
+                        guild.removeTextChannelFromDeletingMessages(e.getTextChannel());
+                        e.delete().queue();
+                    });
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+    }
+
+    private MessageEmbed completedDeletionEmbed(@NotNull Integer count) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor("Completed Deletion");
+        embedBuilder.setDescription("Successfully deleted `" + count + "` messages.");
+        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        return embedBuilder.build();
+    }
+
+    private MessageEmbed moreThanOneEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor("Error Deleting Messages");
+        embedBuilder.setColor(Color.red);
+        embedBuilder.setDescription("You must specify a number greater than 1.");
+        return embedBuilder.build();
+    }
+
+    private MessageEmbed beginDeletionEmbed(@NotNull Integer amount) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor("Starting Deletion");
+        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setDescription("Deleting `" + amount + "` messages. This might take a while.");
         return embedBuilder.build();
     }
 
