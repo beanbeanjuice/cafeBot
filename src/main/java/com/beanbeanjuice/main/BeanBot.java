@@ -163,7 +163,8 @@ public class BeanBot {
                 new AddTwitchChannelCommand(),
                 new RemoveTwitchChannelCommand(),
                 new GetTwitchChannelsCommand(),
-                new SetLiveNotificationsRoleCommand()
+                new SetLiveNotificationsRoleCommand(),
+                new NotifyOnUpdateCommand()
         );
 
         jdaBuilder.addEventListeners(new Listener());
