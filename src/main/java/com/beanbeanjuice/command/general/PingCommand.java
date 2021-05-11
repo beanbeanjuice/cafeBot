@@ -39,6 +39,7 @@ public class PingCommand implements ICommand {
         embedBuilder.setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/beanBot/issues");
         embedBuilder.setThumbnail(BeanBot.getJDA().getSelfUser().getAvatarUrl());
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setDescription("Hello there! How are you!~ Want some coffee?");
         return embedBuilder.build();
     }
 
