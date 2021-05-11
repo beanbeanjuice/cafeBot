@@ -32,11 +32,11 @@ public class PingCommand implements ICommand {
     @NotNull
     private MessageEmbed messageEmbed(@NotNull Long botPing, @NotNull Long gatewayPing) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(getName() + "!", "https://www.beanbeanjuice.com");
+        embedBuilder.setAuthor(getName() + "!", "https://www.beanbeanjuice.com/beanBot.html");
         embedBuilder.addField("Rest Ping", botPing.toString(), true);
         embedBuilder.addField("Gateway Ping", gatewayPing.toString(), true);
         embedBuilder.addField("Current Version", BeanBot.getBotVersion(), true);
-        embedBuilder.setFooter("Author: beanbeanjuice");
+        embedBuilder.setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/beanBot/issues");
         embedBuilder.setThumbnail(BeanBot.getJDA().getSelfUser().getAvatarUrl());
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
