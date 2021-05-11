@@ -16,6 +16,7 @@ import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
 import com.beanbeanjuice.utility.helper.JSONHelper;
+import com.beanbeanjuice.utility.helper.VersionHelper;
 import com.beanbeanjuice.utility.listener.Listener;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
@@ -100,6 +101,9 @@ public class BeanBot {
     private static GeneralHelper generalHelper;
     private static Timer refreshTimer;
     private static TimerTask refreshTimerTask;
+
+    // Version Helper
+    private static VersionHelper versionHelper;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
 
@@ -189,6 +193,9 @@ public class BeanBot {
         generalHelper = new GeneralHelper();
 
         updateGuildPresence();
+
+        versionHelper = new VersionHelper();
+        versionHelper.contactGuilds();
     }
 
     /**

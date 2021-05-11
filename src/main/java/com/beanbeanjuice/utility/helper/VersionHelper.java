@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -57,14 +58,18 @@ public class VersionHelper {
      * @return The last version number that is in the SQL database.
      */
     public String getLastVersion() {
+
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM beanbot.bot_information WHERE id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
             statement.setInt(1, 1);
-            ResultSet resultSet = statement.executeQuery(arguments);
+            ResultSet resultSet = statement.executeQuery();
 
+            ArrayList<String> twitchNames = new ArrayList<>();
+
+            resultSet.next();
             return resultSet.getString(2);
         } catch (SQLException e) {
             BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Get Previous Version From Database: " + e.getMessage());
@@ -76,6 +81,16 @@ public class VersionHelper {
      * A method used for contacting the guilds who have enabled the bot update notification.
      */
     public void contactGuilds() {
+
+        if (compareVersions(BeanBot.getBotVersion())) {
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Not sending messages that there is an update as the versions match.");
+            return;
+        }
+
+        if (!updateVersionInDatabase(BeanBot.getBotVersion())) {
+            return;
+        }
+
         HashMap<String, CustomGuild> customGuilds = BeanBot.getGuildHandler().getGuilds();
 
         customGuilds.forEach((guildID, customGuild) -> {
@@ -85,7 +100,9 @@ public class VersionHelper {
                 Member owner = guild.getOwner();
 
                 // TODO: Notify Them
-                mainChannel.sendMessage(owner.getAsMention() + " there is a new update!").queue();
+                try {
+                    mainChannel.sendMessage(owner.getAsMention() + " there is a new update!").queue();
+                } catch (NullPointerException ignored) {}
             }
         });
     }
