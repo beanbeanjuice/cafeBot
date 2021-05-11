@@ -153,6 +153,8 @@ public class VersionHelper {
         embedBuilder.setDescription(github_body);
         embedBuilder.addField("Extra Information", "The bot has been updated to " + github_tag + "! " +
                 "To request a feature or report bugs, please head over to https://github.com/beanbeanjuice/beanBot/issues.", true);
+        embedBuilder.addField("How to Disable Update Notifications", "To disable these update notifications, " +
+                "the default command would be `!!notify-on-update disable`.", false);
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
