@@ -1,2 +1,3 @@
 CREATE TABLE bot_information
-(bot_version TEXT);
+(id INT default 1,
+ version TEXT);
