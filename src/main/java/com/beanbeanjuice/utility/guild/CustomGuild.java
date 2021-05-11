@@ -81,10 +81,26 @@ public class CustomGuild {
         }
     }
 
+    /**
+     * Set the Bot Update Channel for the {@link Guild}.
+     * @param updateChannelID The ID of the {@link TextChannel} used for sending bot updates.
+     * @return Whether or not setting the update {@link TextChannel} was successful.
+     */
+    @NotNull
     public Boolean setUpdateChannel(@NotNull String updateChannelID) {
-
+        if (BeanBot.getGuildHandler().setUpdateChannelID(guildID, updateChannelID)) {
+            this.updateChannelID = updateChannelID;
+            return true;
+        }
+        return false;
     }
 
+    /**
+     * Set the Bot Update Channel for the {@link Guild}.
+     * @param textChannel The {@link TextChannel} used for sending bot updates.
+     * @return Whether or not setting the update {@link TextChannel} was successful.
+     */
+    @NotNull
     public Boolean setUpdateChannel(@NotNull TextChannel textChannel) {
         return setUpdateChannel(textChannel.getId());
     }
