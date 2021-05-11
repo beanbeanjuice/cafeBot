@@ -159,6 +159,7 @@ public class BeanBot {
                 new ClearChatCommand(),
                 new MuteCommand(),
                 new UnMuteCommand(),
+                new SetUpdateChannelCommand(),
                 new NotifyOnUpdateCommand(),
 
                 new SetLiveChannelCommand(),
