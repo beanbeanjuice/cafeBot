@@ -74,6 +74,7 @@ public class CustomGuild {
      * @param answer The {@link Boolean} answer.
      * @return Whether or not updating it was successful.
      */
+    @NotNull
     public Boolean setNotifyOnUpdate(@NotNull Boolean answer) {
         if (BeanBot.getGuildHandler().setNotifyOnUpdate(guildID, answer)) {
             notifyOnUpdate = answer;
@@ -85,6 +86,7 @@ public class CustomGuild {
     /**
      * @return The current state of whether or not the {@link Guild} should be notified on an update.
      */
+    @NotNull
     public Boolean getNotifyOnUpdate() {
         return notifyOnUpdate;
     }
@@ -94,6 +96,7 @@ public class CustomGuild {
      * @param role The {@link Role} for the Live Notifications {@link Role}.
      * @return Whether or not it was successful.
      */
+    @NotNull
     public Boolean setLiveNotificationsRole(@NotNull Role role) {
         return setLiveNotificationsRoleID(role.getId());
     }
@@ -103,6 +106,7 @@ public class CustomGuild {
      * @param roleID The ID for the Live Notifications {@link Role}.
      * @return Whether or not it was successful.
      */
+    @NotNull
     public Boolean setLiveNotificationsRoleID(@NotNull String roleID) {
 
         // Only set it if it updates in the database.
