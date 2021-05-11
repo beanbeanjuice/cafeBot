@@ -116,6 +116,6 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.MODERATION;
+        return CategoryType.TWITCH;
     }
 }
