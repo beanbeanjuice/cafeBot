@@ -41,7 +41,7 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
                 event.getChannel().sendMessage(BeanBot.getGeneralHelper().successEmbed(
                         "Updated Live Notifications Role",
                         "Successfully updated the role to " + liveNotificationsRole.getAsMention() + "."
-                ));
+                )).queue();
             } else {
                 errorMessage(event);
             }
