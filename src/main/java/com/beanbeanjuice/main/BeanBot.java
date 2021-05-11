@@ -8,10 +8,7 @@ import com.beanbeanjuice.command.moderation.*;
 import com.beanbeanjuice.command.moderation.mute.MuteCommand;
 import com.beanbeanjuice.command.moderation.mute.UnMuteCommand;
 import com.beanbeanjuice.command.music.*;
-import com.beanbeanjuice.command.twitch.AddTwitchChannelCommand;
-import com.beanbeanjuice.command.twitch.GetTwitchChannelsCommand;
-import com.beanbeanjuice.command.twitch.RemoveTwitchChannelCommand;
-import com.beanbeanjuice.command.twitch.SetLiveChannelCommand;
+import com.beanbeanjuice.command.twitch.*;
 import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
@@ -163,13 +160,13 @@ public class BeanBot {
                 new MuteCommand(),
                 new UnMuteCommand(),
                 new SetUpdateChannelCommand(),
+                new NotifyOnUpdateCommand(),
 
                 new SetLiveChannelCommand(),
                 new AddTwitchChannelCommand(),
                 new RemoveTwitchChannelCommand(),
                 new GetTwitchChannelsCommand(),
-                new SetLiveNotificationsRoleCommand(),
-                new NotifyOnUpdateCommand()
+                new SetLiveNotificationsRoleCommand()
         );
 
         jdaBuilder.addEventListeners(new Listener());
