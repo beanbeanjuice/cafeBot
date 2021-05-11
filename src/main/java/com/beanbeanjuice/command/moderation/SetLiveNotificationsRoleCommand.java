@@ -16,6 +16,11 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * A command used for setting the Live Notifications {@link Role} for a {@link net.dv8tion.jda.api.entities.Guild Guild}.
+ *
+ * @author beanbeanjuice
+ */
 public class SetLiveNotificationsRoleCommand implements ICommand {
 
     @Override
