@@ -25,6 +25,7 @@ public class CustomGuild {
     private ArrayList<String> twitchChannels;
     private String mutedRoleID;
     private String liveNotificationsRoleID;
+    private Boolean notifyOnUpdate;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -42,8 +43,9 @@ public class CustomGuild {
      * @param mutedRoleID The ID of the muted {@link Role} for the {@link Guild}.
      * @param liveNotificationsRoleID The ID of the live notifications {@link Role} for the {@link Guild}.
      */
-    public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID, @NotNull String liveChannelID,
-                       @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID, @NotNull String liveNotificationsRoleID) {
+    public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID,
+                       @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
+                       @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
@@ -51,6 +53,7 @@ public class CustomGuild {
         this.twitchChannels = twitchChannels;
         this.mutedRoleID = mutedRoleID;
         this.liveNotificationsRoleID = liveNotificationsRoleID;
+        this.notifyOnUpdate = notifyOnUpdate;
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
@@ -60,6 +63,26 @@ public class CustomGuild {
 
         deletingMessagesChannels = new ArrayList<>();
 
+    }
+
+    /**
+     * Sets the {@link Boolean} for if the {@link Guild} should be notified on an update.
+     * @param answer The {@link Boolean} answer.
+     * @return Whether or not updating it was successful.
+     */
+    public Boolean setNotifyOnUpdate(@NotNull Boolean answer) {
+        if (BeanBot.getGuildHandler().setNotifyOnUpdate(guildID, answer)) {
+            notifyOnUpdate = answer;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return The current state of whether or not the {@link Guild} should be notified on an update.
+     */
+    public Boolean getNotifyOnUpdate() {
+        return notifyOnUpdate;
     }
 
     /**
