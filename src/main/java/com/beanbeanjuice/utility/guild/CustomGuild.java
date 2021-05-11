@@ -70,6 +70,26 @@ public class CustomGuild {
     }
 
     /**
+     * @return The update {@link TextChannel} for the {@link Guild}.
+     */
+    @Nullable
+    public TextChannel getUpdateChannel() {
+        try {
+            return BeanBot.getGuildHandler().getGuild(guildID).getTextChannelById(updateChannelID);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    public Boolean setUpdateChannel(@NotNull String updateChannelID) {
+
+    }
+
+    public Boolean setUpdateChannel(@NotNull TextChannel textChannel) {
+        return setUpdateChannel(textChannel.getId());
+    }
+
+    /**
      * Sets the {@link Boolean} for if the {@link Guild} should be notified on an update.
      * @param answer The {@link Boolean} answer.
      * @return Whether or not updating it was successful.
