@@ -18,7 +18,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -73,7 +72,6 @@ public class VersionHelper {
      * @return The last version number that is in the SQL database.
      */
     public String getLastVersion() {
-
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM beanbot.bot_information WHERE id = (?);";
 
@@ -81,9 +79,6 @@ public class VersionHelper {
             PreparedStatement statement = connection.prepareStatement(arguments);
             statement.setInt(1, 1);
             ResultSet resultSet = statement.executeQuery();
-
-            ArrayList<String> twitchNames = new ArrayList<>();
-
             resultSet.next();
             return resultSet.getString(2);
         } catch (SQLException e) {
