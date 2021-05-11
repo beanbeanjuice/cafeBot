@@ -86,7 +86,7 @@ public class GuildHandler {
      * @param roleID The ID of the Live Notifications {@link Role}.
      * @return Whether or not it was successfully updated in the database.
      */
-    public Boolean setLiveNotificationsRoleID(@NotNull String guildID, @NotNull String roleID) {
+    protected Boolean setLiveNotificationsRoleID(@NotNull String guildID, @NotNull String roleID) {
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information SET live_notifications_role_id = (?) WHERE guild_id = (?);";
 
@@ -109,7 +109,7 @@ public class GuildHandler {
      * @param roleID The ID of the Live Notifications {@link Role}.
      * @return Whether or not it was successfully updated in the database.
      */
-    public Boolean setLiveNotificationsRoleID(@NotNull Guild guild, @NotNull String roleID) {
+    protected Boolean setLiveNotificationsRoleID(@NotNull Guild guild, @NotNull String roleID) {
         return setLiveNotificationsRoleID(guild.getId(), roleID);
     }
 
