@@ -26,6 +26,7 @@ public class CustomGuild {
     private String mutedRoleID;
     private String liveNotificationsRoleID;
     private Boolean notifyOnUpdate;
+    private String updateChannelID;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -42,10 +43,12 @@ public class CustomGuild {
      * @param twitchChannels The {@link ArrayList<String>} of twitch channels for the {@link Guild}.
      * @param mutedRoleID The ID of the muted {@link Role} for the {@link Guild}.
      * @param liveNotificationsRoleID The ID of the live notifications {@link Role} for the {@link Guild}.
+     * @param notifyOnUpdate The {@link Boolean} of whether or not to notify the {@link Guild} on an update to the Bot.
+     * @param updateChannelID The ID of the {@link TextChannel} to send the bot update notifications to.
      */
     public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID,
                        @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
-                       @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate) {
+                       @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
@@ -54,6 +57,7 @@ public class CustomGuild {
         this.mutedRoleID = mutedRoleID;
         this.liveNotificationsRoleID = liveNotificationsRoleID;
         this.notifyOnUpdate = notifyOnUpdate;
+        this.updateChannelID = updateChannelID;
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.

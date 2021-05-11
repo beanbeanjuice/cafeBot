@@ -51,10 +51,11 @@ public class GuildHandler {
                 ArrayList<String> twitchChannels = getTwitchChannels(guildID);
                 String liveNotificationsRoleID = String.valueOf(resultSet.getLong(6));
                 Boolean notifyOnUpdate = resultSet.getBoolean(7);
+                String updateChannelID = String.valueOf(resultSet.getLong(8));
 
                 guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
                         twitchChannelID, twitchChannels, mutedRoleID,
-                        liveNotificationsRoleID, notifyOnUpdate));
+                        liveNotificationsRoleID, notifyOnUpdate, updateChannelID));
             }
         } catch (SQLException e) {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
