@@ -26,6 +26,7 @@ public class CustomGuild {
     private String mutedRoleID;
     private String liveNotificationsRoleID;
     private Boolean notifyOnUpdate;
+    private String updateChannelID;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -42,10 +43,12 @@ public class CustomGuild {
      * @param twitchChannels The {@link ArrayList<String>} of twitch channels for the {@link Guild}.
      * @param mutedRoleID The ID of the muted {@link Role} for the {@link Guild}.
      * @param liveNotificationsRoleID The ID of the live notifications {@link Role} for the {@link Guild}.
+     * @param notifyOnUpdate The {@link Boolean} of whether or not to notify the {@link Guild} on an update to the Bot.
+     * @param updateChannelID The ID of the {@link TextChannel} to send the bot update notifications to.
      */
     public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID,
                        @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
-                       @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate) {
+                       @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
@@ -54,6 +57,7 @@ public class CustomGuild {
         this.mutedRoleID = mutedRoleID;
         this.liveNotificationsRoleID = liveNotificationsRoleID;
         this.notifyOnUpdate = notifyOnUpdate;
+        this.updateChannelID = updateChannelID;
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
@@ -66,10 +70,47 @@ public class CustomGuild {
     }
 
     /**
+     * @return The update {@link TextChannel} for the {@link Guild}.
+     */
+    @Nullable
+    public TextChannel getUpdateChannel() {
+        try {
+            return BeanBot.getGuildHandler().getGuild(guildID).getTextChannelById(updateChannelID);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Set the Bot Update Channel for the {@link Guild}.
+     * @param updateChannelID The ID of the {@link TextChannel} used for sending bot updates.
+     * @return Whether or not setting the update {@link TextChannel} was successful.
+     */
+    @NotNull
+    public Boolean setUpdateChannel(@NotNull String updateChannelID) {
+        if (BeanBot.getGuildHandler().setUpdateChannelID(guildID, updateChannelID)) {
+            this.updateChannelID = updateChannelID;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Set the Bot Update Channel for the {@link Guild}.
+     * @param textChannel The {@link TextChannel} used for sending bot updates.
+     * @return Whether or not setting the update {@link TextChannel} was successful.
+     */
+    @NotNull
+    public Boolean setUpdateChannel(@NotNull TextChannel textChannel) {
+        return setUpdateChannel(textChannel.getId());
+    }
+
+    /**
      * Sets the {@link Boolean} for if the {@link Guild} should be notified on an update.
      * @param answer The {@link Boolean} answer.
      * @return Whether or not updating it was successful.
      */
+    @NotNull
     public Boolean setNotifyOnUpdate(@NotNull Boolean answer) {
         if (BeanBot.getGuildHandler().setNotifyOnUpdate(guildID, answer)) {
             notifyOnUpdate = answer;
@@ -81,6 +122,7 @@ public class CustomGuild {
     /**
      * @return The current state of whether or not the {@link Guild} should be notified on an update.
      */
+    @NotNull
     public Boolean getNotifyOnUpdate() {
         return notifyOnUpdate;
     }
@@ -90,6 +132,7 @@ public class CustomGuild {
      * @param role The {@link Role} for the Live Notifications {@link Role}.
      * @return Whether or not it was successful.
      */
+    @NotNull
     public Boolean setLiveNotificationsRole(@NotNull Role role) {
         return setLiveNotificationsRoleID(role.getId());
     }
@@ -99,6 +142,7 @@ public class CustomGuild {
      * @param roleID The ID for the Live Notifications {@link Role}.
      * @return Whether or not it was successful.
      */
+    @NotNull
     public Boolean setLiveNotificationsRoleID(@NotNull String roleID) {
 
         // Only set it if it updates in the database.
