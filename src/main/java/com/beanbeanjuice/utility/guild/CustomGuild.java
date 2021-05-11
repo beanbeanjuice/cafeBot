@@ -29,6 +29,8 @@ public class CustomGuild {
     private TimerTask timerTask;
     private TextChannel lastMusicChannel;
 
+    private ArrayList<TextChannel> deletingMessagesChannels;
+
     /**
      * Creates a new {@link CustomGuild} object.
      * @param guildID The ID of the {@link Guild}.
@@ -53,6 +55,35 @@ public class CustomGuild {
             BeanBot.getTwitchHandler().addTwitchToGuild(guildID, new Twitch(this.guildID, this.twitchChannels));
         }
 
+        deletingMessagesChannels = new ArrayList<>();
+
+    }
+
+    /**
+     * Remove a {@link TextChannel} from the list of currently deleting {@link Message}s.
+     * @param channel The {@link TextChannel} to remove.
+     */
+    public void removeTextChannelFromDeletingMessages(@NotNull TextChannel channel) {
+        deletingMessagesChannels.remove(channel);
+    }
+
+    /**
+     * Add a {@link TextChannel} to the list of currently deleting {@link Message}s.
+     * @param channel The {@link TextChannel} to add.
+     */
+    public void addTextChannelToDeletingMessages(@NotNull TextChannel channel) {
+        deletingMessagesChannels.add(channel);
+    }
+
+    /**
+     * Checks to make sure that a {@link TextChannel} does not already have {@link Message}s being
+     * currently deleted.
+     * @param channel The {@link TextChannel} to check.
+     * @return Whether or not it already has {@link Message}s being deleted in it.
+     */
+    @NotNull
+    public Boolean containsTextChannelDeletingMessages(@NotNull TextChannel channel) {
+        return deletingMessagesChannels.contains(channel);
     }
 
     /**
