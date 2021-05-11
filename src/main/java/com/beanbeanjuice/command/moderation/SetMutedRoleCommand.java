@@ -24,6 +24,7 @@ public class SetMutedRoleCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
+
         if (!BeanBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }

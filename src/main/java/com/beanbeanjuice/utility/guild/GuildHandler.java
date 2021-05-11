@@ -49,8 +49,9 @@ public class GuildHandler {
                 String twitchChannelID = String.valueOf(resultSet.getLong(4));
                 String mutedRoleID = String.valueOf(resultSet.getLong(5));
                 ArrayList<String> twitchChannels = getTwitchChannels(guildID);
+                String liveNotificationsRoleID = String.valueOf(resultSet.getLong(6));
 
-                guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID, twitchChannelID, twitchChannels, mutedRoleID));
+                guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID, twitchChannelID, twitchChannels, mutedRoleID, liveNotificationsRoleID));
             }
         } catch (SQLException e) {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
@@ -77,6 +78,39 @@ public class GuildHandler {
             BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to retrieve twitch channels from database.", true, false);
             return new ArrayList<>();
         }
+    }
+
+    /**
+     * Sets the Live Notifications {@link Role} for the {@link Guild}.
+     * @param guildID The ID of the {@link Guild}.
+     * @param roleID The ID of the Live Notifications {@link Role}.
+     * @return Whether or not it was successfully updated in the database.
+     */
+    protected Boolean setLiveNotificationsRoleID(@NotNull String guildID, @NotNull String roleID) {
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "UPDATE beanbot.guild_information SET live_notifications_role_id = (?) WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(roleID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to update the live notifications role id.");
+            return false;
+        }
+    }
+
+    /**
+     * Sets the Live Notifications {@link Role} for the {@link Guild}.
+     * @param guild The {@link Guild}.
+     * @param roleID The ID of the Live Notifications {@link Role}.
+     * @return Whether or not it was successfully updated in the database.
+     */
+    protected Boolean setLiveNotificationsRoleID(@NotNull Guild guild, @NotNull String roleID) {
+        return setLiveNotificationsRoleID(guild.getId(), roleID);
     }
 
     /**
