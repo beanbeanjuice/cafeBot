@@ -34,7 +34,15 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
             return;
         }
 
-        Role liveNotificationsRole = BeanBot.getGeneralHelper().getRole(event.getGuild(), args.get(0));
+        Role liveNotificationsRole;
+
+        try {
+            liveNotificationsRole = BeanBot.getGeneralHelper().getRole(event.getGuild(), args.get(0));
+        } catch (NumberFormatException e) {
+            // This means that a role/none was not specified.
+            event.getChannel().sendMessage(invalidRoleEmbed(args.get(0))).queue();
+            return;
+        }
 
         if (liveNotificationsRole != null) {
             if (BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLiveNotificationsRole(liveNotificationsRole)) {
@@ -47,9 +55,6 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
             }
             return;
         }
-
-        // This means that a role/none was not specified.
-        event.getChannel().sendMessage(invalidRoleEmbed(args.get(0))).queue();
 
     }
 
