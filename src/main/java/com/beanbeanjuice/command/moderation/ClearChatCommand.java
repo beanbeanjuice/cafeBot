@@ -15,11 +15,13 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.ContextException;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -96,6 +98,8 @@ public class ClearChatCommand implements ICommand {
 
     private void startMessagesDeletions(@NotNull ArrayList<Message> messages, @NotNull Message deletionMessage) {
 
+        Collections.reverse(messages);
+
         TextChannel textChannel = deletionMessage.getTextChannel();
         int messageCount = messages.size();
         CustomGuild guild = BeanBot.getGuildHandler().getCustomGuild(deletionMessage.getGuild());
@@ -110,12 +114,10 @@ public class ClearChatCommand implements ICommand {
             @Override
             public void run() {
 
-                // Go through each message and delete it individually.
-                try {
-                    messages.get(count++).delete().queue();
-                } catch (ErrorResponseException | NullPointerException e) {
+                Message message = messages.get(count++);
 
-                }
+                // Go through each message and delete it individually. Ignores the error response it might get.
+                message.delete().queue(null, new ErrorHandler().ignore(ErrorResponseException.class));
 
                 // If the messages is empty, cancel it.
                 if (count == messageCount) {
@@ -123,21 +125,26 @@ public class ClearChatCommand implements ICommand {
                     deletionMessage.delete().queue(); // Delete the deletion message.
                     textChannel.sendMessage(completedDeletionEmbed(messageCount)).queue(e -> {
                         try {
+                            // Makes the thread sleep for 10 seconds.
                             Thread.sleep(10000);
                         } catch (InterruptedException ignored) {}
+
+                        // Removes the current channel from channels having current deletions in it.
                         guild.removeTextChannelFromDeletingMessages(e.getTextChannel());
                         e.delete().queue();
                     });
                 }
             }
         };
-        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+        timer.scheduleAtFixedRate(timerTask, 0, 50);
     }
 
     private MessageEmbed completedDeletionEmbed(@NotNull Integer count) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Completed Deletion");
-        embedBuilder.setDescription("Successfully deleted `" + count + "` messages.");
+        embedBuilder.setDescription("Successfully deleted `" + count + "` messages. " +
+                "There might be a time lag for deleting messages. This message will disappear once " +
+                "all of the messages have been successfully deleted from discord.");
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
