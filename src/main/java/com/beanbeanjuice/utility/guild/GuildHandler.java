@@ -49,14 +49,23 @@ public class GuildHandler {
                 String twitchChannelID = String.valueOf(resultSet.getLong(4));
                 String mutedRoleID = String.valueOf(resultSet.getLong(5));
                 ArrayList<String> twitchChannels = getTwitchChannels(guildID);
+                String liveNotificationsRoleID = String.valueOf(resultSet.getLong(6));
+                Boolean notifyOnUpdate = resultSet.getBoolean(7);
 
-                guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID, twitchChannelID, twitchChannels, mutedRoleID));
+                guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
+                        twitchChannelID, twitchChannels, mutedRoleID,
+                        liveNotificationsRoleID, notifyOnUpdate));
             }
         } catch (SQLException e) {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
         }
     }
 
+    /**
+     * Gets the {@link ArrayList<String>} of Twitch Channels for the {@link Guild}.
+     * @param guildID The ID of the {@link Guild}.
+     * @return the {@link ArrayList<String>} of Twitch Channel Names
+     */
     public ArrayList<String> getTwitchChannels(String guildID) {
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM beanbot.guild_twitch WHERE guild_id = ?;";
@@ -77,6 +86,72 @@ public class GuildHandler {
             BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to retrieve twitch channels from database.", true, false);
             return new ArrayList<>();
         }
+    }
+
+    /**
+     * Sets the {@link Boolean} for if the {@link Guild} should be notified on an update.
+     * @param guildID The ID of the {@link Guild} provided.
+     * @param answer The {@link Boolean} provided.
+     * @return Whether or not updating it was successful.
+     */
+    protected Boolean setNotifyOnUpdate(@NotNull String guildID, @NotNull Boolean answer) {
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "UPDATE beanbot.guild_information SET notify_on_update = (?) WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setBoolean(1, answer);
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to Update the Notify On Update Parameter: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Sets the {@link Boolean} for if the {@link Guild} should be notified on an update.
+     * @param guild The {@link Guild} provided.
+     * @param answer The {@link Boolean} provided.
+     * @return Whether or not updating it was successful.
+     */
+    protected Boolean setNotifyOnUpdate(@NotNull Guild guild, @NotNull Boolean answer) {
+        return setNotifyOnUpdate(guild.getId(), answer);
+    }
+
+    /**
+     * Sets the Live Notifications {@link Role} for the {@link Guild}.
+     * @param guildID The ID of the {@link Guild}.
+     * @param roleID The ID of the Live Notifications {@link Role}.
+     * @return Whether or not it was successfully updated in the database.
+     */
+    protected Boolean setLiveNotificationsRoleID(@NotNull String guildID, @NotNull String roleID) {
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "UPDATE beanbot.guild_information SET live_notifications_role_id = (?) WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(roleID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to Update the Live Notifications Role ID: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Sets the Live Notifications {@link Role} for the {@link Guild}.
+     * @param guild The {@link Guild}.
+     * @param roleID The ID of the Live Notifications {@link Role}.
+     * @return Whether or not it was successfully updated in the database.
+     */
+    protected Boolean setLiveNotificationsRoleID(@NotNull Guild guild, @NotNull String roleID) {
+        return setLiveNotificationsRoleID(guild.getId(), roleID);
     }
 
     /**
@@ -190,16 +265,13 @@ public class GuildHandler {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "INSERT INTO beanbot.guild_information " +
-                "(guild_id, prefix, moderator_role_id, twitch_channel_id, muted_role_id) " +
-                "VALUES (?,?,?,?,?);";
+                "(guild_id, prefix) " +
+                "VALUES (?,?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
             statement.setLong(1, Long.parseLong(guildID));
             statement.setString(2, BeanBot.getPrefix());
-            statement.setLong(3, 0L);
-            statement.setLong(4, 0L);
-            statement.setLong(5, 0L);
 
             statement.execute();
             return true;
