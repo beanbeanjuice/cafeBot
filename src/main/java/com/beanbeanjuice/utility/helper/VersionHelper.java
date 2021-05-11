@@ -122,7 +122,13 @@ public class VersionHelper {
         customGuilds.forEach((guildID, customGuild) -> {
             if (customGuild.getNotifyOnUpdate()) {
                 Guild guild = BeanBot.getGuildHandler().getGuild(guildID);
+
                 TextChannel mainChannel = guild.getDefaultChannel();
+
+                if (customGuild.getUpdateChannel() != null) {
+                    mainChannel = customGuild.getUpdateChannel();
+                }
+
                 Member owner = guild.getOwner();
 
                 try {
