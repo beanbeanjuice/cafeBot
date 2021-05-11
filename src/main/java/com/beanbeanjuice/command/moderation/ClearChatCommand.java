@@ -177,13 +177,13 @@ public class ClearChatCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Delete a chats in a channel!";
+        return "Delete messages in a channel! This can take a while, so be wary.";
     }
 
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.NUMBER, "Amount of chats to clear.", true);
+        usage.addUsage(CommandType.NUMBER, "Amount of messages to clear.", true);
         return usage;
     }
 
