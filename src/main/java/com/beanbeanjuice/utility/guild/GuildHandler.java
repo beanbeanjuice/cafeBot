@@ -90,11 +90,47 @@ public class GuildHandler {
     }
 
     /**
+     * Sets the update {@link TextChannel} for the {@link Guild}.
+     * @param guildID The ID of the {@link Guild} to update.
+     * @param updateChannelID The ID of the {@link TextChannel} to send bot updates.
+     * @return Whether or not updating the update channel ID was successful.
+     */
+    @NotNull
+    protected Boolean setUpdateChannelID(@NotNull String guildID, @NotNull String updateChannelID) {
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "UPDATE beanbot.guild_information SET update_channel_id = (?) WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(updateChannelID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Update the Update Channel ID: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Sets the update {@link TextChannel} for the {@link Guild}.
+     * @param guild The {@link Guild} to update.
+     * @param updateChannelID The ID of the {@link TextChannel} to send bot updates.
+     * @return Whether or not updating the update channel ID was successful.
+     */
+    @NotNull
+    protected Boolean setUpdateChannelID(@NotNull Guild guild, @NotNull String updateChannelID) {
+        return setUpdateChannelID(guild.getId(), updateChannelID);
+    }
+
+    /**
      * Sets the {@link Boolean} for if the {@link Guild} should be notified on an update.
      * @param guildID The ID of the {@link Guild} provided.
      * @param answer The {@link Boolean} provided.
      * @return Whether or not updating it was successful.
      */
+    @NotNull
     protected Boolean setNotifyOnUpdate(@NotNull String guildID, @NotNull Boolean answer) {
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information SET notify_on_update = (?) WHERE guild_id = (?);";
@@ -118,6 +154,7 @@ public class GuildHandler {
      * @param answer The {@link Boolean} provided.
      * @return Whether or not updating it was successful.
      */
+    @NotNull
     protected Boolean setNotifyOnUpdate(@NotNull Guild guild, @NotNull Boolean answer) {
         return setNotifyOnUpdate(guild.getId(), answer);
     }
@@ -128,6 +165,7 @@ public class GuildHandler {
      * @param roleID The ID of the Live Notifications {@link Role}.
      * @return Whether or not it was successfully updated in the database.
      */
+    @NotNull
     protected Boolean setLiveNotificationsRoleID(@NotNull String guildID, @NotNull String roleID) {
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information SET live_notifications_role_id = (?) WHERE guild_id = (?);";
@@ -151,6 +189,7 @@ public class GuildHandler {
      * @param roleID The ID of the Live Notifications {@link Role}.
      * @return Whether or not it was successfully updated in the database.
      */
+    @NotNull
     protected Boolean setLiveNotificationsRoleID(@NotNull Guild guild, @NotNull String roleID) {
         return setLiveNotificationsRoleID(guild.getId(), roleID);
     }
