@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class SetLiveNotificationsRoleCommand implements ICommand {
@@ -63,7 +64,7 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
         embedBuilder.setAuthor("Invalid Role");
         embedBuilder.setDescription("The argument `" + argument + "` is not a valid role. " +
                 "Please select `none` or provide a proper role mention.");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(Color.red);
         return embedBuilder.build();
     }
 
