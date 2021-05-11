@@ -1,13 +1,30 @@
 package com.beanbeanjuice.utility.helper;
 
+import com.beanbeanjuice.command.fun.JokeCommand;
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.guild.CustomGuild;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import me.duncte123.botcommons.web.WebUtils;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +35,12 @@ import java.util.HashMap;
  * @author beanbeanjuice
  */
 public class VersionHelper {
+
+    private final String GITHUB_API_URL = "https://api.github.com/repos/beanbeanjuice/beanBot/releases";
+    private String github_url;
+    private String github_tag;
+    private String github_name;
+    private String github_body;
 
     /**
      * Updates the Bot Version Number in the Database
@@ -82,15 +105,31 @@ public class VersionHelper {
      */
     public void contactGuilds() {
 
+        // Comparing the Version to the Database
         if (compareVersions(BeanBot.getBotVersion())) {
             BeanBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Not sending messages that there is an update as the versions match.");
             return;
         }
 
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(GITHUB_API_URL)).build();
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenApply(this::parse)
+                .join();
+
+        // Checking if the GitHub tag does not equal the current version.
+        if (!github_tag.equalsIgnoreCase(BeanBot.getBotVersion())) {
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "There is a mismatch between GitHub tag and Bot Version.");
+            return;
+        }
+
+        // Updating the Version in the Database
         if (!updateVersionInDatabase(BeanBot.getBotVersion())) {
             return;
         }
 
+        MessageEmbed updateEmbed = updateEmbed();
         HashMap<String, CustomGuild> customGuilds = BeanBot.getGuildHandler().getGuilds();
 
         customGuilds.forEach((guildID, customGuild) -> {
@@ -99,12 +138,37 @@ public class VersionHelper {
                 TextChannel mainChannel = guild.getDefaultChannel();
                 Member owner = guild.getOwner();
 
-                // TODO: Notify Them
                 try {
-                    mainChannel.sendMessage(owner.getAsMention() + " there is a new update!").queue();
+                    mainChannel.sendMessage(owner.getAsMention() + " I've been updated!").embed(updateEmbed).queue();
                 } catch (NullPointerException ignored) {}
             }
         });
+    }
+
+    private MessageEmbed updateEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor(github_name, github_url);
+        embedBuilder.setFooter(github_url);
+        embedBuilder.setTitle("New beanBot Update");
+        embedBuilder.setDescription(github_body);
+        embedBuilder.addField("Extra Information", "The bot has been updated to " + github_tag + "! " +
+                "To request a feature or report bugs, please head over to https://github.com/beanbeanjuice/beanBot/issues.", true);
+        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        return embedBuilder.build();
+    }
+
+    private String parse(String responseBody) {
+        ObjectMapper defaultObjectMapper = new ObjectMapper();
+        try {
+            JsonNode node = defaultObjectMapper.readTree(responseBody);
+            github_url = node.get(0).get("html_url").textValue();
+            github_tag = node.get(0).get("tag_name").textValue();
+            github_name = node.get(0).get("name").textValue();
+            github_body = node.get(0).get("body").textValue();
+            return node.get(0).toString();
+        } catch (JsonProcessingException e) {
+            return null;
+        }
     }
 
 }
