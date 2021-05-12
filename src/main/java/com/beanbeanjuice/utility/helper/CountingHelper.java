@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +25,6 @@ public class CountingHelper {
     public void checkNumber(@NotNull GuildMessageReceivedEvent event, @NotNull Integer currentNumber) {
 
         Guild guild = event.getGuild();
-        // Get the last number in the text channel
 
         Integer lastNumber = getLastNumber(guild);
         Integer highestNumber = getHighestNumber(guild);
@@ -41,7 +39,6 @@ public class CountingHelper {
 
             // Set the last number to the current number
             // If it fails, say so and return.
-
             if (!setLastNumber(guild, currentNumber)) {
                 event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
                 return;
@@ -54,16 +51,13 @@ public class CountingHelper {
                     event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
                     return;
                 }
-
             }
 
             if (!setLastUserID(guild, event.getAuthor().getId())) {
                 event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
-
-            // Add Green Checkmark Reaction
-            event.getMessage().addReaction("U+2705").queue();
+            event.getMessage().addReaction("U+2705").queue(); // Green Checkmark Reaction
         } else {
 
             if (!setLastNumber(guild, 0)) {
@@ -81,6 +75,13 @@ public class CountingHelper {
         }
     }
 
+    /**
+     * Sets the last user ID for the counting {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+     * @param guild The {@link Guild} specified.
+     * @param lastUserID The ID of the last user who sent the message.
+     * @return Whether or not setting the last user ID was successful.
+     */
+    @NotNull
     private Boolean setLastUserID(@NotNull Guild guild, @NotNull String lastUserID) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
@@ -95,9 +96,13 @@ public class CountingHelper {
         } catch (SQLException e) {
             return false;
         }
-
     }
 
+    /**
+     * @param guild The {@link Guild} specified.
+     * @return The ID of the last user who sent the counting try.
+     */
+    @Nullable
     private String getLastUserID(@NotNull Guild guild) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
@@ -112,9 +117,16 @@ public class CountingHelper {
         } catch (SQLException e) {
             return null;
         }
-
     }
 
+    /**
+     * A failed {@link MessageEmbed} to send if they fail the counting.
+     * @param member The {@link Member} who failed.
+     * @param lastNumber The last number entered.
+     * @param highestNumber The current highest number.
+     * @return The {@link MessageEmbed} to send.
+     */
+    @NotNull
     private MessageEmbed failedEmbed(@NotNull Member member, @NotNull Integer lastNumber, @NotNull Integer highestNumber) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Counting Failed");
@@ -125,6 +137,13 @@ public class CountingHelper {
         return embedBuilder.build();
     }
 
+    /**
+     * Sets the highest number for the {@link Guild}.
+     * @param guild The {@link Guild} specified.
+     * @param currentNumber The current number for the {@link Guild}.
+     * @return Whether or not setting the highest number was successful.
+     */
+    @NotNull
     private Boolean setHighestNumber(@NotNull Guild guild, @NotNull Integer currentNumber) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
@@ -139,9 +158,15 @@ public class CountingHelper {
         } catch (SQLException e) {
             return false;
         }
-
     }
 
+    /**
+     * Sets the last number for the {@link Guild}.
+     * @param guild The {@link Guild} specified.
+     * @param currentNumber The current number for the {@link Guild}.
+     * @return Whether or not setting the last number was successful.
+     */
+    @NotNull
     private Boolean setLastNumber(@NotNull Guild guild, @NotNull Integer currentNumber) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
@@ -156,9 +181,13 @@ public class CountingHelper {
         } catch (SQLException e) {
             return false;
         }
-
     }
 
+    /**
+     * Creates a new row for the Counting Information from the {@link Guild}.
+     * @param guild The {@link Guild} specified.
+     * @return Whether or not creating a new row was successful.
+     */
     @NotNull
     public Boolean createNewRow(@NotNull Guild guild) {
 
@@ -177,9 +206,13 @@ public class CountingHelper {
         } catch (SQLException e) {
             return false;
         }
-
     }
 
+    /**
+     * The highest number from the {@link Guild}.
+     * @param guild The {@link Guild} specified.
+     * @return The highest number for the {@link Guild}.
+     */
     @Nullable
     private Integer getHighestNumber(@NotNull Guild guild) {
 
@@ -197,9 +230,13 @@ public class CountingHelper {
         } catch (SQLException e) {
             return null;
         }
-
     }
 
+    /**
+     * Gets the last number from the {@link Guild}.
+     * @param guild The {@link Guild} specified.
+     * @return The highest number for the {@link Guild}.
+     */
     @Nullable
     private Integer getLastNumber(@NotNull Guild guild) {
 
@@ -217,7 +254,6 @@ public class CountingHelper {
         } catch (SQLException e) {
             return null;
         }
-
     }
 
 }
