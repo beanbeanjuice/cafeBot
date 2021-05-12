@@ -4,6 +4,7 @@ import com.beanbeanjuice.command.fun.MemeCommand;
 import com.beanbeanjuice.command.fun.JokeCommand;
 import com.beanbeanjuice.command.fun.SetCountingChannelCommand;
 import com.beanbeanjuice.command.generic.BugReportCommand;
+import com.beanbeanjuice.command.generic.FeatureRequestCommand;
 import com.beanbeanjuice.command.generic.HelpCommand;
 import com.beanbeanjuice.command.generic.PingCommand;
 import com.beanbeanjuice.command.moderation.*;
@@ -145,6 +146,7 @@ public class BeanBot {
         commandManager.addCommands(
                 new HelpCommand(),
                 new PingCommand(),
+                new FeatureRequestCommand(),
                 new BugReportCommand(),
 
                 new NowPlayingCommand(),
