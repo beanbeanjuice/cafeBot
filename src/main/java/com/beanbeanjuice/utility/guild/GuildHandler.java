@@ -52,10 +52,12 @@ public class GuildHandler {
                 String liveNotificationsRoleID = String.valueOf(resultSet.getLong(6));
                 Boolean notifyOnUpdate = resultSet.getBoolean(7);
                 String updateChannelID = String.valueOf(resultSet.getLong(8));
+                String countingChannelID = String.valueOf(resultSet.getLong(9));
 
                 guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
                         twitchChannelID, twitchChannels, mutedRoleID,
-                        liveNotificationsRoleID, notifyOnUpdate, updateChannelID));
+                        liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
+                        countingChannelID));
             }
         } catch (SQLException e) {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
@@ -87,6 +89,42 @@ public class GuildHandler {
             BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to retrieve twitch channels from database.", true, false);
             return new ArrayList<>();
         }
+    }
+
+    /**
+     * Sets the counting {@link TextChannel} for the {@link Guild}.
+     * @param guildID The ID for the {@link Guild} to update.
+     * @param countingChannelID The ID of the {@link TextChannel} used for counting.
+     * @return Whether or not updating the counting ID was successful.
+     */
+    @NotNull
+    protected Boolean setCountingChannelID(@NotNull String guildID, @NotNull String countingChannelID) {
+
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "UPDATE beanbot.guild_information SET counting_channel_id = (?) WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(countingChannelID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+
+    }
+
+    /**
+     * Sets the counting {@link TextChannel} for the {@link Guild}.
+     * @param guild The {@link Guild} to update.
+     * @param countingChannelID The ID of the {@link TextChannel} used for counting.
+     * @return Whether or not updating the counting channel ID was successful.
+     */
+    @NotNull
+    protected Boolean setCountingChannelID(@NotNull Guild guild, @NotNull String countingChannelID) {
+        return setCountingChannelID(guild.getId(), countingChannelID);
     }
 
     /**
