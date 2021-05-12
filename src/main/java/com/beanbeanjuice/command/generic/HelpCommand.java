@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.general;
+package com.beanbeanjuice.command.generic;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.command.CommandContext;
