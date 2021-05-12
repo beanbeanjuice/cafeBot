@@ -1,5 +1,7 @@
 package com.beanbeanjuice.main;
 
+import com.beanbeanjuice.command.cafe.BalanceCommand;
+import com.beanbeanjuice.command.cafe.ServeCommand;
 import com.beanbeanjuice.command.fun.MemeCommand;
 import com.beanbeanjuice.command.fun.JokeCommand;
 import com.beanbeanjuice.command.fun.SetCountingChannelCommand;
@@ -12,6 +14,7 @@ import com.beanbeanjuice.command.moderation.mute.MuteCommand;
 import com.beanbeanjuice.command.moderation.mute.UnMuteCommand;
 import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.twitch.*;
+import com.beanbeanjuice.utility.cafe.ServeHandler;
 import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.CountingHelper;
@@ -109,6 +112,9 @@ public class BeanBot {
     // Counting Helper
     private static CountingHelper countingHelper;
 
+    // Cafe Stuff
+    private static ServeHandler serveHandler;
+
     public static void main(String[] args) throws LoginException, InterruptedException {
 
         countingHelper = new CountingHelper();
@@ -139,6 +145,8 @@ public class BeanBot {
         );
         jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
         jdaBuilder.setChunkingFilter(ChunkingFilter.ALL);
+
+        serveHandler = new ServeHandler();
 
         // Listeners and Commands
         commandManager = new CommandManager();
@@ -177,7 +185,10 @@ public class BeanBot {
                 new AddTwitchChannelCommand(),
                 new RemoveTwitchChannelCommand(),
                 new GetTwitchChannelsCommand(),
-                new SetLiveNotificationsRoleCommand()
+                new SetLiveNotificationsRoleCommand(),
+
+                new ServeCommand(),
+                new BalanceCommand()
         );
 
         jdaBuilder.addEventListeners(new Listener());
@@ -207,6 +218,18 @@ public class BeanBot {
         versionHelper.contactGuilds();
     }
 
+    /**
+     * @return The current {@link ServeHandler}.
+     */
+    @NotNull
+    public static ServeHandler getServeHandler() {
+        return serveHandler;
+    }
+
+    /**
+     * @return The current {@link CountingHelper}.
+     */
+    @NotNull
     public static CountingHelper getCountingHelper() {
         return countingHelper;
     }
