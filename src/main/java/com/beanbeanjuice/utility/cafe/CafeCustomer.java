@@ -3,15 +3,17 @@ package com.beanbeanjuice.utility.cafe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class CafeCustomer {
 
     private String userID;
     private double beanCoinAmount;
-    private Date lastServingTime;
+    private Timestamp lastServingTime;
 
-    public CafeCustomer(@NotNull String userID, @NotNull Double beanCoinAmount, @NotNull Date lastServingTime) {
+    public CafeCustomer(@NotNull String userID, @NotNull Double beanCoinAmount, @NotNull Timestamp lastServingTime) {
         this.userID = userID;
         this.beanCoinAmount = beanCoinAmount;
         this.lastServingTime = lastServingTime;
@@ -28,7 +30,7 @@ public class CafeCustomer {
     }
 
     @Nullable
-    public Date getLastServingTime() {
+    public Timestamp getLastServingTime() {
         return lastServingTime;
     }
 

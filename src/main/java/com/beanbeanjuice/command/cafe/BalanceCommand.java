@@ -8,7 +8,6 @@ import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -26,15 +25,26 @@ public class BalanceCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
-
         if (args.size() == 0) {
             CafeCustomer cafeCustomer = BeanBot.getServeHandler().getCafeCustomer(user);
+
+            if (cafeCustomer == null) {
+                event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+                return;
+            }
+
             event.getChannel().sendMessage(selfBalanceEmbed(cafeCustomer.getBeanCoinAmount())).queue();
             return;
         }
 
         User person = BeanBot.getGeneralHelper().getUser(args.get(0));
         CafeCustomer cafeCustomer = BeanBot.getServeHandler().getCafeCustomer(person);
+
+        if (cafeCustomer == null) {
+            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+            return;
+        }
+
         event.getChannel().sendMessage(otherBalanceEmbed(person, cafeCustomer.getBeanCoinAmount())).queue();
 
     }
