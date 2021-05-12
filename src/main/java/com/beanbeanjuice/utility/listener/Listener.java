@@ -48,6 +48,18 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
 
+        TextChannel countingChannel = BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).getCountingChannel();
+
+        if (event.getChannel().equals(countingChannel)) {
+
+            if (BeanBot.getGeneralHelper().isNumber(event.getMessage().getContentRaw().split(" ")[0])) {
+
+                return;
+            }
+
+        }
+
+
         User user = event.getAuthor();
 
         if (user.isBot() || event.isWebhookMessage()) {

@@ -20,6 +20,21 @@ import java.util.Random;
 public class GeneralHelper {
 
     /**
+     * Check whether or not a {@link String} is a number.
+     * @param check The {@link String} to check.
+     * @return Whether or not the {@link String} is a number.
+     */
+    @NotNull
+    public Boolean isNumber(@NotNull String check) {
+        try {
+            Integer.parseInt(check);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
      * @return A random {@link Color}.
      */
     @NotNull
