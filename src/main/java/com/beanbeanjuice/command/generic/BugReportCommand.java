@@ -43,6 +43,8 @@ public class BugReportCommand implements ICommand {
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("bugreport");
+        arrayList.add("report-bug");
+        arrayList.add("reportbug");
         return arrayList;
     }
 
