@@ -62,8 +62,8 @@ public class BeanBot {
     private static Guild homeGuild;
     private static final String HOME_GUILD_ID = JSONHelper.getValue(FILE_INFO, "bot", "guild_id").textValue();
     private static TextChannel homeGuildLogChannel;
-    private static final String HOME_GUILD_LOG_CHANNEL_ID = JSONHelper.getValue(FILE_INFO, "bot", "guild_log_channel_id").textValue();;
-    private static final String HOME_GUILD_WEBHOOK_URL = JSONHelper.getValue(FILE_INFO, "bot", "guild_webhook_url").textValue();;
+    private static final String HOME_GUILD_LOG_CHANNEL_ID = JSONHelper.getValue(FILE_INFO, "bot", "guild_log_channel_id").textValue();
+    private static final String HOME_GUILD_WEBHOOK_URL = JSONHelper.getValue(FILE_INFO, "bot", "guild_webhook_url").textValue();
 
     private static final String BOT_PREFIX = "!!";
 
