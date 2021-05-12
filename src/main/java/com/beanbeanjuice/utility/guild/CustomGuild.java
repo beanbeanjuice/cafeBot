@@ -27,6 +27,7 @@ public class CustomGuild {
     private String liveNotificationsRoleID;
     private Boolean notifyOnUpdate;
     private String updateChannelID;
+    private String countingChannelID;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -48,7 +49,8 @@ public class CustomGuild {
      */
     public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID,
                        @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
-                       @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID) {
+                       @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID,
+                       @NotNull String countingChannelID) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
@@ -58,6 +60,7 @@ public class CustomGuild {
         this.liveNotificationsRoleID = liveNotificationsRoleID;
         this.notifyOnUpdate = notifyOnUpdate;
         this.updateChannelID = updateChannelID;
+        this.countingChannelID = countingChannelID;
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
@@ -67,6 +70,32 @@ public class CustomGuild {
 
         deletingMessagesChannels = new ArrayList<>();
 
+    }
+
+    /**
+     * @return The counting {@link TextChannel} for the {@link Guild}.
+     */
+    @Nullable
+    public TextChannel getCountingChannel() {
+        try {
+            return BeanBot.getGuildHandler().getGuild(guildID).getTextChannelById(countingChannelID);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Set the Counting {@link TextChannel} for the {@link Guild}.
+     * @param countingChannel The {@link TextChannel} used for counting.
+     * @return Whether or not setting the counting {@link TextChannel} was successful.
+     */
+    @NotNull
+    public Boolean setCountingChannel(@NotNull TextChannel countingChannel) {
+        if (BeanBot.getGuildHandler().setCountingChannelID(guildID, countingChannel.getId())) {
+            this.countingChannelID = countingChannel.getId();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -82,7 +111,7 @@ public class CustomGuild {
     }
 
     /**
-     * Set the Bot Update Channel for the {@link Guild}.
+     * Set the Bot Update {@link TextChannel} for the {@link Guild}.
      * @param updateChannelID The ID of the {@link TextChannel} used for sending bot updates.
      * @return Whether or not setting the update {@link TextChannel} was successful.
      */
