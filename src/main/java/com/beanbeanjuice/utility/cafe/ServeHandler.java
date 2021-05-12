@@ -1,15 +1,16 @@
 package com.beanbeanjuice.utility.cafe;
 
 import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.UnsupportedTemporalTypeException;
 import java.util.Random;
 
 public class ServeHandler {
@@ -20,6 +21,7 @@ public class ServeHandler {
     private final Double TIP_DIVIDER = 0.85;
     private final Integer LENGTH_UNTIL_MULTIPLIER = 3;
     private final Integer USAGE_AMOUNT_DIVIDE = 500;
+    private final Integer MINUTES_UNTIL_CAN_SERVE = 60;
 
     /**
      * Gets the dictionary word from the SQL database.
@@ -45,6 +47,7 @@ public class ServeHandler {
 
     }
 
+    @NotNull
     public Boolean updateWord(@NotNull ServeWord serveWord) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
@@ -52,12 +55,16 @@ public class ServeHandler {
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
+
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, ("Uses: " + (serveWord.getUses()+1)));
+
             statement.setInt(1, serveWord.getUses()+1);
             statement.setString(2, serveWord.getWord());
 
             statement.execute();
             return true;
         } catch (SQLException e) {
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Update Cafe Word: " + e.getMessage());
             return false;
         }
 
@@ -68,7 +75,7 @@ public class ServeHandler {
         return Math.round(amount * 100.0) / 100.0;
     }
 
-    @NotNull
+    @Nullable
     public CafeCustomer getCafeCustomer(@NotNull String userID) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
@@ -82,7 +89,7 @@ public class ServeHandler {
 
             // Already Have userID.
             Double beanCountAmount = resultSet.getDouble(2);
-            Date lastServingTime = resultSet.getDate(3);
+            Timestamp lastServingTime = resultSet.getTimestamp(3);
 
             return new CafeCustomer(userID, beanCountAmount, lastServingTime);
         } catch (SQLException e) {
@@ -95,7 +102,7 @@ public class ServeHandler {
                 catchStatement.setLong(1, Long.parseLong(userID));
                 catchStatement.execute();
 
-                return new CafeCustomer(userID, 0.0, new Date());
+                return new CafeCustomer(userID, 0.0, new Timestamp(System.currentTimeMillis()));
 
             } catch (SQLException catchE) {
                 return null;
@@ -136,5 +143,69 @@ public class ServeHandler {
         }
         return tip + addedTip;
     }
+
+    @NotNull
+    public Integer minutesBetween(@NotNull CafeCustomer cafeCustomer) {
+
+        if (cafeCustomer.getLastServingTime() == null) {
+            return MINUTES_UNTIL_CAN_SERVE + 10;
+        }
+
+        try {
+            return Math.round(compareTwoTimeStamps(cafeCustomer.getLastServingTime(), new Timestamp(System.currentTimeMillis())));
+        } catch (UnsupportedTemporalTypeException e) {
+            return MINUTES_UNTIL_CAN_SERVE + 10;
+        }
+    }
+
+    public static long compareTwoTimeStamps(Timestamp oldTime, Timestamp currentTime) {
+        long milliseconds1 = oldTime.getTime();
+        long milliseconds2 = currentTime.getTime();
+
+        long diff = milliseconds2 - milliseconds1;
+        long diffSeconds = diff / 1000;
+        long diffMinutes = diff / (60 * 1000);
+        long diffHours = diff / (60 * 60 * 1000);
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+        return diffMinutes;
+    }
+
+    @NotNull
+    public Boolean canServe(@NotNull CafeCustomer cafeCustomer) {
+        return minutesBetween(cafeCustomer) >= MINUTES_UNTIL_CAN_SERVE;
+    }
+
+    @NotNull
+    public Boolean updateTip(@NotNull CafeCustomer cafeCustomer, @NotNull Timestamp currentDate, @NotNull Double tipToAdd) {
+
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "UPDATE beanbot.cafe_information SET bean_coins = (?) AND last_serving_time = (?) WHERE user_id = (?);";
+
+        double newTip = cafeCustomer.getBeanCoinAmount() + tipToAdd;
+
+        System.out.println("Cafe Customer Timer: " + cafeCustomer.getLastServingTime());
+        System.out.println("Cafe Customer Timer: " + currentDate.toString());
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setDouble(1, newTip);
+            statement.setTimestamp(2, currentDate);
+            statement.setLong(3, Long.parseLong(cafeCustomer.getUserID()));
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Tip: " + e.getMessage());
+            return false;
+        }
+
+    }
+
+    @NotNull
+    public Integer getMinutesUntilCanServe() {
+        return MINUTES_UNTIL_CAN_SERVE;
+    }
+
+
 
 }
