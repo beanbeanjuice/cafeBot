@@ -24,7 +24,21 @@ public class SetCountingChannelCommand implements ICommand {
             return;
         }
 
+        if (BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setCountingChannel(event.getChannel())) {
+            event.getChannel().sendMessage(BeanBot.getGeneralHelper().successEmbed(
+                    "Updated Counting Channel",
+                    "Successfully set the counting channel to this channel. " +
+                            "To remove counting, just delete the channel."
+            )).queue();
 
+            BeanBot.getCountingHelper().createNewRow(event.getGuild());
+            return;
+        }
+
+        event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+                "Error Updating Counting Channel",
+                "There was an error updating the counting channel. Please try again."
+        )).queue();
 
     }
 

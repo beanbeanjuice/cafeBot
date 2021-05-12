@@ -48,12 +48,20 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
 
-        TextChannel countingChannel = BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).getCountingChannel();
+        TextChannel countingChannel;
+
+        try {
+            countingChannel = BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).getCountingChannel();
+        } catch (NullPointerException e) {
+            countingChannel = null;
+        }
 
         if (event.getChannel().equals(countingChannel)) {
 
-            if (BeanBot.getGeneralHelper().isNumber(event.getMessage().getContentRaw().split(" ")[0])) {
+            String number = event.getMessage().getContentRaw().split(" ")[0];
 
+            if (BeanBot.getGeneralHelper().isNumber(number)) {
+                BeanBot.getCountingHelper().checkNumber(event, Integer.parseInt(number));
                 return;
             }
 
