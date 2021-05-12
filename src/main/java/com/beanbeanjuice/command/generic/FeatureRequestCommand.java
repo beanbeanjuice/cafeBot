@@ -13,44 +13,44 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * A command used for getting the link to the bug reports.
+ * A command used for sending the user a feature request link.
  *
  * @author beanbeanjuice
  */
-public class BugReportCommand implements ICommand {
+public class FeatureRequestCommand implements ICommand {
 
-    private final String BUG_REPORT_URL = "https://github.com/beanbeanjuice/beanBot/issues/new?assignees=beanbeanjuice&labels=bug&template=bug-report.md&title=%5BBUG%5D+%2A%2ADESCRIBE+YOUR+ISSUE+AS+SHORT+AS+POSSIBLE+IN+THIS+BOX%2A%2A";
+    private final String FEATURE_REQUEST_URL = "https://github.com/beanbeanjuice/beanBot/issues/new?assignees=beanbeanjuice&labels=feature&template=feature_request.md&title=%5BFEATURE%5D+%2A%2ADESCRIBE+THE+FEATURE+YOU+WANT+AS+SHORT+AS+POSSIBLE+HERE%2A%2A";
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(bugReportEmbed()).queue();
+        event.getChannel().sendMessage(featureRequestEmbed()).queue();
     }
 
-    private MessageEmbed bugReportEmbed() {
+    private MessageEmbed featureRequestEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Bug Report", BUG_REPORT_URL);
-        embedBuilder.setDescription("If you want to submit a bug report, please click on the title above.");
+        embedBuilder.setAuthor("Feature Request", FEATURE_REQUEST_URL);
+        embedBuilder.setDescription("If you want to submit a feature request, please click on the title above.");
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 
     @Override
     public String getName() {
-        return "bug-report";
+        return "feature-request";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("bugreport");
-        arrayList.add("report-bug");
-        arrayList.add("reportbug");
+        arrayList.add("featurerequest");
+        arrayList.add("request-feature");
+        arrayList.add("requestfeature");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Submit a bug report!";
+        return "Request a feature!";
     }
 
     @Override
