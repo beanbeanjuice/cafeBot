@@ -2,6 +2,7 @@ package com.beanbeanjuice.main;
 
 import com.beanbeanjuice.command.fun.MemeCommand;
 import com.beanbeanjuice.command.fun.JokeCommand;
+import com.beanbeanjuice.command.fun.SetCountingChannelCommand;
 import com.beanbeanjuice.command.general.HelpCommand;
 import com.beanbeanjuice.command.general.PingCommand;
 import com.beanbeanjuice.command.moderation.*;
@@ -11,6 +12,7 @@ import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.twitch.*;
 import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
+import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
 import com.beanbeanjuice.utility.helper.JSONHelper;
 import com.beanbeanjuice.utility.helper.VersionHelper;
@@ -102,8 +104,12 @@ public class BeanBot {
     // Version Helper
     private static VersionHelper versionHelper;
 
+    // Counting Helper
+    private static CountingHelper countingHelper;
+
     public static void main(String[] args) throws LoginException, InterruptedException {
 
+        countingHelper = new CountingHelper();
         twitchHandler = new TwitchHandler();
         sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
         sqlServer.startConnection();
@@ -150,6 +156,7 @@ public class BeanBot {
 
                 new MemeCommand(),
                 new JokeCommand(),
+                new SetCountingChannelCommand(),
 
                 new SetModeratorRoleCommand(),
                 new SetMutedRoleCommand(),
@@ -194,6 +201,10 @@ public class BeanBot {
 
         versionHelper = new VersionHelper();
         versionHelper.contactGuilds();
+    }
+
+    public static CountingHelper getCountingHelper() {
+        return countingHelper;
     }
 
     /**

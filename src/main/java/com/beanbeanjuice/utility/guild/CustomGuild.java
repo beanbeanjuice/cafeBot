@@ -86,13 +86,13 @@ public class CustomGuild {
 
     /**
      * Set the Counting {@link TextChannel} for the {@link Guild}.
-     * @param countingChannelID The ID of the {@link TextChannel} used for counting.
+     * @param countingChannel The {@link TextChannel} used for counting.
      * @return Whether or not setting the counting {@link TextChannel} was successful.
      */
     @NotNull
-    public Boolean setCountingChannel(@NotNull String countingChannelID) {
-        if (BeanBot.getGuildHandler().setCountingChannelID(guildID, countingChannelID)) {
-            this.countingChannelID = countingChannelID;
+    public Boolean setCountingChannel(@NotNull TextChannel countingChannel) {
+        if (BeanBot.getGuildHandler().setCountingChannelID(guildID, countingChannel.getId())) {
+            this.countingChannelID = countingChannel.getId();
             return true;
         }
         return false;

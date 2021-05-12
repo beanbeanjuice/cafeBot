@@ -162,6 +162,10 @@ public class CountingHelper {
     @NotNull
     public Boolean createNewRow(@NotNull Guild guild) {
 
+        if (getHighestNumber(guild) != null) {
+            return false;
+        }
+
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "INSERT IGNORE INTO beanbot.counting_information (guild_id) VALUES (?);";
 
