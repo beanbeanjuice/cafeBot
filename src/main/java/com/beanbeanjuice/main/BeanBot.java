@@ -3,8 +3,9 @@ package com.beanbeanjuice.main;
 import com.beanbeanjuice.command.fun.MemeCommand;
 import com.beanbeanjuice.command.fun.JokeCommand;
 import com.beanbeanjuice.command.fun.SetCountingChannelCommand;
-import com.beanbeanjuice.command.general.HelpCommand;
-import com.beanbeanjuice.command.general.PingCommand;
+import com.beanbeanjuice.command.generic.BugReportCommand;
+import com.beanbeanjuice.command.generic.HelpCommand;
+import com.beanbeanjuice.command.generic.PingCommand;
 import com.beanbeanjuice.command.moderation.*;
 import com.beanbeanjuice.command.moderation.mute.MuteCommand;
 import com.beanbeanjuice.command.moderation.mute.UnMuteCommand;
@@ -144,6 +145,7 @@ public class BeanBot {
         commandManager.addCommands(
                 new HelpCommand(),
                 new PingCommand(),
+                new BugReportCommand(),
 
                 new NowPlayingCommand(),
                 new PlayCommand(),
