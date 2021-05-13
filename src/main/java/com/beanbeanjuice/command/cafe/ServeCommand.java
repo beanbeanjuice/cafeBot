@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.sql.Date;
 
 /**
  * A command used to serve words.
@@ -59,9 +58,12 @@ public class ServeCommand implements ICommand {
         Timestamp currentDate = new Timestamp(System.currentTimeMillis());
         Double calculatedTip = BeanBot.getServeHandler().calculateTip(serveWord);
 
-        System.out.println(currentDate.toString()); // TODO: Remove
+        if (!BeanBot.getServeHandler().updateTip(cafeCustomer, currentDate, calculatedTip)) {
+            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+            return;
+        }
 
-        if (!BeanBot.getServeHandler().updateTip(cafeCustomer, currentDate, calculatedTip) && !BeanBot.getServeHandler().updateWord(serveWord)) {
+        if (!BeanBot.getServeHandler().updateWord(serveWord)) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
