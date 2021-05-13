@@ -89,8 +89,9 @@ public class OrderCommand implements ICommand {
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Awww... " + ordererUser.getAsMention() + " bought a " + item.getName()
         + " for " + receiverUser.getAsMention() + " and lost `$" + item.getPrice() + "`!");
-        embedBuilder.setFooter(ordererUser.getName() + " bought " + (orderer.getOrdersBought()+1) + " items. "
-        + receiverUser.getName() + " has received " + (receiver.getOrdersReceived()+1) + " items.");
+        embedBuilder.setFooter("So far, " + ordererUser.getName() + " has bought a total of " + (orderer.getOrdersBought()+1) + " menu items for other people. "
+        + receiverUser.getName() + " has received a total of " + (receiver.getOrdersReceived()+1) + " menu items from other people.");
+        embedBuilder.setThumbnail(item.getImageURL());
         return embedBuilder.build();
     }
 
