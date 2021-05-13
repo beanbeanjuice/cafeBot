@@ -5,7 +5,6 @@ import com.beanbeanjuice.utility.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.cafe.object.MenuItem;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,14 +18,9 @@ import java.util.ArrayList;
  */
 public class MenuHandler {
 
-    @Nullable
-    public MenuItem getItem(@NotNull String itemName) {
-        for (MenuItem menuItem : getMenu()) {
-            if (menuItem.getName().equalsIgnoreCase(itemName)) {
-                return menuItem;
-            }
-        }
-        return null;
+    @NotNull
+    public MenuItem getItem(@NotNull Integer itemNumber) {
+        return getMenu().get(itemNumber);
     }
 
     @NotNull

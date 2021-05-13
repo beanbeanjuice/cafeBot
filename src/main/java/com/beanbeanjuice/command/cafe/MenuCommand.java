@@ -6,9 +6,12 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
+import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -21,25 +24,57 @@ public class MenuCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        StringBuilder stringBuilder = new StringBuilder();
 
-        ArrayList<MenuItem> menu = BeanBot.getMenuHandler().getMenu();
+        if (args.size() == 0) {
+            StringBuilder stringBuilder = new StringBuilder();
+            ArrayList<MenuItem> menu = BeanBot.getMenuHandler().getMenu();
 
-        for (int i = 0; i < menu.size(); i++) {
+            for (int i = 0; i < menu.size(); i++) {
+                stringBuilder.append(i + 1)
+                        .append(" **").append(menu.get(i).getName()).append("** - `$")
+                        .append(menu.get(i).getPrice()).append("`\n");
+            }
 
-            stringBuilder.append(i+1)
-                    .append(" **").append(menu.get(i).getName()).append("** - `$")
-                    .append(menu.get(i).getPrice()).append("` ").append(menu.get(i).getDescription()).append("\n");
+            event.getChannel().sendMessage(menuEmbed(stringBuilder.toString())).queue();
+        } else {
+            int itemIndex = Integer.parseInt(args.get(0)) - 1;
+
+            // Checking if the item exists
+            if (itemIndex >= BeanBot.getMenuHandler().getMenu().size()) {
+                event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+                        "Unknown Item",
+                        "The item `" + args.get(0) + "` does not exist. " +
+                                "To view the menu, do `" + ctx.getPrefix() + "menu`!"
+                )).queue();
+                return;
+            }
+
+            MenuItem item = BeanBot.getMenuHandler().getItem(itemIndex);
+            event.getChannel().sendMessage(menuItemEmbed(item, itemIndex)).queue();
 
         }
+    }
 
+    @NotNull
+    private MessageEmbed menuItemEmbed(@NotNull MenuItem menuItem, @NotNull Integer itemIndex) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor("Menu Item - " + menuItem.getName());
+        embedBuilder.addField("Price", "`$" + menuItem.getPrice() + "` beanCoins", true);
+        embedBuilder.addField("Item Number", String.valueOf(itemIndex+1), true);
+        embedBuilder.setDescription(menuItem.getDescription());
+        embedBuilder.setThumbnail(menuItem.getImageURL());
+        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        return embedBuilder.build();
+    }
+
+    @NotNull
+    private MessageEmbed menuEmbed(@NotNull String description) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Menu Items");
-        embedBuilder.setDescription(stringBuilder.toString());
+        embedBuilder.setDescription(description);
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
         embedBuilder.setFooter("I hope you enjoy your stay!~");
-
-        event.getChannel().sendMessage(embedBuilder.build()).queue();
+        return embedBuilder.build();
     }
 
     @Override
@@ -59,7 +94,9 @@ public class MenuCommand implements ICommand {
 
     @Override
     public Usage getUsage() {
-        return new Usage();
+        Usage usage = new Usage();
+        usage.addUsage(CommandType.NUMBER, "Menu Item Number", false);
+        return usage;
     }
 
     @Override
