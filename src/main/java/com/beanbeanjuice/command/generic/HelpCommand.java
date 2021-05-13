@@ -35,12 +35,6 @@ public class HelpCommand implements ICommand {
             return;
         }
 
-        // Checking if the argument is equal to the "play" command.
-        if (args.get(0).equalsIgnoreCase("play")) {
-            event.getChannel().sendMessage(playCommandEmbed(prefix)).queue(); // Sends a custom play command embed.
-            return;
-        }
-
         String search = args.get(0);
 
         // Goes through each category. If the first argument is equal to the name, then print commands for that category.
@@ -128,42 +122,14 @@ public class HelpCommand implements ICommand {
         int count = 1;
 
         for (ICommand command : BeanBot.getCommandManager().getCommands()) {
-
             if (command.getCategoryType().equals(categoryType)) {
-
                 stringBuilder.append(count++).append(".").append("`").append(prefix).append(command.getName());
-
                 stringBuilder.append("`\n");
             }
         }
 
         embedBuilder.addField("**Commands in " + categoryType.toString() + "**", stringBuilder.toString(), true);
         embedBuilder.setThumbnail(categoryType.getLink());
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-        return embedBuilder.build();
-    }
-
-    @NotNull
-    private MessageEmbed playCommandEmbed(@NotNull String prefix) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        StringBuilder stringBuilder = new StringBuilder();
-
-        embedBuilder.setAuthor("PLAY Command");
-        embedBuilder.addField("Usage", prefix + "play", false);
-
-        ICommand command = BeanBot.getCommandManager().getCommand("play");
-
-        stringBuilder.append("`");
-        for (int i = 0; i < command.getAliases().size(); i++) {
-            stringBuilder.append(command.getAliases().get(i));
-            if (i != command.getAliases().size() - 1) {
-                stringBuilder.append(", ");
-            }
-        }
-        stringBuilder.append("`");
-        embedBuilder.addField("Usage", "`1. <DESCRIPTION:Any text/link>:<TYPE:LINK/TEXT>:<OPTIONAL>`", false);
-        embedBuilder.addField("Command Aliases", stringBuilder.toString(), false);
-        embedBuilder.addField("Command Description", command.getDescription(), false);
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
