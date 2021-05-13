@@ -41,10 +41,10 @@ public class OrderCommand implements ICommand {
             return;
         }
 
-        MenuItem item = BeanBot.getMenuHandler().getItem(args.get(0));
+        int itemIndex = Integer.parseInt(args.get(0)) - 1;
 
         // Checking if the menu item is null.
-        if (item == null) {
+        if (itemIndex >= BeanBot.getMenuHandler().getMenu().size()) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
                     "Unknown Item",
                     "The item `" + args.get(0) + "` does not exist. " +
@@ -52,6 +52,8 @@ public class OrderCommand implements ICommand {
             )).queue();
             return;
         }
+
+        MenuItem item = BeanBot.getMenuHandler().getItem(itemIndex);
 
         // Checking if they have enough money.
         if (orderer.getBeanCoinAmount() < item.getPrice()) {
@@ -110,7 +112,7 @@ public class OrderCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "The Menu Item", true);
+        usage.addUsage(CommandType.NUMBER, "The Menu Item Number", true);
         usage.addUsage(CommandType.USER, "The Person You Are Ordering For", true);
         return usage;
     }
