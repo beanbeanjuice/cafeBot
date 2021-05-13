@@ -169,30 +169,10 @@ public class ServeHandler {
         }
 
         try {
-            return Math.round(compareTwoTimeStamps(cafeCustomer.getLastServingTime(), new Timestamp(System.currentTimeMillis())));
+            return Math.round(BeanBot.getGeneralHelper().compareTwoTimeStamps(cafeCustomer.getLastServingTime(), new Timestamp(System.currentTimeMillis())));
         } catch (UnsupportedTemporalTypeException e) {
             return MINUTES_UNTIL_CAN_SERVE + 10;
         }
-    }
-
-    /**
-     * Compare the difference in minutes between two {@link Timestamp} objects.
-     * @param oldTime The old {@link Timestamp}.
-     * @param currentTime The new {@link Timestamp}.
-     * @return The difference in minutes as a {@link Long}.
-     */
-    @NotNull
-    public Long compareTwoTimeStamps(Timestamp oldTime, Timestamp currentTime) {
-        long milliseconds1 = oldTime.getTime();
-        long milliseconds2 = currentTime.getTime();
-
-        long diff = milliseconds2 - milliseconds1;
-        long diffSeconds = diff / 1000;
-        long diffMinutes = diff / (60 * 1000);
-        long diffHours = diff / (60 * 60 * 1000);
-        long diffDays = diff / (24 * 60 * 60 * 1000);
-
-        return diffMinutes;
     }
 
     /**

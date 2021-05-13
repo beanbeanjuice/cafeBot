@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.sql.Timestamp;
 import java.util.Random;
 
 /**
@@ -18,6 +19,26 @@ import java.util.Random;
  * @author beanbeanjuice
  */
 public class GeneralHelper {
+
+    /**
+     * Compare the difference in minutes between two {@link Timestamp} objects.
+     * @param oldTime The old {@link Timestamp}.
+     * @param currentTime The new {@link Timestamp}.
+     * @return The difference in minutes as a {@link Long}.
+     */
+    @NotNull
+    public Long compareTwoTimeStamps(Timestamp oldTime, Timestamp currentTime) {
+        long milliseconds1 = oldTime.getTime();
+        long milliseconds2 = currentTime.getTime();
+
+        long diff = milliseconds2 - milliseconds1;
+        long diffSeconds = diff / 1000;
+        long diffMinutes = diff / (60 * 1000);
+        long diffHours = diff / (60 * 60 * 1000);
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+        return diffMinutes;
+    }
 
     /**
      * Check whether or not a {@link String} is a number.
