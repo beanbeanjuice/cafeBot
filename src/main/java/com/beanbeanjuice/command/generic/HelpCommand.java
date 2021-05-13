@@ -112,6 +112,7 @@ public class HelpCommand implements ICommand {
 
         embedBuilder.addField("Command Description", command.getDescription(), false);
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/beanBot!");
         return embedBuilder.build();
     }
 
@@ -131,6 +132,7 @@ public class HelpCommand implements ICommand {
         embedBuilder.addField("**Commands in " + categoryType.toString() + "**", stringBuilder.toString(), true);
         embedBuilder.setThumbnail(categoryType.getLink());
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/beanBot!");
         return embedBuilder.build();
     }
 
@@ -147,6 +149,7 @@ public class HelpCommand implements ICommand {
 
         embedBuilder.addField("**Command Categories**", stringBuilder.toString(), true);
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/beanBot!");
         return embedBuilder.build();
     }
 
@@ -156,6 +159,7 @@ public class HelpCommand implements ICommand {
         embedBuilder.setAuthor("No Command Found");
         embedBuilder.setDescription("No command has been found for `" + commandName + "`.");
         embedBuilder.setColor(Color.red);
+        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/beanBot!");
         return embedBuilder.build();
     }
 
