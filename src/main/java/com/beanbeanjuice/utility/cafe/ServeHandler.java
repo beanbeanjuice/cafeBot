@@ -1,6 +1,8 @@
 package com.beanbeanjuice.utility.cafe;
 
 import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.utility.cafe.object.CafeCustomer;
+import com.beanbeanjuice.utility.cafe.object.ServeWord;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
@@ -95,8 +97,10 @@ public class ServeHandler {
             // Already Have userID.
             Double beanCountAmount = resultSet.getDouble(2);
             Timestamp lastServingTime = resultSet.getTimestamp(3);
+            Integer ordersBought = resultSet.getInt(4);
+            Integer ordersReceived = resultSet.getInt(5);
 
-            return new CafeCustomer(userID, beanCountAmount, lastServingTime);
+            return new CafeCustomer(userID, beanCountAmount, lastServingTime, ordersBought, ordersReceived);
         } catch (SQLException e) {
 
             arguments = "INSERT INTO beanbot.cafe_information (user_id) VALUES (?);";
@@ -106,7 +110,7 @@ public class ServeHandler {
                 catchStatement.setLong(1, Long.parseLong(userID));
 
                 catchStatement.execute();
-                return new CafeCustomer(userID, 0.0, new Timestamp(System.currentTimeMillis()));
+                return new CafeCustomer(userID, 0.0, new Timestamp(System.currentTimeMillis()), 0, 0);
             } catch (SQLException catchE) {
                 return null;
             }
