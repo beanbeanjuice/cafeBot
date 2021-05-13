@@ -123,7 +123,7 @@ public class HelpCommand implements ICommand {
 
         for (ICommand command : BeanBot.getCommandManager().getCommands()) {
             if (command.getCategoryType().equals(categoryType)) {
-                stringBuilder.append(count++).append(".").append("`").append(prefix).append(command.getName());
+                stringBuilder.append(count++).append(". ").append("`").append(prefix).append(command.getName());
                 stringBuilder.append("`\n");
             }
         }
@@ -140,7 +140,7 @@ public class HelpCommand implements ICommand {
         int count = 1;
 
         for (CategoryType categoryType : CategoryType.values()) {
-            stringBuilder.append(count++).append(".").append("`").append(categoryType.toString());
+            stringBuilder.append(count++).append(". ").append("`").append(categoryType.toString());
 
             stringBuilder.append("`\n");
         }
