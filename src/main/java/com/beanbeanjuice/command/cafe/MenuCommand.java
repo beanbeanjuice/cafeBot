@@ -51,7 +51,6 @@ public class MenuCommand implements ICommand {
 
             MenuItem item = BeanBot.getMenuHandler().getItem(itemIndex);
             event.getChannel().sendMessage(menuItemEmbed(item, itemIndex)).queue();
-
         }
     }
 
