@@ -99,7 +99,7 @@ public class GeneralHelper {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("No Permission");
         embedBuilder.setColor(Color.red);
-        embedBuilder.setDescription("You don't have permission to run this command. You must be an administrator");
+        embedBuilder.setDescription("You don't have permission to run this command. You must be an administrator.");
         event.getChannel().sendMessage(embedBuilder.build()).queue();
         return false;
     }

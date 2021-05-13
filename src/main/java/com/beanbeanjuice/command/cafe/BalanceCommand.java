@@ -46,14 +46,13 @@ public class BalanceCommand implements ICommand {
         }
 
         event.getChannel().sendMessage(otherBalanceEmbed(person, cafeCustomer.getBeanCoinAmount())).queue();
-
     }
 
     public MessageEmbed selfBalanceEmbed(@NotNull Double beanCoinAmount) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("beanCoin Balance");
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setDescription("Your current balance is `$" + BeanBot.getServeHandler().roundDouble(beanCoinAmount) + "`!"); // TODO: Round to 2 decimal places.
+        embedBuilder.setDescription("Your current balance is `$" + BeanBot.getServeHandler().roundDouble(beanCoinAmount) + "` beanCoins!");
         return embedBuilder.build();
     }
 
@@ -61,7 +60,7 @@ public class BalanceCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("beanCoin Balance");
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setDescription(user.getAsMention() + " has a current balance of `$" + BeanBot.getServeHandler().roundDouble(beanCoinAmount) + "`!"); // TODO: Round to 2 decimal places.
+        embedBuilder.setDescription(user.getAsMention() + " has a current balance of `$" + BeanBot.getServeHandler().roundDouble(beanCoinAmount) + "` beanCoins!");
         return embedBuilder.build();
     }
 

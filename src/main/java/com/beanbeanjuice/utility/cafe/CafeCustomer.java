@@ -3,9 +3,7 @@ package com.beanbeanjuice.utility.cafe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class CafeCustomer {
 
