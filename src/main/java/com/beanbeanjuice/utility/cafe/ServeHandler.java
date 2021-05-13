@@ -42,6 +42,11 @@ public class ServeHandler {
         }
     }
 
+    /**
+     * Updates the specified {@link ServeWord} in the database.
+     * @param serveWord The {@link ServeWord} to update.
+     * @return Whether or not updating the word was successful.
+     */
     @NotNull
     public Boolean updateWord(@NotNull ServeWord serveWord) {
         Connection connection = BeanBot.getSQLServer().getConnection();
@@ -60,11 +65,21 @@ public class ServeHandler {
         }
     }
 
+    /**
+     * Round the specified {@link Double} to 2 decimal places.
+     * @param amount The {@link Double} to round.
+     * @return The rounded {@link Double}.
+     */
     @NotNull
     public Double roundDouble(@NotNull Double amount) {
         return Math.round(amount * 100.0) / 100.0;
     }
 
+    /**
+     * Get a specified {@link CafeCustomer} from their Discord user ID.
+     * @param userID The user ID of the {@link CafeCustomer}.
+     * @return The specified {@link CafeCustomer}.
+     */
     @Nullable
     public CafeCustomer getCafeCustomer(@NotNull String userID) {
 
@@ -98,6 +113,11 @@ public class ServeHandler {
         }
     }
 
+    /**
+     * Get a specified {@link CafeCustomer} from their Discord {@link User}.
+     * @param user The Discord {@link User}.
+     * @return The specified {@link CafeCustomer}.
+     */
     @Nullable
     public CafeCustomer getCafeCustomer(@NotNull User user) {
         return getCafeCustomer(user.getId());
@@ -131,6 +151,12 @@ public class ServeHandler {
         return tip + addedTip;
     }
 
+    /**
+     * Get the amount of minutes that has passed between now and
+     * the last time the {@link CafeCustomer} served something.
+     * @param cafeCustomer The {@link CafeCustomer} to check.
+     * @return The amount of minutes that has passed.
+     */
     @NotNull
     public Integer minutesBetween(@NotNull CafeCustomer cafeCustomer) {
         if (cafeCustomer.getLastServingTime() == null) {
@@ -144,7 +170,14 @@ public class ServeHandler {
         }
     }
 
-    public static long compareTwoTimeStamps(Timestamp oldTime, Timestamp currentTime) {
+    /**
+     * Compare the difference in minutes between two {@link Timestamp} objects.
+     * @param oldTime The old {@link Timestamp}.
+     * @param currentTime The new {@link Timestamp}.
+     * @return The difference in minutes as a {@link Long}.
+     */
+    @NotNull
+    public Long compareTwoTimeStamps(Timestamp oldTime, Timestamp currentTime) {
         long milliseconds1 = oldTime.getTime();
         long milliseconds2 = currentTime.getTime();
 
@@ -157,11 +190,22 @@ public class ServeHandler {
         return diffMinutes;
     }
 
+    /**
+     * @param cafeCustomer THe {@link CafeCustomer} to check.
+     * @return Whether or not the specified {@link CafeCustomer} can serve.
+     */
     @NotNull
     public Boolean canServe(@NotNull CafeCustomer cafeCustomer) {
         return minutesBetween(cafeCustomer) >= MINUTES_UNTIL_CAN_SERVE;
     }
 
+    /**
+     * Updates the amount of money for the {@link CafeCustomer}.
+     * @param cafeCustomer The specified {@link CafeCustomer}.
+     * @param currentDate The current {@link Timestamp}.
+     * @param tipToAdd The amount of tip to add to the {@link CafeCustomer}.
+     * @return Whether or not updating the {@link CafeCustomer} was successful.
+     */
     @NotNull
     public Boolean updateTip(@NotNull CafeCustomer cafeCustomer, @NotNull Timestamp currentDate, @NotNull Double tipToAdd) {
         Connection connection = BeanBot.getSQLServer().getConnection();
@@ -182,6 +226,9 @@ public class ServeHandler {
         }
     }
 
+    /**
+     * @return The amount of minutes maximum that has to pass until they can serve again.
+     */
     @NotNull
     public Integer getMinutesUntilCanServe() {
         return MINUTES_UNTIL_CAN_SERVE;
