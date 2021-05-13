@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.general;
+package com.beanbeanjuice.command.generic;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -75,16 +75,23 @@ public class HelpCommand implements ICommand {
         paramBuilder.append("`");
 
         for (int i = 0; i < usages.size(); i++) {
-            stringBuilder.append(" <").append("Parameter ").append(i + 1).append(">");
+            if (i < 10) {
+                stringBuilder.append(" <").append("Parameter ").append(i + 1).append(">");
 
-            CommandUsage usage = usages.get(i);
-            paramBuilder.append(i+1).append(". ").append("<DESCRIPTION:").append(usage.getName()).append(">:")
-                    .append("<TYPE:").append(usage.getType().getDescription()).append(">:");
+                CommandUsage usage = usages.get(i);
+                paramBuilder.append(i + 1).append(". ").append("<DESCRIPTION:").append(usage.getName()).append(">:")
+                        .append("<TYPE:").append(usage.getType().getDescription()).append(">:");
 
-            if (usage.isRequired()) {
-                paramBuilder.append("<REQUIRED>\n");
-            } else if (!usage.isRequired()) {
-                paramBuilder.append("<OPTIONAL>\n");
+                if (usage.isRequired()) {
+                    paramBuilder.append("<REQUIRED>\n");
+                } else if (!usage.isRequired()) {
+                    paramBuilder.append("<OPTIONAL>\n");
+                }
+            }
+
+            if (i == 10) {
+                paramBuilder.append("\n There are more usages... but it won't fit. If this is the point, that means you should just add a description " +
+                        "instead of a parameter.");
             }
         }
         stringBuilder.append("`");
