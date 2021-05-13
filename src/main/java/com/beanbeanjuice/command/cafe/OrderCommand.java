@@ -27,29 +27,33 @@ public class OrderCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         CafeCustomer orderer = BeanBot.getServeHandler().getCafeCustomer(user);
 
+        // Checking if the person who ordered is null.
         if (orderer == null) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
-        CafeCustomer receiver = BeanBot.getServeHandler().getCafeCustomer(BeanBot.getGeneralHelper().getUser(args.get(0)));
+        CafeCustomer receiver = BeanBot.getServeHandler().getCafeCustomer(BeanBot.getGeneralHelper().getUser(args.get(1)));
 
+        // Checking if the receiver is null.
         if (receiver == null) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
-        MenuItem item = BeanBot.getMenuHandler().getItem(args.get(1));
+        MenuItem item = BeanBot.getMenuHandler().getItem(args.get(0));
 
+        // Checking if the menu item is null.
         if (item == null) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
                     "Unknown Item",
-                    "The item `" + args.get(1) + "` does not exist. " +
+                    "The item `" + args.get(0) + "` does not exist. " +
                             "To view the menu, do `" + ctx.getPrefix() + "menu`!"
             )).queue();
             return;
         }
 
+        // Checking if they have enough money.
         if (orderer.getBeanCoinAmount() < item.getPrice()) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
                     "You Are Broke",
@@ -58,23 +62,23 @@ public class OrderCommand implements ICommand {
             return;
         }
 
+        // Updating the person who ordered the item.
         if (!BeanBot.getMenuHandler().updateOrderer(orderer, item.getPrice())) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
+        // Updating the person who received the order.
         if (!BeanBot.getMenuHandler().updateReceiver(receiver)) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
         event.getChannel().sendMessage(orderEmbed(orderer, receiver, item)).queue();
-
     }
 
     @NotNull
     private MessageEmbed orderEmbed(@NotNull CafeCustomer orderer, @NotNull CafeCustomer receiver, @NotNull MenuItem item) {
-
         User ordererUser = BeanBot.getJDA().getUserById(orderer.getUserID());
         User receiverUser = BeanBot.getJDA().getUserById(receiver.getUserID());
 
@@ -106,8 +110,8 @@ public class OrderCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "The Person You Are Ordering For", true);
         usage.addUsage(CommandType.TEXT, "The Menu Item", true);
+        usage.addUsage(CommandType.USER, "The Person You Are Ordering For", true);
         return usage;
     }
 
