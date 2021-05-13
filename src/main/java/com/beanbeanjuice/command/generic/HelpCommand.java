@@ -69,7 +69,7 @@ public class HelpCommand implements ICommand {
         paramBuilder.append("`");
 
         for (int i = 0; i < usages.size(); i++) {
-            if (i < 10) {
+            if (i < 5) {
                 stringBuilder.append(" <").append("Parameter ").append(i + 1).append(">");
 
                 CommandUsage usage = usages.get(i);
@@ -83,8 +83,8 @@ public class HelpCommand implements ICommand {
                 }
             }
 
-            if (i == 10) {
-                paramBuilder.append("\n There are more usages... but it won't fit. If this is the point, that means you should just add a description " +
+            if (i == 5) {
+                paramBuilder.append("\n There are more usages... but it won't fit. If you see this message, just add a sentence " +
                         "instead of a parameter.");
             }
         }
