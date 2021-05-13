@@ -33,7 +33,7 @@ public class BalanceCommand implements ICommand {
                 return;
             }
 
-            event.getChannel().sendMessage(selfBalanceEmbed(cafeCustomer.getBeanCoinAmount())).queue();
+            event.getChannel().sendMessage(selfBalanceEmbed(cafeCustomer)).queue();
             return;
         }
 
@@ -45,22 +45,26 @@ public class BalanceCommand implements ICommand {
             return;
         }
 
-        event.getChannel().sendMessage(otherBalanceEmbed(person, cafeCustomer.getBeanCoinAmount())).queue();
+        event.getChannel().sendMessage(otherBalanceEmbed(person, cafeCustomer)).queue();
     }
 
-    public MessageEmbed selfBalanceEmbed(@NotNull Double beanCoinAmount) {
+    public MessageEmbed selfBalanceEmbed(@NotNull CafeCustomer cafeCustomer) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("beanCoin Balance");
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setDescription("Your current balance is `$" + BeanBot.getServeHandler().roundDouble(beanCoinAmount) + "` beanCoins!");
+        embedBuilder.addField("Orders Bought", cafeCustomer.getOrdersBought().toString(), true);
+        embedBuilder.addField("Orders Received", cafeCustomer.getOrdersReceived().toString(), true);
+        embedBuilder.setDescription("Your current balance is `$" + BeanBot.getServeHandler().roundDouble(cafeCustomer.getBeanCoinAmount()) + "` beanCoins!");
         return embedBuilder.build();
     }
 
-    public MessageEmbed otherBalanceEmbed(@NotNull User user, @NotNull Double beanCoinAmount) {
+    public MessageEmbed otherBalanceEmbed(@NotNull User user, @NotNull CafeCustomer cafeCustomer) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("beanCoin Balance");
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setDescription(user.getAsMention() + " has a current balance of `$" + BeanBot.getServeHandler().roundDouble(beanCoinAmount) + "` beanCoins!");
+        embedBuilder.addField("Orders Bought", cafeCustomer.getOrdersBought().toString(), true);
+        embedBuilder.addField("Orders Received", cafeCustomer.getOrdersReceived().toString(), true);
+        embedBuilder.setDescription(user.getAsMention() + " has a current balance of `$" + BeanBot.getServeHandler().roundDouble(cafeCustomer.getBeanCoinAmount()) + "` beanCoins!");
         return embedBuilder.build();
     }
 
