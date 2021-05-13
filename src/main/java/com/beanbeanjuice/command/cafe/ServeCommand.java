@@ -49,7 +49,7 @@ public class ServeCommand implements ICommand {
             return;
         }
 
-
+        // Checking if the user CAN serve someone.
         if (!BeanBot.getServeHandler().canServe(cafeCustomer)) {
             event.getChannel().sendMessage(cannotServeEmbed(BeanBot.getServeHandler().minutesBetween(cafeCustomer))).queue();
             return;
@@ -58,11 +58,13 @@ public class ServeCommand implements ICommand {
         Timestamp currentDate = new Timestamp(System.currentTimeMillis());
         Double calculatedTip = BeanBot.getServeHandler().calculateTip(serveWord);
 
+        // Updates the Balance for the User
         if (!BeanBot.getServeHandler().updateTip(cafeCustomer, currentDate, calculatedTip)) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
+        // Updates the Word Used
         if (!BeanBot.getServeHandler().updateWord(serveWord)) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
             return;
