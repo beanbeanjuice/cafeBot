@@ -40,7 +40,7 @@ public class Listener extends ListenerAdapter {
         TextChannel channel = event.getGuild().getDefaultChannel();
 
         if (channel != null) {
-            event.getGuild().getDefaultChannel().sendMessage("The barista has arrived!").queue();
+            event.getGuild().getDefaultChannel().sendMessage(guildJoinEmbed()).queue();
         }
 
         BeanBot.getGuildHandler().addGuild(event.getGuild());
@@ -51,6 +51,7 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
 
+        // Checking if the event is a counting channel
         TextChannel countingChannel;
 
         try {
@@ -60,23 +61,21 @@ public class Listener extends ListenerAdapter {
         }
 
         if (event.getChannel().equals(countingChannel)) {
-
             String number = event.getMessage().getContentRaw().split(" ")[0];
-
             if (BeanBot.getGeneralHelper().isNumber(number)) {
                 BeanBot.getCountingHelper().checkNumber(event, Integer.parseInt(number));
                 return;
             }
-
         }
-
 
         User user = event.getAuthor();
 
+        // Checking if the person is a bot or if the event is a webhook message.
         if (user.isBot() || event.isWebhookMessage()) {
             return;
         }
 
+        // Sets the prefix
         String prefix;
         try {
             prefix = BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getPrefix();
@@ -90,6 +89,22 @@ public class Listener extends ListenerAdapter {
         if (raw.startsWith(prefix)) {
             BeanBot.getCommandManager().handle(event, prefix);
         }
+    }
+
+    @NotNull
+    private MessageEmbed guildJoinEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor("The Barista Has Arrived");
+        embedBuilder.setColor(Color.green);
+        embedBuilder.setThumbnail(BeanBot.getJDA().getSelfUser().getAvatarUrl());
+        StringBuilder description = new StringBuilder();
+        description.append("Thank you for inviting me! I hope I'm not too much trouble.\n\n\n")
+                .append("For a list of command sections, type `!!help`.\n\n")
+                .append("For a list of commands in a section, type `!!help (command section name)`!\n\n")
+                .append("For help with a specific command, type `!!help (command name/alias)`!\n\n\n")
+                .append("Anyway... be sure to report any bug reports or features you want to see!");
+        embedBuilder.setDescription(description.toString());
+        return embedBuilder.build();
     }
 
     @NotNull
