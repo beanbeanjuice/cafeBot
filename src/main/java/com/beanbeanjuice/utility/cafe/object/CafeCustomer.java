@@ -26,7 +26,7 @@ public class CafeCustomer {
      * @param ordersBought The amount of {@link MenuItem}s that the {@link CafeCustomer} bought for others.
      * @param ordersReceived The amount of {@link MenuItem}s that the {@link CafeCustomer} received from others.
      */
-    public CafeCustomer(@NotNull String userID, @NotNull Double beanCoinAmount, @NotNull Timestamp lastServingTime,
+    public CafeCustomer(@NotNull String userID, @NotNull Double beanCoinAmount, @Nullable Timestamp lastServingTime,
                         @NotNull Integer ordersBought, @NotNull Integer ordersReceived) {
         this.userID = userID;
         this.beanCoinAmount = beanCoinAmount;

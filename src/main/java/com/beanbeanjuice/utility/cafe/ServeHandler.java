@@ -110,7 +110,7 @@ public class ServeHandler {
                 catchStatement.setLong(1, Long.parseLong(userID));
 
                 catchStatement.execute();
-                return new CafeCustomer(userID, 0.0, new Timestamp(System.currentTimeMillis()), 0, 0);
+                return new CafeCustomer(userID, 0.0, null, 0, 0);
             } catch (SQLException catchE) {
                 return null;
             }
@@ -163,6 +163,7 @@ public class ServeHandler {
      */
     @NotNull
     public Integer minutesBetween(@NotNull CafeCustomer cafeCustomer) {
+
         if (cafeCustomer.getLastServingTime() == null) {
             return MINUTES_UNTIL_CAN_SERVE + 10;
         }
