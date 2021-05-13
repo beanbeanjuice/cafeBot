@@ -1,6 +1,8 @@
 package com.beanbeanjuice.utility.listener;
 
 import com.beanbeanjuice.main.BeanBot;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -11,6 +13,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 
 /**
  * A listener class used for things that happens when the bot joins/leaves a server.
@@ -74,10 +77,12 @@ public class Listener extends ListenerAdapter {
             return;
         }
 
-        String prefix = BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getPrefix();
-
-        if (prefix == null) {
-            prefix = BeanBot.getPrefix();
+        String prefix;
+        try {
+            prefix = BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getPrefix();
+        } catch (NullPointerException e) {
+            event.getChannel().sendMessage(startingUpEmbed()).queue();
+            return;
         }
 
         String raw = event.getMessage().getContentRaw();
@@ -85,5 +90,15 @@ public class Listener extends ListenerAdapter {
         if (raw.startsWith(prefix)) {
             BeanBot.getCommandManager().handle(event, prefix);
         }
+    }
+
+    @NotNull
+    private MessageEmbed startingUpEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor("Bot Command Error...");
+        embedBuilder.setColor(Color.red);
+        embedBuilder.setDescription("Sorry... you can't run any commands right now because the connection is either lost," +
+                " or I am starting up.");
+        return embedBuilder.build();
     }
 }
