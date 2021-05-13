@@ -35,12 +35,6 @@ public class HelpCommand implements ICommand {
             return;
         }
 
-        // Checking if the argument is equal to the "play" command.
-        if (args.get(0).equalsIgnoreCase("play")) {
-            event.getChannel().sendMessage(playCommandEmbed(prefix)).queue(); // Sends a custom play command embed.
-            return;
-        }
-
         String search = args.get(0);
 
         // Goes through each category. If the first argument is equal to the name, then print commands for that category.
@@ -75,7 +69,7 @@ public class HelpCommand implements ICommand {
         paramBuilder.append("`");
 
         for (int i = 0; i < usages.size(); i++) {
-            if (i < 10) {
+            if (i < 5) {
                 stringBuilder.append(" <").append("Parameter ").append(i + 1).append(">");
 
                 CommandUsage usage = usages.get(i);
@@ -89,8 +83,8 @@ public class HelpCommand implements ICommand {
                 }
             }
 
-            if (i == 10) {
-                paramBuilder.append("\n There are more usages... but it won't fit. If this is the point, that means you should just add a description " +
+            if (i == 5) {
+                paramBuilder.append("\n There are more usages... but it won't fit. If you see this message, just add a sentence " +
                         "instead of a parameter.");
             }
         }
@@ -118,6 +112,7 @@ public class HelpCommand implements ICommand {
 
         embedBuilder.addField("Command Description", command.getDescription(), false);
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/beanBot!");
         return embedBuilder.build();
     }
 
@@ -128,11 +123,8 @@ public class HelpCommand implements ICommand {
         int count = 1;
 
         for (ICommand command : BeanBot.getCommandManager().getCommands()) {
-
             if (command.getCategoryType().equals(categoryType)) {
-
-                stringBuilder.append(count++).append(".").append("`").append(prefix).append(command.getName());
-
+                stringBuilder.append(count++).append(". ").append("`").append(prefix).append(command.getName());
                 stringBuilder.append("`\n");
             }
         }
@@ -140,31 +132,7 @@ public class HelpCommand implements ICommand {
         embedBuilder.addField("**Commands in " + categoryType.toString() + "**", stringBuilder.toString(), true);
         embedBuilder.setThumbnail(categoryType.getLink());
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-        return embedBuilder.build();
-    }
-
-    @NotNull
-    private MessageEmbed playCommandEmbed(@NotNull String prefix) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        StringBuilder stringBuilder = new StringBuilder();
-
-        embedBuilder.setAuthor("PLAY Command");
-        embedBuilder.addField("Usage", prefix + "play", false);
-
-        ICommand command = BeanBot.getCommandManager().getCommand("play");
-
-        stringBuilder.append("`");
-        for (int i = 0; i < command.getAliases().size(); i++) {
-            stringBuilder.append(command.getAliases().get(i));
-            if (i != command.getAliases().size() - 1) {
-                stringBuilder.append(", ");
-            }
-        }
-        stringBuilder.append("`");
-        embedBuilder.addField("Usage", "`1. <DESCRIPTION:Any text/link>:<TYPE:LINK/TEXT>:<OPTIONAL>`", false);
-        embedBuilder.addField("Command Aliases", stringBuilder.toString(), false);
-        embedBuilder.addField("Command Description", command.getDescription(), false);
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/beanBot!");
         return embedBuilder.build();
     }
 
@@ -174,13 +142,14 @@ public class HelpCommand implements ICommand {
         int count = 1;
 
         for (CategoryType categoryType : CategoryType.values()) {
-            stringBuilder.append(count++).append(".").append("`").append(categoryType.toString());
+            stringBuilder.append(count++).append(". ").append("`").append(categoryType.toString());
 
             stringBuilder.append("`\n");
         }
 
         embedBuilder.addField("**Command Categories**", stringBuilder.toString(), true);
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/beanBot!");
         return embedBuilder.build();
     }
 
@@ -190,6 +159,7 @@ public class HelpCommand implements ICommand {
         embedBuilder.setAuthor("No Command Found");
         embedBuilder.setDescription("No command has been found for `" + commandName + "`.");
         embedBuilder.setColor(Color.red);
+        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/beanBot!");
         return embedBuilder.build();
     }
 
