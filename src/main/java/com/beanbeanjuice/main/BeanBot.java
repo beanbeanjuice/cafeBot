@@ -1,6 +1,8 @@
 package com.beanbeanjuice.main;
 
 import com.beanbeanjuice.command.cafe.BalanceCommand;
+import com.beanbeanjuice.command.cafe.MenuCommand;
+import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.cafe.ServeCommand;
 import com.beanbeanjuice.command.fun.MemeCommand;
 import com.beanbeanjuice.command.fun.JokeCommand;
@@ -14,6 +16,7 @@ import com.beanbeanjuice.command.moderation.mute.MuteCommand;
 import com.beanbeanjuice.command.moderation.mute.UnMuteCommand;
 import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.twitch.*;
+import com.beanbeanjuice.utility.cafe.MenuHandler;
 import com.beanbeanjuice.utility.cafe.ServeHandler;
 import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
@@ -114,6 +117,7 @@ public class BeanBot {
 
     // Cafe Stuff
     private static ServeHandler serveHandler;
+    private static MenuHandler menuHandler;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
 
@@ -147,6 +151,7 @@ public class BeanBot {
         jdaBuilder.setChunkingFilter(ChunkingFilter.ALL);
 
         serveHandler = new ServeHandler();
+        menuHandler = new MenuHandler();
 
         // Listeners and Commands
         commandManager = new CommandManager();
@@ -187,7 +192,9 @@ public class BeanBot {
                 new GetTwitchChannelsCommand(),
                 new SetLiveNotificationsRoleCommand(),
 
+                new MenuCommand(),
                 new ServeCommand(),
+                new OrderCommand(),
                 new BalanceCommand()
         );
 
@@ -216,6 +223,14 @@ public class BeanBot {
 
         versionHelper = new VersionHelper();
         versionHelper.contactGuilds();
+    }
+
+    /**
+     * @return The current {@link MenuHandler}.
+     */
+    @NotNull
+    public static MenuHandler getMenuHandler() {
+        return menuHandler;
     }
 
     /**
