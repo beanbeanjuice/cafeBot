@@ -87,6 +87,11 @@ public class BanCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!ban @beanbeanjuice 13 you are trash`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.USER, "Discord Mention", true);

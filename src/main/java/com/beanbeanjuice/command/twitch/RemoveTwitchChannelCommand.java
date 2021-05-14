@@ -72,6 +72,11 @@ public class RemoveTwitchChannelCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!removetwitchchannel beanbeanjuice`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.TEXT, "Twitch Channel Name", true);

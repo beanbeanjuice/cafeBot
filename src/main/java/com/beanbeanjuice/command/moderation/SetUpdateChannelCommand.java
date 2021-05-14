@@ -58,6 +58,11 @@ public class SetUpdateChannelCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!setupdatechannel`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }

@@ -110,6 +110,11 @@ public class QueueCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!queue`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }

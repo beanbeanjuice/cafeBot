@@ -108,6 +108,11 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!set-live-notifications-role @LiveNotifications`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.TEXT, "Role/none", true);

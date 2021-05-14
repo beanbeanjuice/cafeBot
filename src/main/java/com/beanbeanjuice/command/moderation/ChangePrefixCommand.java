@@ -64,6 +64,11 @@ public class ChangePrefixCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!changeprefix b!`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.TEXT, "New Prefix", true);

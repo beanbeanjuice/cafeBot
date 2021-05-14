@@ -181,6 +181,11 @@ public class HelpCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!help` or `!!help moderation` or `!!help bug-report`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.TEXT, "command name", false);

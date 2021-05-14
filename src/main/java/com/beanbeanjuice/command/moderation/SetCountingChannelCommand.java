@@ -60,6 +60,11 @@ public class SetCountingChannelCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!setcountingchannel`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }

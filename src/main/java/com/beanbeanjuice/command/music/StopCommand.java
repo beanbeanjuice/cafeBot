@@ -95,6 +95,11 @@ public class StopCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!stop`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }
