@@ -22,11 +22,11 @@ import java.util.Random;
 public class GeneralHelper {
 
     /**
-     * Compare the difference in minutes between two {@link Timestamp} objects.
+     * Compare the difference in time between two {@link Timestamp} objects.
      * @param oldTime The old {@link Timestamp}.
      * @param currentTime The new {@link Timestamp}.
      * @param timestampDifference The {@link TimestampDifference} to choose.
-     * @return The difference in minutes as a {@link Long}.
+     * @return The difference in time as a {@link Long}.
      */
     @NotNull
     public Long compareTwoTimeStamps(Timestamp oldTime, Timestamp currentTime, TimestampDifference timestampDifference) {
@@ -35,7 +35,6 @@ public class GeneralHelper {
         long diff = milliseconds2 - milliseconds1;
 
         switch (timestampDifference) {
-            
             case SECONDS -> {
                 return diff / 1000;
             }
