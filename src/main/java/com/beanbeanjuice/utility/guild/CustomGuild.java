@@ -28,6 +28,7 @@ public class CustomGuild {
     private Boolean notifyOnUpdate;
     private String updateChannelID;
     private String countingChannelID;
+    private String pollChannelID;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -46,11 +47,12 @@ public class CustomGuild {
      * @param liveNotificationsRoleID The ID of the live notifications {@link Role} for the {@link Guild}.
      * @param notifyOnUpdate The {@link Boolean} of whether or not to notify the {@link Guild} on an update to the Bot.
      * @param updateChannelID The ID of the {@link TextChannel} to send the bot update notifications to.
+     * @param pollChannelID The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.poll.Poll Poll}s.
      */
     public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID,
                        @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
                        @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID,
-                       @NotNull String countingChannelID) {
+                       @NotNull String countingChannelID, @NotNull String pollChannelID) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
@@ -61,6 +63,7 @@ public class CustomGuild {
         this.notifyOnUpdate = notifyOnUpdate;
         this.updateChannelID = updateChannelID;
         this.countingChannelID = countingChannelID;
+        this.pollChannelID = pollChannelID;
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
@@ -70,6 +73,18 @@ public class CustomGuild {
 
         deletingMessagesChannels = new ArrayList<>();
 
+    }
+
+    /**
+     * @return The poll {@link TextChannel} for the {@link Guild}.
+     */
+    @Nullable
+    public TextChannel getPollChannel() {
+        try {
+            return BeanBot.getGuildHandler().getGuild(guildID).getTextChannelById(pollChannelID);
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     /**

@@ -53,11 +53,12 @@ public class GuildHandler {
                 Boolean notifyOnUpdate = resultSet.getBoolean(7);
                 String updateChannelID = String.valueOf(resultSet.getLong(8));
                 String countingChannelID = String.valueOf(resultSet.getLong(9));
+                String pollChannelID = String.valueOf(resultSet.getLong(10));
 
                 guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
                         twitchChannelID, twitchChannels, mutedRoleID,
                         liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
-                        countingChannelID));
+                        countingChannelID, pollChannelID));
             }
         } catch (SQLException e) {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
@@ -89,6 +90,32 @@ public class GuildHandler {
             BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to retrieve twitch channels from database.", true, false);
             return new ArrayList<>();
         }
+    }
+
+    /**
+     * Sets the poll {@link TextChannel} for the {@link Guild}.
+     * @param guildID The ID for the {@link Guild} to update.
+     * @param pollChannelID The ID of the {@link TextChannel} used for polls.
+     * @return Whether or not updating the poll ID was successful.
+     */
+    @NotNull
+    protected Boolean setPollChannelID(@NotNull String guildID, @NotNull String pollChannelID) {
+
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "UPDATE beanbot.guild_information SET poll_channel_id = (?) WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(pollChannelID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Poll Channel: " + e.getMessage());
+            return false;
+        }
+
     }
 
     /**
