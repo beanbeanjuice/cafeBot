@@ -118,11 +118,11 @@ This is an example of how to list things you need to use the software and how to
 As you can see, this was shown using the command `!!help order`. It shows each parameter you can run. For example, `<parameter 1>` needs to be a number and it is `REQUIRED` and `<parameter 2>` is a discord user and is also `REQUIRED`. So this means, to run the `order` command, I would do something like, `!!order 2 @beanbeanjuice`.
 
 #### **Command Section**
-*There are many command sections, with more coming soon. To show the commands in a specific section, do `!!help (command section)` or for example, `!!help moderation`!*
+*There are many command sections, with more coming soon. To show the commands in a specific section, do `!!help (command section)` or for example, `!!help moderation`!* Doing `!!help (command)` will also show you an example of how to use the command.
 
 ##### 1. **GENERIC**
 * `help` - Shows the list of command sections and command list for those sections.
-* `ping` - Show bot information!
+* `ping` - Show bot information! Currently, you can only have 3 polls per Discord server due to server costs.
 * `feature-request` - Request a bot feature.
 * `bug-report` - Report a bug with the bot.
 ##### 2. **CAFE**
