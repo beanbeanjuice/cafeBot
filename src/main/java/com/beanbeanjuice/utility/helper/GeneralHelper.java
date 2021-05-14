@@ -2,6 +2,7 @@ package com.beanbeanjuice.utility.helper;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.guild.CustomGuild;
+import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.sql.Timestamp;
 import java.util.Random;
 
 /**
@@ -18,6 +20,63 @@ import java.util.Random;
  * @author beanbeanjuice
  */
 public class GeneralHelper {
+
+    /**
+     * Get a random number.
+     * @param minimum The minimum {@link Integer}.
+     * @param maximum The maximum {@link Integer}.
+     * @return The random {@link Integer}.
+     */
+    @NotNull
+    public Integer getRandomNumber(@NotNull Integer minimum, @NotNull Integer maximum) {
+        return (int) ((Math.random() * (maximum - minimum)) + minimum);
+    }
+
+    /**
+     * Compare the difference in time between two {@link Timestamp} objects.
+     * @param oldTime The old {@link Timestamp}.
+     * @param currentTime The new {@link Timestamp}.
+     * @param timestampDifference The {@link TimestampDifference} to choose.
+     * @return The difference in time as a {@link Long}.
+     */
+    @NotNull
+    public Long compareTwoTimeStamps(@NotNull Timestamp oldTime, @NotNull Timestamp currentTime, @NotNull TimestampDifference timestampDifference) {
+        long milliseconds1 = oldTime.getTime();
+        long milliseconds2 = currentTime.getTime();
+        long diff = milliseconds2 - milliseconds1;
+
+        switch (timestampDifference) {
+            case SECONDS -> {
+                return diff / 1000;
+            }
+
+            case MINUTES -> {
+                return diff / (60 * 1000);
+            }
+
+            case HOURS -> {
+                return diff / (60 * 60 * 1000);
+            }
+
+            case DAYS -> {
+                return diff / (24 * 60 * 60 * 1000);
+            }
+
+            default -> {
+                return diff;
+            }
+        }
+    }
+
+    /**
+     * Remove underscores from a {@link String}.
+     * @param string The {@link String} to remove underscores from.
+     * @return The new {@link String}.
+     */
+    @NotNull
+    public String removeUnderscores(@NotNull String string) {
+        return string.replaceAll("_", " ");
+    }
 
     /**
      * Check whether or not a {@link String} is a number.
@@ -40,11 +99,9 @@ public class GeneralHelper {
     @NotNull
     public Color getRandomColor() {
         Random random = new Random();
-
         float r = random.nextFloat();
         float g = random.nextFloat();
         float b = random.nextFloat();
-
         return new Color(r, g, b);
     }
 
@@ -80,7 +137,7 @@ public class GeneralHelper {
      * @param user The {@link User} to be messaged.
      * @param message The contents of the message.
      */
-    public void pmUser(User user, String message) {
+    public void pmUser(@NotNull User user, @NotNull String message) {
         user.openPrivateChannel().flatMap(channel -> channel.sendMessage(message)).queue();
     }
 

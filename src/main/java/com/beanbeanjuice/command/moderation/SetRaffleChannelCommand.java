@@ -5,74 +5,62 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 /**
- * A command to change the prefix for a guild.
+ * A command used to set the current {@link net.dv8tion.jda.api.entities.TextChannel TextChannel} to a {@link com.beanbeanjuice.utility.raffle.Raffle Raffle} channel.
  *
  * @author beanbeanjuice
  */
-public class ChangePrefixCommand implements ICommand {
+public class SetRaffleChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
+
         if (!BeanBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
 
-        if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setPrefix(args.get(0))) {
+        if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setRaffleChannel(event.getChannel().getId())) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
-        event.getChannel().sendMessage(successfulPrefixChangeEmbed(args.get(0))).queue();
-    }
+        event.getChannel().sendMessage(BeanBot.getGeneralHelper().successEmbed(
+                "Set Raffle Channel",
+                "This channel has been set to an active raffle channel!"
+        )).queue();
 
-    @NotNull
-    private MessageEmbed successfulPrefixChangeEmbed(String prefix) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setAuthor("Successfully updated prefix.");
-        embedBuilder.setDescription("The prefix has been successfully updated to `" + prefix + "`.");
-        return embedBuilder.build();
     }
 
     @Override
     public String getName() {
-        return "change-prefix";
+        return "set-raffle-channel";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("changeprefix");
-        arrayList.add("setprefix");
-        arrayList.add("set-prefix");
+        arrayList.add("setrafflechannel");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Change the prefix for the server.";
+        return "Set the current channel to a raffle channel.";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!changeprefix b!`";
+        return "`!!set-raffle-channel`";
     }
 
     @Override
     public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "New Prefix", true);
-        return usage;
+        return new Usage();
     }
 
     @Override

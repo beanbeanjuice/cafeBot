@@ -72,6 +72,11 @@ public class AddTwitchChannelCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!addtwitchchannel beanbeanjuice`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.TEXT, "Twitch Username", true);

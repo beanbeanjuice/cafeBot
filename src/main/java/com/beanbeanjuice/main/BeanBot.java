@@ -6,7 +6,10 @@ import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.cafe.ServeCommand;
 import com.beanbeanjuice.command.fun.MemeCommand;
 import com.beanbeanjuice.command.fun.JokeCommand;
-import com.beanbeanjuice.command.fun.SetCountingChannelCommand;
+import com.beanbeanjuice.command.interaction.AddPollCommand;
+import com.beanbeanjuice.command.interaction.AddRaffleCommand;
+import com.beanbeanjuice.command.interaction.AvatarCommand;
+import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
 import com.beanbeanjuice.command.generic.BugReportCommand;
 import com.beanbeanjuice.command.generic.FeatureRequestCommand;
 import com.beanbeanjuice.command.generic.HelpCommand;
@@ -27,6 +30,8 @@ import com.beanbeanjuice.utility.helper.VersionHelper;
 import com.beanbeanjuice.utility.listener.Listener;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
+import com.beanbeanjuice.utility.poll.PollHandler;
+import com.beanbeanjuice.utility.raffle.RaffleHandler;
 import com.beanbeanjuice.utility.sql.SQLServer;
 import com.beanbeanjuice.utility.twitch.TwitchHandler;
 import com.wrapper.spotify.SpotifyApi;
@@ -119,6 +124,10 @@ public class BeanBot {
     private static ServeHandler serveHandler;
     private static MenuHandler menuHandler;
 
+    // Interaction Stuff
+    private static PollHandler pollHandler;
+    private static RaffleHandler raffleHandler;
+
     public static void main(String[] args) throws LoginException, InterruptedException {
 
         countingHelper = new CountingHelper();
@@ -173,7 +182,10 @@ public class BeanBot {
 
                 new MemeCommand(),
                 new JokeCommand(),
-                new SetCountingChannelCommand(),
+
+                new AddPollCommand(),
+                new AddRaffleCommand(),
+                new AvatarCommand(),
 
                 new SetModeratorRoleCommand(),
                 new SetMutedRoleCommand(),
@@ -185,6 +197,9 @@ public class BeanBot {
                 new UnMuteCommand(),
                 new SetUpdateChannelCommand(),
                 new NotifyOnUpdateCommand(),
+                new SetCountingChannelCommand(),
+                new SetPollChannelCommand(),
+                new SetRaffleChannelCommand(),
 
                 new SetLiveChannelCommand(),
                 new AddTwitchChannelCommand(),
@@ -223,6 +238,25 @@ public class BeanBot {
 
         versionHelper = new VersionHelper();
         versionHelper.contactGuilds();
+
+        pollHandler = new PollHandler();
+        raffleHandler = new RaffleHandler();
+    }
+
+    /**
+     * @return The current {@link RaffleHandler}.
+     */
+    @NotNull
+    public static RaffleHandler getRaffleHandler() {
+        return raffleHandler;
+    }
+
+    /**
+     * @return The current {@link PollHandler}.
+     */
+    @NotNull
+    public static PollHandler getPollHandler() {
+        return pollHandler;
     }
 
     /**

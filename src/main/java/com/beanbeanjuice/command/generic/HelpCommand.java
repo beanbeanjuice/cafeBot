@@ -110,6 +110,7 @@ public class HelpCommand implements ICommand {
             embedBuilder.addField("Command Aliases", stringBuilder.toString(), false);
         }
 
+        embedBuilder.addField("Command Example", command.exampleUsage(), false);
         embedBuilder.addField("Command Description", command.getDescription(), false);
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
         embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/beanBot!");
@@ -178,6 +179,11 @@ public class HelpCommand implements ICommand {
     @Override
     public String getDescription() {
         return "Shows the list of commands.";
+    }
+
+    @Override
+    public String exampleUsage() {
+        return "`!!help` or `!!help moderation` or `!!help bug-report`";
     }
 
     @Override
