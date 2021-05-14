@@ -21,14 +21,19 @@ public class PollHandler {
     private Timer pollTimer;
     private TimerTask pollTimerTask;
 
+    /**
+     * Creates a new {@link PollHandler} object.
+     */
     public PollHandler() {
         activePolls = new HashMap<>();
 
         getPollsFromDatabase();
         startPollTimer();
-        // TODO: Timertask
     }
 
+    /**
+     * Starts the poll {@link Timer} and {@link TimerTask}.
+     */
     private void startPollTimer() {
         pollTimer = new Timer();
         pollTimerTask = new TimerTask() {
@@ -106,7 +111,7 @@ public class PollHandler {
     }
 
     @NotNull
-    public MessageEmbed pollEmbed(@NotNull String pollTitle, @NotNull String pollDescription,
+    private MessageEmbed pollEmbed(@NotNull String pollTitle, @NotNull String pollDescription,
                                   @NotNull ArrayList<MessageReaction.ReactionEmote> winners) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(pollTitle);
@@ -127,6 +132,11 @@ public class PollHandler {
         return embedBuilder.build();
     }
 
+    /**
+     * Add a poll to be checked.
+     * @param poll The {@link Poll} to add.
+     * @return Whether or not adding the {@link Poll} was successful.
+     */
     public Boolean addPoll(Poll poll) {
 
         String guildID = poll.getGuildID();
@@ -154,8 +164,10 @@ public class PollHandler {
         return true;
     }
 
+    /**
+     * Refreshing the database cache for the {@link PollHandler}.
+     */
     private void getPollsFromDatabase() {
-
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM beanbot.polls;";
 
@@ -177,12 +189,15 @@ public class PollHandler {
         } catch (SQLException e) {
             BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Retrieving Polls from Database: " + e.getMessage());
         }
-
     }
 
+    /**
+     * Removes a {@link Poll} from the database.
+     * @param poll The {@link Poll} to remove.
+     * @return Whether or not removing the {@link Poll} was successful.
+     */
     @NotNull
     private Boolean removePoll(@NotNull Poll poll) {
-
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "DELETE FROM beanbot.polls WHERE guild_id = (?) AND message_id = (?);";
 
@@ -196,9 +211,13 @@ public class PollHandler {
             BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Removing Poll from Database: " + e.getMessage());
             return false;
         }
-
     }
 
+    /**
+     * Gets the amount of {@link Poll}s that the {@link Guild} has.
+     * @param guildID The ID of the {@link Guild}.
+     * @return The {@link ArrayList<Poll> Polls} for the {@link Guild}.
+     */
     @NotNull
     public ArrayList<Poll> getPollsForGuild(@NotNull String guildID) {
         if (activePolls.get(guildID) != null) {
@@ -207,6 +226,11 @@ public class PollHandler {
         return new ArrayList<>();
     }
 
+    /**
+     * Gets the amount of {@link Poll}s that the {@link Guild} has.
+     * @param guild The {@link Guild}.
+     * @return The {@link ArrayList<Poll> Polls} for the {@link Guild}.
+     */
     @NotNull
     public ArrayList<Poll> getPollsForGuild(@NotNull Guild guild) {
         return getPollsForGuild(guild.getId());

@@ -39,15 +39,28 @@ public enum PollEmoji {
     private final String discordString;
     private final String unicode;
 
+    /**
+     * Creates a new instance of the {@link PollEmoji}.
+     * @param discordString The Discord {@link String} to send the {@link PollEmoji}.
+     * @param unicode The unicode {@link String} of the {@link PollEmoji}.
+     */
     PollEmoji(@NotNull String discordString, @NotNull String unicode) {
         this.discordString = discordString;
         this.unicode = unicode;
     }
 
+    /**
+     * @return The Discord {@link String} for the {@link PollEmoji}.
+     */
+    @NotNull
     public String getDiscordString() {
         return discordString;
     }
 
+    /**
+     * @return The unicode {@link String} for the {@link PollEmoji}.
+     */
+    @NotNull
     public String getUnicode() {
         return unicode;
     }
