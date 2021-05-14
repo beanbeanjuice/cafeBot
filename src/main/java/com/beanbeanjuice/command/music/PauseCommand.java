@@ -86,6 +86,11 @@ public class PauseCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!pause`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }

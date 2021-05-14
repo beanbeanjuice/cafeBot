@@ -111,6 +111,11 @@ public class OrderCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!order 9 @beanbeanjuice`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.NUMBER, "The Menu Item Number", true);

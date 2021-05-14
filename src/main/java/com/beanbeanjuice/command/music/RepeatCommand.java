@@ -133,6 +133,11 @@ public class RepeatCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!repeat playlist` or `!!repeat song`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.TEXT, "song/playlist", true);

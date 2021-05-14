@@ -71,6 +71,11 @@ public class SetLiveChannelCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!setlivechannel`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }
