@@ -19,7 +19,6 @@ public class SetPollChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
         if (!BeanBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
@@ -33,7 +32,6 @@ public class SetPollChannelCommand implements ICommand {
         }
 
         event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
-
     }
 
     @Override
