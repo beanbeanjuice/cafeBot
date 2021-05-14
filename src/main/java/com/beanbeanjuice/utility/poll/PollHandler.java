@@ -120,7 +120,7 @@ public class PollHandler {
             winnersBuilder.append("No one voted...");
         } else {
             for (MessageReaction.ReactionEmote emote : winners) {
-                winnersBuilder.append(emote.getEmoji());
+                winnersBuilder.append(emote.getEmoji()).append(" ");
             }
         }
         embedBuilder.addField("Winners", winnersBuilder.toString(), true);
