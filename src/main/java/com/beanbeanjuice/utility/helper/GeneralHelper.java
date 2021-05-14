@@ -2,6 +2,7 @@ package com.beanbeanjuice.utility.helper;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.guild.CustomGuild;
+import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
@@ -24,20 +25,37 @@ public class GeneralHelper {
      * Compare the difference in minutes between two {@link Timestamp} objects.
      * @param oldTime The old {@link Timestamp}.
      * @param currentTime The new {@link Timestamp}.
+     * @param timestampDifference The {@link TimestampDifference} to choose.
      * @return The difference in minutes as a {@link Long}.
      */
     @NotNull
-    public Long compareTwoTimeStamps(Timestamp oldTime, Timestamp currentTime) {
+    public Long compareTwoTimeStamps(Timestamp oldTime, Timestamp currentTime, TimestampDifference timestampDifference) {
         long milliseconds1 = oldTime.getTime();
         long milliseconds2 = currentTime.getTime();
-
         long diff = milliseconds2 - milliseconds1;
-        long diffSeconds = diff / 1000;
-        long diffMinutes = diff / (60 * 1000);
-        long diffHours = diff / (60 * 60 * 1000);
-        long diffDays = diff / (24 * 60 * 60 * 1000);
 
-        return diffMinutes;
+        switch (timestampDifference) {
+            
+            case SECONDS -> {
+                return diff / 1000;
+            }
+
+            case MINUTES -> {
+                return diff / (60 * 1000);
+            }
+
+            case HOURS -> {
+                return diff / (60 * 60 * 1000);
+            }
+
+            case DAYS -> {
+                return diff / (24 * 60 * 60 * 1000);
+            }
+
+            default -> {
+                return diff;
+            }
+        }
     }
 
     /**
