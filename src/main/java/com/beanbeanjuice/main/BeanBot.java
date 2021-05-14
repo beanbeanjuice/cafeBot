@@ -6,7 +6,7 @@ import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.cafe.ServeCommand;
 import com.beanbeanjuice.command.fun.MemeCommand;
 import com.beanbeanjuice.command.fun.JokeCommand;
-import com.beanbeanjuice.command.fun.SetCountingChannelCommand;
+import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
 import com.beanbeanjuice.command.generic.BugReportCommand;
 import com.beanbeanjuice.command.generic.FeatureRequestCommand;
 import com.beanbeanjuice.command.generic.HelpCommand;
@@ -185,6 +185,7 @@ public class BeanBot {
                 new UnMuteCommand(),
                 new SetUpdateChannelCommand(),
                 new NotifyOnUpdateCommand(),
+                new SetPollChannelCommand(),
 
                 new SetLiveChannelCommand(),
                 new AddTwitchChannelCommand(),
