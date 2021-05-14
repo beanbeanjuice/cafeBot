@@ -1,7 +1,6 @@
 package com.beanbeanjuice.utility.poll;
 
 import com.beanbeanjuice.main.BeanBot;
-import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -47,9 +46,7 @@ public class PollHandler {
                     for (Poll poll : value) {
 
                         // Check if the poll SHOULD be calculated
-                        Long timeBetween = BeanBot.getGeneralHelper().compareTwoTimeStamps(poll.getPollEndTime(), new Timestamp(System.currentTimeMillis()), TimestampDifference.MINUTES);
-                        // If it is greater than 0, check it.
-                        if (timeBetween > 0) {
+                        if (poll.isFinished()) {
                             // Check if the poll channel still exists.
                             TextChannel pollChannel = BeanBot.getGuildHandler().getCustomGuild(key).getPollChannel();
 
@@ -93,6 +90,8 @@ public class PollHandler {
                                     value.remove(poll);
 
                                 }, (failure) -> {
+
+                                    // This means the message does not exist.
                                     removePoll(poll);
                                     value.remove(poll);
                                 });
@@ -128,7 +127,7 @@ public class PollHandler {
                 winnersBuilder.append(emote.getEmoji()).append(" ");
             }
         }
-        embedBuilder.addField("Winners", winnersBuilder.toString(), true);
+        embedBuilder.addField("Poll Results", winnersBuilder.toString(), true);
         return embedBuilder.build();
     }
 

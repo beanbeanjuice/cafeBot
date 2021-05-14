@@ -29,6 +29,7 @@ public class CustomGuild {
     private String updateChannelID;
     private String countingChannelID;
     private String pollChannelID;
+    private String raffleChannelID;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -52,7 +53,7 @@ public class CustomGuild {
     public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID,
                        @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
                        @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID,
-                       @NotNull String countingChannelID, @NotNull String pollChannelID) {
+                       @NotNull String countingChannelID, @NotNull String pollChannelID, @NotNull String raffleChannelID) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
@@ -64,6 +65,7 @@ public class CustomGuild {
         this.updateChannelID = updateChannelID;
         this.countingChannelID = countingChannelID;
         this.pollChannelID = pollChannelID;
+        this.raffleChannelID = raffleChannelID;
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
@@ -73,6 +75,24 @@ public class CustomGuild {
 
         deletingMessagesChannels = new ArrayList<>();
 
+    }
+
+    @Nullable
+    public TextChannel getRaffleChannel() {
+        try {
+            return BeanBot.getGuildHandler().getGuild(guildID).getTextChannelById(raffleChannelID);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    @NotNull
+    public Boolean setRaffleChannel(@NotNull String raffleChannelID) {
+        if (BeanBot.getGuildHandler().setRaffleChannelID(guildID, raffleChannelID)) {
+            this.raffleChannelID = raffleChannelID;
+            return true;
+        }
+        return false;
     }
 
     /**

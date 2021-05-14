@@ -22,6 +22,17 @@ import java.util.Random;
 public class GeneralHelper {
 
     /**
+     * Get a random number.
+     * @param minimum The minimum {@link Integer}.
+     * @param maximum The maximum {@link Integer}.
+     * @return The random {@link Integer}.
+     */
+    @NotNull
+    public Integer getRandomNumber(@NotNull Integer minimum, @NotNull Integer maximum) {
+        return (int) ((Math.random() * (maximum - minimum)) + minimum);
+    }
+
+    /**
      * Compare the difference in time between two {@link Timestamp} objects.
      * @param oldTime The old {@link Timestamp}.
      * @param currentTime The new {@link Timestamp}.
@@ -88,11 +99,9 @@ public class GeneralHelper {
     @NotNull
     public Color getRandomColor() {
         Random random = new Random();
-
         float r = random.nextFloat();
         float g = random.nextFloat();
         float b = random.nextFloat();
-
         return new Color(r, g, b);
     }
 
