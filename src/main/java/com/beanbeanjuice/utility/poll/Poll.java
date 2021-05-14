@@ -1,5 +1,7 @@
 package com.beanbeanjuice.utility.poll;
 
+import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;
@@ -49,6 +51,11 @@ public class Poll {
     @NotNull
     public Timestamp getPollEndTime() {
         return pollEndTime;
+    }
+
+    @NotNull
+    public Boolean isFinished() {
+        return BeanBot.getGeneralHelper().compareTwoTimeStamps(pollEndTime, new Timestamp(System.currentTimeMillis()), TimestampDifference.MINUTES) > 0;
     }
 
 }
