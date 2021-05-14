@@ -116,7 +116,37 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 #### **Command Section**
 *There are many command sections, with more coming soon. To show the commands in a specific section, do `!!help (command section)` or for example, `!!help moderation`!*
 
-##### 1. **MODERATION**
+##### 1. **GENERIC**
+* `help` - Shows the list of command sections and command list for those sections.
+* `ping` - Show bot information!
+* `feature-request` - Request a bot feature.
+* `bug-report` - Report a bug with the bot.
+##### 2. **CAFE**
+* `menu` - Show the list of Cafe menu items.
+* `serve` - Get beanCoins! Essentially you run this command by doing `!!serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.
+* `order` - Order a menu item for someone!
+* `balance` - Check your balance!
+##### 3. **FUN**
+* `meme` - Send a meme in the current channel. (SFW)
+* `joke` - Send a joke in the current channel. (SFW)
+##### 4. **INTERACTION**
+* `add-poll` - Create a poll!
+##### 5. **MUSIC**
+* `now-playing` - Show the current song playing.
+* `play` - Play a song or playlist!
+* `pause` - Pause the current song.
+* `queue` - Check the current queue.
+* `repeat` - Choose to repeat the song or playlist!
+* `shuffle` - Shuffle the current playlist.
+* `skip` - Skip the current song.
+* `stop` - Stop the queue and make the bot leave the channel.
+##### 6. **TWITCH**
+* `set-live-channel` - Set the current channel to receive twitch live notifications. You need to add twitch channels for this to work.
+* `add-twitch-channel` - Add a twitch channel to leave bot notifications for.
+* `remove-twitch-channel` - Remove a twitch channel you are currently receiving notifications for.
+* `get-twitch-channels` - Get a list of the twitch channels you are currently receiving notifications for.
+* `set-live-notifications-role` - Set the role to be mentioned when someone goes live.
+##### 7. **MODERATION**
 * `set-moderator-role` - Set the moderator role for the server. This is needed so that users with this role can run commands that require a moderator role.
 * `set-muted-role` - Set the muted role for the server. This is needed so that users with this role can be stopped from talking in channels. This requires you to set it this way in each channel. This will not mute them if the role does not have the right permissions.
 * `change-prefix` - Change the prefix from the bot to your desired prefix.
@@ -129,34 +159,6 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `notify-on-update` - `Enable` or `Disable` bot notifications. This is `Enabled` by default.
 * `set-counting-channel` - Sets the current channel to the counting channel. This does exactly as it says. Try to count as high as you can without messing up!
 * `set-poll-channel` Sets the current channel to the poll channel. This is needed if you want to run polls on your server!
-##### 2. **FUN**
-* `meme` - Send a meme in the current channel. (SFW)
-* `joke` - Send a joke in the current channel. (SFW)
-##### 3. **GENERIC**
-* `help` - Shows the list of command sections and command list for those sections.
-* `ping` - Show bot information!
-* `feature-request` - Request a bot feature.
-* `bug-report` - Report a bug with the bot.
-##### 4. **MUSIC**
-* `now-playing` - Show the current song playing.
-* `play` - Play a song or playlist!
-* `pause` - Pause the current song.
-* `queue` - Check the current queue.
-* `repeat` - Choose to repeat the song or playlist!
-* `shuffle` - Shuffle the current playlist.
-* `skip` - Skip the current song.
-* `stop` - Stop the queue and make the bot leave the channel.
-##### 5. **TWITCH**
-* `set-live-channel` - Set the current channel to receive twitch live notifications. You need to add twitch channels for this to work.
-* `add-twitch-channel` - Add a twitch channel to leave bot notifications for.
-* `remove-twitch-channel` - Remove a twitch channel you are currently receiving notifications for.
-* `get-twitch-channels` - Get a list of the twitch channels you are currently receiving notifications for.
-* `set-live-notifications-role` - Set the role to be mentioned when someone goes live.
-##### 6. **CAFE**
-* `menu` - Show the list of Cafe menu items.
-* `serve` - Get beanCoins! Essentially you run this command by doing `!!serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.
-* `order` - Order a menu item for someone!
-* `balance` - Check your balance!
 
 
 <!-- ROADMAP -->
