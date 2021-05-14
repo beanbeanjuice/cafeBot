@@ -90,6 +90,11 @@ public class BalanceCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!bal` or `!!bal @beanbeanjuice`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.USER, "A discord user", false);

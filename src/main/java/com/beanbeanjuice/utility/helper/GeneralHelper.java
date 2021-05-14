@@ -2,6 +2,7 @@ package com.beanbeanjuice.utility.helper;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.guild.CustomGuild;
+import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.sql.Timestamp;
 import java.util.Random;
 
 /**
@@ -18,6 +20,52 @@ import java.util.Random;
  * @author beanbeanjuice
  */
 public class GeneralHelper {
+
+    /**
+     * Compare the difference in time between two {@link Timestamp} objects.
+     * @param oldTime The old {@link Timestamp}.
+     * @param currentTime The new {@link Timestamp}.
+     * @param timestampDifference The {@link TimestampDifference} to choose.
+     * @return The difference in time as a {@link Long}.
+     */
+    @NotNull
+    public Long compareTwoTimeStamps(Timestamp oldTime, Timestamp currentTime, TimestampDifference timestampDifference) {
+        long milliseconds1 = oldTime.getTime();
+        long milliseconds2 = currentTime.getTime();
+        long diff = milliseconds2 - milliseconds1;
+
+        switch (timestampDifference) {
+            case SECONDS -> {
+                return diff / 1000;
+            }
+
+            case MINUTES -> {
+                return diff / (60 * 1000);
+            }
+
+            case HOURS -> {
+                return diff / (60 * 60 * 1000);
+            }
+
+            case DAYS -> {
+                return diff / (24 * 60 * 60 * 1000);
+            }
+
+            default -> {
+                return diff;
+            }
+        }
+    }
+
+    /**
+     * Remove underscores from a {@link String}.
+     * @param string The {@link String} to remove underscores from.
+     * @return The new {@link String}.
+     */
+    @NotNull
+    public String removeUnderscores(@NotNull String string) {
+        return string.replaceAll("_", " ");
+    }
 
     /**
      * Check whether or not a {@link String} is a number.

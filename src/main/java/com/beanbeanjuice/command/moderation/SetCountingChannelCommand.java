@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.fun;
+package com.beanbeanjuice.command.moderation;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -60,12 +60,17 @@ public class SetCountingChannelCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!setcountingchannel`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.FUN;
+        return CategoryType.MODERATION;
     }
 }

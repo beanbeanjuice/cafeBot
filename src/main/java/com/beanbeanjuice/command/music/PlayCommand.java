@@ -250,6 +250,11 @@ public class PlayCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!play feeling xqcL by Row Sauce Studio` or `!!play https://open.spotify.com/track/4KkJDRf8H1e3UuoLhCWtvf?si=4b90debdb82947f2`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
 

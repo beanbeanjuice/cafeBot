@@ -58,6 +58,11 @@ public class GetTwitchChannelsCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!gettwitchchannels`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }

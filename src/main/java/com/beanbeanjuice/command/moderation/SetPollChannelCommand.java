@@ -11,55 +11,49 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * A command used for setting up the update {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+ * A command used for setting the {@link net.dv8tion.jda.api.entities.TextChannel TextChannel} to a {@link com.beanbeanjuice.utility.poll.Poll Poll} channel.
  *
  * @author beanbeanjuice
  */
-public class SetUpdateChannelCommand implements ICommand {
+public class SetPollChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
         if (!BeanBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
 
-        if (BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setUpdateChannel(event.getChannel())) {
+        if (BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setPollChannel(event.getChannel().getId())) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().successEmbed(
-                    "Set Update Channel",
-                    "This channel will now receive bot updates! Make sure to enable notifications " +
-                            "with the `notify-on-update` command!"
+                    "Set Poll Channel",
+                    "The current channel has been set to a `poll` channel!"
             )).queue();
             return;
         }
 
-        event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
-                "Error Setting Update Channel",
-                "There was an error setting this channel to receive bot updates."
-        )).queue();
-
+        event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
     }
 
     @Override
     public String getName() {
-        return "set-update-channel";
+        return "set-poll-channel";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setupdatechannel");
+        arrayList.add("setpollchannel");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Sets the current channel to the channel that receives bot updates.";
+        return "Set the current channel as a poll channel!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!setupdatechannel`";
+        return "`!!setpollchannel`";
     }
 
     @Override

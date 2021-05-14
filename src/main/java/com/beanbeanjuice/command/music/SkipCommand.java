@@ -111,6 +111,11 @@ public class SkipCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!skip`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }

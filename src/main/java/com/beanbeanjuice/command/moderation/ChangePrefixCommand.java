@@ -27,7 +27,7 @@ public class ChangePrefixCommand implements ICommand {
             return;
         }
 
-        if (!BeanBot.getGuildHandler().updateGuildPrefix(event.getGuild(), args.get(0))) {
+        if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setPrefix(args.get(0))) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
@@ -61,6 +61,11 @@ public class ChangePrefixCommand implements ICommand {
     @Override
     public String getDescription() {
         return "Change the prefix for the server.";
+    }
+
+    @Override
+    public String exampleUsage() {
+        return "`!!changeprefix b!`";
     }
 
     @Override

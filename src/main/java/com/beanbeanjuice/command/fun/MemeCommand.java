@@ -75,6 +75,11 @@ public class MemeCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!meme`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }

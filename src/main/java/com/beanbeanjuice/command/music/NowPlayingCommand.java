@@ -102,6 +102,11 @@ public class NowPlayingCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!nowplaying`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }

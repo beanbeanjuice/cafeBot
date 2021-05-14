@@ -118,6 +118,11 @@ public class NotifyOnUpdateCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!notify-on-update disable`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.TEXT, "enable/disable", false);

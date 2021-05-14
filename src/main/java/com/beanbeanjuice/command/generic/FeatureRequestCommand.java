@@ -54,6 +54,11 @@ public class FeatureRequestCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!feature-request`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }

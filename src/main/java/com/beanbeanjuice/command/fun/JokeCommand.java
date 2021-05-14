@@ -76,6 +76,11 @@ public class JokeCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!joke`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }
