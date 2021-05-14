@@ -29,7 +29,7 @@ public class GeneralHelper {
      * @return The difference in time as a {@link Long}.
      */
     @NotNull
-    public Long compareTwoTimeStamps(Timestamp oldTime, Timestamp currentTime, TimestampDifference timestampDifference) {
+    public Long compareTwoTimeStamps(@NotNull Timestamp oldTime, @NotNull Timestamp currentTime, @NotNull TimestampDifference timestampDifference) {
         long milliseconds1 = oldTime.getTime();
         long milliseconds2 = currentTime.getTime();
         long diff = milliseconds2 - milliseconds1;
@@ -128,7 +128,7 @@ public class GeneralHelper {
      * @param user The {@link User} to be messaged.
      * @param message The contents of the message.
      */
-    public void pmUser(User user, String message) {
+    public void pmUser(@NotNull User user, @NotNull String message) {
         user.openPrivateChannel().flatMap(channel -> channel.sendMessage(message)).queue();
     }
 
