@@ -113,7 +113,7 @@ public class AddPollCommand implements ICommand {
                     .append(arguments.get(i)).append("\n");
         }
 
-        stringBuilder.append("\n\n").append(pollDescription);
+        stringBuilder.append("\n`").append(pollDescription).append("`");
         embedBuilder.setDescription(stringBuilder.toString());
 
         if (pollTime == 1) {
