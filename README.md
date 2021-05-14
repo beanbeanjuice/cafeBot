@@ -127,10 +127,11 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `un-mute` - Unmute a specified user.
 * `set-update-channel` - Sets the current channel to the update channel. This means if you have `notify-on-update` set to `Enabled`, you will receive bot updates in this channel.
 * `notify-on-update` - `Enable` or `Disable` bot notifications. This is `Enabled` by default.
+* `set-counting-channel` - Sets the current channel to the counting channel. This does exactly as it says. Try to count as high as you can without messing up!
+* `set-poll-channel` Sets the current channel to the poll channel. This is needed if you want to run polls on your server!
 ##### 2. **FUN**
 * `meme` - Send a meme in the current channel. (SFW)
 * `joke` - Send a joke in the current channel. (SFW)
-* `set-counting-channel` - Sets the current channel to the counting channel. This does exactly as it says. Try to count as high as you can without messing up!
 ##### 3. **GENERIC**
 * `help` - Shows the list of command sections and command list for those sections.
 * `ping` - Show bot information!

@@ -173,7 +173,6 @@ public class BeanBot {
 
                 new MemeCommand(),
                 new JokeCommand(),
-                new SetCountingChannelCommand(),
 
                 new SetModeratorRoleCommand(),
                 new SetMutedRoleCommand(),
@@ -185,6 +184,7 @@ public class BeanBot {
                 new UnMuteCommand(),
                 new SetUpdateChannelCommand(),
                 new NotifyOnUpdateCommand(),
+                new SetCountingChannelCommand(),
                 new SetPollChannelCommand(),
 
                 new SetLiveChannelCommand(),
