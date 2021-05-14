@@ -33,13 +33,15 @@ public class PingCommand implements ICommand {
     private MessageEmbed messageEmbed(@NotNull Long botPing, @NotNull Long gatewayPing) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(getName() + "!", "https://www.beanbeanjuice.com/beanBot.html");
-        embedBuilder.addField("Rest Ping", botPing.toString(), true);
-        embedBuilder.addField("Gateway Ping", gatewayPing.toString(), true);
-        embedBuilder.addField("Current Version", BeanBot.getBotVersion(), true);
-        embedBuilder.setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/beanBot/issues");
+        StringBuilder descriptionBuilder = new StringBuilder();
+        descriptionBuilder.append("**Rest Ping** - `").append(botPing.toString()).append("`\n")
+                .append("**Gateway Ping** - `").append(gatewayPing.toString()).append("`\n")
+                .append("**Current Version** - `").append(BeanBot.getBotVersion()).append("`\n\n")
+                .append("Hello there! How are you? Would you like to order some coffee?");
+        embedBuilder.setDescription(descriptionBuilder.toString());
+        embedBuilder.setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/beanBot");
         embedBuilder.setThumbnail(BeanBot.getJDA().getSelfUser().getAvatarUrl());
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setDescription("Hello there! How are you!~ Want some coffee?");
         return embedBuilder.build();
     }
 
