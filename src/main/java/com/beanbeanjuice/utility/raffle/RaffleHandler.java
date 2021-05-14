@@ -2,22 +2,172 @@ package com.beanbeanjuice.utility.raffle;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
-import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class RaffleHandler {
 
     private HashMap<String, ArrayList<Raffle>> raffles;
+    private Timer raffleTimer;
+    private TimerTask raffleTimerTask;
 
     public RaffleHandler() {
         raffles = new HashMap<>();
-
         getRafflesFromDatabase();
-        // TODO: Start the timer.
+        startPollTimer();
+    }
+
+    /**
+     * Starts the poll {@link Timer} and {@link TimerTask}.
+     */
+    private void startPollTimer() {
+        raffleTimer = new Timer();
+        raffleTimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+
+                raffles.forEach((key, value) -> {
+
+                    for (Raffle raffle : value) {
+
+                        // Checking if it SHOULD be checked.
+                        if (raffle.isFinished()) {
+
+                            System.out.println("Checking Raffle");
+
+                            // Checking if the PollChannel is Null
+                            TextChannel raffleChannel = BeanBot.getGuildHandler().getCustomGuild(key).getRaffleChannel();
+
+                            if (raffleChannel == null) {
+                                removeRaffleFromDatabase(raffle);
+                                value.remove(raffle);
+                            } else {
+
+                                // If its not null, check if the message is null.
+                                raffleChannel.retrieveMessageById(raffle.getMessageID()).queue((message) -> {
+                                    // Edit Message If Not Null
+                                    // Get the reactions
+                                    MessageReaction reaction = new ArrayList<>(message.getReactions()).get(0);
+
+                                    ArrayList<User> potentialUsers = new ArrayList<>();
+
+                                    for (MessageReaction reactionMessage : message.getReactions()) {
+                                        reactionMessage.retrieveUsers().queue(users -> {
+                                            for (User user : users) {
+                                                System.out.println("User: " + user.getName());
+                                                if (!user.isBot() && !potentialUsers.contains(user)) {
+                                                    System.out.println("Allowed User: " + user.getName());
+                                                    potentialUsers.add(user);
+                                                }
+                                            }
+
+                                            System.out.println("Users Size: " + potentialUsers.size());
+                                            System.out.println("Message ID: " + message.getId());
+
+                                            ArrayList<User> winners = new ArrayList<>();
+
+                                            if (potentialUsers.size() > raffle.getWinnerAmount()) {
+                                                for (int i = 0; i < raffle.getWinnerAmount(); i++) {
+                                                    System.out.println("Getting Winner #" + i);
+                                                    User user = potentialUsers.get(BeanBot.getGeneralHelper().getRandomNumber(0, (potentialUsers.size() - 1)));
+
+                                                    if (winners.contains(user)) {
+                                                        User newUser = potentialUsers.get(BeanBot.getGeneralHelper().getRandomNumber(0, (potentialUsers.size() - 1)));
+                                                        while (newUser == user) {
+                                                            newUser = potentialUsers.get(BeanBot.getGeneralHelper().getRandomNumber(0, (potentialUsers.size() - 1)));
+                                                        }
+                                                        user = newUser;
+                                                    }
+                                                    winners.add(user);
+                                                }
+                                            } else {
+                                                winners = potentialUsers;
+                                            }
+
+                                            String title = message.getEmbeds().get(0).getAuthor().getName();
+                                            String description = message.getEmbeds().get(0).getFields().get(0).getValue();
+
+                                            message.editMessage(winnerEmbed(title, description, winners)).queue();
+
+                                            // Remove it
+                                            removeRaffleFromDatabase(raffle);
+                                            value.remove(raffle);
+
+                                        });
+                                    }
+
+                                }, (failure) -> {
+
+                                    // This means the message does not exist.
+                                    removeRaffleFromDatabase(raffle);
+                                    value.remove(raffle);
+                                });
+
+                            }
+
+                        } else {
+                            System.out.println("Ignoring Raffle");
+                        }
+
+                    }
+
+                });
+
+            }
+        };
+        raffleTimer.scheduleAtFixedRate(raffleTimerTask, 0, 1000);
+    }
+
+    private MessageEmbed winnerEmbed(@NotNull String title, @NotNull String description, @NotNull ArrayList<User> winners) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor(title);
+        embedBuilder.addField("Description", description, false);
+        embedBuilder.setColor(Color.green);
+
+        if (winners.isEmpty()) {
+            embedBuilder.addField("Winner", "No one entered the raffle...", false);
+        } else if (winners.size() == 1) {
+            embedBuilder.addField("Winner", winners.get(0).getAsMention(), false);
+        } else {
+            StringBuilder winnerBuilder = new StringBuilder();
+            for (int i = 0; i < winners.size(); i++) {
+                winnerBuilder.append(winners.get(i).getAsMention());
+
+                if (i != winners.size() - 1) {
+                    winnerBuilder.append(", ");
+                }
+            }
+            embedBuilder.addField("Winners", winnerBuilder.toString(), false);
+        }
+        return embedBuilder.build();
+    }
+
+    private Boolean removeRaffleFromDatabase(@NotNull Raffle raffle) {
+
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "DELETE FROM beanbot.raffles WHERE message_id = (?) and guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(raffle.getMessageID()));
+            statement.setLong(2, Long.parseLong(raffle.getGuildID()));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Removing Raffle: " + e.getMessage());
+            return false;
+        }
 
     }
 
@@ -51,7 +201,10 @@ public class RaffleHandler {
 
     @NotNull
     public ArrayList<Raffle> getRafflesForGuild(@NotNull String guildID) {
-        return raffles.get(guildID);
+        if (raffles.get(guildID) != null) {
+            return raffles.get(guildID);
+        }
+        return new ArrayList<>();
     }
 
     @NotNull
