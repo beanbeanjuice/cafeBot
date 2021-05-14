@@ -41,6 +41,16 @@ public class GeneralHelper {
     }
 
     /**
+     * Remove underscores from a {@link String}.
+     * @param string The {@link String} to remove underscores from.
+     * @return The new {@link String}.
+     */
+    @NotNull
+    public String removeUnderscores(@NotNull String string) {
+        return string.replaceAll("_", " ");
+    }
+
+    /**
      * Check whether or not a {@link String} is a number.
      * @param check The {@link String} to check.
      * @return Whether or not the {@link String} is a number.
