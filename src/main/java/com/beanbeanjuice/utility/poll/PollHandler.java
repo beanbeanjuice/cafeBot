@@ -93,6 +93,8 @@ public class PollHandler {
                                     value.remove(poll);
 
                                 }, (failure) -> {
+
+                                    // This means the message does not exist.
                                     removePoll(poll);
                                     value.remove(poll);
                                 });
@@ -128,7 +130,7 @@ public class PollHandler {
                 winnersBuilder.append(emote.getEmoji()).append(" ");
             }
         }
-        embedBuilder.addField("Winners", winnersBuilder.toString(), true);
+        embedBuilder.addField("Poll Results", winnersBuilder.toString(), true);
         return embedBuilder.build();
     }
 
