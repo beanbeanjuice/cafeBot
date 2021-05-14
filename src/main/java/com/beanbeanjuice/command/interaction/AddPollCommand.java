@@ -38,7 +38,7 @@ public class AddPollCommand implements ICommand {
         // Makes sure that guilds only have 3 polls.
         if (BeanBot.getPollHandler().getPollsForGuild(event.getGuild()).size()+1 > 3) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
-                    "Too Many Poll",
+                    "Too Many Polls",
                     "You can currently only have a total of " +
                             "3 polls per Discord Server. This is due to server costs."
             )).queue();
