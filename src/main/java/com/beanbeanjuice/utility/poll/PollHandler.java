@@ -2,14 +2,12 @@ package com.beanbeanjuice.utility.poll;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
-import net.dv8tion.jda.api.entities.Emote;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * A class used for handling {@link Poll}s.
@@ -19,9 +17,113 @@ import java.util.HashMap;
 public class PollHandler {
 
     private HashMap<String, ArrayList<Poll>> activePolls;
+    private Timer pollTimer;
+    private TimerTask pollTimerTask;
 
     public PollHandler() {
         activePolls = new HashMap<>();
+
+        getPollsFromDatabase();
+        startPollTimer();
+        // TODO: Timertask
+    }
+
+    private void startPollTimer() {
+        pollTimer = new Timer();
+        pollTimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+
+                activePolls.forEach((key, value) -> {
+
+                    // Go through each poll
+                    for (Poll poll : value) {
+
+                        // Check if the poll SHOULD be calculated
+                        Long timeBetween = BeanBot.getGeneralHelper().compareTwoTimeStamps(poll.getPollEndTime(), new Timestamp(System.currentTimeMillis()));
+                        // If it is greater than 0, check it.
+                        if (timeBetween > 0) {
+                            // Check if the poll channel still exists.
+                            TextChannel pollChannel = BeanBot.getGuildHandler().getCustomGuild(key).getPollChannel();
+
+                            if (pollChannel == null) {
+                                removePoll(poll);
+                                value.remove(poll);
+                            } else {
+                                // Poll Channel IS NOT Null
+                                // Check if the message is null
+
+                                pollChannel.retrieveMessageById(poll.getMessageID()).queue((message) -> {
+                                    // Edit Message If Not Null
+                                    // Get the reactions
+                                    ArrayList<MessageReaction> messageReactions = new ArrayList<>(message.getReactions());
+
+                                    // Compare the amount of reactions
+                                    int highestReaction = 0;
+
+                                    for (MessageReaction messageReaction : messageReactions) {
+                                        if (messageReaction.getCount() > highestReaction) {
+                                            highestReaction = messageReaction.getCount();
+                                        }
+                                    }
+
+                                    // Now we have the highest reaction number.
+                                    ArrayList<MessageReaction.ReactionEmote> highestReactions = new ArrayList<>();
+
+                                    for (MessageReaction messageReaction : messageReactions) {
+                                        if (messageReaction.getCount() == highestReaction && messageReaction.getCount() != 1) {
+                                            highestReactions.add(messageReaction.getReactionEmote());
+                                        }
+                                    }
+
+                                    String title = message.getEmbeds().get(0).getAuthor().getName();
+                                    String pollDescription = message.getEmbeds().get(0).getDescription();
+
+                                    message.editMessage(pollEmbed(title, pollDescription, highestReactions)).queue();
+
+                                    // Remove it
+                                    removePoll(poll);
+                                    value.remove(poll);
+
+                                }, (failure) -> {
+                                    removePoll(poll);
+                                    value.remove(poll);
+                                });
+
+                            }
+
+                        }
+
+                    }
+
+                });
+
+            }
+        };
+        pollTimer.scheduleAtFixedRate(pollTimerTask, 0, 30000);
+    }
+
+    @NotNull
+    public MessageEmbed pollEmbed(@NotNull String pollTitle, @NotNull String pollDescription,
+                                  @NotNull ArrayList<MessageReaction.ReactionEmote> winners) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor(pollTitle);
+        embedBuilder.setDescription(pollDescription);
+        embedBuilder.setFooter("This poll has ended.");
+        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+
+        StringBuilder winnersBuilder = new StringBuilder();
+
+        if (winners.isEmpty()) {
+            winnersBuilder.append("No one voted...");
+        } else {
+            for (MessageReaction.ReactionEmote emote : winners) {
+                winnersBuilder.append(emote.getEmoji());
+            }
+        }
+        embedBuilder.addField("Winners", winnersBuilder.toString(), true);
+        return embedBuilder.build();
     }
 
     public Boolean addPoll(Poll poll) {
@@ -78,7 +180,7 @@ public class PollHandler {
     }
 
     @NotNull
-    private Boolean removePollFromDatabase(@NotNull Poll poll) {
+    private Boolean removePoll(@NotNull Poll poll) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "DELETE FROM beanbot.polls WHERE guild_id = (?) AND message_id = (?);";
@@ -108,7 +210,6 @@ public class PollHandler {
     public ArrayList<Poll> getPollsForGuild(@NotNull Guild guild) {
         return getPollsForGuild(guild.getId());
     }
-
 
 
 }

@@ -6,6 +6,7 @@ import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.cafe.ServeCommand;
 import com.beanbeanjuice.command.fun.MemeCommand;
 import com.beanbeanjuice.command.fun.JokeCommand;
+import com.beanbeanjuice.command.interaction.AddPollCommand;
 import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
 import com.beanbeanjuice.command.generic.BugReportCommand;
 import com.beanbeanjuice.command.generic.FeatureRequestCommand;
@@ -177,6 +178,8 @@ public class BeanBot {
 
                 new MemeCommand(),
                 new JokeCommand(),
+
+                new AddPollCommand(),
 
                 new SetModeratorRoleCommand(),
                 new SetMutedRoleCommand(),
