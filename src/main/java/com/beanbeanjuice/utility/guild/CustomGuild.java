@@ -347,7 +347,26 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean updateMutedRole(String mutedRoleID) {
-        return BeanBot.getGuildHandler().updateGuildMutedRole(guildID, mutedRoleID);
+
+        if (BeanBot.getGuildHandler().updateGuildMutedRole(guildID, mutedRoleID)) {
+            this.mutedRoleID = mutedRoleID;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Update the moderator {@link Role} for the {@link Guild}.
+     * @param moderatorRoleID The ID of the moderator {@link Role}.
+     * @return Whether or not the {@link Role} was successfully updated in the database.
+     */
+    @NotNull
+    public Boolean setModeratorRoleID(@NotNull String moderatorRoleID) {
+        if (BeanBot.getGuildHandler().updateGuildModeratorRole(guildID, moderatorRoleID)) {
+            this.moderatorRoleID = moderatorRoleID;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -373,7 +392,11 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setPrefix(String newPrefix) {
-        return BeanBot.getGuildHandler().updateGuildPrefix(guildID, newPrefix);
+        if (BeanBot.getGuildHandler().updateGuildPrefix(guildID, newPrefix)) {
+            this.prefix = newPrefix;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -401,21 +424,6 @@ public class CustomGuild {
     }
 
     /**
-     * Checks if the {@link CustomGuild} contains the specified twitch channel.
-     * @param twitchChannel The twitch channel specified/
-     * @return Whether or not the {@link CustomGuild} contains the twitch channel.
-     */
-    @NotNull
-    public Boolean containsChannel(String twitchChannel) {
-        for (String channel : twitchChannels) {
-            if (channel.equalsIgnoreCase(twitchChannel)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Add a twitch channel to the {@link Guild}.
      * @param twitchChannel The name of the twitch channel to add.
      * @return Whether or not the twitch channel was successfully added.
@@ -429,9 +437,12 @@ public class CustomGuild {
             return false;
         }
 
-        twitchChannels.add(twitchChannel.toLowerCase());
-        BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().addTwitchChannelName(twitchChannel);
-        return BeanBot.getGuildHandler().addTwitchChannel(guildID, twitchChannel);
+        if (BeanBot.getGuildHandler().addTwitchChannel(guildID, twitchChannel)) {
+            twitchChannels.add(twitchChannel.toLowerCase());
+            BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().addTwitchChannelName(twitchChannel);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -448,19 +459,26 @@ public class CustomGuild {
             return false;
         }
 
-        twitchChannels.remove(twitchChannel.toLowerCase());
-        BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().removeTwitchChannelName(twitchChannel);
-        return BeanBot.getGuildHandler().removeTwitchChannel(guildID, twitchChannel);
+        if (BeanBot.getGuildHandler().removeTwitchChannel(guildID, twitchChannel)) {
+            twitchChannels.remove(twitchChannel.toLowerCase());
+            BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().removeTwitchChannelName(twitchChannel);
+            return true;
+        }
+        return false;
     }
 
     /**
      * Update the twitch channel for the {@link CustomGuild}.
-     * @param newLiveChannelID The new channel ID for the channel.
+     * @param liveChannelID The new channel ID for the channel.
      * @return Whether or not the channel was successfully updated.
      */
     @NotNull
-    public Boolean updateTwitchDiscordChannel(String newLiveChannelID) {
-        return BeanBot.getGuildHandler().updateTwitchDiscordChannel(guildID, newLiveChannelID);
+    public Boolean updateTwitchDiscordChannel(String liveChannelID) {
+        if (BeanBot.getGuildHandler().updateTwitchChannelID(guildID, liveChannelID)) {
+            this.liveChannelID = liveChannelID;
+            return true;
+        }
+        return false;
     }
 
 }

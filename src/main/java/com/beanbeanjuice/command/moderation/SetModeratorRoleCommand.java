@@ -38,7 +38,7 @@ public class SetModeratorRoleCommand implements ICommand {
             return;
         }
 
-        if (!BeanBot.getGuildHandler().updateGuildModeratorRole(event.getGuild(), role)) {
+        if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setModeratorRoleID(role.getId())) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }

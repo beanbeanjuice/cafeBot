@@ -27,7 +27,7 @@ public class ChangePrefixCommand implements ICommand {
             return;
         }
 
-        if (!BeanBot.getGuildHandler().updateGuildPrefix(event.getGuild(), args.get(0))) {
+        if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setPrefix(args.get(0))) {
             event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }

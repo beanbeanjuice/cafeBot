@@ -144,17 +144,6 @@ public class GuildHandler {
     }
 
     /**
-     * Sets the counting {@link TextChannel} for the {@link Guild}.
-     * @param guild The {@link Guild} to update.
-     * @param countingChannelID The ID of the {@link TextChannel} used for counting.
-     * @return Whether or not updating the counting channel ID was successful.
-     */
-    @NotNull
-    protected Boolean setCountingChannelID(@NotNull Guild guild, @NotNull String countingChannelID) {
-        return setCountingChannelID(guild.getId(), countingChannelID);
-    }
-
-    /**
      * Sets the update {@link TextChannel} for the {@link Guild}.
      * @param guildID The ID of the {@link Guild} to update.
      * @param updateChannelID The ID of the {@link TextChannel} to send bot updates.
@@ -176,17 +165,6 @@ public class GuildHandler {
             BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Update the Update Channel ID: " + e.getMessage());
             return false;
         }
-    }
-
-    /**
-     * Sets the update {@link TextChannel} for the {@link Guild}.
-     * @param guild The {@link Guild} to update.
-     * @param updateChannelID The ID of the {@link TextChannel} to send bot updates.
-     * @return Whether or not updating the update channel ID was successful.
-     */
-    @NotNull
-    protected Boolean setUpdateChannelID(@NotNull Guild guild, @NotNull String updateChannelID) {
-        return setUpdateChannelID(guild.getId(), updateChannelID);
     }
 
     /**
@@ -214,17 +192,6 @@ public class GuildHandler {
     }
 
     /**
-     * Sets the {@link Boolean} for if the {@link Guild} should be notified on an update.
-     * @param guild The {@link Guild} provided.
-     * @param answer The {@link Boolean} provided.
-     * @return Whether or not updating it was successful.
-     */
-    @NotNull
-    protected Boolean setNotifyOnUpdate(@NotNull Guild guild, @NotNull Boolean answer) {
-        return setNotifyOnUpdate(guild.getId(), answer);
-    }
-
-    /**
      * Sets the Live Notifications {@link Role} for the {@link Guild}.
      * @param guildID The ID of the {@link Guild}.
      * @param roleID The ID of the Live Notifications {@link Role}.
@@ -249,24 +216,13 @@ public class GuildHandler {
     }
 
     /**
-     * Sets the Live Notifications {@link Role} for the {@link Guild}.
-     * @param guild The {@link Guild}.
-     * @param roleID The ID of the Live Notifications {@link Role}.
-     * @return Whether or not it was successfully updated in the database.
-     */
-    @NotNull
-    protected Boolean setLiveNotificationsRoleID(@NotNull Guild guild, @NotNull String roleID) {
-        return setLiveNotificationsRoleID(guild.getId(), roleID);
-    }
-
-    /**
      * Updates the prefix for a specific {@link Guild}.
      * @param guildID The ID of the {@link Guild}.
      * @param newPrefix The new prefix for the {@link Guild}.
      * @return Whether or not the prefix was updated successfully.
      */
     @NotNull
-    public Boolean updateGuildPrefix(@NotNull String guildID, @NotNull String newPrefix) {
+    protected Boolean updateGuildPrefix(@NotNull String guildID, @NotNull String newPrefix) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information SET prefix = (?) WHERE guild_id = " + guildID + ";";
@@ -276,24 +232,12 @@ public class GuildHandler {
             statement.setString(1, newPrefix);
 
             statement.execute();
-            updateGuildCache();
             return true;
         } catch (SQLException e) {
             BeanBot.getLogManager().log(CustomGuild.class, LogLevel.ERROR, "Unable to reach the SQL database.");
             return false;
         }
 
-    }
-
-    /**
-     * Updates the prefix for a specific {@link Guild}.
-     * @param guild The {@link Guild}.
-     * @param newPrefix The new prefix for the {@link Guild}.
-     * @return Whether or not the prefix was updated successfully.
-     */
-    @NotNull
-    public Boolean updateGuildPrefix(@NotNull Guild guild, @NotNull String newPrefix) {
-        return updateGuildPrefix(guild.getId(), newPrefix);
     }
 
     /**
@@ -393,7 +337,7 @@ public class GuildHandler {
      * @return Whether or not updating the {@link Role} in the database was successful.
      */
     @NotNull
-    public Boolean updateGuildMutedRole(@NotNull String guildID, @NotNull String roleID) {
+    protected Boolean updateGuildMutedRole(@NotNull String guildID, @NotNull String roleID) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information " +
@@ -406,7 +350,6 @@ public class GuildHandler {
             statement.setLong(2, Long.parseLong(guildID));
 
             statement.execute();
-            updateGuildCache();
             return true;
         } catch (SQLException e) {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
@@ -416,24 +359,13 @@ public class GuildHandler {
     }
 
     /**
-     * Updates the muted {@link Role} in the specified {@link Guild}.
-     * @param guild The {@link Guild} to have the {@link Role} updated in.
-     * @param role The {@link Role} to be given to muted {@link net.dv8tion.jda.api.entities.Member Member}.
-     * @return Whether or not updating the {@link Role} in the database was successful.
-     */
-    @NotNull
-    public Boolean updateGuildMutedRole(@NotNull Guild guild, @NotNull Role role) {
-        return updateGuildMutedRole(guild.getId(), role.getId());
-    }
-
-    /**
      * Updates the moderator {@link Role} for the {@link Guild}.
      * @param guildID The ID of the {@link Guild} to have the {@link Role} updated.
      * @param roleID The ID of the {@link Role} to set as the moderator {@link Role}.
      * @return Whether or not updating the moderator {@link Role} was successful.
      */
     @NotNull
-    public Boolean updateGuildModeratorRole(@NotNull String guildID, @NotNull String roleID) {
+    protected Boolean updateGuildModeratorRole(@NotNull String guildID, @NotNull String roleID) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information " +
@@ -446,7 +378,6 @@ public class GuildHandler {
             statement.setLong(2, Long.parseLong(guildID));
 
             statement.execute();
-            updateGuildCache();
             return true;
         } catch (SQLException e) {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
@@ -456,24 +387,13 @@ public class GuildHandler {
     }
 
     /**
-     * Updates the moderator {@link Role} for the {@link Guild}.
-     * @param guild The {@link Guild} to have the {@link Role} updated.
-     * @param role The {@link Role} to set as the moderator {@link Role}.
-     * @return Whether or not updating the moderator {@link Role} was successful.
-     */
-    @NotNull
-    public Boolean updateGuildModeratorRole(@NotNull Guild guild, @NotNull Role role) {
-        return updateGuildModeratorRole(guild.getId(), role.getId());
-    }
-
-    /**
      * Adds a twitch channel for a specified {@link Guild}.
      * @param guildID The ID of the specified {@link Guild}.
      * @param twitchChannel Thw twitch channel to be added.
      * @return Whether or not adding the twitch channel was successful.
      */
     @NotNull
-    public Boolean addTwitchChannel(@NotNull String guildID, @NotNull String twitchChannel) {
+    protected Boolean addTwitchChannel(@NotNull String guildID, @NotNull String twitchChannel) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "INSERT INTO beanbot.guild_twitch " +
@@ -486,7 +406,6 @@ public class GuildHandler {
             statement.setString(2, twitchChannel);
 
             statement.execute();
-            updateGuildCache();
             return true;
         } catch (SQLException e) {
             BeanBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to reach the SQL database.");
@@ -496,24 +415,13 @@ public class GuildHandler {
     }
 
     /**
-     * Adds a twitch channel for a specified {@link Guild}.
-     * @param guild The specified {@link Guild}.
-     * @param twitchChannel The twitch channel to be added.
-     * @return Whether or not adding the twitch channel was successful.
-     */
-    @NotNull
-    public Boolean addTwitchChannel(@NotNull Guild guild, @NotNull String twitchChannel) {
-        return addTwitchChannel(guild.getId(), twitchChannel);
-    }
-
-    /**
      * Remove a twitch channel for a specified {@link Guild}.
      * @param guildID The ID of the specified {@link Guild}.
      * @param twitchChannel The twitch channel to be removed.
      * @return Whether or not removing the twitch channel was successful.
      */
     @NotNull
-    public Boolean removeTwitchChannel(@NotNull String guildID, @NotNull String twitchChannel) {
+    protected Boolean removeTwitchChannel(@NotNull String guildID, @NotNull String twitchChannel) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "DELETE FROM beanbot.guild_twitch " +
@@ -525,7 +433,6 @@ public class GuildHandler {
             statement.setString(2, twitchChannel);
 
             statement.execute();
-            updateGuildCache();
             return true;
         } catch (SQLException e) {
             BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to reach the SQL database.");
@@ -535,24 +442,13 @@ public class GuildHandler {
     }
 
     /**
-     * Removes a twitch channel for a specified {@link Guild}.
-     * @param guild The specified {@link Guild}.
-     * @param twitchChannel The twitch channel to be removed.
-     * @return Whether or not removing the twitch channel was successful.
-     */
-    @NotNull
-    public Boolean removeTwitchChannel(@NotNull Guild guild, @NotNull String twitchChannel) {
-        return removeTwitchChannel(guild.getId(), twitchChannel);
-    }
-
-    /**
      * Update the Twitch Notification Channel for the specified {@link Guild}.
      * @param guildID The ID for the {@link Guild} specified.
      * @param textChannelID The ID for the {@link TextChannel} specified.
      * @return Whether or not updating was successful.
      */
     @NotNull
-    public Boolean updateTwitchDiscordChannel(@NotNull String guildID, @NotNull String textChannelID) {
+    public Boolean updateTwitchChannelID(@NotNull String guildID, @NotNull String textChannelID) {
 
         Connection connection = BeanBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information " +
@@ -565,24 +461,12 @@ public class GuildHandler {
             statement.setLong(2, Long.parseLong(guildID));
 
             statement.execute();
-            updateGuildCache();
             return true;
         } catch (SQLException e) {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
             return false;
         }
 
-    }
-
-    /**
-     * Update the Twitch Notification Channel for the specified {@link Guild}.
-     * @param guild The {@link Guild} specified.
-     * @param textChannel The {@link TextChannel} specified.
-     * @return Whether or not it was successfully updated.
-     */
-    @NotNull
-    public Boolean updateTwitchDiscordChannel(@NotNull Guild guild, @NotNull TextChannel textChannel) {
-        return updateTwitchDiscordChannel(guild.getId(), textChannel.getId());
     }
 
     /**
