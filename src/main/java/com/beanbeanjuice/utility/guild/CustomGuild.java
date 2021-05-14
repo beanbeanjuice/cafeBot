@@ -88,6 +88,20 @@ public class CustomGuild {
     }
 
     /**
+     * Set the poll {@link TextChannel} for the {@link Guild}.
+     * @param pollChannelID The ID of the {@link TextChannel}.
+     * @return Whether or not setting the poll {@link TextChannel} was successful.
+     */
+    @NotNull
+    public Boolean setPollChannel(@NotNull String pollChannelID) {
+        if (BeanBot.getGuildHandler().setPollChannelID(guildID, pollChannelID)) {
+            this.pollChannelID = pollChannelID;
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @return The counting {@link TextChannel} for the {@link Guild}.
      */
     @Nullable
