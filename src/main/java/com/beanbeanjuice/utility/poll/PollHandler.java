@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.poll;
 
 import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -41,7 +42,7 @@ public class PollHandler {
                     for (Poll poll : value) {
 
                         // Check if the poll SHOULD be calculated
-                        Long timeBetween = BeanBot.getGeneralHelper().compareTwoTimeStamps(poll.getPollEndTime(), new Timestamp(System.currentTimeMillis()));
+                        Long timeBetween = BeanBot.getGeneralHelper().compareTwoTimeStamps(poll.getPollEndTime(), new Timestamp(System.currentTimeMillis()), TimestampDifference.MINUTES);
                         // If it is greater than 0, check it.
                         if (timeBetween > 0) {
                             // Check if the poll channel still exists.
