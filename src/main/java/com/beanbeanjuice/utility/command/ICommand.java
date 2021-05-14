@@ -39,6 +39,11 @@ public interface ICommand {
     String getDescription();
 
     /**
+     * @return An example of how to use the {@link ICommand}.
+     */
+    String exampleUsage();
+
+    /**
      * @return The {@link Usage} for the {@link ICommand}.
      */
     Usage getUsage();

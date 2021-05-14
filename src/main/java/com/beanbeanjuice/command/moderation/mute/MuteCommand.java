@@ -94,6 +94,11 @@ public class MuteCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!mute @beanbeanjuice`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.USER, "Discord Mention", true);

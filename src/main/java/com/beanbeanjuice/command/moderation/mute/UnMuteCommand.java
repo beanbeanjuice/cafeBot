@@ -96,6 +96,11 @@ public class UnMuteCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!unmute @beanbeanjuice`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.USER, "Discord User Mention", true);
