@@ -57,19 +57,14 @@ public class AddRaffleCommand implements ICommand {
         }
 
         raffleChannel.sendMessage(creatingRaffle()).queue(message -> {
-
             Raffle raffle = new Raffle(event.getGuild().getId(), message.getId(), new Timestamp(System.currentTimeMillis() + (minutes*60000)), winnerAmount);
-
             if (BeanBot.getRaffleHandler().addRaffle(raffle)) {
                 message.editMessage(raffleEmbed(title, description, minutes, winnerAmount)).queue();
                 message.addReaction("U+2705").queue();
             } else {
                 message.editMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
             }
-
         });
-
-
     }
 
     private MessageEmbed raffleEmbed(@NotNull String title, @NotNull String description,
@@ -79,15 +74,12 @@ public class AddRaffleCommand implements ICommand {
         embedBuilder.addField("Raffle Details", description, false);
         embedBuilder.addField("Winner Amount", winnerAmount.toString(), false);
         embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-
         if (minutes == 1) {
             embedBuilder.setFooter("This raffle will end in " + minutes + " minute from when the message was posted.");
         } else {
             embedBuilder.setFooter("This raffle will end in " + minutes + " minutes from when the message was posted.");
         }
-
         return embedBuilder.build();
-
     }
 
     private MessageEmbed creatingRaffle() {
