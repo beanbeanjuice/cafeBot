@@ -110,7 +110,11 @@ This is an example of how to list things you need to use the software and how to
 * `!!help` - Shows a list of command section.
 * `!!help (command section name)` - Shows a list of commands in that section.
 * `!!help (command name/alias)` - Shows how to use the command.
-![Product Name Screen Shot][help-screenshot]
+
+<p align="center">
+  <img src=images/help.png>
+</p>
+
 As you can see, this was shown using the command `!!help order`. It shows each parameter you can run. For example, `<parameter 1>` needs to be a number and it is `REQUIRED` and `<parameter 2>` is a discord user and is also `REQUIRED`. So this means, to run the `order` command, I would do something like, `!!order 2 @beanbeanjuice`.
 
 #### **Command Section**
