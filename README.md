@@ -135,6 +135,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `joke` - Send a joke in the current channel. (SFW)
 ##### 4. **INTERACTION**
 * `add-poll` - Create a poll!
+* `avatar` - Get yours or someone else's avatar image!
 ##### 5. **MUSIC**
 * `now-playing` - Show the current song playing.
 * `play` - Play a song or playlist!
