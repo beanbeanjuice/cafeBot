@@ -195,6 +195,7 @@ public class BeanBot {
                 new NotifyOnUpdateCommand(),
                 new SetCountingChannelCommand(),
                 new SetPollChannelCommand(),
+                new SetRaffleChannelCommand(),
 
                 new SetLiveChannelCommand(),
                 new AddTwitchChannelCommand(),
