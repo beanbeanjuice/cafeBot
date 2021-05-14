@@ -27,6 +27,7 @@ import com.beanbeanjuice.utility.helper.VersionHelper;
 import com.beanbeanjuice.utility.listener.Listener;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
+import com.beanbeanjuice.utility.poll.PollHandler;
 import com.beanbeanjuice.utility.sql.SQLServer;
 import com.beanbeanjuice.utility.twitch.TwitchHandler;
 import com.wrapper.spotify.SpotifyApi;
@@ -118,6 +119,9 @@ public class BeanBot {
     // Cafe Stuff
     private static ServeHandler serveHandler;
     private static MenuHandler menuHandler;
+
+    // Poll Stuff
+    private static PollHandler pollHandler;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
 
@@ -224,6 +228,16 @@ public class BeanBot {
 
         versionHelper = new VersionHelper();
         versionHelper.contactGuilds();
+
+        pollHandler = new PollHandler();
+    }
+
+    /**
+     * @return The current {@link PollHandler}.
+     */
+    @NotNull
+    public static PollHandler getPollHandler() {
+        return pollHandler;
     }
 
     /**
