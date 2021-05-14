@@ -2,7 +2,9 @@ package com.beanbeanjuice.utility.poll;
 
 import com.beanbeanjuice.main.BeanBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.MessageReaction;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
