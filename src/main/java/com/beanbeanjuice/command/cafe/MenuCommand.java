@@ -92,6 +92,11 @@ public class MenuCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!menu` or `!!menu 9`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.NUMBER, "Menu Item Number", false);

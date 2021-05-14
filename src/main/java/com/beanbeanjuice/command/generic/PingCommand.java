@@ -59,6 +59,11 @@ public class PingCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!ping`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.TEXT, "Any Text", false);

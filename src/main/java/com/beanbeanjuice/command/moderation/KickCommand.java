@@ -87,6 +87,11 @@ public class KickCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!kick @beanbeanjuice you're trash`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.USER, "Discord User", true);

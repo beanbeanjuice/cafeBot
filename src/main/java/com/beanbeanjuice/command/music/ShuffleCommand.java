@@ -85,6 +85,11 @@ public class ShuffleCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!shuffle`";
+    }
+
+    @Override
     public Usage getUsage() {
         return new Usage();
     }

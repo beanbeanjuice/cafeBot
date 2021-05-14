@@ -84,6 +84,11 @@ public class SetModeratorRoleCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!setmoderatorrole @ModRole`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.TEXT, "Role ID or Role Mention", true);

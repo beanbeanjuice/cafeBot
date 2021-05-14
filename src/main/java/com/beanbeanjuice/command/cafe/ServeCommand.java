@@ -124,6 +124,11 @@ public class ServeCommand implements ICommand {
     }
 
     @Override
+    public String exampleUsage() {
+        return "`!!serve keyboard` or `!!serve mouse @beanbeanjuice`";
+    }
+
+    @Override
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.TEXT, "Any English Word", true);
