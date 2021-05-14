@@ -54,11 +54,12 @@ public class GuildHandler {
                 String updateChannelID = String.valueOf(resultSet.getLong(8));
                 String countingChannelID = String.valueOf(resultSet.getLong(9));
                 String pollChannelID = String.valueOf(resultSet.getLong(10));
+                String raffleChannelID = String.valueOf(resultSet.getLong(11));
 
                 guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
                         twitchChannelID, twitchChannels, mutedRoleID,
                         liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
-                        countingChannelID, pollChannelID));
+                        countingChannelID, pollChannelID, raffleChannelID));
             }
         } catch (SQLException e) {
             BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
@@ -90,6 +91,26 @@ public class GuildHandler {
             BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to retrieve twitch channels from database.", true, false);
             return new ArrayList<>();
         }
+    }
+
+    @NotNull
+    protected Boolean setRaffleChannelID(@NotNull String guildID, @NotNull String raffleChannelID) {
+
+        Connection connection = BeanBot.getSQLServer().getConnection();
+        String arguments = "UPDATE beanbot.guild_information SET raffle_channel_id = (?) WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(raffleChannelID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Raffle Channel: " + e.getMessage());
+            return false;
+        }
+
     }
 
     /**
