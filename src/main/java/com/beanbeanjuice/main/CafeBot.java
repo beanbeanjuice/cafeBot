@@ -65,7 +65,7 @@ public class CafeBot {
     // File Information
     // -- 'beta.json' -> Beta Bot Information
     // -- 'release.json' -> Release Bot Information
-    private static final String FILE_INFO = "release.json";
+    private static final String FILE_INFO = "beta.json";
 
     // General Bot Info
     private static final String BOT_VERSION = JSONHelper.getValue(FILE_INFO, "bot", "version").textValue();
@@ -287,7 +287,7 @@ public class CafeBot {
      * Updates the presence for the {@link JDA}.
      */
     public static void updateGuildPresence() {
-        jda.getPresence().setActivity(Activity.playing("!! | beanBot " + BOT_VERSION + " - Currently in " + jda.getGuilds().size() + " servers!"));
+        jda.getPresence().setActivity(Activity.playing("!! | cafeBot " + BOT_VERSION + " - Currently in " + jda.getGuilds().size() + " servers!"));
     }
 
     /**

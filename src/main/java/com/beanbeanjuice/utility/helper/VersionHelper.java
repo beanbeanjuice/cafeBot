@@ -27,7 +27,7 @@ import java.util.HashMap;
  */
 public class VersionHelper {
 
-    private final String GITHUB_API_URL = "https://api.github.com/repos/beanbeanjuice/beanBot/releases";
+    private final String GITHUB_API_URL = "https://api.github.com/repos/beanbeanjuice/cafeBot/releases";
     private String github_url;
     private String github_tag;
     private String github_name;
@@ -40,7 +40,7 @@ public class VersionHelper {
      */
     public Boolean updateVersionInDatabase(@NotNull String currentVersion) {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.bot_information SET version = (?) WHERE id = (?);";
+        String arguments = "UPDATE cafeBot.bot_information SET version = (?) WHERE id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -73,7 +73,7 @@ public class VersionHelper {
      */
     public String getLastVersion() {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.bot_information WHERE id = (?);";
+        String arguments = "SELECT * FROM cafeBot.bot_information WHERE id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -142,10 +142,10 @@ public class VersionHelper {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(github_name, github_url);
         embedBuilder.setFooter(github_url);
-        embedBuilder.setTitle("New beanBot Update");
+        embedBuilder.setTitle("New cafeBot Update");
         embedBuilder.setDescription(github_body);
         embedBuilder.addField("Extra Information", "The bot has been updated to " + github_tag + "! " +
-                "To request a feature or report bugs, please head over to https://github.com/beanbeanjuice/beanBot/issues.", true);
+                "To request a feature or report bugs, please head over to https://github.com/beanbeanjuice/cafeBot/issues.", true);
         embedBuilder.addField("How to Disable Update Notifications", "To disable these update notifications, " +
                 "the default command would be `!!notify-on-update disable`.", false);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());

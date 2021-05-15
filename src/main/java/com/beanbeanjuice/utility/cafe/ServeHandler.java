@@ -31,7 +31,7 @@ public class ServeHandler {
     @Nullable
     public ServeWord getWord(@NotNull String word) {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.serve_words WHERE word = (?);";
+        String arguments = "SELECT * FROM cafeBot.serve_words WHERE word = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -53,7 +53,7 @@ public class ServeHandler {
     @NotNull
     public Boolean updateWord(@NotNull ServeWord serveWord) {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.serve_words SET uses = (?) WHERE word = (?);";
+        String arguments = "UPDATE cafeBot.serve_words SET uses = (?) WHERE word = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -87,7 +87,7 @@ public class ServeHandler {
     public CafeCustomer getCafeCustomer(@NotNull String userID) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.cafe_information WHERE user_id = (?);";
+        String arguments = "SELECT * FROM cafeBot.cafe_information WHERE user_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -104,7 +104,7 @@ public class ServeHandler {
             return new CafeCustomer(userID, beanCountAmount, lastServingTime, ordersBought, ordersReceived);
         } catch (SQLException e) {
 
-            arguments = "INSERT INTO beanbot.cafe_information (user_id) VALUES (?);";
+            arguments = "INSERT INTO cafeBot.cafe_information (user_id) VALUES (?);";
 
             try {
                 PreparedStatement catchStatement = connection.prepareStatement(arguments);
@@ -195,7 +195,7 @@ public class ServeHandler {
     @NotNull
     public Boolean updateTip(@NotNull CafeCustomer cafeCustomer, @NotNull Timestamp currentDate, @NotNull Double tipToAdd) {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.cafe_information SET bean_coins = (?), last_serving_time = (?) WHERE user_id = (?);";
+        String arguments = "UPDATE cafeBot.cafe_information SET bean_coins = (?), last_serving_time = (?) WHERE user_id = (?);";
 
         double newTip = cafeCustomer.getBeanCoinAmount() + tipToAdd;
 

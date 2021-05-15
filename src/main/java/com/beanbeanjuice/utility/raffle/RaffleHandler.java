@@ -151,7 +151,7 @@ public class RaffleHandler {
     @NotNull
     private Boolean removeRaffleFromDatabase(@NotNull Raffle raffle) {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "DELETE FROM beanbot.raffles WHERE message_id = (?) and guild_id = (?);";
+        String arguments = "DELETE FROM cafeBot.raffles WHERE message_id = (?) and guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -173,7 +173,7 @@ public class RaffleHandler {
     @NotNull
     public Boolean addRaffle(@NotNull Raffle raffle) {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "INSERT INTO beanbot.raffles (guild_id, message_id, ending_time, winner_amount) VALUES (?,?,?,?);";
+        String arguments = "INSERT INTO cafeBot.raffles (guild_id, message_id, ending_time, winner_amount) VALUES (?,?,?,?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -223,7 +223,7 @@ public class RaffleHandler {
      */
     private void getRafflesFromDatabase() {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.raffles;";
+        String arguments = "SELECT * FROM cafeBot.raffles;";
 
         try {
             Statement statement = connection.createStatement();

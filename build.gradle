@@ -5,7 +5,7 @@ plugins {
 
 task buildWithDependencies(type: Jar) {
     manifest {
-        attributes 'Main-Class': 'com.beanbeanjuice.main.BeanBot'
+        attributes 'Main-Class': 'com.beanbeanjuice.main.CafeBot'
     }
 
     from {
@@ -16,8 +16,8 @@ task buildWithDependencies(type: Jar) {
 }
 
 group 'com.beanbeanjuice'
-mainClassName = 'com.beanbeanjuice.main.BeanBot'
-version 'v1.5.0'
+mainClassName = 'com.beanbeanjuice.main.CafeBot'
+version 'v2.0.0'
 
 repositories {
 

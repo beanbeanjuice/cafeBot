@@ -36,7 +36,7 @@ public class GuildHandler {
         guildDatabase.clear();
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.guild_information;";
+        String arguments = "SELECT * FROM cafeBot.guild_information;";
 
         try {
             Statement statement = connection.createStatement();
@@ -73,7 +73,7 @@ public class GuildHandler {
      */
     public ArrayList<String> getTwitchChannels(String guildID) {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.guild_twitch WHERE guild_id = ?;";
+        String arguments = "SELECT * FROM cafeBot.guild_twitch WHERE guild_id = ?;";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -97,7 +97,7 @@ public class GuildHandler {
     protected Boolean setRaffleChannelID(@NotNull String guildID, @NotNull String raffleChannelID) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.guild_information SET raffle_channel_id = (?) WHERE guild_id = (?);";
+        String arguments = "UPDATE cafeBot.guild_information SET raffle_channel_id = (?) WHERE guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -123,7 +123,7 @@ public class GuildHandler {
     protected Boolean setPollChannelID(@NotNull String guildID, @NotNull String pollChannelID) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.guild_information SET poll_channel_id = (?) WHERE guild_id = (?);";
+        String arguments = "UPDATE cafeBot.guild_information SET poll_channel_id = (?) WHERE guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -149,7 +149,7 @@ public class GuildHandler {
     protected Boolean setCountingChannelID(@NotNull String guildID, @NotNull String countingChannelID) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.guild_information SET counting_channel_id = (?) WHERE guild_id = (?);";
+        String arguments = "UPDATE cafeBot.guild_information SET counting_channel_id = (?) WHERE guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -173,7 +173,7 @@ public class GuildHandler {
     @NotNull
     protected Boolean setUpdateChannelID(@NotNull String guildID, @NotNull String updateChannelID) {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.guild_information SET update_channel_id = (?) WHERE guild_id = (?);";
+        String arguments = "UPDATE cafeBot.guild_information SET update_channel_id = (?) WHERE guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -197,7 +197,7 @@ public class GuildHandler {
     @NotNull
     protected Boolean setNotifyOnUpdate(@NotNull String guildID, @NotNull Boolean answer) {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.guild_information SET notify_on_update = (?) WHERE guild_id = (?);";
+        String arguments = "UPDATE cafeBot.guild_information SET notify_on_update = (?) WHERE guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -221,7 +221,7 @@ public class GuildHandler {
     @NotNull
     protected Boolean setLiveNotificationsRoleID(@NotNull String guildID, @NotNull String roleID) {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.guild_information SET live_notifications_role_id = (?) WHERE guild_id = (?);";
+        String arguments = "UPDATE cafeBot.guild_information SET live_notifications_role_id = (?) WHERE guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -246,7 +246,7 @@ public class GuildHandler {
     protected Boolean updateGuildPrefix(@NotNull String guildID, @NotNull String newPrefix) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.guild_information SET prefix = (?) WHERE guild_id = " + guildID + ";";
+        String arguments = "UPDATE cafeBot.guild_information SET prefix = (?) WHERE guild_id = " + guildID + ";";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -300,7 +300,7 @@ public class GuildHandler {
     public Boolean removeGuild(@NotNull String guildID) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "DELETE FROM beanbot.guild_information " +
+        String arguments = "DELETE FROM cafeBot.guild_information " +
                 "WHERE guild_id = (?);";
 
         try {
@@ -334,7 +334,7 @@ public class GuildHandler {
     public Boolean addGuild(@NotNull String guildID) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "INSERT INTO beanbot.guild_information " +
+        String arguments = "INSERT INTO cafeBot.guild_information " +
                 "(guild_id, prefix) " +
                 "VALUES (?,?);";
 
@@ -361,7 +361,7 @@ public class GuildHandler {
     protected Boolean updateGuildMutedRole(@NotNull String guildID, @NotNull String roleID) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.guild_information " +
+        String arguments = "UPDATE cafeBot.guild_information " +
                 "SET muted_role_id = (?) " +
                 "WHERE guild_id = (?);";
 
@@ -389,7 +389,7 @@ public class GuildHandler {
     protected Boolean updateGuildModeratorRole(@NotNull String guildID, @NotNull String roleID) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.guild_information " +
+        String arguments = "UPDATE cafeBot.guild_information " +
                 "SET moderator_role_id = (?) " +
                 "WHERE guild_id = (?);";
 
@@ -417,7 +417,7 @@ public class GuildHandler {
     protected Boolean addTwitchChannel(@NotNull String guildID, @NotNull String twitchChannel) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "INSERT INTO beanbot.guild_twitch " +
+        String arguments = "INSERT INTO cafeBot.guild_twitch " +
                 "(guild_id, twitch_channel) " +
                 "VALUES (?,?);";
 
@@ -445,7 +445,7 @@ public class GuildHandler {
     protected Boolean removeTwitchChannel(@NotNull String guildID, @NotNull String twitchChannel) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "DELETE FROM beanbot.guild_twitch " +
+        String arguments = "DELETE FROM cafeBot.guild_twitch " +
                 "WHERE guild_id = (?) AND twitch_channel = (?);";
 
         try {
@@ -472,7 +472,7 @@ public class GuildHandler {
     public Boolean updateTwitchChannelID(@NotNull String guildID, @NotNull String textChannelID) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.guild_information " +
+        String arguments = "UPDATE cafeBot.guild_information " +
                 "SET twitch_channel_id = (?) " +
                 "WHERE guild_id = (?);";
 

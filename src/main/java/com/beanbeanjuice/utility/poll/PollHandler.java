@@ -142,7 +142,7 @@ public class PollHandler {
         String messageID = poll.getMessageID();
 
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "INSERT INTO beanbot.polls (guild_id, message_id, ending_time) VALUES (?,?,?);";
+        String arguments = "INSERT INTO cafeBot.polls (guild_id, message_id, ending_time) VALUES (?,?,?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -168,7 +168,7 @@ public class PollHandler {
      */
     private void getPollsFromDatabase() {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.polls;";
+        String arguments = "SELECT * FROM cafeBot.polls;";
 
         try {
             Statement statement = connection.createStatement();
@@ -198,7 +198,7 @@ public class PollHandler {
     @NotNull
     private Boolean removePoll(@NotNull Poll poll) {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "DELETE FROM beanbot.polls WHERE guild_id = (?) AND message_id = (?);";
+        String arguments = "DELETE FROM cafeBot.polls WHERE guild_id = (?) AND message_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
