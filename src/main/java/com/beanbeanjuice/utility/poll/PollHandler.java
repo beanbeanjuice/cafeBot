@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.poll;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -48,7 +48,7 @@ public class PollHandler {
                         // Check if the poll SHOULD be calculated
                         if (poll.isFinished()) {
                             // Check if the poll channel still exists.
-                            TextChannel pollChannel = BeanBot.getGuildHandler().getCustomGuild(key).getPollChannel();
+                            TextChannel pollChannel = CafeBot.getGuildHandler().getCustomGuild(key).getPollChannel();
 
                             if (pollChannel == null) {
                                 removePoll(poll);
@@ -116,7 +116,7 @@ public class PollHandler {
         embedBuilder.setAuthor(pollTitle);
         embedBuilder.setDescription(pollDescription);
         embedBuilder.setFooter("This poll has ended.");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
 
         StringBuilder winnersBuilder = new StringBuilder();
 
@@ -141,8 +141,8 @@ public class PollHandler {
         String guildID = poll.getGuildID();
         String messageID = poll.getMessageID();
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "INSERT INTO beanbot.polls (guild_id, message_id, ending_time) VALUES (?,?,?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "INSERT INTO cafeBot.polls (guild_id, message_id, ending_time) VALUES (?,?,?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -167,8 +167,8 @@ public class PollHandler {
      * Refreshing the database cache for the {@link PollHandler}.
      */
     private void getPollsFromDatabase() {
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.polls;";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM cafeBot.polls;";
 
         try {
             Statement statement = connection.createStatement();
@@ -186,7 +186,7 @@ public class PollHandler {
                 activePolls.get(guildID).add(new Poll(guildID, messageID, pollEndTime));
             }
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Retrieving Polls from Database: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Retrieving Polls from Database: " + e.getMessage());
         }
     }
 
@@ -197,8 +197,8 @@ public class PollHandler {
      */
     @NotNull
     private Boolean removePoll(@NotNull Poll poll) {
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "DELETE FROM beanbot.polls WHERE guild_id = (?) AND message_id = (?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "DELETE FROM cafeBot.polls WHERE guild_id = (?) AND message_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -207,7 +207,7 @@ public class PollHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Removing Poll from Database: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Removing Poll from Database: " + e.getMessage());
             return false;
         }
     }

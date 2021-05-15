@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.cafe;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.cafe.object.MenuItem;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -27,7 +27,7 @@ public class MenuCommand implements ICommand {
 
         if (args.size() == 0) {
             StringBuilder stringBuilder = new StringBuilder();
-            ArrayList<MenuItem> menu = BeanBot.getMenuHandler().getMenu();
+            ArrayList<MenuItem> menu = CafeBot.getMenuHandler().getMenu();
 
             for (int i = 0; i < menu.size(); i++) {
                 stringBuilder.append(i + 1)
@@ -40,8 +40,8 @@ public class MenuCommand implements ICommand {
             int itemIndex = Integer.parseInt(args.get(0)) - 1;
 
             // Checking if the item exists
-            if (itemIndex >= BeanBot.getMenuHandler().getMenu().size()) {
-                event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+            if (itemIndex >= CafeBot.getMenuHandler().getMenu().size()) {
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                         "Unknown Item",
                         "The item `" + args.get(0) + "` does not exist. " +
                                 "To view the menu, do `" + ctx.getPrefix() + "menu`!"
@@ -49,7 +49,7 @@ public class MenuCommand implements ICommand {
                 return;
             }
 
-            MenuItem item = BeanBot.getMenuHandler().getItem(itemIndex);
+            MenuItem item = CafeBot.getMenuHandler().getItem(itemIndex);
             event.getChannel().sendMessage(menuItemEmbed(item, itemIndex)).queue();
         }
     }
@@ -62,7 +62,7 @@ public class MenuCommand implements ICommand {
         embedBuilder.addField("Item Number", String.valueOf(itemIndex+1), true);
         embedBuilder.setDescription(menuItem.getDescription());
         embedBuilder.setThumbnail(menuItem.getImageURL());
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 
@@ -71,7 +71,7 @@ public class MenuCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Menu Items");
         embedBuilder.setDescription(description);
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setFooter("I hope you enjoy your stay!~");
         return embedBuilder.build();
     }

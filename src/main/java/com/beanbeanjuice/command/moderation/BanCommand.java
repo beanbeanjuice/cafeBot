@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.moderation;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -27,7 +27,7 @@ public class BanCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        if (!BeanBot.getGeneralHelper().checkPermission(event.getMember(), event.getChannel(), Permission.BAN_MEMBERS)) {
+        if (!CafeBot.getGeneralHelper().checkPermission(event.getMember(), event.getChannel(), Permission.BAN_MEMBERS)) {
             return;
         }
 
@@ -40,7 +40,7 @@ public class BanCommand implements ICommand {
         }
 
         // TODO: Not PMing users
-        BeanBot.getGeneralHelper().pmUser(punishee.getUser(), "You have been banned: " + reason.toString());
+        CafeBot.getGeneralHelper().pmUser(punishee.getUser(), "You have been banned: " + reason.toString());
 
         try {
             punishee.ban(Integer.parseInt(args.get(1)), reason.toString()).queue();
@@ -55,7 +55,7 @@ public class BanCommand implements ICommand {
     @NotNull
     private MessageEmbed successfulBanEmbed(@NotNull Member punishee, @NotNull User user, @NotNull String reason) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setAuthor("User Banned");
         embedBuilder.setDescription("`" + punishee.getEffectiveName() + "` has been banned for `" + reason + "`.");
         embedBuilder.addField("Banned By:", user.getAsMention(), true);

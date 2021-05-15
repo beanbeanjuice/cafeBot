@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.cafe;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.cafe.object.ServeWord;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
@@ -30,8 +30,8 @@ public class ServeHandler {
      */
     @Nullable
     public ServeWord getWord(@NotNull String word) {
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.serve_words WHERE word = (?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM cafeBot.serve_words WHERE word = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -52,8 +52,8 @@ public class ServeHandler {
      */
     @NotNull
     public Boolean updateWord(@NotNull ServeWord serveWord) {
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.serve_words SET uses = (?) WHERE word = (?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "UPDATE cafeBot.serve_words SET uses = (?) WHERE word = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -63,7 +63,7 @@ public class ServeHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Update Cafe Word: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Update Cafe Word: " + e.getMessage());
             return false;
         }
     }
@@ -86,8 +86,8 @@ public class ServeHandler {
     @Nullable
     public CafeCustomer getCafeCustomer(@NotNull String userID) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.cafe_information WHERE user_id = (?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM cafeBot.cafe_information WHERE user_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -104,7 +104,7 @@ public class ServeHandler {
             return new CafeCustomer(userID, beanCountAmount, lastServingTime, ordersBought, ordersReceived);
         } catch (SQLException e) {
 
-            arguments = "INSERT INTO beanbot.cafe_information (user_id) VALUES (?);";
+            arguments = "INSERT INTO cafeBot.cafe_information (user_id) VALUES (?);";
 
             try {
                 PreparedStatement catchStatement = connection.prepareStatement(arguments);
@@ -170,7 +170,7 @@ public class ServeHandler {
         }
 
         try {
-            return Math.round(BeanBot.getGeneralHelper().compareTwoTimeStamps(cafeCustomer.getLastServingTime(), new Timestamp(System.currentTimeMillis()), TimestampDifference.MINUTES));
+            return Math.round(CafeBot.getGeneralHelper().compareTwoTimeStamps(cafeCustomer.getLastServingTime(), new Timestamp(System.currentTimeMillis()), TimestampDifference.MINUTES));
         } catch (UnsupportedTemporalTypeException e) {
             return MINUTES_UNTIL_CAN_SERVE + 10;
         }
@@ -194,8 +194,8 @@ public class ServeHandler {
      */
     @NotNull
     public Boolean updateTip(@NotNull CafeCustomer cafeCustomer, @NotNull Timestamp currentDate, @NotNull Double tipToAdd) {
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.cafe_information SET bean_coins = (?), last_serving_time = (?) WHERE user_id = (?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "UPDATE cafeBot.cafe_information SET bean_coins = (?), last_serving_time = (?) WHERE user_id = (?);";
 
         double newTip = cafeCustomer.getBeanCoinAmount() + tipToAdd;
 
@@ -207,7 +207,7 @@ public class ServeHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Tip: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Tip: " + e.getMessage());
             return false;
         }
     }

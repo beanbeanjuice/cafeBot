@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.poll;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,7 +55,7 @@ public class Poll {
 
     @NotNull
     public Boolean isFinished() {
-        return BeanBot.getGeneralHelper().compareTwoTimeStamps(pollEndTime, new Timestamp(System.currentTimeMillis()), TimestampDifference.MINUTES) > 0;
+        return CafeBot.getGeneralHelper().compareTwoTimeStamps(pollEndTime, new Timestamp(System.currentTimeMillis()), TimestampDifference.MINUTES) > 0;
     }
 
 }

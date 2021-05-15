@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.listener;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
@@ -22,7 +22,7 @@ public class TwitchListener {
         twitchClient = TwitchClientBuilder.builder()
                 .withEnableHelix(true)
                 .withEnableChat(true)
-                .withDefaultAuthToken(new OAuth2Credential("twitch", BeanBot.getTwitchAccessToken()))
+                .withDefaultAuthToken(new OAuth2Credential("twitch", CafeBot.getTwitchAccessToken()))
                 .withDefaultEventHandler(SimpleEventHandler.class)
                 .build();
     }

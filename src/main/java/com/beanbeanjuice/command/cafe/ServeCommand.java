@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.cafe;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.cafe.object.ServeWord;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -29,11 +29,11 @@ public class ServeCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
         String word = args.get(0).toLowerCase();
-        ServeWord serveWord = BeanBot.getServeHandler().getWord(word);
+        ServeWord serveWord = CafeBot.getServeHandler().getWord(word);
 
         // Checking if the word entered is a word.
         if (serveWord == null) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "Not A Word",
                     "`" + word + "` is not a word. If this is a mistake, please create a " +
                             "bug report using `" + ctx.getPrefix() + "bug-report`."
@@ -41,32 +41,32 @@ public class ServeCommand implements ICommand {
             return;
         }
 
-        CafeCustomer cafeCustomer = BeanBot.getServeHandler().getCafeCustomer(user);
+        CafeCustomer cafeCustomer = CafeBot.getServeHandler().getCafeCustomer(user);
 
         // Checking if CafeCustomer is null.
         if (cafeCustomer == null) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
         // Checking if the user CAN serve someone.
-        if (!BeanBot.getServeHandler().canServe(cafeCustomer)) {
-            event.getChannel().sendMessage(cannotServeEmbed(BeanBot.getServeHandler().minutesBetween(cafeCustomer))).queue();
+        if (!CafeBot.getServeHandler().canServe(cafeCustomer)) {
+            event.getChannel().sendMessage(cannotServeEmbed(CafeBot.getServeHandler().minutesBetween(cafeCustomer))).queue();
             return;
         }
 
         Timestamp currentDate = new Timestamp(System.currentTimeMillis());
-        Double calculatedTip = BeanBot.getServeHandler().calculateTip(serveWord);
+        Double calculatedTip = CafeBot.getServeHandler().calculateTip(serveWord);
 
         // Updates the Balance for the User
-        if (!BeanBot.getServeHandler().updateTip(cafeCustomer, currentDate, calculatedTip)) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+        if (!CafeBot.getServeHandler().updateTip(cafeCustomer, currentDate, calculatedTip)) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
         // Updates the Word Used
-        if (!BeanBot.getServeHandler().updateWord(serveWord)) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+        if (!CafeBot.getServeHandler().updateWord(serveWord)) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
@@ -74,7 +74,7 @@ public class ServeCommand implements ICommand {
             event.getChannel().sendMessage(serveSingleEmbed(word, calculatedTip, (cafeCustomer.getBeanCoinAmount()) + calculatedTip)).queue();
         } else {
             event.getChannel().sendMessage(serveSomeoneEmbed(word, calculatedTip, (cafeCustomer.getBeanCoinAmount() + calculatedTip),
-                    user, BeanBot.getGeneralHelper().getUser(args.get(1)))).queue();
+                    user, CafeBot.getGeneralHelper().getUser(args.get(1)))).queue();
         }
 
     }
@@ -82,7 +82,7 @@ public class ServeCommand implements ICommand {
     private MessageEmbed cannotServeEmbed(@NotNull Integer minutesLeft) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Cannot Serve - Cooldown");
-        int cooldownAmount = BeanBot.getServeHandler().getMinutesUntilCanServe() - minutesLeft;
+        int cooldownAmount = CafeBot.getServeHandler().getMinutesUntilCanServe() - minutesLeft;
         embedBuilder.setDescription("You cannot serve anything right now because you are on a cooldown for `" + cooldownAmount + "` more minutes!");
         embedBuilder.setColor(Color.red);
         return embedBuilder.build();
@@ -92,9 +92,9 @@ public class ServeCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Successfully Served!");
         embedBuilder.setDescription("You have successfully served a `" + word + "`!");
-        embedBuilder.addField("Tip From Serving", BeanBot.getServeHandler().roundDouble(tipFromWord).toString(), true);
-        embedBuilder.addField("Current Balance", BeanBot.getServeHandler().roundDouble(currentBalance).toString(), true);
-        embedBuilder.addField("Time Until Next Serving", BeanBot.getServeHandler().getMinutesUntilCanServe().toString(), true);
+        embedBuilder.addField("Tip From Serving", CafeBot.getServeHandler().roundDouble(tipFromWord).toString(), true);
+        embedBuilder.addField("Current Balance", CafeBot.getServeHandler().roundDouble(currentBalance).toString(), true);
+        embedBuilder.addField("Time Until Next Serving", CafeBot.getServeHandler().getMinutesUntilCanServe().toString(), true);
         return embedBuilder.build();
     }
 
@@ -102,9 +102,9 @@ public class ServeCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Successfully Served!");
         embedBuilder.setDescription(server.getAsMention() + " has successfully served a `" + word + "` to " + userServed.getAsMention() + "!");
-        embedBuilder.addField("Tip From Serving", BeanBot.getServeHandler().roundDouble(tipFromWord).toString(), true);
-        embedBuilder.addField("Current Balance", BeanBot.getServeHandler().roundDouble(currentBalance).toString(), true);
-        embedBuilder.addField("Time Until Next Serving", BeanBot.getServeHandler().getMinutesUntilCanServe().toString(), true);
+        embedBuilder.addField("Tip From Serving", CafeBot.getServeHandler().roundDouble(tipFromWord).toString(), true);
+        embedBuilder.addField("Current Balance", CafeBot.getServeHandler().roundDouble(currentBalance).toString(), true);
+        embedBuilder.addField("Time Until Next Serving", CafeBot.getServeHandler().getMinutesUntilCanServe().toString(), true);
         return embedBuilder.build();
     }
 

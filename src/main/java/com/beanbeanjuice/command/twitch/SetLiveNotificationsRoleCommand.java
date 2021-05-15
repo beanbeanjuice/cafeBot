@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.twitch;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -26,13 +26,13 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
-        if (!BeanBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
+        if (!CafeBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
             return;
         }
 
         // Checks if "none" is selected.
         if (args.get(0).equalsIgnoreCase("none")) {
-            if (BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLiveNotificationsRoleID("0")) {
+            if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLiveNotificationsRoleID("0")) {
                 event.getChannel().sendMessage(noneEmbed()).queue();
             } else {
                 errorMessage(event);
@@ -43,7 +43,7 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
         Role liveNotificationsRole;
 
         try {
-            liveNotificationsRole = BeanBot.getGeneralHelper().getRole(event.getGuild(), args.get(0));
+            liveNotificationsRole = CafeBot.getGeneralHelper().getRole(event.getGuild(), args.get(0));
         } catch (NumberFormatException e) {
             // This means that a role/none was not specified.
             event.getChannel().sendMessage(invalidRoleEmbed(args.get(0))).queue();
@@ -51,8 +51,8 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
         }
 
         if (liveNotificationsRole != null) {
-            if (BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLiveNotificationsRole(liveNotificationsRole)) {
-                event.getChannel().sendMessage(BeanBot.getGeneralHelper().successEmbed(
+            if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLiveNotificationsRole(liveNotificationsRole)) {
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                         "Updated Live Notifications Role",
                         "Successfully updated the role to " + liveNotificationsRole.getAsMention() + "."
                 )).queue();
@@ -74,7 +74,7 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
     }
 
     private void errorMessage(@NotNull GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                 "Error Updating Live Notifications Role",
                 "There was an error updating the live notifications role. Please try again."
         ));
@@ -84,7 +84,7 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Updated Live Notifications Role");
         embedBuilder.setDescription("Successfully removed the live notifications role!");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 

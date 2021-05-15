@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.listener;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -29,9 +29,9 @@ public class Listener extends ListenerAdapter {
 
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
-        BeanBot.getGuildHandler().removeGuild(event.getGuild());
-        BeanBot.getGuildHandler().checkGuilds();
-        BeanBot.updateGuildPresence(); // Updates the amount of servers in the status.
+        CafeBot.getGuildHandler().removeGuild(event.getGuild());
+        CafeBot.getGuildHandler().checkGuilds();
+        CafeBot.updateGuildPresence(); // Updates the amount of servers in the status.
     }
 
     @Override
@@ -43,9 +43,9 @@ public class Listener extends ListenerAdapter {
             event.getGuild().getDefaultChannel().sendMessage(guildJoinEmbed()).queue();
         }
 
-        BeanBot.getGuildHandler().addGuild(event.getGuild());
-        BeanBot.getGuildHandler().checkGuilds();
-        BeanBot.updateGuildPresence(); // Updates the amount of servers in the status.
+        CafeBot.getGuildHandler().addGuild(event.getGuild());
+        CafeBot.getGuildHandler().checkGuilds();
+        CafeBot.updateGuildPresence(); // Updates the amount of servers in the status.
     }
 
     @Override
@@ -55,15 +55,15 @@ public class Listener extends ListenerAdapter {
         TextChannel countingChannel;
 
         try {
-            countingChannel = BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).getCountingChannel();
+            countingChannel = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCountingChannel();
         } catch (NullPointerException e) {
             countingChannel = null;
         }
 
         if (event.getChannel().equals(countingChannel)) {
             String number = event.getMessage().getContentRaw().split(" ")[0];
-            if (BeanBot.getGeneralHelper().isNumber(number)) {
-                BeanBot.getCountingHelper().checkNumber(event, Integer.parseInt(number));
+            if (CafeBot.getGeneralHelper().isNumber(number)) {
+                CafeBot.getCountingHelper().checkNumber(event, Integer.parseInt(number));
                 return;
             }
         }
@@ -78,7 +78,7 @@ public class Listener extends ListenerAdapter {
         // Sets the prefix
         String prefix;
         try {
-            prefix = BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getPrefix();
+            prefix = CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getPrefix();
         } catch (NullPointerException e) {
             event.getChannel().sendMessage(startingUpEmbed()).queue();
             return;
@@ -87,7 +87,7 @@ public class Listener extends ListenerAdapter {
         String raw = event.getMessage().getContentRaw();
 
         if (raw.startsWith(prefix)) {
-            BeanBot.getCommandManager().handle(event, prefix);
+            CafeBot.getCommandManager().handle(event, prefix);
         }
     }
 
@@ -96,7 +96,7 @@ public class Listener extends ListenerAdapter {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("The Barista Has Arrived");
         embedBuilder.setColor(Color.green);
-        embedBuilder.setThumbnail(BeanBot.getJDA().getSelfUser().getAvatarUrl());
+        embedBuilder.setThumbnail(CafeBot.getJDA().getSelfUser().getAvatarUrl());
         StringBuilder description = new StringBuilder();
         description.append("Thank you for inviting me! I hope I'm not too much trouble.\n\n\n")
                 .append("For a list of command sections, type `!!help`.\n\n")

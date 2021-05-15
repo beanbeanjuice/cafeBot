@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.music;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -23,13 +23,13 @@ public class ShuffleCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
+        CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
 
         Member self = ctx.getSelfMember();
         GuildVoiceState selfVoiceState = self.getVoiceState();
 
         if (!selfVoiceState.inVoiceChannel()) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "Not In A Voice Channel",
                     "I am not currently in a voice channel."
             )).queue();
@@ -37,7 +37,7 @@ public class ShuffleCommand implements ICommand {
         }
 
         if (!event.getGuild().getMember(user).getVoiceState().getChannel().equals(selfVoiceState.getChannel())) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "Not In The Same Voice Channel",
                     "You are not currently in the same voice channel as me."
             )).queue();
@@ -47,7 +47,7 @@ public class ShuffleCommand implements ICommand {
         GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
 
         if (musicManager.scheduler.queue.isEmpty()) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "Empty Queue",
                     "Cannot shuffle the queue as the queue is empty."
             )).queue();
@@ -56,13 +56,13 @@ public class ShuffleCommand implements ICommand {
 
         if (!musicManager.scheduler.shuffle) {
             musicManager.scheduler.setShuffle(true);
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().successEmbed(
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                     "Shuffled Queue",
                     "The current queue has been shuffled!"
             )).queue();
         } else {
             musicManager.scheduler.setShuffle(false);
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().successEmbed(
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                     "Unshuffled Queue",
                     "The current queue has been unshuffled!"
             )).queue();

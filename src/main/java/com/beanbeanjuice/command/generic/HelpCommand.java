@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.generic;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.CommandUsage;
@@ -45,7 +45,7 @@ public class HelpCommand implements ICommand {
             }
         }
 
-        ICommand command = BeanBot.getCommandManager().getCommand(search);
+        ICommand command = CafeBot.getCommandManager().getCommand(search);
 
         // Checks to see if any commands exist for that command.
         if (command == null) {
@@ -112,8 +112,8 @@ public class HelpCommand implements ICommand {
 
         embedBuilder.addField("Command Example", command.exampleUsage(), false);
         embedBuilder.addField("Command Description", command.getDescription(), false);
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/beanBot!");
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
         return embedBuilder.build();
     }
 
@@ -123,7 +123,7 @@ public class HelpCommand implements ICommand {
         StringBuilder stringBuilder = new StringBuilder();
         int count = 1;
 
-        for (ICommand command : BeanBot.getCommandManager().getCommands()) {
+        for (ICommand command : CafeBot.getCommandManager().getCommands()) {
             if (command.getCategoryType().equals(categoryType)) {
                 stringBuilder.append(count++).append(". ").append("`").append(prefix).append(command.getName());
                 stringBuilder.append("`\n");
@@ -132,8 +132,8 @@ public class HelpCommand implements ICommand {
 
         embedBuilder.addField("**Commands in " + categoryType.toString() + "**", stringBuilder.toString(), true);
         embedBuilder.setThumbnail(categoryType.getLink());
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/beanBot!");
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
         return embedBuilder.build();
     }
 
@@ -149,8 +149,8 @@ public class HelpCommand implements ICommand {
         }
 
         embedBuilder.addField("**Command Categories**", stringBuilder.toString(), true);
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/beanBot!");
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
         return embedBuilder.build();
     }
 
@@ -160,7 +160,7 @@ public class HelpCommand implements ICommand {
         embedBuilder.setAuthor("No Command Found");
         embedBuilder.setDescription("No command has been found for `" + commandName + "`.");
         embedBuilder.setColor(Color.red);
-        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/beanBot!");
+        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
         return embedBuilder.build();
     }
 
