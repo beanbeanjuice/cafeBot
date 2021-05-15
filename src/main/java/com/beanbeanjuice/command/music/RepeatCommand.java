@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.music;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -31,14 +31,14 @@ public class RepeatCommand implements ICommand {
         String commandName = args.get(0).toLowerCase();
 
         if (!commandName.equals("song") && !commandName.equals("playlist")) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "Incorrect Command Term",
                     "You must use the command term `song` or `playlist` not `" + commandName + "`."
             )).queue();
             return;
         }
 
-        BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
+        CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
 
         final Member self = ctx.getSelfMember();
         final GuildVoiceState selfVoiceState = self.getVoiceState();
@@ -73,7 +73,7 @@ public class RepeatCommand implements ICommand {
             if (commandName.equals("playlist")) {
 
                 if (!musicManager.scheduler.playlistRepeating() && musicManager.scheduler.queue.isEmpty()) {
-                    event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+                    event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                             "Cannot Repeat Playlist",
                             "Cannot repeat the playlist as the playlist is currently empty."
                     )).queue();

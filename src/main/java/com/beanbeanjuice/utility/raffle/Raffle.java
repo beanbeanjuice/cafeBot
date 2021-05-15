@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.raffle;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import org.jetbrains.annotations.NotNull;
 
@@ -69,7 +69,7 @@ public class Raffle {
      */
     @NotNull
     public Boolean isFinished() {
-        Long timeBetween = BeanBot.getGeneralHelper().compareTwoTimeStamps(raffleEndTime, new Timestamp(System.currentTimeMillis()), TimestampDifference.MINUTES);
+        Long timeBetween = CafeBot.getGeneralHelper().compareTwoTimeStamps(raffleEndTime, new Timestamp(System.currentTimeMillis()), TimestampDifference.MINUTES);
         return timeBetween > 0;
     }
 

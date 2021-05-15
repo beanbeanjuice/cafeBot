@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.cafe;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.cafe.object.MenuItem;
 import com.beanbeanjuice.utility.logger.LogLevel;
@@ -44,7 +44,7 @@ public class MenuHandler {
 
     @NotNull
     public Boolean updateOrderer(@NotNull CafeCustomer cafeCustomer, @NotNull Double cost) {
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.cafe_information SET bean_coins = (?), orders_bought = (?) WHERE user_id = (?);";
 
         double newTip = cafeCustomer.getBeanCoinAmount() - cost;
@@ -57,14 +57,14 @@ public class MenuHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Orderer: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Orderer: " + e.getMessage());
             return false;
         }
     }
 
     @NotNull
     public Boolean updateReceiver(@NotNull CafeCustomer cafeCustomer) {
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.cafe_information SET orders_received = (?) WHERE user_id = (?);";
 
         try {
@@ -74,7 +74,7 @@ public class MenuHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Receiver: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Receiver: " + e.getMessage());
             return false;
         }
     }

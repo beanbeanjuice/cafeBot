@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.music;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -39,7 +39,7 @@ public class PlayCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
+        CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
 
         final TextChannel channel = event.getChannel();
         final Member self = ctx.getSelfMember();
@@ -60,7 +60,7 @@ public class PlayCommand implements ICommand {
             ctx.getGuild().getAudioManager().openAudioConnection(event.getMember().getVoiceState().getChannel());
 
             // Start listening for the audio connection.
-            BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).startAudioChecking();
+            CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).startAudioChecking();
         } else if (!event.getMember().getVoiceState().getChannel().equals(selfVoiceState.getChannel())) {
             event.getChannel().sendMessage(userMustBeInSameVoiceChannelEmbed()).queue();
             return;
@@ -82,7 +82,7 @@ public class PlayCommand implements ICommand {
                 Track track;
 
                 try {
-                    track = BeanBot.getSpotifyApi().getTrack(link).build().execute();
+                    track = CafeBot.getSpotifyApi().getTrack(link).build().execute();
                 } catch (SpotifyWebApiException | IOException | ParseException e) {
                     // TODO: Unable to get spotify song.
                     return;
@@ -99,7 +99,7 @@ public class PlayCommand implements ICommand {
 
                 Playlist playlist;
                 try {
-                    playlist = BeanBot.getSpotifyApi().getPlaylist(link).build().execute();
+                    playlist = CafeBot.getSpotifyApi().getPlaylist(link).build().execute();
                 } catch (SpotifyWebApiException | IOException | ParseException e) {
                     // TODO: Unable to get spotify playlist.
                     return;
@@ -169,7 +169,7 @@ public class PlayCommand implements ICommand {
         embedBuilder.setAuthor("Added Playlist to Queue");
         embedBuilder.addField("Tracks", String.valueOf(playlistCount), true);
         embedBuilder.addField("Playlist Name", "`" + playlistName + "`", true);
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 
@@ -179,7 +179,7 @@ public class PlayCommand implements ICommand {
             final Track track = getTrackRequest.execute();
             return "ytsearch:" + track.getName() + " by " + track.getArtists()[0].getName();
         } catch (IOException | SpotifyWebApiException | ParseException e) {
-            BeanBot.getLogManager().log(PlayCommand.class, LogLevel.ERROR, "There was a sync error: " + e.getMessage());
+            CafeBot.getLogManager().log(PlayCommand.class, LogLevel.ERROR, "There was a sync error: " + e.getMessage());
             return null;
         }
     }
@@ -192,7 +192,7 @@ public class PlayCommand implements ICommand {
             playlistCount = playlist.getTracks().getTotal();
             return playlist.getTracks().getItems();
         } catch (IOException | SpotifyWebApiException | ParseException e) {
-            BeanBot.getLogManager().log(PlayCommand.class, LogLevel.ERROR, "There was a sync error: " + e.getMessage());
+            CafeBot.getLogManager().log(PlayCommand.class, LogLevel.ERROR, "There was a sync error: " + e.getMessage());
             return null;
         }
     }

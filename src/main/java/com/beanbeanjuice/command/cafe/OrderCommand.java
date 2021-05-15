@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.cafe;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.cafe.object.MenuItem;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -25,27 +25,27 @@ public class OrderCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        CafeCustomer orderer = BeanBot.getServeHandler().getCafeCustomer(user);
+        CafeCustomer orderer = CafeBot.getServeHandler().getCafeCustomer(user);
 
         // Checking if the person who ordered is null.
         if (orderer == null) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
-        CafeCustomer receiver = BeanBot.getServeHandler().getCafeCustomer(BeanBot.getGeneralHelper().getUser(args.get(1)));
+        CafeCustomer receiver = CafeBot.getServeHandler().getCafeCustomer(CafeBot.getGeneralHelper().getUser(args.get(1)));
 
         // Checking if the receiver is null.
         if (receiver == null) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
         int itemIndex = Integer.parseInt(args.get(0)) - 1;
 
         // Checking if the menu item is null.
-        if (itemIndex >= BeanBot.getMenuHandler().getMenu().size()) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+        if (itemIndex >= CafeBot.getMenuHandler().getMenu().size()) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "Unknown Item",
                     "The item `" + args.get(0) + "` does not exist. " +
                             "To view the menu, do `" + ctx.getPrefix() + "menu`!"
@@ -53,11 +53,11 @@ public class OrderCommand implements ICommand {
             return;
         }
 
-        MenuItem item = BeanBot.getMenuHandler().getItem(itemIndex);
+        MenuItem item = CafeBot.getMenuHandler().getItem(itemIndex);
 
         // Checking if they have enough money.
         if (orderer.getBeanCoinAmount() < item.getPrice()) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "You Are Broke",
                     "You do not have enough money to purchase a `" + item.getName() + "`..."
             )).queue();
@@ -65,14 +65,14 @@ public class OrderCommand implements ICommand {
         }
 
         // Updating the person who ordered the item.
-        if (!BeanBot.getMenuHandler().updateOrderer(orderer, item.getPrice())) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+        if (!CafeBot.getMenuHandler().updateOrderer(orderer, item.getPrice())) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
         // Updating the person who received the order.
-        if (!BeanBot.getMenuHandler().updateReceiver(receiver)) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+        if (!CafeBot.getMenuHandler().updateReceiver(receiver)) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
@@ -81,12 +81,12 @@ public class OrderCommand implements ICommand {
 
     @NotNull
     private MessageEmbed orderEmbed(@NotNull CafeCustomer orderer, @NotNull CafeCustomer receiver, @NotNull MenuItem item) {
-        User ordererUser = BeanBot.getJDA().getUserById(orderer.getUserID());
-        User receiverUser = BeanBot.getJDA().getUserById(receiver.getUserID());
+        User ordererUser = CafeBot.getJDA().getUserById(orderer.getUserID());
+        User receiverUser = CafeBot.getJDA().getUserById(receiver.getUserID());
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Order Bought!");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Awww... " + ordererUser.getAsMention() + " bought a " + item.getName()
         + " for " + receiverUser.getAsMention() + " and lost `$" + item.getPrice() + "`!");
         embedBuilder.setFooter("So far, " + ordererUser.getName() + " has bought a total of " + (orderer.getOrdersBought()+1) + " menu items for other people. "

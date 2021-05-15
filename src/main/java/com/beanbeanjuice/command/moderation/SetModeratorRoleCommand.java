@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.moderation;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -25,7 +25,7 @@ public class SetModeratorRoleCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        if (!BeanBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
+        if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
 
@@ -38,8 +38,8 @@ public class SetModeratorRoleCommand implements ICommand {
             return;
         }
 
-        if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setModeratorRoleID(role.getId())) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+        if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setModeratorRoleID(role.getId())) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
@@ -49,7 +49,7 @@ public class SetModeratorRoleCommand implements ICommand {
     @NotNull
     private MessageEmbed successfulRoleChangeEmbed(@NotNull Role role) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setAuthor("Successfully changed the Moderator Role");
         embedBuilder.setDescription("Successfully changed the moderator role to " + role.getAsMention());
         return embedBuilder.build();

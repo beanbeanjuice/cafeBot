@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.interaction;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -27,7 +27,7 @@ public class AvatarCommand implements ICommand {
         if (args.isEmpty()) {
             avatarUser = user;
         } else {
-            avatarUser = BeanBot.getGeneralHelper().getUser(args.get(0));
+            avatarUser = CafeBot.getGeneralHelper().getUser(args.get(0));
         }
         event.getChannel().sendMessage(avatarEmbed(avatarUser)).queue();
     }
@@ -37,7 +37,7 @@ public class AvatarCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(user.getName() + "'s Avatar", user.getAvatarUrl());
         embedBuilder.setImage(user.getAvatarUrl() + "?size=512");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 

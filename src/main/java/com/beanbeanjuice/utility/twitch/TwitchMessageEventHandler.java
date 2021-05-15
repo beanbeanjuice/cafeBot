@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.twitch;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.philippheuer.events4j.simple.domain.EventSubscriber;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
@@ -34,13 +34,13 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
      */
     @EventSubscriber
     public void printChannelLive(@NotNull ChannelGoLiveEvent event) {
-        String liveChannelID = BeanBot.getGuildHandler().getCustomGuild(guildID).getLiveChannelID();
-        TextChannel liveChannel = BeanBot.getGuildHandler().getGuild(guildID).getTextChannelById(liveChannelID);
+        String liveChannelID = CafeBot.getGuildHandler().getCustomGuild(guildID).getLiveChannelID();
+        TextChannel liveChannel = CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(liveChannelID);
 
         StringBuilder message = new StringBuilder();
 
         try {
-            message.append(BeanBot.getGuildHandler().getCustomGuild(guildID).getLiveNotificationsRole().getAsMention())
+            message.append(CafeBot.getGuildHandler().getCustomGuild(guildID).getLiveNotificationsRole().getAsMention())
             .append(", ");
         } catch (NumberFormatException | NullPointerException ignored) {}
 
