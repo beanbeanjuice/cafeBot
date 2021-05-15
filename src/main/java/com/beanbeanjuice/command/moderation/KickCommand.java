@@ -95,12 +95,7 @@ public class KickCommand implements ICommand {
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.USER, "Discord User", true);
-        usage.addUsage(CommandType.TEXT, "Reason", true);
-
-        for (int i = 0; i < 100; i++) {
-            usage.addUsage(CommandType.TEXT, "Reason", false);
-        }
-
+        usage.addUsage(CommandType.SENTENCE, "Reason", true);
         return usage;
     }
 
