@@ -18,23 +18,23 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/beanbeanjuice/beanBot">
+  <a href="https://github.com/beanbeanjuice/cafeBot">
     <img src="images/logo.gif" alt="Logo" width="260" height="186">
   </a>
 
-  <h3 align="center">beanBot</h3>
+  <h3 align="center">cafeBot</h3>
 
   <p align="center">
     A cafe bot for your discord server!
     <br />
-    <a href="https://github.com/beanbeanjuice/beanBot"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/beanbeanjuice/cafeBot"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/beanbeanjuice/beanBot">View Demo</a>
+    <a href="https://github.com/beanbeanjuice/cafeBot">View Demo</a>
     ·
-    <a href="https://github.com/beanbeanjuice/beanBot/issues">Report Bug</a>
+    <a href="https://github.com/beanbeanjuice/cafeBot/issues">Report Bug</a>
     ·
-    <a href="https://github.com/beanbeanjuice/beanBot/issues">Request Feature</a>
+    <a href="https://github.com/beanbeanjuice/cafeBot/issues">Request Feature</a>
   </p>
 </p>
 
@@ -71,7 +71,7 @@
 <!-- ABOUT THE PROJECT -->
 # About The Project
 
-[![Product Name Screen Shot][product-title]](https://www.beanbeanjuice.com/beanBot.html)
+[![Product Name Screen Shot][product-title]](https://www.beanbeanjuice.com/cafeBot.html)
 
 
 ### Built With
@@ -171,7 +171,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 <!-- ROADMAP -->
 # Roadmap
 
-See the [open issues](https://github.com/beanbeanjuice/beanBot/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/beanbeanjuice/cafeBot/issues) for a list of proposed features (and known issues).
 
 
 
@@ -200,7 +200,7 @@ Distributed under the GPL-3.0 License. See `LICENSE` for more information.
 
 Your Name - [@beanbeanjuice](https://twitter.com/beanbeanjuice) - beanbeanjuice@outlook.com
 
-Project Link: [https://github.com/beanbeanjuice/beanBot](https://github.com/beanbeanjuice/beanBot)
+Project Link: [https://github.com/beanbeanjuice/cafeBot](https://github.com/beanbeanjuice/cafeBot)
 
 
 
@@ -215,17 +215,17 @@ Project Link: [https://github.com/beanbeanjuice/beanBot](https://github.com/bean
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/beanbeanjuice/beanBot.svg?style=for-the-badge
-[contributors-url]: https://github.com/beanbeanjuice/beanBot/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/beanbeanjuice/beanBot.svg?style=for-the-badge
-[forks-url]: https://github.com/beanbeanjuice/beanBot/network/members
-[stars-shield]: https://img.shields.io/github/stars/beanbeanjuice/beanBot.svg?style=for-the-badge
-[stars-url]: https://github.com/beanbeanjuice/beanBot/stargazers
-[issues-shield]: https://img.shields.io/github/issues/beanbeanjuice/beanBot.svg?style=for-the-badge
-[issues-url]: https://github.com/beanbeanjuice/beanBot/issues
-[license-shield]: https://img.shields.io/github/license/beanbeanjuice/beanBot.svg?style=for-the-badge
-[license-url]: https://github.com/beanbeanjuice/beanBot/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/beanbeanjuice/cafeBot.svg?style=for-the-badge
+[contributors-url]: https://github.com/beanbeanjuice/cafeBot/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/beanbeanjuice/cafeBot.svg?style=for-the-badge
+[forks-url]: https://github.com/beanbeanjuice/cafeBot/network/members
+[stars-shield]: https://img.shields.io/github/stars/beanbeanjuice/cafeBot.svg?style=for-the-badge
+[stars-url]: https://github.com/beanbeanjuice/cafeBot/stargazers
+[issues-shield]: https://img.shields.io/github/issues/beanbeanjuice/cafeBot.svg?style=for-the-badge
+[issues-url]: https://github.com/beanbeanjuice/cafeBot/issues
+[license-shield]: https://img.shields.io/github/license/beanbeanjuice/cafeBot.svg?style=for-the-badge
+[license-url]: https://github.com/beanbeanjuice/cafeBot/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/beanbeanjuice
-[product-title]: images/beanBot.png
+[product-title]: images/cafeBot.png
 [help-screenshot]: images/help.png
