@@ -9,6 +9,7 @@ import com.beanbeanjuice.command.fun.JokeCommand;
 import com.beanbeanjuice.command.fun.AddPollCommand;
 import com.beanbeanjuice.command.fun.AddRaffleCommand;
 import com.beanbeanjuice.command.fun.AvatarCommand;
+import com.beanbeanjuice.command.interaction.HugCommand;
 import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
 import com.beanbeanjuice.command.generic.BugReportCommand;
 import com.beanbeanjuice.command.generic.FeatureRequestCommand;
@@ -27,6 +28,7 @@ import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
 import com.beanbeanjuice.utility.helper.JSONHelper;
 import com.beanbeanjuice.utility.helper.VersionHelper;
+import com.beanbeanjuice.utility.interaction.InteractionHandler;
 import com.beanbeanjuice.utility.listener.Listener;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
@@ -124,9 +126,12 @@ public class CafeBot {
     private static ServeHandler serveHandler;
     private static MenuHandler menuHandler;
 
-    // Interaction Stuff
+    // Poll/Raffle Stuff
     private static PollHandler pollHandler;
     private static RaffleHandler raffleHandler;
+
+    // Interaction Stuff
+    private static InteractionHandler interactionHandler;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
 
@@ -182,10 +187,11 @@ public class CafeBot {
 
                 new MemeCommand(),
                 new JokeCommand(),
-
                 new AddPollCommand(),
                 new AddRaffleCommand(),
                 new AvatarCommand(),
+
+                new HugCommand(),
 
                 new SetModeratorRoleCommand(),
                 new SetMutedRoleCommand(),
@@ -241,6 +247,15 @@ public class CafeBot {
 
         pollHandler = new PollHandler();
         raffleHandler = new RaffleHandler();
+
+        interactionHandler = new InteractionHandler();
+    }
+
+    /**
+     * @return The current {@link InteractionHandler}.
+     */
+    public static InteractionHandler getInteractionHandler() {
+        return interactionHandler;
     }
 
     /**
