@@ -99,7 +99,7 @@ public class BanCommand implements ICommand {
         usage.addUsage(CommandType.TEXT, "Reason for Ban", true);
 
         for (int i = 0; i < 100; i++) {
-            usage.addUsage(CommandType.TEXT, "Reason for Ban", true);
+            usage.addUsage(CommandType.TEXT, "Reason for Ban", false);
         }
 
         return usage;
