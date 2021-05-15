@@ -45,7 +45,7 @@ public class MenuHandler {
     @NotNull
     public Boolean updateOrderer(@NotNull CafeCustomer cafeCustomer, @NotNull Double cost) {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.cafe_information SET bean_coins = (?), orders_bought = (?) WHERE user_id = (?);";
+        String arguments = "UPDATE cafebot.cafe_information SET bean_coins = (?), orders_bought = (?) WHERE user_id = (?);";
 
         double newTip = cafeCustomer.getBeanCoinAmount() - cost;
 
@@ -65,7 +65,7 @@ public class MenuHandler {
     @NotNull
     public Boolean updateReceiver(@NotNull CafeCustomer cafeCustomer) {
         Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.cafe_information SET orders_received = (?) WHERE user_id = (?);";
+        String arguments = "UPDATE cafebot.cafe_information SET orders_received = (?) WHERE user_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);

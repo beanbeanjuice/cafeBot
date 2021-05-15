@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class FeatureRequestCommand implements ICommand {
 
-    private final String FEATURE_REQUEST_URL = "https://github.com/beanbeanjuice/beanBot/issues/new?assignees=beanbeanjuice&labels=feature&template=feature_request.md&title=%5BFEATURE%5D+%2A%2ADESCRIBE+THE+FEATURE+YOU+WANT+AS+SHORT+AS+POSSIBLE+HERE%2A%2A";
+    private final String FEATURE_REQUEST_URL = "https://github.com/beanbeanjuice/cafeBot/issues/new?assignees=beanbeanjuice&labels=feature&template=feature_request.md&title=%5BFEATURE%5D+%2A%2ADESCRIBE+THE+FEATURE+YOU+WANT+AS+SHORT+AS+POSSIBLE+HERE%2A%2A";
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
