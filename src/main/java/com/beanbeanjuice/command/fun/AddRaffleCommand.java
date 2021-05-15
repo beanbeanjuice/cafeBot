@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.interaction;
+package com.beanbeanjuice.command.fun;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -134,6 +134,6 @@ public class AddRaffleCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.INTERACTION;
+        return CategoryType.FUN;
     }
 }
