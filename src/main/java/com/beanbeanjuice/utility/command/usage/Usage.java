@@ -62,12 +62,13 @@ public class Usage {
         int count = 0;
         boolean incorrect;
 
+        // Checking if there are not supposed to be any arguments.
         if (args.size() == 0 && totalRequired == 0) {
             return CommandErrorType.SUCCESS;
         }
 
+        // Checking if there are not enough arguments.
         if (args.size() < totalRequired) {
-
             if (args.size() == 0) {
                 incorrectIndex = 0;
             } else {
@@ -76,47 +77,65 @@ public class Usage {
             return CommandErrorType.NOT_ENOUGH_ARGUMENTS;
         }
 
+        // Checking if there are too many arguments.
         if (args.size() > usages.size()) {
             incorrectIndex = usages.size();
-            return CommandErrorType.TOO_MANY_ARGUMENTS;
+
+            if (!usages.get(usages.size() - 1).getType().equals(CommandType.SENTENCE)) {
+                return CommandErrorType.TOO_MANY_ARGUMENTS;
+            }
+
         }
+
 
         for (CommandUsage entry : usages) {
             CommandType type = entry.getType();
 
-            if (type.equals(CommandType.LINK)) {
-                incorrect = !isLink(args.get(count));
-                if (incorrect) {
-                    incorrectIndex = count;
-                    errorType = CommandErrorType.LINK;
-                    return getErrorType();
+            switch (type) {
+
+                case LINK -> {
+                    incorrect = !isLink(args.get(count));
+                    if (incorrect) {
+                        incorrectIndex = count;
+                        errorType = CommandErrorType.LINK;
+                        return getErrorType();
+                    }
                 }
-            } else if (type.equals(CommandType.NUMBER)) {
-                incorrect = !isNumber(args.get(count));
-                if (incorrect) {
-                    incorrectIndex = count;
-                    errorType = CommandErrorType.NUMBER;
-                    return getErrorType();
+
+                case NUMBER -> {
+                    incorrect = !isNumber(args.get(count));
+                    if (incorrect) {
+                        incorrectIndex = count;
+                        errorType = CommandErrorType.NUMBER;
+                        return getErrorType();
+                    }
                 }
-            } else if (type.equals(CommandType.USER)) {
-                incorrect = !isUser(args.get(count));
-                if (incorrect) {
-                    incorrectIndex = count;
-                    errorType = CommandErrorType.USER;
-                    return getErrorType();
+
+                case USER -> {
+                    incorrect = !isUser(args.get(count));
+                    if (incorrect) {
+                        incorrectIndex = count;
+                        errorType = CommandErrorType.USER;
+                        return getErrorType();
+                    }
                 }
-            } else if (type.equals(CommandType.ROLE)) {
-                incorrect = !isRole(guild, args.get(count));
-                if (incorrect) {
-                    incorrectIndex = count;
-                    errorType = CommandErrorType.ROLE;
-                    return getErrorType();
+
+                case ROLE -> {
+                    incorrect = !isRole(guild, args.get(count));
+                    if (incorrect) {
+                        incorrectIndex = count;
+                        errorType = CommandErrorType.ROLE;
+                        return getErrorType();
+                    }
                 }
+
             }
 
+            // I have no idea what this does.
             if (args.size() - 1 == count) {
                 return CommandErrorType.SUCCESS;
             }
+
             count++;
         }
 
