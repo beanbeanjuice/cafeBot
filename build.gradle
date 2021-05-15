@@ -17,7 +17,7 @@ task buildWithDependencies(type: Jar) {
 
 group 'com.beanbeanjuice'
 mainClassName = 'com.beanbeanjuice.main.CafeBot'
-version 'v2.0.1'
+version 'v2.0.2'
 
 repositories {
 
