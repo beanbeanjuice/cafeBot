@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.fun;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -29,7 +29,7 @@ public class MemeCommand implements ICommand {
         WebUtils.ins.getJSONObject("https://apis.duncte123.me/meme").async((json) -> {
             if (!json.get("success").asBoolean()) {
                 event.getChannel().sendMessage(cannotGetJSONEmbed()).queue();
-                BeanBot.getLogManager().log(MemeCommand.class, LogLevel.ERROR, "Cannot get JSON.");
+                CafeBot.getLogManager().log(MemeCommand.class, LogLevel.ERROR, "Cannot get JSON.");
                 return;
             }
 
@@ -55,7 +55,7 @@ public class MemeCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(title, url);
         embedBuilder.setImage(image);
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 

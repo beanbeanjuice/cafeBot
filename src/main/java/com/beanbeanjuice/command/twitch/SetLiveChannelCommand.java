@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.twitch;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -23,11 +23,11 @@ public class SetLiveChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        if (!BeanBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
+        if (!CafeBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
             return;
         }
 
-        if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).updateTwitchDiscordChannel(event.getChannel().getId())) {
+        if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).updateTwitchDiscordChannel(event.getChannel().getId())) {
             event.getChannel().sendMessage(unsuccessfulEmbed()).queue();
             return;
         }
@@ -39,7 +39,7 @@ public class SetLiveChannelCommand implements ICommand {
     private MessageEmbed successfulEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Successfully set the Live Channel");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Successfully set the live channel to this channel!");
         return embedBuilder.build();
     }

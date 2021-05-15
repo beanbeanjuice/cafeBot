@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.guild;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
 import com.beanbeanjuice.utility.twitch.Twitch;
@@ -69,8 +69,8 @@ public class CustomGuild {
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
-        if (BeanBot.getTwitchHandler().getTwitch(guildID) == null) {
-            BeanBot.getTwitchHandler().addTwitchToGuild(guildID, new Twitch(this.guildID, this.twitchChannels));
+        if (CafeBot.getTwitchHandler().getTwitch(guildID) == null) {
+            CafeBot.getTwitchHandler().addTwitchToGuild(guildID, new Twitch(this.guildID, this.twitchChannels));
         }
 
         deletingMessagesChannels = new ArrayList<>();
@@ -80,7 +80,7 @@ public class CustomGuild {
     @Nullable
     public TextChannel getRaffleChannel() {
         try {
-            return BeanBot.getGuildHandler().getGuild(guildID).getTextChannelById(raffleChannelID);
+            return CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(raffleChannelID);
         } catch (NullPointerException e) {
             return null;
         }
@@ -88,7 +88,7 @@ public class CustomGuild {
 
     @NotNull
     public Boolean setRaffleChannel(@NotNull String raffleChannelID) {
-        if (BeanBot.getGuildHandler().setRaffleChannelID(guildID, raffleChannelID)) {
+        if (CafeBot.getGuildHandler().setRaffleChannelID(guildID, raffleChannelID)) {
             this.raffleChannelID = raffleChannelID;
             return true;
         }
@@ -101,7 +101,7 @@ public class CustomGuild {
     @Nullable
     public TextChannel getPollChannel() {
         try {
-            return BeanBot.getGuildHandler().getGuild(guildID).getTextChannelById(pollChannelID);
+            return CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(pollChannelID);
         } catch (NullPointerException e) {
             return null;
         }
@@ -114,7 +114,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setPollChannel(@NotNull String pollChannelID) {
-        if (BeanBot.getGuildHandler().setPollChannelID(guildID, pollChannelID)) {
+        if (CafeBot.getGuildHandler().setPollChannelID(guildID, pollChannelID)) {
             this.pollChannelID = pollChannelID;
             return true;
         }
@@ -127,7 +127,7 @@ public class CustomGuild {
     @Nullable
     public TextChannel getCountingChannel() {
         try {
-            return BeanBot.getGuildHandler().getGuild(guildID).getTextChannelById(countingChannelID);
+            return CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(countingChannelID);
         } catch (NullPointerException e) {
             return null;
         }
@@ -140,7 +140,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setCountingChannel(@NotNull TextChannel countingChannel) {
-        if (BeanBot.getGuildHandler().setCountingChannelID(guildID, countingChannel.getId())) {
+        if (CafeBot.getGuildHandler().setCountingChannelID(guildID, countingChannel.getId())) {
             this.countingChannelID = countingChannel.getId();
             return true;
         }
@@ -153,7 +153,7 @@ public class CustomGuild {
     @Nullable
     public TextChannel getUpdateChannel() {
         try {
-            return BeanBot.getGuildHandler().getGuild(guildID).getTextChannelById(updateChannelID);
+            return CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(updateChannelID);
         } catch (NullPointerException e) {
             return null;
         }
@@ -166,7 +166,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setUpdateChannel(@NotNull String updateChannelID) {
-        if (BeanBot.getGuildHandler().setUpdateChannelID(guildID, updateChannelID)) {
+        if (CafeBot.getGuildHandler().setUpdateChannelID(guildID, updateChannelID)) {
             this.updateChannelID = updateChannelID;
             return true;
         }
@@ -190,7 +190,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setNotifyOnUpdate(@NotNull Boolean answer) {
-        if (BeanBot.getGuildHandler().setNotifyOnUpdate(guildID, answer)) {
+        if (CafeBot.getGuildHandler().setNotifyOnUpdate(guildID, answer)) {
             notifyOnUpdate = answer;
             return true;
         }
@@ -224,7 +224,7 @@ public class CustomGuild {
     public Boolean setLiveNotificationsRoleID(@NotNull String roleID) {
 
         // Only set it if it updates in the database.
-        if (BeanBot.getGuildHandler().setLiveNotificationsRoleID(guildID, roleID)) {
+        if (CafeBot.getGuildHandler().setLiveNotificationsRoleID(guildID, roleID)) {
             liveNotificationsRoleID = roleID;
             return true;
         }
@@ -236,7 +236,7 @@ public class CustomGuild {
      */
     @Nullable
     public Role getLiveNotificationsRole() {
-        return BeanBot.getGuildHandler().getGuild(guildID).getRoleById(liveNotificationsRoleID);
+        return CafeBot.getGuildHandler().getGuild(guildID).getRoleById(liveNotificationsRoleID);
     }
 
     /**
@@ -296,20 +296,20 @@ public class CustomGuild {
                 boolean voicePassed = false;
                 boolean queuePassed = false;
                 seconds[0] += 1;
-                Guild guild = BeanBot.getGuildHandler().getGuild(guildID);
+                Guild guild = CafeBot.getGuildHandler().getGuild(guildID);
                 Member selfMember = guild.getSelfMember();
                 GuildVoiceState selfVoiceState = selfMember.getVoiceState();
 
                 ArrayList<Member> membersInVoiceChannel = new ArrayList<>(selfVoiceState.getChannel().getMembers());
                 membersInVoiceChannel.remove(selfMember);
-                GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(BeanBot.getGuildHandler().getGuild(guildID));
+                GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(CafeBot.getGuildHandler().getGuild(guildID));
 
                 // Checking if the bot is alone in the VC.
                 if (membersInVoiceChannel.isEmpty() && seconds[0] >= secondsToLeave) {
                     EmbedBuilder embedBuilder = new EmbedBuilder();
                     embedBuilder.setAuthor("Music Bot");
                     embedBuilder.setDescription("Leaving the voice channel as it is empty...");
-                    embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+                    embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
                     sendMessageInLastMusicChannel(embedBuilder.build());
                     musicManager.scheduler.player.stopTrack();
                     musicManager.scheduler.queue.clear();
@@ -326,7 +326,7 @@ public class CustomGuild {
                     guild.getAudioManager().closeAudioConnection();
                     EmbedBuilder embedBuilder = new EmbedBuilder();
                     embedBuilder.setAuthor("Music Bot");
-                    embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+                    embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
                     embedBuilder.setDescription("Leaving the voice channel as the music queue is empty...");
                     sendMessageInLastMusicChannel(embedBuilder.build());
                     guild.getAudioManager().closeAudioConnection();
@@ -371,7 +371,7 @@ public class CustomGuild {
      */
     @NotNull
     public Twitch getTwitch() {
-        return BeanBot.getTwitchHandler().getTwitch(guildID);
+        return CafeBot.getTwitchHandler().getTwitch(guildID);
     }
 
     /**
@@ -382,7 +382,7 @@ public class CustomGuild {
     @NotNull
     public Boolean updateMutedRole(String mutedRoleID) {
 
-        if (BeanBot.getGuildHandler().updateGuildMutedRole(guildID, mutedRoleID)) {
+        if (CafeBot.getGuildHandler().updateGuildMutedRole(guildID, mutedRoleID)) {
             this.mutedRoleID = mutedRoleID;
             return true;
         }
@@ -396,7 +396,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setModeratorRoleID(@NotNull String moderatorRoleID) {
-        if (BeanBot.getGuildHandler().updateGuildModeratorRole(guildID, moderatorRoleID)) {
+        if (CafeBot.getGuildHandler().updateGuildModeratorRole(guildID, moderatorRoleID)) {
             this.moderatorRoleID = moderatorRoleID;
             return true;
         }
@@ -426,7 +426,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setPrefix(String newPrefix) {
-        if (BeanBot.getGuildHandler().updateGuildPrefix(guildID, newPrefix)) {
+        if (CafeBot.getGuildHandler().updateGuildPrefix(guildID, newPrefix)) {
             this.prefix = newPrefix;
             return true;
         }
@@ -439,7 +439,7 @@ public class CustomGuild {
     @Nullable
     public Role getMutedRole() {
         try {
-            return BeanBot.getGuildHandler().getGuild(guildID).getRoleById(mutedRoleID);
+            return CafeBot.getGuildHandler().getGuild(guildID).getRoleById(mutedRoleID);
         } catch (NullPointerException e) {
             return null;
         }
@@ -451,7 +451,7 @@ public class CustomGuild {
     @Nullable
     public Role getModeratorRole() {
         try {
-            return BeanBot.getGuildHandler().getGuild(guildID).getRoleById(moderatorRoleID);
+            return CafeBot.getGuildHandler().getGuild(guildID).getRoleById(moderatorRoleID);
         } catch (NullPointerException e) {
             return null;
         }
@@ -471,9 +471,9 @@ public class CustomGuild {
             return false;
         }
 
-        if (BeanBot.getGuildHandler().addTwitchChannel(guildID, twitchChannel)) {
+        if (CafeBot.getGuildHandler().addTwitchChannel(guildID, twitchChannel)) {
             twitchChannels.add(twitchChannel.toLowerCase());
-            BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().addTwitchChannelName(twitchChannel);
+            CafeBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().addTwitchChannelName(twitchChannel);
             return true;
         }
         return false;
@@ -493,9 +493,9 @@ public class CustomGuild {
             return false;
         }
 
-        if (BeanBot.getGuildHandler().removeTwitchChannel(guildID, twitchChannel)) {
+        if (CafeBot.getGuildHandler().removeTwitchChannel(guildID, twitchChannel)) {
             twitchChannels.remove(twitchChannel.toLowerCase());
-            BeanBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().removeTwitchChannelName(twitchChannel);
+            CafeBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().removeTwitchChannelName(twitchChannel);
             return true;
         }
         return false;
@@ -508,7 +508,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean updateTwitchDiscordChannel(String liveChannelID) {
-        if (BeanBot.getGuildHandler().updateTwitchChannelID(guildID, liveChannelID)) {
+        if (CafeBot.getGuildHandler().updateTwitchChannelID(guildID, liveChannelID)) {
             this.liveChannelID = liveChannelID;
             return true;
         }

@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.guild;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
@@ -35,7 +35,7 @@ public class GuildHandler {
     public void updateGuildCache() {
         guildDatabase.clear();
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM beanbot.guild_information;";
 
         try {
@@ -62,7 +62,7 @@ public class GuildHandler {
                         countingChannelID, pollChannelID, raffleChannelID));
             }
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
+            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
         }
     }
 
@@ -72,7 +72,7 @@ public class GuildHandler {
      * @return the {@link ArrayList<String>} of Twitch Channel Names
      */
     public ArrayList<String> getTwitchChannels(String guildID) {
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM beanbot.guild_twitch WHERE guild_id = ?;";
 
         try {
@@ -88,7 +88,7 @@ public class GuildHandler {
 
             return twitchNames;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to retrieve twitch channels from database.", true, false);
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to retrieve twitch channels from database.", true, false);
             return new ArrayList<>();
         }
     }
@@ -96,7 +96,7 @@ public class GuildHandler {
     @NotNull
     protected Boolean setRaffleChannelID(@NotNull String guildID, @NotNull String raffleChannelID) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information SET raffle_channel_id = (?) WHERE guild_id = (?);";
 
         try {
@@ -107,7 +107,7 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Raffle Channel: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Raffle Channel: " + e.getMessage());
             return false;
         }
 
@@ -122,7 +122,7 @@ public class GuildHandler {
     @NotNull
     protected Boolean setPollChannelID(@NotNull String guildID, @NotNull String pollChannelID) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information SET poll_channel_id = (?) WHERE guild_id = (?);";
 
         try {
@@ -133,7 +133,7 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Poll Channel: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Poll Channel: " + e.getMessage());
             return false;
         }
 
@@ -148,7 +148,7 @@ public class GuildHandler {
     @NotNull
     protected Boolean setCountingChannelID(@NotNull String guildID, @NotNull String countingChannelID) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information SET counting_channel_id = (?) WHERE guild_id = (?);";
 
         try {
@@ -172,7 +172,7 @@ public class GuildHandler {
      */
     @NotNull
     protected Boolean setUpdateChannelID(@NotNull String guildID, @NotNull String updateChannelID) {
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information SET update_channel_id = (?) WHERE guild_id = (?);";
 
         try {
@@ -183,7 +183,7 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Update the Update Channel ID: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Update the Update Channel ID: " + e.getMessage());
             return false;
         }
     }
@@ -196,7 +196,7 @@ public class GuildHandler {
      */
     @NotNull
     protected Boolean setNotifyOnUpdate(@NotNull String guildID, @NotNull Boolean answer) {
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information SET notify_on_update = (?) WHERE guild_id = (?);";
 
         try {
@@ -207,7 +207,7 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to Update the Notify On Update Parameter: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to Update the Notify On Update Parameter: " + e.getMessage());
             return false;
         }
     }
@@ -220,7 +220,7 @@ public class GuildHandler {
      */
     @NotNull
     protected Boolean setLiveNotificationsRoleID(@NotNull String guildID, @NotNull String roleID) {
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information SET live_notifications_role_id = (?) WHERE guild_id = (?);";
 
         try {
@@ -231,7 +231,7 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to Update the Live Notifications Role ID: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to Update the Live Notifications Role ID: " + e.getMessage());
             return false;
         }
     }
@@ -245,7 +245,7 @@ public class GuildHandler {
     @NotNull
     protected Boolean updateGuildPrefix(@NotNull String guildID, @NotNull String newPrefix) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information SET prefix = (?) WHERE guild_id = " + guildID + ";";
 
         try {
@@ -255,7 +255,7 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(CustomGuild.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+            CafeBot.getLogManager().log(CustomGuild.class, LogLevel.ERROR, "Unable to reach the SQL database.");
             return false;
         }
 
@@ -268,7 +268,7 @@ public class GuildHandler {
 
         updateGuildCache();
 
-        List<Guild> guildsHasBot = BeanBot.getJDA().getGuilds();
+        List<Guild> guildsHasBot = CafeBot.getJDA().getGuilds();
         ArrayList<String> guildsIDHasBot = new ArrayList<>();
 
         // Adds any guild that the bot is in but not in the database.
@@ -299,7 +299,7 @@ public class GuildHandler {
     @NotNull
     public Boolean removeGuild(@NotNull String guildID) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "DELETE FROM beanbot.guild_information " +
                 "WHERE guild_id = (?);";
 
@@ -310,7 +310,7 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
             return false;
         }
     }
@@ -333,7 +333,7 @@ public class GuildHandler {
     @NotNull
     public Boolean addGuild(@NotNull String guildID) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "INSERT INTO beanbot.guild_information " +
                 "(guild_id, prefix) " +
                 "VALUES (?,?);";
@@ -341,12 +341,12 @@ public class GuildHandler {
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
             statement.setLong(1, Long.parseLong(guildID));
-            statement.setString(2, BeanBot.getPrefix());
+            statement.setString(2, CafeBot.getPrefix());
 
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to add Guild to SQL database: " + e.getMessage());
+            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to add Guild to SQL database: " + e.getMessage());
             return false;
         }
     }
@@ -360,7 +360,7 @@ public class GuildHandler {
     @NotNull
     protected Boolean updateGuildMutedRole(@NotNull String guildID, @NotNull String roleID) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information " +
                 "SET muted_role_id = (?) " +
                 "WHERE guild_id = (?);";
@@ -373,7 +373,7 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
             return false;
         }
 
@@ -388,7 +388,7 @@ public class GuildHandler {
     @NotNull
     protected Boolean updateGuildModeratorRole(@NotNull String guildID, @NotNull String roleID) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information " +
                 "SET moderator_role_id = (?) " +
                 "WHERE guild_id = (?);";
@@ -401,7 +401,7 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
             return false;
         }
 
@@ -416,7 +416,7 @@ public class GuildHandler {
     @NotNull
     protected Boolean addTwitchChannel(@NotNull String guildID, @NotNull String twitchChannel) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "INSERT INTO beanbot.guild_twitch " +
                 "(guild_id, twitch_channel) " +
                 "VALUES (?,?);";
@@ -429,7 +429,7 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to reach the SQL database.");
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to reach the SQL database.");
             return false;
         }
 
@@ -444,7 +444,7 @@ public class GuildHandler {
     @NotNull
     protected Boolean removeTwitchChannel(@NotNull String guildID, @NotNull String twitchChannel) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "DELETE FROM beanbot.guild_twitch " +
                 "WHERE guild_id = (?) AND twitch_channel = (?);";
 
@@ -456,7 +456,7 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to reach the SQL database.");
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to reach the SQL database.");
             return false;
         }
 
@@ -471,7 +471,7 @@ public class GuildHandler {
     @NotNull
     public Boolean updateTwitchChannelID(@NotNull String guildID, @NotNull String textChannelID) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.guild_information " +
                 "SET twitch_channel_id = (?) " +
                 "WHERE guild_id = (?);";
@@ -484,7 +484,7 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
             return false;
         }
 
@@ -527,7 +527,7 @@ public class GuildHandler {
      */
     @NotNull
     public Guild getGuild(@NotNull String guildID) {
-        return BeanBot.getJDA().getGuildById(guildID);
+        return CafeBot.getJDA().getGuildById(guildID);
     }
 
     /**

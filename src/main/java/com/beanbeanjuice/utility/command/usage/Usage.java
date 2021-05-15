@@ -1,10 +1,9 @@
 package com.beanbeanjuice.utility.command.usage;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.usage.types.CommandErrorType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -187,7 +186,7 @@ public class Usage {
         userID = userID.replace(">", "");
 
         try {
-            BeanBot.getJDA().getUserById(userID);
+            CafeBot.getJDA().getUserById(userID);
         } catch (NumberFormatException e) {
             return false;
         }

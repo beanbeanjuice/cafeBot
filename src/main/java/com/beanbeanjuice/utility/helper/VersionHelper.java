@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.helper;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.guild.CustomGuild;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,7 +39,7 @@ public class VersionHelper {
      * @return Whether or not updating was successful.
      */
     public Boolean updateVersionInDatabase(@NotNull String currentVersion) {
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE beanbot.bot_information SET version = (?) WHERE id = (?);";
 
         try {
@@ -50,7 +50,7 @@ public class VersionHelper {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Update Version in Database: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Update Version in Database: " + e.getMessage());
             return false;
         }
     }
@@ -72,7 +72,7 @@ public class VersionHelper {
      * @return The last version number that is in the SQL database.
      */
     public String getLastVersion() {
-        Connection connection = BeanBot.getSQLServer().getConnection();
+        Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM beanbot.bot_information WHERE id = (?);";
 
         try {
@@ -82,7 +82,7 @@ public class VersionHelper {
             resultSet.next();
             return resultSet.getString(2);
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Get Previous Version From Database: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Get Previous Version From Database: " + e.getMessage());
             return null;
         }
     }
@@ -93,8 +93,8 @@ public class VersionHelper {
     public void contactGuilds() {
 
         // Comparing the Version to the Database
-        if (compareVersions(BeanBot.getBotVersion())) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Not sending messages that there is an update as the versions match.");
+        if (compareVersions(CafeBot.getBotVersion())) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Not sending messages that there is an update as the versions match.");
             return;
         }
 
@@ -106,22 +106,22 @@ public class VersionHelper {
                 .join();
 
         // Checking if the GitHub tag does not equal the current version.
-        if (!github_tag.equalsIgnoreCase(BeanBot.getBotVersion())) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "There is a mismatch between GitHub tag and Bot Version.");
+        if (!github_tag.equalsIgnoreCase(CafeBot.getBotVersion())) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "There is a mismatch between GitHub tag and Bot Version.");
             return;
         }
 
         // Updating the Version in the Database
-        if (!updateVersionInDatabase(BeanBot.getBotVersion())) {
+        if (!updateVersionInDatabase(CafeBot.getBotVersion())) {
             return;
         }
 
         MessageEmbed updateEmbed = updateEmbed();
-        HashMap<String, CustomGuild> customGuilds = BeanBot.getGuildHandler().getGuilds();
+        HashMap<String, CustomGuild> customGuilds = CafeBot.getGuildHandler().getGuilds();
 
         customGuilds.forEach((guildID, customGuild) -> {
             if (customGuild.getNotifyOnUpdate()) {
-                Guild guild = BeanBot.getGuildHandler().getGuild(guildID);
+                Guild guild = CafeBot.getGuildHandler().getGuild(guildID);
 
                 TextChannel mainChannel = guild.getDefaultChannel();
 
@@ -148,7 +148,7 @@ public class VersionHelper {
                 "To request a feature or report bugs, please head over to https://github.com/beanbeanjuice/beanBot/issues.", true);
         embedBuilder.addField("How to Disable Update Notifications", "To disable these update notifications, " +
                 "the default command would be `!!notify-on-update disable`.", false);
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 

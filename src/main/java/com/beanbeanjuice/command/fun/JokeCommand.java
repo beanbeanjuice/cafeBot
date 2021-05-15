@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.fun;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -29,7 +29,7 @@ public class JokeCommand implements ICommand {
         WebUtils.ins.getJSONObject("https://apis.duncte123.me/joke").async((json) -> {
             if (!json.get("success").asBoolean()) {
                 event.getChannel().sendMessage(cannotGetJSONEmbed()).queue();
-                BeanBot.getLogManager().log(JokeCommand.class, LogLevel.ERROR, "Cannot get JSON.");
+                CafeBot.getLogManager().log(JokeCommand.class, LogLevel.ERROR, "Cannot get JSON.");
                 return;
             }
 
@@ -47,7 +47,7 @@ public class JokeCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(title, url);
         embedBuilder.setDescription(body);
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 

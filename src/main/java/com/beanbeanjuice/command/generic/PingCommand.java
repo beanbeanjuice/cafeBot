@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.generic;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -23,9 +23,9 @@ public class PingCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        BeanBot.getJDA().getRestPing().queue(
+        CafeBot.getJDA().getRestPing().queue(
                 (ping) -> event.getChannel()
-                        .sendMessage(messageEmbed(ping, BeanBot.getJDA().getGatewayPing())).queue()
+                        .sendMessage(messageEmbed(ping, CafeBot.getJDA().getGatewayPing())).queue()
         );
     }
 
@@ -36,12 +36,12 @@ public class PingCommand implements ICommand {
         StringBuilder descriptionBuilder = new StringBuilder();
         descriptionBuilder.append("**Rest Ping** - `").append(botPing.toString()).append("`\n")
                 .append("**Gateway Ping** - `").append(gatewayPing.toString()).append("`\n")
-                .append("**Current Version** - `").append(BeanBot.getBotVersion()).append("`\n\n")
+                .append("**Current Version** - `").append(CafeBot.getBotVersion()).append("`\n\n")
                 .append("Hello there! How are you? Would you like to order some coffee?");
         embedBuilder.setDescription(descriptionBuilder.toString());
         embedBuilder.setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/beanBot");
-        embedBuilder.setThumbnail(BeanBot.getJDA().getSelfUser().getAvatarUrl());
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setThumbnail(CafeBot.getJDA().getSelfUser().getAvatarUrl());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 

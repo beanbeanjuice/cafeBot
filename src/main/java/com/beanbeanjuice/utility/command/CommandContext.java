@@ -1,7 +1,6 @@
 package com.beanbeanjuice.utility.command;
 
-import com.beanbeanjuice.main.BeanBot;
-import net.dv8tion.jda.api.JDA;
+import com.beanbeanjuice.main.CafeBot;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -52,7 +51,7 @@ public class CommandContext {
 
     @Nullable
     public ShardManager getShardManager() {
-        return BeanBot.getJDA().getShardManager();
+        return CafeBot.getJDA().getShardManager();
     }
 
     /**
