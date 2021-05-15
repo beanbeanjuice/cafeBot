@@ -58,12 +58,20 @@ public class AddRaffleCommand implements ICommand {
 
         raffleChannel.sendMessage(creatingRaffle()).queue(message -> {
             Raffle raffle = new Raffle(event.getGuild().getId(), message.getId(), new Timestamp(System.currentTimeMillis() + (minutes*60000)), winnerAmount);
-            if (CafeBot.getRaffleHandler().addRaffle(raffle)) {
-                message.editMessage(raffleEmbed(title, description, minutes, winnerAmount)).queue();
-                message.addReaction("U+2705").queue();
-            } else {
-                message.editMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+
+            if (!CafeBot.getRaffleHandler().addRaffle(raffle)) {
+                message.delete().queue();
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+                return;
             }
+
+            message.editMessage(raffleEmbed(title, description, minutes, winnerAmount)).queue();
+            message.addReaction("U+2705").queue();
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                    "Raffle Created",
+                    "A raffle has been successfully created! Check the " + message.getTextChannel().getAsMention() + " channel."
+            )).queue();
+
         });
     }
 
