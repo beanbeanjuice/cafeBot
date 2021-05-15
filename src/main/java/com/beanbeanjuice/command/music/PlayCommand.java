@@ -173,30 +173,6 @@ public class PlayCommand implements ICommand {
         return embedBuilder.build();
     }
 
-    @Nullable
-    private String getTrack_Sync(GetTrackRequest getTrackRequest) {
-        try {
-            final Track track = getTrackRequest.execute();
-            return "ytsearch:" + track.getName() + " by " + track.getArtists()[0].getName();
-        } catch (IOException | SpotifyWebApiException | ParseException e) {
-            CafeBot.getLogManager().log(PlayCommand.class, LogLevel.ERROR, "There was a sync error: " + e.getMessage());
-            return null;
-        }
-    }
-
-    @Nullable
-    private PlaylistTrack[] getPlaylist_Sync(GetPlaylistRequest getPlaylistRequest) {
-        try {
-            final Playlist playlist = getPlaylistRequest.execute();
-            playlistName = playlist.getName();
-            playlistCount = playlist.getTracks().getTotal();
-            return playlist.getTracks().getItems();
-        } catch (IOException | SpotifyWebApiException | ParseException e) {
-            CafeBot.getLogManager().log(PlayCommand.class, LogLevel.ERROR, "There was a sync error: " + e.getMessage());
-            return null;
-        }
-    }
-
     @NotNull
     private MessageEmbed userMustBeInSameVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -216,9 +192,7 @@ public class PlayCommand implements ICommand {
     @NotNull
     private MessageEmbed emptyArgsEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-
         embedBuilder.setDescription("Please enter a link or a search term.");
-
         return embedBuilder.build();
     }
 
@@ -251,16 +225,13 @@ public class PlayCommand implements ICommand {
 
     @Override
     public String exampleUsage() {
-        return "`!!play feeling xqcL by Row Sauce Studio` or `!!play https://open.spotify.com/track/4KkJDRf8H1e3UuoLhCWtvf?si=4b90debdb82947f2`";
+        return "`!!play feeling xqcL` or `!!play https://open.spotify.com/track/4KkJDRf8H1e3UuoLhCWtvf?si=4b90debdb82947f2`";
     }
 
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-
-        for (int i = 0; i < 100; i++) {
-            usage.addUsage(CommandType.TEXT, "word", false);
-        }
+        usage.addUsage(CommandType.SENTENCE, "link/playlist", false);
         return usage;
     }
 

@@ -76,19 +76,29 @@ public class OrderCommand implements ICommand {
             return;
         }
 
-        event.getChannel().sendMessage(orderEmbed(orderer, receiver, item)).queue();
+        event.getChannel().sendMessage(orderEmbed(orderer, receiver, item, args)).queue();
     }
 
     @NotNull
-    private MessageEmbed orderEmbed(@NotNull CafeCustomer orderer, @NotNull CafeCustomer receiver, @NotNull MenuItem item) {
+    private MessageEmbed orderEmbed(@NotNull CafeCustomer orderer, @NotNull CafeCustomer receiver, @NotNull MenuItem item, @NotNull ArrayList<String> args) {
         User ordererUser = CafeBot.getJDA().getUserById(orderer.getUserID());
         User receiverUser = CafeBot.getJDA().getUserById(receiver.getUserID());
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Order Bought!");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+
+        // Adding a personalised message.
+        if (args.size() >= 3) {
+            StringBuilder descriptionBuilder = new StringBuilder();
+            for (int i = 2; i < args.size(); i++) {
+                descriptionBuilder.append(args.get(i)).append(" ");
+            }
+            embedBuilder.addField("Personalised Message", descriptionBuilder.toString(), false);
+        }
+
         embedBuilder.setDescription("Awww... " + ordererUser.getAsMention() + " bought a " + item.getName()
-        + " for " + receiverUser.getAsMention() + " and lost `$" + item.getPrice() + "`!");
+                + " for " + receiverUser.getAsMention() + " and lost `$" + item.getPrice() + "`!");
         embedBuilder.setFooter("So far, " + ordererUser.getName() + " has bought a total of " + (orderer.getOrdersBought()+1) + " menu items for other people. "
         + receiverUser.getName() + " has received a total of " + (receiver.getOrdersReceived()+1) + " menu items from other people.");
         embedBuilder.setThumbnail(item.getImageURL());
@@ -120,6 +130,7 @@ public class OrderCommand implements ICommand {
         Usage usage = new Usage();
         usage.addUsage(CommandType.NUMBER, "The Menu Item Number", true);
         usage.addUsage(CommandType.USER, "The Person You Are Ordering For", true);
+        usage.addUsage(CommandType.SENTENCE, "A message you want to send to them.", false);
         return usage;
     }
 
