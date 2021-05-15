@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.interaction;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -28,28 +28,28 @@ public class AddRaffleCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
-        if (!BeanBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
+        if (!CafeBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
             return;
         }
 
-        String title = BeanBot.getGeneralHelper().removeUnderscores(args.get(0));
-        String description = BeanBot.getGeneralHelper().removeUnderscores(args.get(1));
+        String title = CafeBot.getGeneralHelper().removeUnderscores(args.get(0));
+        String description = CafeBot.getGeneralHelper().removeUnderscores(args.get(1));
         int minutes = Integer.parseInt(args.get(2));
         int winnerAmount = Integer.parseInt(args.get(3));
 
         // Check if the amount of raffles the server has is more than 3
-        if (BeanBot.getRaffleHandler().getRafflesForGuild(event.getGuild()).size()+1 > 3) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+        if (CafeBot.getRaffleHandler().getRafflesForGuild(event.getGuild()).size()+1 > 3) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "Too Many Raffles",
                     "Your guild currently has 3 raffles. This is a limitation due to server costs."
             )).queue();
             return;
         }
 
-        TextChannel raffleChannel = BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).getRaffleChannel();
+        TextChannel raffleChannel = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getRaffleChannel();
 
         if (raffleChannel == null) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "Raffle Channel Not Set",
                     "You currently do not have a raffle channel set."
             )).queue();
@@ -58,11 +58,11 @@ public class AddRaffleCommand implements ICommand {
 
         raffleChannel.sendMessage(creatingRaffle()).queue(message -> {
             Raffle raffle = new Raffle(event.getGuild().getId(), message.getId(), new Timestamp(System.currentTimeMillis() + (minutes*60000)), winnerAmount);
-            if (BeanBot.getRaffleHandler().addRaffle(raffle)) {
+            if (CafeBot.getRaffleHandler().addRaffle(raffle)) {
                 message.editMessage(raffleEmbed(title, description, minutes, winnerAmount)).queue();
                 message.addReaction("U+2705").queue();
             } else {
-                message.editMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+                message.editMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             }
         });
     }
@@ -73,7 +73,7 @@ public class AddRaffleCommand implements ICommand {
         embedBuilder.setAuthor(title);
         embedBuilder.addField("Raffle Details", description, false);
         embedBuilder.addField("Winner Amount", winnerAmount.toString(), false);
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         if (minutes == 1) {
             embedBuilder.setFooter("This raffle will end in " + minutes + " minute from when the message was posted.");
         } else {

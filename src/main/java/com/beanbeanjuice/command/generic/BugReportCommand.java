@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.generic;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class BugReportCommand implements ICommand {
 
-    private final String BUG_REPORT_URL = "https://github.com/beanbeanjuice/beanBot/issues/new?assignees=beanbeanjuice&labels=bug&template=bug-report.md&title=%5BBUG%5D+%2A%2ADESCRIBE+YOUR+ISSUE+AS+SHORT+AS+POSSIBLE+IN+THIS+BOX%2A%2A";
+    private final String BUG_REPORT_URL = "https://github.com/beanbeanjuice/cafeBot/issues/new?assignees=beanbeanjuice&labels=bug&template=bug-report.md&title=%5BBUG%5D+%2A%2ADESCRIBE+YOUR+ISSUE+AS+SHORT+AS+POSSIBLE+IN+THIS+BOX%2A%2A";
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
@@ -30,7 +30,7 @@ public class BugReportCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Bug Report", BUG_REPORT_URL);
         embedBuilder.setDescription("If you want to submit a bug report, please click on the title above.");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 

@@ -56,11 +56,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * The main {@link BeanBot} class.
+ * The main {@link CafeBot} class.
  *
  * @author beanbeanjuice
  */
-public class BeanBot {
+public class CafeBot {
 
     // File Information
     // -- 'beta.json' -> Beta Bot Information
@@ -138,7 +138,7 @@ public class BeanBot {
         logManager = new LogManager("Log Manager", homeGuild, homeGuildLogChannel);
 
         logManager.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
-        logManager.log(BeanBot.class, LogLevel.OKAY, "Starting bot!", true, false);
+        logManager.log(CafeBot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
         jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
         jdaBuilder.setActivity(Activity.playing("The barista is starting up..."));
@@ -222,7 +222,7 @@ public class BeanBot {
         logManager.setGuild(homeGuild);
         logManager.setLogChannel(homeGuildLogChannel);
 
-        logManager.log(BeanBot.class, LogLevel.OKAY, "The bot is online!");
+        logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
 
         // Connecting to the Spotify API
         connectToSpotifyAPI();
@@ -287,7 +287,7 @@ public class BeanBot {
      * Updates the presence for the {@link JDA}.
      */
     public static void updateGuildPresence() {
-        jda.getPresence().setActivity(Activity.playing("!! | beanBot " + BOT_VERSION + " - Currently in " + jda.getGuilds().size() + " servers!"));
+        jda.getPresence().setActivity(Activity.playing("!! | cafeBot " + BOT_VERSION + " - Currently in " + jda.getGuilds().size() + " servers!"));
     }
 
     /**
@@ -300,10 +300,10 @@ public class BeanBot {
             @Override
             public void run() {
                 connectToSpotifyAPI();
-                logManager.log(BeanBot.class, LogLevel.INFO, "Re-establishing Spotify Connection", true, false);
+                logManager.log(CafeBot.class, LogLevel.INFO, "Re-establishing Spotify Connection", true, false);
 
                 try {
-                    logManager.log(BeanBot.class, LogLevel.INFO, "Refreshing MySQL Connection...", true, false);
+                    logManager.log(CafeBot.class, LogLevel.INFO, "Refreshing MySQL Connection...", true, false);
                     sqlServer.getConnection().close(); // Closes the SQL Connection
                     sqlServer.startConnection(); // Reopens the SQL Connection
 
@@ -312,9 +312,9 @@ public class BeanBot {
                         throw new SQLException("The connection is still closed.");
                     }
 
-                    logManager.log(BeanBot.class, LogLevel.OKAY, "Successfully refreshed the MySQL Connection!", true, false);
+                    logManager.log(CafeBot.class, LogLevel.OKAY, "Successfully refreshed the MySQL Connection!", true, false);
                 } catch (SQLException e) {
-                    logManager.log(BeanBot.class, LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage(), true, false);
+                    logManager.log(CafeBot.class, LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage(), true, false);
 
                     sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
                     sqlServer.startConnection();
@@ -338,10 +338,10 @@ public class BeanBot {
         try {
             final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
             spotifyApi.setAccessToken(clientCredentials.getAccessToken());
-            logManager.log(BeanBot.class, LogLevel.INFO, "Spotify Access Token Expires In: " + clientCredentials.getExpiresIn());
-            logManager.log(BeanBot.class, LogLevel.OKAY, "Successfully connected to the Spotify API!");
+            logManager.log(CafeBot.class, LogLevel.INFO, "Spotify Access Token Expires In: " + clientCredentials.getExpiresIn());
+            logManager.log(CafeBot.class, LogLevel.OKAY, "Successfully connected to the Spotify API!");
         } catch (IOException | SpotifyWebApiException | ParseException e) {
-            logManager.log(BeanBot.class, LogLevel.ERROR, e.getMessage());
+            logManager.log(CafeBot.class, LogLevel.ERROR, e.getMessage());
         }
     }
 

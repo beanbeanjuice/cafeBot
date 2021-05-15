@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.moderation;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -20,16 +20,16 @@ public class SetRaffleChannelCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
-        if (!BeanBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
+        if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
 
-        if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setRaffleChannel(event.getChannel().getId())) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+        if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setRaffleChannel(event.getChannel().getId())) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
-        event.getChannel().sendMessage(BeanBot.getGeneralHelper().successEmbed(
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                 "Set Raffle Channel",
                 "This channel has been set to an active raffle channel!"
         )).queue();

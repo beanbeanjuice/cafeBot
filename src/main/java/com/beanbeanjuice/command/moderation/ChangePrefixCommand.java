@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.moderation;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -23,12 +23,12 @@ public class ChangePrefixCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        if (!BeanBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
+        if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
 
-        if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setPrefix(args.get(0))) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+        if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setPrefix(args.get(0))) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
@@ -38,7 +38,7 @@ public class ChangePrefixCommand implements ICommand {
     @NotNull
     private MessageEmbed successfulPrefixChangeEmbed(String prefix) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setAuthor("Successfully updated prefix.");
         embedBuilder.setDescription("The prefix has been successfully updated to `" + prefix + "`.");
         return embedBuilder.build();

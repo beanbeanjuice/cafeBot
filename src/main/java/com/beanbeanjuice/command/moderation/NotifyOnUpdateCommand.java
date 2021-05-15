@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.moderation;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -24,20 +24,20 @@ public class NotifyOnUpdateCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
-        if (!BeanBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
+        if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
 
         // For when there are no arguments.
         if (args.isEmpty()) {
-            boolean currentState = BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).getNotifyOnUpdate();
+            boolean currentState = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getNotifyOnUpdate();
             event.getChannel().sendMessage(currentNotificationStateEmbed(currentState)).queue();
             return;
         }
 
         // For when they are enabling it.
         if (args.get(0).equalsIgnoreCase("enable")) {
-            if (BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setNotifyOnUpdate(true)) {
+            if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setNotifyOnUpdate(true)) {
                 event.getChannel().sendMessage(enableEmbed()).queue();
             } else {
                 errorMessage(event);
@@ -47,7 +47,7 @@ public class NotifyOnUpdateCommand implements ICommand {
 
         // For when they are disabling it.
         if (args.get(0).equalsIgnoreCase("disable")) {
-            if (BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setNotifyOnUpdate(false)) {
+            if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setNotifyOnUpdate(false)) {
                 event.getChannel().sendMessage(disableEmbed()).queue();
             } else {
                 errorMessage(event);
@@ -56,7 +56,7 @@ public class NotifyOnUpdateCommand implements ICommand {
         }
 
         // If the argument provided is invalid.
-        event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                 "Invalid Arguments.",
                 "For this command, you don't have to add arguments. However, if you do, " +
                         "please make sure to specify the arguments `enable` or `disable` otherwise it will not work."
@@ -69,7 +69,7 @@ public class NotifyOnUpdateCommand implements ICommand {
         embedBuilder.setAuthor("Bot Update Notification Status");
         embedBuilder.setDescription("Successfully disabled the bot update notification status! " +
                 "You will no longer be receiving notifications when the bot is updated :( but you can re-enable them at any time!");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 
@@ -78,12 +78,12 @@ public class NotifyOnUpdateCommand implements ICommand {
         embedBuilder.setAuthor("Bot Update Notification Status");
         embedBuilder.setDescription("Successfully enabled the bot update notification status! " +
                 "You will now receive notifications when the bot is updated!");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 
     private void errorMessage(GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                 "Unable to Update Bot Notifications",
                 "There was an error updating the bot notification state. Please " +
                         "try again later."
@@ -95,7 +95,7 @@ public class NotifyOnUpdateCommand implements ICommand {
         embedBuilder.setAuthor("Bot Update Notification Status");
         embedBuilder.setDescription("The current notification status for bot updates is " +
                 "currently set to `" + currentState.toString() + "`.");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 

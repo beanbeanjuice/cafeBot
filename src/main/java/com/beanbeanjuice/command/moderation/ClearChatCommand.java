@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.moderation;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -31,7 +31,7 @@ public class ClearChatCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         // Checking if they are a moderator.
-        if (!BeanBot.getGeneralHelper().checkPermission(event.getMember(), event.getChannel(), Permission.MESSAGE_MANAGE)) {
+        if (!CafeBot.getGeneralHelper().checkPermission(event.getMember(), event.getChannel(), Permission.MESSAGE_MANAGE)) {
             return;
         }
 
@@ -49,7 +49,7 @@ public class ClearChatCommand implements ICommand {
             return;
         }
 
-        if (BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).containsTextChannelDeletingMessages(event.getChannel())) {
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).containsTextChannelDeletingMessages(event.getChannel())) {
             event.getChannel().sendMessage(alreadyDeletingMessagesEmbed()).queue();
             return;
         }
@@ -87,7 +87,7 @@ public class ClearChatCommand implements ICommand {
     private MessageEmbed startMessagesDeletionsEmbed(@NotNull Integer messageCount) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Starting Deletion");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Starting deletion of `" + messageCount + "` messages. This may take a while...");
         return embedBuilder.build();
     }
@@ -98,7 +98,7 @@ public class ClearChatCommand implements ICommand {
 
         TextChannel textChannel = deletionMessage.getTextChannel();
         int messageCount = messages.size();
-        CustomGuild guild = BeanBot.getGuildHandler().getCustomGuild(deletionMessage.getGuild());
+        CustomGuild guild = CafeBot.getGuildHandler().getCustomGuild(deletionMessage.getGuild());
 
         guild.addTextChannelToDeletingMessages(deletionMessage.getTextChannel());
 
@@ -141,7 +141,7 @@ public class ClearChatCommand implements ICommand {
         embedBuilder.setDescription("Successfully deleted `" + count + "` messages. " +
                 "There might be a time lag for deleting messages. This message will disappear once " +
                 "all of the messages have been successfully deleted from discord.");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 
@@ -156,7 +156,7 @@ public class ClearChatCommand implements ICommand {
     private MessageEmbed beginDeletionEmbed(@NotNull Integer amount) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Starting Deletion");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Deleting `" + amount + "` messages. This might take a while.");
         return embedBuilder.build();
     }

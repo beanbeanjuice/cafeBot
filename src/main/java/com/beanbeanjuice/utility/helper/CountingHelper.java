@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.helper;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -31,7 +31,7 @@ public class CountingHelper {
         String lastUserID = getLastUserID(guild);
 
         if (lastNumber == null || highestNumber == null || lastUserID == null) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
@@ -40,7 +40,7 @@ public class CountingHelper {
             // Set the last number to the current number
             // If it fails, say so and return.
             if (!setLastNumber(guild, currentNumber)) {
-                event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
 
@@ -48,25 +48,25 @@ public class CountingHelper {
                 // Set the highest number to the current number.
                 // If it fails, say so and return.
                 if (!setHighestNumber(guild, currentNumber)) {
-                    event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+                    event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
                     return;
                 }
             }
 
             if (!setLastUserID(guild, event.getAuthor().getId())) {
-                event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
             event.getMessage().addReaction("U+2705").queue(); // Green Checkmark Reaction
         } else {
 
             if (!setLastNumber(guild, 0)) {
-                event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
 
             if (!setLastUserID(guild, "0")) {
-                event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
 
@@ -84,8 +84,8 @@ public class CountingHelper {
     @NotNull
     private Boolean setLastUserID(@NotNull Guild guild, @NotNull String lastUserID) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.counting_information SET last_user_id = (?) WHERE guild_id = (?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "UPDATE cafeBot.counting_information SET last_user_id = (?) WHERE guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -105,8 +105,8 @@ public class CountingHelper {
     @Nullable
     private String getLastUserID(@NotNull Guild guild) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.counting_information WHERE guild_id = (?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM cafeBot.counting_information WHERE guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -146,8 +146,8 @@ public class CountingHelper {
     @NotNull
     private Boolean setHighestNumber(@NotNull Guild guild, @NotNull Integer currentNumber) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.counting_information SET highest_number = (?) WHERE guild_id = (?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "UPDATE cafeBot.counting_information SET highest_number = (?) WHERE guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -169,8 +169,8 @@ public class CountingHelper {
     @NotNull
     private Boolean setLastNumber(@NotNull Guild guild, @NotNull Integer currentNumber) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "UPDATE beanbot.counting_information SET last_number = (?) WHERE guild_id = (?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "UPDATE cafeBot.counting_information SET last_number = (?) WHERE guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -195,8 +195,8 @@ public class CountingHelper {
             return false;
         }
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "INSERT IGNORE INTO beanbot.counting_information (guild_id) VALUES (?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "INSERT IGNORE INTO cafeBot.counting_information (guild_id) VALUES (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -216,8 +216,8 @@ public class CountingHelper {
     @Nullable
     private Integer getHighestNumber(@NotNull Guild guild) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.counting_information WHERE guild_id = (?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM cafeBot.counting_information WHERE guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -240,8 +240,8 @@ public class CountingHelper {
     @Nullable
     private Integer getLastNumber(@NotNull Guild guild) {
 
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.counting_information WHERE guild_id = (?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM cafeBot.counting_information WHERE guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);

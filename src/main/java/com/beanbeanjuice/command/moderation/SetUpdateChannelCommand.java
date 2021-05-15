@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.moderation;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -20,12 +20,12 @@ public class SetUpdateChannelCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
-        if (!BeanBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
+        if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
 
-        if (BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).setUpdateChannel(event.getChannel())) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().successEmbed(
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setUpdateChannel(event.getChannel())) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                     "Set Update Channel",
                     "This channel will now receive bot updates! Make sure to enable notifications " +
                             "with the `notify-on-update` command!"
@@ -33,7 +33,7 @@ public class SetUpdateChannelCommand implements ICommand {
             return;
         }
 
-        event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                 "Error Setting Update Channel",
                 "There was an error setting this channel to receive bot updates."
         )).queue();

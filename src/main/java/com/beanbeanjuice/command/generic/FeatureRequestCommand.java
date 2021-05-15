@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.generic;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class FeatureRequestCommand implements ICommand {
 
-    private final String FEATURE_REQUEST_URL = "https://github.com/beanbeanjuice/beanBot/issues/new?assignees=beanbeanjuice&labels=feature&template=feature_request.md&title=%5BFEATURE%5D+%2A%2ADESCRIBE+THE+FEATURE+YOU+WANT+AS+SHORT+AS+POSSIBLE+HERE%2A%2A";
+    private final String FEATURE_REQUEST_URL = "https://github.com/beanbeanjuice/cafeBot/issues/new?assignees=beanbeanjuice&labels=feature&template=feature_request.md&title=%5BFEATURE%5D+%2A%2ADESCRIBE+THE+FEATURE+YOU+WANT+AS+SHORT+AS+POSSIBLE+HERE%2A%2A";
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
@@ -30,7 +30,7 @@ public class FeatureRequestCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Feature Request", FEATURE_REQUEST_URL);
         embedBuilder.setDescription("If you want to submit a feature request, please click on the title above.");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 

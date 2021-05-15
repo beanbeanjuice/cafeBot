@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.interaction;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -31,13 +31,13 @@ public class AddPollCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
         // Checking for if they are a moderator.
-        if (!BeanBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
+        if (!CafeBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
             return;
         }
 
         // Makes sure that guilds only have 3 polls.
-        if (BeanBot.getPollHandler().getPollsForGuild(event.getGuild()).size()+1 > 3) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+        if (CafeBot.getPollHandler().getPollsForGuild(event.getGuild()).size()+1 > 3) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "Too Many Polls",
                     "You can currently only have a total of " +
                             "3 polls per Discord Server. This is due to server costs."
@@ -45,15 +45,15 @@ public class AddPollCommand implements ICommand {
             return;
         }
 
-        String title = BeanBot.getGeneralHelper().removeUnderscores(args.get(0));
-        String description = BeanBot.getGeneralHelper().removeUnderscores(args.get(1));
+        String title = CafeBot.getGeneralHelper().removeUnderscores(args.get(0));
+        String description = CafeBot.getGeneralHelper().removeUnderscores(args.get(1));
         Integer minutes = Integer.parseInt(args.get(2));
         ArrayList<String> arguments = convertToList(args.get(3));
 
         // Making sure the poll channel exists.
-        TextChannel pollChannel = BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).getPollChannel();
+        TextChannel pollChannel = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getPollChannel();
         if (pollChannel == null) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "No Poll Channel",
                     "You do not currently have a poll channel set."
             )).queue();
@@ -62,7 +62,7 @@ public class AddPollCommand implements ICommand {
 
         // Making sure there are less than 20 arguments.
         if (arguments.size() > 20) {
-            pollChannel.sendMessage(BeanBot.getGeneralHelper().errorEmbed(
+            pollChannel.sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "Too Many Items",
                     "You can only have 20 items. Please try again. Discord only supports 20 message reactions."
             )).queue();
@@ -75,8 +75,8 @@ public class AddPollCommand implements ICommand {
         pollChannel.sendMessage(startingPollEmbed()).queue(e -> {
             Poll poll = new Poll(event.getGuild().getId(), e.getId(), timestamp);
 
-            if (!BeanBot.getPollHandler().addPoll(poll)) {
-                e.editMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+            if (!CafeBot.getPollHandler().addPoll(poll)) {
+                e.editMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
 
@@ -103,7 +103,7 @@ public class AddPollCommand implements ICommand {
                                    @NotNull Integer pollTime, @NotNull ArrayList<String> arguments) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(pollTitle);
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
 
         ArrayList<PollEmoji> pollEmojis = new ArrayList<>(Arrays.asList(PollEmoji.values()));
         StringBuilder stringBuilder = new StringBuilder();
@@ -128,7 +128,7 @@ public class AddPollCommand implements ICommand {
     private ArrayList<String> convertToList(@NotNull String string) {
         ArrayList<String> arrayList = new ArrayList<>();
         for (String argument : string.split(",")) {
-            arrayList.add(BeanBot.getGeneralHelper().removeUnderscores(argument));
+            arrayList.add(CafeBot.getGeneralHelper().removeUnderscores(argument));
         }
         return arrayList;
     }

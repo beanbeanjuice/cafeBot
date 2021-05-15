@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.raffle;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -50,7 +50,7 @@ public class RaffleHandler {
                         if (raffle.isFinished()) {
 
                             // Checking if the PollChannel is Null
-                            TextChannel raffleChannel = BeanBot.getGuildHandler().getCustomGuild(key).getRaffleChannel();
+                            TextChannel raffleChannel = CafeBot.getGuildHandler().getCustomGuild(key).getRaffleChannel();
 
                             if (raffleChannel == null) {
                                 removeRaffleFromDatabase(raffle);
@@ -74,11 +74,11 @@ public class RaffleHandler {
 
                                         if (potentialUsers.size() > raffle.getWinnerAmount()) {
                                             for (int i = 0; i < raffle.getWinnerAmount(); i++) {
-                                                User user = potentialUsers.get(BeanBot.getGeneralHelper().getRandomNumber(0, (potentialUsers.size() - 1)));
+                                                User user = potentialUsers.get(CafeBot.getGeneralHelper().getRandomNumber(0, (potentialUsers.size() - 1)));
                                                 if (winners.contains(user)) {
-                                                    User newUser = potentialUsers.get(BeanBot.getGeneralHelper().getRandomNumber(0, (potentialUsers.size() - 1)));
+                                                    User newUser = potentialUsers.get(CafeBot.getGeneralHelper().getRandomNumber(0, (potentialUsers.size() - 1)));
                                                     while (newUser == user) {
-                                                        newUser = potentialUsers.get(BeanBot.getGeneralHelper().getRandomNumber(0, (potentialUsers.size() - 1)));
+                                                        newUser = potentialUsers.get(CafeBot.getGeneralHelper().getRandomNumber(0, (potentialUsers.size() - 1)));
                                                     }
                                                     user = newUser;
                                                 }
@@ -150,8 +150,8 @@ public class RaffleHandler {
      */
     @NotNull
     private Boolean removeRaffleFromDatabase(@NotNull Raffle raffle) {
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "DELETE FROM beanbot.raffles WHERE message_id = (?) and guild_id = (?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "DELETE FROM cafeBot.raffles WHERE message_id = (?) and guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -160,7 +160,7 @@ public class RaffleHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Removing Raffle: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Removing Raffle: " + e.getMessage());
             return false;
         }
     }
@@ -172,8 +172,8 @@ public class RaffleHandler {
      */
     @NotNull
     public Boolean addRaffle(@NotNull Raffle raffle) {
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "INSERT INTO beanbot.raffles (guild_id, message_id, ending_time, winner_amount) VALUES (?,?,?,?);";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "INSERT INTO cafeBot.raffles (guild_id, message_id, ending_time, winner_amount) VALUES (?,?,?,?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
@@ -183,7 +183,7 @@ public class RaffleHandler {
             statement.setInt(4, raffle.getWinnerAmount());
             statement.execute();
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Adding Raffle: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Adding Raffle: " + e.getMessage());
             return false;
         }
 
@@ -222,8 +222,8 @@ public class RaffleHandler {
      * Refresh the {@link Raffle} cache.
      */
     private void getRafflesFromDatabase() {
-        Connection connection = BeanBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM beanbot.raffles;";
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM cafeBot.raffles;";
 
         try {
             Statement statement = connection.createStatement();
@@ -241,7 +241,7 @@ public class RaffleHandler {
                 raffles.get(guildID).add(new Raffle(guildID, messageID, raffleEndTime, winnerAmount));
             }
         } catch (SQLException e) {
-            BeanBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Retrieving Raffles: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Retrieving Raffles: " + e.getMessage());
         }
     }
 

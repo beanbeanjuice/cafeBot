@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.lavaplayer;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -112,7 +112,7 @@ public class PlayerManager {
 
                 if (isSpotifyPlaylist && trackURL.contains("ytsearch:")) {
                     loadAndPlay(channel, trackURL, true);
-                    BeanBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Getting Song from Playlist", false, false);
+                    CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Getting Song from Playlist", false, false);
                     return;
                 }
 

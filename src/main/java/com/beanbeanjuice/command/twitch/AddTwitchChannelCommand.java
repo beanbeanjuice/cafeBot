@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.twitch;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -24,11 +24,11 @@ public class AddTwitchChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        if (!BeanBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
+        if (!CafeBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
             return;
         }
 
-        if (!BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).addTwitchChannel(args.get(0))) {
+        if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).addTwitchChannel(args.get(0))) {
             event.getChannel().sendMessage(alreadyAddedEmbed()).queue();
             return;
         }
@@ -40,7 +40,7 @@ public class AddTwitchChannelCommand implements ICommand {
     private MessageEmbed successfulAddEmbed(@NotNull String twitchName) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Successfully Added Twitch Channel");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Successfully added `" + twitchName + "`!");
         return embedBuilder.build();
     }

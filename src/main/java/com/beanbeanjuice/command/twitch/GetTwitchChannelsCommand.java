@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.twitch;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -21,17 +21,17 @@ public class GetTwitchChannelsCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setAuthor("List of Current Twitch Channels");
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("`");
 
-        for (String channel : BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getTwitch().getTwitchChannelNamesHandler().getTwitchChannelNames()) {
+        for (String channel : CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getTwitch().getTwitchChannelNamesHandler().getTwitchChannelNames()) {
             stringBuilder.append(channel).append("\n");
         }
 
-        if (BeanBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getTwitch().getTwitchChannelNamesHandler().getTwitchChannelNames().isEmpty()) {
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getTwitch().getTwitchChannelNamesHandler().getTwitchChannelNames().isEmpty()) {
             stringBuilder.append("No channels added.");
         }
 

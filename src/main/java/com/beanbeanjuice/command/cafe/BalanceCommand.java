@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.cafe;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -26,10 +26,10 @@ public class BalanceCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
         if (args.size() == 0) {
-            CafeCustomer cafeCustomer = BeanBot.getServeHandler().getCafeCustomer(user);
+            CafeCustomer cafeCustomer = CafeBot.getServeHandler().getCafeCustomer(user);
 
             if (cafeCustomer == null) {
-                event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
 
@@ -37,11 +37,11 @@ public class BalanceCommand implements ICommand {
             return;
         }
 
-        User person = BeanBot.getGeneralHelper().getUser(args.get(0));
-        CafeCustomer cafeCustomer = BeanBot.getServeHandler().getCafeCustomer(person);
+        User person = CafeBot.getGeneralHelper().getUser(args.get(0));
+        CafeCustomer cafeCustomer = CafeBot.getServeHandler().getCafeCustomer(person);
 
         if (cafeCustomer == null) {
-            event.getChannel().sendMessage(BeanBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
@@ -51,20 +51,20 @@ public class BalanceCommand implements ICommand {
     public MessageEmbed selfBalanceEmbed(@NotNull CafeCustomer cafeCustomer) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("beanCoin Balance");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.addField("Orders Bought", cafeCustomer.getOrdersBought().toString(), true);
         embedBuilder.addField("Orders Received", cafeCustomer.getOrdersReceived().toString(), true);
-        embedBuilder.setDescription("Your current balance is `$" + BeanBot.getServeHandler().roundDouble(cafeCustomer.getBeanCoinAmount()) + "` beanCoins!");
+        embedBuilder.setDescription("Your current balance is `$" + CafeBot.getServeHandler().roundDouble(cafeCustomer.getBeanCoinAmount()) + "` beanCoins!");
         return embedBuilder.build();
     }
 
     public MessageEmbed otherBalanceEmbed(@NotNull User user, @NotNull CafeCustomer cafeCustomer) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("beanCoin Balance");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.addField("Orders Bought", cafeCustomer.getOrdersBought().toString(), true);
         embedBuilder.addField("Orders Received", cafeCustomer.getOrdersReceived().toString(), true);
-        embedBuilder.setDescription(user.getAsMention() + " has a current balance of `$" + BeanBot.getServeHandler().roundDouble(cafeCustomer.getBeanCoinAmount()) + "` beanCoins!");
+        embedBuilder.setDescription(user.getAsMention() + " has a current balance of `$" + CafeBot.getServeHandler().roundDouble(cafeCustomer.getBeanCoinAmount()) + "` beanCoins!");
         return embedBuilder.build();
     }
 

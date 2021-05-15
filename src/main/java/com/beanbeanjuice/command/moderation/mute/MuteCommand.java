@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.moderation.mute;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -28,18 +28,18 @@ public class MuteCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        if (!BeanBot.getGeneralHelper().checkPermission(event.getMember(), event.getChannel(), Permission.MANAGE_ROLES)) {
+        if (!CafeBot.getGeneralHelper().checkPermission(event.getMember(), event.getChannel(), Permission.MANAGE_ROLES)) {
             return;
         }
 
-        Role mutedRole = BeanBot.getGuildHandler().getCustomGuild(event.getGuild()).getMutedRole();
+        Role mutedRole = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getMutedRole();
 
         if (mutedRole == null) {
             event.getChannel().sendMessage(noMutedRoleEmbed()).queue();
             return;
         }
 
-        Member punishee = event.getGuild().getMember(BeanBot.getGeneralHelper().getUser(args.get(0)));
+        Member punishee = event.getGuild().getMember(CafeBot.getGeneralHelper().getUser(args.get(0)));
 
         try {
             event.getGuild().addRoleToMember(punishee, mutedRole).queue();
@@ -64,7 +64,7 @@ public class MuteCommand implements ICommand {
     private MessageEmbed successfulMuteEmbed(@NotNull Member punishee) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Muted User");
-        embedBuilder.setColor(BeanBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Muted " + punishee.getAsMention() + ".");
         return embedBuilder.build();
     }

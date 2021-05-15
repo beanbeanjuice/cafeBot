@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.helper;
 
-import com.beanbeanjuice.main.BeanBot;
+import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.guild.CustomGuild;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -115,7 +115,7 @@ public class GeneralHelper {
         userID = userID.replace("<@!", "");
         userID = userID.replace(">", "");
 
-        return BeanBot.getJDA().getUserById(userID);
+        return CafeBot.getJDA().getUserById(userID);
     }
 
     /**
@@ -175,7 +175,7 @@ public class GeneralHelper {
             return true;
         }
 
-        CustomGuild customGuild = BeanBot.getGuildHandler().getCustomGuild(guild);
+        CustomGuild customGuild = CafeBot.getGuildHandler().getCustomGuild(guild);
 
         if (customGuild.getModeratorRole() == null) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
