@@ -180,16 +180,12 @@ public class CafeBot {
                 new BugReportCommand()
         );
 
-        // Music Commands
+        // Cafe Commands
         commandManager.addCommands(
-                new PlayCommand(),
-                new NowPlayingCommand(),
-                new PauseCommand(),
-                new QueueCommand(),
-                new RepeatCommand(),
-                new ShuffleCommand(),
-                new SkipCommand(),
-                new StopCommand()
+                new MenuCommand(),
+                new ServeCommand(),
+                new OrderCommand(),
+                new BalanceCommand()
         );
 
         // Fun Commands
@@ -208,6 +204,27 @@ public class CafeBot {
                 new KissCommand()
         );
 
+        // Music Commands
+        commandManager.addCommands(
+                new PlayCommand(),
+                new NowPlayingCommand(),
+                new PauseCommand(),
+                new QueueCommand(),
+                new RepeatCommand(),
+                new ShuffleCommand(),
+                new SkipCommand(),
+                new StopCommand()
+        );
+
+        // Twitch Commands
+        commandManager.addCommands(
+                new SetLiveChannelCommand(),
+                new AddTwitchChannelCommand(),
+                new RemoveTwitchChannelCommand(),
+                new GetTwitchChannelsCommand(),
+                new SetLiveNotificationsRoleCommand()
+        );
+
         // Moderation Commands
         commandManager.addCommands(
                 new SetModeratorRoleCommand(),
@@ -224,24 +241,7 @@ public class CafeBot {
                 new SetPollChannelCommand(),
                 new SetRaffleChannelCommand()
         );
-
-        // Twitch Commands
-        commandManager.addCommands(
-                new SetLiveChannelCommand(),
-                new AddTwitchChannelCommand(),
-                new RemoveTwitchChannelCommand(),
-                new GetTwitchChannelsCommand(),
-                new SetLiveNotificationsRoleCommand()
-        );
-
-        // Cafe Commands
-        commandManager.addCommands(
-                new MenuCommand(),
-                new ServeCommand(),
-                new OrderCommand(),
-                new BalanceCommand()
-        );
-
+        
         jdaBuilder.addEventListeners(new Listener());
 
         jda = jdaBuilder.build().awaitReady();
