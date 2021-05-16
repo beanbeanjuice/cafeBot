@@ -14,6 +14,9 @@ import java.util.ArrayList;
  */
 public class InteractionHandler {
 
+    /**
+     * @return A random hug image.
+     */
     public String getHugImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://i.pinimg.com/originals/f2/80/5f/f2805f274471676c96aff2bc9fbedd70.gif");
@@ -41,6 +44,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random punch image.
+     */
     public String getPunchImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://media1.tenor.com/images/31686440e805309d34e94219e4bedac1/tenor.gif?itemid=4790446");
@@ -54,6 +60,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random kiss image.
+     */
     public String getKissImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://media0.giphy.com/media/FqBTvSNjNzeZG/source.gif");
@@ -73,6 +82,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random bite image.
+     */
     public String getBiteImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://media1.tenor.com/images/8099a2d3e3f820ddcf96072fc33ad332/tenor.gif?itemid=8231871");
@@ -96,6 +108,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random blush image.
+     */
     public String getBlushImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://cdn.weeb.sh/images/HkrQM8mwZ.gif");
@@ -122,6 +137,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random cuddle image.
+     */
     public String getCuddleImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://cdn.weeb.sh/images/r1VzDkmjW.gif");
@@ -142,6 +160,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random nom image.
+     */
     public String getNomImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://media.tenor.com/images/65804047872f835e45b98d57356ae97e/tenor.gif");
@@ -163,6 +184,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random poke image.
+     */
     public String getPokeImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://media.tenor.com/images/6d227fd93656bd164985aad517a25c3f/tenor.gif");
@@ -181,6 +205,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random slap image.
+     */
     public String getSlapImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://media0.giphy.com/media/Zau0yrl17uzdK/giphy.gif");
@@ -200,6 +227,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random stab image.
+     */
     public String getStabImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://i0.wp.com/blackandyellowotakugamers.com/wp-content/uploads/2017/06/ayase-stab.gif?resize=640%2C360&ssl=1");
@@ -209,6 +239,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random hmph image.
+     */
     public String getHmphImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://i.pinimg.com/originals/15/a0/52/15a05247ac88d901524adde074651bb6.gif");
@@ -223,6 +256,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random pout image.
+     */
     public String getPoutImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://i.imgur.com/Z3Hdtos.gif");
@@ -241,6 +277,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random throw image.
+     */
     public String getThrowImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://i.pinimg.com/originals/8d/ab/29/8dab296aed2cbe25af8ebb4703517356.gif");
@@ -252,6 +291,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random smile image.
+     */
     public String getSmileImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://pa1.narvii.com/6314/69057088d88cccf7cce70f19192e112994cc055b_hq.gif");
@@ -272,6 +314,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random stare image.
+     */
     public String getStareImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://i.pinimg.com/originals/88/42/35/8842356c82360ddf9e586dcc45f5e097.gif");
@@ -292,6 +337,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random tickle image.
+     */
     public String getTickleImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://cdn.weeb.sh/images/Byj7LJmiW.gif");
@@ -307,6 +355,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random rage image.
+     */
     public String getRageImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://i.pinimg.com/originals/19/97/28/199728c74eb00a12d2d2c8a1ad440574.gif");
@@ -325,6 +376,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random yell image.
+     */
     public String getYellImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://thumbs.gfycat.com/UniqueSoggyBluebottle-small.gif");
@@ -341,6 +395,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random head pat image.
+     */
     public String getHeadPatImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://media0.giphy.com/media/ARSp9T7wwxNcs/giphy.gif");
@@ -364,6 +421,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @return A random cry image.
+     */
     public String getCryImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("https://media3.giphy.com/media/ukfn7kMzzLqLeyi5Tt/giphy.gif");
@@ -383,6 +443,10 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    /**
+     * @param link The image URL for the {@link MessageEmbed}.
+     * @return The created {@link MessageEmbed}.
+     */
     @NotNull
     public MessageEmbed actionEmbed(@NotNull String link) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -391,6 +455,11 @@ public class InteractionHandler {
         return embedBuilder.build();
     }
 
+    /**
+     * @param link The image URL for the {@link MessageEmbed}.
+     * @param args The {@link ArrayList<String>} for the message embed.
+     * @return The created {@link MessageEmbed}.
+     */
     @NotNull
     public MessageEmbed actionWithDescriptionEmbed(@NotNull String link, @NotNull ArrayList<String> args) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
