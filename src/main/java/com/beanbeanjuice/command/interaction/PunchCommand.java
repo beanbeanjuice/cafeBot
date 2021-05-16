@@ -6,67 +6,57 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 /**
- * A command used for Discord avatars.
+ * An {@link ICommand} used for punching.
  *
  * @author beanbeanjuice
  */
-public class AvatarCommand implements ICommand {
+public class PunchCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        User avatarUser;
-        if (args.isEmpty()) {
-            avatarUser = user;
-        } else {
-            avatarUser = CafeBot.getGeneralHelper().getUser(args.get(0));
-        }
-        event.getChannel().sendMessage(avatarEmbed(avatarUser)).queue();
-    }
+        String url = CafeBot.getInteractionHandler().getPunchImage();
+        String sender = user.getName();
+        String receiver = CafeBot.getGeneralHelper().getUser(args.get(0)).getName();
+        String message = "**" + receiver + "** was *punched* by **" + sender + "**!";
 
-    @NotNull
-    private MessageEmbed avatarEmbed(@NotNull User user) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(user.getName() + "'s Avatar", user.getAvatarUrl());
-        embedBuilder.setImage(user.getAvatarUrl() + "?size=512");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        return embedBuilder.build();
+        if (args.size() == 1) {
+            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionEmbed(url)).queue();
+        } else {
+            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionWithDescriptionEmbed(url, args)).queue();
+        }
     }
 
     @Override
     public String getName() {
-        return "avatar";
+        return "punch";
     }
 
     @Override
     public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("av");
-        return arrayList;
+        return new ArrayList<>();
     }
 
     @Override
     public String getDescription() {
-        return "Get someone's avatar!";
+        return "Punch someone!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!avatar` or `!!avatar @beanbeanjuice`";
+        return "`!!punch @beanbeanjuice` or `!!punch @beanbeanjuice WHY WOULD YOU DO THIS?`";
     }
 
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "Discord Mention", false);
+        usage.addUsage(CommandType.USER, "Discord Mention", true);
+        usage.addUsage(CommandType.SENTENCE, "Personalised Message", false);
         return usage;
     }
 
@@ -74,4 +64,5 @@ public class AvatarCommand implements ICommand {
     public CategoryType getCategoryType() {
         return CategoryType.INTERACTION;
     }
+
 }

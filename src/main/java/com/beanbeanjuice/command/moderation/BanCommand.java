@@ -96,11 +96,11 @@ public class BanCommand implements ICommand {
         Usage usage = new Usage();
         usage.addUsage(CommandType.USER, "Discord Mention", true);
         usage.addUsage(CommandType.NUMBER, "Number of Days", true);
-        usage.addUsage(CommandType.TEXT, "Reason for Ban", true);
-
-        for (int i = 0; i < 100; i++) {
-            usage.addUsage(CommandType.TEXT, "Reason for Ban", true);
-        }
+        usage.addUsage(CommandType.SENTENCE, "Reason for Ban", true);
+//
+//        for (int i = 0; i < 100; i++) {
+//            usage.addUsage(CommandType.TEXT, "Reason for Ban", false);
+//        }
 
         return usage;
     }

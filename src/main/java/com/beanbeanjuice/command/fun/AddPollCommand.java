@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.interaction;
+package com.beanbeanjuice.command.fun;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -72,20 +72,26 @@ public class AddPollCommand implements ICommand {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() + (minutes*60000));
 
         // Sending a message in the poll channel.
-        pollChannel.sendMessage(startingPollEmbed()).queue(e -> {
-            Poll poll = new Poll(event.getGuild().getId(), e.getId(), timestamp);
+        pollChannel.sendMessage(startingPollEmbed()).queue(message -> {
+            Poll poll = new Poll(event.getGuild().getId(), message.getId(), timestamp);
 
             if (!CafeBot.getPollHandler().addPoll(poll)) {
-                e.editMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+                message.delete().queue();
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
 
-            e.editMessage(pollEmbed(title, description, minutes, arguments)).queue();
+            message.editMessage(pollEmbed(title, description, minutes, arguments)).queue();
 
             ArrayList<PollEmoji> pollEmojis = new ArrayList<>(Arrays.asList(PollEmoji.values()));
             for (int i = 0; i < arguments.size(); i++) {
-                e.addReaction(pollEmojis.get(i).getUnicode()).queue();
+                message.addReaction(pollEmojis.get(i).getUnicode()).queue();
             }
+
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                    "Poll Created",
+                    "A poll has been successfully created! Check the " + message.getTextChannel().getAsMention() + " channel."
+            )).queue();
         });
     }
 
@@ -170,6 +176,6 @@ public class AddPollCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.INTERACTION;
+        return CategoryType.FUN;
     }
 }

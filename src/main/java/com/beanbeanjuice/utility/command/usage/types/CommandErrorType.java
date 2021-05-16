@@ -10,9 +10,10 @@ import org.jetbrains.annotations.NotNull;
 public enum CommandErrorType {
 
     NUMBER ("A number is required."),
-    USER ("A user is required."),
+    USER ("A mentioned user is required."),
     LINK ("A link is required."),
-    ROLE ("A role is required."),
+    ROLE ("A mentioned role is required."),
+    DATE ("A date is required. Use the format (YYYY-MM-DD)."),
     SUCCESS ("Successful command."),
     TOO_MANY_ARGUMENTS ("There are too many arguments."),
     NOT_ENOUGH_ARGUMENTS ("There are not enough arguments.");
