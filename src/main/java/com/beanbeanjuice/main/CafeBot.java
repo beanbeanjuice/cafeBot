@@ -172,31 +172,44 @@ public class CafeBot {
         // Listeners and Commands
         commandManager = new CommandManager();
 
+        // Generic Commands
         commandManager.addCommands(
                 new HelpCommand(),
                 new PingCommand(),
                 new FeatureRequestCommand(),
-                new BugReportCommand(),
+                new BugReportCommand()
+        );
 
-                new NowPlayingCommand(),
+        // Music Commands
+        commandManager.addCommands(
                 new PlayCommand(),
+                new NowPlayingCommand(),
                 new PauseCommand(),
                 new QueueCommand(),
                 new RepeatCommand(),
                 new ShuffleCommand(),
                 new SkipCommand(),
-                new StopCommand(),
+                new StopCommand()
+        );
 
+        // Fun Commands
+        commandManager.addCommands(
                 new MemeCommand(),
                 new JokeCommand(),
                 new AddPollCommand(),
                 new AddRaffleCommand(),
-                new AvatarCommand(),
+                new AvatarCommand()
+        );
 
+        // Interaction Commands
+        commandManager.addCommands(
                 new HugCommand(),
                 new PunchCommand(),
-                new KissCommand(),
+                new KissCommand()
+        );
 
+        // Moderation Commands
+        commandManager.addCommands(
                 new SetModeratorRoleCommand(),
                 new SetMutedRoleCommand(),
                 new ChangePrefixCommand(),
@@ -209,14 +222,20 @@ public class CafeBot {
                 new NotifyOnUpdateCommand(),
                 new SetCountingChannelCommand(),
                 new SetPollChannelCommand(),
-                new SetRaffleChannelCommand(),
+                new SetRaffleChannelCommand()
+        );
 
+        // Twitch Commands
+        commandManager.addCommands(
                 new SetLiveChannelCommand(),
                 new AddTwitchChannelCommand(),
                 new RemoveTwitchChannelCommand(),
                 new GetTwitchChannelsCommand(),
-                new SetLiveNotificationsRoleCommand(),
+                new SetLiveNotificationsRoleCommand()
+        );
 
+        // Cafe Commands
+        commandManager.addCommands(
                 new MenuCommand(),
                 new ServeCommand(),
                 new OrderCommand(),
