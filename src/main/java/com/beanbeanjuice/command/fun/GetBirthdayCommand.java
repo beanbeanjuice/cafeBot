@@ -31,7 +31,6 @@ public class GetBirthdayCommand implements ICommand {
         } else {
             birthdayUser = CafeBot.getGeneralHelper().getUser(args.get(0));
         }
-
         Date birthday = CafeBot.getBirthdayHandler().getBirthday(birthdayUser.getId());
 
         // Checking if the user's birthday is null.
@@ -42,9 +41,7 @@ public class GetBirthdayCommand implements ICommand {
             )).queue();
             return;
         }
-
         event.getChannel().sendMessage(birthdayEmbed(birthdayUser, birthday)).queue();
-
     }
 
     @NotNull

@@ -65,4 +65,5 @@ public class SetBirthdayCommand implements ICommand {
     public CategoryType getCategoryType() {
         return CategoryType.FUN;
     }
+    
 }
