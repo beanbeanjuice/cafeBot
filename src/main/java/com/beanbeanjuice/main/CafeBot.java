@@ -4,11 +4,7 @@ import com.beanbeanjuice.command.cafe.BalanceCommand;
 import com.beanbeanjuice.command.cafe.MenuCommand;
 import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.cafe.ServeCommand;
-import com.beanbeanjuice.command.fun.MemeCommand;
-import com.beanbeanjuice.command.fun.JokeCommand;
-import com.beanbeanjuice.command.fun.AddPollCommand;
-import com.beanbeanjuice.command.fun.AddRaffleCommand;
-import com.beanbeanjuice.command.fun.AvatarCommand;
+import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
 import com.beanbeanjuice.command.generic.BugReportCommand;
@@ -20,6 +16,7 @@ import com.beanbeanjuice.command.moderation.mute.MuteCommand;
 import com.beanbeanjuice.command.moderation.mute.UnMuteCommand;
 import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.twitch.*;
+import com.beanbeanjuice.utility.birthday.BirthdayHandler;
 import com.beanbeanjuice.utility.cafe.MenuHandler;
 import com.beanbeanjuice.utility.cafe.ServeHandler;
 import com.beanbeanjuice.utility.command.CommandManager;
@@ -133,6 +130,9 @@ public class CafeBot {
     // Interaction Stuff
     private static InteractionHandler interactionHandler;
 
+    // Birthday Stuff
+    private static BirthdayHandler birthdayHandler;
+
     public static void main(String[] args) throws LoginException, InterruptedException {
 
         countingHelper = new CountingHelper();
@@ -192,7 +192,9 @@ public class CafeBot {
                 new JokeCommand(),
                 new AddPollCommand(),
                 new AddRaffleCommand(),
-                new AvatarCommand()
+                new AvatarCommand(),
+                new GetBirthdayCommand(),
+                new SetBirthdayCommand()
         );
 
         // Interaction Commands
@@ -254,7 +256,8 @@ public class CafeBot {
                 new NotifyOnUpdateCommand(),
                 new SetCountingChannelCommand(),
                 new SetPollChannelCommand(),
-                new SetRaffleChannelCommand()
+                new SetRaffleChannelCommand(),
+                new SetBirthdayChannelCommand()
         );
 
         jdaBuilder.addEventListeners(new Listener());
@@ -287,6 +290,15 @@ public class CafeBot {
         raffleHandler = new RaffleHandler();
 
         interactionHandler = new InteractionHandler();
+
+        birthdayHandler = new BirthdayHandler();
+    }
+
+    /**
+     * @return The current {@link BirthdayHandler}.
+     */
+    public static BirthdayHandler getBirthdayHandler() {
+        return birthdayHandler;
     }
 
     /**

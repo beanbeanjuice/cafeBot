@@ -11,7 +11,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Random;
 
 /**
@@ -20,6 +23,22 @@ import java.util.Random;
  * @author beanbeanjuice
  */
 public class GeneralHelper {
+
+    /**
+     * Convert a {@link String} to a {@link Date}.
+     * @param dateString The {@link String} to convert.
+     * @return The converted {@link Date}.
+     */
+    @Nullable
+    public Date parseDate(@NotNull String dateString) {
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date date = simpleDateFormat.parse(dateString);
+            return new Date(date.getTime());
+        } catch (ParseException e) {
+            return null;
+        }
+    }
 
     /**
      * Get a random number.
