@@ -49,14 +49,14 @@ public class InteractionHandler {
      */
     public String getPunchImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("https://media1.tenor.com/images/31686440e805309d34e94219e4bedac1/tenor.gif?itemid=4790446");
-        arrayList.add("https://media.tenor.com/images/8a79543998d6878be573aab94ae86456/tenor.gif");
-        arrayList.add("https://i.pinimg.com/originals/d4/17/ce/d417ce25489868ae4bf177de73308aa5.gif");
-        arrayList.add("https://thumbs.gfycat.com/AmazingAngryCoelacanth-max-1mb.gif");
-        arrayList.add("https://media.tenor.com/images/f7b498a905f3e8c964ad5d97bf176e1f/tenor.gif");
-        arrayList.add("https://64.media.tumblr.com/01622a00635a61442a5548e70cd4aff8/a55a2448b1c12be9-0c/s640x960/298f2338ed0eb578a8da10003e4427a3a004a237.gifv");
-        arrayList.add("https://media1.tenor.com/images/2c7d6ec3272a369305cc5cf773ae9b04/tenor.gif?itemid=15151443");
-        arrayList.add("https://media.tenor.com/images/9ff746e22fbb39ebf28f431c158f769f/tenor.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/punches/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/punches/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/punches/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/punches/4.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/punches/5.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/punches/6.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/punches/7.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/punches/8.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
