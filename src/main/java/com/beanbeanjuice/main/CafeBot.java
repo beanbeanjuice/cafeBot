@@ -10,6 +10,7 @@ import com.beanbeanjuice.command.fun.AddPollCommand;
 import com.beanbeanjuice.command.fun.AddRaffleCommand;
 import com.beanbeanjuice.command.fun.AvatarCommand;
 import com.beanbeanjuice.command.interaction.HugCommand;
+import com.beanbeanjuice.command.interaction.PunchCommand;
 import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
 import com.beanbeanjuice.command.generic.BugReportCommand;
 import com.beanbeanjuice.command.generic.FeatureRequestCommand;
@@ -192,6 +193,7 @@ public class CafeBot {
                 new AvatarCommand(),
 
                 new HugCommand(),
+                new PunchCommand(),
 
                 new SetModeratorRoleCommand(),
                 new SetMutedRoleCommand(),
