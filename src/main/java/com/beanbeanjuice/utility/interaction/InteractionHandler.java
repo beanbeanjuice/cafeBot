@@ -1,6 +1,9 @@
 package com.beanbeanjuice.utility.interaction;
 
 import com.beanbeanjuice.main.CafeBot;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -317,6 +320,35 @@ public class InteractionHandler {
         ArrayList<String> arrayList = new ArrayList<>();
 
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
+    }
+
+    @NotNull
+    public MessageEmbed actionEmbed(@NotNull String link) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setImage(link);
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        return embedBuilder.build();
+    }
+
+    @NotNull
+    public MessageEmbed actionWithDescriptionEmbed(@NotNull String link, @NotNull ArrayList<String> args) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setImage(link);
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+
+        StringBuilder descriptionBuilder = new StringBuilder();
+        descriptionBuilder.append("\"");
+
+        for (int i = 1; i < args.size(); i++) {
+            descriptionBuilder.append(args.get(i));
+            if (i != args.size() - 1) {
+                descriptionBuilder.append(" ");
+            }
+        }
+
+        descriptionBuilder.append("\"");
+        embedBuilder.setDescription(descriptionBuilder.toString());
+        return embedBuilder.build();
     }
 
 }
