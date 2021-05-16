@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * A command used to kiss people.
+ * An {@link ICommand} used to kiss people.
  *
  * @author beanbeanjuice
  */
