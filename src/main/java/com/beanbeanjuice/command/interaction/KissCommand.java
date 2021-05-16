@@ -66,7 +66,7 @@ public class KissCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "hug";
+        return "kiss";
     }
 
     @Override
@@ -76,12 +76,12 @@ public class KissCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Hug someone!";
+        return "Kiss someone!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!hug @beanbeanjuice` or `!!hug @beanbeanjuice You're so cool`";
+        return "`!!kiss @beanbeanjuice` or `!!kiss @beanbeanjuice :O`";
     }
 
     @Override
