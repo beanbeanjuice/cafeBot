@@ -26,7 +26,7 @@ public class HugCommand implements ICommand {
         String url = CafeBot.getInteractionHandler().getHugImage();
         String hugger = user.getName();
         String huggee = CafeBot.getGeneralHelper().getUser(args.get(0)).getName();
-        String message = "**" + huggee + "**, you have been hugged by **" + hugger + "**!";
+        String message = "**" + huggee + "**, you have been *hugged* by **" + hugger + "**!";
 
         if (args.size() == 1) {
             event.getChannel().sendMessage(message).embed(hugEmbed(url)).queue();
