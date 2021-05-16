@@ -12,18 +12,18 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to give headpats to people.
+ * An {@link ICommand} used to cry at people.
  *
  * @author beanbeanjuice
  */
-public class HeadPatCommand implements ICommand {
+public class CryCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        String url = CafeBot.getInteractionHandler().getHeadPatImage();
+        String url = CafeBot.getInteractionHandler().getCryImage();
         String sender = user.getName();
         String receiver = CafeBot.getGeneralHelper().getUser(args.get(0)).getName();
-        String message = "**" + sender + "** gave *headpats* to **" + receiver + "**!";
+        String message = "**" + sender + "** is *crying* because of **" + receiver + "**!";
 
         if (args.size() == 1) {
             event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionEmbed(url)).queue();
@@ -34,24 +34,22 @@ public class HeadPatCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "headpat";
+        return "cry";
     }
 
     @Override
     public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("pat");
-        return arrayList;
+        return new ArrayList<>();
     }
 
     @Override
     public String getDescription() {
-        return "Give head pats to someone!";
+        return "Cry at someone!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!headpat @beanbeanjuice` or `!!headpat @beanbeanjuice :O`";
+        return "`!!cry @beanbeanjuice` or `!!cry @beanbeanjuice :O`";
     }
 
     @Override
