@@ -209,7 +209,8 @@ public class CafeBot {
                 new StabCommand(),
                 new HmphCommand(),
                 new PoutCommand(),
-                new ThrowCommand()
+                new ThrowCommand(),
+                new SmileCommand()
         );
 
         // Music Commands
