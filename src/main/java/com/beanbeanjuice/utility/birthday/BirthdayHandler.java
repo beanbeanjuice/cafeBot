@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * A class used to handle birthdays.
+ */
 public class BirthdayHandler {
 
     private HashMap<String, Date> birthdays;
@@ -27,6 +30,9 @@ public class BirthdayHandler {
 
     private ArrayList<String> mentionedBirthdays;
 
+    /**
+     * Create a new {@link BirthdayHandler}.
+     */
     public BirthdayHandler() {
         birthdays = new HashMap<>();
         mentionedBirthdays = new ArrayList<>();
@@ -34,6 +40,9 @@ public class BirthdayHandler {
         startBirthdayTimer();
     }
 
+    /**
+     * A timer used to check for birthdays.
+     */
     public void startBirthdayTimer() {
         birthdayTimer = new Timer();
         birthdayTimerTask = new TimerTask() {
@@ -48,6 +57,8 @@ public class BirthdayHandler {
                             for (Guild guild : CafeBot.getJDA().getGuilds()) {
                                 Member member = guild.getMemberById(userID);
                                 if (member != null) {
+
+                                    // Making sure the BirthdayChannel is not null.
                                     TextChannel birthdayChannel = CafeBot.getGuildHandler().getCustomGuild(guild).getBirthdayChannel();
 
                                     if (birthdayChannel != null) {
@@ -57,8 +68,9 @@ public class BirthdayHandler {
                                 }
                             }
 
+                            // PM them a happy birthday.
                             CafeBot.getGeneralHelper().pmUser(CafeBot.getGeneralHelper().getUser(userID), "Hey... we don't know if anyone wished you " +
-                                    "a happy birthday, but happy birthday!");
+                                    "a happy birthday, but happy birthday <3!");
 
                             mentionedBirthdays.add(userID);
                             updateMentionedBirthday(userID, true);
@@ -76,6 +88,11 @@ public class BirthdayHandler {
         birthdayTimer.scheduleAtFixedRate(birthdayTimerTask, 0, 7200000); // Should be 7200000
     }
 
+    /**
+     * A birthday {@link MessageEmbed} to send in the Birthday {@link TextChannel} for each {@link Guild}.
+     * @param member The {@link Member} who's birthday it is.
+     * @return The completed {@link MessageEmbed}.
+     */
     @NotNull
     private MessageEmbed birthdayEmbed(@NotNull Member member) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -85,6 +102,11 @@ public class BirthdayHandler {
         return embedBuilder.build();
     }
 
+    /**
+     * Update the mentioned birthday for a specified {@link net.dv8tion.jda.api.entities.User User}.
+     * @param userID The ID of the specified {@link net.dv8tion.jda.api.entities.User User}.
+     * @param isMentioned Whether or not they have already been mentioned today.
+     */
     private void updateMentionedBirthday(@NotNull String userID, @NotNull Boolean isMentioned) {
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE cafeBot.birthdays SET already_mentioned = (?) WHERE user_id = (?);";
@@ -100,6 +122,9 @@ public class BirthdayHandler {
         }
     }
 
+    /**
+     * Update the birthday cache.
+     */
     private void cacheBirthdays() {
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM cafeBot.birthdays";
@@ -122,12 +147,18 @@ public class BirthdayHandler {
         }
     }
 
+    /**
+     * Update the birthday {@link Date} for a specified {@link net.dv8tion.jda.api.entities.User User}.
+     * @param userID The ID of the {@link net.dv8tion.jda.api.entities.User User}.
+     * @param birthday The new {@link Date}.
+     * @return Whether or not updating it was successful.
+     */
     @NotNull
     public Boolean updateBirthday(@NotNull String userID, @NotNull Date birthday) {
         Connection connection = CafeBot.getSQLServer().getConnection();
 
         if (!birthdays.containsKey(userID)) {
-            String arguments = "INSERT INTO cafeBot.birthdays (user_id, birthday) VALUES (?,?);";
+            String arguments = "INSERT INTO cafeBot.birthdays (user_id, birth_date) VALUES (?,?);";
             try {
                 PreparedStatement statement = connection.prepareStatement(arguments);
                 statement.setLong(1, Long.parseLong(userID));
@@ -155,6 +186,11 @@ public class BirthdayHandler {
         return true;
     }
 
+    /**
+     * Get the birthday {@link Date} for a specified {@link net.dv8tion.jda.api.entities.User User}.
+     * @param userID The ID of the {@link net.dv8tion.jda.api.entities.User User}.
+     * @return The birthday {@link Date} of the {@link net.dv8tion.jda.api.entities.User User}.
+     */
     @Nullable
     public Date getBirthday(@NotNull String userID) {
         if (birthdays.containsKey(userID)) {
@@ -163,6 +199,11 @@ public class BirthdayHandler {
         return null;
     }
 
+    /**
+     * Check if todays day and month match the birthday day and month.
+     * @param checkDate The {@link Date} to check.
+     * @return Whether or not it is someone's birthday.
+     */
     @NotNull
     public Boolean isBirthday(@NotNull Date checkDate) {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");

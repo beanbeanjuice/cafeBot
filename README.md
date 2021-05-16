@@ -137,7 +137,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `add-raffle` - Create a raffle!
 * `avatar` - Get yours or someone else's avatar image!
 * `get-birthday` - Get yours or someone else's birthday!
-* `set-birthday` - Set your birthday! (YYYY/MM/DD)
+* `set-birthday` - Set your birthday! (YYYY-MM-DD)
 ##### 4. **INTERACTION**
 * `hug` - Hug someone!
 * `punch` - Punch someone!
