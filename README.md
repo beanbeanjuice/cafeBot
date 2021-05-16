@@ -133,13 +133,33 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 ##### 3. **FUN**
 * `meme` - Send a meme in the current channel. (SFW)
 * `joke` - Send a joke in the current channel. (SFW)
-##### 4. **INTERACTION**
 * `add-poll` - Create a poll!
 * `add-raffle` - Create a raffle!
 * `avatar` - Get yours or someone else's avatar image!
+##### 4. **INTERACTION**
+* `hug` - Hug someone!
+* `punch` - Punch someone!
+* `kiss` - Kiss someone!
+* `bite` - Bite someone!
+* `blush` - Blush at someone!
+* `cuddle` - Cuddle someone!
+* `nom` - Nom at someone!
+* `poke` - Poke someone!
+* `slap` - Slap someone!
+* `stab` - Stab someone! :O
+* `hmph` - Hmph at someone!
+* `pout` - Pout at someone!
+* `throw` - Throw someone!
+* `smile` - Smile at someone!
+* `stare` - Stare at someone!
+* `tickle` - Tickle someone!
+* `rage` - Rage at someone!
+* `yell` - Yell at someone!
+* `headpat` - Give head pats to someone!
+* `cry` - Cry at someone!
 ##### 5. **MUSIC**
-* `now-playing` - Show the current song playing.
 * `play` - Play a song or playlist!
+* `now-playing` - Show the current song playing.
 * `pause` - Pause the current song.
 * `queue` - Check the current queue.
 * `repeat` - Choose to repeat the song or playlist!
