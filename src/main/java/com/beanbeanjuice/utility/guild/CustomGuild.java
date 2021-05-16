@@ -30,6 +30,7 @@ public class CustomGuild {
     private String countingChannelID;
     private String pollChannelID;
     private String raffleChannelID;
+    private String birthdayChannelID;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -49,11 +50,13 @@ public class CustomGuild {
      * @param notifyOnUpdate The {@link Boolean} of whether or not to notify the {@link Guild} on an update to the Bot.
      * @param updateChannelID The ID of the {@link TextChannel} to send the bot update notifications to.
      * @param pollChannelID The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.poll.Poll Poll}s.
+     * @param birthdayChannelID The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.birthday.BirthdayHandler Birthday} notifications.
      */
     public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID,
                        @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
                        @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID,
-                       @NotNull String countingChannelID, @NotNull String pollChannelID, @NotNull String raffleChannelID) {
+                       @NotNull String countingChannelID, @NotNull String pollChannelID, @NotNull String raffleChannelID,
+                       @NotNull String birthdayChannelID) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
@@ -66,6 +69,7 @@ public class CustomGuild {
         this.countingChannelID = countingChannelID;
         this.pollChannelID = pollChannelID;
         this.raffleChannelID = raffleChannelID;
+        this.birthdayChannelID = birthdayChannelID;
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
@@ -75,6 +79,24 @@ public class CustomGuild {
 
         deletingMessagesChannels = new ArrayList<>();
 
+    }
+
+    @Nullable
+    public TextChannel getBirthdayChannel() {
+        try {
+            return CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(birthdayChannelID);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    @NotNull
+    public Boolean setBirthdayChannelID(@NotNull String birthdayChannelID) {
+        if (CafeBot.getGuildHandler().setBirthdayChannelID(guildID, birthdayChannelID)) {
+            this.birthdayChannelID = birthdayChannelID;
+            return true;
+        }
+        return false;
     }
 
     @Nullable

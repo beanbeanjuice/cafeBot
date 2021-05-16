@@ -186,6 +186,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `set-counting-channel` - Sets the current channel to the counting channel. This does exactly as it says. Try to count as high as you can without messing up!
 * `set-poll-channel` - Sets the current channel to an active poll channel. This is needed if you want to run polls on your server!
 * `set-raffle-channel` - Sets the current channel to an active raffle channel. This is needed if you want to run raffles on your server!
+* `set-birthday-channel` - Sets the current channel to an active birthday channel. Be notified when one of the members in your server is having a birthday!
 
 
 <!-- ROADMAP -->
