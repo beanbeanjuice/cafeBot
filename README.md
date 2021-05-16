@@ -82,6 +82,16 @@
 * [Spotify Web API](https://github.com/thelinmichael/spotify-web-api-java)
 * [Twitch4J](https://github.com/twitch4j/twitch4j)
 
+### About the Bot
+`cafeBot`, formerly `beanBot` is a general purpose bot that has many features. Many features work across Discord servers. Some features include;
+* Global Birthday Checker
+* Global Currency
+* Interaction Commands
+* Moderation Commands
+* Poll/Raffle Commands
+* Music Player
+* And more to come...
+
 
 
 <!-- GETTING STARTED -->
@@ -136,6 +146,8 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `add-poll` - Create a poll!
 * `add-raffle` - Create a raffle!
 * `avatar` - Get yours or someone else's avatar image!
+* `get-birthday` - Get yours or someone else's birthday!
+* `set-birthday` - Set your birthday! (YYYY-MM-DD)
 ##### 4. **INTERACTION**
 * `hug` - Hug someone!
 * `punch` - Punch someone!
@@ -186,6 +198,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `set-counting-channel` - Sets the current channel to the counting channel. This does exactly as it says. Try to count as high as you can without messing up!
 * `set-poll-channel` - Sets the current channel to an active poll channel. This is needed if you want to run polls on your server!
 * `set-raffle-channel` - Sets the current channel to an active raffle channel. This is needed if you want to run raffles on your server!
+* `set-birthday-channel` - Sets the current channel to an active birthday channel. Be notified when one of the members in your server is having a birthday!
 
 
 <!-- ROADMAP -->

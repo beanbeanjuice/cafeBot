@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -129,6 +131,15 @@ public class Usage {
                     }
                 }
 
+                case DATE -> {
+                    incorrect = !isDate(args.get(count));
+                    if (incorrect) {
+                        incorrectIndex = count;
+                        errorType = CommandErrorType.DATE;
+                        return getErrorType();
+                    }
+                }
+
             }
 
             // I have no idea what this does.
@@ -230,6 +241,21 @@ public class Usage {
         }
 
         return true;
+    }
+
+    /**
+     * Checks whether a provided {@link String} is a {@link java.util.Date}.
+     * @param dateString The date {@link String} provided.
+     * @return Whether or not the {@link String} is a {@link java.util.Date}.
+     */
+    @NotNull
+    private Boolean isDate(@NotNull String dateString) {
+        try {
+            new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
     }
 
 }
