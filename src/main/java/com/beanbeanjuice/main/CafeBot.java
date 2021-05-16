@@ -133,6 +133,8 @@ public class CafeBot {
     // Interaction Stuff
     private static InteractionHandler interactionHandler;
 
+    // Birthday Stuff
+
     public static void main(String[] args) throws LoginException, InterruptedException {
 
         countingHelper = new CountingHelper();
@@ -254,7 +256,8 @@ public class CafeBot {
                 new NotifyOnUpdateCommand(),
                 new SetCountingChannelCommand(),
                 new SetPollChannelCommand(),
-                new SetRaffleChannelCommand()
+                new SetRaffleChannelCommand(),
+                new SetBirthdayChannelCommand()
         );
 
         jdaBuilder.addEventListeners(new Listener());
