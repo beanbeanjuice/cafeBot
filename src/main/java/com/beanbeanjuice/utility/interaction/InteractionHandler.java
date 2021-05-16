@@ -118,6 +118,7 @@ public class InteractionHandler {
         arrayList.add("https://cdn.weeb.sh/images/r1n7M87wW.gif");
         arrayList.add("https://thumbs.gfycat.com/AcidicSecondhandBanteng-size_restricted.gif");
         arrayList.add("https://cdn.weeb.sh/images/B14JM8Qw-.gif");
+        arrayList.add("https://i.pinimg.com/originals/c1/18/28/c118281cf06513a78e2fdc731db48c1b.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
@@ -218,6 +219,7 @@ public class InteractionHandler {
         arrayList.add("https://thumbs.gfycat.com/ThornySizzlingAtlanticsharpnosepuffer-max-1mb.gif");
         arrayList.add("https://cdn.weeb.sh/images/Sy8IMlqJM.gif");
         arrayList.add("https://i.imgur.com/UILjVng.gif");
+        arrayList.add("https://64.media.tumblr.com/490445f667b1d1a9592bc0e865cb04c5/tumblr_pkgg86Msfy1th206io1_640.gifv");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
@@ -235,6 +237,7 @@ public class InteractionHandler {
         arrayList.add("https://i.pinimg.com/originals/e8/a3/9c/e8a39c41b8e2eacdf0fd4b5889a5f323.gif");
         arrayList.add("https://media2.giphy.com/media/X3VrxPijowGC4/giphy.gif");
         arrayList.add("https://cutewallpaper.org/21/anime-pout-face/Moms-Pout-GIF-by-Shumatsu.gif");
+        arrayList.add("https://media.tenor.com/images/8f0fd194a5af38663c43d0c5b6d7042b/tenor.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
@@ -306,19 +309,77 @@ public class InteractionHandler {
 
     public String getRageImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-
+        arrayList.add("https://i.pinimg.com/originals/19/97/28/199728c74eb00a12d2d2c8a1ad440574.gif");
+        arrayList.add("https://data.whicdn.com/images/185977769/original.gif");
+        arrayList.add("https://i.pinimg.com/originals/0e/09/1a/0e091a4895308fa0d2c7940ec2ad21ed.gif");
+        arrayList.add("https://media.tenor.com/images/f1c73d36e72343d0e26d4da210155796/tenor.gif");
+        arrayList.add("https://memestatic.fjcdn.com/gifs/Angry++for+those+who+want+to+express+their+anger_9de5df_6465993.gif");
+        arrayList.add("https://thumbs.gfycat.com/CommonFrightenedEastsiberianlaika-max-1mb.gif");
+        arrayList.add("https://cdn78.picsart.com/198005884000202.gif?to=min&r=640");
+        arrayList.add("https://media.tenor.com/images/abe8bc8b0b76b8ffe6694fa8b8f48853/tenor.gif");
+        arrayList.add("https://media.tenor.com/images/ef795689617a8c97379b297fd7557235/tenor.gif");
+        arrayList.add("https://64.media.tumblr.com/1bd0a91503c985d20460aebe3c32c626/a060f146972d4ae9-8b/s640x960/68a078f5628f80d861029feda95ea5ad833afa04.gifv");
+        arrayList.add("https://media.tenor.com/images/8a3797292089d4f76dc7d08abfbb2e51/tenor.gif");
+        arrayList.add("https://media.tenor.com/images/88b219548ba55c6dfbbaf62502f4ba0a/tenor.gif");
+        arrayList.add("https://i.pinimg.com/originals/65/65/bc/6565bcf12edb458915ee8890861e3e01.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
     public String getYellImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-
+        arrayList.add("https://thumbs.gfycat.com/UniqueSoggyBluebottle-small.gif");
+        arrayList.add("https://media.tenor.com/images/5d95d35aa4321d9d143ce83d3de81741/tenor.gif");
+        arrayList.add("https://media.tenor.com/images/a8f1de53b2b50a54ff330a807a4588eb/tenor.gif");
+        arrayList.add("https://media.tenor.com/images/b07017c1bec2c5ef9e243d20427125c4/tenor.gif");
+        arrayList.add("https://media.tenor.com/images/607fab7d42d9af04ee462ca2705f5e14/tenor.gif");
+        arrayList.add("https://i.pinimg.com/originals/37/21/25/372125c59de3e08571a4f99cb2a19a9a.gif");
+        arrayList.add("https://image.myanimelist.net/ui/ZPVPz_CObDpnH08hnJF81OfXLbu4yKz7EE0wsUNM1bOrCna2msI38gi_ghcFnzgK8OSWKkxoQsrMnM9ZIS7hh9C4UH9H6UMxkZbqJnGICjrrpQkuiZtokmZXUw4Tb6pM");
+        arrayList.add("https://media.tenor.com/images/f31079f190147358ea1ad3f2b8de5db1/tenor.gif");
+        arrayList.add("https://64.media.tumblr.com/1cd5c2f81a26414762d19a3a634f55be/tumblr_ps8zexUjW51sk6fb9_1280.gifv");
+        arrayList.add("https://media0.giphy.com/media/11WojR0GhjExlm/giphy.gif");
+        arrayList.add("http://1.bp.blogspot.com/-CdYIp9oXWBY/VRlScMx-JCI/AAAAAAAABJA/in44lljKjt4/s1600/bi70X9p.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
     public String getHeadPatImage() {
         ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("https://media0.giphy.com/media/ARSp9T7wwxNcs/giphy.gif");
+        arrayList.add("https://media.tenor.com/images/ad8357e58d35c1d63b570ab7e587f212/tenor.gif");
+        arrayList.add("https://i.pinimg.com/originals/1a/94/61/1a9461f15bb5ae752680d99195f9b944.gif");
+        arrayList.add("https://media1.tenor.com/images/d7c326bd43776f1e0df6f63956230eb4/tenor.gif?itemid=17187002");
+        arrayList.add("https://i.pinimg.com/originals/ba/0a/18/ba0a18b4028f9c210f830f7a82a574cb.gif");
+        arrayList.add("https://i.postimg.cc/fTZRHj4V/Adorable-raccoon-girl-headpat.gif");
+        arrayList.add("https://64.media.tumblr.com/acab0232bfb5cfd5d2d45e55e9dae898/tumblr_pbxhq7GyIf1th206io1_500.gifv");
+        arrayList.add("https://media.tenor.com/images/50b500c0fc0ad01a974af8b58b5e0c9b/tenor.gif");
+        arrayList.add("https://thumbs.gfycat.com/AgileHeavyGecko-max-1mb.gif");
+        arrayList.add("https://i.imgur.com/aPSW2uf.gif?noredirect");
+        arrayList.add("https://media.tenor.com/images/da8431374a530ae516c0cc8f966d1c2b/tenor.gif");
+        arrayList.add("https://i.imgur.com/42VnOL9.gif");
+        arrayList.add("https://64.media.tumblr.com/80f4e1aeee44dee530b1e6b416a8459d/83ad7e3b43d48041-53/s500x750/ddbb45d884338428dd0f1e042099b353fd3f49b3.gifv");
+        arrayList.add("https://pa1.narvii.com/6680/1edd1db645f55aa7f2923838b5afabfc863fc109_hq.gif");
+        arrayList.add("https://thumbs.gfycat.com/FlimsyDeafeningGrassspider-max-1mb.gif");
+        arrayList.add("https://media.tenor.com/images/385a8d13c1ee5213e560e07d12320d02/tenor.gif");
+        arrayList.add("https://64.media.tumblr.com/c90065c0ad52fe54d6de824507ebb68b/tumblr_pj79r3W3wU1th206io1_1280.gifv");
+        arrayList.add("https://i.pinimg.com/originals/ec/b8/7f/ecb87fb2827a022884d5165046f6608a.gif");
+        return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
+    }
 
+    public String getCryImage() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("https://media3.giphy.com/media/ukfn7kMzzLqLeyi5Tt/giphy.gif");
+        arrayList.add("https://i.pinimg.com/originals/b4/b1/64/b4b1640525ecadfa1030e6096f3ec842.gif");
+        arrayList.add("https://media1.tenor.com/images/09b085a6b0b33a9a9c8529a3d2ee1914/tenor.gif?itemid=5648908");
+        arrayList.add("https://media.tenor.com/images/b261321eff758fb664ea6ff110fec20a/tenor.gif");
+        arrayList.add("https://steamuserimages-a.akamaihd.net/ugc/860612455483948951/A1597F74D3C26AB279E6C02C2D05B18831D30C32/");
+        arrayList.add("https://media.tenor.com/images/19089cd2b4970740debff2cdfc43329a/tenor.gif");
+        arrayList.add("https://media4.giphy.com/media/yarJ7WfdKiAkE/giphy.gif");
+        arrayList.add("https://media1.tenor.com/images/ce52606293142a2bd11cda1d3f0dc12c/tenor.gif?itemid=5184314");
+        arrayList.add("https://media3.giphy.com/media/8YutMatqkTfSE/200.gif");
+        arrayList.add("https://66.media.tumblr.com/tumblr_m4soo4uyBO1qj4s4bo1_400.gif");
+        arrayList.add("https://s11.favim.com/orig/7/719/7192/71923/gif-anime-girl-sad-Favim.com-7192355.gif");
+        arrayList.add("https://media.tenor.com/images/cac86b83b562bc6add7e5e34311a8588/tenor.gif");
+        arrayList.add("https://thumbs.gfycat.com/CompletePotableDove-max-1mb.gif");
+        arrayList.add("https://cdn140.picsart.com/331786189096201.gif?to=min&r=640");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
