@@ -96,4 +96,5 @@ public class PunchCommand implements ICommand {
     public CategoryType getCategoryType() {
         return CategoryType.INTERACTION;
     }
+
 }

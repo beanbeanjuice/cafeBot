@@ -96,4 +96,5 @@ public class HugCommand implements ICommand {
     public CategoryType getCategoryType() {
         return CategoryType.INTERACTION;
     }
+
 }
