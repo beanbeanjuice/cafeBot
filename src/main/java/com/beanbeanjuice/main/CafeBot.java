@@ -203,7 +203,8 @@ public class CafeBot {
                 new BiteCommand(),
                 new BlushCommand(),
                 new CuddleCommand(),
-                new NomCommand()
+                new NomCommand(),
+                new PokeCommand()
         );
 
         // Music Commands
