@@ -132,6 +132,7 @@ public class GeneralHelper {
     @Nullable
     public User getUser(@NotNull String userID) {
         userID = userID.replace("<@!", "");
+        userID = userID.replace("<@", ""); // Edge Case for Mobile
         userID = userID.replace(">", "");
 
         return CafeBot.getJDA().getUserById(userID);
@@ -146,6 +147,7 @@ public class GeneralHelper {
     @Nullable
     public Role getRole(@NotNull Guild guild, @NotNull String roleID) {
         roleID = roleID.replace("<@&", "");
+        roleID = roleID.replace("<@", "");
         roleID = roleID.replace(">", "");
 
         return guild.getRoleById(roleID);

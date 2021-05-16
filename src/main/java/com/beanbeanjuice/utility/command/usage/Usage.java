@@ -176,7 +176,6 @@ public class Usage {
      */
     @NotNull
     private Boolean isLink(@NotNull String string) {
-
         try {
             new URL(string).toURI();
             return true;
@@ -214,13 +213,13 @@ public class Usage {
     private Boolean isUser(@NotNull String userID) {
         userID = userID.replace("<@!", "");
         userID = userID.replace(">", "");
+        userID = userID.replace("<@", "");
 
         try {
             CafeBot.getJDA().getUserById(userID);
         } catch (NumberFormatException e) {
             return false;
         }
-
         return true;
     }
 
@@ -232,6 +231,7 @@ public class Usage {
     @NotNull
     private Boolean isRole(@NotNull Guild guild, @NotNull String roleID) {
         roleID = roleID.replace("<@&", "");
+        roleID = roleID.replace("<@", "");
         roleID = roleID.replace(">", "");
 
         try {
@@ -239,7 +239,6 @@ public class Usage {
         } catch (NumberFormatException e) {
             return false;
         }
-
         return true;
     }
 
