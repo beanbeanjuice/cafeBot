@@ -9,6 +9,7 @@ import com.beanbeanjuice.command.fun.JokeCommand;
 import com.beanbeanjuice.command.fun.AddPollCommand;
 import com.beanbeanjuice.command.fun.AddRaffleCommand;
 import com.beanbeanjuice.command.fun.AvatarCommand;
+import com.beanbeanjuice.command.interaction.BiteCommand;
 import com.beanbeanjuice.command.interaction.HugCommand;
 import com.beanbeanjuice.command.interaction.KissCommand;
 import com.beanbeanjuice.command.interaction.PunchCommand;
@@ -201,7 +202,8 @@ public class CafeBot {
         commandManager.addCommands(
                 new HugCommand(),
                 new PunchCommand(),
-                new KissCommand()
+                new KissCommand(),
+                new BiteCommand()
         );
 
         // Music Commands
@@ -241,7 +243,7 @@ public class CafeBot {
                 new SetPollChannelCommand(),
                 new SetRaffleChannelCommand()
         );
-        
+
         jdaBuilder.addEventListeners(new Listener());
 
         jda = jdaBuilder.build().awaitReady();

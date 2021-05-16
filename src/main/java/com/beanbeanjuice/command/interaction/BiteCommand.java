@@ -15,28 +15,28 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 /**
- * A command used to kiss people.
+ * A command used to bite people!
  *
  * @author beanbeanjuice
  */
-public class KissCommand implements ICommand {
+public class BiteCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        String url = CafeBot.getInteractionHandler().getKissImage();
-        String kisser = user.getName();
-        String kissee = CafeBot.getGeneralHelper().getUser(args.get(0)).getName();
-        String message = "**" + kissee + "**, you have been *kissed* by **" + kisser + "**!";
+        String url = CafeBot.getInteractionHandler().getBiteImage();
+        String biter = user.getName();
+        String bitee = CafeBot.getGeneralHelper().getUser(args.get(0)).getName();
+        String message = "**" + bitee + "**, you have been *bitten* by **" + biter + "**!";
 
         if (args.size() == 1) {
-            event.getChannel().sendMessage(message).embed(kissEmbed(url)).queue();
+            event.getChannel().sendMessage(message).embed(biteEmbed(url)).queue();
         } else {
-            event.getChannel().sendMessage(message).embed(kissWithDescriptionEmbed(url, args)).queue();
+            event.getChannel().sendMessage(message).embed(biteWithDescriptionEmbed(url, args)).queue();
         }
     }
 
     @NotNull
-    private MessageEmbed kissEmbed(@NotNull String link) {
+    private MessageEmbed biteEmbed(@NotNull String link) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setImage(link);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
@@ -44,7 +44,7 @@ public class KissCommand implements ICommand {
     }
 
     @NotNull
-    private MessageEmbed kissWithDescriptionEmbed(@NotNull String link, @NotNull ArrayList<String> args) {
+    private MessageEmbed biteWithDescriptionEmbed(@NotNull String link, @NotNull ArrayList<String> args) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setImage(link);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
@@ -66,7 +66,7 @@ public class KissCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "kiss";
+        return "bite";
     }
 
     @Override
@@ -76,12 +76,12 @@ public class KissCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Kiss someone!";
+        return "bite someone!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!kiss @beanbeanjuice` or `!!kiss @beanbeanjuice :O`";
+        return "`!!bite @beanbeanjuice` or `!!bite @beanbeanjuice :O`";
     }
 
     @Override

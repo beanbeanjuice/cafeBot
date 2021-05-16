@@ -301,4 +301,22 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    public String getRageImage() {
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
+    }
+
+    public String getYellImage() {
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
+    }
+
+    public String getHeadPatImage() {
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
+    }
+
 }
