@@ -63,4 +63,5 @@ public class SetBirthdayChannelCommand implements ICommand {
     public CategoryType getCategoryType() {
         return CategoryType.MODERATION;
     }
+
 }
