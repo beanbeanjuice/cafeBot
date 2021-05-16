@@ -55,11 +55,13 @@ public class GuildHandler {
                 String countingChannelID = String.valueOf(resultSet.getLong(9));
                 String pollChannelID = String.valueOf(resultSet.getLong(10));
                 String raffleChannelID = String.valueOf(resultSet.getLong(11));
+                String birthdayChannelID = String.valueOf(resultSet.getLong(12));
 
                 guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
                         twitchChannelID, twitchChannels, mutedRoleID,
                         liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
-                        countingChannelID, pollChannelID, raffleChannelID));
+                        countingChannelID, pollChannelID, raffleChannelID,
+                        birthdayChannelID));
             }
         } catch (SQLException e) {
             CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
@@ -94,8 +96,25 @@ public class GuildHandler {
     }
 
     @NotNull
-    protected Boolean setRaffleChannelID(@NotNull String guildID, @NotNull String raffleChannelID) {
+    protected Boolean setBirthdayChannelID(@NotNull String guildID, @NotNull String birthdayChannelID) {
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "UPDATE cafeBot.guild_information SET birthday_channel_id = (?) WHERE guild_id = (?);";
 
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(birthdayChannelID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Birthday Channel: " + e.getMessage());
+            return false;
+        }
+    }
+
+    @NotNull
+    protected Boolean setRaffleChannelID(@NotNull String guildID, @NotNull String raffleChannelID) {
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE cafeBot.guild_information SET raffle_channel_id = (?) WHERE guild_id = (?);";
 
@@ -110,7 +129,6 @@ public class GuildHandler {
             CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Raffle Channel: " + e.getMessage());
             return false;
         }
-
     }
 
     /**
@@ -121,7 +139,6 @@ public class GuildHandler {
      */
     @NotNull
     protected Boolean setPollChannelID(@NotNull String guildID, @NotNull String pollChannelID) {
-
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE cafeBot.guild_information SET poll_channel_id = (?) WHERE guild_id = (?);";
 
@@ -136,7 +153,6 @@ public class GuildHandler {
             CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Poll Channel: " + e.getMessage());
             return false;
         }
-
     }
 
     /**
@@ -147,7 +163,6 @@ public class GuildHandler {
      */
     @NotNull
     protected Boolean setCountingChannelID(@NotNull String guildID, @NotNull String countingChannelID) {
-
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE cafeBot.guild_information SET counting_channel_id = (?) WHERE guild_id = (?);";
 
@@ -159,9 +174,9 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Counting Channel: " + e.getMessage());
             return false;
         }
-
     }
 
     /**

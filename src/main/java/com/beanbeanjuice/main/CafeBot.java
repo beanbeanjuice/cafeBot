@@ -4,11 +4,8 @@ import com.beanbeanjuice.command.cafe.BalanceCommand;
 import com.beanbeanjuice.command.cafe.MenuCommand;
 import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.cafe.ServeCommand;
-import com.beanbeanjuice.command.fun.MemeCommand;
-import com.beanbeanjuice.command.fun.JokeCommand;
-import com.beanbeanjuice.command.interaction.AddPollCommand;
-import com.beanbeanjuice.command.interaction.AddRaffleCommand;
-import com.beanbeanjuice.command.interaction.AvatarCommand;
+import com.beanbeanjuice.command.fun.*;
+import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
 import com.beanbeanjuice.command.generic.BugReportCommand;
 import com.beanbeanjuice.command.generic.FeatureRequestCommand;
@@ -19,6 +16,7 @@ import com.beanbeanjuice.command.moderation.mute.MuteCommand;
 import com.beanbeanjuice.command.moderation.mute.UnMuteCommand;
 import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.twitch.*;
+import com.beanbeanjuice.utility.birthday.BirthdayHandler;
 import com.beanbeanjuice.utility.cafe.MenuHandler;
 import com.beanbeanjuice.utility.cafe.ServeHandler;
 import com.beanbeanjuice.utility.command.CommandManager;
@@ -27,6 +25,7 @@ import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
 import com.beanbeanjuice.utility.helper.JSONHelper;
 import com.beanbeanjuice.utility.helper.VersionHelper;
+import com.beanbeanjuice.utility.interaction.InteractionHandler;
 import com.beanbeanjuice.utility.listener.Listener;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
@@ -65,7 +64,7 @@ public class CafeBot {
     // File Information
     // -- 'beta.json' -> Beta Bot Information
     // -- 'release.json' -> Release Bot Information
-    private static final String FILE_INFO = "release.json";
+    private static final String FILE_INFO = "beta.json";
 
     // General Bot Info
     private static final String BOT_VERSION = JSONHelper.getValue(FILE_INFO, "bot", "version").textValue();
@@ -124,9 +123,15 @@ public class CafeBot {
     private static ServeHandler serveHandler;
     private static MenuHandler menuHandler;
 
-    // Interaction Stuff
+    // Poll/Raffle Stuff
     private static PollHandler pollHandler;
     private static RaffleHandler raffleHandler;
+
+    // Interaction Stuff
+    private static InteractionHandler interactionHandler;
+
+    // Birthday Stuff
+    private static BirthdayHandler birthdayHandler;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
 
@@ -165,28 +170,80 @@ public class CafeBot {
         // Listeners and Commands
         commandManager = new CommandManager();
 
+        // Generic Commands
         commandManager.addCommands(
                 new HelpCommand(),
                 new PingCommand(),
                 new FeatureRequestCommand(),
-                new BugReportCommand(),
+                new BugReportCommand()
+        );
 
-                new NowPlayingCommand(),
+        // Cafe Commands
+        commandManager.addCommands(
+                new MenuCommand(),
+                new ServeCommand(),
+                new OrderCommand(),
+                new BalanceCommand()
+        );
+
+        // Fun Commands
+        commandManager.addCommands(
+                new MemeCommand(),
+                new JokeCommand(),
+                new AddPollCommand(),
+                new AddRaffleCommand(),
+                new AvatarCommand(),
+                new GetBirthdayCommand(),
+                new SetBirthdayCommand()
+        );
+
+        // Interaction Commands
+        commandManager.addCommands(
+                new HugCommand(),
+                new PunchCommand(),
+                new KissCommand(),
+                new BiteCommand(),
+                new BlushCommand(),
+                new CuddleCommand(),
+                new NomCommand(),
+                new PokeCommand(),
+                new SlapCommand(),
+                new StabCommand(),
+                new HmphCommand(),
+                new PoutCommand(),
+                new ThrowCommand(),
+                new SmileCommand(),
+                new StareCommand(),
+                new TickleCommand(),
+                new RageCommand(),
+                new YellCommand(),
+                new HeadPatCommand(),
+                new CryCommand()
+        );
+
+        // Music Commands
+        commandManager.addCommands(
                 new PlayCommand(),
+                new NowPlayingCommand(),
                 new PauseCommand(),
                 new QueueCommand(),
                 new RepeatCommand(),
                 new ShuffleCommand(),
                 new SkipCommand(),
-                new StopCommand(),
+                new StopCommand()
+        );
 
-                new MemeCommand(),
-                new JokeCommand(),
+        // Twitch Commands
+        commandManager.addCommands(
+                new SetLiveChannelCommand(),
+                new AddTwitchChannelCommand(),
+                new RemoveTwitchChannelCommand(),
+                new GetTwitchChannelsCommand(),
+                new SetLiveNotificationsRoleCommand()
+        );
 
-                new AddPollCommand(),
-                new AddRaffleCommand(),
-                new AvatarCommand(),
-
+        // Moderation Commands
+        commandManager.addCommands(
                 new SetModeratorRoleCommand(),
                 new SetMutedRoleCommand(),
                 new ChangePrefixCommand(),
@@ -200,17 +257,7 @@ public class CafeBot {
                 new SetCountingChannelCommand(),
                 new SetPollChannelCommand(),
                 new SetRaffleChannelCommand(),
-
-                new SetLiveChannelCommand(),
-                new AddTwitchChannelCommand(),
-                new RemoveTwitchChannelCommand(),
-                new GetTwitchChannelsCommand(),
-                new SetLiveNotificationsRoleCommand(),
-
-                new MenuCommand(),
-                new ServeCommand(),
-                new OrderCommand(),
-                new BalanceCommand()
+                new SetBirthdayChannelCommand()
         );
 
         jdaBuilder.addEventListeners(new Listener());
@@ -241,6 +288,24 @@ public class CafeBot {
 
         pollHandler = new PollHandler();
         raffleHandler = new RaffleHandler();
+
+        interactionHandler = new InteractionHandler();
+
+        birthdayHandler = new BirthdayHandler();
+    }
+
+    /**
+     * @return The current {@link BirthdayHandler}.
+     */
+    public static BirthdayHandler getBirthdayHandler() {
+        return birthdayHandler;
+    }
+
+    /**
+     * @return The current {@link InteractionHandler}.
+     */
+    public static InteractionHandler getInteractionHandler() {
+        return interactionHandler;
     }
 
     /**

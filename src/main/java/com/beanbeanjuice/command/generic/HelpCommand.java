@@ -69,23 +69,16 @@ public class HelpCommand implements ICommand {
         paramBuilder.append("`");
 
         for (int i = 0; i < usages.size(); i++) {
-            if (i < 5) {
-                stringBuilder.append(" <").append("Parameter ").append(i + 1).append(">");
+            stringBuilder.append(" <").append("Parameter ").append(i + 1).append(">");
 
-                CommandUsage usage = usages.get(i);
-                paramBuilder.append(i + 1).append(". ").append("<DESCRIPTION:").append(usage.getName()).append(">:")
-                        .append("<TYPE:").append(usage.getType().getDescription()).append(">:");
+            CommandUsage usage = usages.get(i);
+            paramBuilder.append(i + 1).append(". ").append("<DESCRIPTION:").append(usage.getName()).append(">:")
+                    .append("<TYPE:").append(usage.getType().getDescription()).append(">:");
 
-                if (usage.isRequired()) {
-                    paramBuilder.append("<REQUIRED>\n");
-                } else if (!usage.isRequired()) {
-                    paramBuilder.append("<OPTIONAL>\n");
-                }
-            }
-
-            if (i == 5) {
-                paramBuilder.append("\n There are more usages... but it won't fit. If you see this message, just add a sentence " +
-                        "instead of a parameter.");
+            if (usage.isRequired()) {
+                paramBuilder.append("<REQUIRED>\n");
+            } else if (!usage.isRequired()) {
+                paramBuilder.append("<OPTIONAL>\n");
             }
         }
         stringBuilder.append("`");
