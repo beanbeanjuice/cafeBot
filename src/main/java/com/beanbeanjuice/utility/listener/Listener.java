@@ -80,7 +80,7 @@ public class Listener extends ListenerAdapter {
         try {
             prefix = CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getPrefix();
         } catch (NullPointerException e) {
-            event.getChannel().sendMessage(startingUpEmbed()).queue();
+            //event.getChannel().sendMessage(startingUpEmbed()).queue();
             return;
         }
 
