@@ -72,6 +72,9 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.3'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.3'
 
+    // Time Stuff (For Birthdays)
+    implementation group: 'joda-time', name: 'joda-time', version: '2.10.10'
+
 }
 
 test {
