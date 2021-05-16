@@ -207,7 +207,8 @@ public class CafeBot {
                 new PokeCommand(),
                 new SlapCommand(),
                 new StabCommand(),
-                new HmphCommand()
+                new HmphCommand(),
+                new PoutCommand()
         );
 
         // Music Commands
