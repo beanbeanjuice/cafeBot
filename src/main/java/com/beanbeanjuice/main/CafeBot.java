@@ -214,7 +214,8 @@ public class CafeBot {
                 new StareCommand(),
                 new TickleCommand(),
                 new RageCommand(),
-                new YellCommand()
+                new YellCommand(),
+                new HeadPatCommand()
         );
 
         // Music Commands
