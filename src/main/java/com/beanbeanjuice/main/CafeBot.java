@@ -212,7 +212,8 @@ public class CafeBot {
                 new ThrowCommand(),
                 new SmileCommand(),
                 new StareCommand(),
-                new TickleCommand()
+                new TickleCommand(),
+                new RageCommand()
         );
 
         // Music Commands
