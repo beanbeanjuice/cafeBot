@@ -82,6 +82,16 @@
 * [Spotify Web API](https://github.com/thelinmichael/spotify-web-api-java)
 * [Twitch4J](https://github.com/twitch4j/twitch4j)
 
+### About the Bot
+`cafeBot`, formerly `beanBot` is a general purpose bot that has many features. Many features work across Discord servers. Some features include;
+* Global Birthday Checker
+* Global Currency
+* Interaction Commands
+* Moderation Commands
+* Poll/Raffle Commands
+* Music Player
+* And more to come...
+
 
 
 <!-- GETTING STARTED -->
