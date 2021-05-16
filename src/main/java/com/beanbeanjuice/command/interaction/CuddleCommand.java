@@ -12,18 +12,18 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * A command used for punching.
+ * A command used to cuddle people.
  *
  * @author beanbeanjuice
  */
-public class PunchCommand implements ICommand {
+public class CuddleCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        String url = CafeBot.getInteractionHandler().getPunchImage();
+        String url = CafeBot.getInteractionHandler().getCuddleImage();
         String sender = user.getName();
         String receiver = CafeBot.getGeneralHelper().getUser(args.get(0)).getName();
-        String message = "**" + receiver + "** was *punched* by **" + sender + "**!";
+        String message = "**" + sender + "** *cuddled* **" + receiver + "**!";
 
         if (args.size() == 1) {
             event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionEmbed(url)).queue();
@@ -34,7 +34,7 @@ public class PunchCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "punch";
+        return "cuddle";
     }
 
     @Override
@@ -44,19 +44,19 @@ public class PunchCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Punch someone!";
+        return "Cuddle someone!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!punch @beanbeanjuice` or `!!punch @beanbeanjuice WHY WOULD YOU DO THIS?`";
+        return "`!!cuddle @beanbeanjuice` or `!!cuddle @beanbeanjuice :O`";
     }
 
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "Discord Mention", true);
-        usage.addUsage(CommandType.SENTENCE, "Personalised Message", false);
+        usage.addUsage(CommandType.USER, "User Mention", true);
+        usage.addUsage(CommandType.SENTENCE, "Extra Message", false);
         return usage;
     }
 
