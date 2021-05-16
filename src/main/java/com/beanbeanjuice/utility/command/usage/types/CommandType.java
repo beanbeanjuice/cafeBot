@@ -14,6 +14,7 @@ public enum CommandType {
     TEXT ("TEXT"),
     LINK ("LINK"),
     ROLE ("ROLE"),
+    DATE ("DATE"),
     SENTENCE ("SENTENCE"); // This must be the last one added.
 
     private final String description;
