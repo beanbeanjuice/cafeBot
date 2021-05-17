@@ -280,12 +280,12 @@ public class InteractionHandler {
      */
     public String getThrowImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("https://i.pinimg.com/originals/8d/ab/29/8dab296aed2cbe25af8ebb4703517356.gif");
-        arrayList.add("https://media1.tenor.com/images/9ff361ceb7cb526cd7874d10095dfd76/tenor.gif?itemid=16842604");
-        arrayList.add("https://media1.tenor.com/images/189e189c645be7debf05bc17026cd915/tenor.gif?itemid=16221358");
-        arrayList.add("https://image.myanimelist.net/ui/q-babdSqGwiJF-zQZJJ0ecZzOC34ttAGza624-gyjeV9rLaBHOyfSoLcrPA8RpZuyM35RqFzOcnaeZZIU0G4GDQxeStT_B6QcDPdAKG2OT8");
-        arrayList.add("https://i.pinimg.com/originals/56/55/d3/5655d367d927ec5920f26c143c50072c.gif");
-        arrayList.add("https://thumbs.gfycat.com/LargeScratchyFinch-size_restricted.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/throws/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/throws/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/throws/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/throws/4.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/throws/5.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/throws/6.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
