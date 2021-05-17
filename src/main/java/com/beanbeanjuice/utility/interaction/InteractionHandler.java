@@ -259,19 +259,19 @@ public class InteractionHandler {
      */
     public String getPoutImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("https://i.imgur.com/Z3Hdtos.gif");
-        arrayList.add("https://cdn.weeb.sh/images/ryO3obrSf.gif");
-        arrayList.add("https://media1.tenor.com/images/1e3dd3aaafa7481aa7f47e0157fc91c9/tenor.gif?itemid=12390498");
-        arrayList.add("https://cdn.weeb.sh/images/Sk7CeJtwZ.gif");
-        arrayList.add("https://cdn.weeb.sh/images/SJmcekKvW.gif");
-        arrayList.add("https://i.pinimg.com/originals/e5/6e/1a/e56e1ae197ea11668756e6e82407e5c5.gif");
-        arrayList.add("https://media.tenor.com/images/fb76ab83c98779c3dae8dc1afef7b5df/tenor.gif");
-        arrayList.add("https://cdn.weeb.sh/images/SJL3gytvb.gif");
-        arrayList.add("https://cdn.weeb.sh/images/SJKTlkYD-.gif");
-        arrayList.add("https://i.pinimg.com/originals/e8/a3/9c/e8a39c41b8e2eacdf0fd4b5889a5f323.gif");
-        arrayList.add("https://media2.giphy.com/media/X3VrxPijowGC4/giphy.gif");
-        arrayList.add("https://cutewallpaper.org/21/anime-pout-face/Moms-Pout-GIF-by-Shumatsu.gif");
-        arrayList.add("https://media.tenor.com/images/8f0fd194a5af38663c43d0c5b6d7042b/tenor.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/4.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/5.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/6.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/7.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/8.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/9.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/10.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/11.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/12.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/13.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
