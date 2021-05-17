@@ -243,15 +243,14 @@ public class InteractionHandler {
      */
     public String getHmphImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("https://i.pinimg.com/originals/15/a0/52/15a05247ac88d901524adde074651bb6.gif");
-        arrayList.add("https://cdn.weeb.sh/images/BkdB9PuLz.gif");
-        arrayList.add("https://i.pinimg.com/originals/b7/e1/32/b7e132fd3f4e110ea54ef8aa8f4eebbe.gif");
-        arrayList.add("https://media.tenor.com/images/bae7c01893337837f652ef4932225bb3/tenor.gif");
-        arrayList.add("https://image.myanimelist.net/ui/D7ahedOlctZp9mcCPCIwK_Ecb3sRiVT2GZ6rB8qrAL2ic1o1A2V6r2f6t1ptoq0MAS2D_e7xg-yS3K4Rrlu-_vnKZO0LjfyjIJ61jzQErjuWrt3R2lud0fbmwAO4owMv");
-        arrayList.add("https://thumbs.gfycat.com/ThornySizzlingAtlanticsharpnosepuffer-max-1mb.gif");
-        arrayList.add("https://cdn.weeb.sh/images/Sy8IMlqJM.gif");
-        arrayList.add("https://i.imgur.com/UILjVng.gif");
-        arrayList.add("https://64.media.tumblr.com/490445f667b1d1a9592bc0e865cb04c5/tumblr_pkgg86Msfy1th206io1_640.gifv");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/hmphs/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/hmphs/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/hmphs/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/hmphs/4.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/hmphs/5.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/hmphs/6.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/hmphs/7.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/hmphs/8.webp");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
