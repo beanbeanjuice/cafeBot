@@ -231,10 +231,10 @@ public class InteractionHandler {
      */
     public String getStabImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("https://i0.wp.com/blackandyellowotakugamers.com/wp-content/uploads/2017/06/ayase-stab.gif?resize=640%2C360&ssl=1");
-        arrayList.add("https://lh4.googleusercontent.com/proxy/rJcn_Dbvigo9RcC7cG2roccmEFsn2bjHahIjWrcnXQopZN83m0K7GSDC1vRuxvxUrs91vgJjhai6ttfeB8s2JjZ0BgNucrLVaN9u3owHNS-T=s0-d");
-        arrayList.add("https://i.gifer.com/EJEW.gif");
-        arrayList.add("https://images6.fanpop.com/image/photos/38400000/Anime-stabbing-the-floor-anime-38465649-500-376.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stabs/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stabs/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stabs/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stabs/4.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
