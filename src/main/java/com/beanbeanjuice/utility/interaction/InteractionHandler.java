@@ -377,17 +377,17 @@ public class InteractionHandler {
      */
     public String getYellImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("https://thumbs.gfycat.com/UniqueSoggyBluebottle-small.gif");
-        arrayList.add("https://media.tenor.com/images/5d95d35aa4321d9d143ce83d3de81741/tenor.gif");
-        arrayList.add("https://media.tenor.com/images/a8f1de53b2b50a54ff330a807a4588eb/tenor.gif");
-        arrayList.add("https://media.tenor.com/images/b07017c1bec2c5ef9e243d20427125c4/tenor.gif");
-        arrayList.add("https://media.tenor.com/images/607fab7d42d9af04ee462ca2705f5e14/tenor.gif");
-        arrayList.add("https://i.pinimg.com/originals/37/21/25/372125c59de3e08571a4f99cb2a19a9a.gif");
-        arrayList.add("https://image.myanimelist.net/ui/ZPVPz_CObDpnH08hnJF81OfXLbu4yKz7EE0wsUNM1bOrCna2msI38gi_ghcFnzgK8OSWKkxoQsrMnM9ZIS7hh9C4UH9H6UMxkZbqJnGICjrrpQkuiZtokmZXUw4Tb6pM");
-        arrayList.add("https://media.tenor.com/images/f31079f190147358ea1ad3f2b8de5db1/tenor.gif");
-        arrayList.add("https://64.media.tumblr.com/1cd5c2f81a26414762d19a3a634f55be/tumblr_ps8zexUjW51sk6fb9_1280.gifv");
-        arrayList.add("https://media0.giphy.com/media/11WojR0GhjExlm/giphy.gif");
-        arrayList.add("http://1.bp.blogspot.com/-CdYIp9oXWBY/VRlScMx-JCI/AAAAAAAABJA/in44lljKjt4/s1600/bi70X9p.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/4.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/5.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/6.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/7.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/8.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/9.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/10.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/11.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
