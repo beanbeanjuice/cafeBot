@@ -356,19 +356,19 @@ public class InteractionHandler {
      */
     public String getRageImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("https://i.pinimg.com/originals/19/97/28/199728c74eb00a12d2d2c8a1ad440574.gif");
-        arrayList.add("https://data.whicdn.com/images/185977769/original.gif");
-        arrayList.add("https://i.pinimg.com/originals/0e/09/1a/0e091a4895308fa0d2c7940ec2ad21ed.gif");
-        arrayList.add("https://media.tenor.com/images/f1c73d36e72343d0e26d4da210155796/tenor.gif");
-        arrayList.add("https://memestatic.fjcdn.com/gifs/Angry++for+those+who+want+to+express+their+anger_9de5df_6465993.gif");
-        arrayList.add("https://thumbs.gfycat.com/CommonFrightenedEastsiberianlaika-max-1mb.gif");
-        arrayList.add("https://cdn78.picsart.com/198005884000202.gif?to=min&r=640");
-        arrayList.add("https://media.tenor.com/images/abe8bc8b0b76b8ffe6694fa8b8f48853/tenor.gif");
-        arrayList.add("https://media.tenor.com/images/ef795689617a8c97379b297fd7557235/tenor.gif");
-        arrayList.add("https://64.media.tumblr.com/1bd0a91503c985d20460aebe3c32c626/a060f146972d4ae9-8b/s640x960/68a078f5628f80d861029feda95ea5ad833afa04.gifv");
-        arrayList.add("https://media.tenor.com/images/8a3797292089d4f76dc7d08abfbb2e51/tenor.gif");
-        arrayList.add("https://media.tenor.com/images/88b219548ba55c6dfbbaf62502f4ba0a/tenor.gif");
-        arrayList.add("https://i.pinimg.com/originals/65/65/bc/6565bcf12edb458915ee8890861e3e01.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/4.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/5.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/6.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/7.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/8.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/9.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/10.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/11.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/12.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/13.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
