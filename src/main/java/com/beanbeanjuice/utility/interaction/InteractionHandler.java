@@ -317,21 +317,19 @@ public class InteractionHandler {
      */
     public String getStareImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("https://i.pinimg.com/originals/88/42/35/8842356c82360ddf9e586dcc45f5e097.gif");
-        arrayList.add("https://cdn.weeb.sh/images/Hye2wIJtPb.gif");
-        arrayList.add("https://cdn.weeb.sh/images/BJThp4xuM.gif");
-        arrayList.add("https://media1.tenor.com/images/ec2187a26ef99212ede5a4408c7bfc9d/tenor.gif?itemid=14577429");
-        arrayList.add("https://i.pinimg.com/originals/61/04/ef/6104efe6d51767e707cb7b6495a73525.gif");
-        arrayList.add("https://media.tenor.com/images/f56bc9a14b1b1a7d8df2ea7b2c33f148/tenor.gif");
-        arrayList.add("https://cdn.weeb.sh/images/BJ88vLvd-.gif");
-        arrayList.add("https://cdn.weeb.sh/images/Sk9jLJKvZ.gif");
-        arrayList.add("https://thumbs.gfycat.com/EnchantingHandyCusimanse-max-1mb.gifhttps://thumbs.gfycat.com/EnchantingHandyCusimanse-max-1mb.gif");
-        arrayList.add("https://thumbs.gfycat.com/InsecureAgedGemsbok-max-1mb.gif");
-        arrayList.add("https://cdn.weeb.sh/images/H1jnI1KPZ.gif");
-        arrayList.add("https://64.media.tumblr.com/3cffc28ab387fe143f233f393827ebc2/13d82faf5dbd0d68-97/s1280x1920/a8d604b710c6131345e8eba9ce9f4537a0421da9.gifv");
-        arrayList.add("https://media0.giphy.com/media/RXrwFW84gDCcU/giphy.gif");
-        arrayList.add("https://64.media.tumblr.com/c7d4d3466fb934c16f22045f3126427e/ae81ba1971e1d5e9-69/s1280x1920/f9d18e4d0fb5bd2be67c6f821a231f33c233d2d5.gifv");
-        arrayList.add("https://cdn.weeb.sh/images/rk23UyYP-.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/4.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/5.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/6.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/7.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/8.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/9.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/10.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/11.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/12.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/13.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
