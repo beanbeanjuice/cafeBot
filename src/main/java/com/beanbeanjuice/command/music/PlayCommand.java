@@ -7,25 +7,24 @@ import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
-import com.beanbeanjuice.utility.logger.LogLevel;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.Playlist;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
-import com.wrapper.spotify.requests.data.playlists.GetPlaylistRequest;
-import com.wrapper.spotify.requests.data.tracks.GetTrackRequest;
+import com.wrapper.spotify.requests.data.playlists.GetPlaylistsItemsRequest;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.apache.hc.core5.http.ParseException;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * The command used for playing a song.
@@ -97,9 +96,27 @@ public class PlayCommand implements ICommand {
                 link = link.replace("playlist/", "");
                 link = link.split("\\?")[0];
 
+                ArrayList<PlaylistTrack> playlistTracksUnconverted = new ArrayList<>();
                 Playlist playlist;
+
                 try {
+
+                    GetPlaylistsItemsRequest playlistsItemsRequest = CafeBot.getSpotifyApi().getPlaylistsItems(link).build();
+                    Paging<PlaylistTrack> playlistTrackPaging = playlistsItemsRequest.execute();
+
+                    playlistTracksUnconverted.addAll(Arrays.asList(playlistTrackPaging.getItems()));
+                    int currentOffset = 100;
+
+                    while (playlistTrackPaging.getNext() != null) {
+                        playlistsItemsRequest = CafeBot.getSpotifyApi().getPlaylistsItems(link).offset(currentOffset).build();
+                        playlistTrackPaging = playlistsItemsRequest.execute();
+                        playlistTracksUnconverted.addAll(Arrays.asList(playlistTrackPaging.getItems()));
+
+                        currentOffset += 100;
+                    }
+
                     playlist = CafeBot.getSpotifyApi().getPlaylist(link).build().execute();
+
                 } catch (SpotifyWebApiException | IOException | ParseException e) {
                     // TODO: Unable to get spotify playlist.
                     return;
@@ -107,9 +124,6 @@ public class PlayCommand implements ICommand {
 
                 playlistName = playlist.getName();
                 playlistCount = playlist.getTracks().getTotal();
-
-                // Get the Track from every song in the playlist.
-                PlaylistTrack[] playlistTracksUnconverted = playlist.getTracks().getItems();
 
                 for (PlaylistTrack playlistTrack : playlistTracksUnconverted) {
 
