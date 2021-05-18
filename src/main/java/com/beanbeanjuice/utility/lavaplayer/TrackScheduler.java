@@ -60,6 +60,10 @@ public class TrackScheduler extends AudioEventAdapter {
             this.unshuffledQueue.remove(nextTrack);
         }
 
+        if (!playlistRepeating) {
+            playlistRepeatQueue.remove(nextTrack);
+        }
+
         if (this.queue.peek() == null) {
             if (playlistRepeating) {
                 requeuePlaylist();
@@ -73,7 +77,6 @@ public class TrackScheduler extends AudioEventAdapter {
 
     public void requeuePlaylist() {
         ArrayList<AudioTrack> tempQueue = new ArrayList<>(playlistRepeatQueue);
-
         for (AudioTrack audioTrack : tempQueue) {
             queue.offer(audioTrack.makeClone());
         }
@@ -86,6 +89,7 @@ public class TrackScheduler extends AudioEventAdapter {
     public void queue(AudioTrack track) {
         if (!this.player.startTrack(track, true)) {
             this.queue.offer(track);
+            playlistRepeatQueue.offer(track.makeClone());
         }
     }
 
@@ -129,19 +133,6 @@ public class TrackScheduler extends AudioEventAdapter {
 
     public void setPlaylistRepeating(@NotNull Boolean playlistRepeatingState) {
         playlistRepeating = playlistRepeatingState;
-
-        if (playlistRepeating) {
-            playlistRepeatQueue.clear();
-
-            ArrayList<AudioTrack> tempQueue = new ArrayList<>(queue);
-
-            // Adds the song currently playing to the queue.
-            playlistRepeatQueue.offer(player.getPlayingTrack().makeClone());
-
-            for (AudioTrack audioTrack : tempQueue) {
-                playlistRepeatQueue.offer(audioTrack);
-            }
-        }
     }
 
     @NotNull

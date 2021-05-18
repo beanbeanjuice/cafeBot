@@ -322,7 +322,14 @@ public class CustomGuild {
                 Member selfMember = guild.getSelfMember();
                 GuildVoiceState selfVoiceState = selfMember.getVoiceState();
 
-                ArrayList<Member> membersInVoiceChannel = new ArrayList<>(selfVoiceState.getChannel().getMembers());
+                ArrayList<Member> membersInVoiceChannel;
+
+                try {
+                    membersInVoiceChannel = new ArrayList<>(selfVoiceState.getChannel().getMembers());
+                } catch (NullPointerException e) {
+                    return;
+                }
+
                 membersInVoiceChannel.remove(selfMember);
                 GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(CafeBot.getGuildHandler().getGuild(guildID));
 

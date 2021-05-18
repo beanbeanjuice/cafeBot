@@ -45,6 +45,8 @@ public class StopCommand implements ICommand {
         GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
         musicManager.scheduler.player.stopTrack();
         musicManager.scheduler.queue.clear();
+        musicManager.scheduler.playlistRepeatQueue.clear();
+        musicManager.scheduler.unshuffledQueue.clear();
         ctx.getGuild().getAudioManager().closeAudioConnection();
 
         // Stop listening for the audio connection and leave.
