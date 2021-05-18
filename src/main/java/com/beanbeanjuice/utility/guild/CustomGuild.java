@@ -310,7 +310,7 @@ public class CustomGuild {
     public void startAudioChecking() {
         timer = new Timer();
         final int[] seconds = {0};
-        int secondsToLeave = 10;
+        int secondsToLeave = 300;
         timerTask = new TimerTask() {
 
             @Override
