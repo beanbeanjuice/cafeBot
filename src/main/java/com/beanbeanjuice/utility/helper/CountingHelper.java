@@ -58,6 +58,11 @@ public class CountingHelper {
                 return;
             }
             event.getMessage().addReaction("U+2705").queue(); // Green Checkmark Reaction
+
+            if (currentNumber % 100 == 0) {
+                event.getMessage().addReaction("U+1F31F").queue(); // Star Reaction for if they get to a number that is divisible by 100.
+            }
+
         } else {
 
             if (!setLastNumber(guild, 0)) {
