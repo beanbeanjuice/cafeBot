@@ -337,7 +337,12 @@ public class GuildHandler {
      */
     @NotNull
     public Boolean removeGuild(@NotNull Guild guild) {
-        return removeGuild(guild.getId());
+
+        if (removeGuild(guild.getId())) {
+            guildDatabase.remove(guild.getId());
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -359,6 +364,8 @@ public class GuildHandler {
             statement.setString(2, CafeBot.getPrefix());
 
             statement.execute();
+            guildDatabase.put(guildID, new CustomGuild(guildID, CafeBot.getPrefix(), "0", "0", new ArrayList<>(), "0",
+                    "0", true, "0", "0", "0", "0", "0"));
             return true;
         } catch (SQLException e) {
             CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to add Guild to SQL database: " + e.getMessage());
