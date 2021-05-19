@@ -192,7 +192,8 @@ public class CafeBot {
                 new AddRaffleCommand(),
                 new AvatarCommand(),
                 new GetBirthdayCommand(),
-                new SetBirthdayCommand()
+                new SetBirthdayCommand(),
+                new CountingStatisticsCommand()
         );
 
         // Interaction Commands
