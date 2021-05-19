@@ -135,6 +135,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `ping` - Show bot information!
 * `feature-request` - Request a bot feature.
 * `bug-report` - Report a bug with the bot.
+* `user-info` - Get user information about someone.
 ##### 2. **CAFE**
 * `menu` - Show the list of Cafe menu items.
 * `serve` - Get beanCoins! Essentially you run this command by doing `!!serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.
@@ -148,6 +149,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `avatar` - Get yours or someone else's avatar image!
 * `get-birthday` - Get yours or someone else's birthday!
 * `set-birthday` - Set your birthday! (YYYY-MM-DD)
+* `counting-statistics` - Get counting information for your server!
 ##### 4. **INTERACTION**
 * `hug` - Hug someone!
 * `punch` - Punch someone!
@@ -169,6 +171,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `yell` - Yell at someone!
 * `headpat` - Give head pats to someone!
 * `cry` - Cry at someone!
+* `dance` - Dance with someone!
 ##### 5. **MUSIC**
 * `play` - Play a song or playlist!
 * `now-playing` - Show the current song playing.

@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.fun;
+package com.beanbeanjuice.command.generic;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -112,7 +112,7 @@ public class UserInfoCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.FUN;
+        return CategoryType.GENERIC;
     }
 
 }

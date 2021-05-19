@@ -58,6 +58,11 @@ public class CountingHelper {
                 return;
             }
             event.getMessage().addReaction("U+2705").queue(); // Green Checkmark Reaction
+
+            if (currentNumber % 100 == 0) {
+                event.getMessage().addReaction("U+1F31F").queue(); // Star Reaction for if they get to a number that is divisible by 100.
+            }
+
         } else {
 
             if (!setLastNumber(guild, 0)) {
@@ -214,7 +219,7 @@ public class CountingHelper {
      * @return The highest number for the {@link Guild}.
      */
     @Nullable
-    private Integer getHighestNumber(@NotNull Guild guild) {
+    public Integer getHighestNumber(@NotNull Guild guild) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM cafeBot.counting_information WHERE guild_id = (?);";
@@ -238,7 +243,7 @@ public class CountingHelper {
      * @return The highest number for the {@link Guild}.
      */
     @Nullable
-    private Integer getLastNumber(@NotNull Guild guild) {
+    public Integer getLastNumber(@NotNull Guild guild) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM cafeBot.counting_information WHERE guild_id = (?);";
