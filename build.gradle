@@ -75,6 +75,9 @@ dependencies {
     // Time Stuff (For Birthdays)
     implementation group: 'joda-time', name: 'joda-time', version: '2.10.10'
 
+    // Apple Music/Itunes API
+    implementation group: 'be.ceau', name: 'itunes-api', version: '4.6.0'
+
 }
 
 test {
