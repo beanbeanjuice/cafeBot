@@ -1,5 +1,9 @@
 package com.beanbeanjuice.command.music;
 
+import be.ceau.itunesapi.Lookup;
+import be.ceau.itunesapi.request.Entity;
+import be.ceau.itunesapi.response.Response;
+import be.ceau.itunesapi.response.Result;
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -87,7 +91,7 @@ public class PlayCommand implements ICommand {
                     return;
                 }
 
-                link = "ytsearch:" + getLinkFromSpotifyTrack(track);
+                link = "ytsearch:" + getLinkFromSpotifyTrack(track) + " audio only";
                 PlayerManager.getInstance().loadAndPlay(channel, link, false);
                 return;
 
@@ -137,11 +141,23 @@ public class PlayCommand implements ICommand {
                         stringBuilder.append(" and ").append(track.getArtists()[1].getName());
                     }
 
-                    PlayerManager.getInstance().loadAndPlay(channel, "ytsearch:" + stringBuilder.toString(), true);
+                    PlayerManager.getInstance().loadAndPlay(channel, "ytsearch:" + stringBuilder.toString() + " audio only", true);
                 }
                 event.getChannel().sendMessage(loadedPlaylist()).queue();
                 return;
             }
+
+        } else if (link.contains("apple.com")) {
+
+            Response response = new Lookup()
+                    .addId(link.split("=")[1])
+                    .setEntity(Entity.SONG)
+                    .execute();
+
+            String songName = response.getResults().get(0).getTrackName();
+            String artistName = response.getResults().get(0).getArtistName();
+
+            link = "ytsearch:" + songName + " by " + artistName + " audio only";
 
         }
         PlayerManager.getInstance().loadAndPlay(channel, link, false);
