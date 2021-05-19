@@ -5,12 +5,9 @@ import com.beanbeanjuice.command.cafe.MenuCommand;
 import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.cafe.ServeCommand;
 import com.beanbeanjuice.command.fun.*;
+import com.beanbeanjuice.command.generic.*;
 import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
-import com.beanbeanjuice.command.generic.BugReportCommand;
-import com.beanbeanjuice.command.generic.FeatureRequestCommand;
-import com.beanbeanjuice.command.generic.HelpCommand;
-import com.beanbeanjuice.command.generic.PingCommand;
 import com.beanbeanjuice.command.moderation.*;
 import com.beanbeanjuice.command.moderation.mute.MuteCommand;
 import com.beanbeanjuice.command.moderation.mute.UnMuteCommand;
@@ -175,7 +172,8 @@ public class CafeBot {
                 new HelpCommand(),
                 new PingCommand(),
                 new FeatureRequestCommand(),
-                new BugReportCommand()
+                new BugReportCommand(),
+                new UserInfoCommand()
         );
 
         // Cafe Commands
@@ -194,8 +192,7 @@ public class CafeBot {
                 new AddRaffleCommand(),
                 new AvatarCommand(),
                 new GetBirthdayCommand(),
-                new SetBirthdayCommand(),
-                new UserInfoCommand()
+                new SetBirthdayCommand()
         );
 
         // Interaction Commands
