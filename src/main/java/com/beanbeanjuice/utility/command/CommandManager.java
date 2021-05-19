@@ -124,13 +124,11 @@ public class CommandManager {
     @NotNull
     private MessageEmbed indexMessageEmbed(@NotNull CommandErrorType errorType, @NotNull Integer incorrectIndex, @NotNull ArrayList<String> args) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-
         embedBuilder.addField(errorType.name(), errorType.getDescription(), true);
-
         if (args.size() > 0) {
             embedBuilder.addField("Location", "There is an error at variable **" + args.get(incorrectIndex) + "**", false);
         }
-
+        embedBuilder.setColor(Color.red);
         return embedBuilder.build();
     }
 
