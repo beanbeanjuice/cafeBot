@@ -199,26 +199,26 @@ public class CafeBot {
 
         // Interaction Commands
         commandManager.addCommands(
-//                new HugCommand(),
-//                new PunchCommand(),
-//                new KissCommand(),
-                new BiteCommand()
-//                new BlushCommand(),
-//                new CuddleCommand(),
-//                new NomCommand(),
-//                new PokeCommand(),
-//                new SlapCommand(),
-//                new StabCommand(),
-//                new HmphCommand(),
-//                new PoutCommand(),
-//                new ThrowCommand(),
-//                new SmileCommand(),
-//                new StareCommand(),
-//                new TickleCommand(),
-//                new RageCommand(),
-//                new YellCommand(),
-//                new HeadPatCommand(),
-//                new CryCommand()
+                new HugCommand(),
+                new PunchCommand(),
+                new KissCommand(),
+                new BiteCommand(),
+                new BlushCommand(),
+                new CuddleCommand(),
+                new NomCommand(),
+                new PokeCommand(),
+                new SlapCommand(),
+                new StabCommand(),
+                new HmphCommand(),
+                new PoutCommand(),
+                new ThrowCommand(),
+                new SmileCommand(),
+                new StareCommand(),
+                new TickleCommand(),
+                new RageCommand(),
+                new YellCommand(),
+                new HeadPatCommand(),
+                new CryCommand()
         );
 
         // Music Commands
