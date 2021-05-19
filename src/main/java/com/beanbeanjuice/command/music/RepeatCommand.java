@@ -113,7 +113,6 @@ public class RepeatCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription(message);
         embedBuilder.setColor(Color.green);
-
         return embedBuilder.build();
     }
 
@@ -124,7 +123,9 @@ public class RepeatCommand implements ICommand {
 
     @Override
     public ArrayList<String> getAliases() {
-        return new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("loop");
+        return arrayList;
     }
 
     @Override

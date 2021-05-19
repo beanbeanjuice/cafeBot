@@ -22,13 +22,39 @@ public class TickleCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         String url = CafeBot.getInteractionHandler().getTickleImage();
         String sender = user.getName();
-        String receiver = CafeBot.getGeneralHelper().getUser(args.get(0)).getName();
-        String message = "**" + sender + "** *tickled* **" + receiver + "**!";
 
-        if (args.size() == 1) {
+        ArrayList<User> receivers = new ArrayList<>();
+        int count = 0;
+
+        if (!args.isEmpty()) {
+            while (CafeBot.getGeneralHelper().getUser(args.get(count)) != null) {
+                receivers.add(CafeBot.getGeneralHelper().getUser(args.get(count++)));
+                if (count == args.size()) {
+                    break;
+                }
+            }
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = count; i < args.size(); i++) {
+            stringBuilder.append(args.get(i));
+            if (i != args.size() - 1) {
+                stringBuilder.append(" ");
+            }
+        }
+
+        String message;
+
+        if (receivers.size() == 0) {
+            message = "**" + sender + "** *tickled* themselves! I-... okay...";
+        } else {
+            message = "**" + sender + "** *tickled* **" + CafeBot.getInteractionHandler().getReceiverString(receivers) + "**.";
+        }
+
+        if (stringBuilder.isEmpty()) {
             event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionEmbed(url)).queue();
         } else {
-            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionWithDescriptionEmbed(url, args)).queue();
+            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionWithDescriptionEmbed(url, stringBuilder.toString())).queue();
         }
     }
 
@@ -55,8 +81,7 @@ public class TickleCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "User Mention", true);
-        usage.addUsage(CommandType.SENTENCE, "Extra Message", false);
+        usage.addUsage(CommandType.SENTENCE, "Users + Extra Message", false);
         return usage;
     }
 
