@@ -55,7 +55,7 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/punches/3.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/punches/4.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/punches/5.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/punches/6.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/punches/6.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/punches/7.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/punches/8.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
@@ -70,7 +70,7 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/2.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/3.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/4.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/5.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/5.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/6.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/7.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/8.gif");
@@ -117,7 +117,7 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/2.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/3.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/4.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/5.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/5.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/6.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/7.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/8.gif");
@@ -128,7 +128,7 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/13.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/14.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/15.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/16.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/16.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/17.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/18.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/blushes/19.gif");
@@ -210,7 +210,7 @@ public class InteractionHandler {
      */
     public String getSlapImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/slaps/1.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/slaps/1.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/slaps/2.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/slaps/3.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/slaps/4.gif");
@@ -251,7 +251,7 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/hmphs/5.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/hmphs/6.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/hmphs/7.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/hmphs/8.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/hmphs/8.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
@@ -270,7 +270,7 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/8.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/9.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/10.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/11.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/11.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/12.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pouts/13.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
@@ -306,7 +306,7 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/smiles/9.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/smiles/10.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/smiles/11.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/smiles/12.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/smiles/12.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/smiles/13.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/smiles/14.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/smiles/15.gif");
@@ -329,7 +329,7 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/9.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/10.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/11.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/12.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/12.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/stares/13.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
@@ -340,8 +340,8 @@ public class InteractionHandler {
     public String getTickleImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/tickles/1.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/tickles/2.webp");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/tickles/3.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/tickles/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/tickles/3.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/tickles/4.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/tickles/5.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/tickles/6.gif");
@@ -366,7 +366,7 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/7.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/8.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/9.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/10.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/10.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/11.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/12.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/rages/13.gif");
@@ -386,8 +386,8 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/6.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/7.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/8.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/9.webp");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/10.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/9.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/10.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/yells/11.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
@@ -397,23 +397,23 @@ public class InteractionHandler {
      */
     public String getHeadPatImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/1.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/1.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/2.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/3.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/4.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/5.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/6.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/7.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/7.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/8.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/9.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/10.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/11.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/12.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/13.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/13.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/14.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/15.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/16.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/17.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/17.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/headpats/18.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
@@ -423,13 +423,13 @@ public class InteractionHandler {
      */
     public String getCryImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/cries/1.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/cries/1.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/cries/2.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/cries/3.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/cries/4.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/cries/5.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/cries/6.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/cries/7.webp");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/cries/7.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/cries/8.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/cries/9.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/cries/10.gif");
