@@ -29,7 +29,10 @@ public class FeatureRequestCommand implements ICommand {
     private MessageEmbed featureRequestEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor("Feature Request", FEATURE_REQUEST_URL);
-        embedBuilder.setDescription("If you want to submit a feature request, please click on the title above.");
+        embedBuilder.setDescription("""
+                If you want to submit a feature request, please click on the title above.
+
+                Or alternatively, head to https://github.com/beanbeanjuice/cafeBot/issues/new/choose""");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
