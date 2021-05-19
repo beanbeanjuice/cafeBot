@@ -3,6 +3,7 @@ package com.beanbeanjuice.utility.interaction;
 import com.beanbeanjuice.main.CafeBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -439,6 +440,24 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()-1));
     }
 
+    @NotNull
+    public String getReceiverString(ArrayList<User> receivers) {
+        StringBuilder receiverBuilder = new StringBuilder();
+
+        for (int i = 0; i < receivers.size(); i++) {
+            receiverBuilder.append(receivers.get(i).getName());
+
+            if (i != receivers.size() - 1) {
+                receiverBuilder.append(", ");
+            }
+
+            if (i == receivers.size() - 2) {
+                receiverBuilder.append(" and ");
+            }
+        }
+        return receiverBuilder.toString();
+    }
+
     /**
      * @param link The image URL for the {@link MessageEmbed}.
      * @return The created {@link MessageEmbed}.
@@ -453,26 +472,17 @@ public class InteractionHandler {
 
     /**
      * @param link The image URL for the {@link MessageEmbed}.
-     * @param args The {@link ArrayList<String>} for the message embed.
+     * @param description The {@link String} description for the message embed.
      * @return The created {@link MessageEmbed}.
      */
     @NotNull
-    public MessageEmbed actionWithDescriptionEmbed(@NotNull String link, @NotNull ArrayList<String> args) {
+    public MessageEmbed actionWithDescriptionEmbed(@NotNull String link, @NotNull String description) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setImage(link);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
 
         StringBuilder descriptionBuilder = new StringBuilder();
-        descriptionBuilder.append("\"");
-
-        for (int i = 1; i < args.size(); i++) {
-            descriptionBuilder.append(args.get(i));
-            if (i != args.size() - 1) {
-                descriptionBuilder.append(" ");
-            }
-        }
-
-        descriptionBuilder.append("\"");
+        descriptionBuilder.append("\"").append(description).append("\"");
         embedBuilder.setDescription(descriptionBuilder.toString());
         return embedBuilder.build();
     }
