@@ -135,7 +135,11 @@ public class GeneralHelper {
         userID = userID.replace("<@", ""); // Edge Case for Mobile
         userID = userID.replace(">", "");
 
-        return CafeBot.getJDA().getUserById(userID);
+        try {
+            return CafeBot.getJDA().getUserById(userID);
+        } catch (NullPointerException | NumberFormatException e) {
+            return null;
+        }
     }
 
     /**
@@ -150,7 +154,11 @@ public class GeneralHelper {
         roleID = roleID.replace("<@", "");
         roleID = roleID.replace(">", "");
 
-        return guild.getRoleById(roleID);
+        try {
+            return guild.getRoleById(roleID);
+        } catch (NullPointerException | NumberFormatException e) {
+            return null;
+        }
     }
 
     /**
