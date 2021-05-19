@@ -30,7 +30,6 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
         CafeBot.getGuildHandler().removeGuild(event.getGuild());
-        CafeBot.getGuildHandler().checkGuilds();
         CafeBot.updateGuildPresence(); // Updates the amount of servers in the status.
     }
 
@@ -44,7 +43,6 @@ public class Listener extends ListenerAdapter {
         }
 
         CafeBot.getGuildHandler().addGuild(event.getGuild());
-        CafeBot.getGuildHandler().checkGuilds();
         CafeBot.updateGuildPresence(); // Updates the amount of servers in the status.
     }
 
