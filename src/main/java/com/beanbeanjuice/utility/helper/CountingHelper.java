@@ -214,7 +214,7 @@ public class CountingHelper {
      * @return The highest number for the {@link Guild}.
      */
     @Nullable
-    private Integer getHighestNumber(@NotNull Guild guild) {
+    public Integer getHighestNumber(@NotNull Guild guild) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM cafeBot.counting_information WHERE guild_id = (?);";
@@ -238,7 +238,7 @@ public class CountingHelper {
      * @return The highest number for the {@link Guild}.
      */
     @Nullable
-    private Integer getLastNumber(@NotNull Guild guild) {
+    public Integer getLastNumber(@NotNull Guild guild) {
 
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM cafeBot.counting_information WHERE guild_id = (?);";

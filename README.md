@@ -149,6 +149,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `avatar` - Get yours or someone else's avatar image!
 * `get-birthday` - Get yours or someone else's birthday!
 * `set-birthday` - Set your birthday! (YYYY-MM-DD)
+* `counting-statistics` - Get counting information for your server!
 ##### 4. **INTERACTION**
 * `hug` - Hug someone!
 * `punch` - Punch someone!
