@@ -81,8 +81,7 @@ public class HmphCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "User Mention", true);
-        usage.addUsage(CommandType.SENTENCE, "Extra Message", false);
+        usage.addUsage(CommandType.SENTENCE, "Users + Extra Message", false);
         return usage;
     }
 

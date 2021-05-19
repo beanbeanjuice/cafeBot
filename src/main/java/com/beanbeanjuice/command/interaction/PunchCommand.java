@@ -81,8 +81,7 @@ public class PunchCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "Discord Mention", true);
-        usage.addUsage(CommandType.SENTENCE, "Personalised Message", false);
+        usage.addUsage(CommandType.SENTENCE, "Users + Extra Message", false);
         return usage;
     }
 
