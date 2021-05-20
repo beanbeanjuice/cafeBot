@@ -150,7 +150,6 @@ public class CountingHelper {
      */
     @NotNull
     private Boolean setHighestNumber(@NotNull Guild guild, @NotNull Integer currentNumber) {
-
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE cafeBot.counting_information SET highest_number = (?) WHERE guild_id = (?);";
 
@@ -173,7 +172,6 @@ public class CountingHelper {
      */
     @NotNull
     private Boolean setLastNumber(@NotNull Guild guild, @NotNull Integer currentNumber) {
-
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE cafeBot.counting_information SET last_number = (?) WHERE guild_id = (?);";
 
@@ -195,7 +193,6 @@ public class CountingHelper {
      */
     @NotNull
     public Boolean createNewRow(@NotNull Guild guild) {
-
         if (getHighestNumber(guild) != null) {
             return false;
         }
@@ -220,7 +217,6 @@ public class CountingHelper {
      */
     @Nullable
     public Integer getHighestNumber(@NotNull Guild guild) {
-
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM cafeBot.counting_information WHERE guild_id = (?);";
 
@@ -244,7 +240,6 @@ public class CountingHelper {
      */
     @Nullable
     public Integer getLastNumber(@NotNull Guild guild) {
-
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM cafeBot.counting_information WHERE guild_id = (?);";
 
