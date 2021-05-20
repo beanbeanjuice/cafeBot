@@ -209,7 +209,7 @@ public class PlayCommand implements ICommand {
     @NotNull
     private MessageEmbed emptySpotifyPlaylist() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Empty Spotify Playlist");
+        embedBuilder.setTitle("Empty Spotify Playlist");
         embedBuilder.setDescription("The spotify playlist you requested is currently empty.");
         embedBuilder.setColor(Color.red);
         return embedBuilder.build();
@@ -218,7 +218,7 @@ public class PlayCommand implements ICommand {
     @NotNull
     private MessageEmbed loadedPlaylist() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Added Playlist to Queue");
+        embedBuilder.setTitle("Added Playlist to Queue");
         embedBuilder.addField("Tracks", String.valueOf(playlistCount), true);
         embedBuilder.addField("Playlist Name", "`" + playlistName + "`", true);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());

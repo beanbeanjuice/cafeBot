@@ -45,7 +45,7 @@ public class JokeCommand implements ICommand {
     @NotNull
     private MessageEmbed messageEmbed(@NotNull String title, @NotNull String url, @NotNull String body) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(title, url);
+        embedBuilder.setTitle(title, url);
         embedBuilder.setDescription(body);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
@@ -54,7 +54,7 @@ public class JokeCommand implements ICommand {
     @NotNull
     private MessageEmbed cannotGetJSONEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Error");
+        embedBuilder.setTitle("Error");
         embedBuilder.setColor(Color.red);
         embedBuilder.setDescription("Unable to get JSON.");
         return embedBuilder.build();

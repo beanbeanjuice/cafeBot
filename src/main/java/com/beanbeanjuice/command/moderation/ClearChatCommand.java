@@ -69,7 +69,7 @@ public class ClearChatCommand implements ICommand {
 
     private MessageEmbed alreadyDeletingMessagesEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Already Deleting Messages");
+        embedBuilder.setTitle("Already Deleting Messages");
         embedBuilder.setDescription("You are already deleting messages in this channel. " +
                 "Please use this command in another channel or wait for this action to stop.");
         embedBuilder.setColor(Color.red);
@@ -78,7 +78,7 @@ public class ClearChatCommand implements ICommand {
 
     private MessageEmbed tooManyMessagesEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Too Many Messages");
+        embedBuilder.setTitle("Too Many Messages");
         embedBuilder.setDescription("You must select a number between `2` and `99`.");
         embedBuilder.setColor(Color.red);
         return embedBuilder.build();
@@ -86,7 +86,7 @@ public class ClearChatCommand implements ICommand {
 
     private MessageEmbed startMessagesDeletionsEmbed(@NotNull Integer messageCount) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Starting Deletion");
+        embedBuilder.setTitle("Starting Deletion");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Starting deletion of `" + messageCount + "` messages. This may take a while...");
         return embedBuilder.build();
@@ -137,7 +137,7 @@ public class ClearChatCommand implements ICommand {
 
     private MessageEmbed completedDeletionEmbed(@NotNull Integer count) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Completed Deletion");
+        embedBuilder.setTitle("Completed Deletion");
         embedBuilder.setDescription("Successfully deleted `" + count + "` messages. " +
                 "There might be a time lag for deleting messages. This message will disappear once " +
                 "all of the messages have been successfully deleted from discord.");
@@ -147,7 +147,7 @@ public class ClearChatCommand implements ICommand {
 
     private MessageEmbed moreThanOneEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Error Deleting Messages");
+        embedBuilder.setTitle("Error Deleting Messages");
         embedBuilder.setColor(Color.red);
         embedBuilder.setDescription("You must specify a number greater than 1.");
         return embedBuilder.build();
@@ -155,7 +155,7 @@ public class ClearChatCommand implements ICommand {
 
     private MessageEmbed beginDeletionEmbed(@NotNull Integer amount) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Starting Deletion");
+        embedBuilder.setTitle("Starting Deletion");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Deleting `" + amount + "` messages. This might take a while.");
         return embedBuilder.build();

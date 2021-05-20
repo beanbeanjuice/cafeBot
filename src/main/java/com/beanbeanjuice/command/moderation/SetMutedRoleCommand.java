@@ -43,7 +43,7 @@ public class SetMutedRoleCommand implements ICommand {
     private MessageEmbed successfulRoleChangeEmbed(@NotNull Role role) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setAuthor("Successfully changed the Muted Role");
+        embedBuilder.setTitle("Successfully changed the Muted Role");
         embedBuilder.setDescription("Successfully changed the muted role to " + role.getAsMention());
         return embedBuilder.build();
     }

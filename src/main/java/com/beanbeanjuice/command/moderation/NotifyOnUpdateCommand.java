@@ -66,7 +66,7 @@ public class NotifyOnUpdateCommand implements ICommand {
 
     private MessageEmbed disableEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Bot Update Notification Status");
+        embedBuilder.setTitle("Bot Update Notification Status");
         embedBuilder.setDescription("Successfully disabled the bot update notification status! " +
                 "You will no longer be receiving notifications when the bot is updated :( but you can re-enable them at any time!");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
@@ -75,7 +75,7 @@ public class NotifyOnUpdateCommand implements ICommand {
 
     private MessageEmbed enableEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Bot Update Notification Status");
+        embedBuilder.setTitle("Bot Update Notification Status");
         embedBuilder.setDescription("Successfully enabled the bot update notification status! " +
                 "You will now receive notifications when the bot is updated!");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
@@ -92,7 +92,7 @@ public class NotifyOnUpdateCommand implements ICommand {
 
     private MessageEmbed currentNotificationStateEmbed(@NotNull Boolean currentState) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Bot Update Notification Status");
+        embedBuilder.setTitle("Bot Update Notification Status");
         embedBuilder.setDescription("The current notification status for bot updates is " +
                 "currently set to `" + currentState.toString() + "`.");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());

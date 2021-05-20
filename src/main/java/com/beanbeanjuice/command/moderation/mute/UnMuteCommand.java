@@ -54,7 +54,7 @@ public class UnMuteCommand implements ICommand {
     @NotNull
     private MessageEmbed successfulUnmuteEmbed(@NotNull Member punishee) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Unmuted User");
+        embedBuilder.setTitle("Unmuted User");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Unmuted " + punishee.getAsMention() + ".");
         return embedBuilder.build();
@@ -64,7 +64,7 @@ public class UnMuteCommand implements ICommand {
     private MessageEmbed noMutedRoleEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.red);
-        embedBuilder.setAuthor("Error Un-Muting User");
+        embedBuilder.setTitle("Error Un-Muting User");
         embedBuilder.setDescription("A muted role has not been set. Please check the help command.");
         return embedBuilder.build();
     }
@@ -72,7 +72,7 @@ public class UnMuteCommand implements ICommand {
     @NotNull
     private MessageEmbed hierarchyErrorEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Hierarchy Error");
+        embedBuilder.setTitle("Hierarchy Error");
         embedBuilder.setColor(Color.red);
         embedBuilder.setDescription("The bot needs to have a higher role than the user you are trying to unmute!");
         return embedBuilder.build();

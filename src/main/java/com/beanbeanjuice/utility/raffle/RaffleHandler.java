@@ -122,7 +122,7 @@ public class RaffleHandler {
     @NotNull
     private MessageEmbed winnerEmbed(@NotNull String title, @NotNull String description, @NotNull ArrayList<User> winners) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(title);
+        embedBuilder.setTitle(title);
         embedBuilder.addField("Description", description, false);
         embedBuilder.setColor(Color.green);
 
