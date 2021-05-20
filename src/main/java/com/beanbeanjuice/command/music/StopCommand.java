@@ -5,8 +5,8 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
-import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
+import com.beanbeanjuice.utility.music.lavaplayer.GuildMusicManager;
+import com.beanbeanjuice.utility.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -45,8 +45,11 @@ public class StopCommand implements ICommand {
         GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
         musicManager.scheduler.player.stopTrack();
         musicManager.scheduler.queue.clear();
-        musicManager.scheduler.playlistRepeatQueue.clear();
         musicManager.scheduler.unshuffledQueue.clear();
+        musicManager.scheduler.playlistRepeatQueue.clear();
+        musicManager.scheduler.setShuffle(false);
+        musicManager.scheduler.setPlaylistRepeating(false);
+        musicManager.scheduler.inVoiceChannel = false;
         ctx.getGuild().getAudioManager().closeAudioConnection();
 
         // Stop listening for the audio connection and leave.

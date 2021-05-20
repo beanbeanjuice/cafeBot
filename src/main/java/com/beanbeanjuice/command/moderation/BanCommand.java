@@ -56,7 +56,7 @@ public class BanCommand implements ICommand {
     private MessageEmbed successfulBanEmbed(@NotNull Member punishee, @NotNull User user, @NotNull String reason) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setAuthor("User Banned");
+        embedBuilder.setTitle("User Banned");
         embedBuilder.setDescription("`" + punishee.getEffectiveName() + "` has been banned for `" + reason + "`.");
         embedBuilder.addField("Banned By:", user.getAsMention(), true);
         return embedBuilder.build();
@@ -66,7 +66,7 @@ public class BanCommand implements ICommand {
     private MessageEmbed hierarchyErrorEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.red);
-        embedBuilder.setAuthor("Unable to Ban User");
+        embedBuilder.setTitle("Unable to Ban User");
         embedBuilder.setDescription("The user you are trying to ban has a higher role than the bot.");
         return embedBuilder.build();
     }

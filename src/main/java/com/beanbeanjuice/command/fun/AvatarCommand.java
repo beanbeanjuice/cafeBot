@@ -35,7 +35,7 @@ public class AvatarCommand implements ICommand {
     @NotNull
     private MessageEmbed avatarEmbed(@NotNull User user) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(user.getName() + "'s Avatar", user.getAvatarUrl());
+        embedBuilder.setTitle(user.getName() + "'s Avatar", user.getAvatarUrl());
         embedBuilder.setImage(user.getAvatarUrl() + "?size=512");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();

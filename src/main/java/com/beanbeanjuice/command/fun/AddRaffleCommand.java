@@ -78,7 +78,7 @@ public class AddRaffleCommand implements ICommand {
     private MessageEmbed raffleEmbed(@NotNull String title, @NotNull String description,
                                      @NotNull Integer minutes, @NotNull Integer winnerAmount) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(title);
+        embedBuilder.setTitle(title);
         embedBuilder.addField("Raffle Details", description, false);
         embedBuilder.addField("Winner Amount", winnerAmount.toString(), false);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
@@ -92,7 +92,7 @@ public class AddRaffleCommand implements ICommand {
 
     private MessageEmbed creatingRaffle() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Creating Raffle...");
+        embedBuilder.setTitle("Creating Raffle...");
         embedBuilder.setDescription("Please wait while the raffle is created.");
         embedBuilder.setColor(Color.orange);
         return embedBuilder.build();

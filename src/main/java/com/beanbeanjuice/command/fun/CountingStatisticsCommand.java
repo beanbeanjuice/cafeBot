@@ -5,81 +5,75 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to get someone's birthday.
+ * An {@link ICommand} to get the current number for the {@link net.dv8tion.jda.api.entities.Guild Guild}.
  *
  * @author beanbeanjuice
  */
-public class GetBirthdayCommand implements ICommand {
+public class CountingStatisticsCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        User birthdayUser;
+        Integer highestNumber = CafeBot.getCountingHelper().getHighestNumber(event.getGuild());
+        Integer currentNumber = CafeBot.getCountingHelper().getLastNumber(event.getGuild());
 
-        if (args.size() == 0) {
-            birthdayUser = user;
-        } else {
-            birthdayUser = CafeBot.getGeneralHelper().getUser(args.get(0));
-        }
-        Date birthday = CafeBot.getBirthdayHandler().getBirthday(birthdayUser.getId());
-
-        // Checking if the user's birthday is null.
-        if (birthday == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
-                    "No Birthday Set",
-                    "The user specified does not have a birthday set."
-            )).queue();
+        if (highestNumber == null || currentNumber == null) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
-        event.getChannel().sendMessage(birthdayEmbed(birthdayUser, birthday)).queue();
+
+        event.getChannel().sendMessage(countingStatisticsEmbed(highestNumber, currentNumber)).queue();
     }
 
     @NotNull
-    private MessageEmbed birthdayEmbed(@NotNull User user, @NotNull Date birthday) {
+    private MessageEmbed countingStatisticsEmbed(@NotNull Integer highestNumber, @NotNull Integer currentNumber) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle("Current Number");
+        embedBuilder.addField("Highest Number", highestNumber.toString(), true);
+        embedBuilder.addField("Current Number", currentNumber.toString(), true);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setTitle(user.getName() + "'s Birthday");
-        embedBuilder.setDescription("Their birthday is on " + birthday.toString() + ". (YYYY/MM/DD)");
         return embedBuilder.build();
     }
 
     @Override
     public String getName() {
-        return "get-birthday";
+        return "counting-statistics";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("getbirthday");
+        arrayList.add("current-number");
+        arrayList.add("currentnumber");
+        arrayList.add("highest-number");
+        arrayList.add("highestnumber");
+        arrayList.add("countingstatistics");
+        arrayList.add("counting-stats");
+        arrayList.add("countingstats");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Get yours or someones birthday!";
+        return "Get the counting stats for the server!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!getbirthday` or `!!getbirthday @beanbeanjuice`";
+        return "`!!counting-stats`";
     }
 
     @Override
     public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "Discord Mention", false);
-        return usage;
+        return new Usage();
     }
 
     @Override

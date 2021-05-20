@@ -81,7 +81,7 @@ public class ServeCommand implements ICommand {
 
     private MessageEmbed cannotServeEmbed(@NotNull Integer minutesLeft) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Cannot Serve - Cooldown");
+        embedBuilder.setTitle("Cannot Serve - Cooldown");
         int cooldownAmount = CafeBot.getServeHandler().getMinutesUntilCanServe() - minutesLeft;
         embedBuilder.setDescription("You cannot serve anything right now because you are on a cooldown for `" + cooldownAmount + "` more minutes!");
         embedBuilder.setColor(Color.red);
@@ -90,7 +90,7 @@ public class ServeCommand implements ICommand {
 
     private MessageEmbed serveSingleEmbed(@NotNull String word, @NotNull Double tipFromWord, @NotNull Double currentBalance) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Successfully Served!");
+        embedBuilder.setTitle("Successfully Served!");
         embedBuilder.setDescription("You have successfully served a `" + word + "`!");
         embedBuilder.addField("Tip From Serving", CafeBot.getServeHandler().roundDouble(tipFromWord).toString(), true);
         embedBuilder.addField("Current Balance", CafeBot.getServeHandler().roundDouble(currentBalance).toString(), true);
@@ -100,7 +100,7 @@ public class ServeCommand implements ICommand {
 
     private MessageEmbed serveSomeoneEmbed(@NotNull String word, @NotNull Double tipFromWord, @NotNull Double currentBalance, @NotNull User server, @NotNull User userServed) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Successfully Served!");
+        embedBuilder.setTitle("Successfully Served!");
         embedBuilder.setDescription(server.getAsMention() + " has successfully served a `" + word + "` to " + userServed.getAsMention() + "!");
         embedBuilder.addField("Tip From Serving", CafeBot.getServeHandler().roundDouble(tipFromWord).toString(), true);
         embedBuilder.addField("Current Balance", CafeBot.getServeHandler().roundDouble(currentBalance).toString(), true);

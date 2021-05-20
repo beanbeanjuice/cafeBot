@@ -38,7 +38,7 @@ public class SetLiveChannelCommand implements ICommand {
     @NotNull
     private MessageEmbed successfulEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Successfully set the Live Channel");
+        embedBuilder.setTitle("Successfully set the Live Channel");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Successfully set the live channel to this channel!");
         return embedBuilder.build();
@@ -49,7 +49,7 @@ public class SetLiveChannelCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.red);
         embedBuilder.setDescription("Unable to set the current channel to the twitch live channel.");
-        embedBuilder.setAuthor("Error Setting Live Channel");
+        embedBuilder.setTitle("Error Setting Live Channel");
         return embedBuilder.build();
     }
 

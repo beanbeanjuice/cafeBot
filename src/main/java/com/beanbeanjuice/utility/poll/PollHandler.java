@@ -113,7 +113,7 @@ public class PollHandler {
     private MessageEmbed pollEmbed(@NotNull String pollTitle, @NotNull String pollDescription,
                                   @NotNull ArrayList<MessageReaction.ReactionEmote> winners) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(pollTitle);
+        embedBuilder.setTitle(pollTitle);
         embedBuilder.setDescription(pollDescription);
         embedBuilder.setFooter("This poll has ended.");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
