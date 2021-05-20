@@ -3,7 +3,6 @@ package com.beanbeanjuice.utility.guild;
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.music.lavaplayer.PlayerManager;
-import com.beanbeanjuice.utility.twitch.Twitch;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import org.jetbrains.annotations.NotNull;
@@ -73,14 +72,23 @@ public class CustomGuild {
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
-        if (CafeBot.getTwitchHandler().getTwitch(guildID) == null) {
-            CafeBot.getTwitchHandler().addTwitchToGuild(guildID, new Twitch(this.guildID, this.twitchChannels));
-        }
+        CafeBot.getTwitchHandler().addTwitchChannels(this.twitchChannels);
 
         deletingMessagesChannels = new ArrayList<>();
 
     }
 
+    /**
+     * @return The twitch channels for the {@link Guild}.
+     */
+    @NotNull
+    public ArrayList<String> getTwitchChannels() {
+        return twitchChannels;
+    }
+
+    /**
+     * @return The birthday {@link TextChannel}.
+     */
     @Nullable
     public TextChannel getBirthdayChannel() {
         try {
@@ -90,6 +98,11 @@ public class CustomGuild {
         }
     }
 
+    /**
+     * Set the birthday {@link TextChannel} for the {@link Guild}.
+     * @param birthdayChannelID The ID of the specified {@link TextChannel}.
+     * @return Whether or not setting it was successful.
+     */
     @NotNull
     public Boolean setBirthdayChannelID(@NotNull String birthdayChannelID) {
         if (CafeBot.getGuildHandler().setBirthdayChannelID(guildID, birthdayChannelID)) {
@@ -99,6 +112,9 @@ public class CustomGuild {
         return false;
     }
 
+    /**
+     * @return The {@link com.beanbeanjuice.utility.raffle.Raffle Raffle} {@link TextChannel} for the {@link Guild}.
+     */
     @Nullable
     public TextChannel getRaffleChannel() {
         try {
@@ -108,6 +124,11 @@ public class CustomGuild {
         }
     }
 
+    /**
+     * Sets the {@link com.beanbeanjuice.utility.raffle.Raffle Raffle} {@link TextChannel}.
+     * @param raffleChannelID The ID of the {@link TextChannel}.
+     * @return Whether or not setting it was successful.
+     */
     @NotNull
     public Boolean setRaffleChannel(@NotNull String raffleChannelID) {
         if (CafeBot.getGuildHandler().setRaffleChannelID(guildID, raffleChannelID)) {
@@ -414,14 +435,6 @@ public class CustomGuild {
     }
 
     /**
-     * @return The {@link Twitch} associated with the {@link Guild}.
-     */
-    @NotNull
-    public Twitch getTwitch() {
-        return CafeBot.getTwitchHandler().getTwitch(guildID);
-    }
-
-    /**
      * Update the muted {@link Role} for the {@link Guild}.
      * @param mutedRoleID The ID of the muted {@link Role}.
      * @return Whether or not the {@link Role} was successfully updated in the database.
@@ -511,7 +524,6 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean addTwitchChannel(String twitchChannel) {
-
         twitchChannel = twitchChannel.toLowerCase();
 
         if (twitchChannels.contains(twitchChannel)) {
@@ -520,7 +532,7 @@ public class CustomGuild {
 
         if (CafeBot.getGuildHandler().addTwitchChannel(guildID, twitchChannel)) {
             twitchChannels.add(twitchChannel.toLowerCase());
-            CafeBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().addTwitchChannelName(twitchChannel);
+            CafeBot.getTwitchHandler().addTwitchChannel(twitchChannel);
             return true;
         }
         return false;
@@ -533,7 +545,6 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean removeTwitchChannel(String twitchChannel) {
-
         twitchChannel = twitchChannel.toLowerCase();
 
         if (!twitchChannels.contains(twitchChannel)) {
@@ -542,7 +553,6 @@ public class CustomGuild {
 
         if (CafeBot.getGuildHandler().removeTwitchChannel(guildID, twitchChannel)) {
             twitchChannels.remove(twitchChannel.toLowerCase());
-            CafeBot.getTwitchHandler().getTwitch(guildID).getTwitchChannelNamesHandler().removeTwitchChannelName(twitchChannel);
             return true;
         }
         return false;
