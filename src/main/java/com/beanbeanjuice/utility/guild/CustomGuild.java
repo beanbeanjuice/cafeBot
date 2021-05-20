@@ -322,6 +322,7 @@ public class CustomGuild {
                 Member selfMember = guild.getSelfMember();
                 GuildVoiceState selfVoiceState = selfMember.getVoiceState();
 
+
                 ArrayList<Member> membersInVoiceChannel;
 
                 try {
@@ -333,6 +334,12 @@ public class CustomGuild {
                 membersInVoiceChannel.remove(selfMember);
                 GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(CafeBot.getGuildHandler().getGuild(guildID));
 
+                if (selfVoiceState.inVoiceChannel()) {
+                    musicManager.scheduler.inVoiceChannel = true;
+                } else {
+                    musicManager.scheduler.inVoiceChannel = false;
+                }
+
                 // Checking if the bot is alone in the VC.
                 if (membersInVoiceChannel.isEmpty() && seconds[0] >= secondsToLeave) {
                     EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -342,7 +349,12 @@ public class CustomGuild {
                     sendMessageInLastMusicChannel(embedBuilder.build());
                     musicManager.scheduler.player.stopTrack();
                     musicManager.scheduler.queue.clear();
+                    musicManager.scheduler.unshuffledQueue.clear();
+                    musicManager.scheduler.playlistRepeatQueue.clear();
+                    musicManager.scheduler.setShuffle(false);
+                    musicManager.scheduler.setPlaylistRepeating(false);
                     guild.getAudioManager().closeAudioConnection();
+                    musicManager.scheduler.inVoiceChannel = false;
                     timer.cancel();
                     return;
                 }
@@ -359,6 +371,12 @@ public class CustomGuild {
                     embedBuilder.setDescription("Leaving the voice channel as the music queue is empty...");
                     sendMessageInLastMusicChannel(embedBuilder.build());
                     guild.getAudioManager().closeAudioConnection();
+                    musicManager.scheduler.queue.clear();
+                    musicManager.scheduler.unshuffledQueue.clear();
+                    musicManager.scheduler.playlistRepeatQueue.clear();
+                    musicManager.scheduler.setShuffle(false);
+                    musicManager.scheduler.setPlaylistRepeating(false);
+                    musicManager.scheduler.inVoiceChannel = false;
                     timer.cancel();
                     return;
                 }

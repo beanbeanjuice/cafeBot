@@ -3,7 +3,6 @@ package com.beanbeanjuice.command.music;
 import be.ceau.itunesapi.Lookup;
 import be.ceau.itunesapi.request.Entity;
 import be.ceau.itunesapi.response.Response;
-import be.ceau.itunesapi.response.Result;
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -60,6 +59,7 @@ public class PlayCommand implements ICommand {
             }
 
             // Join the channel and play music and say you joined
+            PlayerManager.getInstance().getMusicManager(event.getGuild()).scheduler.inVoiceChannel = true;
             ctx.getGuild().getAudioManager().openAudioConnection(event.getMember().getVoiceState().getChannel());
 
             // Start listening for the audio connection.
