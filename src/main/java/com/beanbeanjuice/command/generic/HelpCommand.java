@@ -64,7 +64,7 @@ public class HelpCommand implements ICommand {
 
         stringBuilder.append("`").append(prefix).append(command.getName());
         StringBuilder paramBuilder = new StringBuilder();
-        embedBuilder.setAuthor(command.getName().toUpperCase() + " Command");
+        embedBuilder.setTitle(command.getName().toUpperCase() + " Command");
         ArrayList<CommandUsage> usages = command.getUsage().getUsages();
         paramBuilder.append("`");
 
@@ -150,7 +150,7 @@ public class HelpCommand implements ICommand {
     @NotNull
     private MessageEmbed noCommandFoundEmbed(@NotNull String commandName) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("No Command Found");
+        embedBuilder.setTitle("No Command Found");
         embedBuilder.setDescription("No command has been found for `" + commandName + "`.");
         embedBuilder.setColor(Color.red);
         embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");

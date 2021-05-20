@@ -53,7 +53,7 @@ public class MemeCommand implements ICommand {
     @NotNull
     private MessageEmbed messageEmbed(@NotNull String title, @NotNull String url, @NotNull String image) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(title, url);
+        embedBuilder.setTitle(title, url);
         embedBuilder.setImage(image);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();

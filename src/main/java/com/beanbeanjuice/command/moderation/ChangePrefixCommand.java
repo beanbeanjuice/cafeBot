@@ -39,7 +39,7 @@ public class ChangePrefixCommand implements ICommand {
     private MessageEmbed successfulPrefixChangeEmbed(String prefix) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setAuthor("Successfully updated prefix.");
+        embedBuilder.setTitle("Successfully updated prefix.");
         embedBuilder.setDescription("The prefix has been successfully updated to `" + prefix + "`.");
         return embedBuilder.build();
     }
