@@ -342,6 +342,10 @@ public class CustomGuild {
                     sendMessageInLastMusicChannel(embedBuilder.build());
                     musicManager.scheduler.player.stopTrack();
                     musicManager.scheduler.queue.clear();
+                    musicManager.scheduler.unshuffledQueue.clear();
+                    musicManager.scheduler.playlistRepeatQueue.clear();
+                    musicManager.scheduler.setShuffle(false);
+                    musicManager.scheduler.setPlaylistRepeating(false);
                     guild.getAudioManager().closeAudioConnection();
                     timer.cancel();
                     return;
@@ -359,6 +363,11 @@ public class CustomGuild {
                     embedBuilder.setDescription("Leaving the voice channel as the music queue is empty...");
                     sendMessageInLastMusicChannel(embedBuilder.build());
                     guild.getAudioManager().closeAudioConnection();
+                    musicManager.scheduler.queue.clear();
+                    musicManager.scheduler.unshuffledQueue.clear();
+                    musicManager.scheduler.playlistRepeatQueue.clear();
+                    musicManager.scheduler.setShuffle(false);
+                    musicManager.scheduler.setPlaylistRepeating(false);
                     timer.cancel();
                     return;
                 }
