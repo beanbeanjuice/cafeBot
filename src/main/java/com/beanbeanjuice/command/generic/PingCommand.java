@@ -40,7 +40,7 @@ public class PingCommand implements ICommand {
                 .append("Hello there! How are you? Would you like to order some coffee?");
         embedBuilder.setDescription(descriptionBuilder.toString());
         embedBuilder.setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/cafeBot");
-        embedBuilder.setThumbnail(CafeBot.getJDA().getSelfUser().getAvatarUrl());
+        embedBuilder.setThumbnail(CafeBot.getDiscordAvatarUrl());
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
