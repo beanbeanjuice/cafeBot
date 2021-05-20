@@ -40,7 +40,6 @@ public class TwitchHandler {
         if (!alreadyAddedTwitchNames.contains(twitchUsername)) {
             twitchListener.addStream(twitchUsername);
             alreadyAddedTwitchNames.add(twitchUsername);
-            System.out.println(twitchUsername);
         }
     }
 
