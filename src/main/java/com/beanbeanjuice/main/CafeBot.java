@@ -147,15 +147,12 @@ public class CafeBot {
         jdaBuilder.setActivity(Activity.playing("The barista is starting up..."));
 
         jdaBuilder.enableIntents(
-                GatewayIntent.GUILD_PRESENCES,
                 GatewayIntent.GUILD_VOICE_STATES,
                 GatewayIntent.GUILD_BANS,
                 GatewayIntent.GUILD_EMOJIS,
                 GatewayIntent.GUILD_MEMBERS
         );
         jdaBuilder.enableCache(
-                CacheFlag.ACTIVITY,
-                CacheFlag.CLIENT_STATUS,
                 CacheFlag.EMOTE,
                 CacheFlag.VOICE_STATE
         );
