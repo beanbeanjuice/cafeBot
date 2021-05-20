@@ -1,16 +1,17 @@
 package com.beanbeanjuice.utility.twitch;
 
 import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.utility.guild.CustomGuild;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.philippheuer.events4j.simple.domain.EventSubscriber;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * A class for handling twitch message events.
@@ -19,39 +20,49 @@ import java.awt.*;
  */
 public class TwitchMessageEventHandler extends SimpleEventHandler {
 
-    private String guildID;
-
-    /**
-     * Creates a new {@link TwitchMessageEventHandler} object.
-     * @param guildID The ID of the {@link Guild} for the message to be sent in.
-     */
-    public TwitchMessageEventHandler(@NotNull String guildID) {
-        this.guildID = guildID;
-    }
-
     /**
      * @param event The {@link ChannelGoLiveEvent}.
      */
     @EventSubscriber
     public void printChannelLive(@NotNull ChannelGoLiveEvent event) {
-        String liveChannelID = CafeBot.getGuildHandler().getCustomGuild(guildID).getLiveChannelID();
-        TextChannel liveChannel = CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(liveChannelID);
 
-        StringBuilder message = new StringBuilder();
+        // Converts the Twitch Name to lower case.
+        String twitchName = event.getChannel().getName().toLowerCase();
 
-        try {
-            message.append(CafeBot.getGuildHandler().getCustomGuild(guildID).getLiveNotificationsRole().getAsMention())
-            .append(", ");
-        } catch (NumberFormatException | NullPointerException ignored) {}
+        // Gets the Guilds that are listening for that twitch name.
+        ArrayList<String> guilds = CafeBot.getTwitchHandler().getGuildsForChannel(twitchName);
 
-        message.append(event.getChannel().getName())
-                .append(", is now live on ")
-                .append("https://www.twitch.tv/")
-                .append(event.getChannel().getName());
+        // If there are no guilds/sql error, do nothing.
+        if (guilds == null) {
+            return;
+        }
 
-        try {
-            liveChannel.sendMessage(message.toString()).embed(liveEmbed(event)).queue();
-        } catch (NullPointerException ignored) {} // If the live channel no longer exists, then just don't print the message.
+        // Go through each guild.
+        for (String guildID : guilds) {
+            CustomGuild customGuild = CafeBot.getGuildHandler().getCustomGuild(guildID);
+            if (customGuild.getTwitchChannels().contains(twitchName)) {
+                String liveChannelID = CafeBot.getGuildHandler().getCustomGuild(guildID).getLiveChannelID();
+                TextChannel liveChannel = CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(liveChannelID);
+
+                StringBuilder message = new StringBuilder();
+
+                try {
+                    message.append(CafeBot.getGuildHandler().getCustomGuild(guildID).getLiveNotificationsRole().getAsMention())
+                            .append(", ");
+                } catch (NumberFormatException | NullPointerException ignored) {
+                }
+
+                message.append(event.getChannel().getName())
+                        .append(", is now live on ")
+                        .append("https://www.twitch.tv/")
+                        .append(event.getChannel().getName());
+
+                try {
+                    liveChannel.sendMessage(message.toString()).embed(liveEmbed(event)).queue();
+                } catch (NullPointerException ignored) {
+                } // If the live channel no longer exists, then just don't print the message.
+            }
+        }
     }
 
     /**

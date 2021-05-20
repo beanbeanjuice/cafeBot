@@ -27,11 +27,11 @@ public class GetTwitchChannelsCommand implements ICommand {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("`");
 
-        for (String channel : CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getTwitch().getTwitchChannelNamesHandler().getTwitchChannelNames()) {
+        for (String channel : CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getTwitchChannels()) {
             stringBuilder.append(channel).append("\n");
         }
 
-        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getTwitch().getTwitchChannelNamesHandler().getTwitchChannelNames().isEmpty()) {
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).getTwitchChannels().isEmpty()) {
             stringBuilder.append("No channels added.");
         }
 
