@@ -9,13 +9,13 @@ import org.jetbrains.annotations.NotNull;
  */
 public enum CategoryType {
 
-    GENERIC("Generic commands.", "http://cdn.beanbeanjuice.com/images/cafeBot/categories/generic.png"),
-    CAFE("Commands used for the cafe.", "http://cdn.beanbeanjuice.com/images/cafeBot/categories/cafe.jpg"),
-    FUN("Commands used for fun.", "http://cdn.beanbeanjuice.com/images/cafeBot/categories/fun.jpg"),
-    INTERACTION("Commands used for user interactions.", "http://cdn.beanbeanjuice.com/images/cafeBot/categories/interaction.png"),
-    MUSIC("Commands used for music.", "http://cdn.beanbeanjuice.com/images/cafeBot/categories/music.webp"),
-    TWITCH("Commands used for twitch.", "http://cdn.beanbeanjuice.com/images/cafeBot/categories/twitch.jpg"),
-    MODERATION("Commands used for moderation.", "http://cdn.beanbeanjuice.com/images/cafeBot/categories/moderation.png");
+    GENERIC("Generic commands.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/generic.png"),
+    CAFE("Commands used for the cafe.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/cafe.jpg"),
+    FUN("Commands used for fun.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/fun.jpg"),
+    INTERACTION("Commands used for user interactions.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/interaction.png"),
+    MUSIC("Commands used for music.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/music.webp"),
+    TWITCH("Commands used for twitch.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/twitch.jpg"),
+    MODERATION("Commands used for moderation.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/moderation.png");
 
     private final String message;
     private final String link;
