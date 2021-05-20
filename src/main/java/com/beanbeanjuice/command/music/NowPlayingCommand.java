@@ -60,7 +60,7 @@ public class NowPlayingCommand implements ICommand {
     @NotNull
     private MessageEmbed nowPlaying(@NotNull String title, @NotNull String author, @NotNull String url) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Now Playing", url);
+        embedBuilder.setTitle("Now Playing", url);
         String message = String.format("`%s` by `%s`", title, author);
         embedBuilder.setDescription(message);
         embedBuilder.setColor(Color.cyan);

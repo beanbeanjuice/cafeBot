@@ -85,7 +85,7 @@ public class OrderCommand implements ICommand {
         User receiverUser = CafeBot.getJDA().getUserById(receiver.getUserID());
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Order Bought!");
+        embedBuilder.setTitle("Order Bought!");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
 
         // Adding a personalised message.

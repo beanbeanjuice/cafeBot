@@ -28,7 +28,7 @@ public class BugReportCommand implements ICommand {
 
     private MessageEmbed bugReportEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Bug Report", BUG_REPORT_URL);
+        embedBuilder.setTitle("Bug Report", BUG_REPORT_URL);
         embedBuilder.setDescription("""
                 If you want to submit a bug report, please click on the title above.
 

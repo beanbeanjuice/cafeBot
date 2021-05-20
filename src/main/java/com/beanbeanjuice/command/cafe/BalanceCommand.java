@@ -50,7 +50,7 @@ public class BalanceCommand implements ICommand {
 
     public MessageEmbed selfBalanceEmbed(@NotNull CafeCustomer cafeCustomer) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("beanCoin Balance");
+        embedBuilder.setTitle("beanCoin Balance");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.addField("Orders Bought", cafeCustomer.getOrdersBought().toString(), true);
         embedBuilder.addField("Orders Received", cafeCustomer.getOrdersReceived().toString(), true);
@@ -60,7 +60,7 @@ public class BalanceCommand implements ICommand {
 
     public MessageEmbed otherBalanceEmbed(@NotNull User user, @NotNull CafeCustomer cafeCustomer) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("beanCoin Balance");
+        embedBuilder.setTitle("beanCoin Balance");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.addField("Orders Bought", cafeCustomer.getOrdersBought().toString(), true);
         embedBuilder.addField("Orders Received", cafeCustomer.getOrdersReceived().toString(), true);

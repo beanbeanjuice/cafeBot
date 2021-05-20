@@ -98,7 +98,7 @@ public class AddPollCommand implements ICommand {
     @NotNull
     private MessageEmbed startingPollEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Setting Up Polls...");
+        embedBuilder.setTitle("Setting Up Polls...");
         embedBuilder.setDescription("The poll is currently being setup. Please hold on.");
         embedBuilder.setColor(Color.orange);
         return embedBuilder.build();
@@ -108,7 +108,7 @@ public class AddPollCommand implements ICommand {
     private MessageEmbed pollEmbed(@NotNull String pollTitle, @NotNull String pollDescription,
                                    @NotNull Integer pollTime, @NotNull ArrayList<String> arguments) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(pollTitle);
+        embedBuilder.setTitle(pollTitle);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
 
         ArrayList<PollEmoji> pollEmojis = new ArrayList<>(Arrays.asList(PollEmoji.values()));

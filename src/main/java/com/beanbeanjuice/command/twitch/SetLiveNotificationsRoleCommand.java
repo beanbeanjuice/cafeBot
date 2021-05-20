@@ -66,7 +66,7 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
 
     private MessageEmbed invalidRoleEmbed(@NotNull String argument) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Invalid Role");
+        embedBuilder.setTitle("Invalid Role");
         embedBuilder.setDescription("The argument `" + argument + "` is not a valid role. " +
                 "Please select `none` or provide a proper role mention.");
         embedBuilder.setColor(Color.red);
@@ -82,7 +82,7 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
 
     private MessageEmbed noneEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Updated Live Notifications Role");
+        embedBuilder.setTitle("Updated Live Notifications Role");
         embedBuilder.setDescription("Successfully removed the live notifications role!");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();

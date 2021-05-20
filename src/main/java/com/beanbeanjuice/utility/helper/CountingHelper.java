@@ -134,7 +134,7 @@ public class CountingHelper {
     @NotNull
     private MessageEmbed failedEmbed(@NotNull Member member, @NotNull Integer lastNumber, @NotNull Integer highestNumber) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Counting Failed");
+        embedBuilder.setTitle("Counting Failed");
         embedBuilder.setDescription("Counting failed due to " + member.getAsMention() + " at `" + lastNumber + "`. " +
                 "The highest number received on this server was `" + highestNumber + "`. Counting has been reset to `0`. " +
                 "Remember, the same user can't count twice in a row and the numbers must increment by 1!");

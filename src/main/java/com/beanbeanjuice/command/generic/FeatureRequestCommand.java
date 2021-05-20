@@ -28,7 +28,7 @@ public class FeatureRequestCommand implements ICommand {
 
     private MessageEmbed featureRequestEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Feature Request", FEATURE_REQUEST_URL);
+        embedBuilder.setTitle("Feature Request", FEATURE_REQUEST_URL);
         embedBuilder.setDescription("""
                 If you want to submit a feature request, please click on the title above.
 

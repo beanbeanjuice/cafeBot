@@ -96,7 +96,7 @@ public class BirthdayHandler {
     @NotNull
     private MessageEmbed birthdayEmbed(@NotNull Member member) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("BIRTHDAY ALERT");
+        embedBuilder.setTitle("BIRTHDAY ALERT");
         embedBuilder.setDescription("ATTENTION! It is currently " + member.getAsMention() + "'s birthday! Wish them a happy birthday everyone!");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();

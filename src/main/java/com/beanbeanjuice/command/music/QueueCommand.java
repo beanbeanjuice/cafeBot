@@ -47,7 +47,7 @@ public class QueueCommand implements ICommand {
     @NotNull
     private MessageEmbed queueEmbed(@NotNull ArrayList<AudioTrack> trackList, @NotNull Integer trackCount) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Current Queue");
+        embedBuilder.setTitle("Current Queue");
 
         StringBuilder message = new StringBuilder();
 

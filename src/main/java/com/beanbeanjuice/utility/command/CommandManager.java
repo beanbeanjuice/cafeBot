@@ -108,7 +108,7 @@ public class CommandManager {
         } else {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setColor(Color.red);
-            embedBuilder.setAuthor("Command Not Found");
+            embedBuilder.setTitle("Command Not Found");
             embedBuilder.setDescription("The command you are trying to run has not been found...");
             event.getChannel().sendMessage(embedBuilder.build()).queue();
         }

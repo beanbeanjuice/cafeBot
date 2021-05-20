@@ -32,7 +32,7 @@ public class PingCommand implements ICommand {
     @NotNull
     private MessageEmbed messageEmbed(@NotNull Long botPing, @NotNull Long gatewayPing) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(getName() + "!", "https://www.beanbeanjuice.com/cafeBot.html");
+        embedBuilder.setTitle(getName() + "!", "https://www.beanbeanjuice.com/cafeBot.html");
         StringBuilder descriptionBuilder = new StringBuilder();
         descriptionBuilder.append("**Rest Ping** - `").append(botPing.toString()).append("`\n")
                 .append("**Gateway Ping** - `").append(gatewayPing.toString()).append("`\n")

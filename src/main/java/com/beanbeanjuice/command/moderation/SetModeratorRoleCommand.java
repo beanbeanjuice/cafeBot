@@ -50,7 +50,7 @@ public class SetModeratorRoleCommand implements ICommand {
     private MessageEmbed successfulRoleChangeEmbed(@NotNull Role role) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setAuthor("Successfully changed the Moderator Role");
+        embedBuilder.setTitle("Successfully changed the Moderator Role");
         embedBuilder.setDescription("Successfully changed the moderator role to " + role.getAsMention());
         return embedBuilder.build();
     }
@@ -59,7 +59,7 @@ public class SetModeratorRoleCommand implements ICommand {
     private MessageEmbed unknownRoleEmbed(@NotNull String roleName) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.red);
-        embedBuilder.setAuthor("Unknown Role");
+        embedBuilder.setTitle("Unknown Role");
         embedBuilder.setDescription("`" + roleName + "` is not a role.");
         return embedBuilder.build();
     }

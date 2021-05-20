@@ -92,7 +92,7 @@ public class Listener extends ListenerAdapter {
     @NotNull
     private MessageEmbed guildJoinEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("The Barista Has Arrived");
+        embedBuilder.setTitle("The Barista Has Arrived");
         embedBuilder.setColor(Color.green);
         embedBuilder.setThumbnail(CafeBot.getJDA().getSelfUser().getAvatarUrl());
         StringBuilder description = new StringBuilder();
@@ -108,7 +108,7 @@ public class Listener extends ListenerAdapter {
     @NotNull
     private MessageEmbed startingUpEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Bot Command Error...");
+        embedBuilder.setTitle("Bot Command Error...");
         embedBuilder.setColor(Color.red);
         embedBuilder.setDescription("Sorry... you can't run any commands right now because the connection is either lost," +
                 " or I am starting up.");
