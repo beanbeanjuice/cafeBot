@@ -322,6 +322,7 @@ public class CustomGuild {
                 Member selfMember = guild.getSelfMember();
                 GuildVoiceState selfVoiceState = selfMember.getVoiceState();
 
+
                 ArrayList<Member> membersInVoiceChannel;
 
                 try {
@@ -332,6 +333,12 @@ public class CustomGuild {
 
                 membersInVoiceChannel.remove(selfMember);
                 GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(CafeBot.getGuildHandler().getGuild(guildID));
+
+                if (selfVoiceState.inVoiceChannel()) {
+                    musicManager.scheduler.inVoiceChannel = true;
+                } else {
+                    musicManager.scheduler.inVoiceChannel = false;
+                }
 
                 // Checking if the bot is alone in the VC.
                 if (membersInVoiceChannel.isEmpty() && seconds[0] >= secondsToLeave) {
@@ -347,6 +354,7 @@ public class CustomGuild {
                     musicManager.scheduler.setShuffle(false);
                     musicManager.scheduler.setPlaylistRepeating(false);
                     guild.getAudioManager().closeAudioConnection();
+                    musicManager.scheduler.inVoiceChannel = false;
                     timer.cancel();
                     return;
                 }
@@ -368,6 +376,7 @@ public class CustomGuild {
                     musicManager.scheduler.playlistRepeatQueue.clear();
                     musicManager.scheduler.setShuffle(false);
                     musicManager.scheduler.setPlaylistRepeating(false);
+                    musicManager.scheduler.inVoiceChannel = false;
                     timer.cancel();
                     return;
                 }

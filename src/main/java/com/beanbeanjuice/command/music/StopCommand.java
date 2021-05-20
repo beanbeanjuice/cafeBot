@@ -49,6 +49,7 @@ public class StopCommand implements ICommand {
         musicManager.scheduler.playlistRepeatQueue.clear();
         musicManager.scheduler.setShuffle(false);
         musicManager.scheduler.setPlaylistRepeating(false);
+        musicManager.scheduler.inVoiceChannel = false;
         ctx.getGuild().getAudioManager().closeAudioConnection();
 
         // Stop listening for the audio connection and leave.

@@ -60,6 +60,7 @@ public class PlayCommand implements ICommand {
             }
 
             // Join the channel and play music and say you joined
+            PlayerManager.getInstance().getMusicManager(event.getGuild()).scheduler.inVoiceChannel = true;
             ctx.getGuild().getAudioManager().openAudioConnection(event.getMember().getVoiceState().getChannel());
 
             // Start listening for the audio connection.
