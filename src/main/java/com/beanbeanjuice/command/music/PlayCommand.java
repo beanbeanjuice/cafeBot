@@ -10,7 +10,7 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
+import com.beanbeanjuice.utility.music.lavaplayer.PlayerManager;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.Playlist;
@@ -147,17 +147,39 @@ public class PlayCommand implements ICommand {
                 return;
             }
 
-        } else if (link.contains("apple.com")) {
+        } else if (link.contains("apple.com")) { // Apple Music Links
 
-            Response response = new Lookup()
-                    .addId(link.split("=")[1])
-                    .setEntity(Entity.SONG)
-                    .execute();
+            if (!link.contains("playlist")) {
+                Response response = new Lookup()
+                        .addId(link.split("=")[1])
+                        .setEntity(Entity.SONG)
+                        .execute();
 
-            String songName = response.getResults().get(0).getTrackName();
-            String artistName = response.getResults().get(0).getArtistName();
+                String songName = response.getResults().get(0).getTrackName();
+                String artistName = response.getResults().get(0).getArtistName();
 
-            link = "ytsearch:" + songName + " by " + artistName + " audio only";
+                link = "ytsearch:" + songName + " by " + artistName + " audio only";
+            } else {
+
+//                link = link.split("pl.u-")[1].split("\\?")[0];
+//
+//                Response response = new Lookup()
+//                        .addId(link)
+//                        .setEntity(Entity.SONG)
+//                        .execute();
+//
+//                for (Result result : response.getResults()) {
+//                    System.out.println(result.getTrackName());
+//                }
+
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                        "Cannot Get Apple Music Playlist",
+                        "Doing this requires a developer license for the Apple Itunes API. " +
+                                "Currently, I do not have this, but will try to get one in the future. Please just use individual songs for now."
+                )).queue();
+
+                return;
+            }
 
         }
         PlayerManager.getInstance().loadAndPlay(channel, link, false);

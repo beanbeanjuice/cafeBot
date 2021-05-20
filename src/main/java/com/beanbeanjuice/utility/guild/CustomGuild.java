@@ -1,8 +1,8 @@
 package com.beanbeanjuice.utility.guild;
 
 import com.beanbeanjuice.main.CafeBot;
-import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
-import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
+import com.beanbeanjuice.utility.music.lavaplayer.GuildMusicManager;
+import com.beanbeanjuice.utility.music.lavaplayer.PlayerManager;
 import com.beanbeanjuice.utility.twitch.Twitch;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
