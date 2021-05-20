@@ -56,7 +56,7 @@ public class KickCommand implements ICommand {
     private MessageEmbed successfulKickEmbed(@NotNull Member punishee, @NotNull User user, @NotNull String reason) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setAuthor("User Kicked");
+        embedBuilder.setTitle("User Kicked");
         embedBuilder.setDescription("`" + punishee.getEffectiveName() + "` has been kicked for `" + reason + "`.");
         embedBuilder.addField("Kicked By:", user.getAsMention(), true);
         return embedBuilder.build();
@@ -66,7 +66,7 @@ public class KickCommand implements ICommand {
     private MessageEmbed hierarchyErrorEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.red);
-        embedBuilder.setAuthor("Unable to Kick User");
+        embedBuilder.setTitle("Unable to Kick User");
         embedBuilder.setDescription("The user you are trying to kick has a higher role than the bot.");
         return embedBuilder.build();
     }

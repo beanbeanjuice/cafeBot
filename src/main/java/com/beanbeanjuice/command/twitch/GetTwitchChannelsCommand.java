@@ -22,7 +22,7 @@ public class GetTwitchChannelsCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setAuthor("List of Current Twitch Channels");
+        embedBuilder.setTitle("List of Current Twitch Channels");
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("`");

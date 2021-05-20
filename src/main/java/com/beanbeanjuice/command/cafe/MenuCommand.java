@@ -57,7 +57,7 @@ public class MenuCommand implements ICommand {
     @NotNull
     private MessageEmbed menuItemEmbed(@NotNull MenuItem menuItem, @NotNull Integer itemIndex) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Menu Item - " + menuItem.getName());
+        embedBuilder.setTitle("Menu Item - " + menuItem.getName());
         embedBuilder.addField("Price", "`$" + menuItem.getPrice() + "` beanCoins", true);
         embedBuilder.addField("Item Number", String.valueOf(itemIndex+1), true);
         embedBuilder.setDescription(menuItem.getDescription());
@@ -69,7 +69,7 @@ public class MenuCommand implements ICommand {
     @NotNull
     private MessageEmbed menuEmbed(@NotNull String description) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Menu Items");
+        embedBuilder.setTitle("Menu Items");
         embedBuilder.setDescription(description);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setFooter("I hope you enjoy your stay!~");

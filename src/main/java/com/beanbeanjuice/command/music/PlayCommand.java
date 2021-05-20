@@ -1,12 +1,16 @@
 package com.beanbeanjuice.command.music;
 
+import be.ceau.itunesapi.Lookup;
+import be.ceau.itunesapi.request.Entity;
+import be.ceau.itunesapi.response.Response;
+import be.ceau.itunesapi.response.Result;
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
+import com.beanbeanjuice.utility.music.lavaplayer.PlayerManager;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.Playlist;
@@ -87,7 +91,7 @@ public class PlayCommand implements ICommand {
                     return;
                 }
 
-                link = "ytsearch:" + getLinkFromSpotifyTrack(track);
+                link = "ytsearch:" + getLinkFromSpotifyTrack(track) + " audio only";
                 PlayerManager.getInstance().loadAndPlay(channel, link, false);
                 return;
 
@@ -137,9 +141,43 @@ public class PlayCommand implements ICommand {
                         stringBuilder.append(" and ").append(track.getArtists()[1].getName());
                     }
 
-                    PlayerManager.getInstance().loadAndPlay(channel, "ytsearch:" + stringBuilder.toString(), true);
+                    PlayerManager.getInstance().loadAndPlay(channel, "ytsearch:" + stringBuilder.toString() + " audio only", true);
                 }
                 event.getChannel().sendMessage(loadedPlaylist()).queue();
+                return;
+            }
+
+        } else if (link.contains("apple.com")) { // Apple Music Links
+
+            if (!link.contains("playlist")) {
+                Response response = new Lookup()
+                        .addId(link.split("=")[1])
+                        .setEntity(Entity.SONG)
+                        .execute();
+
+                String songName = response.getResults().get(0).getTrackName();
+                String artistName = response.getResults().get(0).getArtistName();
+
+                link = "ytsearch:" + songName + " by " + artistName + " audio only";
+            } else {
+
+//                link = link.split("pl.u-")[1].split("\\?")[0];
+//
+//                Response response = new Lookup()
+//                        .addId(link)
+//                        .setEntity(Entity.SONG)
+//                        .execute();
+//
+//                for (Result result : response.getResults()) {
+//                    System.out.println(result.getTrackName());
+//                }
+
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                        "Cannot Get Apple Music Playlist",
+                        "Doing this requires a developer license for the Apple Itunes API. " +
+                                "Currently, I do not have this, but will try to get one in the future. Please just use individual songs for now."
+                )).queue();
+
                 return;
             }
 
@@ -171,7 +209,7 @@ public class PlayCommand implements ICommand {
     @NotNull
     private MessageEmbed emptySpotifyPlaylist() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Empty Spotify Playlist");
+        embedBuilder.setTitle("Empty Spotify Playlist");
         embedBuilder.setDescription("The spotify playlist you requested is currently empty.");
         embedBuilder.setColor(Color.red);
         return embedBuilder.build();
@@ -180,7 +218,7 @@ public class PlayCommand implements ICommand {
     @NotNull
     private MessageEmbed loadedPlaylist() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Added Playlist to Queue");
+        embedBuilder.setTitle("Added Playlist to Queue");
         embedBuilder.addField("Tracks", String.valueOf(playlistCount), true);
         embedBuilder.addField("Playlist Name", "`" + playlistName + "`", true);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());

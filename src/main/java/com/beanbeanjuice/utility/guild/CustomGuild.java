@@ -1,8 +1,8 @@
 package com.beanbeanjuice.utility.guild;
 
 import com.beanbeanjuice.main.CafeBot;
-import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
-import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
+import com.beanbeanjuice.utility.music.lavaplayer.GuildMusicManager;
+import com.beanbeanjuice.utility.music.lavaplayer.PlayerManager;
 import com.beanbeanjuice.utility.twitch.Twitch;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -336,7 +336,7 @@ public class CustomGuild {
                 // Checking if the bot is alone in the VC.
                 if (membersInVoiceChannel.isEmpty() && seconds[0] >= secondsToLeave) {
                     EmbedBuilder embedBuilder = new EmbedBuilder();
-                    embedBuilder.setAuthor("Music Bot");
+                    embedBuilder.setTitle("Music Bot");
                     embedBuilder.setDescription("Leaving the voice channel as it is empty...");
                     embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
                     sendMessageInLastMusicChannel(embedBuilder.build());
@@ -354,7 +354,7 @@ public class CustomGuild {
                 if (musicManager.scheduler.queue.isEmpty() && musicManager.audioPlayer.getPlayingTrack() == null && seconds[0] >= secondsToLeave) {
                     guild.getAudioManager().closeAudioConnection();
                     EmbedBuilder embedBuilder = new EmbedBuilder();
-                    embedBuilder.setAuthor("Music Bot");
+                    embedBuilder.setTitle("Music Bot");
                     embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
                     embedBuilder.setDescription("Leaving the voice channel as the music queue is empty...");
                     sendMessageInLastMusicChannel(embedBuilder.build());

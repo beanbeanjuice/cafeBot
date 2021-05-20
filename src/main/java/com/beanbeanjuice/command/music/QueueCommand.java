@@ -5,8 +5,8 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
-import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
+import com.beanbeanjuice.utility.music.lavaplayer.GuildMusicManager;
+import com.beanbeanjuice.utility.music.lavaplayer.PlayerManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -47,7 +47,7 @@ public class QueueCommand implements ICommand {
     @NotNull
     private MessageEmbed queueEmbed(@NotNull ArrayList<AudioTrack> trackList, @NotNull Integer trackCount) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Current Queue");
+        embedBuilder.setTitle("Current Queue");
 
         StringBuilder message = new StringBuilder();
 
