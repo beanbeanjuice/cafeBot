@@ -34,8 +34,8 @@ public class AddRaffleCommand implements ICommand {
 
         String title = CafeBot.getGeneralHelper().removeUnderscores(args.get(0));
         String description = CafeBot.getGeneralHelper().removeUnderscores(args.get(1));
-        int minutes = Integer.parseInt(args.get(2));
-        int winnerAmount = Integer.parseInt(args.get(3));
+        int winnerAmount = Integer.parseInt(args.get(2));
+        int minutes = Integer.parseInt(args.get(3));
 
         // Check if the amount of raffles the server has is more than 3
         if (CafeBot.getRaffleHandler().getRafflesForGuild(event.getGuild()).size()+1 > 3) {
@@ -119,7 +119,7 @@ public class AddRaffleCommand implements ICommand {
 
     @Override
     public String exampleUsage() {
-        return "`!!addraffle RTX_3080_Giveaway Do_you_want_to_win_an_rtx_3080? 30 2`";
+        return "`!!addraffle RTX_3080_Giveaway Do_you_want_to_win_an_rtx_3080? 2 30`";
     }
 
     @Override
@@ -127,8 +127,8 @@ public class AddRaffleCommand implements ICommand {
         Usage usage = new Usage();
         usage.addUsage(CommandType.TEXT, "Raffle Title", true);
         usage.addUsage(CommandType.TEXT, "Raffle Description", true);
-        usage.addUsage(CommandType.NUMBER, "Raffle Timer (In Minutes)", true);
         usage.addUsage(CommandType.NUMBER, "Raffle Winner Amount", true);
+        usage.addUsage(CommandType.NUMBER, "Raffle Timer (In Minutes)", true);
         return usage;
     }
 

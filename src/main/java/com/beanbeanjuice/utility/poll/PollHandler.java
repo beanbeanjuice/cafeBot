@@ -80,7 +80,7 @@ public class PollHandler {
                                         }
                                     }
 
-                                    String title = message.getEmbeds().get(0).getAuthor().getName();
+                                    String title = message.getEmbeds().get(0).getTitle();
                                     String pollDescription = message.getEmbeds().get(0).getDescription();
 
                                     message.editMessage(pollEmbed(title, pollDescription, highestReactions)).queue();
