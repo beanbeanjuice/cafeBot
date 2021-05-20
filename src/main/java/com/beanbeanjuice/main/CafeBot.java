@@ -68,6 +68,7 @@ public class CafeBot {
     private static final String BOT_TOKEN = JSONHelper.getValue(FILE_INFO, "bot", "token").textValue();
     private static JDA jda;
     private static JDABuilder jdaBuilder;
+    private static final String DISCORD_AVATAR_URL = "http://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif";
 
     // Logging Stuff
     private static Guild homeGuild;
@@ -496,6 +497,14 @@ public class CafeBot {
     @NotNull
     public static String getBotVersion() {
         return BOT_VERSION;
+    }
+
+    /**
+     * @return The Discord avatar URL for the bot.
+     */
+    @NotNull
+    public static String getDiscordAvatarUrl() {
+        return DISCORD_AVATAR_URL;
     }
 
 }
