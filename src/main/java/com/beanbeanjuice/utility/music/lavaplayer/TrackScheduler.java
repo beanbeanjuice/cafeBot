@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.lavaplayer;
+package com.beanbeanjuice.utility.music.lavaplayer;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
@@ -23,6 +23,7 @@ public class TrackScheduler extends AudioEventAdapter {
     public boolean songRepeating = false;
     private boolean playlistRepeating = false;
     public boolean shuffle = false;
+    public boolean inVoiceChannel = false;
 
     public TrackScheduler(AudioPlayer player) {
         this.player = player;
@@ -87,9 +88,11 @@ public class TrackScheduler extends AudioEventAdapter {
      * @param track The {@link AudioTrack} to be added.
      */
     public void queue(AudioTrack track) {
-        if (!this.player.startTrack(track, true)) {
-            this.queue.offer(track);
-            playlistRepeatQueue.offer(track.makeClone());
+        if (inVoiceChannel) {
+            if (!this.player.startTrack(track, true)) {
+                this.queue.offer(track);
+                playlistRepeatQueue.offer(track.makeClone());
+            }
         }
     }
 

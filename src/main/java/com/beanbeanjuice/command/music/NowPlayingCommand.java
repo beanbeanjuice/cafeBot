@@ -5,8 +5,8 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.lavaplayer.GuildMusicManager;
-import com.beanbeanjuice.utility.lavaplayer.PlayerManager;
+import com.beanbeanjuice.utility.music.lavaplayer.GuildMusicManager;
+import com.beanbeanjuice.utility.music.lavaplayer.PlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
@@ -60,7 +60,7 @@ public class NowPlayingCommand implements ICommand {
     @NotNull
     private MessageEmbed nowPlaying(@NotNull String title, @NotNull String author, @NotNull String url) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Now Playing", url);
+        embedBuilder.setTitle("Now Playing", url);
         String message = String.format("`%s` by `%s`", title, author);
         embedBuilder.setDescription(message);
         embedBuilder.setColor(Color.cyan);

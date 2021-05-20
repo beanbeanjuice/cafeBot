@@ -108,7 +108,7 @@ public class CommandManager {
         } else {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setColor(Color.red);
-            embedBuilder.setAuthor("Command Not Found");
+            embedBuilder.setTitle("Command Not Found");
             embedBuilder.setDescription("The command you are trying to run has not been found...");
             event.getChannel().sendMessage(embedBuilder.build()).queue();
         }
@@ -124,13 +124,11 @@ public class CommandManager {
     @NotNull
     private MessageEmbed indexMessageEmbed(@NotNull CommandErrorType errorType, @NotNull Integer incorrectIndex, @NotNull ArrayList<String> args) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-
         embedBuilder.addField(errorType.name(), errorType.getDescription(), true);
-
         if (args.size() > 0) {
             embedBuilder.addField("Location", "There is an error at variable **" + args.get(incorrectIndex) + "**", false);
         }
-
+        embedBuilder.setColor(Color.red);
         return embedBuilder.build();
     }
 

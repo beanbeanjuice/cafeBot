@@ -5,12 +5,9 @@ import com.beanbeanjuice.command.cafe.MenuCommand;
 import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.cafe.ServeCommand;
 import com.beanbeanjuice.command.fun.*;
+import com.beanbeanjuice.command.generic.*;
 import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
-import com.beanbeanjuice.command.generic.BugReportCommand;
-import com.beanbeanjuice.command.generic.FeatureRequestCommand;
-import com.beanbeanjuice.command.generic.HelpCommand;
-import com.beanbeanjuice.command.generic.PingCommand;
 import com.beanbeanjuice.command.moderation.*;
 import com.beanbeanjuice.command.moderation.mute.MuteCommand;
 import com.beanbeanjuice.command.moderation.mute.UnMuteCommand;
@@ -71,6 +68,7 @@ public class CafeBot {
     private static final String BOT_TOKEN = JSONHelper.getValue(FILE_INFO, "bot", "token").textValue();
     private static JDA jda;
     private static JDABuilder jdaBuilder;
+    private static final String DISCORD_AVATAR_URL = "http://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif";
 
     // Logging Stuff
     private static Guild homeGuild;
@@ -149,15 +147,12 @@ public class CafeBot {
         jdaBuilder.setActivity(Activity.playing("The barista is starting up..."));
 
         jdaBuilder.enableIntents(
-                GatewayIntent.GUILD_PRESENCES,
                 GatewayIntent.GUILD_VOICE_STATES,
                 GatewayIntent.GUILD_BANS,
                 GatewayIntent.GUILD_EMOJIS,
                 GatewayIntent.GUILD_MEMBERS
         );
         jdaBuilder.enableCache(
-                CacheFlag.ACTIVITY,
-                CacheFlag.CLIENT_STATUS,
                 CacheFlag.EMOTE,
                 CacheFlag.VOICE_STATE
         );
@@ -175,7 +170,8 @@ public class CafeBot {
                 new HelpCommand(),
                 new PingCommand(),
                 new FeatureRequestCommand(),
-                new BugReportCommand()
+                new BugReportCommand(),
+                new UserInfoCommand()
         );
 
         // Cafe Commands
@@ -194,7 +190,8 @@ public class CafeBot {
                 new AddRaffleCommand(),
                 new AvatarCommand(),
                 new GetBirthdayCommand(),
-                new SetBirthdayCommand()
+                new SetBirthdayCommand(),
+                new CountingStatisticsCommand()
         );
 
         // Interaction Commands
@@ -218,7 +215,8 @@ public class CafeBot {
                 new RageCommand(),
                 new YellCommand(),
                 new HeadPatCommand(),
-                new CryCommand()
+                new CryCommand(),
+                new DanceCommand()
         );
 
         // Music Commands
@@ -496,6 +494,14 @@ public class CafeBot {
     @NotNull
     public static String getBotVersion() {
         return BOT_VERSION;
+    }
+
+    /**
+     * @return The Discord avatar URL for the bot.
+     */
+    @NotNull
+    public static String getDiscordAvatarUrl() {
+        return DISCORD_AVATAR_URL;
     }
 
 }

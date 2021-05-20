@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.lavaplayer;
+package com.beanbeanjuice.utility.music.lavaplayer;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
@@ -73,7 +73,7 @@ public class PlayerManager {
                 musicManager.scheduler.queue(audioTrack);
 
                 EmbedBuilder embedBuilder = new EmbedBuilder();
-                embedBuilder.setAuthor("Added Song to Queue");
+                embedBuilder.setTitle("Added Song to Queue");
 
                 String message = "`" +
                         audioTrack.getInfo().title +
@@ -96,7 +96,7 @@ public class PlayerManager {
                 }
 
                 EmbedBuilder embedBuilder = new EmbedBuilder();
-                embedBuilder.setAuthor("Added Playlist to Queue");
+                embedBuilder.setTitle("Added Playlist to Queue");
                 embedBuilder.addField("Tracks", String.valueOf(tracks.size()), true);
                 embedBuilder.addField("Track Name", "`" + audioPlaylist.getName() + "`", true);
                 embedBuilder.setColor(Color.green);

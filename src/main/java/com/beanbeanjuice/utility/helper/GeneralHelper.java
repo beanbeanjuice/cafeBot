@@ -183,7 +183,7 @@ public class GeneralHelper {
         }
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("No Permission");
+        embedBuilder.setTitle("No Permission");
         embedBuilder.setColor(Color.red);
         embedBuilder.setDescription("You don't have permission to run this command. You must be an administrator.");
         event.getChannel().sendMessage(embedBuilder.build()).queue();
@@ -208,7 +208,7 @@ public class GeneralHelper {
 
         if (customGuild.getModeratorRole() == null) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setAuthor("No Moderator Role Set");
+            embedBuilder.setTitle("No Moderator Role Set");
             embedBuilder.setColor(Color.red);
             embedBuilder.setDescription("No moderator role has been set. Please check the help command for more information.");
             event.getChannel().sendMessage(embedBuilder.build()).queue();
@@ -217,7 +217,7 @@ public class GeneralHelper {
 
         if (!member.getRoles().contains(customGuild.getModeratorRole())) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setAuthor("No Permission");
+            embedBuilder.setTitle("No Permission");
             embedBuilder.setColor(Color.red);
             embedBuilder.setDescription("You don't have permission to run this command.");
             event.getChannel().sendMessage(embedBuilder.build()).queue();
@@ -242,7 +242,7 @@ public class GeneralHelper {
 
         if (!member.hasPermission(permission)) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setAuthor("No Permission");
+            embedBuilder.setTitle("No Permission");
             embedBuilder.setColor(Color.red);
             embedBuilder.setDescription("You don't have the permission `" + permission.getName() + "` to run this command.");
             channel.sendMessage(embedBuilder.build()).queue();
@@ -258,7 +258,7 @@ public class GeneralHelper {
     public MessageEmbed sqlServerError() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.red);
-        embedBuilder.setAuthor("Connection Error");
+        embedBuilder.setTitle("Connection Error");
         embedBuilder.setDescription("The bot is unable to connect to the SQL database. Please try again later.");
         return embedBuilder.build();
     }
@@ -272,7 +272,7 @@ public class GeneralHelper {
     @NotNull
     public MessageEmbed errorEmbed(@NotNull String title, @NotNull String description) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(title);
+        embedBuilder.setTitle(title);
         embedBuilder.setDescription(description);
         embedBuilder.setColor(Color.red);
         return embedBuilder.build();
@@ -287,7 +287,7 @@ public class GeneralHelper {
     @NotNull
     public MessageEmbed successEmbed(@NotNull String title, @NotNull String description) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(title);
+        embedBuilder.setTitle(title);
         embedBuilder.setDescription(description);
         embedBuilder.setColor(getRandomColor());
         return embedBuilder.build();

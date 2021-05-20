@@ -39,7 +39,7 @@ public class AddTwitchChannelCommand implements ICommand {
     @NotNull
     private MessageEmbed successfulAddEmbed(@NotNull String twitchName) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Successfully Added Twitch Channel");
+        embedBuilder.setTitle("Successfully Added Twitch Channel");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Successfully added `" + twitchName + "`!");
         return embedBuilder.build();
@@ -50,7 +50,7 @@ public class AddTwitchChannelCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.red);
         embedBuilder.setDescription("Unable to add the twitch channel. The channel may already be added.");
-        embedBuilder.setAuthor("Error Adding Twitch Channel");
+        embedBuilder.setTitle("Error Adding Twitch Channel");
         return embedBuilder.build();
     }
 

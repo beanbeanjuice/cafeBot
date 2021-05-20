@@ -39,7 +39,7 @@ public class RemoveTwitchChannelCommand implements ICommand {
     @NotNull
     private MessageEmbed successfulRemoveEmbed(@NotNull String twitchName) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("Successfully Removed the Twitch Channel");
+        embedBuilder.setTitle("Successfully Removed the Twitch Channel");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Successfully removed `" + twitchName + "`!");
         return embedBuilder.build();
@@ -50,7 +50,7 @@ public class RemoveTwitchChannelCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.red);
         embedBuilder.setDescription("Unable to remove the twitch channel. The twitch channel may not be added.");
-        embedBuilder.setAuthor("Error Removing Twitch Channel");
+        embedBuilder.setTitle("Error Removing Twitch Channel");
         return embedBuilder.build();
     }
 
