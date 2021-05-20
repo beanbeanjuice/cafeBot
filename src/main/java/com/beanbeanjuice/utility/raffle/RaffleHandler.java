@@ -88,7 +88,7 @@ public class RaffleHandler {
                                             winners = potentialUsers;
                                         }
 
-                                        String title = message.getEmbeds().get(0).getAuthor().getName();
+                                        String title = message.getEmbeds().get(0).getTitle();
                                         String description = message.getEmbeds().get(0).getFields().get(0).getValue();
 
                                         message.editMessage(winnerEmbed(title, description, winners)).queue();
