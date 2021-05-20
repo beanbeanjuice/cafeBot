@@ -189,19 +189,19 @@ public class InteractionHandler {
      */
     public String getPokeImage() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/noms/1.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/noms/2.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/noms/3.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/noms/4.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/noms/5.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/noms/6.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/noms/7.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/noms/8.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/noms/9.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/noms/10.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/noms/11.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/noms/12.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/noms/13.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pokes/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pokes/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pokes/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pokes/4.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pokes/5.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pokes/6.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pokes/7.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pokes/8.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pokes/9.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pokes/10.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pokes/11.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pokes/12.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/pokes/13.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()));
     }
 
