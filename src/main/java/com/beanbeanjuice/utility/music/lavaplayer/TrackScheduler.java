@@ -91,6 +91,7 @@ public class TrackScheduler extends AudioEventAdapter {
         if (inVoiceChannel) {
             if (!this.player.startTrack(track, true)) {
                 this.queue.offer(track);
+                unshuffledQueue.offer(track.makeClone());
                 playlistRepeatQueue.offer(track.makeClone());
             }
         }
