@@ -18,6 +18,7 @@ import java.util.List;
  * @author beanbeanjuice
  */
 public class GuildHandler {
+
     private HashMap<String, CustomGuild> guildDatabase;
 
     /**
