@@ -440,6 +440,9 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()));
     }
 
+    /**
+     * @return A random dance image.
+     */
     public String getDanceImage() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dances/1.gif");
@@ -454,6 +457,25 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dances/10.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dances/11.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dances/12.gif");
+        return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()));
+    }
+
+    /**
+     * @return A random dab image.
+     */
+    public String getDabImage() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dabs/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dabs/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dabs/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dabs/4.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dabs/5.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dabs/6.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dabs/7.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dabs/8.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dabs/9.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dabs/10.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dabs/11.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()));
     }
 
