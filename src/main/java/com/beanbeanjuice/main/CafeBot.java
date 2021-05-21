@@ -5,6 +5,7 @@ import com.beanbeanjuice.command.cafe.MenuCommand;
 import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.cafe.ServeCommand;
 import com.beanbeanjuice.command.fun.*;
+import com.beanbeanjuice.command.games.EightBallCommand;
 import com.beanbeanjuice.command.generic.*;
 import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
@@ -192,6 +193,11 @@ public class CafeBot {
                 new GetBirthdayCommand(),
                 new SetBirthdayCommand(),
                 new CountingStatisticsCommand()
+        );
+
+        // Games Commands
+        commandManager.addCommands(
+                new EightBallCommand()
         );
 
         // Interaction Commands
