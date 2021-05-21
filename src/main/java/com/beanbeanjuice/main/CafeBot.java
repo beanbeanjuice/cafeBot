@@ -401,8 +401,8 @@ public class CafeBot {
         try {
             final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
             spotifyApi.setAccessToken(clientCredentials.getAccessToken());
-            logManager.log(CafeBot.class, LogLevel.INFO, "Spotify Access Token Expires In: " + clientCredentials.getExpiresIn());
-            logManager.log(CafeBot.class, LogLevel.OKAY, "Successfully connected to the Spotify API!");
+            logManager.log(CafeBot.class, LogLevel.INFO, "Spotify Access Token Expires In: `" + clientCredentials.getExpiresIn() + "` Seconds", true, false);
+            logManager.log(CafeBot.class, LogLevel.OKAY, "Successfully connected to the Spotify API!", true, false);
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             logManager.log(CafeBot.class, LogLevel.ERROR, e.getMessage());
         }
