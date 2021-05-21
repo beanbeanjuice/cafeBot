@@ -150,7 +150,9 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `get-birthday` - Get yours or someone else's birthday!
 * `set-birthday` - Set your birthday! (YYYY-MM-DD)
 * `counting-statistics` - Get counting information for your server!
-##### 4. **INTERACTION**
+##### 4. **GAMES**
+* `8-ball` - Ask a yes or no question!
+##### 5. **INTERACTION**
 * `hug` - Hug someone!
 * `punch` - Punch someone!
 * `kiss` - Kiss someone!
@@ -174,7 +176,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `dance` - Dance with someone!
 * `dab` - Dab at someone!
 * `bonk` - Bonk someone! Send them to `h o r n i` jail.
-##### 5. **MUSIC**
+##### 6. **MUSIC**
 * `play` - Play a song or playlist!
 * `now-playing` - Show the current song playing.
 * `pause` - Pause the current song.
@@ -183,13 +185,13 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `shuffle` - Shuffle the current playlist.
 * `skip` - Skip the current song.
 * `stop` - Stop the queue and make the bot leave the channel.
-##### 6. **TWITCH**
+##### 7. **TWITCH**
 * `set-live-channel` - Set the current channel to receive twitch live notifications. You need to add twitch channels for this to work.
 * `add-twitch-channel` - Add a twitch channel to leave bot notifications for.
 * `remove-twitch-channel` - Remove a twitch channel you are currently receiving notifications for.
 * `get-twitch-channels` - Get a list of the twitch channels you are currently receiving notifications for.
 * `set-live-notifications-role` - Set the role to be mentioned when someone goes live.
-##### 7. **MODERATION**
+##### 8. **MODERATION**
 * `set-moderator-role` - Set the moderator role for the server. This is needed so that users with this role can run commands that require a moderator role.
 * `set-muted-role` - Set the muted role for the server. This is needed so that users with this role can be stopped from talking in channels. This requires you to set it this way in each channel. This will not mute them if the role does not have the right permissions.
 * `change-prefix` - Change the prefix from the bot to your desired prefix.
