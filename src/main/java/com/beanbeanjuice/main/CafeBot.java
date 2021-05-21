@@ -217,7 +217,8 @@ public class CafeBot {
                 new HeadPatCommand(),
                 new CryCommand(),
                 new DanceCommand(),
-                new DabCommand()
+                new DabCommand(),
+                new BonkCommand()
         );
 
         // Music Commands
