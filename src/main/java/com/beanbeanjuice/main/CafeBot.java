@@ -216,7 +216,9 @@ public class CafeBot {
                 new YellCommand(),
                 new HeadPatCommand(),
                 new CryCommand(),
-                new DanceCommand()
+                new DanceCommand(),
+                new DabCommand(),
+                new BonkCommand()
         );
 
         // Music Commands
