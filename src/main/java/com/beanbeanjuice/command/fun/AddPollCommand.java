@@ -47,8 +47,8 @@ public class AddPollCommand implements ICommand {
 
         String title = CafeBot.getGeneralHelper().removeUnderscores(args.get(0));
         String description = CafeBot.getGeneralHelper().removeUnderscores(args.get(1));
-        Integer minutes = Integer.parseInt(args.get(2));
-        ArrayList<String> arguments = convertToList(args.get(3));
+        ArrayList<String> arguments = convertToList(args.get(2));
+        Integer minutes = Integer.parseInt(args.get(3));
 
         // Making sure the poll channel exists.
         TextChannel pollChannel = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getPollChannel();
@@ -161,7 +161,7 @@ public class AddPollCommand implements ICommand {
 
     @Override
     public String exampleUsage() {
-        return "`!!add-poll Red_or_Blue? Which_colour_is_the_best? 12 Red,Blue`";
+        return "`!!add-poll Red_or_Blue? Which_colour_is_the_best? Red,Blue 12`";
     }
 
     @Override
@@ -169,8 +169,8 @@ public class AddPollCommand implements ICommand {
         Usage usage = new Usage();
         usage.addUsage(CommandType.TEXT, "Poll Title", true);
         usage.addUsage(CommandType.TEXT, "Poll Description", true);
-        usage.addUsage(CommandType.NUMBER, "Poll Duration (In Minutes)", true);
         usage.addUsage(CommandType.TEXT, "Poll Arguments", true);
+        usage.addUsage(CommandType.NUMBER, "Poll Duration (In Minutes)", true);
         return usage;
     }
 
