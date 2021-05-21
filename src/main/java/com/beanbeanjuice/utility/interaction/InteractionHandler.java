@@ -480,6 +480,27 @@ public class InteractionHandler {
     }
 
     /**
+     * @return A random bonk image.
+     */
+    public String getBonkImage() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/bonks/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/bonks/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/bonks/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/bonks/4.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/bonks/5.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/bonks/6.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/bonks/7.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/bonks/8.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/bonks/9.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/bonks/10.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/bonks/11.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/bonks/12.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/bonks/13.gif");
+        return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()));
+    }
+
+    /**
      * Gets the receivers {@link String} for the Interaction Commands.
      * @param receivers The {@link ArrayList<User>} to be used as the receivers.
      * @return The new receiver {@link String}.
