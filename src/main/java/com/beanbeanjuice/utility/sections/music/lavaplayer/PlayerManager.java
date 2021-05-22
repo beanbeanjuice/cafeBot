@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.music.lavaplayer;
+package com.beanbeanjuice.utility.sections.music.lavaplayer;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;

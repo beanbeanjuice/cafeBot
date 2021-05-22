@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.raffle;
+package com.beanbeanjuice.utility.sections.fun.raffle;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;

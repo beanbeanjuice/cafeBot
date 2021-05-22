@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.cafe.object;
+package com.beanbeanjuice.utility.sections.cafe.object;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

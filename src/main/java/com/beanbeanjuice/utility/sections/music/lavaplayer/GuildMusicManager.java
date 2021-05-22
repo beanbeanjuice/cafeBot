@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.music.lavaplayer;
+package com.beanbeanjuice.utility.sections.music.lavaplayer;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;

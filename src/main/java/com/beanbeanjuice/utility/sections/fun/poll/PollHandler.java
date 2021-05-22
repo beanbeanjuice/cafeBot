@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.poll;
+package com.beanbeanjuice.utility.sections.fun.poll;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;

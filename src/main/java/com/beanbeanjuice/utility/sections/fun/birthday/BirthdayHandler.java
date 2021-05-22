@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.birthday;
+package com.beanbeanjuice.utility.sections.fun.birthday;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
