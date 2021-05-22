@@ -26,6 +26,7 @@ import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
 import com.beanbeanjuice.utility.helper.JSONHelper;
 import com.beanbeanjuice.utility.helper.VersionHelper;
+import com.beanbeanjuice.utility.sections.games.tictactoe.TicTacToeHandler;
 import com.beanbeanjuice.utility.sections.interaction.InteractionHandler;
 import com.beanbeanjuice.utility.listener.Listener;
 import com.beanbeanjuice.utility.logger.LogLevel;
@@ -134,6 +135,9 @@ public class CafeBot {
 
     // Birthday Stuff
     private static BirthdayHandler birthdayHandler;
+
+    // Game Stuff
+    private static TicTacToeHandler ticTacToeHandler;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         countingHelper = new CountingHelper();
@@ -303,6 +307,15 @@ public class CafeBot {
         interactionHandler = new InteractionHandler();
 
         birthdayHandler = new BirthdayHandler();
+
+        ticTacToeHandler = new TicTacToeHandler();
+    }
+
+    /**
+     * @return The current {@link TicTacToeHandler}.
+     */
+    public static TicTacToeHandler getTicTacToeHandler() {
+        return ticTacToeHandler;
     }
 
     /**
@@ -414,7 +427,7 @@ public class CafeBot {
         try {
             final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
             spotifyApi.setAccessToken(clientCredentials.getAccessToken());
-            logManager.log(CafeBot.class, LogLevel.INFO, "Spotify Access Token Expires In: `" + clientCredentials.getExpiresIn() + "` Seconds", true, false);
+            logManager.log(CafeBot.class, LogLevel.INFO, "Spotify Access Token Expires In: " + clientCredentials.getExpiresIn() + " Seconds", true, false);
             logManager.log(CafeBot.class, LogLevel.OKAY, "Successfully connected to the Spotify API!", true, false);
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             logManager.log(CafeBot.class, LogLevel.ERROR, e.getMessage());
