@@ -8,6 +8,7 @@ import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.games.CoinFlipCommand;
 import com.beanbeanjuice.command.games.DiceRollCommand;
 import com.beanbeanjuice.command.games.EightBallCommand;
+import com.beanbeanjuice.command.games.TicTacToeCommand;
 import com.beanbeanjuice.command.generic.*;
 import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
@@ -135,7 +136,6 @@ public class CafeBot {
     private static BirthdayHandler birthdayHandler;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
-
         countingHelper = new CountingHelper();
         twitchHandler = new TwitchHandler();
         sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
@@ -201,7 +201,8 @@ public class CafeBot {
         commandManager.addCommands(
                 new EightBallCommand(),
                 new CoinFlipCommand(),
-                new DiceRollCommand()
+                new DiceRollCommand(),
+                new TicTacToeCommand()
         );
 
         // Interaction Commands
