@@ -6,6 +6,7 @@ import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.cafe.ServeCommand;
 import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.games.CoinFlipCommand;
+import com.beanbeanjuice.command.games.DiceRollCommand;
 import com.beanbeanjuice.command.games.EightBallCommand;
 import com.beanbeanjuice.command.generic.*;
 import com.beanbeanjuice.command.interaction.*;
@@ -199,7 +200,8 @@ public class CafeBot {
         // Games Commands
         commandManager.addCommands(
                 new EightBallCommand(),
-                new CoinFlipCommand()
+                new CoinFlipCommand(),
+                new DiceRollCommand()
         );
 
         // Interaction Commands
