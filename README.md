@@ -153,6 +153,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 ##### 4. **GAMES**
 * `8-ball` - Ask a yes or no question!
 * `coin-flip` - Flip a coin!
+* `dice-roll` - Roll a dice!
 ##### 5. **INTERACTION**
 * `hug` - Hug someone!
 * `punch` - Punch someone!
