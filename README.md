@@ -152,6 +152,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `counting-statistics` - Get counting information for your server!
 ##### 4. **GAMES**
 * `8-ball` - Ask a yes or no question!
+* `coin-flip` - Flip a coin!
 ##### 5. **INTERACTION**
 * `hug` - Hug someone!
 * `punch` - Punch someone!
