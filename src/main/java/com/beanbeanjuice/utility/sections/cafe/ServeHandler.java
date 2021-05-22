@@ -1,8 +1,8 @@
-package com.beanbeanjuice.utility.cafe;
+package com.beanbeanjuice.utility.sections.cafe;
 
 import com.beanbeanjuice.main.CafeBot;
-import com.beanbeanjuice.utility.cafe.object.CafeCustomer;
-import com.beanbeanjuice.utility.cafe.object.ServeWord;
+import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
+import com.beanbeanjuice.utility.sections.cafe.object.ServeWord;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.entities.User;

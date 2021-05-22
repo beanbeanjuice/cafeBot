@@ -1,5 +1,5 @@
-import com.beanbeanjuice.utility.cafe.ServeHandler;
-import com.beanbeanjuice.utility.cafe.object.ServeWord;
+import com.beanbeanjuice.utility.sections.cafe.ServeHandler;
+import com.beanbeanjuice.utility.sections.cafe.object.ServeWord;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

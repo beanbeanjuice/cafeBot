@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.poll;
+package com.beanbeanjuice.utility.sections.fun.poll;
 
 import org.jetbrains.annotations.NotNull;
 

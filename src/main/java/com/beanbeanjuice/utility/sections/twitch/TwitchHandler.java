@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.twitch;
+package com.beanbeanjuice.utility.sections.twitch;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.listener.TwitchListener;

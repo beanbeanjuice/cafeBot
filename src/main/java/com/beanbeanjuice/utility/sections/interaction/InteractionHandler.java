@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.interaction;
+package com.beanbeanjuice.utility.sections.interaction;
 
 import com.beanbeanjuice.main.CafeBot;
 import net.dv8tion.jda.api.EmbedBuilder;
