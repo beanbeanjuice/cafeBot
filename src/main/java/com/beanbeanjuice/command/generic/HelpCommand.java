@@ -35,6 +35,7 @@ public class HelpCommand implements ICommand {
             return;
         }
 
+        // Setting the Search Term
         String search = args.get(0);
 
         // Goes through each category. If the first argument is equal to the name, then print commands for that category.
@@ -182,7 +183,7 @@ public class HelpCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "command name", false);
+        usage.addUsage(CommandType.TEXT, "command name or section name", false);
         return usage;
     }
 
