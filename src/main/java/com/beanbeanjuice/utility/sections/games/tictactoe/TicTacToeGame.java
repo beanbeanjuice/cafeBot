@@ -20,7 +20,7 @@ public class TicTacToeGame {
     private User player2;
 
     private String currentMessageID = null;
-    private String currentTextChannelID = null;
+    private String currentTextChannelID;
     private String guildID;
 
     private Timer gameTimer;
@@ -50,8 +50,7 @@ public class TicTacToeGame {
 
                 // Checking if no one has responded in 60 seconds.
                 if (count++ >= TIME_UNTIL_END) {
-                    CafeBot.getTicTacToeHandler().stopGame(guildID);
-                    gameTimer.cancel();
+                    stopGame();
                     return;
                 }
 
@@ -61,8 +60,7 @@ public class TicTacToeGame {
                 try {
                     textChannel = CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID);
                 } catch (NullPointerException e) {
-                    CafeBot.getTicTacToeHandler().stopGame(guildID);
-                    gameTimer.cancel();
+                    stopGame();
                     return;
                 }
 
@@ -71,17 +69,25 @@ public class TicTacToeGame {
                 try {
                     message = textChannel.getHistory().getMessageById(currentMessageID);
                 } catch (NullPointerException e) {
-                    CafeBot.getTicTacToeHandler().stopGame(guildID);
-                    gameTimer.cancel();
+                    stopGame();
                     return;
                 }
 
-                // TODO: Make sure that text channel is null. I don't know if you need to get it async or not.
                 // TODO: Make sure the person who reacted is the person who is supposed to be next.
                 // TODO: CHeck if an X is reacted, then stop the timer as the game has been cancelled.
             }
         };
         gameTimer.scheduleAtFixedRate(gameTimerTask, 0, 1000);
+    }
+
+    private void stopGame() {
+        gameTimer.cancel();
+        CafeBot.getTicTacToeHandler().stopGame(this);
+    }
+
+    @NotNull
+    public String getGuildID() {
+        return guildID;
     }
 
     private void fillBoard() {

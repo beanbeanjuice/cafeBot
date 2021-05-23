@@ -27,8 +27,8 @@ public class TicTacToeHandler {
         return false;
     }
 
-    public void stopGame(@NotNull String guildID) {
-        games.remove(guildID);
+    public void stopGame(@NotNull TicTacToeGame game) {
+        games.remove(game.getGuildID());
     }
 
     public Boolean hasGame(@NotNull String guildID) {
