@@ -21,7 +21,6 @@ public class TicTacToeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
         User player1 = user;
         User player2 = CafeBot.getGeneralHelper().getUser(args.get(0));
 
