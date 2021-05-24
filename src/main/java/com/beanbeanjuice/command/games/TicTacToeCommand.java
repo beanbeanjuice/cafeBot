@@ -21,7 +21,7 @@ public class TicTacToeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        TicTacToeGame game = new TicTacToeGame(user, CafeBot.getGeneralHelper().getUser(args.get(0)));
+        TicTacToeGame game = new TicTacToeGame(user, CafeBot.getGeneralHelper().getUser(args.get(0)), event.getChannel());
         if (!CafeBot.getTicTacToeHandler().createGame(event.getGuild().getId(), game)) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "Error Creating Tic-Tac-Toe Game",
