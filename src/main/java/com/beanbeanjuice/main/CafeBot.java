@@ -5,10 +5,7 @@ import com.beanbeanjuice.command.cafe.MenuCommand;
 import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.cafe.ServeCommand;
 import com.beanbeanjuice.command.fun.*;
-import com.beanbeanjuice.command.games.CoinFlipCommand;
-import com.beanbeanjuice.command.games.DiceRollCommand;
-import com.beanbeanjuice.command.games.EightBallCommand;
-import com.beanbeanjuice.command.games.TicTacToeCommand;
+import com.beanbeanjuice.command.games.*;
 import com.beanbeanjuice.command.generic.*;
 import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
@@ -26,6 +23,7 @@ import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
 import com.beanbeanjuice.utility.helper.JSONHelper;
 import com.beanbeanjuice.utility.helper.VersionHelper;
+import com.beanbeanjuice.utility.sections.games.connectfour.ConnectFourHandler;
 import com.beanbeanjuice.utility.sections.games.tictactoe.TicTacToeHandler;
 import com.beanbeanjuice.utility.sections.interaction.InteractionHandler;
 import com.beanbeanjuice.utility.listener.Listener;
@@ -138,6 +136,7 @@ public class CafeBot {
 
     // Game Stuff
     private static TicTacToeHandler ticTacToeHandler;
+    private static ConnectFourHandler connectFourHandler;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         countingHelper = new CountingHelper();
@@ -206,7 +205,8 @@ public class CafeBot {
                 new EightBallCommand(),
                 new CoinFlipCommand(),
                 new DiceRollCommand(),
-                new TicTacToeCommand()
+                new TicTacToeCommand(),
+                new ConnectFourCommand()
         );
 
         // Interaction Commands
@@ -309,11 +309,21 @@ public class CafeBot {
         birthdayHandler = new BirthdayHandler();
 
         ticTacToeHandler = new TicTacToeHandler();
+        connectFourHandler = new ConnectFourHandler();
+    }
+
+    /**
+     * @return The current {@link ConnectFourHandler}.
+     */
+    @NotNull
+    public static ConnectFourHandler getConnectFourHandler() {
+        return connectFourHandler;
     }
 
     /**
      * @return The current {@link TicTacToeHandler}.
      */
+    @NotNull
     public static TicTacToeHandler getTicTacToeHandler() {
         return ticTacToeHandler;
     }
@@ -321,6 +331,7 @@ public class CafeBot {
     /**
      * @return The current {@link BirthdayHandler}.
      */
+    @NotNull
     public static BirthdayHandler getBirthdayHandler() {
         return birthdayHandler;
     }
@@ -328,6 +339,7 @@ public class CafeBot {
     /**
      * @return The current {@link InteractionHandler}.
      */
+    @NotNull
     public static InteractionHandler getInteractionHandler() {
         return interactionHandler;
     }
