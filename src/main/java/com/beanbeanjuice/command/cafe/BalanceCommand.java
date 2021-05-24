@@ -1,7 +1,7 @@
 package com.beanbeanjuice.command.cafe;
 
 import com.beanbeanjuice.main.CafeBot;
-import com.beanbeanjuice.utility.cafe.object.CafeCustomer;
+import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
