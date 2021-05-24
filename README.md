@@ -154,6 +154,8 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `8-ball` - Ask a yes or no question!
 * `coin-flip` - Flip a coin!
 * `dice-roll` - Roll a dice!
+* `tic-tac-toe` - Play tic tac toe with someone!
+* `connect-four` - Play connect four with someone!
 ##### 5. **INTERACTION**
 * `hug` - Hug someone!
 * `punch` - Punch someone!
