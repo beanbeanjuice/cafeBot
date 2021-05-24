@@ -14,6 +14,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
+/**
+ * A custom {@link ConnectFourGame} class.
+ *
+ * @author beanbeanjuice
+ */
 public class ConnectFourGame {
 
     private String[][] board;
@@ -36,6 +41,12 @@ public class ConnectFourGame {
     private HashMap<Long, Consumer<MessageReaction>> emojiListeners = new HashMap<>();
     private ListenerAdapter reactionListener;
 
+    /**
+     * Creates a new {@link ConnectFourGame} object.
+     * @param player1 The first {@link User}.
+     * @param player2 The second {@link User}.
+     * @param textChannel The {@link TextChannel} the game is in.
+     */
     public ConnectFourGame(@NotNull User player1, @NotNull User player2, @NotNull TextChannel textChannel) {
         this.player1 = player1;
         this.currentUser = player1;
@@ -63,13 +74,19 @@ public class ConnectFourGame {
         CafeBot.getJDA().addEventListener(reactionListener);
     }
 
+    /**
+     * @return The ID of the {@link Guild} the {@link ConnectFourGame} is in.
+     */
+    @NotNull
     public String getGuildID() {
         return guildID;
     }
 
+    /**
+     * Starts the {@link ConnectFourGame}.
+     */
     public void startGame() {
         startGameTimer();
-
         try {
             sendMessage();
         } catch (NullPointerException e) {
@@ -77,6 +94,10 @@ public class ConnectFourGame {
         }
     }
 
+    /**
+     * Sends a {@link Message} with {@link ConnectFourGame} information.
+     * @throws NullPointerException This is thrown if the message is deleted.
+     */
     private void sendMessage() throws NullPointerException {
         CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessage(getBoardEmbed()).queue(message -> {
             currentMessageID = message.getId();
@@ -125,6 +146,9 @@ public class ConnectFourGame {
         });
     }
 
+    /**
+     * @return Whether or not the {@link ConnectFourGame} exists.
+     */
     @NotNull
     private Boolean checkGameExists() {
         TextChannel textChannel;
@@ -142,6 +166,10 @@ public class ConnectFourGame {
         return true;
     }
 
+    /**
+     * Adds reactions to the specified {@link Message}.
+     * @param message The {@link Message} specified.
+     */
     private void addReactions(Message message) {
         message.addReaction("1️⃣").queue();
         message.addReaction("2️⃣").queue();
@@ -153,12 +181,14 @@ public class ConnectFourGame {
         message.addReaction("❌").queue();
     }
 
+    /**
+     * Starts the {@link ConnectFourGame} {@link Timer}.
+     */
     private void startGameTimer() {
         gameTimer = new Timer();
         gameTimerTask = new TimerTask() {
             @Override
             public void run() {
-                System.out.println(count);
                 if (count++ >= TIME_UNTIL_END) {
                     stopGameTimer();
                     if (checkGameExists()) {
@@ -177,12 +207,18 @@ public class ConnectFourGame {
         gameTimer.scheduleAtFixedRate(gameTimerTask, 0, 1000);
     }
 
+    /**
+     * Stops the {@link ConnectFourGame} {@link Timer}.
+     */
     private void stopGameTimer() {
         gameTimer.cancel();
         CafeBot.getConnectFourHandler().stopGame(this);
         CafeBot.getJDA().removeEventListener(reactionListener);
     }
 
+    /**
+     * Fills the {@link ConnectFourGame} board.
+     */
     private void fillBoard() {
         for (int x = 0; x < 7; x++) {
             for (int y = 0; y < 6; y++) {
@@ -192,6 +228,13 @@ public class ConnectFourGame {
         }
     }
 
+    /**
+     * Creates teh end game {@link MessageEmbed}.
+     * @param title The title of the {@link MessageEmbed}.
+     * @param description The description of the {@link MessageEmbed}.
+     * @param footer The footer of the {@link MessageEmbed}.
+     * @return The completed {@link MessageEmbed}.
+     */
     @NotNull
     private MessageEmbed endGameEmbed(@NotNull String title, @NotNull String description, @NotNull String footer) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -202,7 +245,13 @@ public class ConnectFourGame {
         return embedBuilder.build();
     }
 
-    private boolean parseTurn(MessageReaction.ReactionEmote emote) {
+    /**
+     * Parses the turn.
+     * @param emote The {@link net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote ReactionEmote} to parse.
+     * @return Whether or not the turn can be run.
+     */
+    @NotNull
+    private Boolean parseTurn(MessageReaction.ReactionEmote emote) {
         String emoji = emote.getEmoji();
 
         int x;
@@ -242,6 +291,11 @@ public class ConnectFourGame {
         return useTurn(x, y);
     }
 
+    /**
+     * Checks the game for any winners.
+     * @param unicodeEmoji The unicode emoji to check for.
+     * @param player The possible {@link User} winner.
+     */
     private void checkGame(String unicodeEmoji, User player) {
         boolean allSpotsTaken = true;
 
@@ -296,6 +350,10 @@ public class ConnectFourGame {
         }
     }
 
+    /**
+     * The method to be run when the {@link User} wins the game.
+     * @param user The {@link User} specified.
+     */
     private void winGame(@NotNull User user) {
         hasWinner = true;
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -303,6 +361,7 @@ public class ConnectFourGame {
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         StringBuilder boardBuilder = new StringBuilder();
         boardBuilder.append("———+———+———+——+———+———+———\n");
+
         for (int y = 5; y >= 0; y--) {
             for (int x = 0; x < 7; x++) {
                 boardBuilder.append("|    ");
@@ -323,9 +382,7 @@ public class ConnectFourGame {
         }
 
         boardBuilder.append("|\n");
-
         boardBuilder.append("\n**").append(user.getName()).append("** wins!");
-
         embedBuilder.setDescription(boardBuilder.toString());
         stopGameTimer();
 
@@ -335,6 +392,9 @@ public class ConnectFourGame {
         }
     }
 
+    /**
+     * The method to be run when there is a tie.
+     */
     private void tieGame() {
         hasWinner = true;
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -362,9 +422,7 @@ public class ConnectFourGame {
         }
 
         boardBuilder.append("|\n");
-
         boardBuilder.append("**There was a tie!**");
-
         embedBuilder.setDescription(boardBuilder.toString());
         stopGameTimer();
 
@@ -380,6 +438,7 @@ public class ConnectFourGame {
      * @param y The Y value of the button.
      * @return Whether or not the turn was used.
      */
+    @NotNull
     public Boolean useTurn(@NotNull Integer x, @NotNull Integer y) {
         if (!takenSpots[x][y]) {
             takenSpots[x][y] = true;
@@ -399,6 +458,11 @@ public class ConnectFourGame {
         return false;
     }
 
+    /**
+     * Gets the top value for the specified x {@link Integer}.
+     * @param x The specified {@link Integer}.
+     * @return The top value of the board. Returns -1 if null.
+     */
     @NotNull
     public Integer getTopValue(@NotNull Integer x) {
         for (int y = 0; y < 6; y++) {
@@ -409,6 +473,10 @@ public class ConnectFourGame {
         return -1;
     }
 
+    /**
+     * Gets the board {@link MessageEmbed}.
+     * @return The completed {@link MessageEmbed}.
+     */
     @NotNull
     public MessageEmbed getBoardEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -447,6 +515,9 @@ public class ConnectFourGame {
         return embedBuilder.build();
     }
 
+    /**
+     * @return The {@link ArrayList<String>} of board emojis.
+     */
     @NotNull
     private ArrayList<String> getBoardEmojis() {
         ArrayList<String> arrayList = new ArrayList<>();

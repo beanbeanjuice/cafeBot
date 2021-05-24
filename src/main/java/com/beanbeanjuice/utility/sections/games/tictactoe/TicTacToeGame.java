@@ -79,7 +79,6 @@ public class TicTacToeGame {
      */
     public void startGame() {
         startGameTimer();
-
         try {
             sendMessage();
         } catch (NullPointerException e) {
@@ -222,7 +221,6 @@ public class TicTacToeGame {
         gameTimerTask = new TimerTask() {
             @Override
             public void run() {
-                System.out.println(count);
                 if (count++ >= TIME_UNTIL_END) {
                     stopGameTimer();
                     if (checkGameExists()) {
