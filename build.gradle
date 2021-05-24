@@ -17,7 +17,7 @@ task buildWithDependencies(type: Jar) {
 
 group 'com.beanbeanjuice'
 mainClassName = 'com.beanbeanjuice.main.CafeBot'
-version 'v2.2.2'
+version 'v2.3.0'
 
 repositories {
 
@@ -83,3 +83,6 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'

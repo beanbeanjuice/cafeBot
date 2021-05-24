@@ -5,11 +5,15 @@ import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sql.SQLServer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.function.Consumer;
 
 public class TicTacToeGame {
 
@@ -27,62 +31,145 @@ public class TicTacToeGame {
     private TimerTask gameTimerTask;
 
     private final int TIME_UNTIL_END = 60;
+    private int count = 0;
+
+    private HashMap<Long, Consumer<MessageReaction>> emojiListeners = new HashMap<>();
+    private ListenerAdapter reactionListener;
 
     public TicTacToeGame(@NotNull User player1, @NotNull User player2, @NotNull TextChannel textChannel) {
         this.player1 = player1;
         this.player2 = player2;
+        this.currentUser = player1;
         this.guildID = textChannel.getGuild().getId();
         this.currentTextChannelID = textChannel.getId();
 
         board = new String[3][3];
         takenSpots = new boolean[3][3];
         fillBoard();
+
+        reactionListener = new ListenerAdapter() {
+            @Override
+            public void onGuildMessageReactionAdd(@NotNull GuildMessageReactionAddEvent event) {
+                Consumer<MessageReaction> callback = emojiListeners.get(event.getMessageIdLong());
+
+                if (callback != null) {
+                    callback.accept(event.getReaction());
+                }
+
+                System.out.println("CHECKED REACTION");
+            }
+        };
+
+        CafeBot.getJDA().addEventListener(reactionListener);
     }
 
     public void startGame() {
+        startGameTimer();
+
+        try {
+            sendMessage();
+        } catch (NullPointerException e) {
+            stopGameTimer();
+            return;
+        }
+
+//        while (checkGameExists()) {
+//
+//
+//        }
+    }
+
+    private void sendMessage() throws NullPointerException {
+        CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessage(getBoardEmbed()).queue(message -> {
+            currentMessageID = message.getId();
+            addReactions(message);
+
+            System.out.println("ADDED REACTIONS");
+            emojiListeners.put(message.getIdLong(), (r) -> {
+
+                System.out.println("CHECKING REACTION");
+                if (r.getReactionEmote().isEmoji() && !r.isSelf()) {
+                    r.retrieveUsers().queue();
+                    message.clearReactions().queue();
+                    message.addReaction(r.getReactionEmote().getEmoji()).queue();
+                    stopGameTimer(); // TODO: Not this
+                    System.out.println("FINISHING GAME");
+                    emojiListeners.remove(r.getMessageIdLong());
+                }
+
+            });
+
+        });
+    }
+
+    private void addReactions(Message message) {
+        if (!takenSpots[0][2]) {
+            message.addReaction("1️⃣").queue();
+        }
+        if (!takenSpots[1][2]) {
+            message.addReaction("2️⃣").queue();
+        }
+        if (!takenSpots[2][2]) {
+            message.addReaction("3️⃣").queue();
+        }
+        if (!takenSpots[0][1]) {
+            message.addReaction("4️⃣").queue();
+        }
+        if (!takenSpots[1][1]) {
+            message.addReaction("5️⃣").queue();
+        }
+        if (!takenSpots[2][1]) {
+            message.addReaction("6️⃣").queue();
+        }
+        if (!takenSpots[0][0]) {
+            message.addReaction("7️⃣").queue();
+        }
+        if (!takenSpots[1][0]) {
+            message.addReaction("8️⃣").queue();
+        }
+        if (!takenSpots[2][0]) {
+            message.addReaction("9️⃣").queue();
+        }
+
+        message.addReaction("❌").queue();
+    }
+
+    private Boolean checkGameExists() {
+        TextChannel textChannel;
+        try {
+            textChannel = CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID);
+        } catch (NullPointerException e) {
+            return false;
+        }
+
+        Message message;
+        try {
+            message = textChannel.getHistory().getMessageById(currentMessageID);
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private void startGameTimer() {
         gameTimer = new Timer();
         gameTimerTask = new TimerTask() {
-
-            int count = 0;
-
             @Override
             public void run() {
-
-                // Checking if no one has responded in 60 seconds.
                 if (count++ >= TIME_UNTIL_END) {
-                    stopGame();
+                    stopGameTimer();
                     return;
                 }
-
-                // Checking if the TextChannel is null.
-                TextChannel textChannel;
-
-                try {
-                    textChannel = CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID);
-                } catch (NullPointerException e) {
-                    stopGame();
-                    return;
-                }
-
-                Message message;
-
-                try {
-                    message = textChannel.getHistory().getMessageById(currentMessageID);
-                } catch (NullPointerException e) {
-                    stopGame();
-                    return;
-                }
-
-                // TODO: Make sure the person who reacted is the person who is supposed to be next.
-                // TODO: CHeck if an X is reacted, then stop the timer as the game has been cancelled.
             }
         };
         gameTimer.scheduleAtFixedRate(gameTimerTask, 0, 1000);
     }
 
-    private void stopGame() {
+    private void stopGameTimer() {
+        System.out.println("STOPPING TIMER");
         gameTimer.cancel();
         CafeBot.getTicTacToeHandler().stopGame(this);
+        CafeBot.getJDA().removeEventListener(reactionListener);
     }
 
     @NotNull
