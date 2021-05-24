@@ -1,8 +1,8 @@
 package com.beanbeanjuice.utility.guild;
 
 import com.beanbeanjuice.main.CafeBot;
-import com.beanbeanjuice.utility.music.lavaplayer.GuildMusicManager;
-import com.beanbeanjuice.utility.music.lavaplayer.PlayerManager;
+import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
+import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import org.jetbrains.annotations.NotNull;
@@ -48,8 +48,8 @@ public class CustomGuild {
      * @param liveNotificationsRoleID The ID of the live notifications {@link Role} for the {@link Guild}.
      * @param notifyOnUpdate The {@link Boolean} of whether or not to notify the {@link Guild} on an update to the Bot.
      * @param updateChannelID The ID of the {@link TextChannel} to send the bot update notifications to.
-     * @param pollChannelID The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.poll.Poll Poll}s.
-     * @param birthdayChannelID The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.birthday.BirthdayHandler Birthday} notifications.
+     * @param pollChannelID The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.sections.fun.poll.Poll Poll}s.
+     * @param birthdayChannelID The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler Birthday} notifications.
      */
     public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID,
                        @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
@@ -113,7 +113,7 @@ public class CustomGuild {
     }
 
     /**
-     * @return The {@link com.beanbeanjuice.utility.raffle.Raffle Raffle} {@link TextChannel} for the {@link Guild}.
+     * @return The {@link com.beanbeanjuice.utility.sections.fun.raffle.Raffle Raffle} {@link TextChannel} for the {@link Guild}.
      */
     @Nullable
     public TextChannel getRaffleChannel() {
@@ -125,7 +125,7 @@ public class CustomGuild {
     }
 
     /**
-     * Sets the {@link com.beanbeanjuice.utility.raffle.Raffle Raffle} {@link TextChannel}.
+     * Sets the {@link com.beanbeanjuice.utility.sections.fun.raffle.Raffle Raffle} {@link TextChannel}.
      * @param raffleChannelID The ID of the {@link TextChannel}.
      * @return Whether or not setting it was successful.
      */

@@ -5,6 +5,7 @@ import com.beanbeanjuice.command.cafe.MenuCommand;
 import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.cafe.ServeCommand;
 import com.beanbeanjuice.command.fun.*;
+import com.beanbeanjuice.command.games.*;
 import com.beanbeanjuice.command.generic.*;
 import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
@@ -13,23 +14,25 @@ import com.beanbeanjuice.command.moderation.mute.MuteCommand;
 import com.beanbeanjuice.command.moderation.mute.UnMuteCommand;
 import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.twitch.*;
-import com.beanbeanjuice.utility.birthday.BirthdayHandler;
-import com.beanbeanjuice.utility.cafe.MenuHandler;
-import com.beanbeanjuice.utility.cafe.ServeHandler;
+import com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler;
+import com.beanbeanjuice.utility.sections.cafe.MenuHandler;
+import com.beanbeanjuice.utility.sections.cafe.ServeHandler;
 import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
 import com.beanbeanjuice.utility.helper.JSONHelper;
 import com.beanbeanjuice.utility.helper.VersionHelper;
-import com.beanbeanjuice.utility.interaction.InteractionHandler;
+import com.beanbeanjuice.utility.sections.games.connectfour.ConnectFourHandler;
+import com.beanbeanjuice.utility.sections.games.tictactoe.TicTacToeHandler;
+import com.beanbeanjuice.utility.sections.interaction.InteractionHandler;
 import com.beanbeanjuice.utility.listener.Listener;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
-import com.beanbeanjuice.utility.poll.PollHandler;
-import com.beanbeanjuice.utility.raffle.RaffleHandler;
+import com.beanbeanjuice.utility.sections.fun.poll.PollHandler;
+import com.beanbeanjuice.utility.sections.fun.raffle.RaffleHandler;
 import com.beanbeanjuice.utility.sql.SQLServer;
-import com.beanbeanjuice.utility.twitch.TwitchHandler;
+import com.beanbeanjuice.utility.sections.twitch.TwitchHandler;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
@@ -131,8 +134,11 @@ public class CafeBot {
     // Birthday Stuff
     private static BirthdayHandler birthdayHandler;
 
-    public static void main(String[] args) throws LoginException, InterruptedException {
+    // Game Stuff
+    private static TicTacToeHandler ticTacToeHandler;
+    private static ConnectFourHandler connectFourHandler;
 
+    public static void main(String[] args) throws LoginException, InterruptedException {
         countingHelper = new CountingHelper();
         twitchHandler = new TwitchHandler();
         sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
@@ -192,6 +198,15 @@ public class CafeBot {
                 new GetBirthdayCommand(),
                 new SetBirthdayCommand(),
                 new CountingStatisticsCommand()
+        );
+
+        // Games Commands
+        commandManager.addCommands(
+                new EightBallCommand(),
+                new CoinFlipCommand(),
+                new DiceRollCommand(),
+                new TicTacToeCommand(),
+                new ConnectFourCommand()
         );
 
         // Interaction Commands
@@ -292,11 +307,31 @@ public class CafeBot {
         interactionHandler = new InteractionHandler();
 
         birthdayHandler = new BirthdayHandler();
+
+        ticTacToeHandler = new TicTacToeHandler();
+        connectFourHandler = new ConnectFourHandler();
+    }
+
+    /**
+     * @return The current {@link ConnectFourHandler}.
+     */
+    @NotNull
+    public static ConnectFourHandler getConnectFourHandler() {
+        return connectFourHandler;
+    }
+
+    /**
+     * @return The current {@link TicTacToeHandler}.
+     */
+    @NotNull
+    public static TicTacToeHandler getTicTacToeHandler() {
+        return ticTacToeHandler;
     }
 
     /**
      * @return The current {@link BirthdayHandler}.
      */
+    @NotNull
     public static BirthdayHandler getBirthdayHandler() {
         return birthdayHandler;
     }
@@ -304,6 +339,7 @@ public class CafeBot {
     /**
      * @return The current {@link InteractionHandler}.
      */
+    @NotNull
     public static InteractionHandler getInteractionHandler() {
         return interactionHandler;
     }
@@ -403,7 +439,7 @@ public class CafeBot {
         try {
             final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
             spotifyApi.setAccessToken(clientCredentials.getAccessToken());
-            logManager.log(CafeBot.class, LogLevel.INFO, "Spotify Access Token Expires In: `" + clientCredentials.getExpiresIn() + "` Seconds", true, false);
+            logManager.log(CafeBot.class, LogLevel.INFO, "Spotify Access Token Expires In: " + clientCredentials.getExpiresIn() + " Seconds", true, false);
             logManager.log(CafeBot.class, LogLevel.OKAY, "Successfully connected to the Spotify API!", true, false);
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             logManager.log(CafeBot.class, LogLevel.ERROR, e.getMessage());

@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * A command used to set the current {@link net.dv8tion.jda.api.entities.TextChannel TextChannel} to a {@link com.beanbeanjuice.utility.raffle.Raffle Raffle} channel.
+ * A command used to set the current {@link net.dv8tion.jda.api.entities.TextChannel TextChannel} to a {@link com.beanbeanjuice.utility.sections.fun.raffle.Raffle Raffle} channel.
  *
  * @author beanbeanjuice
  */

@@ -26,7 +26,11 @@ public class CountingStatisticsCommand implements ICommand {
         Integer currentNumber = CafeBot.getCountingHelper().getLastNumber(event.getGuild());
 
         if (highestNumber == null || currentNumber == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Error Getting Counting Statistics",
+                    "There was an error getting counting statistics. There are either no counting statistics " +
+                            "for the server on this bot, or there is an SQL server error."
+            )).queue();
             return;
         }
 
@@ -40,6 +44,7 @@ public class CountingStatisticsCommand implements ICommand {
         embedBuilder.addField("Highest Number", highestNumber.toString(), true);
         embedBuilder.addField("Current Number", currentNumber.toString(), true);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter("These statistics are for the current server only.");
         return embedBuilder.build();
     }
 

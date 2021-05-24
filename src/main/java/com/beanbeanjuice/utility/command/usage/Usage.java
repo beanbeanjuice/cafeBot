@@ -196,7 +196,7 @@ public class Usage {
         }
 
         try {
-            double d = Double.parseDouble(string);
+            int d = Integer.parseInt(string);
         } catch (NumberFormatException e) {
             return false;
         }
