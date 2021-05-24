@@ -6,8 +6,8 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import com.beanbeanjuice.utility.poll.Poll;
-import com.beanbeanjuice.utility.poll.PollEmoji;
+import com.beanbeanjuice.utility.sections.fun.poll.Poll;
+import com.beanbeanjuice.utility.sections.fun.poll.PollEmoji;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * A command used to add a {@link com.beanbeanjuice.utility.poll.Poll Poll}.
+ * A command used to add a {@link com.beanbeanjuice.utility.sections.fun.poll.Poll Poll}.
  *
  * @author beanbeanjuice
  */

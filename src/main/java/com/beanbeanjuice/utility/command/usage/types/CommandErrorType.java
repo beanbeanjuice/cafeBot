@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public enum CommandErrorType {
 
-    NUMBER ("A number is required."),
+    NUMBER ("A *whole* number is required."),
     USER ("A mentioned user is required."),
     LINK ("A link is required."),
     ROLE ("A mentioned role is required."),

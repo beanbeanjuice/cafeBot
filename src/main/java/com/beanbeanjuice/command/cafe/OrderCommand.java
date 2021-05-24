@@ -1,8 +1,8 @@
 package com.beanbeanjuice.command.cafe;
 
 import com.beanbeanjuice.main.CafeBot;
-import com.beanbeanjuice.utility.cafe.object.CafeCustomer;
-import com.beanbeanjuice.utility.cafe.object.MenuItem;
+import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
+import com.beanbeanjuice.utility.sections.cafe.object.MenuItem;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 /**
- * A command used to order {@link com.beanbeanjuice.utility.cafe.object.MenuItem MenuItem}s.
+ * A command used to order {@link com.beanbeanjuice.utility.sections.cafe.object.MenuItem MenuItem}s.
  *
  * @author beanbeanjuice
  */
