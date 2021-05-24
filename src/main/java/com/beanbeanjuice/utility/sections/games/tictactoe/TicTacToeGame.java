@@ -9,7 +9,9 @@ import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,6 +34,7 @@ public class TicTacToeGame {
 
     private final int TIME_UNTIL_END = 60;
     private int count = 0;
+    private boolean hasWinner = false;
 
     private HashMap<Long, Consumer<MessageReaction>> emojiListeners = new HashMap<>();
     private ListenerAdapter reactionListener;
@@ -55,8 +58,6 @@ public class TicTacToeGame {
                 if (callback != null) {
                     callback.accept(event.getReaction());
                 }
-
-                System.out.println("CHECKED REACTION");
             }
         };
 
@@ -70,13 +71,8 @@ public class TicTacToeGame {
             sendMessage();
         } catch (NullPointerException e) {
             stopGameTimer();
-            return;
         }
 
-//        while (checkGameExists()) {
-//
-//
-//        }
     }
 
     private void sendMessage() throws NullPointerException {
@@ -84,22 +80,62 @@ public class TicTacToeGame {
             currentMessageID = message.getId();
             addReactions(message);
 
-            System.out.println("ADDED REACTIONS");
             emojiListeners.put(message.getIdLong(), (r) -> {
 
-                System.out.println("CHECKING REACTION");
-                if (r.getReactionEmote().isEmoji() && !r.isSelf()) {
-                    r.retrieveUsers().queue();
-                    message.clearReactions().queue();
-                    message.addReaction(r.getReactionEmote().getEmoji()).queue();
-                    stopGameTimer(); // TODO: Not this
-                    System.out.println("FINISHING GAME");
-                    emojiListeners.remove(r.getMessageIdLong());
-                }
+                r.retrieveUsers().queue(users -> {
+
+                    // Checking if someone cancelled the game.
+                    if (users.contains(player1) || users.contains(player2)) {
+                        if (r.getReactionEmote().getEmoji().equals("❌")) {
+                            stopGameTimer();
+                            if (checkGameExists()) {
+                                CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
+                                    String title = retrievedMessage.getEmbeds().get(0).getTitle();
+                                    String description = retrievedMessage.getEmbeds().get(0).getDescription();
+                                    retrievedMessage.editMessage(endGameEmbed(title, description, "The game was cancelled.")).queue();
+                                });
+                            }
+                            return;
+                        }
+                    }
+
+                    if (users.contains(currentUser)) {
+                        if (getBoardEmojis().contains(r.getReactionEmote().getEmoji()) && !r.isSelf()) {
+
+                            if (!parseTurn(r.getReactionEmote())) {
+                                return;
+                            }
+
+                            r.retrieveUsers().queue();
+                            message.clearReactions().queue();
+                            message.addReaction(r.getReactionEmote().getEmoji()).queue();
+                            emojiListeners.remove(r.getMessageIdLong());
+
+                            if (!hasWinner) {
+                                sendMessage();
+                            }
+                            count = 0;
+                        }
+                    }
+                });
 
             });
 
         });
+    }
+
+    private ArrayList<String> getBoardEmojis() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("1️⃣");
+        arrayList.add("2️⃣");
+        arrayList.add("3️⃣");
+        arrayList.add("4️⃣");
+        arrayList.add("5️⃣");
+        arrayList.add("6️⃣");
+        arrayList.add("7️⃣");
+        arrayList.add("8️⃣");
+        arrayList.add("9️⃣");
+        return arrayList;
     }
 
     private void addReactions(Message message) {
@@ -142,9 +178,8 @@ public class TicTacToeGame {
             return false;
         }
 
-        Message message;
         try {
-            message = textChannel.getHistory().getMessageById(currentMessageID);
+            textChannel.retrieveMessageById(currentMessageID).queue();
         } catch (NullPointerException e) {
             return false;
         }
@@ -156,17 +191,36 @@ public class TicTacToeGame {
         gameTimerTask = new TimerTask() {
             @Override
             public void run() {
+                System.out.println(count);
                 if (count++ >= TIME_UNTIL_END) {
                     stopGameTimer();
-                    return;
+
+                    if (checkGameExists()) {
+                        CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
+                            String title = retrievedMessage.getEmbeds().get(0).getTitle();
+                            String description = retrievedMessage.getEmbeds().get(0).getDescription();
+                            retrievedMessage.editMessage(endGameEmbed(title, description, "The game ended because you didn't respond in time.")).queue(e -> {
+                                e.clearReactions().queue();
+                                e.addReaction("❌").queue();
+                            });
+                        });
+                    }
                 }
             }
         };
         gameTimer.scheduleAtFixedRate(gameTimerTask, 0, 1000);
     }
 
+    private MessageEmbed endGameEmbed(@NotNull String title, @NotNull String description, @NotNull String footer) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle(title);
+        embedBuilder.setDescription(description);
+        embedBuilder.setColor(Color.red);
+        embedBuilder.setFooter(footer);
+        return embedBuilder.build();
+    }
+
     private void stopGameTimer() {
-        System.out.println("STOPPING TIMER");
         gameTimer.cancel();
         CafeBot.getTicTacToeHandler().stopGame(this);
         CafeBot.getJDA().removeEventListener(reactionListener);
@@ -203,17 +257,130 @@ public class TicTacToeGame {
 
             if (currentUser.equals(player1)) {
                 board[x][y] = "❌";
+                checkGame("❌", player1);
                 currentUser = player2;
-            }
-
-            if (currentUser.equals(player2)) {
+            } else {
                 board[x][y] = "🔵";
+                checkGame("🔵", player2);
                 currentUser = player1;
             }
 
             return true;
         }
         return false;
+    }
+
+    private void checkGame(String unicodeEmoji, User player) {
+
+        boolean allSpotsTaken = true;
+
+        for (int y = 2; y >= 0; y--) {
+            for (int x = 0; x < 3; x++) {
+
+                if (board[x][y].equals(unicodeEmoji)) {
+
+                    try {
+                        // Check above and below
+                        if (board[x][y + 1].equals(unicodeEmoji) && board[x][y - 1].equals(unicodeEmoji)) {
+                            winGame(player);
+                            return;
+                        }
+                    } catch (ArrayIndexOutOfBoundsException ignored) {}
+
+                    try {
+                        // Check left and right
+                        if (board[x - 1][y].equals(unicodeEmoji) && board[x + 1][y].equals(unicodeEmoji)) {
+                            winGame(player);
+                            return;
+                        }
+                    } catch (ArrayIndexOutOfBoundsException ignored) {}
+
+                    try {
+                        // Check up right and down left
+                        if (board[x + 1][y + 1].equals(unicodeEmoji) && board[x - 1][y - 1].equals(unicodeEmoji)) {
+                            winGame(player);
+                            return;
+                        }
+                    } catch (ArrayIndexOutOfBoundsException ignored) {}
+
+                    try {
+                        // Check up left and down right
+                        if (board[x - 1][y + 1].equals(unicodeEmoji) && board[x + 1][y - 1].equals(unicodeEmoji)) {
+                            winGame(player);
+                            return;
+                        }
+                    } catch (ArrayIndexOutOfBoundsException ignored) {}
+
+                }
+
+                if (takenSpots[x][y] == false) {
+                    allSpotsTaken = false;
+                }
+
+            }
+
+        }
+
+        if (allSpotsTaken) {
+            tieGame();
+        }
+
+    }
+
+    private void tieGame() {
+        hasWinner = true;
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle("Tic-Tac-Toe");
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        StringBuilder boardBuilder = new StringBuilder();
+        boardBuilder.append("———+———+———\n");
+        for (int y = 2; y >= 0; y--) {
+            for (int x = 0; x < 3; x++) {
+                boardBuilder.append("|    ");
+                if (x == 2) {
+                    boardBuilder.append(" ");
+                }
+                boardBuilder.append(board[x][y]).append("     ");
+            }
+            boardBuilder.append("|\n———+———+———\n");
+        }
+
+        boardBuilder.append("\n**There was a tie!**");
+        embedBuilder.setDescription(boardBuilder.toString());
+        stopGameTimer();
+
+        if (checkGameExists()) {
+            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID)
+                    .sendMessage(embedBuilder.build()).queue();
+        }
+    }
+
+    private void winGame(@NotNull User user) {
+        hasWinner = true;
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle("Tic-Tac-Toe");
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        StringBuilder boardBuilder = new StringBuilder();
+        boardBuilder.append("———+———+———\n");
+        for (int y = 2; y >= 0; y--) {
+            for (int x = 0; x < 3; x++) {
+                boardBuilder.append("|    ");
+                if (x == 2) {
+                    boardBuilder.append(" ");
+                }
+                boardBuilder.append(board[x][y]).append("     ");
+            }
+            boardBuilder.append("|\n———+———+———\n");
+        }
+
+        boardBuilder.append("\n").append("**").append(user.getName()).append("** wins!");
+        embedBuilder.setDescription(boardBuilder.toString());
+        stopGameTimer();
+
+        if (checkGameExists()) {
+            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID)
+                    .sendMessage(embedBuilder.build()).queue();
+        }
     }
 
     public Boolean parseTurn(MessageReaction.ReactionEmote emote) {
@@ -293,8 +460,14 @@ public class TicTacToeGame {
             }
             boardBuilder.append("|\n———+———+———\n");
         }
+
+        if (player1.equals(currentUser)) {
+            boardBuilder.append("\n").append("**").append(player1.getName()).append("** vs ").append(player2.getName());
+        } else {
+            boardBuilder.append("\n").append(player1.getName()).append(" vs **").append(player2.getName()).append("**");
+        }
+
         embedBuilder.setDescription(boardBuilder.toString());
-        embedBuilder.setFooter(currentUser.getName() + "'s turn.");
         return embedBuilder.build();
     }
 
