@@ -44,6 +44,7 @@ public class CountingStatisticsCommand implements ICommand {
         embedBuilder.addField("Highest Number", highestNumber.toString(), true);
         embedBuilder.addField("Current Number", currentNumber.toString(), true);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter("These statistics are for the current server only.");
         return embedBuilder.build();
     }
 
