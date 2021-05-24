@@ -1,8 +1,6 @@
 package com.beanbeanjuice.utility.sections.games.tictactoe;
 
 import com.beanbeanjuice.main.CafeBot;
-import com.beanbeanjuice.utility.logger.LogLevel;
-import com.beanbeanjuice.utility.sql.SQLServer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
@@ -10,13 +8,17 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
+/**
+ * A custom {@link TicTacToeGame} object.
+ *
+ * @author beanbeanjuice
+ */
 public class TicTacToeGame {
 
     private String[][] board;
@@ -39,6 +41,12 @@ public class TicTacToeGame {
     private HashMap<Long, Consumer<MessageReaction>> emojiListeners = new HashMap<>();
     private ListenerAdapter reactionListener;
 
+    /**
+     * Creates a new {@link TicTacToeGame} object.
+     * @param player1 The first {@link User}.
+     * @param player2 The second {@link User}.
+     * @param textChannel The {@link TextChannel} the game is in.
+     */
     public TicTacToeGame(@NotNull User player1, @NotNull User player2, @NotNull TextChannel textChannel) {
         this.player1 = player1;
         this.player2 = player2;
@@ -50,6 +58,7 @@ public class TicTacToeGame {
         takenSpots = new boolean[3][3];
         fillBoard();
 
+        // Creates a new reaction listener for the current game.
         reactionListener = new ListenerAdapter() {
             @Override
             public void onGuildMessageReactionAdd(@NotNull GuildMessageReactionAddEvent event) {
@@ -61,9 +70,13 @@ public class TicTacToeGame {
             }
         };
 
+        // Adds the reaction listener to the JDA.
         CafeBot.getJDA().addEventListener(reactionListener);
     }
 
+    /**
+     * Starts the {@link TicTacToeGame}.
+     */
     public void startGame() {
         startGameTimer();
 
@@ -72,16 +85,19 @@ public class TicTacToeGame {
         } catch (NullPointerException e) {
             stopGameTimer();
         }
-
     }
 
+    /**
+     * Sends the first {@link TicTacToeGame} message.
+     * @throws NullPointerException This gets thrown if someone deletes the message.
+     */
     private void sendMessage() throws NullPointerException {
         CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessage(getBoardEmbed()).queue(message -> {
             currentMessageID = message.getId();
             addReactions(message);
 
+            // Adds this message to the reaction listeners.
             emojiListeners.put(message.getIdLong(), (r) -> {
-
                 r.retrieveUsers().queue(users -> {
 
                     // Checking if someone cancelled the game.
@@ -99,6 +115,7 @@ public class TicTacToeGame {
                         }
                     }
 
+                    // Makes sure the person who reacted is the user who is supposed to react.
                     if (users.contains(currentUser)) {
                         if (getBoardEmojis().contains(r.getReactionEmote().getEmoji()) && !r.isSelf()) {
 
@@ -118,12 +135,14 @@ public class TicTacToeGame {
                         }
                     }
                 });
-
             });
-
         });
     }
 
+    /**
+     * @return The board of emojis for the {@link TicTacToeGame}.
+     */
+    @NotNull
     private ArrayList<String> getBoardEmojis() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("1️⃣");
@@ -138,6 +157,10 @@ public class TicTacToeGame {
         return arrayList;
     }
 
+    /**
+     * Adds reactions to the {@link Message}.
+     * @param message The {@link Message} to have reactions added to.
+     */
     private void addReactions(Message message) {
         if (!takenSpots[0][2]) {
             message.addReaction("1️⃣").queue();
@@ -170,6 +193,11 @@ public class TicTacToeGame {
         message.addReaction("❌").queue();
     }
 
+    /**
+     * Makes sure the {@link TextChannel} and game {@link Message} still exist.
+     * @return Whether or not they exist.
+     */
+    @NotNull
     private Boolean checkGameExists() {
         TextChannel textChannel;
         try {
@@ -186,6 +214,9 @@ public class TicTacToeGame {
         return true;
     }
 
+    /**
+     * Starts the game {@link Timer}. Stops the game after inactivity.
+     */
     private void startGameTimer() {
         gameTimer = new Timer();
         gameTimerTask = new TimerTask() {
@@ -194,7 +225,6 @@ public class TicTacToeGame {
                 System.out.println(count);
                 if (count++ >= TIME_UNTIL_END) {
                     stopGameTimer();
-
                     if (checkGameExists()) {
                         CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
                             String title = retrievedMessage.getEmbeds().get(0).getTitle();
@@ -211,6 +241,14 @@ public class TicTacToeGame {
         gameTimer.scheduleAtFixedRate(gameTimerTask, 0, 1000);
     }
 
+    /**
+     * A {@link MessageEmbed} to be sent upon game ending.
+     * @param title The title of the {@link MessageEmbed}.
+     * @param description The description of the {@link MessageEmbed}.
+     * @param footer The footer of the {@link MessageEmbed}.
+     * @return The completed {@link MessageEmbed}.
+     */
+    @NotNull
     private MessageEmbed endGameEmbed(@NotNull String title, @NotNull String description, @NotNull String footer) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(title);
@@ -220,17 +258,27 @@ public class TicTacToeGame {
         return embedBuilder.build();
     }
 
+    /**
+     * Stops the current game {@link Timer}.
+     */
     private void stopGameTimer() {
         gameTimer.cancel();
         CafeBot.getTicTacToeHandler().stopGame(this);
         CafeBot.getJDA().removeEventListener(reactionListener);
     }
 
+    /**
+     * Gets the ID for the {@link Guild} that the {@link TicTacToeGame} is in.
+     * @return The {@link String} ID for the {@link Guild}.
+     */
     @NotNull
     public String getGuildID() {
         return guildID;
     }
 
+    /**
+     * Fills the board for the {@link TicTacToeGame}.
+     */
     private void fillBoard() {
         board[0][2] = "1️⃣";
         board[1][2] = "2️⃣";
@@ -243,18 +291,17 @@ public class TicTacToeGame {
         board[2][0] = "9️⃣";
     }
 
-    public void setCurrentMessageID(@NotNull String messageID) {
-        currentMessageID = messageID;
-    }
-
-    public String getCurrentMessageID() {
-        return currentMessageID;
-    }
-
+    /**
+     * Checks to see if a {@link User} can use that turn.
+     * @param x The X value of the button.
+     * @param y The Y value of the button.
+     * @return Whether or not the turn was used.
+     */
     public Boolean useTurn(@NotNull Integer x, @NotNull Integer y) {
         if (!takenSpots[x][y]) {
             takenSpots[x][y] = true;
 
+            // Makes sure to properly check for which player is currently playing.
             if (currentUser.equals(player1)) {
                 board[x][y] = "❌";
                 checkGame("❌", player1);
@@ -264,19 +311,23 @@ public class TicTacToeGame {
                 checkGame("🔵", player2);
                 currentUser = player1;
             }
-
             return true;
         }
         return false;
     }
 
+    /**
+     * Checks the {@link TicTacToeGame} for any winners.
+     * @param unicodeEmoji The unicode {@link String} to check for.
+     * @param player The possible {@link User} winner.
+     */
     private void checkGame(String unicodeEmoji, User player) {
-
         boolean allSpotsTaken = true;
 
         for (int y = 2; y >= 0; y--) {
             for (int x = 0; x < 3; x++) {
 
+                // Making sure to only check for the ones that should be checked.
                 if (board[x][y].equals(unicodeEmoji)) {
 
                     try {
@@ -316,17 +367,17 @@ public class TicTacToeGame {
                 if (takenSpots[x][y] == false) {
                     allSpotsTaken = false;
                 }
-
             }
-
         }
 
         if (allSpotsTaken) {
             tieGame();
         }
-
     }
 
+    /**
+     * A method that is run when there is a tie.
+     */
     private void tieGame() {
         hasWinner = true;
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -355,6 +406,10 @@ public class TicTacToeGame {
         }
     }
 
+    /**
+     * A method that is run when there is a winner.
+     * @param user The {@link User} who has won.
+     */
     private void winGame(@NotNull User user) {
         hasWinner = true;
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -383,6 +438,12 @@ public class TicTacToeGame {
         }
     }
 
+    /**
+     * Parses the {@link net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote ReactionEmote}.
+     * @param emote The {@link net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote ReactionEmote} to parse.
+     * @return Whether or not that is a valid turn.
+     */
+    @NotNull
     public Boolean parseTurn(MessageReaction.ReactionEmote emote) {
         String emoji = emote.getEmoji();
 
@@ -390,61 +451,54 @@ public class TicTacToeGame {
         int y;
 
         switch (emoji) {
-
             case "1️⃣" -> {
                 x = 0;
                 y = 2;
             }
-
             case "2️⃣" -> {
                 x = 1;
                 y = 2;
             }
-
             case "3️⃣" -> {
                 x = 2;
                 y = 2;
             }
-
             case "4️⃣" -> {
                 x = 0;
                 y = 1;
             }
-
             case "5️⃣" -> {
                 x = 1;
                 y = 1;
             }
-
             case "6️⃣" -> {
                 x = 2;
                 y = 1;
             }
-
             case "7️⃣" -> {
                 x = 0;
                 y = 0;
             }
-
             case "8️⃣" -> {
                 x = 1;
                 y = 0;
             }
-
             case "9️⃣" -> {
                 x = 2;
                 y = 0;
             }
-
             default -> {
                 return false;
             }
-
         }
         return useTurn(x, y);
     }
 
-    public MessageEmbed getBoardEmbed() {
+    /**
+     * @return The current board {@link MessageEmbed} for the {@link TicTacToeGame}.
+     */
+    @NotNull
+    private MessageEmbed getBoardEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Tic-Tac-Toe");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
