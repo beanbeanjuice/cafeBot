@@ -79,63 +79,78 @@ public class TicTacToeGame {
      */
     public void startGame() {
         startGameTimer();
+
         try {
-            sendMessage();
+            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessage("Creating Tic-Tac-Toe Game...").queue(message -> {
+                currentMessageID = message.getId();
+                editMessage();
+            });
         } catch (NullPointerException e) {
             stopGameTimer();
         }
     }
 
     /**
-     * Sends the first {@link TicTacToeGame} message.
-     * @throws NullPointerException This gets thrown if someone deletes the message.
+     * Edits the {@link TicTacToeGame} message.
      */
-    private void sendMessage() throws NullPointerException {
-        CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessage(getBoardEmbed()).queue(message -> {
-            currentMessageID = message.getId();
-            addReactions(message);
+    private void editMessage() {
+        try {
+            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(message -> {
+                message.editMessage(getBoardEmbed()).queue(editedMessage -> {
+                    addReactions(message);
 
-            // Adds this message to the reaction listeners.
-            emojiListeners.put(message.getIdLong(), (r) -> {
-                r.retrieveUsers().queue(users -> {
+                    // Adds this message to the reaction listeners.
+                    emojiListeners.put(message.getIdLong(), (r) -> {
+                        r.retrieveUsers().queue(users -> {
 
-                    // Checking if someone cancelled the game.
-                    if (users.contains(player1) || users.contains(player2)) {
-                        if (r.getReactionEmote().getEmoji().equals("❌")) {
-                            stopGameTimer();
-                            if (checkGameExists()) {
-                                CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
-                                    String title = retrievedMessage.getEmbeds().get(0).getTitle();
-                                    String description = retrievedMessage.getEmbeds().get(0).getDescription();
-                                    retrievedMessage.editMessage(endGameEmbed(title, description, "The game was cancelled.")).queue();
+                            // Checking if someone cancelled the game.
+                            if (users.contains(player1) || users.contains(player2)) {
+                                if (r.getReactionEmote().getEmoji().equals("❌")) {
+                                    stopGameTimer();
+                                    if (checkGameExists()) {
+                                        CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
+                                            String title = retrievedMessage.getEmbeds().get(0).getTitle();
+                                            String description = retrievedMessage.getEmbeds().get(0).getDescription();
+                                            retrievedMessage.editMessage(endGameEmbed(title, description, "The game was cancelled.")).queue();
+                                        });
+                                    }
+                                    return;
+                                }
+                            }
+
+                            // Makes sure the person who reacted is the user who is supposed to react.
+                            if (users.contains(currentUser)) {
+                                if (getBoardEmojis().contains(r.getReactionEmote().getEmoji()) && !r.isSelf()) {
+
+                                    if (!parseTurn(r.getReactionEmote())) {
+                                        return;
+                                    }
+
+                                    message.clearReactions(r.getReactionEmote().getEmoji()).queue();
+                                    emojiListeners.remove(r.getMessageIdLong());
+
+                                    if (!hasWinner) {
+                                        editMessage();
+                                    }
+                                    count = 0;
+                                }
+                            } else {
+                                r.retrieveUsers().queue(notPlayers -> {
+                                    for (User user : notPlayers) {
+                                        if (!user.isBot()) {
+                                            r.removeReaction(user).queue();
+                                        }
+                                    }
                                 });
                             }
-                            return;
-                        }
-                    }
-
-                    // Makes sure the person who reacted is the user who is supposed to react.
-                    if (users.contains(currentUser)) {
-                        if (getBoardEmojis().contains(r.getReactionEmote().getEmoji()) && !r.isSelf()) {
-
-                            if (!parseTurn(r.getReactionEmote())) {
-                                return;
-                            }
-
-                            r.retrieveUsers().queue();
-                            message.clearReactions().queue();
-                            message.addReaction(r.getReactionEmote().getEmoji()).queue();
-                            emojiListeners.remove(r.getMessageIdLong());
-
-                            if (!hasWinner) {
-                                sendMessage();
-                            }
-                            count = 0;
-                        }
-                    }
+                        });
+                    });
                 });
             });
-        });
+        } catch (NullPointerException e) {
+            stopGameTimer();
+            return;
+        }
     }
 
     /**
@@ -400,7 +415,9 @@ public class TicTacToeGame {
 
         if (checkGameExists()) {
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID)
-                    .sendMessage(embedBuilder.build()).queue();
+                    .editMessageById(currentMessageID, embedBuilder.build()).queue(message -> {
+                        message.clearReactions().queue();
+            });
         }
     }
 
@@ -432,7 +449,9 @@ public class TicTacToeGame {
 
         if (checkGameExists()) {
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID)
-                    .sendMessage(embedBuilder.build()).queue();
+                    .editMessageById(currentMessageID, embedBuilder.build()).queue(message -> {
+                        message.clearReactions().queue();
+            });
         }
     }
 
