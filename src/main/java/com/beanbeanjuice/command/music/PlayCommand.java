@@ -91,7 +91,7 @@ public class PlayCommand implements ICommand {
                     return;
                 }
 
-                link = "ytsearch:" + getLinkFromSpotifyTrack(track) + " audio only";
+                link = "ytsearch:" + getLinkFromSpotifyTrack(track) + " audio";
                 PlayerManager.getInstance().loadAndPlay(channel, link, false);
                 return;
 
@@ -141,7 +141,7 @@ public class PlayCommand implements ICommand {
                         stringBuilder.append(" and ").append(track.getArtists()[1].getName());
                     }
 
-                    PlayerManager.getInstance().loadAndPlay(channel, "ytsearch:" + stringBuilder.toString() + " audio only", true);
+                    PlayerManager.getInstance().loadAndPlay(channel, "ytsearch:" + stringBuilder.toString() + " audio", true);
                 }
                 event.getChannel().sendMessage(loadedPlaylist()).queue();
                 return;
@@ -158,7 +158,7 @@ public class PlayCommand implements ICommand {
                 String songName = response.getResults().get(0).getTrackName();
                 String artistName = response.getResults().get(0).getArtistName();
 
-                link = "ytsearch:" + songName + " by " + artistName + " audio only";
+                link = "ytsearch:" + songName + " by " + artistName + " audio";
             } else {
 
 //                link = link.split("pl.u-")[1].split("\\?")[0];
