@@ -483,24 +483,24 @@ public class ConnectFourGame {
         embedBuilder.setTitle("Connect Four");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         StringBuilder boardBuilder = new StringBuilder();
-        boardBuilder.append("———+———+———+——+———+———+———\n");
+        boardBuilder.append("———+———+————+———+———\n");
         for (int y = 5; y >= 0; y--) {
             for (int x = 0; x < 7; x++) {
-                boardBuilder.append("|    ");
+                boardBuilder.append("|  ");
                 if (x == 6) {
                     boardBuilder.append(" ");
                 }
-                boardBuilder.append(board[x][y]).append("     ");
+                boardBuilder.append(board[x][y]).append("   ");
             }
-            boardBuilder.append("|\n———+———+———+——+———+———+———\n");
+            boardBuilder.append("|\n———+———+————+———+———\n");
         }
 
         for (int i = 0; i < 7; i++) {
-            boardBuilder.append("|    ");
+            boardBuilder.append("|  ");
             if (i == 6) {
                 boardBuilder.append(" ");
             }
-            boardBuilder.append(getBoardEmojis().get(i)).append("     ");
+            boardBuilder.append(getBoardEmojis().get(i)).append("   ");
         }
 
         boardBuilder.append("|\n");
