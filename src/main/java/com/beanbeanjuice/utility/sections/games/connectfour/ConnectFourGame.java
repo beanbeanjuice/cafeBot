@@ -87,63 +87,78 @@ public class ConnectFourGame {
      */
     public void startGame() {
         startGameTimer();
+
         try {
-            sendMessage();
+            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessage("Creating Connect 4 Game...").queue(message -> {
+                currentMessageID = message.getId();
+                editMessage();
+            });
         } catch (NullPointerException e) {
             stopGameTimer();
         }
     }
 
     /**
-     * Sends a {@link Message} with {@link ConnectFourGame} information.
-     * @throws NullPointerException This is thrown if the message is deleted.
+     * Edits the {@link ConnectFourGame} message.
      */
-    private void sendMessage() throws NullPointerException {
-        CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessage(getBoardEmbed()).queue(message -> {
-            currentMessageID = message.getId();
-            addReactions(message);
+    private void editMessage() {
+        try {
 
-            // Adds this message to the reaction listeners.
-            emojiListeners.put(message.getIdLong(), (r) -> {
-                r.retrieveUsers().queue(users -> {
+            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).editMessageById(currentMessageID, getBoardEmbed()).queue(message -> {
 
-                    // Checking if someone cancelled the game.
-                    if (users.contains(player1) || users.contains(player2)) {
-                        if (r.getReactionEmote().getEmoji().equals("❌")) {
-                            stopGameTimer();
-                            if (checkGameExists()) {
-                                CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
-                                    String title = retrievedMessage.getEmbeds().get(0).getTitle();
-                                    String description = retrievedMessage.getEmbeds().get(0).getDescription();
-                                    retrievedMessage.editMessage(endGameEmbed(title, description, "The game was cancelled.")).queue();
-                                });
-                            }
-                            return;
-                        }
-                    }
+                addReactions(message);
 
-                    // Makes sure the person who reacted is the user who is supposed to react.
-                    if (users.contains(currentUser)) {
-                        if (getBoardEmojis().contains(r.getReactionEmote().getEmoji()) && !r.isSelf()) {
+                // Adds this message to the reaction listeners.
+                emojiListeners.put(message.getIdLong(), (r) -> {
+                    r.retrieveUsers().queue(users -> {
 
-                            if (!parseTurn(r.getReactionEmote())) {
+                        // Checking if someone cancelled the game.
+                        if (users.contains(player1) || users.contains(player2)) {
+                            if (r.getReactionEmote().getEmoji().equals("❌")) {
+                                stopGameTimer();
+                                if (checkGameExists()) {
+                                    CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
+                                        String title = retrievedMessage.getEmbeds().get(0).getTitle();
+                                        String description = retrievedMessage.getEmbeds().get(0).getDescription();
+                                        retrievedMessage.editMessage(endGameEmbed(title, description, "The game was cancelled.")).queue();
+                                    });
+                                }
                                 return;
                             }
-
-                            r.retrieveUsers().queue();
-                            message.clearReactions().queue();
-                            message.addReaction(r.getReactionEmote().getEmoji()).queue();
-                            emojiListeners.remove(r.getMessageIdLong());
-
-                            if (!hasWinner) {
-                                sendMessage();
-                            }
-                            count = 0;
                         }
-                    }
+
+                        // Makes sure the person who reacted is the user who is supposed to react.
+                        if (users.contains(currentUser)) {
+                            if (getBoardEmojis().contains(r.getReactionEmote().getEmoji()) && !r.isSelf()) {
+                                r.removeReaction(currentUser).queue();
+
+                                if (!parseTurn(r.getReactionEmote())) {
+                                    return;
+                                }
+
+                                emojiListeners.remove(r.getMessageIdLong());
+
+                                if (!hasWinner) {
+                                    editMessage();
+                                }
+                                count = 0;
+                            }
+                        } else {
+                            r.retrieveUsers().queue(notPlayers -> {
+                                for (User user : notPlayers) {
+                                    if (!user.isBot()) {
+                                        r.removeReaction(user).queue();
+                                    }
+                                }
+                            });
+                        }
+                    });
                 });
             });
-        });
+        } catch (NullPointerException e) {
+            stopGameTimer();
+            return;
+        }
     }
 
     /**
@@ -360,25 +375,24 @@ public class ConnectFourGame {
         embedBuilder.setTitle("Connect Four");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         StringBuilder boardBuilder = new StringBuilder();
-        boardBuilder.append("———+———+———+——+———+———+———\n");
-
+        boardBuilder.append("———+———+————+———+———\n");
         for (int y = 5; y >= 0; y--) {
             for (int x = 0; x < 7; x++) {
-                boardBuilder.append("|    ");
+                boardBuilder.append("|  ");
                 if (x == 6) {
                     boardBuilder.append(" ");
                 }
-                boardBuilder.append(board[x][y]).append("     ");
+                boardBuilder.append(board[x][y]).append("   ");
             }
-            boardBuilder.append("|\n———+———+———+——+———+———+———\n");
+            boardBuilder.append("|\n———+———+————+———+———\n");
         }
 
         for (int i = 0; i < 7; i++) {
-            boardBuilder.append("|    ");
+            boardBuilder.append("|  ");
             if (i == 6) {
                 boardBuilder.append(" ");
             }
-            boardBuilder.append(getBoardEmojis().get(i)).append("     ");
+            boardBuilder.append(getBoardEmojis().get(i)).append("   ");
         }
 
         boardBuilder.append("|\n");
@@ -388,7 +402,9 @@ public class ConnectFourGame {
 
         if (checkGameExists()) {
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID)
-                    .sendMessage(embedBuilder.build()).queue();
+                    .editMessageById(currentMessageID, embedBuilder.build()).queue(message -> {
+                        message.clearReactions().queue();
+            });
         }
     }
 
@@ -401,24 +417,24 @@ public class ConnectFourGame {
         embedBuilder.setTitle("Connect Four");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         StringBuilder boardBuilder = new StringBuilder();
-        boardBuilder.append("———+———+———+——+———+———+———\n");
+        boardBuilder.append("———+———+————+———+———\n");
         for (int y = 5; y >= 0; y--) {
             for (int x = 0; x < 7; x++) {
-                boardBuilder.append("|    ");
+                boardBuilder.append("|  ");
                 if (x == 6) {
                     boardBuilder.append(" ");
                 }
-                boardBuilder.append(board[x][y]).append("     ");
+                boardBuilder.append(board[x][y]).append("   ");
             }
-            boardBuilder.append("|\n———+———+———+——+———+———+———\n");
+            boardBuilder.append("|\n———+———+————+———+———\n");
         }
 
         for (int i = 0; i < 7; i++) {
-            boardBuilder.append("|    ");
+            boardBuilder.append("|  ");
             if (i == 6) {
                 boardBuilder.append(" ");
             }
-            boardBuilder.append(getBoardEmojis().get(i)).append("     ");
+            boardBuilder.append(getBoardEmojis().get(i)).append("   ");
         }
 
         boardBuilder.append("|\n");
@@ -428,7 +444,9 @@ public class ConnectFourGame {
 
         if (checkGameExists()) {
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID)
-                    .sendMessage(embedBuilder.build()).queue();
+                    .editMessageById(currentMessageID, embedBuilder.build()).queue(message -> {
+                        message.clearReactions().queue();
+            });
         }
     }
 
@@ -483,24 +501,24 @@ public class ConnectFourGame {
         embedBuilder.setTitle("Connect Four");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         StringBuilder boardBuilder = new StringBuilder();
-        boardBuilder.append("———+———+———+——+———+———+———\n");
+        boardBuilder.append("———+———+————+———+———\n");
         for (int y = 5; y >= 0; y--) {
             for (int x = 0; x < 7; x++) {
-                boardBuilder.append("|    ");
+                boardBuilder.append("|  ");
                 if (x == 6) {
                     boardBuilder.append(" ");
                 }
-                boardBuilder.append(board[x][y]).append("     ");
+                boardBuilder.append(board[x][y]).append("   ");
             }
-            boardBuilder.append("|\n———+———+———+——+———+———+———\n");
+            boardBuilder.append("|\n———+———+————+———+———\n");
         }
 
         for (int i = 0; i < 7; i++) {
-            boardBuilder.append("|    ");
+            boardBuilder.append("|  ");
             if (i == 6) {
                 boardBuilder.append(" ");
             }
-            boardBuilder.append(getBoardEmojis().get(i)).append("     ");
+            boardBuilder.append(getBoardEmojis().get(i)).append("   ");
         }
 
         boardBuilder.append("|\n");
