@@ -412,7 +412,9 @@ public class TicTacToeGame {
 
         if (checkGameExists()) {
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID)
-                    .editMessageById(currentMessageID, embedBuilder.build()).queue();
+                    .editMessageById(currentMessageID, embedBuilder.build()).queue(message -> {
+                        message.clearReactions().queue();
+            });
         }
     }
 
@@ -444,7 +446,9 @@ public class TicTacToeGame {
 
         if (checkGameExists()) {
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID)
-                    .editMessageById(currentMessageID, embedBuilder.build()).queue();
+                    .editMessageById(currentMessageID, embedBuilder.build()).queue(message -> {
+                        message.clearReactions().queue();
+            });
         }
     }
 
