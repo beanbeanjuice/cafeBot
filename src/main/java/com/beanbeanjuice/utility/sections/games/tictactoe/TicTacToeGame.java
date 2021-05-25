@@ -90,6 +90,9 @@ public class TicTacToeGame {
         }
     }
 
+    /**
+     * Edits the {@link TicTacToeGame} message.
+     */
     private void editMessage() {
         try {
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(message -> {

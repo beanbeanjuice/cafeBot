@@ -98,6 +98,9 @@ public class ConnectFourGame {
         }
     }
 
+    /**
+     * Edits the {@link ConnectFourGame} message.
+     */
     private void editMessage() {
         try {
 
@@ -152,8 +155,6 @@ public class ConnectFourGame {
                     });
                 });
             });
-
-
         } catch (NullPointerException e) {
             stopGameTimer();
             return;
