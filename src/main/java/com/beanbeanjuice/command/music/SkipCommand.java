@@ -38,26 +38,34 @@ public class SkipCommand implements ICommand {
             return;
         }
 
-        if (selfVoiceState.inVoiceChannel()) {
-            if (!event.getMember().getVoiceState().inVoiceChannel()) {
-                event.getChannel().sendMessage(user.getAsMention()).queue(e -> {
-                    e.delete().queue();
-                });
-                event.getChannel().sendMessage(mustBeInVoiceChannelEmbed()).queue();
-                return;
-            }
-
-            GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
-            AudioPlayer audioPlayer = musicManager.audioPlayer;
-
-            if (audioPlayer.getPlayingTrack() == null) {
-                event.getChannel().sendMessage(noTrackPlayingEmbed()).queue();
-                return;
-            }
-
-            musicManager.scheduler.nextTrack();
-            event.getChannel().sendMessage(successEmbed()).queue();
+        if (!event.getMember().getVoiceState().inVoiceChannel()) {
+            event.getChannel().sendMessage(mustBeInVoiceChannelEmbed()).queue();
+            return;
         }
+
+        if (!event.getMember().getVoiceState().getChannel().equals(selfVoiceState.getChannel())) {
+            event.getChannel().sendMessage(userMustBeInSameVoiceChannelEmbed()).queue();
+            return;
+        }
+
+        GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
+        AudioPlayer audioPlayer = musicManager.audioPlayer;
+
+        if (audioPlayer.getPlayingTrack() == null) {
+            event.getChannel().sendMessage(noTrackPlayingEmbed()).queue();
+            return;
+        }
+
+        musicManager.scheduler.nextTrack();
+        event.getChannel().sendMessage(successEmbed()).queue();
+    }
+
+    @NotNull
+    private MessageEmbed userMustBeInSameVoiceChannelEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setDescription("Sorry, you must be in the same voice channel as the bot to use this command.");
+        embedBuilder.setColor(Color.red);
+        return embedBuilder.build();
     }
 
     @NotNull
