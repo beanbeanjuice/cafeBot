@@ -51,7 +51,7 @@ public class AddPollCommand implements ICommand {
         Integer minutes = Integer.parseInt(args.get(3));
 
         // Making sure the poll channel exists.
-        TextChannel pollChannel = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getPollChannel();
+        TextChannel pollChannel = ctx.getCustomGuild().getPollChannel();
         if (pollChannel == null) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "No Poll Channel",

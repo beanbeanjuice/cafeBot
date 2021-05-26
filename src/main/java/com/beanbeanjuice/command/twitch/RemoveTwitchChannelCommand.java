@@ -28,7 +28,7 @@ public class RemoveTwitchChannelCommand implements ICommand {
             return;
         }
 
-        if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).removeTwitchChannel(args.get(0))) {
+        if (!ctx.getCustomGuild().removeTwitchChannel(args.get(0))) {
             event.getChannel().sendMessage(notAddedEmbed()).queue();
             return;
         }
