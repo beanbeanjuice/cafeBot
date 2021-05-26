@@ -27,7 +27,7 @@ public class SetLiveChannelCommand implements ICommand {
             return;
         }
 
-        if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).updateTwitchDiscordChannel(event.getChannel().getId())) {
+        if (!ctx.getCustomGuild().updateTwitchDiscordChannel(event.getChannel().getId())) {
             event.getChannel().sendMessage(unsuccessfulEmbed()).queue();
             return;
         }

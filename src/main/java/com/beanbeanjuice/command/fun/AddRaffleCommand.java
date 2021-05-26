@@ -46,7 +46,7 @@ public class AddRaffleCommand implements ICommand {
             return;
         }
 
-        TextChannel raffleChannel = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getRaffleChannel();
+        TextChannel raffleChannel = ctx.getCustomGuild().getRaffleChannel();
 
         if (raffleChannel == null) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(

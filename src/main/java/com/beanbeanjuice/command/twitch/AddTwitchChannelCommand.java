@@ -28,7 +28,7 @@ public class AddTwitchChannelCommand implements ICommand {
             return;
         }
 
-        if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).addTwitchChannel(args.get(0))) {
+        if (!ctx.getCustomGuild().addTwitchChannel(args.get(0))) {
             event.getChannel().sendMessage(alreadyAddedEmbed()).queue();
             return;
         }
