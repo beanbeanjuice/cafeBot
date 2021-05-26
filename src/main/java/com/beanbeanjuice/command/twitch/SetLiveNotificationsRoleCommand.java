@@ -32,7 +32,7 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
 
         // Checks if "none" is selected.
         if (args.get(0).equalsIgnoreCase("none")) {
-            if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLiveNotificationsRoleID("0")) {
+            if (ctx.getCustomGuild().setLiveNotificationsRoleID("0")) {
                 event.getChannel().sendMessage(noneEmbed()).queue();
             } else {
                 errorMessage(event);
@@ -51,7 +51,7 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
         }
 
         if (liveNotificationsRole != null) {
-            if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLiveNotificationsRole(liveNotificationsRole)) {
+            if (ctx.getCustomGuild().setLiveNotificationsRole(liveNotificationsRole)) {
                 event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                         "Updated Live Notifications Role",
                         "Successfully updated the role to " + liveNotificationsRole.getAsMention() + "."

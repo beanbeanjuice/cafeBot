@@ -22,7 +22,7 @@ public class PauseCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
+        ctx.getCustomGuild().setLastMusicChannel(event.getChannel());
 
         Member self = ctx.getSelfMember();
         GuildVoiceState selfVoiceState = self.getVoiceState();

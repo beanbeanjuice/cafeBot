@@ -38,7 +38,7 @@ public class RepeatCommand implements ICommand {
             return;
         }
 
-        CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
+        ctx.getCustomGuild().setLastMusicChannel(event.getChannel());
 
         final Member self = ctx.getSelfMember();
         final GuildVoiceState selfVoiceState = self.getVoiceState();
@@ -48,48 +48,57 @@ public class RepeatCommand implements ICommand {
             return;
         }
 
-        if (selfVoiceState.inVoiceChannel()) {
-            if (!event.getMember().getVoiceState().inVoiceChannel()) {
-                event.getChannel().sendMessage(user.getAsMention()).queue(e -> {
-                    e.delete().queue();
-                });
-                event.getChannel().sendMessage(mustBeInVoiceChannelEmbed()).queue();
+        if (!event.getMember().getVoiceState().inVoiceChannel()) {
+            event.getChannel().sendMessage(mustBeInVoiceChannelEmbed()).queue();
+            return;
+        }
+
+        if (!event.getMember().getVoiceState().getChannel().equals(selfVoiceState.getChannel())) {
+            event.getChannel().sendMessage(userMustBeInSameVoiceChannelEmbed()).queue();
+            return;
+        }
+
+        GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
+
+        if (commandName.equals("song")) {
+            final boolean newRepeating = !musicManager.scheduler.songRepeating;
+            musicManager.scheduler.songRepeating = newRepeating;
+
+            if (newRepeating) {
+                event.getChannel().sendMessage(successEmbed("Song repeating has now been turned on.")).queue();
+            } else {
+                event.getChannel().sendMessage(successEmbed("Song repeating has now been turned off.")).queue();
+            }
+        }
+
+        if (commandName.equals("playlist")) {
+
+            if (!musicManager.scheduler.playlistRepeating() && musicManager.scheduler.queue.isEmpty()) {
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                        "Cannot Repeat Playlist",
+                        "Cannot repeat the playlist as the playlist is currently empty."
+                )).queue();
                 return;
             }
 
-            GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
+            final boolean newRepeating = !musicManager.scheduler.playlistRepeating();
+            musicManager.scheduler.setPlaylistRepeating(newRepeating);
 
-            if (commandName.equals("song")) {
-                final boolean newRepeating = !musicManager.scheduler.songRepeating;
-                musicManager.scheduler.songRepeating = newRepeating;
-
-                if (newRepeating) {
-                    event.getChannel().sendMessage(successEmbed("Song repeating has now been turned on.")).queue();
-                } else {
-                    event.getChannel().sendMessage(successEmbed("Song repeating has now been turned off.")).queue();
-                }
-            }
-
-            if (commandName.equals("playlist")) {
-
-                if (!musicManager.scheduler.playlistRepeating() && musicManager.scheduler.queue.isEmpty()) {
-                    event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
-                            "Cannot Repeat Playlist",
-                            "Cannot repeat the playlist as the playlist is currently empty."
-                    )).queue();
-                    return;
-                }
-
-                final boolean newRepeating = !musicManager.scheduler.playlistRepeating();
-                musicManager.scheduler.setPlaylistRepeating(newRepeating);
-
-                if (newRepeating) {
-                    event.getChannel().sendMessage(successEmbed("Playlist repeating has now been turned on.")).queue();
-                } else {
-                    event.getChannel().sendMessage(successEmbed("Playlist repeating has now been turned off.")).queue();
-                }
+            if (newRepeating) {
+                event.getChannel().sendMessage(successEmbed("Playlist repeating has now been turned on.")).queue();
+            } else {
+                event.getChannel().sendMessage(successEmbed("Playlist repeating has now been turned off.")).queue();
             }
         }
+
+    }
+
+    @NotNull
+    private MessageEmbed userMustBeInSameVoiceChannelEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setDescription("Sorry, you must be in the same voice channel as the bot to use this command.");
+        embedBuilder.setColor(Color.red);
+        return embedBuilder.build();
     }
 
     @NotNull
