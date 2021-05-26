@@ -20,10 +20,20 @@ public class DiceRollCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        System.out.println(Integer.parseInt(args.get(0)));
+
+        int number = Integer.parseInt(args.get(0));
+
+        if (number < 6) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Number Too Low",
+                    "You must choose a number that is greater than 6!"
+            )).queue();
+            return;
+        }
+
         event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                 "Dice Roll!",
-                "You rolled a `" + CafeBot.getGeneralHelper().getRandomNumber(1, Integer.parseInt(args.get(0)) + 1) + "`."
+                "You rolled a `" + CafeBot.getGeneralHelper().getRandomNumber(1, number + 1) + "`."
         )).queue();
     }
 
@@ -36,8 +46,10 @@ public class DiceRollCommand implements ICommand {
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("diceroll");
+        arrayList.add("roll-dice");
         arrayList.add("roll");
         arrayList.add("dice");
+        arrayList.add("dr");
         return arrayList;
     }
 
