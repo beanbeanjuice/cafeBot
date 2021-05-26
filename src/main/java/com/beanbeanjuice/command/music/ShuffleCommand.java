@@ -7,11 +7,15 @@ import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -44,6 +48,11 @@ public class ShuffleCommand implements ICommand {
             return;
         }
 
+        if (!event.getMember().getVoiceState().getChannel().equals(selfVoiceState.getChannel())) {
+            event.getChannel().sendMessage(userMustBeInSameVoiceChannelEmbed()).queue();
+            return;
+        }
+
         GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
 
         if (musicManager.scheduler.queue.isEmpty()) {
@@ -67,6 +76,14 @@ public class ShuffleCommand implements ICommand {
                     "The current queue has been unshuffled!"
             )).queue();
         }
+    }
+
+    @NotNull
+    private MessageEmbed userMustBeInSameVoiceChannelEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setDescription("Sorry, you must be in the same voice channel as the bot to use this command.");
+        embedBuilder.setColor(Color.red);
+        return embedBuilder.build();
     }
 
     @Override
