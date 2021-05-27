@@ -66,6 +66,11 @@ public class Listener extends ListenerAdapter {
             }
         }
 
+        if (event.getMessage().getContentRaw().equals("!!get-prefix")) {
+            event.getChannel().sendMessage("The current prefix is :`" + CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getPrefix() + "`.").queue();
+            return;
+        }
+
         User user = event.getAuthor();
 
         // Checking if the person is a bot or if the event is a webhook message.
