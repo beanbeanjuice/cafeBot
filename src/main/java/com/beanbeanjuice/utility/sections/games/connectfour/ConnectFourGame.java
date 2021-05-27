@@ -89,7 +89,7 @@ public class ConnectFourGame {
         startGameTimer();
 
         try {
-            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessage("Creating Connect 4 Game...").queue(message -> {
+            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessage(getBoardEmbed()).queue(message -> {
                 currentMessageID = message.getId();
                 editMessage();
             });
@@ -105,7 +105,6 @@ public class ConnectFourGame {
         try {
 
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).editMessageById(currentMessageID, getBoardEmbed()).queue(message -> {
-
                 addReactions(message);
 
                 // Adds this message to the reaction listeners.
@@ -351,7 +350,6 @@ public class ConnectFourGame {
                             return;
                         }
                     } catch (ArrayIndexOutOfBoundsException ignored) {}
-
                 }
 
                 if (takenSpots[x][y] == false) {
