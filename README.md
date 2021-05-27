@@ -120,6 +120,7 @@ This is an example of how to list things you need to use the software and how to
 * `!!help` - Shows a list of command section.
 * `!!help (command section name)` - Shows a list of commands in that section.
 * `!!help (command name/alias)` - Shows how to use the command.
+* `!!get-prefix` - Gets the current prefix for the server if you forget it!
 
 <p align="center">
   <img src=images/help.png>
