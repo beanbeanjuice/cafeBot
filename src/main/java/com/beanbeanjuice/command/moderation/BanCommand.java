@@ -42,7 +42,6 @@ public class BanCommand implements ICommand {
         if (args.size() >= 2) {
             for (int i = 1; i < args.size(); i++) {
                 reason.append(args.get(i));
-
                 if (i != args.size() - 1) {
                     reason.append(" ");
                 }
@@ -56,8 +55,8 @@ public class BanCommand implements ICommand {
             return;
         }
 
-        event.getChannel().sendMessage(successfulBanWithReasonEmbed(punishee, user, reason.toString())).queue();
         CafeBot.getGeneralHelper().pmUser(punishee, "You have been banned: " + reason.toString());
+        event.getChannel().sendMessage(successfulBanWithReasonEmbed(punishee, user, reason.toString())).queue();
     }
 
     @NotNull
