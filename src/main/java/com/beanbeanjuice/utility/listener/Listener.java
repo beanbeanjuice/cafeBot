@@ -67,7 +67,7 @@ public class Listener extends ListenerAdapter {
         }
 
         if (event.getMessage().getContentRaw().equals("!!get-prefix")) {
-            event.getChannel().sendMessage("The current prefix is :`" + CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getPrefix() + "`.").queue();
+            event.getChannel().sendMessage(prefixEmbed(CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getPrefix())).queue();
             return;
         }
 
@@ -92,6 +92,16 @@ public class Listener extends ListenerAdapter {
         if (raw.startsWith(prefix)) {
             CafeBot.getCommandManager().handle(event, prefix);
         }
+    }
+
+    @NotNull
+    private MessageEmbed prefixEmbed(@NotNull String prefix) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle("Server Prefix");
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setThumbnail(CafeBot.getJDA().getSelfUser().getAvatarUrl());
+        embedBuilder.setDescription("Hello! The current prefix you have set for me is: `" + prefix + "`.");
+        return embedBuilder.build();
     }
 
     @NotNull
