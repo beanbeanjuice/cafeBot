@@ -180,6 +180,8 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `dance` - Dance with someone!
 * `dab` - Dab at someone!
 * `bonk` - Bonk someone! Send them to `h o r n i` jail.
+* `sleep` - Sleep! (Or sleep with someone...)
+* `die` - Just straight up die.
 ##### 6. **MUSIC**
 * `play` - Play a song or playlist!
 * `now-playing` - Show the current song playing.
