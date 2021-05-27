@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation;
+package com.beanbeanjuice.command.moderation.counting;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -11,21 +11,22 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to set the birthday channel.
+ * An {@link ICommand} used to remove the counting {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
-public class SetBirthdayChannelCommand implements ICommand {
+public class RemoveCountingChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
-        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setBirthdayChannelID(event.getChannel().getId())) {
+
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setCountingChannel("0")) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                    "Updated Birthday Channel",
-                    "This channel has been set to an active birthday channel. To remove it, simply delete the channel."
+                    "Removed Counting Channel",
+                    "Successfully removed the counting channel."
             )).queue();
             return;
         }
@@ -34,24 +35,26 @@ public class SetBirthdayChannelCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "set-birthday-channel";
+        return "remove-counting-channel";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setbirthdaychannel");
+        arrayList.add("removecountingchannel");
+        arrayList.add("unset-counting-channel");
+        arrayList.add("unsetcountingchannel");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Set the current channel to an active birthday channel!";
+        return "Remove the counting channel!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!set-birthday-channel`";
+        return "`!!remove-counting-channel`";
     }
 
     @Override
@@ -63,5 +66,4 @@ public class SetBirthdayChannelCommand implements ICommand {
     public CategoryType getCategoryType() {
         return CategoryType.MODERATION;
     }
-
 }

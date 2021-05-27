@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation;
+package com.beanbeanjuice.command.moderation.counting;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -11,11 +11,11 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * A command used for setting the {@link net.dv8tion.jda.api.entities.TextChannel TextChannel} to a {@link com.beanbeanjuice.utility.sections.fun.poll.Poll Poll} channel.
+ * A command used for setting the counting {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
-public class SetPollChannelCommand implements ICommand {
+public class SetCountingChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
@@ -23,37 +23,39 @@ public class SetPollChannelCommand implements ICommand {
             return;
         }
 
-        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setPollChannel(event.getChannel().getId())) {
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setCountingChannel(event.getChannel().getId())) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                    "Set Poll Channel",
-                    "The current channel has been set to a `poll` channel!"
+                    "Updated Counting Channel",
+                    "Successfully set the counting channel to this channel. " +
+                            "To remove counting, just delete the channel."
             )).queue();
+
+            CafeBot.getCountingHelper().createNewRow(event.getGuild());
             return;
         }
-
         event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
     }
 
     @Override
     public String getName() {
-        return "set-poll-channel";
+        return "set-counting-channel";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setpollchannel");
+        arrayList.add("setcountingchannel");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Set the current channel as a poll channel!";
+        return "Set the current channel to the active counting channel.";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!setpollchannel`";
+        return "`!!setcountingchannel`";
     }
 
     @Override
