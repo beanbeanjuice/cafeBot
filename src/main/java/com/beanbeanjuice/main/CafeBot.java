@@ -233,7 +233,9 @@ public class CafeBot {
                 new CryCommand(),
                 new DanceCommand(),
                 new DabCommand(),
-                new BonkCommand()
+                new BonkCommand(),
+                new SleepCommand(),
+                new DieCommand()
         );
 
         // Music Commands

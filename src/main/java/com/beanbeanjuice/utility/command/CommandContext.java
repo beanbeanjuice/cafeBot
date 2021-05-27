@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.command;
 
 import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.utility.guild.CustomGuild;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -39,6 +40,14 @@ public class CommandContext {
     @NotNull
     public Guild getGuild() {
         return this.getEvent().getGuild();
+    }
+
+    /**
+     * @return The {@link CustomGuild} for the {@link Guild}.
+     */
+    @NotNull
+    public CustomGuild getCustomGuild() {
+        return CafeBot.getGuildHandler().getCustomGuild(getGuild());
     }
 
     /**

@@ -81,7 +81,7 @@ public class TicTacToeGame {
         startGameTimer();
 
         try {
-            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessage("Creating Tic-Tac-Toe Game...").queue(message -> {
+            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessage(getBoardEmbed()).queue(message -> {
                 currentMessageID = message.getId();
                 editMessage();
             });

@@ -27,7 +27,7 @@ public class StopCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
+        ctx.getCustomGuild().setLastMusicChannel(event.getChannel());
 
         final Member self = ctx.getSelfMember();
         final GuildVoiceState selfVoiceState = self.getVoiceState();
@@ -39,6 +39,11 @@ public class StopCommand implements ICommand {
 
         if (!event.getMember().getVoiceState().inVoiceChannel()) {
             event.getChannel().sendMessage(userMustBeInVoiceChannelEmbed()).queue();
+            return;
+        }
+
+        if (!event.getMember().getVoiceState().getChannel().equals(self.getVoiceState().getChannel())) {
+            event.getChannel().sendMessage(userMustBeInSameVoiceChannelEmbed()).queue();
             return;
         }
 
@@ -61,6 +66,14 @@ public class StopCommand implements ICommand {
     private MessageEmbed botMustBeInVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription("I'm not currently in a voice channel.");
+        embedBuilder.setColor(Color.red);
+        return embedBuilder.build();
+    }
+
+    @NotNull
+    private MessageEmbed userMustBeInSameVoiceChannelEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setDescription("Sorry, you must be in the same voice channel as the bot to use this command.");
         embedBuilder.setColor(Color.red);
         return embedBuilder.build();
     }
