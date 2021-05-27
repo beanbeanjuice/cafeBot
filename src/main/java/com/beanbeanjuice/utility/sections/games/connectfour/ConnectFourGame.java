@@ -522,9 +522,9 @@ public class ConnectFourGame {
         boardBuilder.append("|\n");
 
         if (player1.equals(currentUser)) {
-            boardBuilder.append("\n").append("**").append(player1.getName()).append("** vs ").append(player2.getName());
+            boardBuilder.append("\n").append("**").append(player1.getName()).append("** (🔴) vs ").append(player2.getName()).append(" (🟡)");
         } else {
-            boardBuilder.append("\n").append(player1.getName()).append(" vs **").append(player2.getName()).append("**");
+            boardBuilder.append("\n").append(player1.getName()).append(" (🔴) vs **").append(player2.getName()).append("** (🟡)");
         }
 
         embedBuilder.setDescription(boardBuilder.toString());
