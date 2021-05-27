@@ -73,6 +73,7 @@ public class BanCommand implements ICommand {
         embedBuilder.setTitle("User Banned");
         embedBuilder.setDescription("`" + punishee.getName() + "` has been banned for `" + reason + "`.");
         embedBuilder.addField("Banned By:", punisher.getAsMention(), true);
+        embedBuilder.setThumbnail(punishee.getAvatarUrl());
         return embedBuilder.build();
     }
 
