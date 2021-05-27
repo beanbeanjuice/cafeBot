@@ -96,7 +96,7 @@ public class KickCommand implements ICommand {
 
     @Override
     public String exampleUsage() {
-        return "`!!kick @beanbeanjuice you're trash`";
+        return "`!!kick @beanbeanjuice` or `!!kick @beanbeanjuice you're trash`";
     }
 
     @Override
