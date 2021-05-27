@@ -15,9 +15,11 @@ task buildWithDependencies(type: Jar) {
     with jar
 }
 
+def result = new groovy.json.JsonSlurper().parseText(file('beta.json').text)
+
 group 'com.beanbeanjuice'
 mainClassName = 'com.beanbeanjuice.main.CafeBot'
-version 'v2.3.3'
+version result.bot.version
 
 repositories {
 
