@@ -19,7 +19,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * A command used for kicking people.
+ * An {@link ICommand} used for kicking people.
  *
  * @author beanbeanjuice
  */
@@ -31,7 +31,15 @@ public class KickCommand implements ICommand {
             return;
         }
 
-        Member punishee = event.getMessage().getMentionedMembers().get(0);
+        User punishee = CafeBot.getGeneralHelper().getUser(args.get(0));
+
+        if (args.size() == 1) {
+
+        }
+
+        if (args.size() >= 2) {
+
+        }
 
         StringBuilder reason = new StringBuilder();
 
@@ -39,7 +47,6 @@ public class KickCommand implements ICommand {
             reason.append(args.get(i)).append(" ");
         }
 
-        // TODO: Not PMing users
         CafeBot.getGeneralHelper().pmUser(punishee.getUser(), "You have been kicked: " + reason.toString());
 
         try {
