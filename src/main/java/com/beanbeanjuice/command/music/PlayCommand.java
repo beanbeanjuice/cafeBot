@@ -41,7 +41,7 @@ public class PlayCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLastMusicChannel(event.getChannel());
+        ctx.getCustomGuild().setLastMusicChannel(event.getChannel());
 
         final TextChannel channel = event.getChannel();
         final Member self = ctx.getSelfMember();
@@ -63,10 +63,18 @@ public class PlayCommand implements ICommand {
             ctx.getGuild().getAudioManager().openAudioConnection(event.getMember().getVoiceState().getChannel());
 
             // Start listening for the audio connection.
-            CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).startAudioChecking();
-        } else if (!event.getMember().getVoiceState().getChannel().equals(selfVoiceState.getChannel())) {
-            event.getChannel().sendMessage(userMustBeInSameVoiceChannelEmbed()).queue();
-            return;
+            ctx.getCustomGuild().startAudioChecking();
+        } else {
+
+            try {
+                if (!event.getMember().getVoiceState().getChannel().equals(selfVoiceState.getChannel())) {
+                    event.getChannel().sendMessage(userMustBeInSameVoiceChannelEmbed()).queue();
+                    return;
+                }
+            } catch (NullPointerException e) {
+                event.getChannel().sendMessage(userMustBeInVoiceChannelEmbed()).queue();
+                return;
+            }
         }
 
         String link = String.join(" ", args);
@@ -228,15 +236,7 @@ public class PlayCommand implements ICommand {
     @NotNull
     private MessageEmbed userMustBeInSameVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setDescription("Sorry, you must be in a voice channel to use this command.");
-        embedBuilder.setColor(Color.red);
-        return embedBuilder.build();
-    }
-
-    @NotNull
-    private MessageEmbed botMustBeInVoiceChannelEmbed() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setDescription("I'm not currently in a voice channel.");
+        embedBuilder.setDescription("Sorry, you must be in the same voice channel to use this command.");
         embedBuilder.setColor(Color.red);
         return embedBuilder.build();
     }
