@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation;
+package com.beanbeanjuice.command.moderation.update;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -11,51 +11,49 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * A command used to set the current {@link net.dv8tion.jda.api.entities.TextChannel TextChannel} to a {@link com.beanbeanjuice.utility.sections.fun.raffle.Raffle Raffle} channel.
+ * A command used for setting up the update {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
-public class SetRaffleChannelCommand implements ICommand {
+public class SetUpdateChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
         if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
 
-        if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setRaffleChannel(event.getChannel().getId())) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setUpdateChannel(event.getChannel().getId())) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                    "Set Update Channel",
+                    "This channel will now receive bot updates! Make sure to enable notifications " +
+                            "with the `notify-on-update` command!"
+            )).queue();
             return;
         }
-
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                "Set Raffle Channel",
-                "This channel has been set to an active raffle channel!"
-        )).queue();
-
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
     }
 
     @Override
     public String getName() {
-        return "set-raffle-channel";
+        return "set-update-channel";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setrafflechannel");
+        arrayList.add("setupdatechannel");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Set the current channel to a raffle channel.";
+        return "Sets the current channel to the channel that receives bot updates.";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!set-raffle-channel`";
+        return "`!!setupdatechannel`";
     }
 
     @Override

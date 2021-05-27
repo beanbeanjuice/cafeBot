@@ -5,21 +5,17 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * A command to set the live channel.
+ * An {@link ICommand} used to remove the live {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
-public class SetLiveChannelCommand implements ICommand {
+public class RemoveLiveChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
@@ -27,10 +23,10 @@ public class SetLiveChannelCommand implements ICommand {
             return;
         }
 
-        if (ctx.getCustomGuild().updateTwitchDiscordChannel(event.getChannel().getId())) {
+        if (ctx.getCustomGuild().updateTwitchDiscordChannel("0")) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                    "Set Live Channel",
-                    "Successfully set the live channel to this channel!"
+                    "Removed Live Channel",
+                    "Successfully removed the live channel!"
             )).queue();
             return;
         }
@@ -40,24 +36,26 @@ public class SetLiveChannelCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "set-live-channel";
+        return "remove-live-channel";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setlivechannel");
+        arrayList.add("removelivechannel");
+        arrayList.add("unset-live-channel");
+        arrayList.add("unsetlivechannel");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Set the current channel to a live channel.";
+        return "Remove the live channel!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!setlivechannel`";
+        return "`!!remove-live-channel`";
     }
 
     @Override

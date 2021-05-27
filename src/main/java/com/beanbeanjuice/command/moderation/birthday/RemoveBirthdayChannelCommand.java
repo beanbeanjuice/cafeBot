@@ -1,63 +1,59 @@
-package com.beanbeanjuice.command.twitch;
+package com.beanbeanjuice.command.moderation.birthday;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * A command to set the live channel.
+ * An {@link ICommand} used to remove the Birthday {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
-public class SetLiveChannelCommand implements ICommand {
+public class RemoveBirthdayChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        if (!CafeBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
+        if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
-
-        if (ctx.getCustomGuild().updateTwitchDiscordChannel(event.getChannel().getId())) {
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setBirthdayChannelID("0")) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                    "Set Live Channel",
-                    "Successfully set the live channel to this channel!"
+                    "Removed Birthday Channel",
+                    "The current birthday channel has been unset."
             )).queue();
             return;
         }
-
         event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
     }
 
     @Override
     public String getName() {
-        return "set-live-channel";
+        return "remove-birthday-channel";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setlivechannel");
+        arrayList.add("removebirthdaychannel");
+        arrayList.add("unset-birthday-channel");
+        arrayList.add("unsetbirthdaychannel");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Set the current channel to a live channel.";
+        return "Remove the birthday channel!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!setlivechannel`";
+        return "`!!remove-birthday-channel`";
     }
 
     @Override
@@ -67,6 +63,6 @@ public class SetLiveChannelCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.TWITCH;
+        return CategoryType.MODERATION;
     }
 }

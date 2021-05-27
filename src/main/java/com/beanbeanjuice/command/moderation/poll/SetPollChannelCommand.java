@@ -1,36 +1,32 @@
-package com.beanbeanjuice.command.twitch;
+package com.beanbeanjuice.command.moderation.poll;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * A command to set the live channel.
+ * A command used for setting the {@link net.dv8tion.jda.api.entities.TextChannel TextChannel} to a {@link com.beanbeanjuice.utility.sections.fun.poll.Poll Poll} channel.
  *
  * @author beanbeanjuice
  */
-public class SetLiveChannelCommand implements ICommand {
+public class SetPollChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        if (!CafeBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
+        if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
 
-        if (ctx.getCustomGuild().updateTwitchDiscordChannel(event.getChannel().getId())) {
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setPollChannel(event.getChannel().getId())) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                    "Set Live Channel",
-                    "Successfully set the live channel to this channel!"
+                    "Set Poll Channel",
+                    "The current channel has been set to a `poll` channel!"
             )).queue();
             return;
         }
@@ -40,24 +36,24 @@ public class SetLiveChannelCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "set-live-channel";
+        return "set-poll-channel";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setlivechannel");
+        arrayList.add("setpollchannel");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Set the current channel to a live channel.";
+        return "Set the current channel as a poll channel!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!setlivechannel`";
+        return "`!!setpollchannel`";
     }
 
     @Override
@@ -67,6 +63,6 @@ public class SetLiveChannelCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.TWITCH;
+        return CategoryType.MODERATION;
     }
 }
