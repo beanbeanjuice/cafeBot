@@ -95,6 +95,7 @@ public class ServeCommand implements ICommand {
         embedBuilder.addField("Tip From Serving", CafeBot.getServeHandler().roundDouble(tipFromWord).toString(), true);
         embedBuilder.addField("Current Balance", CafeBot.getServeHandler().roundDouble(currentBalance).toString(), true);
         embedBuilder.addField("Time Until Next Serving", CafeBot.getServeHandler().getMinutesUntilCanServe().toString(), true);
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 
@@ -105,6 +106,7 @@ public class ServeCommand implements ICommand {
         embedBuilder.addField("Tip From Serving", CafeBot.getServeHandler().roundDouble(tipFromWord).toString(), true);
         embedBuilder.addField("Current Balance", CafeBot.getServeHandler().roundDouble(currentBalance).toString(), true);
         embedBuilder.addField("Time Until Next Serving", CafeBot.getServeHandler().getMinutesUntilCanServe().toString(), true);
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 
