@@ -105,7 +105,7 @@ public class ConnectFourGame {
         try {
 
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).editMessageById(currentMessageID, getBoardEmbed()).queue(message -> {
-
+                message.editMessage("------------").queue();
                 addReactions(message);
 
                 // Adds this message to the reaction listeners.
