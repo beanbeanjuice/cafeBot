@@ -178,13 +178,13 @@ public class CustomGuild {
 
     /**
      * Set the Counting {@link TextChannel} for the {@link Guild}.
-     * @param countingChannel The {@link TextChannel} used for counting.
+     * @param countingChannelID The ID of the {@link TextChannel} used for counting.
      * @return Whether or not setting the counting {@link TextChannel} was successful.
      */
     @NotNull
-    public Boolean setCountingChannel(@NotNull TextChannel countingChannel) {
-        if (CafeBot.getGuildHandler().setCountingChannelID(guildID, countingChannel.getId())) {
-            this.countingChannelID = countingChannel.getId();
+    public Boolean setCountingChannel(@NotNull String countingChannelID) {
+        if (CafeBot.getGuildHandler().setCountingChannelID(guildID, countingChannelID)) {
+            this.countingChannelID = countingChannelID;
             return true;
         }
         return false;
@@ -214,16 +214,6 @@ public class CustomGuild {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Set the Bot Update Channel for the {@link Guild}.
-     * @param textChannel The {@link TextChannel} used for sending bot updates.
-     * @return Whether or not setting the update {@link TextChannel} was successful.
-     */
-    @NotNull
-    public Boolean setUpdateChannel(@NotNull TextChannel textChannel) {
-        return setUpdateChannel(textChannel.getId());
     }
 
     /**
@@ -440,7 +430,7 @@ public class CustomGuild {
      * @return Whether or not the {@link Role} was successfully updated in the database.
      */
     @NotNull
-    public Boolean updateMutedRole(String mutedRoleID) {
+    public Boolean setMutedRoleID(String mutedRoleID) {
 
         if (CafeBot.getGuildHandler().updateGuildMutedRole(guildID, mutedRoleID)) {
             this.mutedRoleID = mutedRoleID;

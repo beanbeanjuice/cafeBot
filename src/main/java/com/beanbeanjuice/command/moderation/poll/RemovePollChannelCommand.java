@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation;
+package com.beanbeanjuice.command.moderation.poll;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -11,57 +11,51 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * A command used for setting the counting {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+ * An {@link ICommand} used to remove the poll {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
-public class SetCountingChannelCommand implements ICommand {
+public class RemovePollChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
         if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
 
-        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setCountingChannel(event.getChannel())) {
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setPollChannel("0")) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                    "Updated Counting Channel",
-                    "Successfully set the counting channel to this channel. " +
-                            "To remove counting, just delete the channel."
+                    "Removed Poll Channel",
+                    "The poll channel has been successfully removed."
             )).queue();
-
-            CafeBot.getCountingHelper().createNewRow(event.getGuild());
             return;
         }
 
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
-                "Error Updating Counting Channel",
-                "There was an error updating the counting channel. Please try again."
-        )).queue();
-
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
     }
 
     @Override
     public String getName() {
-        return "set-counting-channel";
+        return "remove-poll-channel";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setcountingchannel");
+        arrayList.add("removepollchannel");
+        arrayList.add("unset-poll-channel");
+        arrayList.add("unsetpollchannel");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Set the current channel to the active counting channel.";
+        return "Remove the poll channel!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!setcountingchannel`";
+        return "`!!remove-poll-channel`";
     }
 
     @Override

@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -29,14 +30,42 @@ public class SetMutedRoleCommand implements ICommand {
             return;
         }
 
-        Role role = CafeBot.getGeneralHelper().getRole(event.getGuild(), args.get(0));
+        String argument = args.get(0).replace("<@&", "").replace(">", "");
 
-        if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).updateMutedRole(role.getId())) {
+        Role role = event.getGuild().getRoleById(argument);
+
+        if (args.get(0).equals("0")) {
+            if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setMutedRoleID("0")) {
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                        "Removed Muted Role",
+                        "Successfully removed the muted role."
+                )).queue();
+                return;
+            }
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            return;
+        }
+
+        if (role == null) {
+            event.getChannel().sendMessage(unknownRoleEmbed(argument)).queue();
+            return;
+        }
+
+        if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setMutedRoleID(role.getId())) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
         event.getChannel().sendMessage(successfulRoleChangeEmbed(role)).queue();
+    }
+
+    @NotNull
+    private MessageEmbed unknownRoleEmbed(@NotNull String roleName) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setColor(Color.red);
+        embedBuilder.setTitle("Unknown Role");
+        embedBuilder.setDescription("`" + roleName + "` is not a role.");
+        return embedBuilder.build();
     }
 
     @NotNull
@@ -67,7 +96,7 @@ public class SetMutedRoleCommand implements ICommand {
 
     @Override
     public String exampleUsage() {
-        return "`!!setmutedrole @MutedRole`";
+        return "`!!setmutedrole 0` or `!!setmutedrole @MutedRole`";
     }
 
     @Override

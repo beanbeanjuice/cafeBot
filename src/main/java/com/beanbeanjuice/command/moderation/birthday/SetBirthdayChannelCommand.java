@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation;
+package com.beanbeanjuice.command.moderation.birthday;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -11,55 +11,47 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * A command used for setting up the update {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+ * An {@link ICommand} used to set the birthday channel.
  *
  * @author beanbeanjuice
  */
-public class SetUpdateChannelCommand implements ICommand {
+public class SetBirthdayChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
         if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
-
-        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setUpdateChannel(event.getChannel())) {
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setBirthdayChannelID(event.getChannel().getId())) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                    "Set Update Channel",
-                    "This channel will now receive bot updates! Make sure to enable notifications " +
-                            "with the `notify-on-update` command!"
+                    "Updated Birthday Channel",
+                    "This channel has been set to an active birthday channel."
             )).queue();
             return;
         }
-
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
-                "Error Setting Update Channel",
-                "There was an error setting this channel to receive bot updates."
-        )).queue();
-
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
     }
 
     @Override
     public String getName() {
-        return "set-update-channel";
+        return "set-birthday-channel";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setupdatechannel");
+        arrayList.add("setbirthdaychannel");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Sets the current channel to the channel that receives bot updates.";
+        return "Set the current channel to an active birthday channel!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!setupdatechannel`";
+        return "`!!set-birthday-channel`";
     }
 
     @Override
@@ -71,4 +63,5 @@ public class SetUpdateChannelCommand implements ICommand {
     public CategoryType getCategoryType() {
         return CategoryType.MODERATION;
     }
+
 }
