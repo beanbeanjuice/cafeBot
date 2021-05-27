@@ -96,6 +96,7 @@ public class TicTacToeGame {
     private void editMessage() {
         try {
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(message -> {
+                message.editMessage("------------").queue();
                 message.editMessage(getBoardEmbed()).queue(editedMessage -> {
                     addReactions(message);
 
