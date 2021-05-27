@@ -350,7 +350,6 @@ public class ConnectFourGame {
                             return;
                         }
                     } catch (ArrayIndexOutOfBoundsException ignored) {}
-
                 }
 
                 if (takenSpots[x][y] == false) {
