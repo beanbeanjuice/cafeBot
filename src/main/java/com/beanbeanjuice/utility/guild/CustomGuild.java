@@ -430,7 +430,7 @@ public class CustomGuild {
      * @return Whether or not the {@link Role} was successfully updated in the database.
      */
     @NotNull
-    public Boolean updateMutedRole(String mutedRoleID) {
+    public Boolean setMutedRoleID(String mutedRoleID) {
 
         if (CafeBot.getGuildHandler().updateGuildMutedRole(guildID, mutedRoleID)) {
             this.mutedRoleID = mutedRoleID;
