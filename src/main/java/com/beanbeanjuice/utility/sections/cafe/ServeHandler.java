@@ -22,6 +22,7 @@ public class ServeHandler {
     private final Integer LENGTH_UNTIL_MULTIPLIER = 3;
     private final Integer USAGE_AMOUNT_DIVIDE = 500;
     private final Integer MINUTES_UNTIL_CAN_SERVE = 60;
+    private final Integer LETTER_STOP_AMOUNT = 20;
 
     /**
      * Gets the dictionary word from the SQL database.
@@ -146,7 +147,7 @@ public class ServeHandler {
         if (length > LENGTH_UNTIL_MULTIPLIER) {
             for (int i = 0; i < (length - LENGTH_UNTIL_MULTIPLIER); i++) {
                 // Stop after 15.
-                if (i > 15) {
+                if (i > LETTER_STOP_AMOUNT) {
                     break;
                 }
                 addedTip += ((tip + addedTip) * TIP_MULTIPLIER) - (tip + addedTip);
@@ -155,7 +156,7 @@ public class ServeHandler {
             // Get the uses divided by 10 and however many times that is, do the added tip x0.85.
             for (int i = 0; i < uses / USAGE_AMOUNT_DIVIDE; i++) {
                 // Stop after 15.
-                if (i > 15) {
+                if (i > LETTER_STOP_AMOUNT) {
                     break;
                 }
                 addedTip *= TIP_DIVIDER;
