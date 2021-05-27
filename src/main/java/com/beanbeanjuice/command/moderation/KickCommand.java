@@ -8,7 +8,6 @@ import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -32,40 +31,42 @@ public class KickCommand implements ICommand {
         }
 
         User punishee = CafeBot.getGeneralHelper().getUser(args.get(0));
-
-        if (args.size() == 1) {
-
-        }
-
-        if (args.size() >= 2) {
-
-        }
-
         StringBuilder reason = new StringBuilder();
 
-        for (int i = 1; i < args.size(); i++) {
-            reason.append(args.get(i)).append(" ");
+        // No Reason
+        if (args.size() == 1) {
+            reason.append("No reason was specified.");
         }
 
-        CafeBot.getGeneralHelper().pmUser(punishee.getUser(), "You have been kicked: " + reason.toString());
+        // With Reason
+        if (args.size() >= 2) {
+            for (int i = 1; i < args.size(); i++) {
+                reason.append(args.get(i));
+                if (i != args.size() - 1) {
+                    reason.append(" ");
+                }
+            }
+        }
 
         try {
-            punishee.kick(reason.toString()).queue();
+            ctx.getGuild().getMember(punishee).kick(reason.toString()).queue();
         } catch (HierarchyException e) {
             event.getChannel().sendMessage(hierarchyErrorEmbed()).queue();
             return;
         }
 
+        CafeBot.getGeneralHelper().pmUser(punishee, "You have been kicked: " + reason.toString());
         event.getChannel().sendMessage(successfulKickEmbed(punishee, user, reason.toString())).queue();
     }
 
     @NotNull
-    private MessageEmbed successfulKickEmbed(@NotNull Member punishee, @NotNull User user, @NotNull String reason) {
+    private MessageEmbed successfulKickEmbed(@NotNull User punishee, @NotNull User punisher, @NotNull String reason) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setTitle("User Kicked");
-        embedBuilder.setDescription("`" + punishee.getEffectiveName() + "` has been kicked for `" + reason + "`.");
-        embedBuilder.addField("Kicked By:", user.getAsMention(), true);
+        embedBuilder.setDescription("`" + punishee.getName() + "` has been kicked for `" + reason + "`.");
+        embedBuilder.addField("Kicked By:", punisher.getAsMention(), true);
+        embedBuilder.setThumbnail(punishee.getAvatarUrl());
         return embedBuilder.build();
     }
 
