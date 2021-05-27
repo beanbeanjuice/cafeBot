@@ -262,6 +262,7 @@ public class CafeBot {
         // Twitch Commands
         commandManager.addCommands(
                 new SetLiveChannelCommand(),
+                new RemoveLiveChannelCommand(),
                 new AddTwitchChannelCommand(),
                 new RemoveTwitchChannelCommand(),
                 new GetTwitchChannelsCommand(),
