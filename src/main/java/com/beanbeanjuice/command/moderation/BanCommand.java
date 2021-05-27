@@ -35,24 +35,11 @@ public class BanCommand implements ICommand {
 
         // No Reason
         if (args.size() == 1) {
-            try {
-                ctx.getGuild().getMember(punishee).ban(0).queue();
-            } catch (HierarchyException e) {
-                event.getChannel().sendMessage(hierarchyErrorEmbed()).queue();
-                return;
-            }
             reason.append("No reason was specified for the ban.");
         }
 
         // With Reason
         if (args.size() >= 2) {
-            try {
-                ctx.getGuild().getMember(punishee).ban(0, reason.toString()).queue();
-            } catch (HierarchyException e) {
-                event.getChannel().sendMessage(hierarchyErrorEmbed()).queue();
-                return;
-            }
-
             for (int i = 1; i < args.size(); i++) {
                 reason.append(args.get(i));
 
@@ -60,6 +47,13 @@ public class BanCommand implements ICommand {
                     reason.append(" ");
                 }
             }
+        }
+
+        try {
+            ctx.getGuild().getMember(punishee).ban(0, reason.toString()).queue();
+        } catch (HierarchyException e) {
+            event.getChannel().sendMessage(hierarchyErrorEmbed()).queue();
+            return;
         }
 
         event.getChannel().sendMessage(successfulBanWithReasonEmbed(punishee, user, reason.toString())).queue();
