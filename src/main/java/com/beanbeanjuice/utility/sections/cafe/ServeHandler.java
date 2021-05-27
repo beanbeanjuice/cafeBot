@@ -145,11 +145,19 @@ public class ServeHandler {
         // If the word length is above 3, then x1.125 per letter.
         if (length > LENGTH_UNTIL_MULTIPLIER) {
             for (int i = 0; i < (length - LENGTH_UNTIL_MULTIPLIER); i++) {
+                // Stop after 15.
+                if (i > 15) {
+                    break;
+                }
                 addedTip += ((tip + addedTip) * TIP_MULTIPLIER) - (tip + addedTip);
             }
 
             // Get the uses divided by 10 and however many times that is, do the added tip x0.85.
             for (int i = 0; i < uses / USAGE_AMOUNT_DIVIDE; i++) {
+                // Stop after 15.
+                if (i > 15) {
+                    break;
+                }
                 addedTip *= TIP_DIVIDER;
             }
         }
