@@ -539,7 +539,6 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dies/5.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dies/6.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dies/7.gif");
-        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/dies/8.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()));
     }
 
