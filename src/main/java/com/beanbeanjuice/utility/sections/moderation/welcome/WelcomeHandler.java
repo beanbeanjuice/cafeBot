@@ -9,8 +9,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * A handler used for handling welcomes.
+ */
 public class WelcomeHandler {
 
+    /**
+     * Gets the {@link GuildWelcome} for the specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @return The requested {@link GuildWelcome}.
+     */
     @NotNull
     public GuildWelcome getGuildWelcome(@NotNull String guildID) {
         Connection connection = CafeBot.getSQLServer().getConnection();
@@ -33,6 +41,12 @@ public class WelcomeHandler {
         }
     }
 
+    /**
+     * Checks if the {@link GuildWelcome} exists for the specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @return Whether or not the {@link GuildWelcome} exists for the {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @throws SQLException An {@link SQLException} is thrown if it cannot connect to the database.
+     */
     @NotNull
     private Boolean welcomeExists(@NotNull String guildID) throws SQLException {
         Connection connection = CafeBot.getSQLServer().getConnection();
@@ -45,6 +59,12 @@ public class WelcomeHandler {
         return resultSet.next();
     }
 
+    /**
+     * Sets the {@link GuildWelcome} for the specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @param guildWelcome The {@link GuildWelcome} to add.
+     * @return Whether or not it was successfully added.
+     */
     @NotNull
     public Boolean setGuildWelcome(@NotNull String guildID, @NotNull GuildWelcome guildWelcome) {
         boolean welcomeExists = false;
