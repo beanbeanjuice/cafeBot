@@ -273,6 +273,7 @@ public class CafeBot {
 
         // Moderation Commands
         commandManager.addCommands(
+                new SetLogChannelCommand(),
                 new SetUpdateChannelCommand(),
                 new SetCountingChannelCommand(),
                 new SetPollChannelCommand(),
