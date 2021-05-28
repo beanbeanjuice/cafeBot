@@ -1,6 +1,8 @@
 package com.beanbeanjuice.utility.guild;
 
 import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.utility.command.ICommand;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.moderation.welcome.GuildWelcome;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
@@ -81,6 +83,26 @@ public class CustomGuild {
         CafeBot.getTwitchHandler().addTwitchChannels(this.twitchChannels);
 
         deletingMessagesChannels = new ArrayList<>();
+    }
+
+    /**
+     * Log certain actions.
+     * @param command The {@link ICommand} that sent the log.
+     * @param level The {@link LogLevel} of the log.
+     * @param title The title of the log.
+     * @param description The description of the log.
+     */
+    public void log(@NotNull ICommand command, @NotNull LogLevel level, @NotNull String title, @NotNull String description) {
+        if (getLogChannel() != null) {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle(title + " - " + level.getCode());
+            embedBuilder.setDescription(description);
+            embedBuilder.setThumbnail(level.getImageURL());
+            embedBuilder.setColor(level.getColor());
+            embedBuilder.setFooter(command.getName() + " command");
+            embedBuilder.setTimestamp(new Date().toInstant());
+            getLogChannel().sendMessage(embedBuilder.build()).queue();
+        }
     }
 
     /**
