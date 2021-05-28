@@ -99,6 +99,6 @@ public class EditWelcomeMessageCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return null;
+        return CategoryType.MODERATION;
     }
 }
