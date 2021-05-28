@@ -1,6 +1,8 @@
 package com.beanbeanjuice.utility.guild;
 
 import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.utility.command.ICommand;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.moderation.welcome.GuildWelcome;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
@@ -32,6 +34,7 @@ public class CustomGuild {
     private String raffleChannelID;
     private String birthdayChannelID;
     private String welcomeChannelID;
+    private String logChannelID;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -58,7 +61,7 @@ public class CustomGuild {
                        @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
                        @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID,
                        @NotNull String countingChannelID, @NotNull String pollChannelID, @NotNull String raffleChannelID,
-                       @NotNull String birthdayChannelID, @NotNull String welcomeChannelID) {
+                       @NotNull String birthdayChannelID, @NotNull String welcomeChannelID, @NotNull String logChannelID) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
@@ -73,12 +76,59 @@ public class CustomGuild {
         this.raffleChannelID = raffleChannelID;
         this.birthdayChannelID = birthdayChannelID;
         this.welcomeChannelID = welcomeChannelID;
+        this.logChannelID = logChannelID;
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
         CafeBot.getTwitchHandler().addTwitchChannels(this.twitchChannels);
 
         deletingMessagesChannels = new ArrayList<>();
+    }
+
+    /**
+     * Log certain actions.
+     * @param command The {@link ICommand} that sent the log.
+     * @param level The {@link LogLevel} of the log.
+     * @param title The title of the log.
+     * @param description The description of the log.
+     */
+    public void log(@NotNull ICommand command, @NotNull LogLevel level, @NotNull String title, @NotNull String description) {
+        if (getLogChannel() != null) {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle(title + " - " + level.getCode());
+            embedBuilder.setDescription(description);
+            embedBuilder.setThumbnail(level.getImageURL());
+            embedBuilder.setColor(level.getColor());
+            embedBuilder.setFooter(command.getName() + " command");
+            embedBuilder.setTimestamp(new Date().toInstant());
+            getLogChannel().sendMessage(embedBuilder.build()).queue();
+        }
+    }
+
+    /**
+     * @return The log {@link TextChannel} for the {@link Guild}.
+     */
+    @Nullable
+    public TextChannel getLogChannel() {
+        try {
+            return CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(logChannelID);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Sets the log {@link TextChannel} for the {@link Guild}.
+     * @param logChannelID The ID of the log {@link TextChannel}.
+     * @return Whether or not updating the log {@link TextChannel} was successful.
+     */
+    @NotNull
+    public Boolean setLogChannelID(@NotNull String logChannelID) {
+        if (CafeBot.getGuildHandler().updateLogChannelID(guildID, logChannelID)) {
+            this.logChannelID = logChannelID;
+            return true;
+        }
+        return false;
     }
 
     /**

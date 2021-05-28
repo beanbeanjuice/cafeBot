@@ -8,21 +8,15 @@ import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.games.*;
 import com.beanbeanjuice.command.generic.*;
 import com.beanbeanjuice.command.interaction.*;
-import com.beanbeanjuice.command.moderation.birthday.RemoveBirthdayChannelCommand;
-import com.beanbeanjuice.command.moderation.counting.RemoveCountingChannelCommand;
-import com.beanbeanjuice.command.moderation.counting.SetCountingChannelCommand;
+import com.beanbeanjuice.command.moderation.SetCountingChannelCommand;
 import com.beanbeanjuice.command.moderation.*;
-import com.beanbeanjuice.command.moderation.birthday.SetBirthdayChannelCommand;
+import com.beanbeanjuice.command.moderation.SetBirthdayChannelCommand;
 import com.beanbeanjuice.command.moderation.mute.MuteCommand;
 import com.beanbeanjuice.command.moderation.mute.UnMuteCommand;
-import com.beanbeanjuice.command.moderation.poll.RemovePollChannelCommand;
-import com.beanbeanjuice.command.moderation.poll.SetPollChannelCommand;
-import com.beanbeanjuice.command.moderation.raffle.RemoveRaffleChannelCommand;
-import com.beanbeanjuice.command.moderation.raffle.SetRaffleChannelCommand;
-import com.beanbeanjuice.command.moderation.update.RemoveUpdateChannelCommand;
-import com.beanbeanjuice.command.moderation.update.SetUpdateChannelCommand;
+import com.beanbeanjuice.command.moderation.SetPollChannelCommand;
+import com.beanbeanjuice.command.moderation.SetRaffleChannelCommand;
+import com.beanbeanjuice.command.moderation.SetUpdateChannelCommand;
 import com.beanbeanjuice.command.moderation.welcome.EditWelcomeMessageCommand;
-import com.beanbeanjuice.command.moderation.welcome.RemoveWelcomeChannelCommand;
 import com.beanbeanjuice.command.moderation.welcome.SetWelcomeChannelCommand;
 import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.twitch.*;
@@ -271,7 +265,6 @@ public class CafeBot {
         // Twitch Commands
         commandManager.addCommands(
                 new SetLiveChannelCommand(),
-                new RemoveLiveChannelCommand(),
                 new AddTwitchChannelCommand(),
                 new RemoveTwitchChannelCommand(),
                 new GetTwitchChannelsCommand(),
@@ -280,18 +273,13 @@ public class CafeBot {
 
         // Moderation Commands
         commandManager.addCommands(
+                new SetLogChannelCommand(),
                 new SetUpdateChannelCommand(),
-                new RemoveUpdateChannelCommand(),
                 new SetCountingChannelCommand(),
-                new RemoveCountingChannelCommand(),
                 new SetPollChannelCommand(),
-                new RemovePollChannelCommand(),
                 new SetRaffleChannelCommand(),
-                new RemoveRaffleChannelCommand(),
                 new SetBirthdayChannelCommand(),
-                new RemoveBirthdayChannelCommand(),
                 new SetWelcomeChannelCommand(),
-                new RemoveWelcomeChannelCommand(),
                 new EditWelcomeMessageCommand(),
                 new SetModeratorRoleCommand(),
                 new SetMutedRoleCommand(),
