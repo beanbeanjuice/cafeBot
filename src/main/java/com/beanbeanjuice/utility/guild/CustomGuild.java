@@ -1,6 +1,9 @@
 package com.beanbeanjuice.utility.guild;
 
 import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.utility.command.ICommand;
+import com.beanbeanjuice.utility.logger.LogLevel;
+import com.beanbeanjuice.utility.sections.moderation.welcome.GuildWelcome;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -30,6 +33,8 @@ public class CustomGuild {
     private String pollChannelID;
     private String raffleChannelID;
     private String birthdayChannelID;
+    private String welcomeChannelID;
+    private String logChannelID;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -50,12 +55,13 @@ public class CustomGuild {
      * @param updateChannelID The ID of the {@link TextChannel} to send the bot update notifications to.
      * @param pollChannelID The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.sections.fun.poll.Poll Poll}s.
      * @param birthdayChannelID The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler Birthday} notifications.
+     * @param welcomeChannelID The ID of the {@link TextChannel} being used for the Welcome notifications.
      */
     public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID,
                        @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
                        @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID,
                        @NotNull String countingChannelID, @NotNull String pollChannelID, @NotNull String raffleChannelID,
-                       @NotNull String birthdayChannelID) {
+                       @NotNull String birthdayChannelID, @NotNull String welcomeChannelID, @NotNull String logChannelID) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
@@ -69,13 +75,86 @@ public class CustomGuild {
         this.pollChannelID = pollChannelID;
         this.raffleChannelID = raffleChannelID;
         this.birthdayChannelID = birthdayChannelID;
+        this.welcomeChannelID = welcomeChannelID;
+        this.logChannelID = logChannelID;
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
         CafeBot.getTwitchHandler().addTwitchChannels(this.twitchChannels);
 
         deletingMessagesChannels = new ArrayList<>();
+    }
 
+    /**
+     * Log certain actions.
+     * @param command The {@link ICommand} that sent the log.
+     * @param level The {@link LogLevel} of the log.
+     * @param title The title of the log.
+     * @param description The description of the log.
+     */
+    public void log(@NotNull ICommand command, @NotNull LogLevel level, @NotNull String title, @NotNull String description) {
+        if (getLogChannel() != null) {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle(title + " - " + level.getCode());
+            embedBuilder.setDescription(description);
+            embedBuilder.setThumbnail(level.getImageURL());
+            embedBuilder.setColor(level.getColor());
+            embedBuilder.setFooter(command.getName() + " command");
+            embedBuilder.setTimestamp(new Date().toInstant());
+            getLogChannel().sendMessage(embedBuilder.build()).queue();
+        }
+    }
+
+    /**
+     * @return The log {@link TextChannel} for the {@link Guild}.
+     */
+    @Nullable
+    public TextChannel getLogChannel() {
+        try {
+            return CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(logChannelID);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Sets the log {@link TextChannel} for the {@link Guild}.
+     * @param logChannelID The ID of the log {@link TextChannel}.
+     * @return Whether or not updating the log {@link TextChannel} was successful.
+     */
+    @NotNull
+    public Boolean setLogChannelID(@NotNull String logChannelID) {
+        if (CafeBot.getGuildHandler().updateLogChannelID(guildID, logChannelID)) {
+            this.logChannelID = logChannelID;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return The welcome {@link TextChannel} for the {@link Guild}.
+     */
+    @Nullable
+    public TextChannel getWelcomeChannel() {
+        try {
+            return CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(welcomeChannelID);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Update the welcome {@link TextChannel} for the {@link Guild}.
+     * @param welcomeChannelID The ID of the new welcome {@link TextChannel}.
+     * @return Whether or not it was successfully updated.
+     */
+    @NotNull
+    public Boolean setWelcomeChannelID(@NotNull String welcomeChannelID) {
+        if (CafeBot.getGuildHandler().updateWelcomeChannelID(guildID, welcomeChannelID)) {
+            this.welcomeChannelID = welcomeChannelID;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -178,13 +257,13 @@ public class CustomGuild {
 
     /**
      * Set the Counting {@link TextChannel} for the {@link Guild}.
-     * @param countingChannel The {@link TextChannel} used for counting.
+     * @param countingChannelID The ID of the {@link TextChannel} used for counting.
      * @return Whether or not setting the counting {@link TextChannel} was successful.
      */
     @NotNull
-    public Boolean setCountingChannel(@NotNull TextChannel countingChannel) {
-        if (CafeBot.getGuildHandler().setCountingChannelID(guildID, countingChannel.getId())) {
-            this.countingChannelID = countingChannel.getId();
+    public Boolean setCountingChannel(@NotNull String countingChannelID) {
+        if (CafeBot.getGuildHandler().setCountingChannelID(guildID, countingChannelID)) {
+            this.countingChannelID = countingChannelID;
             return true;
         }
         return false;
@@ -214,16 +293,6 @@ public class CustomGuild {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Set the Bot Update Channel for the {@link Guild}.
-     * @param textChannel The {@link TextChannel} used for sending bot updates.
-     * @return Whether or not setting the update {@link TextChannel} was successful.
-     */
-    @NotNull
-    public Boolean setUpdateChannel(@NotNull TextChannel textChannel) {
-        return setUpdateChannel(textChannel.getId());
     }
 
     /**
@@ -440,7 +509,7 @@ public class CustomGuild {
      * @return Whether or not the {@link Role} was successfully updated in the database.
      */
     @NotNull
-    public Boolean updateMutedRole(String mutedRoleID) {
+    public Boolean setMutedRoleID(String mutedRoleID) {
 
         if (CafeBot.getGuildHandler().updateGuildMutedRole(guildID, mutedRoleID)) {
             this.mutedRoleID = mutedRoleID;

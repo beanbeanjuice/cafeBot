@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.twitch;
+package com.beanbeanjuice.command.moderation;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -6,35 +6,31 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * A command to set the live channel.
+ * An {@link ICommand} used to set the log {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
-public class SetLiveChannelCommand implements ICommand {
+public class SetLogChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        if (!CafeBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
+        if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
 
         if (args.size() == 1) {
             String commandTerm = args.get(0);
             if (commandTerm.equalsIgnoreCase("remove") || commandTerm.equalsIgnoreCase("disable") || commandTerm.equalsIgnoreCase("0")) {
-                if (ctx.getCustomGuild().updateTwitchDiscordChannel("0")) {
+                if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLogChannelID("0")) {
                     event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                            "Removed Live Channel",
-                            "Successfully removed the live channel!"
+                            "Removed Log Channel",
+                            "The log channel has been successfully removed."
                     )).queue();
                     return;
                 }
@@ -50,10 +46,10 @@ public class SetLiveChannelCommand implements ICommand {
             return;
         }
 
-        if (ctx.getCustomGuild().updateTwitchDiscordChannel(event.getChannel().getId())) {
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLogChannelID(event.getChannel().getId())) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                    "Set Live Channel",
-                    "Successfully set the live channel to this channel!"
+                    "Set Log Channel",
+                    "The current channel has been set to a `log` channel!"
             )).queue();
             return;
         }
@@ -63,24 +59,24 @@ public class SetLiveChannelCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "set-live-channel";
+        return "set-log-channel";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setlivechannel");
+        arrayList.add("setlogchannel");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Set the current channel to a live channel.";
+        return "Set the log channel for the guild!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!setlivechannel` or `!!setlivechannel 0`";
+        return "`!!set-log-channel` or `!!set-log-channel 0`";
     }
 
     @Override
@@ -92,6 +88,6 @@ public class SetLiveChannelCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.TWITCH;
+        return CategoryType.MODERATION;
     }
 }

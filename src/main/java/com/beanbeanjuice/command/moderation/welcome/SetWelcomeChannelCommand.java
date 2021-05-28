@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.twitch;
+package com.beanbeanjuice.command.moderation.welcome;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -6,35 +6,31 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * A command to set the live channel.
+ * An {@link ICommand} used to update the welcome {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
-public class SetLiveChannelCommand implements ICommand {
+public class SetWelcomeChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        if (!CafeBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
+        if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
 
         if (args.size() == 1) {
             String commandTerm = args.get(0);
             if (commandTerm.equalsIgnoreCase("remove") || commandTerm.equalsIgnoreCase("disable") || commandTerm.equalsIgnoreCase("0")) {
-                if (ctx.getCustomGuild().updateTwitchDiscordChannel("0")) {
+                if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setWelcomeChannelID("0")) {
                     event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                            "Removed Live Channel",
-                            "Successfully removed the live channel!"
+                            "Removed Welcome Channel",
+                            "The welcome channel has been successfully removed!"
                     )).queue();
                     return;
                 }
@@ -50,37 +46,37 @@ public class SetLiveChannelCommand implements ICommand {
             return;
         }
 
-        if (ctx.getCustomGuild().updateTwitchDiscordChannel(event.getChannel().getId())) {
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setWelcomeChannelID(event.getChannel().getId())) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                    "Set Live Channel",
-                    "Successfully set the live channel to this channel!"
+                    "Set Welcome Channel",
+                    "This channel has been set to the welcome channel! Make sure to " +
+                            "edit the welcome message with the `edit-welcome-message` command!"
             )).queue();
             return;
         }
-
         event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
     }
 
     @Override
     public String getName() {
-        return "set-live-channel";
+        return "set-welcome-channel";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setlivechannel");
+        arrayList.add("setwelcomechannel");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Set the current channel to a live channel.";
+        return "Set the welcome channel!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!setlivechannel` or `!!setlivechannel 0`";
+        return "`!!set-welcome-channel`";
     }
 
     @Override
@@ -92,6 +88,6 @@ public class SetLiveChannelCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.TWITCH;
+        return CategoryType.MODERATION;
     }
 }

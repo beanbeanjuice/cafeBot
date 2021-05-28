@@ -57,12 +57,14 @@ public class GuildHandler {
                 String pollChannelID = String.valueOf(resultSet.getLong(10));
                 String raffleChannelID = String.valueOf(resultSet.getLong(11));
                 String birthdayChannelID = String.valueOf(resultSet.getLong(12));
+                String welcomeChannelID = String.valueOf(resultSet.getLong(13));
+                String logChannelID = String.valueOf(resultSet.getLong(14));
 
                 guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
                         twitchChannelID, twitchChannels, mutedRoleID,
                         liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
                         countingChannelID, pollChannelID, raffleChannelID,
-                        birthdayChannelID));
+                        birthdayChannelID, welcomeChannelID, logChannelID));
             }
         } catch (SQLException e) {
             CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
@@ -365,11 +367,61 @@ public class GuildHandler {
             statement.setString(2, CafeBot.getPrefix());
 
             statement.execute();
-            guildDatabase.put(guildID, new CustomGuild(guildID, CafeBot.getPrefix(), "0", "0", new ArrayList<>(), "0",
-                    "0", true, "0", "0", "0", "0", "0"));
+            guildDatabase.put(guildID, new CustomGuild(guildID, CafeBot.getPrefix(), "0",
+                    "0", new ArrayList<>(), "0",
+                    "0", true, "0",
+                    "0", "0", "0",
+                    "0", "0", "0"));
             return true;
         } catch (SQLException e) {
             CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to add Guild to SQL database: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Update the log {@link TextChannel} for the specified {@link Guild}.
+     * @param guildID The ID of the {@link Guild}.
+     * @param logChannelID The ID of the {@link TextChannel}.
+     * @return Whether or not updating the log {@link TextChannel} was successful.
+     */
+    @NotNull
+    protected Boolean updateLogChannelID(@NotNull String guildID, @NotNull String logChannelID) {
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "UPDATE cafeBot.guild_information SET log_channel_id = (?) WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(logChannelID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Updated the welcome {@link TextChannel} in the specified {@link Guild}.
+     * @param guildID The ID of the {@link Guild} to update the {@link TextChannel} in.
+     * @param welcomeChannelID The ID of the {@link TextChannel} to set the welcome {@link TextChannel} to in the {@link Guild}.
+     * @return Whether or not the welcome {@link TextChannel} ID was updated successfully.
+     */
+    @NotNull
+    protected Boolean updateWelcomeChannelID(@NotNull String guildID, @NotNull String welcomeChannelID) {
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "UPDATE cafeBot.guild_information SET welcome_channel_id = (?) WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(welcomeChannelID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Welcome Channel: " + e.getMessage());
             return false;
         }
     }
@@ -382,7 +434,6 @@ public class GuildHandler {
      */
     @NotNull
     protected Boolean updateGuildMutedRole(@NotNull String guildID, @NotNull String roleID) {
-
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE cafeBot.guild_information " +
                 "SET muted_role_id = (?) " +
@@ -399,7 +450,6 @@ public class GuildHandler {
             CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
             return false;
         }
-
     }
 
     /**

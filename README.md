@@ -199,6 +199,14 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `get-twitch-channels` - Get a list of the twitch channels you are currently receiving notifications for.
 * `set-live-notifications-role` - Set the role to be mentioned when someone goes live.
 ##### 8. **MODERATION**
+* `set-log-channel` - Sets the log channel for the guild.
+* `set-update-channel` - Sets the current channel to the update channel. This means if you have `notify-on-update` set to `Enabled`, you will receive bot updates in this channel.
+* `set-counting-channel` - Sets the current channel to the counting channel. This does exactly as it says. Try to count as high as you can without messing up!
+* `set-poll-channel` - Sets the current channel to an active poll channel. This is needed if you want to run polls on your server!
+* `set-raffle-channel` - Sets the current channel to an active raffle channel. This is needed if you want to run raffles on your server!
+* `set-birthday-channel` - Sets the current channel to an active birthday channel. Be notified when one of the members in your server is having a birthday!
+* `set-welcome-channel` - Sets the current channel to welcome users when they join!
+* `edit-welcome-message` - Edits the welcome message that is sent when users join. (Make sure to check the usage for this command doing `help edit-welcome-message` because this one is a little complicated!)
 * `set-moderator-role` - Set the moderator role for the server. This is needed so that users with this role can run commands that require a moderator role.
 * `set-muted-role` - Set the muted role for the server. This is needed so that users with this role can be stopped from talking in channels. This requires you to set it this way in each channel. This will not mute them if the role does not have the right permissions.
 * `change-prefix` - Change the prefix from the bot to your desired prefix.
@@ -207,12 +215,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `clear-chat` - Clear the chat. (Only currently works from 2-99 messages).
 * `mute` - Mute a specified user.
 * `un-mute` - Unmute a specified user.
-* `set-update-channel` - Sets the current channel to the update channel. This means if you have `notify-on-update` set to `Enabled`, you will receive bot updates in this channel.
 * `notify-on-update` - `Enable` or `Disable` bot notifications. This is `Enabled` by default.
-* `set-counting-channel` - Sets the current channel to the counting channel. This does exactly as it says. Try to count as high as you can without messing up!
-* `set-poll-channel` - Sets the current channel to an active poll channel. This is needed if you want to run polls on your server!
-* `set-raffle-channel` - Sets the current channel to an active raffle channel. This is needed if you want to run raffles on your server!
-* `set-birthday-channel` - Sets the current channel to an active birthday channel. Be notified when one of the members in your server is having a birthday!
 
 
 <!-- ROADMAP -->

@@ -33,6 +33,18 @@ public class SetModeratorRoleCommand implements ICommand {
 
         Role role = event.getGuild().getRoleById(argument);
 
+        if (args.get(0).equals("0")) {
+            if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setModeratorRoleID("0")) {
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                        "Removed Moderator Role",
+                        "Successfully removed the moderator role."
+                )).queue();
+                return;
+            }
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            return;
+        }
+
         if (role == null) {
             event.getChannel().sendMessage(unknownRoleEmbed(argument)).queue();
             return;
@@ -85,7 +97,7 @@ public class SetModeratorRoleCommand implements ICommand {
 
     @Override
     public String exampleUsage() {
-        return "`!!setmoderatorrole @ModRole`";
+        return "`!!setmoderatorrole 0` or `!!setmoderatorrole @ModRole`";
     }
 
     @Override
