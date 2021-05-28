@@ -21,10 +21,12 @@ import com.beanbeanjuice.command.moderation.raffle.RemoveRaffleChannelCommand;
 import com.beanbeanjuice.command.moderation.raffle.SetRaffleChannelCommand;
 import com.beanbeanjuice.command.moderation.update.RemoveUpdateChannelCommand;
 import com.beanbeanjuice.command.moderation.update.SetUpdateChannelCommand;
+import com.beanbeanjuice.command.moderation.welcome.EditWelcomeMessageCommand;
 import com.beanbeanjuice.command.moderation.welcome.RemoveWelcomeChannelCommand;
 import com.beanbeanjuice.command.moderation.welcome.SetWelcomeChannelCommand;
 import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.twitch.*;
+import com.beanbeanjuice.utility.listener.WelcomeListener;
 import com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler;
 import com.beanbeanjuice.utility.sections.cafe.MenuHandler;
 import com.beanbeanjuice.utility.sections.cafe.ServeHandler;
@@ -42,6 +44,7 @@ import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
 import com.beanbeanjuice.utility.sections.fun.poll.PollHandler;
 import com.beanbeanjuice.utility.sections.fun.raffle.RaffleHandler;
+import com.beanbeanjuice.utility.sections.moderation.welcome.WelcomeHandler;
 import com.beanbeanjuice.utility.sql.SQLServer;
 import com.beanbeanjuice.utility.sections.twitch.TwitchHandler;
 import com.wrapper.spotify.SpotifyApi;
@@ -148,6 +151,10 @@ public class CafeBot {
     // Game Stuff
     private static TicTacToeHandler ticTacToeHandler;
     private static ConnectFourHandler connectFourHandler;
+
+    // Welcome Stuff
+    private static WelcomeHandler welcomeHandler;
+    private static WelcomeListener welcomeListener;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         countingHelper = new CountingHelper();
@@ -285,6 +292,7 @@ public class CafeBot {
                 new RemoveBirthdayChannelCommand(),
                 new SetWelcomeChannelCommand(),
                 new RemoveWelcomeChannelCommand(),
+                new EditWelcomeMessageCommand(),
                 new SetModeratorRoleCommand(),
                 new SetMutedRoleCommand(),
                 new ChangePrefixCommand(),
@@ -331,6 +339,26 @@ public class CafeBot {
 
         ticTacToeHandler = new TicTacToeHandler();
         connectFourHandler = new ConnectFourHandler();
+
+        welcomeHandler = new WelcomeHandler();
+        welcomeListener = new WelcomeListener();
+        jda.addEventListener(welcomeListener);
+    }
+
+    /**
+     * @return The current {@link WelcomeHandler}.
+     */
+    @NotNull
+    public static WelcomeHandler getWelcomeHandler() {
+        return welcomeHandler;
+    }
+
+    /**
+     * @return The current {@link WelcomeListener}.
+     */
+    @NotNull
+    public static WelcomeListener getWelcomeListener() {
+        return welcomeListener;
     }
 
     /**
