@@ -199,6 +199,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `get-twitch-channels` - Get a list of the twitch channels you are currently receiving notifications for.
 * `set-live-notifications-role` - Set the role to be mentioned when someone goes live.
 ##### 8. **MODERATION**
+* `set-log-channel` - Sets the log channel for the guild.
 * `set-update-channel` - Sets the current channel to the update channel. This means if you have `notify-on-update` set to `Enabled`, you will receive bot updates in this channel.
 * `set-counting-channel` - Sets the current channel to the counting channel. This does exactly as it says. Try to count as high as you can without messing up!
 * `set-poll-channel` - Sets the current channel to an active poll channel. This is needed if you want to run polls on your server!
