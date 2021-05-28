@@ -58,12 +58,13 @@ public class GuildHandler {
                 String raffleChannelID = String.valueOf(resultSet.getLong(11));
                 String birthdayChannelID = String.valueOf(resultSet.getLong(12));
                 String welcomeChannelID = String.valueOf(resultSet.getLong(13));
+                String logChannelID = String.valueOf(resultSet.getLong(14));
 
                 guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
                         twitchChannelID, twitchChannels, mutedRoleID,
                         liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
                         countingChannelID, pollChannelID, raffleChannelID,
-                        birthdayChannelID, welcomeChannelID));
+                        birthdayChannelID, welcomeChannelID, logChannelID));
             }
         } catch (SQLException e) {
             CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
@@ -370,10 +371,33 @@ public class GuildHandler {
                     "0", new ArrayList<>(), "0",
                     "0", true, "0",
                     "0", "0", "0",
-                    "0", "0"));
+                    "0", "0", "0"));
             return true;
         } catch (SQLException e) {
             CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to add Guild to SQL database: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Update the log {@link TextChannel} for the specified {@link Guild}.
+     * @param guildID The ID of the {@link Guild}.
+     * @param logChannelID The ID of the {@link TextChannel}.
+     * @return Whether or not updating the log {@link TextChannel} was successful.
+     */
+    @NotNull
+    protected Boolean updateLogChannelID(@NotNull String guildID, @NotNull String logChannelID) {
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "UPDATE cafeBot.guild_information SET log_channel_id = (?) WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(logChannelID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
             return false;
         }
     }
