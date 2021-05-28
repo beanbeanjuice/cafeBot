@@ -11,4 +11,5 @@ counting_channel_id BIGINT DEFAULT 0,
 poll_channel_id BIGINT DEFAULT 0,
 raffle_channel_id BIGINT DEFAULT 0,
 birthday_channel_id BIGINT DEFAULT 0,
-welcome_channel_id BIGINT DEFAULT 0);
+welcome_channel_id BIGINT DEFAULT 0,
+log_channel_id BIGINT DEFAULT 0);
