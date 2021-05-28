@@ -25,43 +25,36 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
         if (!CafeBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
             return;
         }
 
-        // Checks if "none" is selected.
-        if (args.get(0).equalsIgnoreCase("none")) {
-            if (ctx.getCustomGuild().setLiveNotificationsRoleID("0")) {
-                event.getChannel().sendMessage(noneEmbed()).queue();
-            } else {
-                errorMessage(event);
+        if (args.get(0).equalsIgnoreCase("0")) {
+            if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLiveNotificationsRoleID("0")) {
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                        "Removed Live Notifications Role",
+                        "Successfully removed the live notifications role."
+                )).queue();
+                return;
             }
-            return;
         }
 
-        Role liveNotificationsRole;
+        Role liveNotificationsRole = CafeBot.getGeneralHelper().getRole(event.getGuild(), args.get(0));
 
-        try {
-            liveNotificationsRole = CafeBot.getGeneralHelper().getRole(event.getGuild(), args.get(0));
-        } catch (NumberFormatException e) {
-            // This means that a role/none was not specified.
+        if (liveNotificationsRole == null) {
             event.getChannel().sendMessage(invalidRoleEmbed(args.get(0))).queue();
             return;
         }
 
-        if (liveNotificationsRole != null) {
-            if (ctx.getCustomGuild().setLiveNotificationsRole(liveNotificationsRole)) {
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                        "Updated Live Notifications Role",
-                        "Successfully updated the role to " + liveNotificationsRole.getAsMention() + "."
-                )).queue();
-            } else {
-                errorMessage(event);
-            }
+        if (ctx.getCustomGuild().setLiveNotificationsRoleID(liveNotificationsRole.getId())) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                    "Set Live Notifications Role",
+                    "Successfully updated the role to " + liveNotificationsRole.getAsMention() + "."
+            )).queue();
             return;
         }
 
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
     }
 
     private MessageEmbed invalidRoleEmbed(@NotNull String argument) {
@@ -70,21 +63,6 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
         embedBuilder.setDescription("The argument `" + argument + "` is not a valid role. " +
                 "Please select `none` or provide a proper role mention.");
         embedBuilder.setColor(Color.red);
-        return embedBuilder.build();
-    }
-
-    private void errorMessage(@NotNull GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
-                "Error Updating Live Notifications Role",
-                "There was an error updating the live notifications role. Please try again."
-        ));
-    }
-
-    private MessageEmbed noneEmbed() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Updated Live Notifications Role");
-        embedBuilder.setDescription("Successfully removed the live notifications role!");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }
 
@@ -109,13 +87,13 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
 
     @Override
     public String exampleUsage() {
-        return "`!!set-live-notifications-role @LiveNotifications`";
+        return "`!!set-live-notifications-role 0` or `!!set-live-notifications-role @LiveNotifications`";
     }
 
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "Role/none", true);
+        usage.addUsage(CommandType.TEXT, "Role ID or Mention", true);
         return usage;
     }
 
