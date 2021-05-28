@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.guild;
 
 import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.utility.sections.moderation.welcome.GuildWelcome;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -30,6 +31,7 @@ public class CustomGuild {
     private String pollChannelID;
     private String raffleChannelID;
     private String birthdayChannelID;
+    private String welcomeChannelID;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -50,12 +52,13 @@ public class CustomGuild {
      * @param updateChannelID The ID of the {@link TextChannel} to send the bot update notifications to.
      * @param pollChannelID The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.sections.fun.poll.Poll Poll}s.
      * @param birthdayChannelID The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler Birthday} notifications.
+     * @param welcomeChannelID The ID of the {@link TextChannel} being used for the Welcome notifications.
      */
     public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID,
                        @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
                        @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID,
                        @NotNull String countingChannelID, @NotNull String pollChannelID, @NotNull String raffleChannelID,
-                       @NotNull String birthdayChannelID) {
+                       @NotNull String birthdayChannelID, @NotNull String welcomeChannelID) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
@@ -69,13 +72,39 @@ public class CustomGuild {
         this.pollChannelID = pollChannelID;
         this.raffleChannelID = raffleChannelID;
         this.birthdayChannelID = birthdayChannelID;
+        this.welcomeChannelID = welcomeChannelID;
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
         CafeBot.getTwitchHandler().addTwitchChannels(this.twitchChannels);
 
         deletingMessagesChannels = new ArrayList<>();
+    }
 
+    /**
+     * @return The welcome {@link TextChannel} for the {@link Guild}.
+     */
+    @Nullable
+    public TextChannel getWelcomeChannel() {
+        try {
+            return CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(welcomeChannelID);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Update the welcome {@link TextChannel} for the {@link Guild}.
+     * @param welcomeChannelID The ID of the new welcome {@link TextChannel}.
+     * @return Whether or not it was successfully updated.
+     */
+    @NotNull
+    public Boolean setWelcomeChannelID(@NotNull String welcomeChannelID) {
+        if (CafeBot.getGuildHandler().updateWelcomeChannelID(guildID, welcomeChannelID)) {
+            this.welcomeChannelID = welcomeChannelID;
+            return true;
+        }
+        return false;
     }
 
     /**
