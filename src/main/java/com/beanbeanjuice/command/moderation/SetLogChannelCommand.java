@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation.welcome;
+package com.beanbeanjuice.command.moderation;
 
 import com.beanbeanjuice.main.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -12,11 +12,11 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to update the welcome {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+ * An {@link ICommand} used to set the log {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
-public class SetWelcomeChannelCommand implements ICommand {
+public class SetLogChannelCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
@@ -27,10 +27,10 @@ public class SetWelcomeChannelCommand implements ICommand {
         if (args.size() == 1) {
             String commandTerm = args.get(0);
             if (commandTerm.equalsIgnoreCase("remove") || commandTerm.equalsIgnoreCase("disable") || commandTerm.equalsIgnoreCase("0")) {
-                if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setWelcomeChannelID("0")) {
+                if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLogChannelID("0")) {
                     event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                            "Removed Welcome Channel",
-                            "The welcome channel has been successfully removed!"
+                            "Removed Log Channel",
+                            "The log channel has been successfully removed."
                     )).queue();
                     return;
                 }
@@ -46,37 +46,37 @@ public class SetWelcomeChannelCommand implements ICommand {
             return;
         }
 
-        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setWelcomeChannelID(event.getChannel().getId())) {
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setLogChannelID(event.getChannel().getId())) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                    "Set Welcome Channel",
-                    "This channel has been set to the welcome channel! Make sure to " +
-                            "edit the welcome message with the `edit-welcome-message` command!"
+                    "Set Log Channel",
+                    "The current channel has been set to a `log` channel!"
             )).queue();
             return;
         }
+
         event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
     }
 
     @Override
     public String getName() {
-        return "set-welcome-channel";
+        return "set-log-channel";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setwelcomechannel");
+        arrayList.add("setlogchannel");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Set the welcome channel!";
+        return "Set the log channel for the guild!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!set-welcome-channel`";
+        return "`!!set-log-channel` or `!!set-log-channel 0`";
     }
 
     @Override

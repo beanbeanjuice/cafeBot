@@ -6,6 +6,7 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -57,6 +58,8 @@ public class BanCommand implements ICommand {
 
         CafeBot.getGeneralHelper().pmUser(punishee, "You have been banned: " + reason.toString());
         event.getChannel().sendMessage(successfulBanWithReasonEmbed(punishee, user, reason.toString())).queue();
+        CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).log(this, LogLevel.INFO, "User Banned", "`" + punishee.getAsTag() + "` was banned by " +
+                 user.getAsMention() + " for: `" + reason.toString() + "`");
     }
 
     @NotNull

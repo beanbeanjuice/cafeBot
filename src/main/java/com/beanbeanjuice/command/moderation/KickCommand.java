@@ -6,6 +6,7 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -57,6 +58,8 @@ public class KickCommand implements ICommand {
 
         CafeBot.getGeneralHelper().pmUser(punishee, "You have been kicked: " + reason.toString());
         event.getChannel().sendMessage(successfulKickEmbed(punishee, user, reason.toString())).queue();
+        CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).log(this, LogLevel.INFO, "User Kicked", "`" + punishee.getAsTag() + "` was kicked by " +
+                user.getAsMention() + " for: `" + reason.toString() + "`");
     }
 
     @NotNull
@@ -103,7 +106,7 @@ public class KickCommand implements ICommand {
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.USER, "Discord User", true);
-        usage.addUsage(CommandType.SENTENCE, "Reason", true);
+        usage.addUsage(CommandType.SENTENCE, "Reason", false);
         return usage;
     }
 
