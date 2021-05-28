@@ -21,6 +21,8 @@ import com.beanbeanjuice.command.moderation.raffle.RemoveRaffleChannelCommand;
 import com.beanbeanjuice.command.moderation.raffle.SetRaffleChannelCommand;
 import com.beanbeanjuice.command.moderation.update.RemoveUpdateChannelCommand;
 import com.beanbeanjuice.command.moderation.update.SetUpdateChannelCommand;
+import com.beanbeanjuice.command.moderation.welcome.RemoveWelcomeChannelCommand;
+import com.beanbeanjuice.command.moderation.welcome.SetWelcomeChannelCommand;
 import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.twitch.*;
 import com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler;
@@ -281,6 +283,8 @@ public class CafeBot {
                 new RemoveRaffleChannelCommand(),
                 new SetBirthdayChannelCommand(),
                 new RemoveBirthdayChannelCommand(),
+                new SetWelcomeChannelCommand(),
+                new RemoveWelcomeChannelCommand(),
                 new SetModeratorRoleCommand(),
                 new SetMutedRoleCommand(),
                 new ChangePrefixCommand(),
