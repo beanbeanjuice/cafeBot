@@ -210,6 +210,9 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `remove-raffle-channel` - Remove the current raffle channel.
 * `set-birthday-channel` - Sets the current channel to an active birthday channel. Be notified when one of the members in your server is having a birthday!
 * `remove-birthday-channel` - Remove the current birthday channel.
+* `set-welcome-channel` - Sets the current channel to welcome users when they join!
+* `remove-welcome-channel` - Remove the current welcome channel.
+* `edit-welcome-message` - Edits the welcome message that is sent when users join. (Make sure to check the usage for this command doing `help edit-welcome-message` because this one is a little complicated!)
 * `set-moderator-role` - Set the moderator role for the server. This is needed so that users with this role can run commands that require a moderator role.
 * `set-muted-role` - Set the muted role for the server. This is needed so that users with this role can be stopped from talking in channels. This requires you to set it this way in each channel. This will not mute them if the role does not have the right permissions.
 * `change-prefix` - Change the prefix from the bot to your desired prefix.
