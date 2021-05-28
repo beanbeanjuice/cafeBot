@@ -11,7 +11,7 @@ public class WelcomeListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        
+
     }
 
 }
