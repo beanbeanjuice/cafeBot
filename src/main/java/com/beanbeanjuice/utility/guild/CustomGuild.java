@@ -86,7 +86,7 @@ public class CustomGuild {
      * @return Whether or not it was successfully updated.
      */
     @NotNull
-    public Boolean updateWelcomeChannelID(@NotNull String welcomeChannelID) {
+    public Boolean setWelcomeChannelID(@NotNull String welcomeChannelID) {
         if (CafeBot.getGuildHandler().updateWelcomeChannelID(guildID, welcomeChannelID)) {
             this.welcomeChannelID = welcomeChannelID;
             return true;
