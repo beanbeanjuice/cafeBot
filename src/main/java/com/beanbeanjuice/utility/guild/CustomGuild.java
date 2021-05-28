@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.guild;
 
 import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.utility.sections.moderation.welcome.GuildWelcome;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -78,6 +79,18 @@ public class CustomGuild {
         CafeBot.getTwitchHandler().addTwitchChannels(this.twitchChannels);
 
         deletingMessagesChannels = new ArrayList<>();
+    }
+
+    /**
+     * @return The welcome {@link TextChannel} for the {@link Guild}.
+     */
+    @Nullable
+    public TextChannel getWelcomeChannel() {
+        try {
+            return CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(welcomeChannelID);
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     /**
