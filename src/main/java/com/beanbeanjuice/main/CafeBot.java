@@ -212,6 +212,7 @@ public class CafeBot {
                 new AvatarCommand(),
                 new GetBirthdayCommand(),
                 new SetBirthdayCommand(),
+                new RemoveBirthdayCommand(),
                 new CountingStatisticsCommand()
         );
 
