@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.listener;
 
 import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -35,7 +36,6 @@ public class Listener extends ListenerAdapter {
 
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
-
         TextChannel channel = event.getGuild().getDefaultChannel();
 
         if (channel != null) {
@@ -44,6 +44,7 @@ public class Listener extends ListenerAdapter {
 
         CafeBot.getGuildHandler().addGuild(event.getGuild());
         CafeBot.updateGuildPresence(); // Updates the amount of servers in the status.
+        CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, event.getGuild().getName() + " has added me!", false, true);
     }
 
     @Override
