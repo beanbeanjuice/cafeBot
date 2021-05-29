@@ -5,9 +5,11 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
+import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -57,7 +59,7 @@ public class SkipCommand implements ICommand {
         }
 
         musicManager.scheduler.nextTrack();
-        event.getChannel().sendMessage(successEmbed()).queue();
+        event.getChannel().sendMessage(successEmbed(musicManager.audioPlayer.getPlayingTrack(), musicManager.scheduler.queue.size())).queue();
     }
 
     @NotNull
@@ -95,11 +97,23 @@ public class SkipCommand implements ICommand {
     }
 
     @NotNull
-    private MessageEmbed successEmbed() {
+    private MessageEmbed successEmbed(@NotNull AudioTrack audioTrack, @NotNull Integer songsLeftInQueue) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setDescription("Successfully skipped the track.");
-        embedBuilder.setColor(Color.green);
+        embedBuilder.setTitle("Skipped Song");
 
+        int songLength = CafeBot.getGeneralHelper().roundTime(audioTrack.getDuration(), TimestampDifference.SECONDS);
+        String songLengthString = String.valueOf(songLength);
+
+        if (!CafeBot.getGeneralHelper().isDoubleDigit(songLength)) {
+            songLengthString = "0" + songLengthString;
+        }
+        String songPosition = String.format("%s:%s", CafeBot.getGeneralHelper().roundTime(audioTrack.getDuration(), TimestampDifference.MINUTES), songLengthString);
+        StringBuilder descriptionBuilder = new StringBuilder();
+        descriptionBuilder.append("Now Playing - `" + audioTrack.getInfo().title + "` by `" + audioTrack.getInfo().author + "` [`" + songPosition + "]`");
+
+        embedBuilder.setDescription(descriptionBuilder.toString());
+        embedBuilder.setColor(Color.green);
+        embedBuilder.setFooter("Songs Left: " + songsLeftInQueue);
         return embedBuilder.build();
     }
 

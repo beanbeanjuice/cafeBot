@@ -5,6 +5,7 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
+import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -41,7 +42,6 @@ public class NowPlayingCommand implements ICommand {
         }
 
         if (selfVoiceState.inVoiceChannel()) {
-
             GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
             AudioPlayer audioPlayer = musicManager.audioPlayer;
             final AudioTrack audioTrack = audioPlayer.getPlayingTrack();
@@ -52,16 +52,31 @@ public class NowPlayingCommand implements ICommand {
             }
 
             final AudioTrackInfo info = audioTrack.getInfo();
-            event.getChannel().sendMessage(nowPlaying(info.title, info.author, info.uri)).queue();
-
+            event.getChannel().sendMessage(nowPlaying(info.title, info.author, info.uri, audioTrack.getPosition(), audioTrack.getDuration())).queue();
         }
     }
 
     @NotNull
-    private MessageEmbed nowPlaying(@NotNull String title, @NotNull String author, @NotNull String url) {
+    private MessageEmbed nowPlaying(@NotNull String title, @NotNull String author, @NotNull String url, @NotNull Long songTimestamp, @NotNull Long songDuration) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Now Playing", url);
-        String message = String.format("`%s` by `%s`", title, author);
+        int songPositionSeconds = CafeBot.getGeneralHelper().roundTime(songTimestamp, TimestampDifference.SECONDS);
+        String songPositionSecondsString = String.valueOf(songPositionSeconds);
+
+        if (!CafeBot.getGeneralHelper().isDoubleDigit(songPositionSeconds)) {
+            songPositionSecondsString = "0" + songPositionSecondsString;
+        }
+        String songPosition = String.format("%s:%s", CafeBot.getGeneralHelper().roundTime(songTimestamp, TimestampDifference.MINUTES), songPositionSecondsString);
+
+        int songLengthSeconds = CafeBot.getGeneralHelper().roundTime(songDuration, TimestampDifference.SECONDS);
+        String songLengthSecondsString = String.valueOf(songLengthSeconds);
+
+        if (!CafeBot.getGeneralHelper().isDoubleDigit(songLengthSeconds)) {
+            songLengthSecondsString = "0" + songLengthSecondsString;
+        }
+
+        String songLength = String.format("%s:%s", CafeBot.getGeneralHelper().roundTime(songDuration, TimestampDifference.MINUTES), songLengthSecondsString);
+        String message = String.format("`%s` by `%s` - [`%s / %s`]", title, author, songPosition, songLength);
         embedBuilder.setDescription(message);
         embedBuilder.setColor(Color.cyan);
         return embedBuilder.build();
