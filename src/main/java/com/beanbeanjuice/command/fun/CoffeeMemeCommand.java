@@ -43,6 +43,8 @@ public class CoffeeMemeCommand implements ICommand {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("coffeememe");
         arrayList.add("coffee");
+        arrayList.add("coffee-memes");
+        arrayList.add("coffeememes");
         arrayList.add("cafe-meme");
         arrayList.add("cafememe");
         return arrayList;
