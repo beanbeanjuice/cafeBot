@@ -19,7 +19,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/beanbeanjuice/cafeBot">
-    <img src="images/logo.gif" alt="Logo" width="260" height="186">
+    <img src="http://cdn.beanbeanjuice.com/images/cafeBot/readme/logo.gif" alt="Logo" width="260" height="186">
   </a>
 
   <h3 align="center">cafeBot</h3>
@@ -123,7 +123,7 @@ This is an example of how to list things you need to use the software and how to
 * `!!get-prefix` - Gets the current prefix for the server if you forget it!
 
 <p align="center">
-  <img src=images/help.png>
+  <img src=http://cdn.beanbeanjuice.com/images/cafeBot/readme/help.png>
 </p>
 
 As you can see, this was shown using the command `!!help order`. It shows each parameter you can run. For example, `<parameter 1>` needs to be a number and it is `REQUIRED` and `<parameter 2>` is a discord user and is also `REQUIRED`. So this means, to run the `order` command, I would do something like, `!!order 2 @beanbeanjuice`.
@@ -278,5 +278,5 @@ Project Link: [https://github.com/beanbeanjuice/cafeBot](https://github.com/bean
 [license-url]: https://github.com/beanbeanjuice/cafeBot/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/beanbeanjuice
-[product-title]: images/cafeBot.png
+[product-title]: http://cdn.beanbeanjuice.com/images/cafeBot//readme/cafeBot.png
 [help-screenshot]: images/help.png
