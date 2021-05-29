@@ -192,6 +192,7 @@ public class CafeBot {
                 new FeatureRequestCommand(),
                 new BugReportCommand(),
                 new SupportCommand(),
+                new BotInviteCommand(),
                 new UserInfoCommand()
         );
 

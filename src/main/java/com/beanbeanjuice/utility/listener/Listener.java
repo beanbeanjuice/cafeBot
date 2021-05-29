@@ -112,7 +112,7 @@ public class Listener extends ListenerAdapter {
         embedBuilder.setColor(Color.green);
         embedBuilder.setThumbnail(CafeBot.getJDA().getSelfUser().getAvatarUrl());
         StringBuilder description = new StringBuilder();
-        description.append("Thank you for inviting me! I hope I'm not too much trouble.\n\n\n")
+        description.append("Thank you for inviting me! I hope I'm not too much trouble. Please make sure I have the appropriate permissions!\n\n\n")
                 .append("For a list of command sections, type `!!help`.\n\n")
                 .append("For a list of commands in a section, type `!!help (command section name)`!\n\n")
                 .append("For help with a specific command, type `!!help (command name/alias)`!\n\n\n")
