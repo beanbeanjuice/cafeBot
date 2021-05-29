@@ -6,21 +6,18 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.helper.RedditAPI;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * A command used for sending jokes.
+ * An {@link ICommand} used to get coffee memes from the {@link com.beanbeanjuice.utility.helper.RedditAPI RedditAPI}.
  *
  * @author beanbeanjuice
  */
-public class JokeCommand implements ICommand {
+public class CoffeeMemeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
@@ -30,49 +27,37 @@ public class JokeCommand implements ICommand {
     @NotNull
     private ArrayList<String> getSubreddits() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("oneliners");
-        arrayList.add("dadjokes");
-        arrayList.add("jokes");
-        arrayList.add("cleanjokes");
+        arrayList.add("CoffeePorn");
+        arrayList.add("coffeememes");
+        arrayList.add("coffeewithaview");
         return arrayList;
-    }
-
-    @NotNull
-    private MessageEmbed messageEmbed(@NotNull String title, @NotNull String url, @NotNull String body) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(title, url);
-        embedBuilder.setDescription(body);
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        return embedBuilder.build();
-    }
-
-    @NotNull
-    private MessageEmbed cannotGetJSONEmbed() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Error");
-        embedBuilder.setColor(Color.red);
-        embedBuilder.setDescription("Unable to get JSON.");
-        return embedBuilder.build();
     }
 
     @Override
     public String getName() {
-        return "joke";
+        return "coffee-meme";
     }
 
     @Override
     public ArrayList<String> getAliases() {
-        return new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("coffeememe");
+        arrayList.add("coffee");
+        arrayList.add("coffee-memes");
+        arrayList.add("coffeememes");
+        arrayList.add("cafe-meme");
+        arrayList.add("cafememe");
+        return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "say a random joke!";
+        return "Get a coffee meme!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!joke`";
+        return "`!!coffee-meme`";
     }
 
     @Override
