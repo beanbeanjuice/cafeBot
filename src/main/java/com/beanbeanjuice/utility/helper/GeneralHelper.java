@@ -52,6 +52,31 @@ public class GeneralHelper {
     }
 
     /**
+     * Checks if a specified {@link Integer} is a double digit.
+     * @param number The {@link Integer} specified.
+     * @return Whether or not the {@link Integer} is a double digit.
+     */
+    @NotNull
+    public Boolean isDoubleDigit(@NotNull Integer number) {
+        return (number > 9 && number < 100) || (number < -9 && number > -100);
+    }
+
+    /**
+     * Round a time to minutes or seconds.
+     * @param time The time in milliseconds.
+     * @param timestampDifference The timestamp difference specified.
+     * @return The rounded time.
+     */
+    @NotNull
+    public Integer roundTime(@NotNull Long time, @NotNull TimestampDifference timestampDifference) {
+
+        if (timestampDifference.equals(TimestampDifference.MINUTES)) {
+            return Math.round(((time/1000)/60));
+        }
+        return Math.round((time/1000)%60);
+    }
+
+    /**
      * Compare the difference in time between two {@link Timestamp} objects.
      * @param oldTime The old {@link Timestamp}.
      * @param currentTime The new {@link Timestamp}.
