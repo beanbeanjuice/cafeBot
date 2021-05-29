@@ -34,6 +34,11 @@ public class RedditAPI {
         reddit_api_url = reddit_api_url.replace("{SUBREDDIT}", reddit_subreddit);
         contactRedditAPI();
 
+        // Making sure it's not a video
+        while (reddit_image_url.contains("v.red")) {
+            contactRedditAPI();
+        }
+
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(reddit_title, reddit_url);
         embedBuilder.setImage(reddit_image_url);
