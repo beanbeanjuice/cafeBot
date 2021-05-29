@@ -42,7 +42,6 @@ public class NowPlayingCommand implements ICommand {
         }
 
         if (selfVoiceState.inVoiceChannel()) {
-
             GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
             AudioPlayer audioPlayer = musicManager.audioPlayer;
             final AudioTrack audioTrack = audioPlayer.getPlayingTrack();
