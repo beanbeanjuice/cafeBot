@@ -5,9 +5,7 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.logger.LogLevel;
-import com.fasterxml.jackson.databind.JsonNode;
-import me.duncte123.botcommons.web.WebUtils;
+import com.beanbeanjuice.utility.helper.RedditAPI;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
@@ -26,20 +24,17 @@ public class JokeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        WebUtils.ins.getJSONObject("https://apis.duncte123.me/joke").async((json) -> {
-            if (!json.get("success").asBoolean()) {
-                event.getChannel().sendMessage(cannotGetJSONEmbed()).queue();
-                CafeBot.getLogManager().log(JokeCommand.class, LogLevel.ERROR, "Cannot get JSON.");
-                return;
-            }
+        event.getChannel().sendMessage(new RedditAPI().getRedditEmbed(getSubreddits().get(CafeBot.getGeneralHelper().getRandomNumber(0, getSubreddits().size())))).queue();
+    }
 
-            final JsonNode data = json.get("data");
-            final String title = data.get("title").asText();
-            final String url = data.get("url").asText();
-            final String body = data.get("body").asText();
-
-            event.getChannel().sendMessage(messageEmbed(title, url, body)).queue();
-        });
+    @NotNull
+    private ArrayList<String> getSubreddits() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("oneliners");
+        arrayList.add("dadjokes");
+        arrayList.add("jokes");
+        arrayList.add("cleanjokes");
+        return arrayList;
     }
 
     @NotNull

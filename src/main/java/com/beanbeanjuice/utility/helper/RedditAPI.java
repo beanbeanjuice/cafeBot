@@ -6,9 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URI;
@@ -24,6 +21,7 @@ public class RedditAPI {
     private String reddit_title;
     private String reddit_username;
     private String reddit_subreddit;
+    private String reddit_description;
 
     /**
      * Get the completed {@link MessageEmbed} for the subreddit.
@@ -41,6 +39,7 @@ public class RedditAPI {
         embedBuilder.setImage(reddit_image_url);
         embedBuilder.setFooter("By: " + reddit_username + " - r/" + reddit_subreddit);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setDescription(reddit_description);
         return embedBuilder.build();
     }
 
@@ -64,6 +63,7 @@ public class RedditAPI {
             reddit_image_url = node.get("url").textValue();
             reddit_title = node.get("title").textValue();
             reddit_username = node.get("author").textValue();
+            reddit_description = node.get("selftext").textValue();
             return node.toString();
         } catch (JsonProcessingException e) {
             return null;
