@@ -145,7 +145,7 @@ public class VersionHelper {
         embedBuilder.setTitle("New cafeBot Update");
         embedBuilder.setDescription(github_body);
         embedBuilder.addField("Extra Information", "The bot has been updated to " + github_tag + "! " +
-                "To request a feature or report bugs, please head over to https://github.com/beanbeanjuice/cafeBot/issues.", true);
+                "To request a feature or report bugs, please click this [link](https://github.com/beanbeanjuice/cafeBot/issues).", true);
         embedBuilder.addField("How to Disable Update Notifications", "To disable these update notifications, " +
                 "the default command would be `!!notify-on-update disable`.", false);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
