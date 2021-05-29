@@ -63,8 +63,8 @@ dependencies {
     // Spotify API
     implementation group: 'se.michaelthelin.spotify', name: 'spotify-web-api-java', version: '6.5.2'
 
-    // Web Utils
-    implementation group: 'me.duncte123', name: 'botCommons', version: '2.0.122'
+    // JSOUP for Parsing
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
 
     // JSON
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.1'
