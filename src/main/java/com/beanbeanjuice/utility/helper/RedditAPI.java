@@ -25,6 +25,12 @@ public class RedditAPI {
     private String reddit_username;
     private String reddit_subreddit;
 
+    /**
+     * Get the completed {@link MessageEmbed} for the subreddit.
+     * @param subreddit The subreddit specified.
+     * @return The new {@link MessageEmbed} to be sent.
+     */
+    @NotNull
     public MessageEmbed getRedditEmbed(@NotNull String subreddit) {
         reddit_subreddit = subreddit;
         reddit_api_url = reddit_api_url.replace("{SUBREDDIT}", reddit_subreddit);
@@ -42,7 +48,6 @@ public class RedditAPI {
      * A method used for contacting the guilds who have enabled the bot update notification.
      */
     private void contactRedditAPI() {
-//        HttpClient client = HttpClient.newHttpClient();
         HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(reddit_api_url)).build();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
@@ -55,8 +60,6 @@ public class RedditAPI {
         ObjectMapper defaultObjectMapper = new ObjectMapper();
         try {
             JsonNode node = defaultObjectMapper.readTree(responseBody).get(0).get("data").get("children").get(0).get("data");
-//            JsonNode node = defaultObjectMapper.readTree(responseBody);
-            System.out.println(node.toString());
             reddit_url = "https://www.reddit.com" + node.get("permalink").textValue();
             reddit_image_url = node.get("url").textValue();
             reddit_title = node.get("title").textValue();

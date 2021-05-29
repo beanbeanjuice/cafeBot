@@ -5,6 +5,7 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
+import com.beanbeanjuice.utility.helper.RedditAPI;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.fasterxml.jackson.databind.JsonNode;
 import me.duncte123.botcommons.web.WebUtils;
@@ -26,20 +27,18 @@ public class MemeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        WebUtils.ins.getJSONObject("https://apis.duncte123.me/meme").async((json) -> {
-            if (!json.get("success").asBoolean()) {
-                event.getChannel().sendMessage(cannotGetJSONEmbed()).queue();
-                CafeBot.getLogManager().log(MemeCommand.class, LogLevel.ERROR, "Cannot get JSON.");
-                return;
-            }
+        event.getChannel().sendMessage(new RedditAPI().getRedditEmbed(getSubreddits().get(CafeBot.getGeneralHelper().getRandomNumber(0, getSubreddits().size())))).queue();
+    }
 
-            final JsonNode data = json.get("data");
-            final String title = data.get("title").asText();
-            final String url = data.get("url").asText();
-            final String image = data.get("image").asText();
-
-            event.getChannel().sendMessage(messageEmbed(title, url, image)).queue();
-        });
+    @NotNull
+    private ArrayList<String> getSubreddits() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("memes");
+        arrayList.add("dankmemes");
+        arrayList.add("me_irl");
+        arrayList.add("PrequelMemes");
+        arrayList.add("thatHappened");
+        return arrayList;
     }
 
     @NotNull
