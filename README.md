@@ -279,4 +279,3 @@ Project Link: [https://github.com/beanbeanjuice/cafeBot](https://github.com/bean
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/beanbeanjuice
 [product-title]: http://cdn.beanbeanjuice.com/images/cafeBot//readme/cafeBot.png
-[help-screenshot]: images/help.png
