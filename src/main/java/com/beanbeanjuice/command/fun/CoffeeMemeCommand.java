@@ -27,7 +27,7 @@ public class CoffeeMemeCommand implements ICommand {
     @NotNull
     private ArrayList<String> getSubreddits() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("CoffeePorn");
+//        arrayList.add("CoffeePorn");
         arrayList.add("coffeememes");
         arrayList.add("coffeewithaview");
         return arrayList;
