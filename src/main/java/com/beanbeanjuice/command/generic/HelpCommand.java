@@ -31,7 +31,7 @@ public class HelpCommand implements ICommand {
 
         // Checking if the arguments is empty.
         if (args.isEmpty()) {
-            channel.sendMessage(categoryEmbed()).queue(); // Sends the list of categories.
+            channel.sendMessage(categoryEmbed(ctx.getPrefix())).queue(); // Sends the list of categories.
             return;
         }
 
@@ -50,7 +50,7 @@ public class HelpCommand implements ICommand {
 
         // Checks to see if any commands exist for that command.
         if (command == null) {
-            channel.sendMessage(noCommandFoundEmbed(search)).queue();
+            channel.sendMessage(noCommandFoundEmbed(search, ctx.getPrefix())).queue();
             return;
         }
 
@@ -124,14 +124,15 @@ public class HelpCommand implements ICommand {
             }
         }
 
-        embedBuilder.addField("**Commands in " + categoryType.toString() + "**", stringBuilder.toString(), true);
+        embedBuilder.addField("**Commands in " + categoryType + "**", stringBuilder.toString(), true);
         embedBuilder.setThumbnail(categoryType.getLink());
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
+        embedBuilder.setFooter("For help with a specific command, do " + prefix + "help (command name).");
         return embedBuilder.build();
     }
 
-    private MessageEmbed categoryEmbed() {
+    @NotNull
+    private MessageEmbed categoryEmbed(@NotNull String prefix) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         StringBuilder stringBuilder = new StringBuilder();
         int count = 1;
@@ -144,17 +145,17 @@ public class HelpCommand implements ICommand {
 
         embedBuilder.addField("**Command Categories**", stringBuilder.toString(), true);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
+        embedBuilder.setFooter("If you're stuck, use " + prefix + "help (category name).");
         return embedBuilder.build();
     }
 
     @NotNull
-    private MessageEmbed noCommandFoundEmbed(@NotNull String commandName) {
+    private MessageEmbed noCommandFoundEmbed(@NotNull String commandName, @NotNull String prefix) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("No Command Found");
         embedBuilder.setDescription("No command has been found for `" + commandName + "`.");
         embedBuilder.setColor(Color.red);
-        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
+        embedBuilder.setFooter("Please see " + prefix + "help!");
         return embedBuilder.build();
     }
 
