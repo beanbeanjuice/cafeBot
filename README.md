@@ -38,11 +38,6 @@
   </p>
 </p>
 
-<p align="center">
-  <h2 align="center">Support Discord</h2>
-  <iframe align="center" src="https://discord.com/widget?id=723103621889130497&theme=dark" width="700" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-</p>
-
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
