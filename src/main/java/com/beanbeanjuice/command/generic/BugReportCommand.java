@@ -29,10 +29,7 @@ public class BugReportCommand implements ICommand {
     private MessageEmbed bugReportEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Bug Report", BUG_REPORT_URL);
-        embedBuilder.setDescription("""
-                If you want to submit a bug report, please click on the title above.
-
-                Or alternatively, head to https://github.com/beanbeanjuice/cafeBot/issues/new/choose""");
+        embedBuilder.setDescription("You can submit a [bug report](" + BUG_REPORT_URL + ") on github!");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
     }

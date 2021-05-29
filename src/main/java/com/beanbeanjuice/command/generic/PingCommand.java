@@ -34,8 +34,8 @@ public class PingCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(getName() + "!", "https://www.beanbeanjuice.com/cafeBot.html");
         StringBuilder descriptionBuilder = new StringBuilder();
-        descriptionBuilder.append("**Rest Ping** - `").append(botPing.toString()).append("`\n")
-                .append("**Gateway Ping** - `").append(gatewayPing.toString()).append("`\n")
+        descriptionBuilder.append("**Rest Ping** - `").append(botPing).append("`\n")
+                .append("**Gateway Ping** - `").append(gatewayPing).append("`\n")
                 .append("**Current Version** - `").append(CafeBot.getBotVersion()).append("`\n\n")
                 .append("Hello there! How are you? Would you like to order some coffee?");
         embedBuilder.setDescription(descriptionBuilder.toString());
