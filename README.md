@@ -136,6 +136,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `ping` - Show bot information!
 * `feature-request` - Request a bot feature.
 * `bug-report` - Report a bug with the bot.
+* `support` - Get support for the bot!
 * `user-info` - Get user information about someone.
 ##### 2. **CAFE**
 * `menu` - Show the list of Cafe menu items.

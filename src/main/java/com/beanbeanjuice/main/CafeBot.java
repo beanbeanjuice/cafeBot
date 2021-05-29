@@ -191,6 +191,7 @@ public class CafeBot {
                 new PingCommand(),
                 new FeatureRequestCommand(),
                 new BugReportCommand(),
+                new SupportCommand(),
                 new UserInfoCommand()
         );
 
