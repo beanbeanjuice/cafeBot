@@ -59,7 +59,7 @@ public class SkipCommand implements ICommand {
         }
 
         musicManager.scheduler.nextTrack();
-        event.getChannel().sendMessage(successEmbed(musicManager.audioPlayer.getPlayingTrack())).queue();
+        event.getChannel().sendMessage(successEmbed(musicManager.audioPlayer.getPlayingTrack(), musicManager.scheduler.queue.size())).queue();
     }
 
     @NotNull
@@ -97,7 +97,7 @@ public class SkipCommand implements ICommand {
     }
 
     @NotNull
-    private MessageEmbed successEmbed(@NotNull AudioTrack audioTrack) {
+    private MessageEmbed successEmbed(@NotNull AudioTrack audioTrack, @NotNull Integer songsLeftInQueue) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Skipped Song");
 
@@ -113,6 +113,7 @@ public class SkipCommand implements ICommand {
 
         embedBuilder.setDescription(descriptionBuilder.toString());
         embedBuilder.setColor(Color.green);
+        embedBuilder.setFooter("Songs Left: " + songsLeftInQueue);
         return embedBuilder.build();
     }
 
