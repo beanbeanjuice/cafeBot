@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URI;
@@ -39,7 +42,8 @@ public class RedditAPI {
      * A method used for contacting the guilds who have enabled the bot update notification.
      */
     private void contactRedditAPI() {
-        HttpClient client = HttpClient.newHttpClient();
+//        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(reddit_api_url)).build();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::body)
@@ -51,11 +55,13 @@ public class RedditAPI {
         ObjectMapper defaultObjectMapper = new ObjectMapper();
         try {
             JsonNode node = defaultObjectMapper.readTree(responseBody).get(0).get("data").get("children").get(0).get("data");
+//            JsonNode node = defaultObjectMapper.readTree(responseBody);
+            System.out.println(node.toString());
             reddit_url = "https://www.reddit.com" + node.get("permalink").textValue();
             reddit_image_url = node.get("url").textValue();
             reddit_title = node.get("title").textValue();
             reddit_username = node.get("author").textValue();
-            return node.get(0).toString();
+            return node.toString();
         } catch (JsonProcessingException e) {
             return null;
         }
