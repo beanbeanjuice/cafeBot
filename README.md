@@ -22,7 +22,7 @@
     <img src="http://cdn.beanbeanjuice.com/images/cafeBot/readme/logo.gif" alt="Logo" width="260" height="186">
   </a>
 
-  <h3 align="center">cafeBot</h3>
+  <h1 align="center">cafeBot</h1>
 
   <p align="center">
     A cafe bot for your discord server!
@@ -38,7 +38,10 @@
   </p>
 </p>
 
-
+<p align="center">
+  <h2 align="center">Support Discord</h2>
+  <iframe align="center" src="https://discord.com/widget?id=723103621889130497&theme=dark" width="700" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+</p>
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
