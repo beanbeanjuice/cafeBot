@@ -76,7 +76,7 @@ public class NowPlayingCommand implements ICommand {
         }
 
         String songLength = String.format("%s:%s", CafeBot.getGeneralHelper().roundTime(songDuration, TimestampDifference.MINUTES), songLengthSecondsString);
-        String message = String.format("`%s` by `%s` - `(%s / %s)`", title, author, songPosition, songLength);
+        String message = String.format("`%s` by `%s` - [`%s / %s`]", title, author, songPosition, songLength);
         embedBuilder.setDescription(message);
         embedBuilder.setColor(Color.cyan);
         return embedBuilder.build();
