@@ -145,6 +145,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `balance` - Check your balance!
 ##### 3. **FUN**
 * `coffee-meme` - Get a coffee meme!
+* `tea-meme` - Get a tea meme!
 * `meme` - Send a meme in the current channel. (SFW)
 * `joke` - Send a joke in the current channel. (SFW)
 * `add-poll` - Create a poll! Currently, you can only have 3 polls due to server costs. This will go up in the future!
