@@ -13,11 +13,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to get coffee memes from the {@link com.beanbeanjuice.utility.helper.RedditAPI RedditAPI}.
+ * An {@link ICommand} to send Tea memes.
  *
  * @author beanbeanjuice
  */
-public class CoffeeMemeCommand implements ICommand {
+public class TeaMemeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
@@ -27,37 +27,32 @@ public class CoffeeMemeCommand implements ICommand {
     @NotNull
     private ArrayList<String> getSubreddits() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("CoffeePorn");
-        arrayList.add("coffeememes");
-        arrayList.add("coffeewithaview");
+        arrayList.add("TeaPorn");
+        arrayList.add("TeaPictures");
         return arrayList;
     }
 
     @Override
     public String getName() {
-        return "coffee-meme";
+        return "tea-meme";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("coffeememe");
-        arrayList.add("coffee");
-        arrayList.add("coffee-memes");
-        arrayList.add("coffeememes");
-        arrayList.add("cafe-meme");
-        arrayList.add("cafememe");
+        arrayList.add("teameme");
+        arrayList.add("tea");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Get a coffee meme!";
+        return "Get a tea meme!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!coffee-meme`";
+        return "`!!tea`";
     }
 
     @Override

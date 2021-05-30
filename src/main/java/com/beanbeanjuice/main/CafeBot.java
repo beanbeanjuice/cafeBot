@@ -208,6 +208,7 @@ public class CafeBot {
         // Fun Commands
         commandManager.addCommands(
                 new CoffeeMemeCommand(),
+                new TeaMemeCommand(),
                 new MemeCommand(),
                 new JokeCommand(),
                 new AddPollCommand(),
