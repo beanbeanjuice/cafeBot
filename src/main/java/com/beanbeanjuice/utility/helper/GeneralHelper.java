@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A general class used for everything.
@@ -49,6 +50,20 @@ public class GeneralHelper {
     @NotNull
     public Integer getRandomNumber(@NotNull Integer minimum, @NotNull Integer maximum) {
         return (int) ((Math.random() * (maximum - minimum)) + minimum);
+    }
+
+    /**
+     * Formats the specified time.
+     * @param timeInMillis The time as a {@link Long} value.
+     * @return The formatted time {@link String}.
+     */
+    @NotNull
+    public String formatTime(@NotNull Long timeInMillis) {
+        final long hours = timeInMillis / TimeUnit.HOURS.toMillis(1);
+        final long minutes = timeInMillis / TimeUnit.MINUTES.toMillis(1);
+        final long seconds = timeInMillis % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
     /**
