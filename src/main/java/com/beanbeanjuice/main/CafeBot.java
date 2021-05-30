@@ -56,6 +56,8 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.apache.hc.core5.http.ParseException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -68,6 +70,7 @@ import java.util.TimerTask;
  *
  * @author beanbeanjuice
  */
+@SpringBootApplication
 public class CafeBot {
 
     // File Information
@@ -152,6 +155,9 @@ public class CafeBot {
     private static WelcomeListener welcomeListener;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
+
+        SpringApplication.run(CafeBot.class, args);
+
         countingHelper = new CountingHelper();
         twitchHandler = new TwitchHandler();
         sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
