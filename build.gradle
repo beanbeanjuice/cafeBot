@@ -1,5 +1,7 @@
 plugins {
     id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'org.springframework.boot' version '2.5.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'application'
 }
@@ -13,6 +15,7 @@ try {
     versionName = 'v0.0.0'
 }
 
+sourceCompatibility = '15'
 group 'com.beanbeanjuice'
 mainClassName = 'com.beanbeanjuice.main.CafeBot'
 version versionName
@@ -71,6 +74,15 @@ dependencies {
 
     // Apple Music/Itunes API
     implementation group: 'be.ceau', name: 'itunes-api', version: '4.6.0'
+
+    // Spring Stuff
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.5.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty', version: '2.5.0'
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.5.0'
+
+    // Lombok
+    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
 
 }
 
