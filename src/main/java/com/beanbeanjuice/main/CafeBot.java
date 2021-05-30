@@ -56,6 +56,8 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.apache.hc.core5.http.ParseException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -68,6 +70,7 @@ import java.util.TimerTask;
  *
  * @author beanbeanjuice
  */
+@SpringBootApplication
 public class CafeBot {
 
     // File Information
@@ -153,196 +156,194 @@ public class CafeBot {
 
     public static void main(String[] args) throws LoginException, InterruptedException {
 
-        logManager = new LogManager("Log Manager", homeGuild, homeGuildLogChannel);
+        SpringApplication.run(CafeBot.class, args);
 
-        countingHelper = new CountingHelper();
-        twitchHandler = new TwitchHandler();
-        sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
-        sqlServer.startConnection();
+        logManager = new LogManager("Log Manager", homeGuildLogChannel);
 
-        logManager.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
-        logManager.log(CafeBot.class, LogLevel.OKAY, "Starting bot!", true, false);
-
-        jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
-        jdaBuilder.setActivity(Activity.playing("The barista is starting up..."));
-        jdaBuilder.setStatus(OnlineStatus.IDLE);
-
-        jdaBuilder.enableIntents(
-                GatewayIntent.GUILD_VOICE_STATES,
-                GatewayIntent.GUILD_BANS,
-                GatewayIntent.GUILD_EMOJIS,
-                GatewayIntent.GUILD_MEMBERS
-        );
-        jdaBuilder.enableCache(
-                CacheFlag.EMOTE,
-                CacheFlag.VOICE_STATE
-        );
-        jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
-        jdaBuilder.setChunkingFilter(ChunkingFilter.ALL);
-
-        serveHandler = new ServeHandler();
-        menuHandler = new MenuHandler();
-
-        // Listeners and Commands
-        commandManager = new CommandManager();
-
-        // Generic Commands
-        commandManager.addCommands(
-                new HelpCommand(),
-                new PingCommand(),
-                new FeatureRequestCommand(),
-                new BugReportCommand(),
-                new SupportCommand(),
-                new BotInviteCommand(),
-                new UserInfoCommand(),
-                new MemberCountCommand()
-        );
-
-        // Cafe Commands
-        commandManager.addCommands(
-                new MenuCommand(),
-                new ServeCommand(),
-                new OrderCommand(),
-                new BalanceCommand()
-        );
-
-        // Fun Commands
-        commandManager.addCommands(
-                new CoffeeMemeCommand(),
-                new TeaMemeCommand(),
-                new MemeCommand(),
-                new JokeCommand(),
-                new AddPollCommand(),
-                new AddRaffleCommand(),
-                new AvatarCommand(),
-                new GetBirthdayCommand(),
-                new SetBirthdayCommand(),
-                new RemoveBirthdayCommand(),
-                new CountingStatisticsCommand()
-        );
-
-        // Games Commands
-        commandManager.addCommands(
-                new EightBallCommand(),
-                new CoinFlipCommand(),
-                new DiceRollCommand(),
-                new TicTacToeCommand(),
-                new ConnectFourCommand()
-        );
-
-        // Interaction Commands
-        commandManager.addCommands(
-                new HugCommand(),
-                new PunchCommand(),
-                new KissCommand(),
-                new BiteCommand(),
-                new BlushCommand(),
-                new CuddleCommand(),
-                new NomCommand(),
-                new PokeCommand(),
-                new SlapCommand(),
-                new StabCommand(),
-                new HmphCommand(),
-                new PoutCommand(),
-                new ThrowCommand(),
-                new SmileCommand(),
-                new StareCommand(),
-                new TickleCommand(),
-                new RageCommand(),
-                new YellCommand(),
-                new HeadPatCommand(),
-                new CryCommand(),
-                new DanceCommand(),
-                new DabCommand(),
-                new BonkCommand(),
-                new SleepCommand(),
-                new DieCommand()
-        );
-
-        // Music Commands
-        commandManager.addCommands(
-                new PlayCommand(),
-                new NowPlayingCommand(),
-                new PauseCommand(),
-                new QueueCommand(),
-                new RepeatCommand(),
-                new ShuffleCommand(),
-                new SkipCommand(),
-                new StopCommand()
-        );
-
-        // Twitch Commands
-        commandManager.addCommands(
-                new SetLiveChannelCommand(),
-                new AddTwitchChannelCommand(),
-                new RemoveTwitchChannelCommand(),
-                new GetTwitchChannelsCommand(),
-                new SetLiveNotificationsRoleCommand()
-        );
-
-        // Moderation Commands
-        commandManager.addCommands(
-                new SetLogChannelCommand(),
-                new SetUpdateChannelCommand(),
-                new SetCountingChannelCommand(),
-                new SetPollChannelCommand(),
-                new SetRaffleChannelCommand(),
-                new SetBirthdayChannelCommand(),
-                new SetWelcomeChannelCommand(),
-                new EditWelcomeMessageCommand(),
-                new SetModeratorRoleCommand(),
-                new SetMutedRoleCommand(),
-                new ChangePrefixCommand(),
-                new KickCommand(),
-                new BanCommand(),
-                new ClearChatCommand(),
-                new MuteCommand(),
-                new UnMuteCommand(),
-                new NotifyOnUpdateCommand()
-        );
-
-        jdaBuilder.addEventListeners(new Listener());
-
-        jda = jdaBuilder.build().awaitReady();
-
-        homeGuild = jda.getGuildById(HOME_GUILD_ID);
-        homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
-        logManager.setGuild(homeGuild);
-        logManager.setLogChannel(homeGuildLogChannel);
-
-        logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
-
-        // Connecting to the Spotify API
-        connectToSpotifyAPI();
-        startRefreshTimer();
-
-        logManager.setGuild(homeGuild);
-        logManager.setLogChannel(homeGuildLogChannel);
-        guildHandler = new GuildHandler();
-
-        generalHelper = new GeneralHelper();
-
-
-        versionHelper = new VersionHelper();
-        versionHelper.contactGuilds();
-
-        pollHandler = new PollHandler();
-        raffleHandler = new RaffleHandler();
-
-        interactionHandler = new InteractionHandler();
-
-        birthdayHandler = new BirthdayHandler();
-
-        ticTacToeHandler = new TicTacToeHandler();
-        connectFourHandler = new ConnectFourHandler();
-
-        welcomeHandler = new WelcomeHandler();
-        welcomeListener = new WelcomeListener();
-        jda.addEventListener(welcomeListener);
-
-        // Final Things
-        updateGuildPresence();
-        jda.getPresence().setStatus(OnlineStatus.ONLINE);
+//        countingHelper = new CountingHelper();
+//        twitchHandler = new TwitchHandler();
+//        sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
+//        sqlServer.startConnection();
+//
+//        logManager.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
+//        logManager.log(CafeBot.class, LogLevel.OKAY, "Starting bot!", true, false);
+//
+//        jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
+//        jdaBuilder.setActivity(Activity.playing("The barista is starting up..."));
+//        jdaBuilder.setStatus(OnlineStatus.IDLE);
+//
+//        jdaBuilder.enableIntents(
+//                GatewayIntent.GUILD_VOICE_STATES,
+//                GatewayIntent.GUILD_BANS,
+//                GatewayIntent.GUILD_EMOJIS,
+//                GatewayIntent.GUILD_MEMBERS
+//        );
+//        jdaBuilder.enableCache(
+//                CacheFlag.EMOTE,
+//                CacheFlag.VOICE_STATE
+//        );
+//        jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
+//        jdaBuilder.setChunkingFilter(ChunkingFilter.ALL);
+//
+//        serveHandler = new ServeHandler();
+//        menuHandler = new MenuHandler();
+//
+//        // Listeners and Commands
+//        commandManager = new CommandManager();
+//
+//        // Generic Commands
+//        commandManager.addCommands(
+//                new HelpCommand(),
+//                new PingCommand(),
+//                new FeatureRequestCommand(),
+//                new BugReportCommand(),
+//                new SupportCommand(),
+//                new BotInviteCommand(),
+//                new UserInfoCommand(),
+//                new MemberCountCommand()
+//        );
+//
+//        // Cafe Commands
+//        commandManager.addCommands(
+//                new MenuCommand(),
+//                new ServeCommand(),
+//                new OrderCommand(),
+//                new BalanceCommand()
+//        );
+//
+//        // Fun Commands
+//        commandManager.addCommands(
+//                new CoffeeMemeCommand(),
+//                new TeaMemeCommand(),
+//                new MemeCommand(),
+//                new JokeCommand(),
+//                new AddPollCommand(),
+//                new AddRaffleCommand(),
+//                new AvatarCommand(),
+//                new GetBirthdayCommand(),
+//                new SetBirthdayCommand(),
+//                new RemoveBirthdayCommand(),
+//                new CountingStatisticsCommand()
+//        );
+//
+//        // Games Commands
+//        commandManager.addCommands(
+//                new EightBallCommand(),
+//                new CoinFlipCommand(),
+//                new DiceRollCommand(),
+//                new TicTacToeCommand(),
+//                new ConnectFourCommand()
+//        );
+//
+//        // Interaction Commands
+//        commandManager.addCommands(
+//                new HugCommand(),
+//                new PunchCommand(),
+//                new KissCommand(),
+//                new BiteCommand(),
+//                new BlushCommand(),
+//                new CuddleCommand(),
+//                new NomCommand(),
+//                new PokeCommand(),
+//                new SlapCommand(),
+//                new StabCommand(),
+//                new HmphCommand(),
+//                new PoutCommand(),
+//                new ThrowCommand(),
+//                new SmileCommand(),
+//                new StareCommand(),
+//                new TickleCommand(),
+//                new RageCommand(),
+//                new YellCommand(),
+//                new HeadPatCommand(),
+//                new CryCommand(),
+//                new DanceCommand(),
+//                new DabCommand(),
+//                new BonkCommand(),
+//                new SleepCommand(),
+//                new DieCommand()
+//        );
+//
+//        // Music Commands
+//        commandManager.addCommands(
+//                new PlayCommand(),
+//                new NowPlayingCommand(),
+//                new PauseCommand(),
+//                new QueueCommand(),
+//                new RepeatCommand(),
+//                new ShuffleCommand(),
+//                new SkipCommand(),
+//                new StopCommand()
+//        );
+//
+//        // Twitch Commands
+//        commandManager.addCommands(
+//                new SetLiveChannelCommand(),
+//                new AddTwitchChannelCommand(),
+//                new RemoveTwitchChannelCommand(),
+//                new GetTwitchChannelsCommand(),
+//                new SetLiveNotificationsRoleCommand()
+//        );
+//
+//        // Moderation Commands
+//        commandManager.addCommands(
+//                new SetLogChannelCommand(),
+//                new SetUpdateChannelCommand(),
+//                new SetCountingChannelCommand(),
+//                new SetPollChannelCommand(),
+//                new SetRaffleChannelCommand(),
+//                new SetBirthdayChannelCommand(),
+//                new SetWelcomeChannelCommand(),
+//                new EditWelcomeMessageCommand(),
+//                new SetModeratorRoleCommand(),
+//                new SetMutedRoleCommand(),
+//                new ChangePrefixCommand(),
+//                new KickCommand(),
+//                new BanCommand(),
+//                new ClearChatCommand(),
+//                new MuteCommand(),
+//                new UnMuteCommand(),
+//                new NotifyOnUpdateCommand()
+//        );
+//
+//        jdaBuilder.addEventListeners(new Listener());
+//
+//        jda = jdaBuilder.build().awaitReady();
+//
+//        homeGuild = jda.getGuildById(HOME_GUILD_ID);
+//        homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
+//        logManager.setLogChannel(homeGuildLogChannel);
+//
+//        logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
+//
+//        // Connecting to the Spotify API
+//        connectToSpotifyAPI();
+//        startRefreshTimer();
+//
+//        guildHandler = new GuildHandler();
+//
+//        generalHelper = new GeneralHelper();
+//
+//        versionHelper = new VersionHelper();
+//        versionHelper.contactGuilds();
+//
+//        pollHandler = new PollHandler();
+//        raffleHandler = new RaffleHandler();
+//
+//        interactionHandler = new InteractionHandler();
+//
+//        birthdayHandler = new BirthdayHandler();
+//
+//        ticTacToeHandler = new TicTacToeHandler();
+//        connectFourHandler = new ConnectFourHandler();
+//
+//        welcomeHandler = new WelcomeHandler();
+//        welcomeListener = new WelcomeListener();
+//        jda.addEventListener(welcomeListener);
+//
+//        // Final Things
+//        updateGuildPresence();
+//        jda.getPresence().setStatus(OnlineStatus.ONLINE);
     }
 
     /**

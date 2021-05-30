@@ -9,6 +9,8 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -24,30 +26,19 @@ import java.util.TimeZone;
 public class LogManager {
 
     private final String name;
-    private Guild guild;
     private TextChannel logChannel;
     private ArrayList<String> webhookURLs;
 
     /**
      * Create a {@link LogManager LogManager} instance.
      * @param name The name for the {@link LogManager LogManager}.
-     * @param guild The {@link Guild Guild} to be used for logging.
      * @param logChannel The {@link TextChannel TextChannel} to be used for logging.
      */
-    public LogManager(@NotNull String name, @NotNull Guild guild, @NotNull TextChannel logChannel) {
+    public LogManager(@NotNull String name, @NotNull TextChannel logChannel) {
         this.name = name;
-        this.guild = guild;
         this.logChannel = logChannel;
 
         webhookURLs = new ArrayList<>(); // Creates the ArrayList
-    }
-
-    /**
-     * Sets the {@link Guild} for the {@link LogManager}.
-     * @param guild The {@link Guild} which contains the {@link TextChannel logChannel}.
-     */
-    public void setGuild(@NotNull Guild guild) {
-        this.guild = guild;
     }
 
     /**
