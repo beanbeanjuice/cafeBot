@@ -215,7 +215,8 @@ public class CafeBot {
                 new GetBirthdayCommand(),
                 new SetBirthdayCommand(),
                 new RemoveBirthdayCommand(),
-                new CountingStatisticsCommand()
+                new CountingStatisticsCommand(),
+                new MemberCountCommand()
         );
 
         // Games Commands
