@@ -1,7 +1,4 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
-    id 'org.springframework.boot' version '2.5.0'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'application'
 }
@@ -76,14 +73,6 @@ dependencies {
 
     // Apple Music/Itunes API
     implementation group: 'be.ceau', name: 'itunes-api', version: '4.6.0'
-
-    // Spring for Websocket
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    // Lombok for Websocket
-    implementation 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
 
 }
 
