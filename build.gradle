@@ -1,18 +1,9 @@
 plugins {
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'org.springframework.boot' version '2.5.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'application'
-}
-
-task buildWithDependencies(type: Jar) {
-    manifest {
-        attributes 'Main-Class': 'com.beanbeanjuice.main.CafeBot'
-    }
-
-    from {
-        configurations.runtimeClasspath.findAll { !it.path.endsWith(".pom") }.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-
-    with jar
 }
 
 def versionName
@@ -48,6 +39,9 @@ dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.8.0-M1'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine'
 
+    // Json Slurper
+    implementation group: 'org.codehaus.groovy', name: 'groovy-json', version: '3.0.8'
+
     // Jetbrains Annotations
     implementation group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
 
@@ -82,6 +76,14 @@ dependencies {
 
     // Apple Music/Itunes API
     implementation group: 'be.ceau', name: 'itunes-api', version: '4.6.0'
+
+    // Spring for Websocket
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Lombok for Websocket
+    implementation 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
 }
 
