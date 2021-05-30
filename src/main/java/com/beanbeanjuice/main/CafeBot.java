@@ -193,7 +193,8 @@ public class CafeBot {
                 new BugReportCommand(),
                 new SupportCommand(),
                 new BotInviteCommand(),
-                new UserInfoCommand()
+                new UserInfoCommand(),
+                new MemberCountCommand()
         );
 
         // Cafe Commands
@@ -215,8 +216,7 @@ public class CafeBot {
                 new GetBirthdayCommand(),
                 new SetBirthdayCommand(),
                 new RemoveBirthdayCommand(),
-                new CountingStatisticsCommand(),
-                new MemberCountCommand()
+                new CountingStatisticsCommand()
         );
 
         // Games Commands
