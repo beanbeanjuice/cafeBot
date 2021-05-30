@@ -69,6 +69,7 @@ public class MuteCommand implements ICommand {
         embedBuilder.setTitle("Muted User");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setDescription("Muted " + punishee.getAsMention() + ".");
+        embedBuilder.setFooter("As a heads up... you need to make sure the muted role does not have access to speak in your server.");
         return embedBuilder.build();
     }
 

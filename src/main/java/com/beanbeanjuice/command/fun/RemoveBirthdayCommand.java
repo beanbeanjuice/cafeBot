@@ -5,67 +5,60 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} to set your birthday.
+ * An {@link ICommand} used to remove your birthday.
  *
  * @author beanbeanjuice
  */
-public class SetBirthdayCommand implements ICommand {
+public class RemoveBirthdayCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        Date date = CafeBot.getGeneralHelper().parseDate(args.get(0));
-        if (CafeBot.getBirthdayHandler().updateBirthday(user.getId(), date)) {
+        if (CafeBot.getBirthdayHandler().removeBirthday(user.getId())) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                    "Updated Birthday",
-                    "Successfully updated your birthday to " + date + " (YYYY-MM-DD)\n\n*By setting your birthday, " +
-                            "you are agreeing to be notified in EVERY server that this bot is in, granted that they have enabled " +
-                            "birthday notifications. To opt out, do `" + ctx.getPrefix() + "remove-birthday`.*"
+                    "Removed Birthday",
+                    "Successfully removed your birthday!"
             )).queue();
             return;
         }
+
         event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
     }
 
     @Override
     public String getName() {
-        return "set-birthday";
+        return "remove-birthday";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setbirthday");
+        arrayList.add("removebirthday");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Set your birthday! Use the format `(YYYY-MM-DD)`!";
+        return "Remove your birthday.";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!set-birthday 2000-02-02` - This sets it to February 2, 2002.";
+        return "`!!remove-birthday";
     }
 
     @Override
     public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.DATE, "Birthdate (YYYY-MM-DD)", true);
-        return usage;
+        return new Usage();
     }
 
     @Override
     public CategoryType getCategoryType() {
         return CategoryType.FUN;
     }
-    
 }

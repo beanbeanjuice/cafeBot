@@ -5,57 +5,48 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.ArrayList;
 
 /**
- * A command used for getting the link to the bug reports.
+ * An {@link ICommand} used to get an invite link for the bot.
  *
  * @author beanbeanjuice
  */
-public class BugReportCommand implements ICommand {
-
-    private final String BUG_REPORT_URL = "https://github.com/beanbeanjuice/cafeBot/issues/new?assignees=beanbeanjuice&labels=bug&template=bug-report.md&title=%5BBUG%5D+%2A%2ADESCRIBE+YOUR+ISSUE+AS+SHORT+AS+POSSIBLE+IN+THIS+BOX%2A%2A";
+public class BotInviteCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(bugReportEmbed()).queue();
-    }
-
-    private MessageEmbed bugReportEmbed() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Bug Report", BUG_REPORT_URL);
-        embedBuilder.setDescription("You can submit a [bug report](" + BUG_REPORT_URL + ") on github!");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        return embedBuilder.build();
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                "Bot Invite Link",
+                "Click [this](https://discord.com/api/oauth2/authorize?client_id=787162619504492554&permissions=305917254&scope=bot) to invite the bot to your server!"
+        )).queue();
     }
 
     @Override
     public String getName() {
-        return "bug-report";
+        return "invite-bot";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("bugreport");
-        arrayList.add("report-bug");
-        arrayList.add("reportbug");
+        arrayList.add("invitebot");
+        arrayList.add("bot-invite");
+        arrayList.add("botinvite");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Submit a bug report!";
+        return "Get an invite for the bot to add it to your server!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!bug-report`";
+        return "`!!botinvite`";
     }
 
     @Override

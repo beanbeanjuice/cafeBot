@@ -79,7 +79,7 @@ public class PlayerManager {
                         audioTrack.getInfo().title +
                         "` by `" +
                         audioTrack.getInfo().author +
-                        "`";
+                        "` [`" + CafeBot.getGeneralHelper().formatTime(audioTrack.getDuration()) + "`]";
                 embedBuilder.setDescription(message);
                 embedBuilder.setColor(Color.green);
 
