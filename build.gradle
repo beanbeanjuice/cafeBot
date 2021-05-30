@@ -1,4 +1,5 @@
 plugins {
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
     id 'java'
     id 'application'
 }
@@ -20,9 +21,6 @@ repositories {
 
     // Central Maven repository.
     mavenCentral()
-
-    // Repository used for the DiscordJDA.
-    jcenter()
 
     maven {
         url 'https://m2.dv8tion.net/releases'

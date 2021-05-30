@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -39,7 +40,6 @@ public class LogManager {
         this.logChannel = logChannel;
 
         webhookURLs = new ArrayList<>(); // Creates the ArrayList
-
     }
 
     /**
@@ -142,18 +142,16 @@ public class LogManager {
      */
     private void logToLogChannel(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Time time) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-
         embedBuilder.setAuthor(logLevel.toString());
         embedBuilder.setThumbnail(logLevel.getImageURL());
-        embedBuilder.setDescription("``" + c.getSimpleName() + "``");
-        embedBuilder.setTitle(shortenToLimit(message, 200));
+        embedBuilder.setTitle("`" + c.getSimpleName() + "`");
+        embedBuilder.setDescription(shortenToLimit(message, 4000));
         embedBuilder.setColor(logLevel.getColor());
+        embedBuilder.setTimestamp(new Date().toInstant());
 
         try {
             logChannel.sendMessage(embedBuilder.build()).complete();
-        } catch (NullPointerException e) {
-            //
-        }
+        } catch (NullPointerException ignored) {}
     }
 
     /**
