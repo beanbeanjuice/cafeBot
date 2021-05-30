@@ -52,16 +52,16 @@ public class TeaMemeCommand implements ICommand {
 
     @Override
     public String exampleUsage() {
-        return null;
+        return "`!!tea`";
     }
 
     @Override
     public Usage getUsage() {
-        return null;
+        return new Usage();
     }
 
     @Override
     public CategoryType getCategoryType() {
-        return null;
+        return CategoryType.FUN;
     }
 }
