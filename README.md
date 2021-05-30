@@ -137,6 +137,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `support` - Get support for the bot!
 * `invite-bot` - A command to get an invite link for the bot!
 * `user-info` - Get user information about someone.
+* `member-count` - Get the member count for your server!
 ##### 2. **CAFE**
 * `menu` - Show the list of Cafe menu items.
 * `serve` - Get beanCoins! Essentially you run this command by doing `!!serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.

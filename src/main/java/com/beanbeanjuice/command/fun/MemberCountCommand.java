@@ -64,6 +64,6 @@ public class MemberCountCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.FUN;
+        return CategoryType.GENERIC;
     }
 }
