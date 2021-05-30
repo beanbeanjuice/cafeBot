@@ -101,15 +101,9 @@ public class SkipCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Skipped Song");
 
-        int songLength = CafeBot.getGeneralHelper().roundTime(audioTrack.getDuration(), TimestampDifference.SECONDS);
-        String songLengthString = String.valueOf(songLength);
-
-        if (!CafeBot.getGeneralHelper().isDoubleDigit(songLength)) {
-            songLengthString = "0" + songLengthString;
-        }
-        String songPosition = String.format("%s:%s", CafeBot.getGeneralHelper().roundTime(audioTrack.getDuration(), TimestampDifference.MINUTES), songLengthString);
         StringBuilder descriptionBuilder = new StringBuilder();
-        descriptionBuilder.append("Now Playing - `" + audioTrack.getInfo().title + "` by `" + audioTrack.getInfo().author + "` [`" + songPosition + "]`");
+        descriptionBuilder.append("Now Playing - `" + audioTrack.getInfo().title + "` by `" + audioTrack.getInfo().author + "` [`" +
+                CafeBot.getGeneralHelper().formatTime(audioTrack.getDuration())+ "]`");
 
         embedBuilder.setDescription(descriptionBuilder.toString());
         embedBuilder.setColor(Color.green);
