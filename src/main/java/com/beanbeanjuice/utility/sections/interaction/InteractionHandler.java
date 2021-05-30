@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.sections.interaction;
 
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;

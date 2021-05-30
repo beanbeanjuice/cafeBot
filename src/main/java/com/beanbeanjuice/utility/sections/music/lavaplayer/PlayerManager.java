@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.sections.music.lavaplayer;
 
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;

@@ -1,7 +1,6 @@
 package com.beanbeanjuice.utility.listener;
 
-import com.beanbeanjuice.main.CafeBot;
-import com.beanbeanjuice.utility.logger.LogLevel;
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.sections.moderation.welcome.GuildWelcome;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;

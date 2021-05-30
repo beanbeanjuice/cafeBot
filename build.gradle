@@ -1,9 +1,30 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.*
+
 plugins {
     id 'com.github.johnrengelman.shadow' version '7.0.0'
     id 'org.springframework.boot' version '2.5.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'application'
+}
+
+// Can't use Boot's nested jar packaging due to environment constrained classloader
+apply plugin: 'com.github.johnrengelman.shadow'
+
+import com.github.jengelman.gradle.plugins.shadow.transformers.*
+
+shadowJar {
+
+    // Required for Spring
+    mergeServiceFiles()
+    append 'META-INF/spring.handlers'
+    append 'META-INF/spring.schemas'
+    append 'META-INF/spring.tooling'
+    transform(PropertiesFileTransformer) {
+        paths = ['META-INF/spring.factories' ]
+        mergeStrategy = "append"
+    }
+
 }
 
 def versionName
@@ -17,7 +38,7 @@ try {
 
 sourceCompatibility = '15'
 group 'com.beanbeanjuice'
-mainClassName = 'com.beanbeanjuice.main.CafeBot'
+mainClassName = 'com.beanbeanjuice.CafeBot'
 version versionName
 
 repositories {
@@ -76,9 +97,12 @@ dependencies {
     implementation group: 'be.ceau', name: 'itunes-api', version: '4.6.0'
 
     // Spring Stuff
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.5.0'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty', version: '2.5.0'
-    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.5.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-maven-plugin', version: '2.5.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '2.5.0'
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    implementation group: 'javax.servlet', name: 'javax.servlet-api'
 
     // Lombok
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.20'

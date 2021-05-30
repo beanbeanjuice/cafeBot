@@ -1,8 +1,8 @@
 package com.beanbeanjuice.utility.logger;
 
-import com.beanbeanjuice.main.websocket.controller.ChatController;
-import com.beanbeanjuice.main.websocket.model.ChatMessage;
-import com.beanbeanjuice.main.websocket.model.MessageType;
+import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.utility.logger.websocket.model.ChatMessage;
+import com.beanbeanjuice.utility.logger.websocket.model.MessageType;
 import com.beanbeanjuice.utility.exception.WebhookException;
 import com.beanbeanjuice.utility.time.Time;
 import com.beanbeanjuice.utility.webhook.Webhook;
@@ -13,9 +13,12 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
+import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.messaging.SessionConnectedEvent;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import java.io.*;
 import java.util.ArrayList;

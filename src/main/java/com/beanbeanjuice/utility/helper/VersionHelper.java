@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.helper;
 
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.guild.CustomGuild;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.fasterxml.jackson.core.JsonProcessingException;

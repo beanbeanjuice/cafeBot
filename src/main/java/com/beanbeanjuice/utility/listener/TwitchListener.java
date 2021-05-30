@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.listener;
 
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;

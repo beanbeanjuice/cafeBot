@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.command;
 
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.guild.CustomGuild;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
