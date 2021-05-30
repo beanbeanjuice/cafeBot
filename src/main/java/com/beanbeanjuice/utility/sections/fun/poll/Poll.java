@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.sections.fun.poll;
 
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import org.jetbrains.annotations.NotNull;
 

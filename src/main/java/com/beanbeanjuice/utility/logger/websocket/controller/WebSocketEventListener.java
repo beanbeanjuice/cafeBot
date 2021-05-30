@@ -1,9 +1,9 @@
-package com.beanbeanjuice.main.websocket.controller;
+package com.beanbeanjuice.utility.logger.websocket.controller;
 
-import com.beanbeanjuice.main.CafeBot;
-import com.beanbeanjuice.main.websocket.model.ChatMessage;
-import com.beanbeanjuice.main.websocket.model.MessageType;
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import com.beanbeanjuice.utility.logger.websocket.model.ChatMessage;
+import com.beanbeanjuice.utility.logger.websocket.model.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;

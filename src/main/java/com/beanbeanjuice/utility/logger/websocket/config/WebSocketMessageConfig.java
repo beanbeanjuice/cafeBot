@@ -1,4 +1,4 @@
-package com.beanbeanjuice.main.websocket.config;
+package com.beanbeanjuice.utility.logger.websocket.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

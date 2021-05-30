@@ -1,4 +1,4 @@
-package com.beanbeanjuice.main.websocket.model;
+package com.beanbeanjuice.utility.logger.websocket.model;
 
 import lombok.Builder;
 import lombok.Getter;

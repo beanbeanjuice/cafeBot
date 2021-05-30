@@ -1,6 +1,6 @@
-package com.beanbeanjuice.main.websocket.controller;
+package com.beanbeanjuice.utility.logger.websocket.controller;
 
-import com.beanbeanjuice.main.websocket.model.ChatMessage;
+import com.beanbeanjuice.utility.logger.websocket.model.ChatMessage;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
