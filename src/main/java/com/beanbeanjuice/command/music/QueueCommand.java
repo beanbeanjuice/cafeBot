@@ -61,7 +61,7 @@ public class QueueCommand implements ICommand {
                     .append(" by ")
                     .append(audioTrackInfo.author)
                     .append("` [`")
-                    .append(formatTime(audioTrack.getDuration()))
+                    .append(CafeBot.getGeneralHelper().formatTime(audioTrack.getDuration()))
                     .append("`]\n");
         }
 
@@ -76,21 +76,10 @@ public class QueueCommand implements ICommand {
     }
 
     @NotNull
-    private String formatTime(@NotNull Long timeInMillis) {
-        final long hours = timeInMillis / TimeUnit.HOURS.toMillis(1);
-        final long minutes = timeInMillis / TimeUnit.MINUTES.toMillis(1);
-        final long seconds = timeInMillis % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
-
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
-    }
-
-    @NotNull
     private MessageEmbed emptyQueueEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-
         embedBuilder.setColor(Color.orange);
         embedBuilder.setDescription("The queue is currently empty.");
-
         return embedBuilder.build();
     }
 
