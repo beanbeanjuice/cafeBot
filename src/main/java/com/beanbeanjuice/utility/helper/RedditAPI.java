@@ -35,7 +35,7 @@ public class RedditAPI {
         contactRedditAPI();
 
         // Making sure it's not a video
-        while (reddit_image_url.contains("v.red")) {
+        while (reddit_image_url.contains("v.red") || reddit_image_url.contains("youtube.") || reddit_image_url.contains("youtu-be")) {
             contactRedditAPI();
         }
 

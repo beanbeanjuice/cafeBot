@@ -22,7 +22,7 @@
     <img src="http://cdn.beanbeanjuice.com/images/cafeBot/readme/logo.gif" alt="Logo" width="260" height="186">
   </a>
 
-  <h3 align="center">cafeBot</h3>
+  <h1 align="center">cafeBot</h1>
 
   <p align="center">
     A cafe bot for your discord server!
@@ -37,8 +37,6 @@
     <a href="https://github.com/beanbeanjuice/cafeBot/issues">Request Feature</a>
   </p>
 </p>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -136,7 +134,10 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `ping` - Show bot information!
 * `feature-request` - Request a bot feature.
 * `bug-report` - Report a bug with the bot.
+* `support` - Get support for the bot!
+* `invite-bot` - A command to get an invite link for the bot!
 * `user-info` - Get user information about someone.
+* `member-count` - Get the member count for your server!
 ##### 2. **CAFE**
 * `menu` - Show the list of Cafe menu items.
 * `serve` - Get beanCoins! Essentially you run this command by doing `!!serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.
@@ -144,13 +145,15 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `balance` - Check your balance!
 ##### 3. **FUN**
 * `coffee-meme` - Get a coffee meme!
+* `tea-meme` - Get a tea meme!
 * `meme` - Send a meme in the current channel. (SFW)
 * `joke` - Send a joke in the current channel. (SFW)
 * `add-poll` - Create a poll! Currently, you can only have 3 polls due to server costs. This will go up in the future!
 * `add-raffle` - Create a raffle! Currently, you can only have 3 raffles due to server costs. This will go up in the future!
 * `avatar` - Get yours or someone else's avatar image!
 * `get-birthday` - Get yours or someone else's birthday!
-* `set-birthday` - Set your birthday! (YYYY-MM-DD)
+* `set-birthday` - Set your birthday! `(YYYY-MM-DD)`
+* `remove-birthday` - Remove your birthday.
 * `counting-statistics` - Get counting information for your server!
 ##### 4. **GAMES**
 * `8-ball` - Ask a yes or no question!

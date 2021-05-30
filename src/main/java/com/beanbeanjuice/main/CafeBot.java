@@ -47,6 +47,7 @@ import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
 import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
@@ -163,6 +164,7 @@ public class CafeBot {
 
         jdaBuilder = JDABuilder.createDefault(BOT_TOKEN);
         jdaBuilder.setActivity(Activity.playing("The barista is starting up..."));
+        jdaBuilder.setStatus(OnlineStatus.IDLE);
 
         jdaBuilder.enableIntents(
                 GatewayIntent.GUILD_VOICE_STATES,
@@ -189,7 +191,10 @@ public class CafeBot {
                 new PingCommand(),
                 new FeatureRequestCommand(),
                 new BugReportCommand(),
-                new UserInfoCommand()
+                new SupportCommand(),
+                new BotInviteCommand(),
+                new UserInfoCommand(),
+                new MemberCountCommand()
         );
 
         // Cafe Commands
@@ -203,6 +208,7 @@ public class CafeBot {
         // Fun Commands
         commandManager.addCommands(
                 new CoffeeMemeCommand(),
+                new TeaMemeCommand(),
                 new MemeCommand(),
                 new JokeCommand(),
                 new AddPollCommand(),
@@ -210,6 +216,7 @@ public class CafeBot {
                 new AvatarCommand(),
                 new GetBirthdayCommand(),
                 new SetBirthdayCommand(),
+                new RemoveBirthdayCommand(),
                 new CountingStatisticsCommand()
         );
 
@@ -314,7 +321,6 @@ public class CafeBot {
 
         generalHelper = new GeneralHelper();
 
-        updateGuildPresence();
 
         versionHelper = new VersionHelper();
         versionHelper.contactGuilds();
@@ -332,6 +338,10 @@ public class CafeBot {
         welcomeHandler = new WelcomeHandler();
         welcomeListener = new WelcomeListener();
         jda.addEventListener(welcomeListener);
+
+        // Final Things
+        updateGuildPresence();
+        jda.getPresence().setStatus(OnlineStatus.ONLINE);
     }
 
     /**

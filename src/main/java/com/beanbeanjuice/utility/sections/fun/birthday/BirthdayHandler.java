@@ -64,7 +64,6 @@ public class BirthdayHandler {
                                     if (birthdayChannel != null) {
                                         birthdayChannel.sendMessage(birthdayEmbed(member)).queue();
                                     }
-
                                 }
                             }
 
@@ -144,6 +143,30 @@ public class BirthdayHandler {
             }
         } catch (SQLException e) {
             CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Getting Birthdays: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Remove a birthday from the database.
+     * @param userID The ID of the {@link net.dv8tion.jda.api.entities.User User} to remove.
+     * @return Whether or not it was successfully removed.
+     */
+    @NotNull
+    public Boolean removeBirthday(@NotNull String userID) {
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "DELETE FROM cafeBot.birthdays WHERE user_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(userID));
+            statement.execute();
+
+            birthdays.remove(userID);
+            mentionedBirthdays.remove(userID);
+            return true;
+        } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Removing Birthday: " + e.getMessage());
+            return false;
         }
     }
 

@@ -60,23 +60,7 @@ public class NowPlayingCommand implements ICommand {
     private MessageEmbed nowPlaying(@NotNull String title, @NotNull String author, @NotNull String url, @NotNull Long songTimestamp, @NotNull Long songDuration) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Now Playing", url);
-        int songPositionSeconds = CafeBot.getGeneralHelper().roundTime(songTimestamp, TimestampDifference.SECONDS);
-        String songPositionSecondsString = String.valueOf(songPositionSeconds);
-
-        if (!CafeBot.getGeneralHelper().isDoubleDigit(songPositionSeconds)) {
-            songPositionSecondsString = "0" + songPositionSecondsString;
-        }
-        String songPosition = String.format("%s:%s", CafeBot.getGeneralHelper().roundTime(songTimestamp, TimestampDifference.MINUTES), songPositionSecondsString);
-
-        int songLengthSeconds = CafeBot.getGeneralHelper().roundTime(songDuration, TimestampDifference.SECONDS);
-        String songLengthSecondsString = String.valueOf(songLengthSeconds);
-
-        if (!CafeBot.getGeneralHelper().isDoubleDigit(songLengthSeconds)) {
-            songLengthSecondsString = "0" + songLengthSecondsString;
-        }
-
-        String songLength = String.format("%s:%s", CafeBot.getGeneralHelper().roundTime(songDuration, TimestampDifference.MINUTES), songLengthSecondsString);
-        String message = String.format("`%s` by `%s` - [`%s / %s`]", title, author, songPosition, songLength);
+        String message = String.format("`%s` by `%s` - [`%s / %s`]", title, author, CafeBot.getGeneralHelper().formatTime(songTimestamp), CafeBot.getGeneralHelper().formatTime(songDuration));
         embedBuilder.setDescription(message);
         embedBuilder.setColor(Color.cyan);
         return embedBuilder.build();
