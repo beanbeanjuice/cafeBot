@@ -6,6 +6,7 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.sections.interaction.InteractionType;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -44,17 +45,28 @@ public class KissCommand implements ICommand {
         }
 
         String message;
+        String footer = null;
 
         if (receivers.size() == 0) {
-            message = "**" + sender + "** *kissed* themselves! Is this even physically possible?";
+            message = "**" + sender + "** *kissed* themselves! How did you even do that?";
         } else {
-            message = "**" + sender + "** *kissed* **" + CafeBot.getInteractionHandler().getReceiverString(receivers) + "**.";
+            message = "**" + sender + "** *kissed* **" + CafeBot.getInteractionHandler().getReceiverString(receivers) + "**. UwU";
+
+            if (receivers.size() == 1) {
+                int sendAmount = CafeBot.getInteractionHandler().getSender(user.getId(), InteractionType.KISS) + 1;
+                int receiveAmount = CafeBot.getInteractionHandler().getReceiver(receivers.get(0).getId(), InteractionType.KISS) + 1;
+
+                CafeBot.getInteractionHandler().updateSender(user.getId(), InteractionType.KISS, sendAmount);
+                CafeBot.getInteractionHandler().updateReceiver(receivers.get(0).getId(), InteractionType.KISS, receiveAmount);
+
+                footer = user.getName() + " kissed others " + sendAmount + " times. " + receivers.get(0).getName() + " was kissed " + receiveAmount + " times.";
+            }
         }
 
         if (stringBuilder.isEmpty()) {
-            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionEmbed(url)).queue();
+            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionEmbed(url, footer)).queue();
         } else {
-            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionWithDescriptionEmbed(url, stringBuilder.toString())).queue();
+            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionWithDescriptionEmbed(url, stringBuilder.toString(), footer)).queue();
         }
     }
 

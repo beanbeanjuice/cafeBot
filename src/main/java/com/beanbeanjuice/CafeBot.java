@@ -159,7 +159,6 @@ public class CafeBot {
     public static void main(String[] args) throws LoginException, InterruptedException {
 
         SpringApplication.run(CafeBot.class, args);
-//        new SpringApplicationBuilder(CafeBot.class).web(WebApplicationType.REACTIVE).run(args);
 
         logManager = new LogManager("Log Manager", homeGuildLogChannel);
 
@@ -264,7 +263,8 @@ public class CafeBot {
                 new DabCommand(),
                 new BonkCommand(),
                 new SleepCommand(),
-                new DieCommand()
+                new DieCommand(),
+                new WelcomeCommand()
         );
 
         // Music Commands
