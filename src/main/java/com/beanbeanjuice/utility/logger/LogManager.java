@@ -1,5 +1,7 @@
 package com.beanbeanjuice.utility.logger;
 
+import com.beanbeanjuice.utility.logger.websocket.model.ChatMessage;
+import com.beanbeanjuice.utility.logger.websocket.model.MessageType;
 import com.beanbeanjuice.utility.exception.WebhookException;
 import com.beanbeanjuice.utility.time.Time;
 import com.beanbeanjuice.utility.webhook.Webhook;
@@ -9,10 +11,12 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -23,31 +27,20 @@ import java.util.TimeZone;
 public class LogManager {
 
     private final String name;
-    private Guild guild;
     private TextChannel logChannel;
     private ArrayList<String> webhookURLs;
+    private SimpMessageSendingOperations sendingOperations;
 
     /**
      * Create a {@link LogManager LogManager} instance.
      * @param name The name for the {@link LogManager LogManager}.
-     * @param guild The {@link Guild Guild} to be used for logging.
      * @param logChannel The {@link TextChannel TextChannel} to be used for logging.
      */
-    public LogManager(@NotNull String name, @NotNull Guild guild, @NotNull TextChannel logChannel) {
+    public LogManager(@NotNull String name, @NotNull TextChannel logChannel) {
         this.name = name;
-        this.guild = guild;
         this.logChannel = logChannel;
 
         webhookURLs = new ArrayList<>(); // Creates the ArrayList
-
-    }
-
-    /**
-     * Sets the {@link Guild} for the {@link LogManager}.
-     * @param guild The {@link Guild} which contains the {@link TextChannel logChannel}.
-     */
-    public void setGuild(@NotNull Guild guild) {
-        this.guild = guild;
     }
 
     /**
@@ -107,6 +100,25 @@ public class LogManager {
         if (logToLogChannel) {
             logToLogChannel(c, logLevel, message, time);
         }
+
+        // Logs it to the console.
+        if (sendingOperations != null) {
+            String formattedMessage = "[" + time.toString("{HH}:{mm}:{ss} {Z}") + "]" + " [" + c.getSimpleName() + "/" + logLevel + "]: " + message;
+            ChatMessage chatMessage = ChatMessage.builder()
+                    .type(MessageType.CHAT)
+                    .sender("CONSOLE")
+                    .content(formattedMessage)
+                    .build();
+            sendingOperations.convertAndSend("/topic/public", chatMessage);
+        }
+    }
+
+    /**
+     * Sets the {@link SimpMessageSendingOperations} for the {@link LogManager}.
+     * @param sendingOperations The {@link SimpMessageSendingOperations} to set.
+     */
+    public void setSendingOperations(SimpMessageSendingOperations sendingOperations) {
+        this.sendingOperations = sendingOperations;
     }
 
     /**
@@ -116,7 +128,7 @@ public class LogManager {
      * @param message The message contents for the log.
      */
     private void logToWebhook(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Time time) {
-        String temp = "``[" + time.toString("{HH}:{mm}:{ss} {Z}") + "]" + " [" + c.getName() + "/" + logLevel.toString() + "]: " + message + "``";
+        String temp = "``[" + time.toString("{HH}:{mm}:{ss} {Z}") + "]" + " [" + c.getName() + "/" + logLevel + "]: " + message + "``";
 
         temp = shortenToLimit(temp, 2000); // Shortens it to 2000 characters.
 
@@ -142,18 +154,16 @@ public class LogManager {
      */
     private void logToLogChannel(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Time time) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-
         embedBuilder.setAuthor(logLevel.toString());
         embedBuilder.setThumbnail(logLevel.getImageURL());
-        embedBuilder.setDescription("``" + c.getSimpleName() + "``");
-        embedBuilder.setTitle(shortenToLimit(message, 200));
+        embedBuilder.setTitle("`" + c.getSimpleName() + "`");
+        embedBuilder.setDescription(shortenToLimit(message, 4000));
         embedBuilder.setColor(logLevel.getColor());
+        embedBuilder.setTimestamp(new Date().toInstant());
 
         try {
             logChannel.sendMessage(embedBuilder.build()).complete();
-        } catch (NullPointerException e) {
-            //
-        }
+        } catch (NullPointerException ignored) {}
     }
 
     /**
@@ -178,14 +188,6 @@ public class LogManager {
      */
     public void addWebhookURL(@NotNull String url) {
         webhookURLs.add(url);
-    }
-
-    /**
-     * Remove a {@link Webhook} URL that receives logs.
-     * @param url The link for the webhook.
-     */
-    public void removeWebhookURL(@NotNull String url) {
-        webhookURLs.remove(url);
     }
 
 }

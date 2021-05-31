@@ -187,6 +187,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `bonk` - Bonk someone! Send them to `h o r n i` jail.
 * `sleep` - Sleep! (Or sleep with someone...)
 * `die` - Just straight up die.
+* `welcome` - Welcome someone... for something!
 ##### 6. **MUSIC**
 * `play` - Play a song or playlist!
 * `now-playing` - Show the current song playing.
@@ -253,19 +254,13 @@ Distributed under the GPL-3.0 License. See `LICENSE` for more information.
 # Contact
 
 Your Name - [@beanbeanjuice](https://twitter.com/beanbeanjuice) - beanbeanjuice@outlook.com
-
-Project Link: [https://github.com/beanbeanjuice/cafeBot](https://github.com/beanbeanjuice/cafeBot)
-
-
+Email - beanbeanjuice@outlook.com
+Project Link: [GitHub](https://github.com/beanbeanjuice/cafeBot)
 
 <!-- ACKNOWLEDGEMENTS -->
 # Acknowledgements
 
 * *There's nothing here yet... maybe in the future?*
-
-
-
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
@@ -281,4 +276,4 @@ Project Link: [https://github.com/beanbeanjuice/cafeBot](https://github.com/bean
 [license-url]: https://github.com/beanbeanjuice/cafeBot/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/beanbeanjuice
-[product-title]: http://cdn.beanbeanjuice.com/images/cafeBot//readme/cafeBot.png
+[product-title]: http://cdn.beanbeanjuice.com/images/cafeBot/readme/cafeBot.png

@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.sections.twitch;
 
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.listener.TwitchListener;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import org.jetbrains.annotations.NotNull;

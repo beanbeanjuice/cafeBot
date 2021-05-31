@@ -1,4 +1,4 @@
-package com.beanbeanjuice.main;
+package com.beanbeanjuice;
 
 import com.beanbeanjuice.command.cafe.BalanceCommand;
 import com.beanbeanjuice.command.cafe.MenuCommand;
@@ -56,6 +56,10 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.apache.hc.core5.http.ParseException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -68,6 +72,7 @@ import java.util.TimerTask;
  *
  * @author beanbeanjuice
  */
+@SpringBootApplication
 public class CafeBot {
 
     // File Information
@@ -152,12 +157,15 @@ public class CafeBot {
     private static WelcomeListener welcomeListener;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
+
+        SpringApplication.run(CafeBot.class, args);
+
+        logManager = new LogManager("Log Manager", homeGuildLogChannel);
+
         countingHelper = new CountingHelper();
         twitchHandler = new TwitchHandler();
         sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
         sqlServer.startConnection();
-
-        logManager = new LogManager("Log Manager", homeGuild, homeGuildLogChannel);
 
         logManager.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
         logManager.log(CafeBot.class, LogLevel.OKAY, "Starting bot!", true, false);
@@ -255,7 +263,8 @@ public class CafeBot {
                 new DabCommand(),
                 new BonkCommand(),
                 new SleepCommand(),
-                new DieCommand()
+                new DieCommand(),
+                new WelcomeCommand()
         );
 
         // Music Commands
@@ -306,7 +315,6 @@ public class CafeBot {
 
         homeGuild = jda.getGuildById(HOME_GUILD_ID);
         homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
-        logManager.setGuild(homeGuild);
         logManager.setLogChannel(homeGuildLogChannel);
 
         logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
@@ -315,12 +323,9 @@ public class CafeBot {
         connectToSpotifyAPI();
         startRefreshTimer();
 
-        logManager.setGuild(homeGuild);
-        logManager.setLogChannel(homeGuildLogChannel);
         guildHandler = new GuildHandler();
 
         generalHelper = new GeneralHelper();
-
 
         versionHelper = new VersionHelper();
         versionHelper.contactGuilds();
