@@ -1,6 +1,5 @@
 package com.beanbeanjuice.utility.logger;
 
-import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.websocket.model.ChatMessage;
 import com.beanbeanjuice.utility.logger.websocket.model.MessageType;
 import com.beanbeanjuice.utility.exception.WebhookException;
@@ -12,13 +11,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.stereotype.Component;
-import org.springframework.web.socket.messaging.SessionConnectedEvent;
-import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -36,6 +29,7 @@ public class LogManager {
     private final String name;
     private TextChannel logChannel;
     private ArrayList<String> webhookURLs;
+    private SimpMessageSendingOperations sendingOperations;
 
     /**
      * Create a {@link LogManager LogManager} instance.
@@ -107,14 +101,24 @@ public class LogManager {
             logToLogChannel(c, logLevel, message, time);
         }
 
-        String formattedMessage = "``[" + time.toString("{HH}:{mm}:{ss} {Z}") + "]" + " [" + c.getName() + "/" + logLevel.toString() + "]: " + message + "``";
-        ChatMessage chatMessage = ChatMessage.builder()
-                .type(MessageType.CHAT)
-                .sender("CONSOLE")
-                .content(formattedMessage)
-                .build();
+        // Logs it to the console.
+        if (sendingOperations != null) {
+            String formattedMessage = "[" + time.toString("{HH}:{mm}:{ss} {Z}") + "]" + " [" + c.getSimpleName() + "/" + logLevel + "]: " + message;
+            ChatMessage chatMessage = ChatMessage.builder()
+                    .type(MessageType.CHAT)
+                    .sender("CONSOLE")
+                    .content(formattedMessage)
+                    .build();
+            sendingOperations.convertAndSend("/topic/public", chatMessage);
+        }
+    }
 
-        // TODO: Log this chatMessage.
+    /**
+     * Sets the {@link SimpMessageSendingOperations} for the {@link LogManager}.
+     * @param sendingOperations The {@link SimpMessageSendingOperations} to set.
+     */
+    public void setSendingOperations(SimpMessageSendingOperations sendingOperations) {
+        this.sendingOperations = sendingOperations;
     }
 
     /**
@@ -124,7 +128,7 @@ public class LogManager {
      * @param message The message contents for the log.
      */
     private void logToWebhook(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Time time) {
-        String temp = "``[" + time.toString("{HH}:{mm}:{ss} {Z}") + "]" + " [" + c.getName() + "/" + logLevel.toString() + "]: " + message + "``";
+        String temp = "``[" + time.toString("{HH}:{mm}:{ss} {Z}") + "]" + " [" + c.getName() + "/" + logLevel + "]: " + message + "``";
 
         temp = shortenToLimit(temp, 2000); // Shortens it to 2000 characters.
 
@@ -184,14 +188,6 @@ public class LogManager {
      */
     public void addWebhookURL(@NotNull String url) {
         webhookURLs.add(url);
-    }
-
-    /**
-     * Remove a {@link Webhook} URL that receives logs.
-     * @param url The link for the webhook.
-     */
-    public void removeWebhookURL(@NotNull String url) {
-        webhookURLs.remove(url);
     }
 
 }

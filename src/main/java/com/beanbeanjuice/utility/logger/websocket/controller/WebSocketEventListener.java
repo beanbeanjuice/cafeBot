@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+import java.io.PrintStream;
+
 @Component
 public class WebSocketEventListener {
 
@@ -20,7 +22,8 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-        CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "A user has connected to the websocket server.");
+        CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "A user has connected to the websocket server.", false, false);
+        CafeBot.getLogManager().setSendingOperations(sendingOperations);
     }
 
     @EventListener
