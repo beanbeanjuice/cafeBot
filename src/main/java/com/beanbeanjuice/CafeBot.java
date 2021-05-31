@@ -264,7 +264,8 @@ public class CafeBot {
                 new DabCommand(),
                 new BonkCommand(),
                 new SleepCommand(),
-                new DieCommand()
+                new DieCommand(),
+                new WelcomeCommand()
         );
 
         // Music Commands
