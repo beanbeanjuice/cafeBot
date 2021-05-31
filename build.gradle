@@ -11,10 +11,7 @@ plugins {
 // Can't use Boot's nested jar packaging due to environment constrained classloader
 apply plugin: 'com.github.johnrengelman.shadow'
 
-import com.github.jengelman.gradle.plugins.shadow.transformers.*
-
 shadowJar {
-
     // Required for Spring
     mergeServiceFiles()
     append 'META-INF/spring.handlers'
@@ -24,7 +21,6 @@ shadowJar {
         paths = ['META-INF/spring.factories' ]
         mergeStrategy = "append"
     }
-
 }
 
 def versionName
