@@ -1,11 +1,12 @@
 package com.beanbeanjuice.command.generic;
 
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
@@ -27,6 +28,10 @@ public class PingCommand implements ICommand {
                 (ping) -> event.getChannel()
                         .sendMessage(messageEmbed(ping, CafeBot.getJDA().getGatewayPing())).queue()
         );
+
+        if (args.get(0).equals("log")) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Testing Log.");
+        }
     }
 
     @NotNull

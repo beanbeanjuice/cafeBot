@@ -1,18 +1,26 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.*
+
 plugins {
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'org.springframework.boot' version '2.5.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'application'
 }
 
-task buildWithDependencies(type: Jar) {
-    manifest {
-        attributes 'Main-Class': 'com.beanbeanjuice.main.CafeBot'
-    }
+// Can't use Boot's nested jar packaging due to environment constrained classloader
+apply plugin: 'com.github.johnrengelman.shadow'
 
-    from {
-        configurations.runtimeClasspath.findAll { !it.path.endsWith(".pom") }.collect { it.isDirectory() ? it : zipTree(it) }
+shadowJar {
+    // Required for Spring
+    mergeServiceFiles()
+    append 'META-INF/spring.handlers'
+    append 'META-INF/spring.schemas'
+    append 'META-INF/spring.tooling'
+    transform(PropertiesFileTransformer) {
+        paths = ['META-INF/spring.factories' ]
+        mergeStrategy = "append"
     }
-
-    with jar
 }
 
 def versionName
@@ -24,17 +32,15 @@ try {
     versionName = 'v0.0.0'
 }
 
+sourceCompatibility = '15'
 group 'com.beanbeanjuice'
-mainClassName = 'com.beanbeanjuice.main.CafeBot'
+mainClassName = 'com.beanbeanjuice.CafeBot'
 version versionName
 
 repositories {
 
     // Central Maven repository.
     mavenCentral()
-
-    // Repository used for the DiscordJDA.
-    jcenter()
 
     maven {
         url 'https://m2.dv8tion.net/releases'
@@ -47,6 +53,9 @@ dependencies {
     // JUnit, for Unit Testing
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.8.0-M1'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine'
+
+    // Json Slurper
+    implementation group: 'org.codehaus.groovy', name: 'groovy-json', version: '3.0.8'
 
     // Jetbrains Annotations
     implementation group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
@@ -82,6 +91,18 @@ dependencies {
 
     // Apple Music/Itunes API
     implementation group: 'be.ceau', name: 'itunes-api', version: '4.6.0'
+
+    // Spring Stuff
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-maven-plugin', version: '2.5.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '2.5.0'
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    implementation group: 'javax.servlet', name: 'javax.servlet-api'
+
+    // Lombok
+    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
 
 }
 
