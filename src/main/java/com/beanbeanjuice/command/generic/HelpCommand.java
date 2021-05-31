@@ -37,10 +37,11 @@ public class HelpCommand implements ICommand {
 
         // Setting the Search Term
         String search = args.get(0);
+        int count = 1;
 
         // Goes through each category. If the first argument is equal to the name, then print commands for that category.
         for (CategoryType categoryType : CategoryType.values()) {
-            if (categoryType.toString().equalsIgnoreCase(search)) {
+            if (categoryType.toString().equalsIgnoreCase(search) || String.valueOf(count++).equals(search)) {
                 channel.sendMessage(searchCategoriesEmbed(prefix, categoryType)).queue();
                 return;
             }

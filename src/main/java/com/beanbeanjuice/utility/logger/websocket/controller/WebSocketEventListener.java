@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import java.io.PrintStream;
-
 @Component
 public class WebSocketEventListener {
 
@@ -22,13 +20,12 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-        CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "A user has connected to the websocket server.", false, false);
+        CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "User Connected to Websocket!");
         CafeBot.getLogManager().setSendingOperations(sendingOperations);
     }
 
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-        CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "A user has disconnected.");
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
         String username = (String) headerAccessor.getSessionAttributes().get("username");
@@ -37,6 +34,7 @@ public class WebSocketEventListener {
                 .sender(username)
                 .build();
 
+        CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "User Disconnected from Websocket: " + username);
         sendingOperations.convertAndSend("/topic/public", chatMessage);
     }
 
