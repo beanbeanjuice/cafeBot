@@ -1,11 +1,12 @@
 package com.beanbeanjuice.command.interaction;
 
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.sections.interaction.InteractionType;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -44,17 +45,28 @@ public class NomCommand implements ICommand {
         }
 
         String message;
+        String footer = null;
 
         if (receivers.size() == 0) {
-            message = "**" + sender + "** *nommed* themselves! Doesn't this hurt?";
+            message = "**" + sender + "** *nommed* themselves! Doesn't that... hurt?";
         } else {
-            message = "**" + sender + "** *nommed* at **" + CafeBot.getInteractionHandler().getReceiverString(receivers) + "**.";
+            message = "**" + sender + "** *nommed* at **" + CafeBot.getInteractionHandler().getReceiverString(receivers) + "**!";
+
+            if (receivers.size() == 1) {
+                int sendAmount = CafeBot.getInteractionHandler().getSender(user.getId(), InteractionType.NOM) + 1;
+                int receiveAmount = CafeBot.getInteractionHandler().getReceiver(receivers.get(0).getId(), InteractionType.NOM) + 1;
+
+                CafeBot.getInteractionHandler().updateSender(user.getId(), InteractionType.NOM, sendAmount);
+                CafeBot.getInteractionHandler().updateReceiver(receivers.get(0).getId(), InteractionType.NOM, receiveAmount);
+
+                footer = user.getName() + " nommed others " + sendAmount + " times. " + receivers.get(0).getName() + " was nommed " + receiveAmount + " times.";
+            }
         }
 
         if (stringBuilder.isEmpty()) {
-            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionEmbed(url)).queue();
+            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionEmbed(url, footer)).queue();
         } else {
-            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionWithDescriptionEmbed(url, stringBuilder.toString())).queue();
+            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionWithDescriptionEmbed(url, stringBuilder.toString(), footer)).queue();
         }
     }
 

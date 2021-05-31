@@ -3,7 +3,7 @@ package com.beanbeanjuice.command.music;
 import be.ceau.itunesapi.Lookup;
 import be.ceau.itunesapi.request.Entity;
 import be.ceau.itunesapi.response.Response;
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;

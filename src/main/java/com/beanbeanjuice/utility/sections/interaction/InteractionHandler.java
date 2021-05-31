@@ -1,11 +1,17 @@
 package com.beanbeanjuice.utility.sections.interaction;
 
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -80,6 +86,7 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/12.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/13.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/14.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/15.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()));
     }
 
@@ -543,6 +550,181 @@ public class InteractionHandler {
     }
 
     /**
+     * @return a random welcome image.
+     */
+    public String getWelcomeImage() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/welcomes/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/welcomes/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/welcomes/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/welcomes/4.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/welcomes/5.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/welcomes/6.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/welcomes/7.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/welcomes/8.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/welcomes/9.gif");
+        return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()));
+    }
+
+    /**
+     * Checks if the {@link User} has any {@link InteractionType}.
+     * @param userID The ID of the {@link User} specified.
+     * @return Whether or not if the user exists.
+     * @throws SQLException An {@link SQLException} is thrown if the database cannot be contact.
+     */
+    @NotNull
+    private Boolean checkIfSenderExists(@NotNull String userID) throws SQLException {
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM cafeBot.interaction_senders WHERE user_id = (?);";
+
+        PreparedStatement statement = connection.prepareStatement(arguments);
+        statement.setLong(1, Long.parseLong(userID));
+        ResultSet resultSet = statement.executeQuery();
+
+        if (!resultSet.next()) {
+            arguments = "INSERT INTO cafeBot.interaction_senders (user_id) VALUES (?);";
+            statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(userID));
+            statement.execute();
+            return true;
+        }
+        return true;
+    }
+
+    /**
+     * Checks if the {@link User} has any {@link InteractionType}.
+     * @param userID The ID of the {@link User} specified.
+     * @return Whether or not if the user exists.
+     * @throws SQLException An {@link SQLException} is thrown if the database cannot be contact.
+     */
+    @NotNull
+    public Boolean checkIfReceiverExists(@NotNull String userID) throws SQLException {
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM cafeBot.interaction_receivers WHERE user_id = (?);";
+
+        PreparedStatement statement = connection.prepareStatement(arguments);
+        statement.setLong(1, Long.parseLong(userID));
+        ResultSet resultSet = statement.executeQuery();
+
+        if (!resultSet.next()) {
+            arguments = "INSERT INTO cafeBot.interaction_receivers (user_id) VALUES (?);";
+            statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(userID));
+            statement.execute();
+            return true;
+        }
+        return true;
+    }
+
+    /**
+     * Gets the amount of {@link InteractionType} that a specified {@link User} has.
+     * @param userID The ID of the {@link User} specified.
+     * @param type The {@link InteractionType} to look for.
+     * @return The amount of times that {@link User} has sent the {@link InteractionType}.
+     */
+    @NotNull
+    public Integer getSender(@NotNull String userID, @NotNull InteractionType type) {
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM cafeBot.interaction_senders WHERE user_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(userID));
+            ResultSet resultSet = statement.executeQuery();
+
+            resultSet.first();
+            return resultSet.getInt(type.getSQLColumn());
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Gets the amount of {@link InteractionType} that a specified {@link User} has.
+     * @param userID The ID of the {@link User} specified.
+     * @param type The {@link InteractionType} to look for.
+     * @return The amount of times that {@link User} has received the {@link InteractionType}.
+     */
+    @NotNull
+    public Integer getReceiver(@NotNull String userID, @NotNull InteractionType type) {
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM cafeBot.interaction_receivers WHERE user_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(userID));
+            ResultSet resultSet = statement.executeQuery();
+
+            resultSet.first();
+            return resultSet.getInt(type.getSQLColumn());
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Updates the {@link InteractionType} for the specified {@link User}.
+     * @param userID The ID of the {@link User} specified.
+     * @param type The {@link InteractionType} to update.
+     * @param amount The new amount to be  updated to.
+     * @return Whether or not updating was successful.
+     */
+    @NotNull
+    public Boolean updateSender(@NotNull String userID, @NotNull InteractionType type, @NotNull Integer amount) {
+        try {
+            checkIfSenderExists(userID);
+        } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Checking if Sender Exists: " + e.getMessage());
+            return false;
+        }
+
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "UPDATE cafeBot.interaction_senders SET " + type.getSQLColumn() + " = (?) WHERE user_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setInt(1, amount);
+            statement.setLong(2, Long.parseLong(userID));
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Interaction Sender: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Updates the {@link InteractionType} for the specified {@link User}.
+     * @param userID The ID of the {@link User} specified.
+     * @param type The {@link InteractionType} to update.
+     * @param amount The new amount to be  updated to.
+     * @return Whether or not updating was successful.
+     */
+    @NotNull
+    public Boolean updateReceiver(@NotNull String userID, @NotNull InteractionType type, @NotNull Integer amount) {
+        try {
+            checkIfReceiverExists(userID);
+        } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Checking if Receiver Exists: " + e.getMessage());
+            return false;
+        }
+
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "UPDATE cafeBot.interaction_receivers SET " + type.getSQLColumn() + " = (?) WHERE user_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setInt(1, amount);
+            statement.setLong(2, Long.parseLong(userID));
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Interaction Receiver: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Gets the receivers {@link String} for the Interaction Commands.
      * @param receivers The {@link ArrayList<User>} to be used as the receivers.
      * @return The new receiver {@link String}.
@@ -570,10 +752,11 @@ public class InteractionHandler {
      * @return The created {@link MessageEmbed}.
      */
     @NotNull
-    public MessageEmbed actionEmbed(@NotNull String link) {
+    public MessageEmbed actionEmbed(@NotNull String link, @Nullable String footer) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setImage(link);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter(footer);
         return embedBuilder.build();
     }
 
@@ -583,7 +766,7 @@ public class InteractionHandler {
      * @return The created {@link MessageEmbed}.
      */
     @NotNull
-    public MessageEmbed actionWithDescriptionEmbed(@NotNull String link, @NotNull String description) {
+    public MessageEmbed actionWithDescriptionEmbed(@NotNull String link, @NotNull String description, @Nullable String footer) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setImage(link);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
@@ -591,6 +774,7 @@ public class InteractionHandler {
         StringBuilder descriptionBuilder = new StringBuilder();
         descriptionBuilder.append("\"").append(description).append("\"");
         embedBuilder.setDescription(descriptionBuilder.toString());
+        embedBuilder.setFooter(footer);
         return embedBuilder.build();
     }
 
