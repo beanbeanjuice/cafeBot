@@ -566,6 +566,12 @@ public class InteractionHandler {
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()));
     }
 
+    /**
+     * Checks if the {@link User} has any {@link InteractionType}.
+     * @param userID The ID of the {@link User} specified.
+     * @return Whether or not if the user exists.
+     * @throws SQLException An {@link SQLException} is thrown if the database cannot be contact.
+     */
     @NotNull
     private Boolean checkIfSenderExists(@NotNull String userID) throws SQLException {
         Connection connection = CafeBot.getSQLServer().getConnection();
@@ -585,6 +591,12 @@ public class InteractionHandler {
         return true;
     }
 
+    /**
+     * Checks if the {@link User} has any {@link InteractionType}.
+     * @param userID The ID of the {@link User} specified.
+     * @return Whether or not if the user exists.
+     * @throws SQLException An {@link SQLException} is thrown if the database cannot be contact.
+     */
     @NotNull
     public Boolean checkIfReceiverExists(@NotNull String userID) throws SQLException {
         Connection connection = CafeBot.getSQLServer().getConnection();
@@ -604,6 +616,12 @@ public class InteractionHandler {
         return true;
     }
 
+    /**
+     * Gets the amount of {@link InteractionType} that a specified {@link User} has.
+     * @param userID The ID of the {@link User} specified.
+     * @param type The {@link InteractionType} to look for.
+     * @return The amount of times that {@link User} has sent the {@link InteractionType}.
+     */
     @NotNull
     public Integer getSender(@NotNull String userID, @NotNull InteractionType type) {
         Connection connection = CafeBot.getSQLServer().getConnection();
@@ -621,6 +639,12 @@ public class InteractionHandler {
         }
     }
 
+    /**
+     * Gets the amount of {@link InteractionType} that a specified {@link User} has.
+     * @param userID The ID of the {@link User} specified.
+     * @param type The {@link InteractionType} to look for.
+     * @return The amount of times that {@link User} has received the {@link InteractionType}.
+     */
     @NotNull
     public Integer getReceiver(@NotNull String userID, @NotNull InteractionType type) {
         Connection connection = CafeBot.getSQLServer().getConnection();
@@ -638,6 +662,13 @@ public class InteractionHandler {
         }
     }
 
+    /**
+     * Updates the {@link InteractionType} for the specified {@link User}.
+     * @param userID The ID of the {@link User} specified.
+     * @param type The {@link InteractionType} to update.
+     * @param amount The new amount to be  updated to.
+     * @return Whether or not updating was successful.
+     */
     @NotNull
     public Boolean updateSender(@NotNull String userID, @NotNull InteractionType type, @NotNull Integer amount) {
         try {
@@ -662,6 +693,13 @@ public class InteractionHandler {
         }
     }
 
+    /**
+     * Updates the {@link InteractionType} for the specified {@link User}.
+     * @param userID The ID of the {@link User} specified.
+     * @param type The {@link InteractionType} to update.
+     * @param amount The new amount to be  updated to.
+     * @return Whether or not updating was successful.
+     */
     @NotNull
     public Boolean updateReceiver(@NotNull String userID, @NotNull InteractionType type, @NotNull Integer amount) {
         try {
