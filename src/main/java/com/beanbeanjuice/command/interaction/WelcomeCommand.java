@@ -13,15 +13,15 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to cuddle people.
+ * An {@link ICommand} used to welcome people.
  *
  * @author beanbeanjuice
  */
-public class CuddleCommand implements ICommand {
+public class WelcomeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        String url = CafeBot.getInteractionHandler().getCuddleImage();
+        String url = CafeBot.getInteractionHandler().getWelcomeImage();
         String sender = user.getName();
 
         ArrayList<User> receivers = new ArrayList<>();
@@ -48,18 +48,18 @@ public class CuddleCommand implements ICommand {
         String footer = null;
 
         if (receivers.size() == 0) {
-            message = "**" + sender + "** *cuddled* themselves! Will no one join in?";
+            message = "**" + sender + "** *welcomed* themselves! That's sad.";
         } else {
-            message = "**" + sender + "** *cuddled* **" + CafeBot.getInteractionHandler().getReceiverString(receivers) + "**. Awww!";
+            message = "**" + sender + "** *welcomed* **" + CafeBot.getInteractionHandler().getReceiverString(receivers) + "**!";
 
             if (receivers.size() == 1) {
-                int sendAmount = CafeBot.getInteractionHandler().getSender(user.getId(), InteractionType.CUDDLE) + 1;
-                int receiveAmount = CafeBot.getInteractionHandler().getReceiver(receivers.get(0).getId(), InteractionType.CUDDLE) + 1;
+                int sendAmount = CafeBot.getInteractionHandler().getSender(user.getId(), InteractionType.WELCOME) + 1;
+                int receiveAmount = CafeBot.getInteractionHandler().getReceiver(receivers.get(0).getId(), InteractionType.WELCOME) + 1;
 
-                CafeBot.getInteractionHandler().updateSender(user.getId(), InteractionType.CUDDLE, sendAmount);
-                CafeBot.getInteractionHandler().updateReceiver(receivers.get(0).getId(), InteractionType.CUDDLE, receiveAmount);
+                CafeBot.getInteractionHandler().updateSender(user.getId(), InteractionType.WELCOME, sendAmount);
+                CafeBot.getInteractionHandler().updateReceiver(receivers.get(0).getId(), InteractionType.WELCOME, receiveAmount);
 
-                footer = user.getName() + " cuddled others " + sendAmount + " times. " + receivers.get(0).getName() + " was cuddled " + receiveAmount + " times.";
+                footer = user.getName() + " welcomed others " + sendAmount + " times. " + receivers.get(0).getName() + " was welcomed " + receiveAmount + " times.";
             }
         }
 
@@ -72,7 +72,7 @@ public class CuddleCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "cuddle";
+        return "welcome";
     }
 
     @Override
@@ -82,12 +82,12 @@ public class CuddleCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Cuddle someone!";
+        return "Welcome someone!";
     }
 
     @Override
     public String exampleUsage() {
-        return "`!!cuddle @beanbeanjuice` or `!!cuddle @beanbeanjuice :O`";
+        return "`!!welcome @beanbeanjuice` or `!!welcome @beanbeanjuice Welcome to the server!`";
     }
 
     @Override
