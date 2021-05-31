@@ -1,6 +1,6 @@
 package com.beanbeanjuice.command.cafe;
 
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.sections.cafe.object.MenuItem;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;

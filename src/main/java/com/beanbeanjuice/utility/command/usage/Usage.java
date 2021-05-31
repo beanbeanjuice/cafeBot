@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.command.usage;
 
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.usage.types.CommandErrorType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.entities.Guild;

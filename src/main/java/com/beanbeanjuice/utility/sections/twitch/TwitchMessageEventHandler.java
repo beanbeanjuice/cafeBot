@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.sections.twitch;
 
-import com.beanbeanjuice.main.CafeBot;
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.guild.CustomGuild;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.philippheuer.events4j.simple.domain.EventSubscriber;
