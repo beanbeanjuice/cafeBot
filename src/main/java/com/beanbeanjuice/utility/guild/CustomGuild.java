@@ -433,7 +433,7 @@ public class CustomGuild {
                 if (membersInVoiceChannel.isEmpty() && seconds[0] >= secondsToLeave) {
                     EmbedBuilder embedBuilder = new EmbedBuilder();
                     embedBuilder.setTitle("Music Bot");
-                    embedBuilder.setDescription("Leaving the voice channel as it is empty...");
+                    embedBuilder.setDescription("Aww... it's lonely in this voice channel. I guess I'll go...");
                     embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
                     sendMessageInLastMusicChannel(embedBuilder.build());
                     musicManager.scheduler.player.stopTrack();
@@ -457,7 +457,7 @@ public class CustomGuild {
                     EmbedBuilder embedBuilder = new EmbedBuilder();
                     embedBuilder.setTitle("Music Bot");
                     embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-                    embedBuilder.setDescription("Leaving the voice channel as the music queue is empty...");
+                    embedBuilder.setDescription("There's no music playing... sooooo I'm gonna go because this is boring.");
                     sendMessageInLastMusicChannel(embedBuilder.build());
                     guild.getAudioManager().closeAudioConnection();
                     musicManager.scheduler.queue.clear();
