@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.helper;
+package com.beanbeanjuice.utility.helper.api;
 
 import com.beanbeanjuice.CafeBot;
 import com.fasterxml.jackson.core.JsonProcessingException;
