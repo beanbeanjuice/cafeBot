@@ -256,9 +256,10 @@ Distributed under the GPL-3.0 License. See `LICENSE` for more information.
 <!-- CONTACT -->
 # Contact
 
-Your Name - [@beanbeanjuice](https://twitter.com/beanbeanjuice) - beanbeanjuice@outlook.com
-Email - beanbeanjuice@outlook.com
-Project Link: [GitHub](https://github.com/beanbeanjuice/cafeBot)
+- beanbeanjuice
+- Twitter [@beanbeanjuice](https://twitter.com/beanbeanjuice)
+- Email - beanbeanjuice@outlook.com
+- Project Link: [GitHub](https://github.com/beanbeanjuice/cafeBot)
 
 <!-- ACKNOWLEDGEMENTS -->
 # Acknowledgements
