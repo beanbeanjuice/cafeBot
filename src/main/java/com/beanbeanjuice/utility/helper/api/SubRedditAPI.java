@@ -18,7 +18,7 @@ import java.net.http.HttpResponse;
  *
  * @author beanbeanjuice
  */
-public class RedditAPI {
+public class SubRedditAPI {
 
     private String reddit_api_url = "https://www.reddit.com/r/{SUBREDDIT}/random/.json";
     private String reddit_url;
@@ -29,10 +29,10 @@ public class RedditAPI {
     private String reddit_description;
 
     /**
-     * Creates a new {@link RedditAPI} object.
+     * Creates a new {@link SubRedditAPI} object.
      * @param subreddit The subreddit to search for.
      */
-    public RedditAPI(@NotNull String subreddit) {
+    public SubRedditAPI(@NotNull String subreddit) {
         this.reddit_subreddit = subreddit;
     }
 

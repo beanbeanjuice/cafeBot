@@ -5,7 +5,7 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.helper.api.RedditAPI;
+import com.beanbeanjuice.utility.helper.api.SubRedditAPI;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +21,7 @@ public class TeaMemeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(new RedditAPI(getSubreddits().get(CafeBot.getGeneralHelper().getRandomNumber(0, getSubreddits().size()))).getRedditEmbed()).queue();
+        event.getChannel().sendMessage(new SubRedditAPI(getSubreddits().get(CafeBot.getGeneralHelper().getRandomNumber(0, getSubreddits().size()))).getRedditEmbed()).queue();
     }
 
     @NotNull
