@@ -81,6 +81,7 @@ public class CafeBot {
     // General Bot Info
     private static final String BOT_VERSION = JSONHelper.getValue(FILE_INFO, "bot", "version").textValue();
     private static final String BOT_TOKEN = JSONHelper.getValue(FILE_INFO, "bot", "token").textValue();
+    private static final String BOT_USER_AGENT = "java:com.beanbeanjuice.cafeBot:" + BOT_VERSION;
     private static JDA jda;
     private static JDABuilder jdaBuilder;
     private static final String DISCORD_AVATAR_URL = "http://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif";
@@ -237,7 +238,6 @@ public class CafeBot {
 
         // Social Commands
         commandManager.addCommands(
-                new InstagramInformationCommand()
         );
 
         // Interaction Commands
@@ -350,6 +350,14 @@ public class CafeBot {
         // Final Things
         updateGuildPresence();
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
+    }
+
+    /**
+     * @return the current USER AGENT {@link String}.
+     */
+    @NotNull
+    public static String getBotUserAgent() {
+        return BOT_USER_AGENT;
     }
 
     /**
