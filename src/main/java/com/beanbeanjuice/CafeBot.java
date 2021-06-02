@@ -57,9 +57,7 @@ import org.apache.hc.core5.http.ParseException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -235,6 +233,11 @@ public class CafeBot {
                 new DiceRollCommand(),
                 new TicTacToeCommand(),
                 new ConnectFourCommand()
+        );
+
+        // Social Commands
+        commandManager.addCommands(
+                new InstagramInformationCommand()
         );
 
         // Interaction Commands
