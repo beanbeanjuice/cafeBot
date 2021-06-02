@@ -21,7 +21,7 @@ public class TeaMemeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(new RedditAPI().getRedditEmbed(getSubreddits().get(CafeBot.getGeneralHelper().getRandomNumber(0, getSubreddits().size())))).queue();
+        event.getChannel().sendMessage(new RedditAPI(getSubreddits().get(CafeBot.getGeneralHelper().getRandomNumber(0, getSubreddits().size()))).getRedditEmbed()).queue();
     }
 
     @NotNull

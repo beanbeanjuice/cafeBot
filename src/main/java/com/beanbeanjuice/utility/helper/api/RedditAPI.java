@@ -13,6 +13,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+/**
+ * A handler for getting Reddit stuff.
+ *
+ * @author beanbeanjuice
+ */
 public class RedditAPI {
 
     private String reddit_api_url = "https://www.reddit.com/r/{SUBREDDIT}/random/.json";
@@ -24,13 +29,19 @@ public class RedditAPI {
     private String reddit_description;
 
     /**
+     * Creates a new {@link RedditAPI} object.
+     * @param subreddit The subreddit to search for.
+     */
+    public RedditAPI(@NotNull String subreddit) {
+        this.reddit_subreddit = subreddit;
+    }
+
+    /**
      * Get the completed {@link MessageEmbed} for the subreddit.
-     * @param subreddit The subreddit specified.
      * @return The new {@link MessageEmbed} to be sent.
      */
     @NotNull
-    public MessageEmbed getRedditEmbed(@NotNull String subreddit) {
-        reddit_subreddit = subreddit;
+    public MessageEmbed getRedditEmbed() {
         reddit_api_url = reddit_api_url.replace("{SUBREDDIT}", reddit_subreddit);
         contactRedditAPI();
 
