@@ -46,7 +46,7 @@ public class RedditAPI {
         contactRedditAPI();
 
         // Making sure it's not a video
-        while (reddit_image_url.contains("v.red") || reddit_image_url.contains("youtube.") || reddit_image_url.contains("youtu-be")) {
+        while (reddit_image_url.contains("v.red") || reddit_image_url.contains("youtube.") || reddit_image_url.contains("youtu.be")) {
             contactRedditAPI();
         }
 
@@ -64,7 +64,7 @@ public class RedditAPI {
      */
     private void contactRedditAPI() {
         HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(reddit_api_url)).build();
+        HttpRequest request = HttpRequest.newBuilder().setHeader("User-Agent", CafeBot.getBotUserAgent()).uri(URI.create(reddit_api_url)).build();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::body)
                 .thenApply(this::parse)
