@@ -57,9 +57,7 @@ import org.apache.hc.core5.http.ParseException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -83,6 +81,7 @@ public class CafeBot {
     // General Bot Info
     private static final String BOT_VERSION = JSONHelper.getValue(FILE_INFO, "bot", "version").textValue();
     private static final String BOT_TOKEN = JSONHelper.getValue(FILE_INFO, "bot", "token").textValue();
+    private static final String BOT_USER_AGENT = "java:com.beanbeanjuice.cafeBot:" + BOT_VERSION;
     private static JDA jda;
     private static JDABuilder jdaBuilder;
     private static final String DISCORD_AVATAR_URL = "http://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif";
@@ -237,6 +236,10 @@ public class CafeBot {
                 new ConnectFourCommand()
         );
 
+        // Social Commands
+        commandManager.addCommands(
+        );
+
         // Interaction Commands
         commandManager.addCommands(
                 new HugCommand(),
@@ -264,7 +267,8 @@ public class CafeBot {
                 new BonkCommand(),
                 new SleepCommand(),
                 new DieCommand(),
-                new WelcomeCommand()
+                new WelcomeCommand(),
+                new LickCommand()
         );
 
         // Music Commands
@@ -347,6 +351,14 @@ public class CafeBot {
         // Final Things
         updateGuildPresence();
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
+    }
+
+    /**
+     * @return the current USER AGENT {@link String}.
+     */
+    @NotNull
+    public static String getBotUserAgent() {
+        return BOT_USER_AGENT;
     }
 
     /**
