@@ -29,7 +29,8 @@ public enum InteractionType {
     BONK("bonk_amount"),
     SLEEP("sleep_amount"),
     DIE("die_amount"),
-    WELCOME("welcome_amount");
+    WELCOME("welcome_amount"),
+    LICK("lick_amount");
 
     private String sqlColumn;
 

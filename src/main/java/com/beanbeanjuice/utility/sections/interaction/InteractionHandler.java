@@ -567,6 +567,29 @@ public class InteractionHandler {
     }
 
     /**
+     * @return a random lick image.
+     */
+    @NotNull
+    public String getLickImage() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/4.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/5.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/6.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/7.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/8.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/9.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/10.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/11.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/12.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/13.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/licks/14.gif");
+        return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()));
+    }
+
+    /**
      * Checks if the {@link User} has any {@link InteractionType}.
      * @param userID The ID of the {@link User} specified.
      * @return Whether or not if the user exists.

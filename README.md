@@ -12,6 +12,8 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+[![WakaTime][wakatime-shield]][wakatime-url]
+
 
 
 
@@ -36,6 +38,7 @@
     ·
     <a href="https://github.com/beanbeanjuice/cafeBot/issues">Request Feature</a>
   </p>
+  <figure><embed src="https://wakatime.com/share/@beeb4317-977b-4b19-878a-21e9aa8e43ed/31fd7762-6212-4dd2-b4d7-4bfdc2a3b5a3.svg"></embed></figure>
 </p>
 
 <!-- TABLE OF CONTENTS -->
@@ -161,7 +164,9 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `dice-roll` - Roll a dice!
 * `tic-tac-toe` - Play tic tac toe with someone!
 * `connect-four` - Play connect four with someone!
-##### 5. **INTERACTION**
+##### 5. **SOCIAL**
+* Nothing here yet...
+##### 6. **INTERACTION**
 * `hug` - Hug someone!
 * `punch` - Punch someone!
 * `kiss` - Kiss someone!
@@ -188,7 +193,8 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `sleep` - Sleep! (Or sleep with someone...)
 * `die` - Just straight up die.
 * `welcome` - Welcome someone... for something!
-##### 6. **MUSIC**
+* `lick` - Lick... someone... ummm why?
+##### 7. **MUSIC**
 * `play` - Play a song or playlist!
 * `now-playing` - Show the current song playing.
 * `pause` - Pause the current song.
@@ -197,13 +203,13 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `shuffle` - Shuffle the current playlist.
 * `skip` - Skip the current song.
 * `stop` - Stop the queue and make the bot leave the channel.
-##### 7. **TWITCH**
+##### 8. **TWITCH**
 * `set-live-channel` - Set the current channel to receive twitch live notifications. You need to add twitch channels for this to work.
 * `add-twitch-channel` - Add a twitch channel to leave bot notifications for.
 * `remove-twitch-channel` - Remove a twitch channel you are currently receiving notifications for.
 * `get-twitch-channels` - Get a list of the twitch channels you are currently receiving notifications for.
 * `set-live-notifications-role` - Set the role to be mentioned when someone goes live.
-##### 8. **MODERATION**
+##### 9. **MODERATION**
 * `set-log-channel` - Sets the log channel for the guild.
 * `set-update-channel` - Sets the current channel to the update channel. This means if you have `notify-on-update` set to `Enabled`, you will receive bot updates in this channel.
 * `set-counting-channel` - Sets the current channel to the counting channel. This does exactly as it says. Try to count as high as you can without messing up!
@@ -253,9 +259,10 @@ Distributed under the GPL-3.0 License. See `LICENSE` for more information.
 <!-- CONTACT -->
 # Contact
 
-Your Name - [@beanbeanjuice](https://twitter.com/beanbeanjuice) - beanbeanjuice@outlook.com
-Email - beanbeanjuice@outlook.com
-Project Link: [GitHub](https://github.com/beanbeanjuice/cafeBot)
+- beanbeanjuice
+- Twitter [@beanbeanjuice](https://twitter.com/beanbeanjuice)
+- Email - beanbeanjuice@outlook.com
+- Project Link: [GitHub](https://github.com/beanbeanjuice/cafeBot)
 
 <!-- ACKNOWLEDGEMENTS -->
 # Acknowledgements
@@ -276,4 +283,6 @@ Project Link: [GitHub](https://github.com/beanbeanjuice/cafeBot)
 [license-url]: https://github.com/beanbeanjuice/cafeBot/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/beanbeanjuice
+[wakatime-shield]: https://wakatime.com/badge/github/beanbeanjuice/cafeBot.svg?style=for-the-badge
+[wakatime-url]: https://wakatime.com/badge/github/beanbeanjuice/cafeBot
 [product-title]: http://cdn.beanbeanjuice.com/images/cafeBot/readme/cafeBot.png
