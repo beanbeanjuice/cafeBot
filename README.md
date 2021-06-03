@@ -164,7 +164,9 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `dice-roll` - Roll a dice!
 * `tic-tac-toe` - Play tic tac toe with someone!
 * `connect-four` - Play connect four with someone!
-##### 5. **INTERACTION**
+##### 5. **SOCIAL**
+* Nothing here yet...
+##### 6. **INTERACTION**
 * `hug` - Hug someone!
 * `punch` - Punch someone!
 * `kiss` - Kiss someone!
@@ -191,7 +193,8 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `sleep` - Sleep! (Or sleep with someone...)
 * `die` - Just straight up die.
 * `welcome` - Welcome someone... for something!
-##### 6. **MUSIC**
+* `lick` - Lick... someone... ummm why?
+##### 7. **MUSIC**
 * `play` - Play a song or playlist!
 * `now-playing` - Show the current song playing.
 * `pause` - Pause the current song.
@@ -200,13 +203,13 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `shuffle` - Shuffle the current playlist.
 * `skip` - Skip the current song.
 * `stop` - Stop the queue and make the bot leave the channel.
-##### 7. **TWITCH**
+##### 8. **TWITCH**
 * `set-live-channel` - Set the current channel to receive twitch live notifications. You need to add twitch channels for this to work.
 * `add-twitch-channel` - Add a twitch channel to leave bot notifications for.
 * `remove-twitch-channel` - Remove a twitch channel you are currently receiving notifications for.
 * `get-twitch-channels` - Get a list of the twitch channels you are currently receiving notifications for.
 * `set-live-notifications-role` - Set the role to be mentioned when someone goes live.
-##### 8. **MODERATION**
+##### 9. **MODERATION**
 * `set-log-channel` - Sets the log channel for the guild.
 * `set-update-channel` - Sets the current channel to the update channel. This means if you have `notify-on-update` set to `Enabled`, you will receive bot updates in this channel.
 * `set-counting-channel` - Sets the current channel to the counting channel. This does exactly as it says. Try to count as high as you can without messing up!
