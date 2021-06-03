@@ -41,7 +41,7 @@ public class UserInfoCommand implements ICommand {
 
     @NotNull
     private MessageEmbed userInfoEmbed(@NotNull Member member) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy @ h:ma");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy @ h:mma");
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setThumbnail(member.getUser().getAvatarUrl());
         embedBuilder.setTitle(member.getUser().getName());
