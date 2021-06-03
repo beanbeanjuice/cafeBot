@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.helper;
+package com.beanbeanjuice.utility.helper.api;
 
 import com.beanbeanjuice.CafeBot;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,7 +13,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class RedditAPI {
+/**
+ * A handler for getting Reddit stuff.
+ *
+ * @author beanbeanjuice
+ */
+public class SubRedditAPI {
 
     private String reddit_api_url = "https://www.reddit.com/r/{SUBREDDIT}/random/.json";
     private String reddit_url;
@@ -24,18 +29,24 @@ public class RedditAPI {
     private String reddit_description;
 
     /**
+     * Creates a new {@link SubRedditAPI} object.
+     * @param subreddit The subreddit to search for.
+     */
+    public SubRedditAPI(@NotNull String subreddit) {
+        this.reddit_subreddit = subreddit;
+    }
+
+    /**
      * Get the completed {@link MessageEmbed} for the subreddit.
-     * @param subreddit The subreddit specified.
      * @return The new {@link MessageEmbed} to be sent.
      */
     @NotNull
-    public MessageEmbed getRedditEmbed(@NotNull String subreddit) {
-        reddit_subreddit = subreddit;
+    public MessageEmbed getRedditEmbed() {
         reddit_api_url = reddit_api_url.replace("{SUBREDDIT}", reddit_subreddit);
         contactRedditAPI();
 
         // Making sure it's not a video
-        while (reddit_image_url.contains("v.red") || reddit_image_url.contains("youtube.") || reddit_image_url.contains("youtu-be")) {
+        while (reddit_image_url.contains("v.red") || reddit_image_url.contains("youtube.") || reddit_image_url.contains("youtu.be")) {
             contactRedditAPI();
         }
 
@@ -53,7 +64,7 @@ public class RedditAPI {
      */
     private void contactRedditAPI() {
         HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(reddit_api_url)).build();
+        HttpRequest request = HttpRequest.newBuilder().setHeader("User-Agent", CafeBot.getBotUserAgent()).uri(URI.create(reddit_api_url)).build();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::body)
                 .thenApply(this::parse)

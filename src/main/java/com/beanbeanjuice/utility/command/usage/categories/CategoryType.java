@@ -13,6 +13,7 @@ public enum CategoryType {
     CAFE("Commands used for the cafe.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/cafe.jpg"),
     FUN("Commands used for fun.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/fun.jpg"),
     GAMES("Commands used for small games.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/games.png"),
+    SOCIAL("Commands used for social media stuff", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/social.gif"),
     INTERACTION("Commands used for user interactions.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/interaction.png"),
     MUSIC("Commands used for music.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/music.webp"),
     TWITCH("Commands used for twitch.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/twitch.jpg"),

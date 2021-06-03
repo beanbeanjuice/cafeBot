@@ -37,10 +37,11 @@ public class HelpCommand implements ICommand {
 
         // Setting the Search Term
         String search = args.get(0);
+        int count = 1;
 
         // Goes through each category. If the first argument is equal to the name, then print commands for that category.
         for (CategoryType categoryType : CategoryType.values()) {
-            if (categoryType.toString().equalsIgnoreCase(search)) {
+            if (categoryType.toString().equalsIgnoreCase(search) || String.valueOf(count++).equals(search)) {
                 channel.sendMessage(searchCategoriesEmbed(prefix, categoryType)).queue();
                 return;
             }
@@ -122,6 +123,10 @@ public class HelpCommand implements ICommand {
                 stringBuilder.append(count++).append(". ").append("`").append(prefix).append(command.getName());
                 stringBuilder.append("`\n");
             }
+        }
+
+        if (count == 1) {
+            stringBuilder.append("There are no commands here right now :( but if this section is here, that means I'm working on it!");
         }
 
         embedBuilder.addField("**Commands in " + categoryType + "**", stringBuilder.toString(), true);
