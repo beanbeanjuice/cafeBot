@@ -77,6 +77,7 @@ public class UserInfoCommand implements ICommand {
         embedBuilder.addField("Roles [" + roles.size() + "]", roleBuilder.toString(), false);
         embedBuilder.addField("Permissions", permissionBuilder.toString(), false);
         return embedBuilder.build();
+
     }
 
     @Override

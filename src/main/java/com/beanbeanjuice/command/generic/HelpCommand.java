@@ -125,6 +125,10 @@ public class HelpCommand implements ICommand {
             }
         }
 
+        if (count == 1) {
+            stringBuilder.append("There are no commands here right now :( but if this section is here, that means I'm working on it!");
+        }
+
         embedBuilder.addField("**Commands in " + categoryType + "**", stringBuilder.toString(), true);
         embedBuilder.setThumbnail(categoryType.getLink());
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
