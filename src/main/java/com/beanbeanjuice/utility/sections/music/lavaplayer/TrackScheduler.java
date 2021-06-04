@@ -21,19 +21,12 @@ public class TrackScheduler extends AudioEventAdapter {
     public final AudioPlayer player;
     private Guild guild;
     public BlockingQueue<AudioTrack> queue;
-    public BlockingQueue<AudioTrack> unshuffledQueue;
-    public BlockingQueue<AudioTrack> playlistRepeatQueue;
-    public boolean songRepeating = false;
-    private boolean playlistRepeating = false;
-    public boolean shuffle = false;
     public boolean inVoiceChannel = false;
 
     public TrackScheduler(AudioPlayer player, Guild guild) {
         this.player = player;
         this.guild = guild;
         this.queue = new LinkedBlockingQueue<>();
-        this.unshuffledQueue = new LinkedBlockingQueue<>();
-        this.playlistRepeatQueue = new LinkedBlockingQueue<>();
     }
 
     /**
@@ -45,7 +38,7 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         if (endReason.mayStartNext) {
-            if (this.songRepeating) {
+            if (CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().getSongRepeating()) {
                 this.player.startTrack(track.makeClone(), false);
                 return;
             }
@@ -60,13 +53,6 @@ public class TrackScheduler extends AudioEventAdapter {
         this.player.stopTrack();
         CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().setSongPlayingStatus(false);
         CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().queueNextSong();
-    }
-
-    public void requeuePlaylist() {
-        ArrayList<AudioTrack> tempQueue = new ArrayList<>(playlistRepeatQueue);
-        for (AudioTrack audioTrack : tempQueue) {
-            queue.offer(audioTrack.makeClone());
-        }
     }
 
     /**
