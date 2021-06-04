@@ -316,21 +316,31 @@ public class GuildHandler {
      */
     @NotNull
     public Boolean removeGuild(@NotNull String guildID) {
-
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "DELETE FROM cafeBot.guild_information " +
                 "WHERE guild_id = (?);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setString(1, guildID);
-
+            statement.setLong(1, Long.parseLong(guildID));
             statement.execute();
-            return true;
         } catch (SQLException e) {
-            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Error Removing Guild: " + e.getMessage());
             return false;
         }
+
+        arguments = "DELETE FROM cafeBot.guild_twitch WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(guildID));
+            statement.execute();
+        } catch (SQLException e) {
+            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.WARN, "Error Removing Guild's Twitch: " + e.getMessage());
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -340,7 +350,6 @@ public class GuildHandler {
      */
     @NotNull
     public Boolean removeGuild(@NotNull Guild guild) {
-
         if (removeGuild(guild.getId())) {
             guildDatabase.remove(guild.getId());
             return true;
