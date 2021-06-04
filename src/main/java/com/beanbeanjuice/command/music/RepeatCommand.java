@@ -28,6 +28,28 @@ public class RepeatCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
+        if (args.isEmpty()) {
+            if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getSongRepeating()) {
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                        "Repeat Status",
+                        "You currently have song repeating enabled."
+                )).queue();
+                return;
+            } else if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getPlaylistRepeating()) {
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                        "Repeat Status",
+                        "You currently have playlist repeating enabled."
+                )).queue();
+                return;
+            } else {
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                        "Repeat Status",
+                        "Playlist and song repeating are both disabled. Do `" + ctx.getPrefix() + "help repeat` for more information."
+                )).queue();
+                return;
+            }
+        }
+
         String commandName = args.get(0).toLowerCase();
 
         if (!commandName.equals("song") && !commandName.equals("playlist")) {
@@ -151,7 +173,7 @@ public class RepeatCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "song/playlist", true);
+        usage.addUsage(CommandType.TEXT, "song/playlist", false);
         return usage;
     }
 
