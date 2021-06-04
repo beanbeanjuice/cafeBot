@@ -89,7 +89,6 @@ public class Usage {
 
         }
 
-
         for (CommandUsage entry : usages) {
             CommandType type = entry.getType();
 

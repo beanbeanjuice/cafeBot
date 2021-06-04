@@ -155,7 +155,7 @@ public class CafeBot {
     private static WelcomeHandler welcomeHandler;
     private static WelcomeListener welcomeListener;
 
-    public static void main(String[] args) throws LoginException, InterruptedException {
+    public static void main(String[] args) throws LoginException, InterruptedException, SQLException {
 
         SpringApplication.run(CafeBot.class, args);
 
