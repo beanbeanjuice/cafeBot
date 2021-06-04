@@ -281,8 +281,8 @@ public class CafeBot {
                 new NowPlayingCommand(),
                 new PauseCommand(),
                 new QueueCommand(),
-//                new RepeatCommand(),
-//                new ShuffleCommand(),
+                new RepeatCommand(),
+                new ShuffleCommand(),
                 new SkipCommand(),
                 new StopCommand()
         );

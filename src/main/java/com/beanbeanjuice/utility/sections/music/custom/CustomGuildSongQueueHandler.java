@@ -50,8 +50,8 @@ public class CustomGuildSongQueueHandler {
                 unshuffledQueue.remove(currentSong);
                 PlayerManager.getInstance().loadAndPlay(currentSong.getSearchString(), CafeBot.getGuildHandler().getGuild(guildID));
             } catch (IndexOutOfBoundsException e) {
-
                 if (playlistRepeat) {
+                    songPlaying = false;
                     for (CustomSong customSong : repeatQueue) {
                         addCustomSong(customSong, true);
                     }
@@ -59,6 +59,10 @@ public class CustomGuildSongQueueHandler {
                     currentSong = null;
                 }
             }
+        }
+
+        if (currentSong == null && customSongQueue.isEmpty()) {
+            songPlaying = false;
         }
     }
 
@@ -69,16 +73,18 @@ public class CustomGuildSongQueueHandler {
         playlistRepeat = false;
         songRepeat = false;
         shuffle = false;
+        currentSong = null;
+        songPlaying = false;
     }
 
     public void setShuffle(@NotNull Boolean bool) {
         shuffle = bool;
 
         if (shuffle) {
-            unshuffledQueue = customSongQueue;
+            unshuffledQueue = new ArrayList<>(customSongQueue);
             Collections.shuffle(customSongQueue);
         } else {
-            customSongQueue = unshuffledQueue;
+            customSongQueue = new ArrayList<>(unshuffledQueue);
             unshuffledQueue.clear();
         }
     }
@@ -91,8 +97,9 @@ public class CustomGuildSongQueueHandler {
     public void setPlaylistRepeating(@NotNull Boolean bool) {
         playlistRepeat = bool;
 
-        if (playlistRepeat && songRepeat) {
-            repeatQueue = customSongQueue;
+        if (playlistRepeat) {
+            repeatQueue = new ArrayList<>(customSongQueue);
+            repeatQueue.add(0, currentSong);
             songRepeat = false;
         } else {
             repeatQueue.clear();
@@ -112,7 +119,7 @@ public class CustomGuildSongQueueHandler {
     public void setSongRepeating(@NotNull Boolean bool) {
         songRepeat = bool;
 
-        if (songRepeat && playlistRepeat) {
+        if (songRepeat) {
             playlistRepeat = false;
             repeatQueue.clear();
         }

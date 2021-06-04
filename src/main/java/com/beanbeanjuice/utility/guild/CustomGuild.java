@@ -458,6 +458,7 @@ public class CustomGuild {
                     sendMessageInLastMusicChannel(embedBuilder.build());
                     musicManager.scheduler.player.stopTrack();
                     musicManager.scheduler.queue.clear();
+                    customGuildSongQueueHandler.clear();
                     guild.getAudioManager().closeAudioConnection();
                     musicManager.scheduler.inVoiceChannel = false;
                     timer.cancel();
@@ -478,6 +479,7 @@ public class CustomGuild {
                     guild.getAudioManager().closeAudioConnection();
                     musicManager.scheduler.queue.clear();
                     musicManager.scheduler.inVoiceChannel = false;
+                    customGuildSongQueueHandler.clear();
                     timer.cancel();
                     return;
                 }
