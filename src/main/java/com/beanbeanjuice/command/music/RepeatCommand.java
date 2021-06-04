@@ -28,6 +28,28 @@ public class RepeatCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
+        if (args.isEmpty()) {
+            if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getSongRepeating()) {
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                        "Repeat Status",
+                        "You currently have song repeating enabled."
+                )).queue();
+                return;
+            } else if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getPlaylistRepeating()) {
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                        "Repeat Status",
+                        "You currently have playlist repeating enabled."
+                )).queue();
+                return;
+            } else {
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                        "Repeat Status",
+                        "Playlist and song repeating are both disabled. Do `" + ctx.getPrefix() + "help repeat` for more information."
+                )).queue();
+                return;
+            }
+        }
+
         String commandName = args.get(0).toLowerCase();
 
         if (!commandName.equals("song") && !commandName.equals("playlist")) {
@@ -61,8 +83,8 @@ public class RepeatCommand implements ICommand {
         GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
 
         if (commandName.equals("song")) {
-            final boolean newRepeating = !musicManager.scheduler.songRepeating;
-            musicManager.scheduler.songRepeating = newRepeating;
+            final boolean newRepeating = !CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getSongRepeating();
+            CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().setSongRepeating(newRepeating);
 
             if (newRepeating) {
                 event.getChannel().sendMessage(successEmbed("Song repeating has now been turned on.")).queue();
@@ -73,7 +95,8 @@ public class RepeatCommand implements ICommand {
 
         if (commandName.equals("playlist")) {
 
-            if (!musicManager.scheduler.playlistRepeating() && musicManager.scheduler.queue.isEmpty()) {
+            if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getPlaylistRepeating() &&
+                    CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCustomSongQueue().isEmpty()) {
                 event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                         "Cannot Repeat Playlist",
                         "Cannot repeat the playlist as the playlist is currently empty."
@@ -81,8 +104,8 @@ public class RepeatCommand implements ICommand {
                 return;
             }
 
-            final boolean newRepeating = !musicManager.scheduler.playlistRepeating();
-            musicManager.scheduler.setPlaylistRepeating(newRepeating);
+            final boolean newRepeating = !CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getPlaylistRepeating();
+            CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().setPlaylistRepeating(newRepeating);
 
             if (newRepeating) {
                 event.getChannel().sendMessage(successEmbed("Playlist repeating has now been turned on.")).queue();
@@ -150,7 +173,7 @@ public class RepeatCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "song/playlist", true);
+        usage.addUsage(CommandType.TEXT, "song/playlist", false);
         return usage;
     }
 

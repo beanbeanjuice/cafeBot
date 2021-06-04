@@ -3,6 +3,7 @@ package com.beanbeanjuice.utility.guild;
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import com.beanbeanjuice.utility.sections.music.custom.CustomGuildSongQueueHandler;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -40,6 +41,8 @@ public class CustomGuild {
     private TextChannel lastMusicChannel;
 
     private ArrayList<TextChannel> deletingMessagesChannels;
+
+    private CustomGuildSongQueueHandler customGuildSongQueueHandler;
 
     /**
      * Creates a new {@link CustomGuild} object.
@@ -82,6 +85,15 @@ public class CustomGuild {
         CafeBot.getTwitchHandler().addTwitchChannels(this.twitchChannels);
 
         deletingMessagesChannels = new ArrayList<>();
+
+        customGuildSongQueueHandler = new CustomGuildSongQueueHandler(guildID);
+    }
+
+    /**
+     * @return The {@link CustomGuildSongQueueHandler} for the {@link CustomGuild}.
+     */
+    public CustomGuildSongQueueHandler getCustomGuildSongQueue() {
+        return customGuildSongQueueHandler;
     }
 
     /**
@@ -394,6 +406,14 @@ public class CustomGuild {
     }
 
     /**
+     * @return The last music {@link TextChannel}.
+     */
+    @NotNull
+    public TextChannel getLastMusicChannel() {
+        return lastMusicChannel;
+    }
+
+    /**
      * Starts checking for an {@link net.dv8tion.jda.internal.audio.AudioConnection AudioConnection} in the current {@link Guild}.
      */
     public void startAudioChecking() {
@@ -438,10 +458,7 @@ public class CustomGuild {
                     sendMessageInLastMusicChannel(embedBuilder.build());
                     musicManager.scheduler.player.stopTrack();
                     musicManager.scheduler.queue.clear();
-                    musicManager.scheduler.unshuffledQueue.clear();
-                    musicManager.scheduler.playlistRepeatQueue.clear();
-                    musicManager.scheduler.setShuffle(false);
-                    musicManager.scheduler.setPlaylistRepeating(false);
+                    customGuildSongQueueHandler.clear();
                     guild.getAudioManager().closeAudioConnection();
                     musicManager.scheduler.inVoiceChannel = false;
                     timer.cancel();
@@ -461,11 +478,8 @@ public class CustomGuild {
                     sendMessageInLastMusicChannel(embedBuilder.build());
                     guild.getAudioManager().closeAudioConnection();
                     musicManager.scheduler.queue.clear();
-                    musicManager.scheduler.unshuffledQueue.clear();
-                    musicManager.scheduler.playlistRepeatQueue.clear();
-                    musicManager.scheduler.setShuffle(false);
-                    musicManager.scheduler.setPlaylistRepeating(false);
                     musicManager.scheduler.inVoiceChannel = false;
+                    customGuildSongQueueHandler.clear();
                     timer.cancel();
                     return;
                 }

@@ -1,5 +1,6 @@
 package com.beanbeanjuice.utility.logger;
 
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.websocket.model.ChatMessage;
 import com.beanbeanjuice.utility.logger.websocket.model.MessageType;
 import com.beanbeanjuice.utility.exception.WebhookException;
@@ -41,6 +42,11 @@ public class LogManager {
         this.logChannel = logChannel;
 
         webhookURLs = new ArrayList<>(); // Creates the ArrayList
+
+        log(LogManager.class, LogLevel.INFO, "Starting the Uncaught Exception Handler", true, false);
+        Thread.setDefaultUncaughtExceptionHandler((thread, exception) -> {
+            CafeBot.getLogManager().log(thread.getClass(), LogLevel.WARN, "Unhandled Exception: " + exception.getMessage());
+        });
     }
 
     /**

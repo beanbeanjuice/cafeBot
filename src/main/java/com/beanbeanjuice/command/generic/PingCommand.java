@@ -1,5 +1,6 @@
 package com.beanbeanjuice.command.generic;
 
+import ch.qos.logback.core.util.SystemInfo;
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -7,12 +8,14 @@ import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import com.sun.management.OperatingSystemMXBean;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 
 /**
@@ -29,8 +32,10 @@ public class PingCommand implements ICommand {
                         .sendMessage(messageEmbed(ping, CafeBot.getJDA().getGatewayPing())).queue()
         );
 
-        if (args.get(0).equals("log")) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Testing Log.");
+        if (args.size() == 1) {
+            if (args.get(0).equals("log")) {
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Testing Log.");
+            }
         }
     }
 
@@ -41,7 +46,10 @@ public class PingCommand implements ICommand {
         StringBuilder descriptionBuilder = new StringBuilder();
         descriptionBuilder.append("**Rest Ping** - `").append(botPing).append("`\n")
                 .append("**Gateway Ping** - `").append(gatewayPing).append("`\n")
-                .append("**Current Version** - `").append(CafeBot.getBotVersion()).append("`\n\n")
+                .append("**Current Version** - `").append(CafeBot.getBotVersion()).append("`\n")
+                .append("**CPU Usage** - `").append((double) Math.round((ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCpuLoad()*100) * 100) / 100).append("%`\n")
+                .append("**Memory Usage** - `").append(ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCommittedVirtualMemorySize()/1048576).append("` mb / `").append(Runtime.getRuntime().maxMemory()/1048576).append("` mb\n")
+                .append("**Bot Uptime** - `").append(CafeBot.getGeneralHelper().formatTime(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n\n")
                 .append("Hello there! How are you? Would you like to order some coffee?");
         embedBuilder.setDescription(descriptionBuilder.toString());
         embedBuilder.setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/cafeBot");
