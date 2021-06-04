@@ -9,6 +9,7 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.sections.music.custom.CustomSong;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.Paging;
@@ -102,6 +103,12 @@ public class PlayCommand implements ICommand {
 //                link = "ytsearch:" + getLinkFromSpotifyTrack(track) + " audio";
 //                PlayerManager.getInstance().loadAndPlay(channel, link, false);
                 CafeBot.getCustomSongManager().addSongToGuild(event.getGuild(), track, user);
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                        "Queued Song",
+                        "`" + track.getName() + "` by `" + track.getArtists()[0].getName() + "` [`"
+                                + CafeBot.getGeneralHelper().formatTime(track.getDurationMs().longValue()) + "`]\n\n" +
+                                "**Requested By**: " + user.getAsMention()
+                )).queue();
                 return;
 
             } else if (link.startsWith("playlist/")) {

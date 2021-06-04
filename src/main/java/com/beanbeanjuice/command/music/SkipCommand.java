@@ -9,7 +9,6 @@ import com.beanbeanjuice.utility.sections.music.custom.CustomSong;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -17,6 +16,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -97,16 +97,20 @@ public class SkipCommand implements ICommand {
     }
 
     @NotNull
-    private MessageEmbed successEmbed(@NotNull CustomSong customSong, @NotNull Integer songsLeftInQueue) {
+    private MessageEmbed successEmbed(@Nullable CustomSong customSong, @NotNull Integer songsLeftInQueue) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Skipped Song");
 
         StringBuilder descriptionBuilder = new StringBuilder();
 
-        descriptionBuilder.append("Now Playing - `").append(customSong.getName())
-                .append("` by `").append(customSong.getAuthor())
-                .append("` [`").append(customSong.getLengthString()).append("]`\n\n")
-                .append("**Requested By**: ").append(customSong.getRequester().getAsMention());
+        if (customSong != null) {
+            descriptionBuilder.append("Now Playing - `").append(customSong.getName())
+                    .append("` by `").append(customSong.getAuthor())
+                    .append("` [`").append(customSong.getLengthString()).append("]`\n\n")
+                    .append("**Requested By**: ").append(customSong.getRequester().getAsMention());
+        } else {
+            descriptionBuilder.append("No song is currently playing. Please wait for a track to start playing if the queue is not empty...");
+        }
 
         embedBuilder.setDescription(descriptionBuilder.toString());
         embedBuilder.setColor(Color.green);
