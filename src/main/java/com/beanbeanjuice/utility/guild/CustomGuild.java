@@ -3,6 +3,8 @@ package com.beanbeanjuice.utility.guild;
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import com.beanbeanjuice.utility.sections.music.custom.CustomGuildSongQueue;
+import com.beanbeanjuice.utility.sections.music.custom.CustomSong;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -40,6 +42,8 @@ public class CustomGuild {
     private TextChannel lastMusicChannel;
 
     private ArrayList<TextChannel> deletingMessagesChannels;
+
+    private CustomGuildSongQueue customGuildSongQueue;
 
     /**
      * Creates a new {@link CustomGuild} object.
@@ -82,6 +86,12 @@ public class CustomGuild {
         CafeBot.getTwitchHandler().addTwitchChannels(this.twitchChannels);
 
         deletingMessagesChannels = new ArrayList<>();
+
+        customGuildSongQueue = new CustomGuildSongQueue(guildID);
+    }
+
+    public CustomGuildSongQueue getCustomGuildSongQueue() {
+        return customGuildSongQueue;
     }
 
     /**
@@ -440,8 +450,8 @@ public class CustomGuild {
                     musicManager.scheduler.queue.clear();
                     musicManager.scheduler.unshuffledQueue.clear();
                     musicManager.scheduler.playlistRepeatQueue.clear();
-                    musicManager.scheduler.setShuffle(false);
-                    musicManager.scheduler.setPlaylistRepeating(false);
+//                    musicManager.scheduler.setShuffle(false);
+//                    musicManager.scheduler.setPlaylistRepeating(false);
                     guild.getAudioManager().closeAudioConnection();
                     musicManager.scheduler.inVoiceChannel = false;
                     timer.cancel();
@@ -463,8 +473,8 @@ public class CustomGuild {
                     musicManager.scheduler.queue.clear();
                     musicManager.scheduler.unshuffledQueue.clear();
                     musicManager.scheduler.playlistRepeatQueue.clear();
-                    musicManager.scheduler.setShuffle(false);
-                    musicManager.scheduler.setPlaylistRepeating(false);
+//                    musicManager.scheduler.setShuffle(false);
+//                    musicManager.scheduler.setPlaylistRepeating(false);
                     musicManager.scheduler.inVoiceChannel = false;
                     timer.cancel();
                     return;

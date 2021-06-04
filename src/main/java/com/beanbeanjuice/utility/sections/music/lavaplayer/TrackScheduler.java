@@ -1,9 +1,11 @@
 package com.beanbeanjuice.utility.sections.music.lavaplayer;
 
+import com.beanbeanjuice.CafeBot;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TrackScheduler extends AudioEventAdapter {
 
     public final AudioPlayer player;
+    private Guild guild;
     public BlockingQueue<AudioTrack> queue;
     public BlockingQueue<AudioTrack> unshuffledQueue;
     public BlockingQueue<AudioTrack> playlistRepeatQueue;
@@ -25,8 +28,9 @@ public class TrackScheduler extends AudioEventAdapter {
     public boolean shuffle = false;
     public boolean inVoiceChannel = false;
 
-    public TrackScheduler(AudioPlayer player) {
+    public TrackScheduler(AudioPlayer player, Guild guild) {
         this.player = player;
+        this.guild = guild;
         this.queue = new LinkedBlockingQueue<>();
         this.unshuffledQueue = new LinkedBlockingQueue<>();
         this.playlistRepeatQueue = new LinkedBlockingQueue<>();
@@ -53,27 +57,9 @@ public class TrackScheduler extends AudioEventAdapter {
      * Moves to the next {@link AudioTrack}.
      */
     public void nextTrack() {
-
-        AudioTrack nextTrack = this.queue.poll();
-        this.player.startTrack(nextTrack, false);
-
-        if (shuffle) {
-            this.unshuffledQueue.remove(nextTrack);
-        }
-
-        if (!playlistRepeating) {
-            playlistRepeatQueue.remove(nextTrack);
-        }
-
-        if (this.queue.peek() == null) {
-            if (playlistRepeating) {
-                requeuePlaylist();
-
-                if (shuffle) {
-                    shuffleQueue();
-                }
-            }
-        }
+        this.player.stopTrack();
+        CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().setSongPlayingStatus(false);
+        CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().queueNextSong();
     }
 
     public void requeuePlaylist() {
@@ -89,59 +75,8 @@ public class TrackScheduler extends AudioEventAdapter {
      */
     public void queue(AudioTrack track) {
         if (inVoiceChannel) {
-            if (!this.player.startTrack(track, true)) {
-                this.queue.offer(track);
-                unshuffledQueue.offer(track.makeClone());
-                playlistRepeatQueue.offer(track.makeClone());
-            }
+            this.player.startTrack(track, true);
         }
-    }
-
-    private void shuffleQueue() {
-        unshuffledQueue.clear();
-
-        ArrayList<AudioTrack> tempUnshuffledQueue = new ArrayList<>(queue);
-
-        for (AudioTrack audioTrack : tempUnshuffledQueue) {
-            unshuffledQueue.offer(audioTrack);
-        }
-
-        ArrayList<AudioTrack> tempQueue = new ArrayList<>(queue);
-        Collections.shuffle(tempQueue);
-        queue.clear();
-
-        for (AudioTrack audioTrack : tempQueue) {
-            queue.offer(audioTrack);
-        }
-    }
-
-    /**
-     * Sets whether or not the queue should be shuffled.
-     * @param shuffleState The state of shuffling.
-     */
-    public void setShuffle(@NotNull Boolean shuffleState) {
-        shuffle = shuffleState;
-
-        if (shuffle) {
-            shuffleQueue();
-        } else {
-            queue.clear();
-
-            ArrayList<AudioTrack> tempQueue = new ArrayList<>(unshuffledQueue);
-
-            for (AudioTrack audioTrack : tempQueue) {
-                queue.offer(audioTrack);
-            }
-        }
-    }
-
-    public void setPlaylistRepeating(@NotNull Boolean playlistRepeatingState) {
-        playlistRepeating = playlistRepeatingState;
-    }
-
-    @NotNull
-    public Boolean playlistRepeating() {
-        return playlistRepeating;
     }
 
 }

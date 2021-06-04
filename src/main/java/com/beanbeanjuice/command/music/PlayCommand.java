@@ -99,8 +99,9 @@ public class PlayCommand implements ICommand {
                     return;
                 }
 
-                link = "ytsearch:" + getLinkFromSpotifyTrack(track) + " audio";
-                PlayerManager.getInstance().loadAndPlay(channel, link, false);
+//                link = "ytsearch:" + getLinkFromSpotifyTrack(track) + " audio";
+//                PlayerManager.getInstance().loadAndPlay(channel, link, false);
+                CafeBot.getCustomSongManager().addSongToGuild(event.getGuild(), track, user);
                 return;
 
             } else if (link.startsWith("playlist/")) {
@@ -141,15 +142,16 @@ public class PlayCommand implements ICommand {
 
                     Track track = (Track) playlistTrack.getTrack();
 
-                    StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.append(track.getName()).append(" by ")
-                            .append(track.getArtists()[0].getName());
+//                    StringBuilder stringBuilder = new StringBuilder();
+//                    stringBuilder.append(track.getName()).append(" by ")
+//                            .append(track.getArtists()[0].getName());
+//
+//                    if (track.getArtists().length > 1) {
+//                        stringBuilder.append(" and ").append(track.getArtists()[1].getName());
+//                    }
 
-                    if (track.getArtists().length > 1) {
-                        stringBuilder.append(" and ").append(track.getArtists()[1].getName());
-                    }
-
-                    PlayerManager.getInstance().loadAndPlay(channel, "ytsearch:" + stringBuilder.toString() + " audio", true);
+//                    PlayerManager.getInstance().loadAndPlay(channel, "ytsearch:" + stringBuilder.toString() + " audio", true);
+                    CafeBot.getCustomSongManager().addSongToGuild(event.getGuild(), track, user);
                 }
                 event.getChannel().sendMessage(loadedPlaylist()).queue();
                 return;
@@ -190,7 +192,7 @@ public class PlayCommand implements ICommand {
             }
 
         }
-        PlayerManager.getInstance().loadAndPlay(channel, link, false);
+        CafeBot.getCustomSongManager().addSongToGuild(event.getGuild(), link, user);
     }
 
     @NotNull

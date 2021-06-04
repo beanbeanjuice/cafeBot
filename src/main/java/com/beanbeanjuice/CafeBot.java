@@ -39,6 +39,7 @@ import com.beanbeanjuice.utility.logger.LogManager;
 import com.beanbeanjuice.utility.sections.fun.poll.PollHandler;
 import com.beanbeanjuice.utility.sections.fun.raffle.RaffleHandler;
 import com.beanbeanjuice.utility.sections.moderation.welcome.WelcomeHandler;
+import com.beanbeanjuice.utility.sections.music.custom.CustomSongManager;
 import com.beanbeanjuice.utility.sql.SQLServer;
 import com.beanbeanjuice.utility.sections.twitch.TwitchHandler;
 import com.wrapper.spotify.SpotifyApi;
@@ -154,6 +155,9 @@ public class CafeBot {
     // Welcome Stuff
     private static WelcomeHandler welcomeHandler;
     private static WelcomeListener welcomeListener;
+
+    // Song Stuff
+    private static CustomSongManager customSongManager;
 
     public static void main(String[] args) throws LoginException, InterruptedException, SQLException {
 
@@ -277,8 +281,8 @@ public class CafeBot {
                 new NowPlayingCommand(),
                 new PauseCommand(),
                 new QueueCommand(),
-                new RepeatCommand(),
-                new ShuffleCommand(),
+//                new RepeatCommand(),
+//                new ShuffleCommand(),
                 new SkipCommand(),
                 new StopCommand()
         );
@@ -348,9 +352,16 @@ public class CafeBot {
         welcomeListener = new WelcomeListener();
         jda.addEventListener(welcomeListener);
 
+        customSongManager = new CustomSongManager();
+
         // Final Things
         updateGuildPresence();
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
+    }
+
+    @NotNull
+    public static CustomSongManager getCustomSongManager() {
+        return customSongManager;
     }
 
     /**
