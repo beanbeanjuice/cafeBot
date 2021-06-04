@@ -45,7 +45,7 @@ public class LogManager {
 
         log(LogManager.class, LogLevel.INFO, "Starting the Uncaught Exception Handler", true, false);
         Thread.setDefaultUncaughtExceptionHandler((thread, exception) -> {
-            CafeBot.getLogManager().log(thread.getClass(), LogLevel.WARN, exception.getMessage());
+            CafeBot.getLogManager().log(thread.getClass(), LogLevel.WARN, "Unhandled Exception: " + exception.getMessage());
         });
     }
 
