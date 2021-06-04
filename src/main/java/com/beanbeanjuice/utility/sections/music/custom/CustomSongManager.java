@@ -20,7 +20,7 @@ import java.util.List;
 public class CustomSongManager {
 
     public void addSongToGuild(@NotNull Guild guild, @NotNull Track spotifyTrack, @NotNull User user) {
-        CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(spotifyTrack.getName(), spotifyTrack.getArtists()[0].getName(), Long.parseLong(spotifyTrack.getDurationMs().toString()), user));
+        CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(spotifyTrack.getName(), spotifyTrack.getArtists()[0].getName(), Long.parseLong(spotifyTrack.getDurationMs().toString()), user), false);
     }
 
     public void addSongToGuild(@NotNull Guild guild, @NotNull String searchString, @NotNull User user) {
@@ -31,7 +31,7 @@ public class CustomSongManager {
         audioPlayerManager.loadItemOrdered(new GuildMusicManager(audioPlayerManager, guild), searchString, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack audioTrack) {
-                CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(audioTrack.getInfo().title, audioTrack.getInfo().author, audioTrack.getDuration(), user));
+                CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(audioTrack.getInfo().title, audioTrack.getInfo().author, audioTrack.getDuration(), user), false);
                 CafeBot.getGuildHandler().getCustomGuild(guild).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                         "Queued Song",
                         "`" + audioTrack.getInfo().title + "` by `" + audioTrack.getInfo().author + "` [`"
@@ -50,7 +50,7 @@ public class CustomSongManager {
                 }
 
                 for (final AudioTrack track : tracks) {
-                    CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(track.getInfo().title, track.getInfo().author, track.getDuration(), user));
+                    CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(track.getInfo().title, track.getInfo().author, track.getDuration(), user), false);
                 }
 
                 CafeBot.getGuildHandler().getCustomGuild(guild).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
