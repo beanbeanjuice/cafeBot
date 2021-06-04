@@ -45,7 +45,7 @@ public class PlayerManager {
      */
     public GuildMusicManager getMusicManager(Guild guild) {
         return this.musicManagers.computeIfAbsent(guild.getIdLong(), (guildID) -> {
-            final GuildMusicManager guildMusicManager = new GuildMusicManager(this.audioPlayerManager);
+            final GuildMusicManager guildMusicManager = new GuildMusicManager(this.audioPlayerManager, guild);
 
             guild.getAudioManager().setSendingHandler(guildMusicManager.getSendHandler());
 
@@ -55,85 +55,31 @@ public class PlayerManager {
 
     /**
      * A method used for loading and playing music.
-     * @param channel The {@link TextChannel} that received the song playing message.
      * @param trackURL The link for the track to be played.
+     * @param guild The {@link Guild} for the music.
      */
-    public void loadAndPlay(TextChannel channel, String trackURL, boolean isSpotifyPlaylist) {
-        final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
+    public void loadAndPlay(String trackURL, Guild guild) {
+        final GuildMusicManager musicManager = this.getMusicManager(guild);
 
         this.audioPlayerManager.loadItemOrdered(musicManager, trackURL, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack audioTrack) {
-
-                if (isSpotifyPlaylist) {
-                    musicManager.scheduler.queue(audioTrack);
-                    return;
-                }
-
                 musicManager.scheduler.queue(audioTrack);
-
-                EmbedBuilder embedBuilder = new EmbedBuilder();
-                embedBuilder.setTitle("Added Song to Queue");
-
-                String message = "`" +
-                        audioTrack.getInfo().title +
-                        "` by `" +
-                        audioTrack.getInfo().author +
-                        "` [`" + CafeBot.getGeneralHelper().formatTime(audioTrack.getDuration()) + "`]";
-                embedBuilder.setDescription(message);
-                embedBuilder.setColor(Color.green);
-
-                channel.sendMessage(embedBuilder.build()).queue();
             }
 
             @Override
             public void playlistLoaded(AudioPlaylist audioPlaylist) {
-                final List<AudioTrack> tracks = audioPlaylist.getTracks();
-
                 if (trackURL.startsWith("ytsearch:")) {
-                    trackLoaded(tracks.get(0));
-                    return;
-                }
-
-                EmbedBuilder embedBuilder = new EmbedBuilder();
-                embedBuilder.setTitle("Added Playlist to Queue");
-                embedBuilder.addField("Tracks", String.valueOf(tracks.size()), true);
-                embedBuilder.addField("Track Name", "`" + audioPlaylist.getName() + "`", true);
-                embedBuilder.setColor(Color.green);
-                channel.sendMessage(embedBuilder.build()).queue();
-
-                for (final AudioTrack track : tracks) {
-                    musicManager.scheduler.queue(track);
+                    trackLoaded(audioPlaylist.getTracks().get(0));
                 }
             }
 
             @Override
             public void noMatches() {
-
-                if (isSpotifyPlaylist && trackURL.contains("ytsearch:")) {
-                    loadAndPlay(channel, trackURL, true);
-                    CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Getting Song from Playlist", false, false);
-                    return;
-                }
-
-                if (!isSpotifyPlaylist) {
-                    EmbedBuilder embedBuilder = new EmbedBuilder();
-                    embedBuilder.setDescription("No matches found.");
-                    embedBuilder.setColor(Color.red);
-                    embedBuilder.setFooter("The link provided may not be a video: " + trackURL);
-                    channel.sendMessage(embedBuilder.build()).queue();
-                }
             }
 
             @Override
             public void loadFailed(FriendlyException e) {
-                if (!isSpotifyPlaylist) {
-                    EmbedBuilder embedBuilder = new EmbedBuilder();
-                    embedBuilder.setDescription("Video failed to load.");
-                    embedBuilder.setColor(Color.red);
-                    embedBuilder.setFooter("The link provided may not be a video: " + trackURL);
-                    channel.sendMessage(embedBuilder.build()).queue();
-                }
             }
         });
     }

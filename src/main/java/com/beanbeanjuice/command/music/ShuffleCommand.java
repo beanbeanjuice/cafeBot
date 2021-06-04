@@ -55,7 +55,7 @@ public class ShuffleCommand implements ICommand {
 
         GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
 
-        if (musicManager.scheduler.queue.isEmpty()) {
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCustomSongQueue().isEmpty()) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "Empty Queue",
                     "Cannot shuffle the queue as the queue is empty."
@@ -63,14 +63,14 @@ public class ShuffleCommand implements ICommand {
             return;
         }
 
-        if (!musicManager.scheduler.shuffle) {
-            musicManager.scheduler.setShuffle(true);
+        if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getShuffle()) {
+            CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().setShuffle(true);
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                     "Shuffled Queue",
                     "The current queue has been shuffled!"
             )).queue();
         } else {
-            musicManager.scheduler.setShuffle(false);
+            CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().setShuffle(false);
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                     "Unshuffled Queue",
                     "The current queue has been unshuffled!"

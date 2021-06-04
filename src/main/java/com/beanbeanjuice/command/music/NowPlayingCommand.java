@@ -5,6 +5,7 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
+import com.beanbeanjuice.utility.sections.music.custom.CustomSong;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -42,24 +43,25 @@ public class NowPlayingCommand implements ICommand {
 
         if (selfVoiceState.inVoiceChannel()) {
             GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
-            AudioPlayer audioPlayer = musicManager.audioPlayer;
-            final AudioTrack audioTrack = audioPlayer.getPlayingTrack();
+            CustomSong currentSong = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCurrentSong();
 
-            if (audioTrack == null) {
+            if (currentSong == null) {
                 event.getChannel().sendMessage(noTrackPlaying()).queue();
                 return;
             }
 
-            final AudioTrackInfo info = audioTrack.getInfo();
-            event.getChannel().sendMessage(nowPlaying(info.title, info.author, info.uri, audioTrack.getPosition(), audioTrack.getDuration())).queue();
+            AudioTrack audioTrack = musicManager.audioPlayer.getPlayingTrack();
+            AudioTrackInfo info = audioTrack.getInfo();
+            event.getChannel().sendMessage(nowPlaying(info.title, info.author, info.uri, audioTrack.getPosition(), audioTrack.getDuration(), currentSong.getRequester())).queue();
         }
     }
 
     @NotNull
-    private MessageEmbed nowPlaying(@NotNull String title, @NotNull String author, @NotNull String url, @NotNull Long songTimestamp, @NotNull Long songDuration) {
+    private MessageEmbed nowPlaying(@NotNull String title, @NotNull String author, @NotNull String url, @NotNull Long songTimestamp, @NotNull Long songDuration, @NotNull User requester) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Now Playing", url);
         String message = String.format("`%s` by `%s` - [`%s / %s`]", title, author, CafeBot.getGeneralHelper().formatTime(songTimestamp), CafeBot.getGeneralHelper().formatTime(songDuration));
+        message += "\n\n**Requested By**: " + requester.getAsMention();
         embedBuilder.setDescription(message);
         embedBuilder.setColor(Color.cyan);
         return embedBuilder.build();
