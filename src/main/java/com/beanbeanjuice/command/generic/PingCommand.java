@@ -32,8 +32,10 @@ public class PingCommand implements ICommand {
                         .sendMessage(messageEmbed(ping, CafeBot.getJDA().getGatewayPing())).queue()
         );
 
-        if (args.get(0).equals("log")) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Testing Log.");
+        if (args.size() == 1) {
+            if (args.get(0).equals("log")) {
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Testing Log.");
+            }
         }
     }
 

@@ -17,12 +17,29 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * A {@link CustomSongManager} class used for handling lavaplayer songs.
+ *
+ * @author beanbeanjuice
+ */
 public class CustomSongManager {
 
+    /**
+     * Add a {@link CustomSong} to the specified {@link Guild}.
+     * @param guild The {@link Guild} to add the {@link CustomSong} to.
+     * @param spotifyTrack The {@link Track} to be used.
+     * @param user The {@link User} who sent the song request.
+     */
     public void addSongToGuild(@NotNull Guild guild, @NotNull Track spotifyTrack, @NotNull User user) {
         CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(spotifyTrack.getName(), spotifyTrack.getArtists()[0].getName(), Long.parseLong(spotifyTrack.getDurationMs().toString()), user), false);
     }
 
+    /**
+     * Add a {@link CustomSong} to the specified {@link Guild}.
+     * @param guild The {@link Guild} to add the {@link CustomSong} to.
+     * @param searchString The search {@link String} for YouTube.
+     * @param user The {@link User} who sent the request.
+     */
     public void addSongToGuild(@NotNull Guild guild, @NotNull String searchString, @NotNull User user) {
         AudioPlayerManager audioPlayerManager = new DefaultAudioPlayerManager();
         AudioSourceManagers.registerRemoteSources(audioPlayerManager);
@@ -71,5 +88,4 @@ public class CustomSongManager {
             }
         });
     }
-
 }
