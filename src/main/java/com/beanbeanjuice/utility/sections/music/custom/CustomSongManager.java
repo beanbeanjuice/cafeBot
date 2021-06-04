@@ -11,12 +11,10 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.util.List;
 
 public class CustomSongManager {
@@ -34,6 +32,12 @@ public class CustomSongManager {
             @Override
             public void trackLoaded(AudioTrack audioTrack) {
                 CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(audioTrack.getInfo().title, audioTrack.getInfo().author, audioTrack.getDuration(), user));
+                CafeBot.getGuildHandler().getCustomGuild(guild).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                        "Queued Song",
+                        "`" + audioTrack.getInfo().title + "` by `" + audioTrack.getInfo().author + "` [`"
+                                + CafeBot.getGeneralHelper().formatTime(audioTrack.getDuration()) + "`]\n\n" +
+                                "**Requested By**: " + user.getAsMention()
+                )).queue();
             }
 
             @Override
@@ -42,13 +46,18 @@ public class CustomSongManager {
 
                 if (searchString.startsWith("ytsearch:")) {
                     trackLoaded(tracks.get(0));
-                    CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Loaded Song: " + tracks.get(0).getInfo().title);
                     return;
                 }
 
                 for (final AudioTrack track : tracks) {
                     CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(track.getInfo().title, track.getInfo().author, track.getDuration(), user));
                 }
+
+                CafeBot.getGuildHandler().getCustomGuild(guild).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                        "Queued Playlist",
+                        "`" + audioPlaylist.getName() + "` containing `" + audioPlaylist.getTracks().size() + "` songs.\n\n" +
+                                "**Requested By**: " + user.getAsMention()
+                )).queue();
             }
 
             @Override

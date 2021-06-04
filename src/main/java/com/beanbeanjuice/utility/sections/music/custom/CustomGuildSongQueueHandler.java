@@ -1,13 +1,12 @@
 package com.beanbeanjuice.utility.sections.music.custom;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class CustomGuildSongQueue {
+public class CustomGuildSongQueueHandler {
 
     private String guildID;
     private ArrayList<CustomSong> customSongQueue;
@@ -16,7 +15,7 @@ public class CustomGuildSongQueue {
     private CustomSong currentSong;
     private boolean songPlaying = false;
 
-    public CustomGuildSongQueue(@NotNull String guildID) {
+    public CustomGuildSongQueueHandler(@NotNull String guildID) {
         this.guildID = guildID;
         customSongQueue = new ArrayList<>();
         repeatQueue = new ArrayList<>();

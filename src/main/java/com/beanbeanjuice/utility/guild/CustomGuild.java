@@ -3,8 +3,7 @@ package com.beanbeanjuice.utility.guild;
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.logger.LogLevel;
-import com.beanbeanjuice.utility.sections.music.custom.CustomGuildSongQueue;
-import com.beanbeanjuice.utility.sections.music.custom.CustomSong;
+import com.beanbeanjuice.utility.sections.music.custom.CustomGuildSongQueueHandler;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -43,7 +42,7 @@ public class CustomGuild {
 
     private ArrayList<TextChannel> deletingMessagesChannels;
 
-    private CustomGuildSongQueue customGuildSongQueue;
+    private CustomGuildSongQueueHandler customGuildSongQueueHandler;
 
     /**
      * Creates a new {@link CustomGuild} object.
@@ -87,11 +86,14 @@ public class CustomGuild {
 
         deletingMessagesChannels = new ArrayList<>();
 
-        customGuildSongQueue = new CustomGuildSongQueue(guildID);
+        customGuildSongQueueHandler = new CustomGuildSongQueueHandler(guildID);
     }
 
-    public CustomGuildSongQueue getCustomGuildSongQueue() {
-        return customGuildSongQueue;
+    /**
+     * @return The {@link CustomGuildSongQueueHandler} for the {@link CustomGuild}.
+     */
+    public CustomGuildSongQueueHandler getCustomGuildSongQueue() {
+        return customGuildSongQueueHandler;
     }
 
     /**
@@ -401,6 +403,14 @@ public class CustomGuild {
      */
     public void setLastMusicChannel(TextChannel lastMusicChannel) {
         this.lastMusicChannel = lastMusicChannel;
+    }
+
+    /**
+     * @return The last music {@link TextChannel}.
+     */
+    @NotNull
+    public TextChannel getLastMusicChannel() {
+        return lastMusicChannel;
     }
 
     /**
