@@ -52,8 +52,8 @@ public class StopCommand implements ICommand {
         musicManager.scheduler.queue.clear();
         musicManager.scheduler.unshuffledQueue.clear();
         musicManager.scheduler.playlistRepeatQueue.clear();
-        musicManager.scheduler.setShuffle(false);
-        musicManager.scheduler.setPlaylistRepeating(false);
+//        musicManager.scheduler.setShuffle(false);
+//        musicManager.scheduler.setPlaylistRepeating(false);
         musicManager.scheduler.inVoiceChannel = false;
         ctx.getGuild().getAudioManager().closeAudioConnection();
 

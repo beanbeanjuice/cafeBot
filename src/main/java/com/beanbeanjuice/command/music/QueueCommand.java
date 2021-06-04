@@ -5,10 +5,7 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
-import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
+import com.beanbeanjuice.utility.sections.music.custom.CustomSong;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
@@ -17,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
 
 /**
  * The command used for seeing the song queue.
@@ -30,45 +26,41 @@ public class QueueCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         ctx.getCustomGuild().setLastMusicChannel(event.getChannel());
 
-        GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(ctx.getGuild());
-        BlockingQueue<AudioTrack> queue = musicManager.scheduler.queue;
+        ArrayList<CustomSong> queue = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCustomSongQueue();
 
         if (queue.isEmpty()) {
             event.getChannel().sendMessage(emptyQueueEmbed()).queue();
             return;
         }
 
-        int trackCount = Math.min(queue.size(), 20);
-        final ArrayList<AudioTrack> trackList = new ArrayList<>(queue);
-        event.getChannel().sendMessage(queueEmbed(trackList, trackCount)).queue();
+        event.getChannel().sendMessage(queueEmbed(queue)).queue();
     }
 
     @NotNull
-    private MessageEmbed queueEmbed(@NotNull ArrayList<AudioTrack> trackList, @NotNull Integer trackCount) {
+    private MessageEmbed queueEmbed(@NotNull ArrayList<CustomSong> queue) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Current Queue");
 
         StringBuilder message = new StringBuilder();
 
-        for (int i = 0; i < trackCount; i++) {
-            AudioTrack audioTrack = trackList.get(i);
-            AudioTrackInfo audioTrackInfo = audioTrack.getInfo();
+        for (int i = 0; i < queue.size() && i < 20; i++) {
+            CustomSong customSong = queue.get(i);
 
             message.append("#").append(i + 1)
                     .append(" `")
-                    .append(audioTrackInfo.title)
+                    .append(customSong.getName())
                     .append(" by ")
-                    .append(audioTrackInfo.author)
+                    .append(customSong.getAuthor())
                     .append("` [`")
-                    .append(CafeBot.getGeneralHelper().formatTime(audioTrack.getDuration()))
+                    .append(customSong.getLengthString())
                     .append("`]\n");
         }
 
         embedBuilder.setDescription(message);
         embedBuilder.setColor(Color.cyan);
 
-        if (trackList.size() > trackCount) {
-            embedBuilder.setFooter("And " + (trackList.size() - trackCount) + " more...");
+        if (queue.size() > 20) {
+            embedBuilder.setFooter("And " + (queue.size() - 20) + " more...");
         }
 
         return embedBuilder.build();

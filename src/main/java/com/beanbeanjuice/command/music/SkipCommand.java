@@ -5,6 +5,7 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
+import com.beanbeanjuice.utility.sections.music.custom.CustomSong;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -58,7 +59,7 @@ public class SkipCommand implements ICommand {
         }
 
         musicManager.scheduler.nextTrack();
-        event.getChannel().sendMessage(successEmbed(musicManager.audioPlayer.getPlayingTrack(), musicManager.scheduler.queue.size())).queue();
+        event.getChannel().sendMessage(successEmbed(CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCurrentSong(), CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCustomSongQueue().size())).queue();
     }
 
     @NotNull
@@ -96,13 +97,16 @@ public class SkipCommand implements ICommand {
     }
 
     @NotNull
-    private MessageEmbed successEmbed(@NotNull AudioTrack audioTrack, @NotNull Integer songsLeftInQueue) {
+    private MessageEmbed successEmbed(@NotNull CustomSong customSong, @NotNull Integer songsLeftInQueue) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Skipped Song");
 
         StringBuilder descriptionBuilder = new StringBuilder();
-        descriptionBuilder.append("Now Playing - `" + audioTrack.getInfo().title + "` by `" + audioTrack.getInfo().author + "` [`" +
-                CafeBot.getGeneralHelper().formatTime(audioTrack.getDuration())+ "]`");
+
+        descriptionBuilder.append("Now Playing - `").append(customSong.getName())
+                .append("` by `").append(customSong.getAuthor())
+                .append("` [`").append(customSong.getLengthString()).append("]`\n\n")
+                .append("**Requested By**: ").append(customSong.getRequester().getAsMention());
 
         embedBuilder.setDescription(descriptionBuilder.toString());
         embedBuilder.setColor(Color.green);
