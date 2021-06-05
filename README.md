@@ -108,7 +108,7 @@ This is an example of how to list things you need to use the software and how to
 
 ## Installation
 
-1. Click this [link](https://discord.com/api/oauth2/authorize?client_id=787162619504492554&permissions=8&scope=bot).
+1. Click this [link](https://discord.com/api/oauth2/authorize?client_id=787162619504492554&permissions=305654886&scope=bot).
 2. Give the bot administrative access. `I promise it's safe. You can view all the code for yourself.`
 3. Enjoy!
 
