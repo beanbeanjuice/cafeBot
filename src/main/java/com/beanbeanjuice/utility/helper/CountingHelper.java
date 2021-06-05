@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.helper;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -10,10 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * A class used for helping with counting.
@@ -77,6 +75,26 @@ public class CountingHelper {
 
             event.getMessage().addReaction("U+274C").queue();
             event.getChannel().sendMessage(failedEmbed(event.getMember(), lastNumber, highestNumber)).queue();
+        }
+    }
+
+    @Nullable
+    public Integer getCountingLeaderboardPlace(@NotNull Integer limit) {
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM cafeBot.counting_information WHERE counting_information.highest_number>=(?) ORDER BY counting_information.highest_number DESC;";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setInt(1, limit);
+            ResultSet resultSet = statement.executeQuery();
+            int count = 0;
+            while (resultSet.next()) {
+                count++;
+            }
+            return count;
+        } catch (SQLException e) {
+            CafeBot.getLogManager().log(CountingHelper.class, LogLevel.WARN, "Error Getting Leaderboard: " + e.getMessage());
+            return null;
         }
     }
 

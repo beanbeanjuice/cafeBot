@@ -7,6 +7,7 @@ import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
@@ -26,23 +27,34 @@ public class CountingStatisticsCommand implements ICommand {
         Integer currentNumber = CafeBot.getCountingHelper().getLastNumber(event.getGuild());
 
         if (highestNumber == null || currentNumber == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
-                    "Error Getting Counting Statistics",
-                    "There was an error getting counting statistics. There are either no counting statistics " +
-                            "for the server on this bot, or there is an SQL server error."
-            )).queue();
+            sendSQLError(event.getChannel());
             return;
         }
 
-        event.getChannel().sendMessage(countingStatisticsEmbed(highestNumber, currentNumber)).queue();
+        Integer leaderboardPlace = CafeBot.getCountingHelper().getCountingLeaderboardPlace(highestNumber);
+        if (leaderboardPlace == null) {
+            sendSQLError(event.getChannel());
+            return;
+        }
+
+        event.getChannel().sendMessage(countingStatisticsEmbed(highestNumber, currentNumber, leaderboardPlace)).queue();
+    }
+
+    private void sendSQLError(@NotNull TextChannel textChannel) {
+        textChannel.sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                "Error Getting Counting Statistics",
+                "There was an error getting counting statistics. There are either no counting statistics " +
+                        "for the server on this bot, or there is an SQL server error."
+        )).queue();
     }
 
     @NotNull
-    private MessageEmbed countingStatisticsEmbed(@NotNull Integer highestNumber, @NotNull Integer currentNumber) {
+    private MessageEmbed countingStatisticsEmbed(@NotNull Integer highestNumber, @NotNull Integer currentNumber, @NotNull Integer leaderboardPlace) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Current Number");
         embedBuilder.addField("Highest Number", highestNumber.toString(), true);
         embedBuilder.addField("Current Number", currentNumber.toString(), true);
+        embedBuilder.setDescription("Your current place in the global server leaderboard is `#" + leaderboardPlace + "/" + CafeBot.getJDA().getGuilds().size() + "`.");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setFooter("These statistics are for the current server only.");
         return embedBuilder.build();
