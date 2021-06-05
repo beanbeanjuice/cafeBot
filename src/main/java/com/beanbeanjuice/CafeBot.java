@@ -163,7 +163,7 @@ public class CafeBot {
 
         SpringApplication.run(CafeBot.class, args);
 
-        logManager = new LogManager("Log Manager", homeGuildLogChannel);
+        logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
 
         countingHelper = new CountingHelper();
         twitchHandler = new TwitchHandler();
