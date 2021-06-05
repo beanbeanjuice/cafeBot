@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -52,7 +53,16 @@ public class BanCommand implements ICommand {
         try {
             ctx.getGuild().getMember(punishee).ban(0, reason.toString()).queue();
         } catch (HierarchyException e) {
-            event.getChannel().sendMessage(hierarchyErrorEmbed()).queue();
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Unable to Ban User",
+                    "The user you are trying to ban has a higher role than the bot!"
+            )).queue();
+            return;
+        } catch (InsufficientPermissionException e) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Unable to Ban User",
+                    "I do not have the proper permissions to ban users."
+            )).queue();
             return;
         }
 
@@ -70,15 +80,6 @@ public class BanCommand implements ICommand {
         embedBuilder.setDescription("`" + punishee.getName() + "` has been banned for `" + reason + "`.");
         embedBuilder.addField("Banned By:", punisher.getAsMention(), true);
         embedBuilder.setThumbnail(punishee.getAvatarUrl());
-        return embedBuilder.build();
-    }
-
-    @NotNull
-    private MessageEmbed hierarchyErrorEmbed() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setColor(Color.red);
-        embedBuilder.setTitle("Unable to Ban User");
-        embedBuilder.setDescription("The user you are trying to ban has a higher role than the bot.");
         return embedBuilder.build();
     }
 
