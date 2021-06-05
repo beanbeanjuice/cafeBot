@@ -15,10 +15,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * A class used for logging.
@@ -31,22 +33,194 @@ public class LogManager {
     private TextChannel logChannel;
     private ArrayList<String> webhookURLs;
     private SimpMessageSendingOperations sendingOperations;
+    private String currentLogFileName;
+    private String filePath;
 
     /**
      * Create a {@link LogManager LogManager} instance.
      * @param name The name for the {@link LogManager LogManager}.
      * @param logChannel The {@link TextChannel TextChannel} to be used for logging.
      */
-    public LogManager(@NotNull String name, @NotNull TextChannel logChannel) {
+    public LogManager(@NotNull String name, @NotNull TextChannel logChannel, @NotNull String filePath) {
         this.name = name;
         this.logChannel = logChannel;
+        this.filePath = filePath;
 
         webhookURLs = new ArrayList<>(); // Creates the ArrayList
+
+        File file = new File(filePath);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+
+        compressOldLogs();
+
+        // If the log file already exists, it doesn't need to make a new one.
+        if (!createLogFile(filePath)) {
+            log(this.getClass(), LogLevel.INFO, "Log for today has already been created.");
+        }
 
         log(LogManager.class, LogLevel.INFO, "Starting the Uncaught Exception Handler", true, false);
         Thread.setDefaultUncaughtExceptionHandler((thread, exception) -> {
             CafeBot.getLogManager().log(thread.getClass(), LogLevel.WARN, "Unhandled Exception: " + exception.getMessage());
         });
+    }
+
+    /**
+     * Logs to file.
+     * @param c The class that called the log.
+     * @param logLevel The current {@link LogLevel} of the log to be created.
+     * @param message The message contents for the log.
+     * @param time The current {@link Time} the log was sent.
+     */
+    private void logToFile(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Time time) {
+        String formattedMessage = "[" + time.toString("{hh}:{mm}:{ss} {a} {zzz}") + "] ["
+                + c.getName() + "/" + logLevel + "]: " + message;
+        logToFile(formattedMessage);
+    }
+
+    private void logToFile(@NotNull String message) {
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        PrintWriter printWriter = null;
+
+        try {
+
+            fileWriter = new FileWriter(currentLogFileName, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            printWriter = new PrintWriter(bufferedWriter);
+
+            // Appends this to the current log file.
+            printWriter.println(message);
+
+            // Flushes the print writer.
+            printWriter.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                printWriter.close();
+                bufferedWriter.close();;
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Create a new log file from its designated name.
+     * @param fileName The name of the new {@link File}.
+     * @return Returns false if the file already exists.
+     */
+    @NotNull
+    private Boolean createLogFile(@NotNull String fileName) {
+        try {
+            Time time = new Time(Calendar.getInstance(TimeZone.getDefault()));
+
+            // Sets the current log file name.
+            currentLogFileName = fileName + time.toString("{MM}-{dd}-{yyyy}") + ".log";
+            File file = new File(currentLogFileName);
+
+            return file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Compresses the old logs.
+     */
+    private void compressOldLogs() {
+        Time time = new Time(Calendar.getInstance(TimeZone.getDefault()));
+        String[] pathnames;
+
+        File file = new File(filePath);
+        pathnames = file.list();
+
+        // Goes through all files in the directory.
+        for (String fileName : pathnames) {
+
+            // If the file contains ".log" then compress it if the file name
+            // No longer matches today's date.
+            if (fileName.contains(".log")) {
+                String parsedFileName = fileName.split(" ")[0];
+                parsedFileName = parsedFileName.replace(".log", "");
+
+                // Compress the file
+                if (!parsedFileName.equals(time.toString("{MM}-{dd}-{yyyy}"))) {
+                    try {
+                        compress(filePath, fileName, parsedFileName);
+
+                        // Deletes the file once it has been compressed.
+                        Path fileFromPath = Paths.get(filePath + fileName);
+                        System.out.println(filePath + fileName);
+                        fileFromPath.toFile().delete();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Compress a file from a filepath to its designated compressed file name.
+     * @param logDirectory The path to the directory of the log files.
+     * @param fileName The file name of the {@link File logFile}.
+     * @param compressedFileName The file name of the new {@link File} for compression.
+     * @throws IOException The exception that is thrown if the file cannot be found.
+     */
+    private void compress(@NotNull String logDirectory, @NotNull String fileName, @NotNull String compressedFileName) throws IOException {
+
+        File compressedDirectory = new File(logDirectory + compressedFileName);
+
+        compressedDirectory.mkdir();
+
+        String gZipCompressedFileName = logDirectory + compressedFileName + "/" + compressedFileName + ".gz";
+        String zipCompressedFileName = logDirectory + compressedFileName + "/" + compressedFileName + ".zip";
+        String uncompressedFileName = logDirectory + fileName;
+
+        Path filePath = Paths.get(logDirectory + fileName);
+        Path gZipCompressedPath = Paths.get(gZipCompressedFileName);
+        Path zipCompressedPath = Paths.get(zipCompressedFileName);
+
+        // Creating a GZIP.
+        try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(
+                new FileOutputStream(gZipCompressedPath.toFile()
+                ));
+
+             FileInputStream fileInputStream = new FileInputStream(filePath.toFile())) {
+
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = fileInputStream.read(buffer)) > 0) {
+                gzipOutputStream.write(buffer, 0, len);
+            }
+        }
+
+        // Creating a ZIP.
+        FileOutputStream fileOutputStream = new FileOutputStream(zipCompressedFileName);
+        ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream);
+
+        File file = new File(uncompressedFileName);
+        FileInputStream fileInputStream = new FileInputStream(file);
+
+        ZipEntry zipEntry = new ZipEntry(fileName);
+        zipOutputStream.putNextEntry(zipEntry);
+
+        byte[] buffer = new byte[1024];
+        int len;
+
+        while ((len = fileInputStream.read(buffer)) > 0) {
+            zipOutputStream.write(buffer, 0, len);
+        }
+
+        zipOutputStream.flush();
+        zipOutputStream.close();
+        fileInputStream.close();
     }
 
     /**
@@ -99,6 +273,8 @@ public class LogManager {
 
         }
 
+        logToFile(c, logLevel, message, time);
+
         if (logToWebhook) {
             logToWebhook(c, logLevel, message, time);
         }
@@ -107,13 +283,20 @@ public class LogManager {
             logToLogChannel(c, logLevel, message, time);
         }
 
-        // Logs it to the console.
+        logToConsole(c, logLevel, message, time);
+    }
+
+    private void logToConsole(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Time time) {
+        String formattedMessage = "[" + time.toString("{HH}:{mm}:{ss} {Z}") + "]" + " [" + c.getSimpleName() + "/" + logLevel + "]: " + message;
+        logToConsole(formattedMessage);
+    }
+
+    private void logToConsole(@NotNull String message) {
         if (sendingOperations != null) {
-            String formattedMessage = "[" + time.toString("{HH}:{mm}:{ss} {Z}") + "]" + " [" + c.getSimpleName() + "/" + logLevel + "]: " + message;
             ChatMessage chatMessage = ChatMessage.builder()
                     .type(MessageType.CHAT)
                     .sender("CONSOLE")
-                    .content(formattedMessage)
+                    .content(message)
                     .build();
             sendingOperations.convertAndSend("/topic/public", chatMessage);
         }
