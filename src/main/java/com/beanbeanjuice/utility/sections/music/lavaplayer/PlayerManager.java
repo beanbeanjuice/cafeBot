@@ -76,10 +76,22 @@ public class PlayerManager {
 
             @Override
             public void noMatches() {
+                try {
+                    CafeBot.getGuildHandler().getCustomGuild(guild).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                            "Error Playing Song",
+                            "There was an error playing: `" + trackURL + "`."
+                    )).queue();
+                } catch (NullPointerException ignored) {}
             }
 
             @Override
             public void loadFailed(FriendlyException e) {
+                try {
+                    CafeBot.getGuildHandler().getCustomGuild(guild).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                            "Error Playing Song",
+                            "There has been a catastrophic error playing: `" + trackURL + "`.\n\n**ERROR**: " + e.getMessage()
+                    )).queue();
+                } catch (NullPointerException ignored) {}
             }
         });
     }
