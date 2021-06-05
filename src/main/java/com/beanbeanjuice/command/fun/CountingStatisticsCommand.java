@@ -75,6 +75,8 @@ public class CountingStatisticsCommand implements ICommand {
         arrayList.add("countingstatistics");
         arrayList.add("counting-stats");
         arrayList.add("countingstats");
+        arrayList.add("countingleaderboard");
+        arrayList.add("counting-leaderboard");
         return arrayList;
     }
 
