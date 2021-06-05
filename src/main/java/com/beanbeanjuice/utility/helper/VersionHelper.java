@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URI;
@@ -133,7 +134,7 @@ public class VersionHelper {
 
                 try {
                     mainChannel.sendMessage(owner.getAsMention() + " I've been updated!").embed(updateEmbed).queue();
-                } catch (NullPointerException ignored) {}
+                } catch (NullPointerException | InsufficientPermissionException | UnsupportedOperationException ignored) {}
             }
         });
     }
