@@ -78,6 +78,11 @@ public class CountingHelper {
         }
     }
 
+    /**
+     * Get the leaderboard place for a specified {@link Integer} limit.
+     * @param limit The limit specified.
+     * @return The current place of that {@link Integer}.
+     */
     @Nullable
     public Integer getCountingLeaderboardPlace(@NotNull Integer limit) {
         Connection connection = CafeBot.getSQLServer().getConnection();
@@ -106,7 +111,6 @@ public class CountingHelper {
      */
     @NotNull
     private Boolean setLastUserID(@NotNull Guild guild, @NotNull String lastUserID) {
-
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE cafeBot.counting_information SET last_user_id = (?) WHERE guild_id = (?);";
 
