@@ -159,7 +159,7 @@ public class CafeBot {
     // Song Stuff
     private static CustomSongManager customSongManager;
 
-    public static void main(String[] args) throws LoginException, InterruptedException, SQLException {
+    public static void main(String[] args) throws LoginException, InterruptedException {
 
         SpringApplication.run(CafeBot.class, args);
 
