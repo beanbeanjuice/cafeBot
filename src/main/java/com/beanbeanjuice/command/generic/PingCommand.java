@@ -44,11 +44,17 @@ public class PingCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(getName() + "!", "https://www.beanbeanjuice.com/cafeBot.html");
         StringBuilder descriptionBuilder = new StringBuilder();
+        double cpuLoad = (double) Math.round((ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCpuLoad()*100) * 100) / 100;
+        long systemMemoryTotal = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getTotalMemorySize()/1048576;
+        long systemMemoryUsage = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCommittedVirtualMemorySize()/1048576;
+        long dedicatedMemoryTotal = Runtime.getRuntime().maxMemory()/1048576;
+        long dedicatedMemoryUsage = Runtime.getRuntime().totalMemory()/1048576;
         descriptionBuilder.append("**Rest Ping** - `").append(botPing).append("`\n")
                 .append("**Gateway Ping** - `").append(gatewayPing).append("`\n")
                 .append("**Current Version** - `").append(CafeBot.getBotVersion()).append("`\n")
-                .append("**CPU Usage** - `").append((double) Math.round((ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCpuLoad()*100) * 100) / 100).append("%`\n")
-                .append("**Memory Usage** - `").append(ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCommittedVirtualMemorySize()/1048576).append("` mb / `").append(Runtime.getRuntime().maxMemory()/1048576).append("` mb\n")
+                .append("**CPU Usage** - `").append(cpuLoad).append("%`\n")
+                .append("**OS Memory Usage** - `").append(systemMemoryUsage).append("` mb / `").append(systemMemoryTotal).append("` mb\n")
+                .append("**Bot Memory Usage** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
                 .append("**Bot Uptime** - `").append(CafeBot.getGeneralHelper().formatTime(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n\n")
                 .append("Hello there! How are you? Would you like to order some coffee?");
         embedBuilder.setDescription(descriptionBuilder.toString());
