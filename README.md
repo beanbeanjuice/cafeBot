@@ -87,6 +87,7 @@
 `cafeBot`, formerly `beanBot` is a general purpose bot that has many features. Many features work across Discord servers. Some features include;
 * Global Birthday Checker
 * Global Currency
+* Global Counting Leaderboard
 * Interaction Commands
 * Moderation Commands
 * Poll/Raffle Commands
