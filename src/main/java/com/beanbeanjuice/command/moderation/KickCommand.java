@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -52,14 +53,23 @@ public class KickCommand implements ICommand {
         try {
             ctx.getGuild().getMember(punishee).kick(reason.toString()).queue();
         } catch (HierarchyException e) {
-            event.getChannel().sendMessage(hierarchyErrorEmbed()).queue();
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Unable to Kick User",
+                    "The user you are trying to kick has a higher role than the bot."
+            )).queue();
+            return;
+        } catch (InsufficientPermissionException e) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Unable to Kick User",
+                    "I do not have the proper permissions to kick users."
+            )).queue();
             return;
         }
 
-        CafeBot.getGeneralHelper().pmUser(punishee, "You have been kicked: " + reason.toString());
+        CafeBot.getGeneralHelper().pmUser(punishee, "You have been kicked: " + reason);
         event.getChannel().sendMessage(successfulKickEmbed(punishee, user, reason.toString())).queue();
         CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).log(this, LogLevel.INFO, "User Kicked", "`" + punishee.getAsTag() + "` was kicked by " +
-                user.getAsMention() + " for: `" + reason.toString() + "`");
+                user.getAsMention() + " for: `" + reason + "`");
     }
 
     @NotNull
@@ -70,15 +80,6 @@ public class KickCommand implements ICommand {
         embedBuilder.setDescription("`" + punishee.getName() + "` has been kicked for `" + reason + "`.");
         embedBuilder.addField("Kicked By:", punisher.getAsMention(), true);
         embedBuilder.setThumbnail(punishee.getAvatarUrl());
-        return embedBuilder.build();
-    }
-
-    @NotNull
-    private MessageEmbed hierarchyErrorEmbed() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setColor(Color.red);
-        embedBuilder.setTitle("Unable to Kick User");
-        embedBuilder.setDescription("The user you are trying to kick has a higher role than the bot.");
         return embedBuilder.build();
     }
 

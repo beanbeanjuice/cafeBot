@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.helper;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -10,10 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * A class used for helping with counting.
@@ -81,6 +79,31 @@ public class CountingHelper {
     }
 
     /**
+     * Get the leaderboard place for a specified {@link Integer} limit.
+     * @param limit The limit specified.
+     * @return The current place of that {@link Integer}.
+     */
+    @Nullable
+    public Integer getCountingLeaderboardPlace(@NotNull Integer limit) {
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "SELECT * FROM cafeBot.counting_information WHERE counting_information.highest_number>=(?) ORDER BY counting_information.highest_number DESC;";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setInt(1, limit);
+            ResultSet resultSet = statement.executeQuery();
+            int count = 0;
+            while (resultSet.next()) {
+                count++;
+            }
+            return count;
+        } catch (SQLException e) {
+            CafeBot.getLogManager().log(CountingHelper.class, LogLevel.WARN, "Error Getting Leaderboard: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
      * Sets the last user ID for the counting {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
      * @param guild The {@link Guild} specified.
      * @param lastUserID The ID of the last user who sent the message.
@@ -88,7 +111,6 @@ public class CountingHelper {
      */
     @NotNull
     private Boolean setLastUserID(@NotNull Guild guild, @NotNull String lastUserID) {
-
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "UPDATE cafeBot.counting_information SET last_user_id = (?) WHERE guild_id = (?);";
 
