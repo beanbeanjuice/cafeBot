@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A general ping command to show bot information.
@@ -55,13 +56,22 @@ public class PingCommand implements ICommand {
                 .append("**CPU Usage** - `").append(cpuLoad).append("%`\n")
                 .append("**OS Memory Usage** - `").append(systemMemoryUsage).append("` mb / `").append(systemMemoryTotal).append("` mb\n")
                 .append("**Bot Memory Usage** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
-                .append("**Bot Uptime** - `").append(CafeBot.getGeneralHelper().formatTime(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n\n")
+                .append("**Bot Uptime** - `").append(formatTime(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n\n")
                 .append("Hello there! How are you? Would you like to order some coffee?");
         embedBuilder.setDescription(descriptionBuilder.toString());
         embedBuilder.setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/cafeBot");
         embedBuilder.setThumbnail(CafeBot.getDiscordAvatarUrl());
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
+    }
+
+    private String formatTime(@NotNull Long timeInMillis) {
+        final long days = timeInMillis / TimeUnit.DAYS.toMillis(1);
+        final long hours = timeInMillis / TimeUnit.HOURS.toMillis(1);
+        final long minutes = timeInMillis / TimeUnit.MINUTES.toMillis(1);
+        final long seconds = timeInMillis % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
+
+        return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds);
     }
 
     @Override
