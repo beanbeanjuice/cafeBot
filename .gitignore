@@ -42,6 +42,9 @@ gradle.properties
 beta.json
 release.json
 
+# Logging Stuff
+/logs/
+
 # Mac Stuff
 .DS_Store
 
