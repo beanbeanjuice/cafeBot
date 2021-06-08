@@ -46,7 +46,10 @@ public class SubRedditAPI {
         contactRedditAPI();
 
         // Making sure it's not a video
-        while (reddit_image_url.contains("v.red") || reddit_image_url.contains("youtube.") || reddit_image_url.contains("youtu.be")) {
+        while (reddit_image_url.contains("v.red")
+                || reddit_image_url.contains("youtube.")
+                || reddit_image_url.contains("youtu.be")
+                || reddit_image_url.contains("instagram.com")) {
             contactRedditAPI();
         }
 

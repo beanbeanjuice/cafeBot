@@ -86,6 +86,7 @@ public class CafeBot {
     private static JDA jda;
     private static JDABuilder jdaBuilder;
     private static final String DISCORD_AVATAR_URL = "http://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif";
+    private static int commandsRun = 0;
 
     // Logging Stuff
     private static Guild homeGuild;
@@ -159,11 +160,11 @@ public class CafeBot {
     // Song Stuff
     private static CustomSongManager customSongManager;
 
-    public static void main(String[] args) throws LoginException, InterruptedException, SQLException {
+    public static void main(String[] args) throws LoginException, InterruptedException {
 
         SpringApplication.run(CafeBot.class, args);
 
-        logManager = new LogManager("Log Manager", homeGuildLogChannel);
+        logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
 
         countingHelper = new CountingHelper();
         twitchHandler = new TwitchHandler();
@@ -359,6 +360,25 @@ public class CafeBot {
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
     }
 
+
+    /**
+     * @return The current amount of commands run during this session.
+     */
+    @NotNull
+    public static Integer getCommandsRun() {
+        return commandsRun;
+    }
+
+    /**
+     * Increase the amount of commands run during this session by 1.
+     */
+    public static void increaseCommandsRun() {
+        commandsRun++;
+    }
+
+    /**
+     * @return The current {@link CustomSongManager}.
+     */
     @NotNull
     public static CustomSongManager getCustomSongManager() {
         return customSongManager;

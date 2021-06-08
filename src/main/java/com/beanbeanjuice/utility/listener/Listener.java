@@ -96,6 +96,7 @@ public class Listener extends ListenerAdapter {
 
         if (raw.startsWith(prefix)) {
             CafeBot.getCommandManager().handle(event, prefix);
+            CafeBot.increaseCommandsRun();
         }
     }
 
