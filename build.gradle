@@ -61,7 +61,7 @@ dependencies {
     implementation group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
 
     // Discord JDA, for Discord things
-    implementation group: 'net.dv8tion', name: 'JDA', version: '4.2.1_266'
+    implementation group: 'net.dv8tion', name: 'JDA', version: '4.2.1_273'
 
     // Twitch Connections
     implementation group: 'com.github.twitch4j', name: 'twitch4j', version: '1.4.0'
