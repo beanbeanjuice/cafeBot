@@ -65,23 +65,21 @@ public class CustomGuildSongQueueHandler {
      */
     public void queueNextSong() {
         CafeBot.getLogManager().log(CustomGuildSongQueueHandler.class, LogLevel.DEBUG, "Queuing Next Song");
-        if (!songPlaying) {
-            try {
-                songPlaying = true;
-                currentSong = customSongQueue.remove(0);
-                unshuffledQueue.remove(currentSong);
-                PlayerManager.getInstance().loadAndPlay(currentSong.getSearchString(), CafeBot.getGuildHandler().getGuild(guildID));
-            } catch (IndexOutOfBoundsException e) {
-                CafeBot.getLogManager().log(CustomGuildSongQueueHandler.class, LogLevel.DEBUG, "Index Out of Bounds: " + e.getMessage());
-                if (playlistRepeat) {
-                    CafeBot.getLogManager().log(CustomGuildSongQueueHandler.class, LogLevel.DEBUG, "Playlist Repeat: ON");
-                    songPlaying = false;
-                    for (CustomSong customSong : repeatQueue) {
-                        addCustomSong(customSong, true);
-                    }
-                } else {
-                    currentSong = null;
+        try {
+            songPlaying = true;
+            currentSong = customSongQueue.remove(0);
+            unshuffledQueue.remove(currentSong);
+            PlayerManager.getInstance().loadAndPlay(currentSong.getSearchString(), CafeBot.getGuildHandler().getGuild(guildID));
+        } catch (IndexOutOfBoundsException e) {
+            CafeBot.getLogManager().log(CustomGuildSongQueueHandler.class, LogLevel.DEBUG, "Index Out of Bounds: " + e.getMessage());
+            if (playlistRepeat) {
+                CafeBot.getLogManager().log(CustomGuildSongQueueHandler.class, LogLevel.DEBUG, "Playlist Repeat: ON");
+                songPlaying = false;
+                for (CustomSong customSong : repeatQueue) {
+                    addCustomSong(customSong, true);
                 }
+            } else {
+                currentSong = null;
             }
         }
 
