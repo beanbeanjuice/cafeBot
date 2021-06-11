@@ -7,21 +7,21 @@ assignees: beanbeanjuice
 
 ---
 
-**Describe the bug**
+**__Describe the Bug__**
 A clear and concise description of what the bug is.
 
-**To Reproduce**
+**__Steps To Reproduce__**
 Steps to reproduce the behavior:
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
 
-**Expected behavior**
+**__Expected Behavior__**
 A clear and concise description of what you expected to happen.
 
-**Screenshots/Videos**
+**__Screenshots/Videos__**
 If applicable, add screenshots or videos to help explain your problem. Links are preferred.
 
-**Additional context**
+**__Additional Context__**
 Add any other context about the problem here.

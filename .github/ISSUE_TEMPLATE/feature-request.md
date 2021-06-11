@@ -1,20 +1,17 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
+name: Feature Request
+about: Suggest an idea for this project.
 title: "[FEATURE] **DESCRIBE THE FEATURE YOU WANT AS SHORT AS POSSIBLE HERE**"
 labels: feature
 assignees: beanbeanjuice
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
-
-**Describe the solution you'd like**
+**__Describe the Feature__**
 A clear and concise description of what you want to happen.
 
-**Describe alternatives you've considered**
+**__Describe Alternatives__**
 A clear and concise description of any alternative solutions or features you've considered.
 
-**Additional context**
+**__Additional Context__**
 Add any other context or screenshots about the feature request here.
