@@ -69,8 +69,8 @@ public class ConnectFourCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!connect4 @beanbeanjuice`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "connect4 @beanbeanjuice`";
     }
 
     @Override

@@ -74,8 +74,8 @@ public class SetRaffleChannelCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!set-raffle-channel` or `!!set-raffle-channel 0`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "set-raffle-channel` or `" + prefix + "set-raffle-channel 0`";
     }
 
     @Override

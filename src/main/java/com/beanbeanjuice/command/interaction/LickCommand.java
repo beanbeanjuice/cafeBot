@@ -86,8 +86,8 @@ public class LickCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!lick @beanbeanjuice` or `!!lick @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "lick @beanbeanjuice` or `" + prefix + "lick @beanbeanjuice :O`";
     }
 
     @Override

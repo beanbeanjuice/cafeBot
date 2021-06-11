@@ -90,8 +90,8 @@ public class BalanceCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!bal` or `!!bal @beanbeanjuice`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "bal` or `" + prefix + "bal @beanbeanjuice`";
     }
 
     @Override

@@ -51,8 +51,8 @@ public class TeaMemeCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!tea`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "tea`";
     }
 
     @Override

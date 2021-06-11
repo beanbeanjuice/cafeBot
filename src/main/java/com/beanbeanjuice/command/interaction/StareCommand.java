@@ -86,8 +86,8 @@ public class StareCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!stare @beanbeanjuice` or `!!stare @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "stare @beanbeanjuice` or `" + prefix + "stare @beanbeanjuice :O`";
     }
 
     @Override

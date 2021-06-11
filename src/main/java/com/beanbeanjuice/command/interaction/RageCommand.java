@@ -86,8 +86,8 @@ public class RageCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!rage @beanbeanjuice` or `!!rage @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "rage @beanbeanjuice` or `" + prefix + "rage @beanbeanjuice :O`";
     }
 
     @Override

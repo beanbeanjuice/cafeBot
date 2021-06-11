@@ -285,8 +285,8 @@ public class PlayCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!play feeling xqcL` or `!!play https://open.spotify.com/track/4KkJDRf8H1e3UuoLhCWtvf?si=4b90debdb82947f2`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "play feeling xqcL` or `" + prefix + "play https://open.spotify.com/track/4KkJDRf8H1e3UuoLhCWtvf?si=4b90debdb82947f2`";
     }
 
     @Override

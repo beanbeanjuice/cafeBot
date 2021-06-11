@@ -86,8 +86,8 @@ public class YellCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!yell @beanbeanjuice` or `!!yell @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "yell @beanbeanjuice` or `" + prefix + "yell @beanbeanjuice :O`";
     }
 
     @Override

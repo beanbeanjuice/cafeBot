@@ -49,12 +49,14 @@ public class CustomSongManager {
             @Override
             public void trackLoaded(AudioTrack audioTrack) {
                 CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(audioTrack.getInfo().title, audioTrack.getInfo().author, audioTrack.getDuration(), user), false);
-                CafeBot.getGuildHandler().getCustomGuild(guild).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                        "Queued Song",
-                        "`" + audioTrack.getInfo().title + "` by `" + audioTrack.getInfo().author + "` [`"
-                                + CafeBot.getGeneralHelper().formatTime(audioTrack.getDuration()) + "`]\n\n" +
-                                "**Requested By**: " + user.getAsMention()
-                )).queue();
+                try {
+                    CafeBot.getGuildHandler().getCustomGuild(guild).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                            "Queued Song",
+                            "`" + audioTrack.getInfo().title + "` by `" + audioTrack.getInfo().author + "` [`"
+                                    + CafeBot.getGeneralHelper().formatTime(audioTrack.getDuration()) + "`]\n\n" +
+                                    "**Requested By**: " + user.getAsMention()
+                    )).queue();
+                } catch (NullPointerException ignored) {}
             }
 
             @Override
@@ -70,11 +72,13 @@ public class CustomSongManager {
                     CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(track.getInfo().title, track.getInfo().author, track.getDuration(), user), false);
                 }
 
-                CafeBot.getGuildHandler().getCustomGuild(guild).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                        "Queued Playlist",
-                        "`" + audioPlaylist.getName() + "` containing `" + audioPlaylist.getTracks().size() + "` songs.\n\n" +
-                                "**Requested By**: " + user.getAsMention()
-                )).queue();
+                try {
+                    CafeBot.getGuildHandler().getCustomGuild(guild).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                            "Queued Playlist",
+                            "`" + audioPlaylist.getName() + "` containing `" + audioPlaylist.getTracks().size() + "` songs.\n\n" +
+                                    "**Requested By**: " + user.getAsMention()
+                    )).queue();
+                } catch (NullPointerException ignored) {}
             }
 
             @Override

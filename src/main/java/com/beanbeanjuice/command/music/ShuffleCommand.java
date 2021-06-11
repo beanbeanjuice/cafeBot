@@ -102,8 +102,8 @@ public class ShuffleCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!shuffle`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "shuffle`";
     }
 
     @Override

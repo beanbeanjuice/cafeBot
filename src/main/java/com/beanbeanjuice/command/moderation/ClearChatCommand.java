@@ -181,8 +181,8 @@ public class ClearChatCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!clearchat 20`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "clearchat 20`";
     }
 
     @Override

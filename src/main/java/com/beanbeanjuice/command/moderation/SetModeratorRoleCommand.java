@@ -96,8 +96,8 @@ public class SetModeratorRoleCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!setmoderatorrole 0` or `!!setmoderatorrole @ModRole`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "setmoderatorrole 0` or `" + prefix + "setmoderatorrole @ModRole`";
     }
 
     @Override

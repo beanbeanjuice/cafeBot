@@ -86,8 +86,8 @@ public class PokeCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!poke @beanbeanjuice` or `!!poke @beanbeanjuice WAKE UP`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "poke @beanbeanjuice` or `" + prefix + "poke @beanbeanjuice WAKE UP`";
     }
 
     @Override

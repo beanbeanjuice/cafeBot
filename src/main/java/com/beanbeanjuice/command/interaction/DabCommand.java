@@ -86,8 +86,8 @@ public class DabCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!dab @beanbeanjuice` or `!!dab @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "dab @beanbeanjuice` or `" + prefix + "dab @beanbeanjuice :O`";
     }
 
     @Override

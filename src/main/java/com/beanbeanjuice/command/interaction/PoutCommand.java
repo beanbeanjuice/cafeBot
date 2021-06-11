@@ -86,8 +86,8 @@ public class PoutCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!pout @beanbeanjuice` or `!!pout @beanbeanjuice pout pout`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "pout @beanbeanjuice` or `" + prefix + "pout @beanbeanjuice pout pout`";
     }
 
     @Override
