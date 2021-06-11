@@ -75,8 +75,8 @@ public class SetLiveChannelCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!setlivechannel` or `!!setlivechannel 0`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "setlivechannel` or `!!setlivechannel 0`";
     }
 
     @Override

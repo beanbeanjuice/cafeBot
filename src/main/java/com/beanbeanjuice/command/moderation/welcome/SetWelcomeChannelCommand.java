@@ -75,8 +75,8 @@ public class SetWelcomeChannelCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!set-welcome-channel`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "set-welcome-channel`";
     }
 
     @Override

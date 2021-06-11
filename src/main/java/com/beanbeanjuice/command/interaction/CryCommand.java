@@ -86,8 +86,8 @@ public class CryCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!cry @beanbeanjuice` or `!!cry @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "cry @beanbeanjuice` or `" + prefix + "cry @beanbeanjuice :O`";
     }
 
     @Override

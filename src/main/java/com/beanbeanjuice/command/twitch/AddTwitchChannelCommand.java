@@ -72,8 +72,8 @@ public class AddTwitchChannelCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!addtwitchchannel beanbeanjuice`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "addtwitchchannel beanbeanjuice`";
     }
 
     @Override

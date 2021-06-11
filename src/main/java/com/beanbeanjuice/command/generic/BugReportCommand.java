@@ -54,8 +54,8 @@ public class BugReportCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!bug-report`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "bug-report`";
     }
 
     @Override

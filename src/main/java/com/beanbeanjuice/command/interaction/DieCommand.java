@@ -86,8 +86,8 @@ public class DieCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!die @beanbeanjuice` or `!!die @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "die @beanbeanjuice` or `" + prefix + "die @beanbeanjuice :O`";
     }
 
     @Override

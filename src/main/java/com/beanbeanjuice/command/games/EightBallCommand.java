@@ -72,8 +72,8 @@ public class EightBallCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!8ball Am I going to win a million dollars today?`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "8ball Am I going to win a million dollars today?`";
     }
 
     @Override

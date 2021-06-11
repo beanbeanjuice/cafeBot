@@ -118,8 +118,8 @@ public class AddRaffleCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!addraffle RTX_3080_Giveaway Do_you_want_to_win_an_rtx_3080? 2 30`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "addraffle RTX_3080_Giveaway Do_you_want_to_win_an_rtx_3080? 2 30`";
     }
 
     @Override

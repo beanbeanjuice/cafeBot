@@ -109,8 +109,8 @@ public class StopCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!stop`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "stop`";
     }
 
     @Override

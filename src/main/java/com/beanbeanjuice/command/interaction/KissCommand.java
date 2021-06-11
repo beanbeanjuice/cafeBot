@@ -86,8 +86,8 @@ public class KissCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!kiss @beanbeanjuice` or `!!kiss @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "kiss @beanbeanjuice` or `" + prefix + "kiss @beanbeanjuice :O`";
     }
 
     @Override

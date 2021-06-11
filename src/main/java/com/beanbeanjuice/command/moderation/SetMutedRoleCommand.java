@@ -95,8 +95,8 @@ public class SetMutedRoleCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!setmutedrole 0` or `!!setmutedrole @MutedRole`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "setmutedrole 0` or `" + prefix + "setmutedrole @MutedRole`";
     }
 
     @Override

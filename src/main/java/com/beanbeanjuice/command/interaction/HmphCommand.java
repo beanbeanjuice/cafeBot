@@ -86,8 +86,8 @@ public class HmphCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!hmph @beanbeanjuice` or `!!hmph @beanbeanjuice Go away!`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "hmph @beanbeanjuice` or `" + prefix + "hmph @beanbeanjuice Go away!`";
     }
 
     @Override

@@ -86,8 +86,8 @@ public class HugCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!hug @beanbeanjuice` or `!!hug @beanbeanjuice You're so cool`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "hug @beanbeanjuice` or `" + prefix + "hug @beanbeanjuice You're so cool`";
     }
 
     @Override
