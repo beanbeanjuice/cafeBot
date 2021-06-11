@@ -86,8 +86,8 @@ public class TickleCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!tickle @beanbeanjuice` or `!!tickle @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "tickle @beanbeanjuice` or `" + prefix + "tickle @beanbeanjuice :O`";
     }
 
     @Override

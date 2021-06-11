@@ -71,8 +71,8 @@ public class GetBirthdayCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!getbirthday` or `!!getbirthday @beanbeanjuice`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "getbirthday` or `" + prefix + "getbirthday @beanbeanjuice`";
     }
 
     @Override

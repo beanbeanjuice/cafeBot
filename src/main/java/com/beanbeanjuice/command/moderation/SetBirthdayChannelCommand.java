@@ -74,8 +74,8 @@ public class SetBirthdayChannelCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!set-birthday-channel` or `!!set-birthday-channel 0`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "set-birthday-channel` or `" + prefix + "set-birthday-channel 0`";
     }
 
     @Override

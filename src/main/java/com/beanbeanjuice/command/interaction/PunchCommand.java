@@ -86,8 +86,8 @@ public class PunchCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!punch @beanbeanjuice` or `!!punch @beanbeanjuice WHY WOULD YOU DO THIS?`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "punch @beanbeanjuice` or `" + prefix + "punch @beanbeanjuice WHY WOULD YOU DO THIS?`";
     }
 
     @Override

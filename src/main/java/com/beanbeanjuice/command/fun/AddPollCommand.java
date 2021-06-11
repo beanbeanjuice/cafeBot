@@ -160,8 +160,8 @@ public class AddPollCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!add-poll Red_or_Blue? Which_colour_is_the_best? Red,Blue 12`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "add-poll Red_or_Blue? Which_colour_is_the_best? Red,Blue 12`";
     }
 
     @Override

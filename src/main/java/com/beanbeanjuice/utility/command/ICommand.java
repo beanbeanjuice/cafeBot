@@ -41,7 +41,7 @@ public interface ICommand {
     /**
      * @return An example of how to use the {@link ICommand}.
      */
-    String exampleUsage();
+    String exampleUsage(String prefix);
 
     /**
      * @return The {@link Usage} for the {@link ICommand}.

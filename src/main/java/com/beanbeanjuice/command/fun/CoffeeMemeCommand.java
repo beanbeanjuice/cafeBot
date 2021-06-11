@@ -56,8 +56,8 @@ public class CoffeeMemeCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!coffee-meme`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "coffee-meme`";
     }
 
     @Override

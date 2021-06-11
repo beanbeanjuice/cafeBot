@@ -53,8 +53,8 @@ public class MemberCountCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!members`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "members`";
     }
 
     @Override

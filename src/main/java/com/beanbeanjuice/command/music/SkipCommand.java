@@ -134,8 +134,8 @@ public class SkipCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!skip`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "skip`";
     }
 
     @Override

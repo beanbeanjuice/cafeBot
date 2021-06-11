@@ -90,8 +90,8 @@ public class QueueCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!queue`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "queue`";
     }
 
     @Override

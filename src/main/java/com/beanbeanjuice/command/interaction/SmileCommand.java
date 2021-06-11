@@ -86,8 +86,8 @@ public class SmileCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!smile @beanbeanjuice` or `!!smile @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "smile @beanbeanjuice` or `" + prefix + "smile @beanbeanjuice :O`";
     }
 
     @Override

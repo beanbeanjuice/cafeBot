@@ -91,8 +91,8 @@ public class PingCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!ping`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "ping`";
     }
 
     @Override

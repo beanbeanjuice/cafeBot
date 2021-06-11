@@ -166,8 +166,8 @@ public class RepeatCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!repeat playlist` or `!!repeat song`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "repeat playlist` or `" + prefix + "repeat song`";
     }
 
     @Override

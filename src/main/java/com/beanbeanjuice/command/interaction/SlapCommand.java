@@ -86,8 +86,8 @@ public class SlapCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!slap @beanbeanjuice` or `!!slap @beanbeanjuice wow get slapped`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "slap @beanbeanjuice` or `" + prefix + "slap @beanbeanjuice wow get slapped`";
     }
 
     @Override

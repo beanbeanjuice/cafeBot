@@ -52,8 +52,8 @@ public class SetBirthdayCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!set-birthday 2000-02-02` - This sets it to February 2, 2002.";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "set-birthday 2000-02-02` - This sets it to February 2, 2002.";
     }
 
     @Override
