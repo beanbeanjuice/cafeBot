@@ -71,8 +71,8 @@ public class MemeCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!meme`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "meme`";
     }
 
     @Override

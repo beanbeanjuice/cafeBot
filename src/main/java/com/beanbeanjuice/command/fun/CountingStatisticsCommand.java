@@ -86,8 +86,8 @@ public class CountingStatisticsCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!counting-stats`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "counting-stats`";
     }
 
     @Override

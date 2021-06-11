@@ -92,8 +92,8 @@ public class MenuCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!menu` or `!!menu 9`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "menu` or `" + prefix + "menu 9`";
     }
 
     @Override

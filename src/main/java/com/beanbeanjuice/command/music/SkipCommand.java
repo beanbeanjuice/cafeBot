@@ -59,7 +59,10 @@ public class SkipCommand implements ICommand {
         }
 
         musicManager.scheduler.nextTrack();
-        event.getChannel().sendMessage(successEmbed(CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCurrentSong(), CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCustomSongQueue().size())).queue();
+
+        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCustomSongQueue().isEmpty()) {
+            event.getChannel().sendMessage(emptyEmbed(CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCurrentSong(), CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCustomSongQueue().size())).queue();
+        }
     }
 
     @NotNull
@@ -97,7 +100,7 @@ public class SkipCommand implements ICommand {
     }
 
     @NotNull
-    private MessageEmbed successEmbed(@Nullable CustomSong customSong, @NotNull Integer songsLeftInQueue) {
+    private MessageEmbed emptyEmbed(@Nullable CustomSong customSong, @NotNull Integer songsLeftInQueue) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Skipped Song");
 
@@ -134,8 +137,8 @@ public class SkipCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!skip`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "skip`";
     }
 
     @Override

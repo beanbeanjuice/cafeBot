@@ -118,8 +118,8 @@ public class NotifyOnUpdateCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!notify-on-update disable`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "notify-on-update disable`";
     }
 
     @Override

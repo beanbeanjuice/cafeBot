@@ -72,8 +72,8 @@ public class RemoveTwitchChannelCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!removetwitchchannel beanbeanjuice`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "removetwitchchannel beanbeanjuice`";
     }
 
     @Override

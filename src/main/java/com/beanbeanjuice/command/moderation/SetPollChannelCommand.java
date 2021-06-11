@@ -75,8 +75,8 @@ public class SetPollChannelCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!setpollchannel` or `!!setpollchannel 0`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "setpollchannel` or `" + prefix + "setpollchannel 0`";
     }
 
     @Override

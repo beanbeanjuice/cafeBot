@@ -59,8 +59,8 @@ public class AvatarCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!avatar` or `!!avatar @beanbeanjuice`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "avatar` or `" + prefix + "avatar @beanbeanjuice`";
     }
 
     @Override

@@ -86,8 +86,8 @@ public class BiteCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!bite @beanbeanjuice` or `!!bite @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "bite @beanbeanjuice` or `" + prefix + "bite @beanbeanjuice :O`";
     }
 
     @Override

@@ -86,8 +86,8 @@ public class BonkCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!bonk @beanbeanjuice` or `!!bonk @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "bonk @beanbeanjuice` or `" + prefix + "bonk @beanbeanjuice :O`";
     }
 
     @Override

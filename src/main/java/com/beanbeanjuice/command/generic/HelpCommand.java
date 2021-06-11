@@ -105,7 +105,7 @@ public class HelpCommand implements ICommand {
             embedBuilder.addField("Command Aliases", stringBuilder.toString(), false);
         }
 
-        embedBuilder.addField("Command Example", command.exampleUsage(), false);
+        embedBuilder.addField("Command Example", command.exampleUsage(prefix), false);
         embedBuilder.addField("Command Description", command.getDescription(), false);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
@@ -182,8 +182,8 @@ public class HelpCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!help` or `!!help moderation` or `!!help bug-report`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "help` or `" + prefix + "help moderation` or `" + prefix + "help bug-report`";
     }
 
     @Override
