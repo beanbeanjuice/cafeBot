@@ -58,8 +58,8 @@ public class CoinFlipCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!coinflip`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "coinflip`";
     }
 
     @Override

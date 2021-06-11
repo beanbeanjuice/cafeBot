@@ -86,8 +86,8 @@ public class DanceCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!dance @beanbeanjuice` or `!!dance @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "dance @beanbeanjuice` or `" + prefix + "dance @beanbeanjuice :O`";
     }
 
     @Override

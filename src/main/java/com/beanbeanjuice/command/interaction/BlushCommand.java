@@ -86,8 +86,8 @@ public class BlushCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!blush @beanbeanjuice` or `!!blush @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "blush @beanbeanjuice` or `" + prefix + "blush @beanbeanjuice :O`";
     }
 
     @Override

@@ -54,8 +54,8 @@ public class FeatureRequestCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!feature-request`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "feature-request`";
     }
 
     @Override

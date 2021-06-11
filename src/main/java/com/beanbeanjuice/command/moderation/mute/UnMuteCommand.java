@@ -99,8 +99,8 @@ public class UnMuteCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!unmute @beanbeanjuice`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "unmute @beanbeanjuice`";
     }
 
     @Override

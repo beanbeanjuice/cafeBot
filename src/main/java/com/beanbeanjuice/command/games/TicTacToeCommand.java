@@ -68,8 +68,8 @@ public class TicTacToeCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!ttt @beanbeanjuice`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "ttt @beanbeanjuice`";
     }
 
     @Override

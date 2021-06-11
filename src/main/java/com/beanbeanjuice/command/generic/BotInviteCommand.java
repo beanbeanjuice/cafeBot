@@ -45,8 +45,8 @@ public class BotInviteCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!botinvite`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "botinvite`";
     }
 
     @Override

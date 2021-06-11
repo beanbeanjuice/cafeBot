@@ -86,8 +86,8 @@ public class NomCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!nom @beanbeanjuice` or `!!nom @beanbeanjuice wow here's some nom nom`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "nom @beanbeanjuice` or `" + prefix + "nom @beanbeanjuice wow here's some nom nom`";
     }
 
     @Override

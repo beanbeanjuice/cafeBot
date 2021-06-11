@@ -77,7 +77,7 @@ public class KickCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setTitle("User Kicked");
-        embedBuilder.setDescription("`" + punishee.getName() + "` has been kicked for `" + reason + "`.");
+        embedBuilder.setDescription("`" + punishee.getName() + "` has been kicked for `" + reason + "`");
         embedBuilder.addField("Kicked By:", punisher.getAsMention(), true);
         embedBuilder.setThumbnail(punishee.getAvatarUrl());
         return embedBuilder.build();
@@ -99,8 +99,8 @@ public class KickCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!kick @beanbeanjuice` or `!!kick @beanbeanjuice you're trash`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "kick @beanbeanjuice` or `" + prefix + "kick @beanbeanjuice you're trash`";
     }
 
     @Override

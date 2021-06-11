@@ -77,8 +77,8 @@ public class SetCountingChannelCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!setcountingchannel` or `!!set-counting-channel 0`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "setcountingchannel` or `" + prefix + "set-counting-channel 0`";
     }
 
     @Override

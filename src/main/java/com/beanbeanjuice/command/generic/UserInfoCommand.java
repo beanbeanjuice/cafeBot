@@ -100,8 +100,8 @@ public class UserInfoCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!whois` or `!!whois @beanbeanjuice`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "whois` or `" + prefix + "whois @beanbeanjuice`";
     }
 
     @Override

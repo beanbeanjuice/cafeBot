@@ -71,8 +71,8 @@ public class JokeCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!joke`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "joke`";
     }
 
     @Override

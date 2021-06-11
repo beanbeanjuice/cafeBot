@@ -86,8 +86,8 @@ public class EditWelcomeMessageCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!edit-welcome thumbnail:https://www.fakeImageurl.png image:https://www.fakeImageUrl.png2 Welcome, {user} to the server!\\nYou're cool!` or `!!edit-welcome Welcome to the server!`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "edit-welcome thumbnail:https://www.fakeImageurl.png image:https://www.fakeImageUrl.png2 Welcome, {user} to the server!\\nYou're cool!` or `" + prefix + "edit-welcome Welcome to the server!`";
     }
 
     @Override

@@ -88,8 +88,8 @@ public class HeadPatCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!headpat @beanbeanjuice` or `!!headpat @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "headpat @beanbeanjuice` or `" + prefix + "headpat @beanbeanjuice :O`";
     }
 
     @Override
