@@ -126,8 +126,8 @@ public class ServeCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!serve keyboard` or `!!serve mouse @beanbeanjuice`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "serve keyboard` or `" + prefix + "serve mouse @beanbeanjuice`";
     }
 
     @Override

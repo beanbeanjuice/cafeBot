@@ -48,8 +48,8 @@ public class RemoveBirthdayCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!remove-birthday";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "remove-birthday";
     }
 
     @Override

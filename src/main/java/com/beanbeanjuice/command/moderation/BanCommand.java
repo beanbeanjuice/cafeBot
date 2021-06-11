@@ -77,7 +77,7 @@ public class BanCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setTitle("User Banned");
-        embedBuilder.setDescription("`" + punishee.getName() + "` has been banned for `" + reason + "`.");
+        embedBuilder.setDescription("`" + punishee.getName() + "` has been banned for `" + reason + "`");
         embedBuilder.addField("Banned By:", punisher.getAsMention(), true);
         embedBuilder.setThumbnail(punishee.getAvatarUrl());
         return embedBuilder.build();
@@ -99,8 +99,8 @@ public class BanCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!ban @beanbeanjuice` or `!!ban @beanbeanjuice you are trash`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "ban @beanbeanjuice` or `" + prefix + "ban @beanbeanjuice you are trash`";
     }
 
     @Override

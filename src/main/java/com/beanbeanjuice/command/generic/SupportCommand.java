@@ -43,8 +43,8 @@ public class SupportCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!support`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "support`";
     }
 
     @Override

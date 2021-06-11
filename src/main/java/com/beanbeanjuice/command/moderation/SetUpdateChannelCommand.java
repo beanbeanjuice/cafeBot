@@ -75,8 +75,8 @@ public class SetUpdateChannelCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!setupdatechannel` or `!!setupdatechannel 0`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "setupdatechannel` or `" + prefix + "setupdatechannel 0`";
     }
 
     @Override

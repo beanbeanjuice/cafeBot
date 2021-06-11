@@ -408,7 +408,7 @@ public class CustomGuild {
     /**
      * @return The last music {@link TextChannel}.
      */
-    @NotNull
+    @Nullable
     public TextChannel getLastMusicChannel() {
         return lastMusicChannel;
     }

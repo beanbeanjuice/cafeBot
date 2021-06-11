@@ -58,8 +58,8 @@ public class GetTwitchChannelsCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!gettwitchchannels`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "gettwitchchannels`";
     }
 
     @Override

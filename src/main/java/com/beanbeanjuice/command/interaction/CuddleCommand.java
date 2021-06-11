@@ -86,8 +86,8 @@ public class CuddleCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!cuddle @beanbeanjuice` or `!!cuddle @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "cuddle @beanbeanjuice` or `" + prefix + "cuddle @beanbeanjuice :O`";
     }
 
     @Override

@@ -98,8 +98,8 @@ public class MuteCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!mute @beanbeanjuice`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "mute @beanbeanjuice`";
     }
 
     @Override

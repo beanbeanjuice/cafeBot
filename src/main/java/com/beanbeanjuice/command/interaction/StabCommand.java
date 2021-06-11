@@ -86,8 +86,8 @@ public class StabCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!stab @beanbeanjuice` or `!!stab @beanbeanjuice get stabbed`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "stab @beanbeanjuice` or `" + prefix + "stab @beanbeanjuice get stabbed`";
     }
 
     @Override

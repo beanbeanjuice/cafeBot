@@ -59,8 +59,8 @@ public class DiceRollCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!roll 200`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "roll 200`";
     }
 
     @Override

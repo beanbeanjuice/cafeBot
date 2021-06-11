@@ -86,8 +86,8 @@ public class ThrowCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!throw @beanbeanjuice` or `!!throw @beanbeanjuice LEAVE`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "throw @beanbeanjuice` or `" + prefix + "throw @beanbeanjuice LEAVE`";
     }
 
     @Override

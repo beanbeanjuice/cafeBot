@@ -86,8 +86,8 @@ public class SleepCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!sleep @beanbeanjuice` or `!!sleep @beanbeanjuice :O`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "sleep @beanbeanjuice` or `" + prefix + "sleep @beanbeanjuice :O`";
     }
 
     @Override

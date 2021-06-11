@@ -75,8 +75,8 @@ public class SetLogChannelCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!set-log-channel` or `!!set-log-channel 0`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "set-log-channel` or `" + prefix + "set-log-channel 0`";
     }
 
     @Override

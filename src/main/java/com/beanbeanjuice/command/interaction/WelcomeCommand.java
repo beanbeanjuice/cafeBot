@@ -86,8 +86,8 @@ public class WelcomeCommand implements ICommand {
     }
 
     @Override
-    public String exampleUsage() {
-        return "`!!welcome @beanbeanjuice` or `!!welcome @beanbeanjuice Welcome to the server!`";
+    public String exampleUsage(String prefix) {
+        return "`" + prefix + "welcome @beanbeanjuice` or `" + prefix + "welcome @beanbeanjuice Welcome to the server!`";
     }
 
     @Override
