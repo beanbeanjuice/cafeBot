@@ -70,6 +70,14 @@ public class CustomGuildSongQueueHandler {
             currentSong = customSongQueue.remove(0);
             unshuffledQueue.remove(currentSong);
             PlayerManager.getInstance().loadAndPlay(currentSong.getSearchString(), CafeBot.getGuildHandler().getGuild(guildID));
+            try {
+                CafeBot.getGuildHandler().getCustomGuild(guildID).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                        "Now Playing",
+                        "`" + currentSong.getName() + "` by `" + currentSong.getAuthor() + "` [`"
+                                + currentSong.getLengthString() + "`]\n\n" +
+                                "**Requested By**: " + currentSong.getRequester().getAsMention()
+                )).queue();
+            } catch (NullPointerException ignored) {}
         } catch (IndexOutOfBoundsException e) {
             CafeBot.getLogManager().log(CustomGuildSongQueueHandler.class, LogLevel.DEBUG, "Index Out of Bounds: " + e.getMessage());
             if (playlistRepeat) {
