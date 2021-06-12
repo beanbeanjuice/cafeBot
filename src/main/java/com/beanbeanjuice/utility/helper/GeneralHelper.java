@@ -3,6 +3,13 @@ package com.beanbeanjuice.utility.helper;
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.guild.CustomGuild;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
+import com.beanbeanjuice.utility.logger.LogLevel;
+import com.beanbeanjuice.utility.sql.SQLServer;
+import com.wrapper.spotify.SpotifyApi;
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
+import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
+import lombok.SneakyThrows;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
@@ -11,11 +18,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,6 +35,78 @@ import java.util.concurrent.TimeUnit;
  * @author beanbeanjuice
  */
 public class GeneralHelper {
+
+    private Timer spotifyRefreshTimer;
+    private TimerTask spotifyRefreshTimerTask;
+
+    private Timer mysqlRefreshTimer;
+    private TimerTask mysqlRefreshTimerTask;
+
+    public void startMySQLRefreshTimer() {
+        mysqlRefreshTimer = new Timer();
+        mysqlRefreshTimerTask = new TimerTask() {
+
+            @SneakyThrows
+            @Override
+            public void run() {
+                try {
+                    CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Refreshing MySQL Connection...", true, false);
+                    CafeBot.getSQLServer().getConnection().close(); // Closes the SQL Connection
+                    CafeBot.getSQLServer().startConnection(); // Reopens the SQL Connection
+
+                    // If the SQL Connection is still closed, then it must throw an sql exception.
+                    if (!CafeBot.getSQLServer().checkConnection()) {
+                        throw new SQLException("The connection is still closed.");
+                    }
+
+                    CafeBot.getLogManager().log(this.getClass(), LogLevel.OKAY, "Successfully refreshed the MySQL Connection!", true, false);
+                } catch (SQLException e) {
+                    CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage(), true, false);
+
+                    CafeBot.setSQLServer(new SQLServer(CafeBot.getSQLURL(), CafeBot.getSQLPort(), CafeBot.getSQLEncrypt(), CafeBot.getSQLUsername(), CafeBot.getSQLPassword()));
+                    CafeBot.getSQLServer().startConnection();
+
+                    Thread.sleep(3000);
+                    while (!CafeBot.getSQLServer().checkConnection()) {
+                        CafeBot.setSQLServer(new SQLServer(CafeBot.getSQLURL(), CafeBot.getSQLPort(), CafeBot.getSQLEncrypt(), CafeBot.getSQLUsername(), CafeBot.getSQLPassword()));
+                        CafeBot.getSQLServer().startConnection();
+                    }
+                }
+            }
+        };
+        mysqlRefreshTimer.scheduleAtFixedRate(mysqlRefreshTimerTask, 1800000, 1800000);
+    }
+
+    /**
+     * Starts the re-establishing of a Spotify Key Timer.
+     */
+    public void startSpotifyRefreshTimer() {
+        spotifyRefreshTimer = new Timer();
+        spotifyRefreshTimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                SpotifyApi spotifyApi = new SpotifyApi.Builder()
+                        .setClientId(CafeBot.getSpotifyApiClientID())
+                        .setClientSecret(CafeBot.getSpotifyApiClientSecret())
+                        .build();
+
+                ClientCredentialsRequest clientCredentialsRequest = spotifyApi.clientCredentials().build();
+
+                try {
+                    final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
+                    spotifyApi.setAccessToken(clientCredentials.getAccessToken());
+                    CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Spotify Access Token Expires In: " + clientCredentials.getExpiresIn() + " Seconds", true, false);
+                    CafeBot.getLogManager().log(this.getClass(), LogLevel.OKAY, "Successfully connected to the Spotify API!", true, false);
+                    CafeBot.setSpotifyApi(spotifyApi);
+                } catch (IOException | SpotifyWebApiException | org.apache.hc.core5.http.ParseException e) {
+                    CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, e.getMessage());
+                }
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.OKAY, "Established Spotify Connection...", true, false);
+            }
+        };
+        spotifyRefreshTimer.scheduleAtFixedRate(spotifyRefreshTimerTask, 0, 1800000);
+    }
 
     /**
      * Convert a {@link String} to a {@link Date}.

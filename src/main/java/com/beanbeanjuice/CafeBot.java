@@ -105,7 +105,6 @@ public class CafeBot {
 
     // Spotify Stuff
     private static SpotifyApi spotifyApi;
-    private static ClientCredentialsRequest clientCredentialsRequest;
     private static final String SPOTIFY_API_CLIENT_ID = JSONHelper.getValue(FILE_INFO, "spotify", "id").textValue();
     private static final String SPOTIFY_API_CLIENT_SECRET = JSONHelper.getValue(FILE_INFO, "spotify", "secret").textValue();
 
@@ -166,10 +165,13 @@ public class CafeBot {
 
         logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
 
+        generalHelper = new GeneralHelper();
+
         countingHelper = new CountingHelper();
         twitchHandler = new TwitchHandler();
         sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
         sqlServer.startConnection();
+        generalHelper.startMySQLRefreshTimer();
 
         logManager.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
         logManager.log(CafeBot.class, LogLevel.OKAY, "Starting bot!", true, false);
@@ -326,15 +328,10 @@ public class CafeBot {
         homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
         logManager.setLogChannel(homeGuildLogChannel);
 
-        logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
-
         // Connecting to the Spotify API
-        connectToSpotifyAPI();
-        startRefreshTimer();
+        generalHelper.startSpotifyRefreshTimer();
 
         guildHandler = new GuildHandler();
-
-        generalHelper = new GeneralHelper();
 
         versionHelper = new VersionHelper();
         versionHelper.contactGuilds();
@@ -356,6 +353,7 @@ public class CafeBot {
         customSongManager = new CustomSongManager();
 
         // Final Things
+        logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
         updateGuildPresence();
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
     }
@@ -488,61 +486,6 @@ public class CafeBot {
     }
 
     /**
-     * Starts the re-establishing of a Spotify Key Timer.
-     */
-    public static void startRefreshTimer() {
-        refreshTimer = new Timer();
-        refreshTimerTask = new TimerTask() {
-
-            @Override
-            public void run() {
-                connectToSpotifyAPI();
-                logManager.log(CafeBot.class, LogLevel.INFO, "Re-establishing Spotify Connection", true, false);
-
-                try {
-                    logManager.log(CafeBot.class, LogLevel.INFO, "Refreshing MySQL Connection...", true, false);
-                    sqlServer.getConnection().close(); // Closes the SQL Connection
-                    sqlServer.startConnection(); // Reopens the SQL Connection
-
-                    // If the SQL Connection is still closed, then it must throw an sql exception.
-                    if (!sqlServer.checkConnection()) {
-                        throw new SQLException("The connection is still closed.");
-                    }
-
-                    logManager.log(CafeBot.class, LogLevel.OKAY, "Successfully refreshed the MySQL Connection!", true, false);
-                } catch (SQLException e) {
-                    logManager.log(CafeBot.class, LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage(), true, false);
-
-                    sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
-                    sqlServer.startConnection();
-                }
-            }
-        };
-        refreshTimer.scheduleAtFixedRate(refreshTimerTask, 3000000, 3000000);
-    }
-
-    /**
-     * Connects to the Spotify API
-     */
-    public static void connectToSpotifyAPI() {
-        spotifyApi = new SpotifyApi.Builder()
-                .setClientId(SPOTIFY_API_CLIENT_ID)
-                .setClientSecret(SPOTIFY_API_CLIENT_SECRET)
-                .build();
-
-        clientCredentialsRequest = spotifyApi.clientCredentials().build();
-
-        try {
-            final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
-            spotifyApi.setAccessToken(clientCredentials.getAccessToken());
-            logManager.log(CafeBot.class, LogLevel.INFO, "Spotify Access Token Expires In: " + clientCredentials.getExpiresIn() + " Seconds", true, false);
-            logManager.log(CafeBot.class, LogLevel.OKAY, "Successfully connected to the Spotify API!", true, false);
-        } catch (IOException | SpotifyWebApiException | ParseException e) {
-            logManager.log(CafeBot.class, LogLevel.ERROR, e.getMessage());
-        }
-    }
-
-    /**
      * @return The current {@link TwitchHandler}.
      */
     @NotNull
@@ -564,6 +507,30 @@ public class CafeBot {
     @Nullable
     public static SpotifyApi getSpotifyApi() {
         return spotifyApi;
+    }
+
+    /**
+     * Sets the new {@link SpotifyApi} for the {@link CafeBot}.
+     * @param newSpotifyAPI The new {@link SpotifyApi} to be set.
+     */
+    public static void setSpotifyApi(SpotifyApi newSpotifyAPI) {
+        spotifyApi = newSpotifyAPI;
+    }
+
+    /**
+     * @return The client ID for the {@link SpotifyApi}.
+     */
+    @NotNull
+    public static String getSpotifyApiClientID() {
+        return SPOTIFY_API_CLIENT_ID;
+    }
+
+    /**
+     * @return The client secret for the {@link SpotifyApi}.
+     */
+    @NotNull
+    public static String getSpotifyApiClientSecret() {
+        return SPOTIFY_API_CLIENT_SECRET;
     }
 
     /**
@@ -612,6 +579,54 @@ public class CafeBot {
     @Nullable
     public static SQLServer getSQLServer() {
         return sqlServer;
+    }
+
+    /**
+     * Set the new main {@link SQLServer}.
+     * @param newSQLServer The new {@link SQLServer} object.
+     */
+    public static void setSQLServer(@NotNull SQLServer newSQLServer) {
+        sqlServer = newSQLServer;
+    }
+
+    /**
+     * @return The current URL for the main {@link SQLServer}.
+     */
+    @NotNull
+    public static String getSQLURL() {
+        return SQL_URL;
+    }
+
+    /**
+     * @return The current port for the main {@link SQLServer}.
+     */
+    @NotNull
+    public static String getSQLPort() {
+        return SQL_PORT;
+    }
+
+    /**
+     * @return Whether or not to encrypt the connection for the main {@link SQLServer}.
+     */
+    @NotNull
+    public static Boolean getSQLEncrypt() {
+        return SQL_ENCRYPT;
+    }
+
+    /**
+     * @return The username for the main {@link SQLServer}.
+     */
+    @NotNull
+    public static String getSQLUsername() {
+        return SQL_USERNAME;
+    }
+
+    /**
+     * @return The password for the main {@link SQLServer}.
+     */
+    @NotNull
+    public static String getSQLPassword() {
+        return SQL_PASSWORD;
     }
 
     /**

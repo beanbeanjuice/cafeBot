@@ -1,7 +1,6 @@
 package com.beanbeanjuice.utility.sections.music.custom;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import org.jetbrains.annotations.NotNull;
 
@@ -64,7 +63,6 @@ public class CustomGuildSongQueueHandler {
      * Queues up the next {@link CustomSong}.
      */
     public void queueNextSong() {
-        CafeBot.getLogManager().log(CustomGuildSongQueueHandler.class, LogLevel.DEBUG, "Queuing Next Song");
         try {
             songPlaying = true;
             currentSong = customSongQueue.remove(0);
@@ -79,9 +77,7 @@ public class CustomGuildSongQueueHandler {
                 )).queue();
             } catch (NullPointerException ignored) {}
         } catch (IndexOutOfBoundsException e) {
-            CafeBot.getLogManager().log(CustomGuildSongQueueHandler.class, LogLevel.DEBUG, "Index Out of Bounds: " + e.getMessage());
             if (playlistRepeat) {
-                CafeBot.getLogManager().log(CustomGuildSongQueueHandler.class, LogLevel.DEBUG, "Playlist Repeat: ON");
                 songPlaying = false;
                 for (CustomSong customSong : repeatQueue) {
                     addCustomSong(customSong, true);
