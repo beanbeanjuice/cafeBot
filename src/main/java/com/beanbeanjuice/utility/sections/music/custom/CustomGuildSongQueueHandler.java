@@ -2,8 +2,12 @@ package com.beanbeanjuice.utility.sections.music.custom;
 
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -69,12 +73,7 @@ public class CustomGuildSongQueueHandler {
             unshuffledQueue.remove(currentSong);
             PlayerManager.getInstance().loadAndPlay(currentSong.getSearchString(), CafeBot.getGuildHandler().getGuild(guildID));
             try {
-                CafeBot.getGuildHandler().getCustomGuild(guildID).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                        "Now Playing",
-                        "`" + currentSong.getName() + "` by `" + currentSong.getAuthor() + "` [`"
-                                + currentSong.getLengthString() + "`]\n\n" +
-                                "**Requested By**: " + currentSong.getRequester().getAsMention()
-                )).queue();
+                CafeBot.getGuildHandler().getCustomGuild(guildID).getLastMusicChannel().sendMessage(nowPlaying()).queue();
             } catch (NullPointerException ignored) {}
         } catch (IndexOutOfBoundsException e) {
             if (playlistRepeat) {
@@ -90,6 +89,18 @@ public class CustomGuildSongQueueHandler {
         if (currentSong == null && customSongQueue.isEmpty()) {
             songPlaying = false;
         }
+    }
+
+    @NotNull
+    private MessageEmbed nowPlaying() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle("Now Playing");
+        embedBuilder.setDescription("`" + currentSong.getName() + "` by `" + currentSong.getAuthor() + "` [`"
+                + currentSong.getLengthString() + "`]\n\n" +
+                "**Requested By**: " + currentSong.getRequester().getAsMention());
+        embedBuilder.setColor(Color.cyan);
+        embedBuilder.setFooter("Songs Left: " + customSongQueue.size());
+        return embedBuilder.build();
     }
 
     /**

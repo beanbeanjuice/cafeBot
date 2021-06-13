@@ -125,8 +125,6 @@ public class CafeBot {
 
     // Other
     private static GeneralHelper generalHelper;
-    private static Timer refreshTimer;
-    private static TimerTask refreshTimerTask;
 
     // Version Helper
     private static VersionHelper versionHelper;
