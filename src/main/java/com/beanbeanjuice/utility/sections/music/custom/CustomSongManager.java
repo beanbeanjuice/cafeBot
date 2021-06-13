@@ -31,12 +31,12 @@ public class CustomSongManager {
      * @param user The {@link User} who sent the song request.
      */
     public void addSongToGuild(@NotNull Guild guild, @NotNull Track spotifyTrack, @NotNull User user) {
-        String trackName = spotifyTrack.getName();
-
-        if (spotifyTrack.getIsExplicit()) {
-            trackName += " uncensored";
-        }
-        CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(trackName, spotifyTrack.getArtists()[0].getName(), Long.parseLong(spotifyTrack.getDurationMs().toString()), user), false);
+        CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(
+                spotifyTrack.getName(),
+                spotifyTrack.getArtists()[0].getName(),
+                Long.parseLong(spotifyTrack.getDurationMs().toString()),
+                user,
+                spotifyTrack.getIsExplicit()), false);
     }
 
     /**
@@ -53,7 +53,7 @@ public class CustomSongManager {
         audioPlayerManager.loadItemOrdered(new GuildMusicManager(audioPlayerManager, guild), searchString, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack audioTrack) {
-                CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(audioTrack.getInfo().title, audioTrack.getInfo().author, audioTrack.getDuration(), user), false);
+                CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(audioTrack.getInfo().title, audioTrack.getInfo().author, audioTrack.getDuration(), user, false), false);
                 try {
                     CafeBot.getGuildHandler().getCustomGuild(guild).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                             "Queued Song",
@@ -74,7 +74,7 @@ public class CustomSongManager {
                 }
 
                 for (final AudioTrack track : tracks) {
-                    CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(track.getInfo().title, track.getInfo().author, track.getDuration(), user), false);
+                    CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(track.getInfo().title, track.getInfo().author, track.getDuration(), user, false), false);
                 }
 
                 try {
