@@ -66,7 +66,7 @@ public class VersionHelper {
         if (lastVersion == null) {
             return true;
         }
-        return currentVersion.equals(lastVersion);
+        return currentVersion.startsWith(lastVersion);
     }
 
     /**
@@ -107,7 +107,7 @@ public class VersionHelper {
                 .join();
 
         // Checking if the GitHub tag does not equal the current version.
-        if (!github_tag.equalsIgnoreCase(CafeBot.getBotVersion())) {
+        if (!github_tag.startsWith(CafeBot.getBotVersion())) {
             CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "There is a mismatch between GitHub tag and Bot Version.");
             return;
         }

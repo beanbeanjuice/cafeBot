@@ -102,11 +102,11 @@ public class HelpCommand implements ICommand {
                 }
             }
             stringBuilder.append("`");
-            embedBuilder.addField("Command Aliases", stringBuilder.toString(), false);
+            embedBuilder.addField("Aliases", stringBuilder.toString(), false);
         }
 
-        embedBuilder.addField("Command Example", command.exampleUsage(prefix), false);
-        embedBuilder.addField("Command Description", command.getDescription(), false);
+        embedBuilder.addField("Example Usage", command.exampleUsage(prefix), false);
+        embedBuilder.addField("Description", command.getDescription(), false);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
         return embedBuilder.build();
@@ -150,7 +150,7 @@ public class HelpCommand implements ICommand {
 
         embedBuilder.addField("**Command Categories**", stringBuilder.toString(), true);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setFooter("If you're stuck, use " + prefix + "help (category name).");
+        embedBuilder.setFooter("If you're stuck, use " + prefix + "help (category name/number).");
         return embedBuilder.build();
     }
 
