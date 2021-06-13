@@ -58,6 +58,14 @@ public class CustomSong {
     }
 
     /**
+     * @return The length of the song in milliseconds.
+     */
+    @NotNull
+    public Long getLengthMS() {
+        return length;
+    }
+
+    /**
      * @return The search term for the {@link CustomSong}.
      */
     @NotNull
