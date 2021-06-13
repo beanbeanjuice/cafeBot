@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.management.ManagementFactory;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -35,7 +36,8 @@ public class PingCommand implements ICommand {
 
         if (args.size() == 1) {
             if (args.get(0).equals("log")) {
-                CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Testing Log.");
+                Exception exception = new SQLException("Fake SQL Exception");
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Testing Log: " + exception.getMessage(), exception);
             }
         }
     }
