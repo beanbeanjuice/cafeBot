@@ -52,18 +52,25 @@ public class NowPlayingCommand implements ICommand {
 
             AudioTrack audioTrack = musicManager.audioPlayer.getPlayingTrack();
             AudioTrackInfo info = audioTrack.getInfo();
-            event.getChannel().sendMessage(nowPlaying(info.title, info.author, info.uri, audioTrack.getPosition(), audioTrack.getDuration(), currentSong.getRequester())).queue();
+            event.getChannel().sendMessage(nowPlaying(info.title,
+                    info.author,
+                    info.uri,
+                    audioTrack.getPosition(),
+                    audioTrack.getDuration(),
+                    currentSong.getRequester(),
+                    CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCustomSongQueue().size())).queue();
         }
     }
 
     @NotNull
-    private MessageEmbed nowPlaying(@NotNull String title, @NotNull String author, @NotNull String url, @NotNull Long songTimestamp, @NotNull Long songDuration, @NotNull User requester) {
+    private MessageEmbed nowPlaying(@NotNull String title, @NotNull String author, @NotNull String url, @NotNull Long songTimestamp, @NotNull Long songDuration, @NotNull User requester, @NotNull Integer songsLeft) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Now Playing", url);
         String message = String.format("`%s` by `%s` - [`%s / %s`]", title, author, CafeBot.getGeneralHelper().formatTime(songTimestamp), CafeBot.getGeneralHelper().formatTime(songDuration));
         message += "\n\n**Requested By**: " + requester.getAsMention();
         embedBuilder.setDescription(message);
         embedBuilder.setColor(Color.cyan);
+        embedBuilder.setFooter("Songs Left: " + songsLeft);
         return embedBuilder.build();
     }
 
