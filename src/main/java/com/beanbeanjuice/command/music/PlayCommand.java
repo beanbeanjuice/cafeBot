@@ -102,12 +102,15 @@ public class PlayCommand implements ICommand {
 
 //                link = "ytsearch:" + getLinkFromSpotifyTrack(track) + " audio";
 //                PlayerManager.getInstance().loadAndPlay(channel, link, false);
+                String estimatedTime = CafeBot.getGeneralHelper().formatTimeDays(CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getQueueLengthMS());
                 CafeBot.getCustomSongManager().addSongToGuild(event.getGuild(), track, user);
                 event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                         "Queued Song",
                         "`" + track.getName() + "` by `" + track.getArtists()[0].getName() + "` [`"
                                 + CafeBot.getGeneralHelper().formatTime(track.getDurationMs().longValue()) + "`]\n\n" +
-                                "**Requested By**: " + user.getAsMention()
+                                "**Requested By**: " + user.getAsMention() +
+                                "\n**Estimated Time Until Playing**: `" + estimatedTime + "`\n" +
+                                "**Place In Queue**: " + CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCustomSongQueue().size()
                 )).queue();
                 return;
 

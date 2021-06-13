@@ -120,7 +120,7 @@ public class HelpCommand implements ICommand {
 
         for (ICommand command : CafeBot.getCommandManager().getCommands()) {
             if (command.getCategoryType().equals(categoryType)) {
-                stringBuilder.append(count++).append(". ").append("`").append(prefix).append(command.getName());
+                stringBuilder.append("**").append(count++).append("** `").append(prefix).append(command.getName());
                 stringBuilder.append("`\n");
             }
         }
@@ -143,7 +143,7 @@ public class HelpCommand implements ICommand {
         int count = 1;
 
         for (CategoryType categoryType : CategoryType.values()) {
-            stringBuilder.append(count++).append(". ").append("`").append(categoryType.toString());
+            stringBuilder.append("**").append(count++).append("** `").append(categoryType.toString());
 
             stringBuilder.append("`\n");
         }

@@ -38,6 +38,20 @@ public class CustomGuildSongQueueHandler {
         repeatQueue = new ArrayList<>();
     }
 
+    @NotNull
+    public Long getQueueLengthMS() {
+        if (customSongQueue.isEmpty()) {
+            return 0L;
+        }
+
+        long totalTime = 0;
+
+        for (CustomSong customSong : customSongQueue) {
+            totalTime += customSong.getLengthMS();
+        }
+        return totalTime;
+    }
+
     /**
      * Adds a custom song to the {@link ArrayList<CustomSong>}.
      * @param customSong The {@link CustomSong} to add.
