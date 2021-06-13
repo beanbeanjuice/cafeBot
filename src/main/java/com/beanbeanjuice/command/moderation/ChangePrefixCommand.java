@@ -6,6 +6,7 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
@@ -33,6 +34,8 @@ public class ChangePrefixCommand implements ICommand {
         }
 
         event.getChannel().sendMessage(successfulPrefixChangeEmbed(args.get(0))).queue();
+        CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).log(this, LogLevel.INFO, "Changed Prefix",
+                user.getAsMention() + " has changed the prefix to: `" + args.get(0) + "`.");
     }
 
     @NotNull
