@@ -31,7 +31,12 @@ public class CustomSongManager {
      * @param user The {@link User} who sent the song request.
      */
     public void addSongToGuild(@NotNull Guild guild, @NotNull Track spotifyTrack, @NotNull User user) {
-        CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(spotifyTrack.getName(), spotifyTrack.getArtists()[0].getName(), Long.parseLong(spotifyTrack.getDurationMs().toString()), user), false);
+        String trackName = spotifyTrack.getName();
+
+        if (spotifyTrack.getIsExplicit()) {
+            trackName += " uncensored";
+        }
+        CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().addCustomSong(new CustomSong(trackName, spotifyTrack.getArtists()[0].getName(), Long.parseLong(spotifyTrack.getDurationMs().toString()), user), false);
     }
 
     /**

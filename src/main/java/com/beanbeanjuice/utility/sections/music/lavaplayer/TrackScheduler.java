@@ -1,12 +1,15 @@
 package com.beanbeanjuice.utility.sections.music.lavaplayer;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import net.dv8tion.jda.api.entities.Guild;
 
+import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -16,7 +19,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TrackScheduler extends AudioEventAdapter {
 
     public final AudioPlayer player;
-    private Guild guild;
+    private final Guild guild;
     public BlockingQueue<AudioTrack> queue;
     public boolean inVoiceChannel = false;
 
@@ -41,6 +44,10 @@ public class TrackScheduler extends AudioEventAdapter {
             }
             nextTrack();
         }
+
+        if (endReason == AudioTrackEndReason.LOAD_FAILED) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Loading Track", true, false);
+        }
     }
 
     /**
@@ -60,6 +67,16 @@ public class TrackScheduler extends AudioEventAdapter {
         if (inVoiceChannel) {
             this.player.startTrack(track, true);
         }
+    }
+
+    @Override
+    public void onTrackException(AudioPlayer player, AudioTrack track, FriendlyException exception) {
+        CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Track Exception on Track `" + track.getInfo().title + "`: " + Arrays.toString(exception.getStackTrace()), true, false);
+    }
+
+    @Override
+    public void onTrackStuck(AudioPlayer player, AudioTrack track, long thresholdMS) {
+        CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Providing Audio: " + thresholdMS, true, false);
     }
 
 }

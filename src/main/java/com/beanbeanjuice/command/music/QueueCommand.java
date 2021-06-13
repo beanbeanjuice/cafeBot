@@ -46,8 +46,8 @@ public class QueueCommand implements ICommand {
         for (int i = 0; i < queue.size() && i < 20; i++) {
             CustomSong customSong = queue.get(i);
 
-            message.append("#").append(i + 1)
-                    .append(" `")
+            message.append("*#").append(i + 1)
+                    .append("* `")
                     .append(customSong.getName())
                     .append(" by ")
                     .append(customSong.getAuthor())
