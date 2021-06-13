@@ -83,7 +83,9 @@ public class QueueCommand implements ICommand {
 
     @Override
     public ArrayList<String> getAliases() {
-        return new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("p");
+        return arrayList;
     }
 
     @Override
