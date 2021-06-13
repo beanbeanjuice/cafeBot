@@ -113,6 +113,10 @@ public class LogManager {
         logToFile(formattedMessage);
     }
 
+    /**
+     * This is used to log a message to a file.
+     * @param message The message to log.
+     */
     private void logToFile(@NotNull String message) {
         FileWriter fileWriter = null;
         BufferedWriter bufferedWriter = null;
@@ -275,10 +279,25 @@ public class LogManager {
         log(c, logLevel, message, true, true);
     }
 
+    /**
+     * This is for optionally choosing to log with an exception to everything.
+     * @param c The {@link Class} that called the log.
+     * @param logLevel The {@link LogLevel} for the log.
+     * @param message The message contents for the log.
+     * @param exception The {@link Throwable} that goes with the log.
+     */
     public void log(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Throwable exception) {
         log(c, logLevel, message, true, true, exception);
     }
 
+    /**
+     * This is for optionally choosing to log without an exception.
+     * @param c The {@link Class} that called the log.
+     * @param logLevel The current {@link LogLevel} of the log to be created.
+     * @param message The message contents for the log.
+     * @param logToWebhook Whether or not to log to the webhook.
+     * @param logToLogChannel Whether or not to log to the log channel.
+     */
     public void log(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message,
                     @NotNull Boolean logToWebhook, @NotNull Boolean logToLogChannel) {
         log(c, logLevel, message, logToWebhook, logToLogChannel, null);
@@ -335,11 +354,22 @@ public class LogManager {
 
     }
 
+    /**
+     * A method used to log to the {@link org.springframework.boot.autoconfigure.SpringBootApplication SpringBoot} console.
+     * @param c The {@link Class} that threw the log.
+     * @param logLevel The {@link LogLevel} of the log.
+     * @param message The message to send.
+     * @param time The {@link Time} the log was sent.
+     */
     private void logToConsole(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Time time) {
         String formattedMessage = "[" + time.toString("{HH}:{mm}:{ss} {Z}") + "]" + " [" + c.getSimpleName() + "/" + logLevel + "]: " + message;
         logToConsole(formattedMessage);
     }
 
+    /**
+     * An optional message to log a message to the console.
+     * @param message The message to log.
+     */
     private void logToConsole(@NotNull String message) {
         if (sendingOperations != null) {
             ChatMessage chatMessage = ChatMessage.builder()
