@@ -30,12 +30,12 @@ public class MenuCommand implements ICommand {
             ArrayList<MenuItem> menu = CafeBot.getMenuHandler().getMenu();
 
             for (int i = 0; i < menu.size(); i++) {
-                stringBuilder.append(i + 1)
-                        .append(" **").append(menu.get(i).getName()).append("** - `$")
-                        .append(menu.get(i).getPrice()).append("`\n");
+                stringBuilder.append("**").append(i + 1)
+                        .append("** *").append(menu.get(i).getName()).append("* - `")
+                        .append(menu.get(i).getPrice()).append("bC`\n");
             }
 
-            event.getChannel().sendMessage(menuEmbed(stringBuilder.toString())).queue();
+            event.getChannel().sendMessage(menuEmbed(stringBuilder.toString(), ctx.getPrefix())).queue();
         } else {
             int itemIndex = Integer.parseInt(args.get(0)) - 1;
 
@@ -58,7 +58,7 @@ public class MenuCommand implements ICommand {
     private MessageEmbed menuItemEmbed(@NotNull MenuItem menuItem, @NotNull Integer itemIndex) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Menu Item - " + menuItem.getName());
-        embedBuilder.addField("Price", "`$" + menuItem.getPrice() + "` beanCoins", true);
+        embedBuilder.addField("Price", "`" + menuItem.getPrice() + "bC`", true);
         embedBuilder.addField("Item Number", String.valueOf(itemIndex+1), true);
         embedBuilder.setDescription(menuItem.getDescription());
         embedBuilder.setThumbnail(menuItem.getImageURL());
@@ -67,12 +67,12 @@ public class MenuCommand implements ICommand {
     }
 
     @NotNull
-    private MessageEmbed menuEmbed(@NotNull String description) {
+    private MessageEmbed menuEmbed(@NotNull String description, @NotNull String prefix) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Menu Items");
         embedBuilder.setDescription(description);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setFooter("I hope you enjoy your stay!~");
+        embedBuilder.setFooter("For more details, do '" + prefix + "menu (item number)'! I hope you enjoy your stay!~");
         return embedBuilder.build();
     }
 
