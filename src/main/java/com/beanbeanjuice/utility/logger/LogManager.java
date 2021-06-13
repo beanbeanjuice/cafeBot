@@ -312,10 +312,6 @@ public class LogManager {
     public void log(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message,
                     @NotNull Boolean logToWebhook, @NotNull Boolean logToLogChannel, @Nullable Throwable exception) {
 
-        // Printing the Stack Trace if the Exception Exists
-        if (exception != null) {
-            logStackTrace(exception);
-        }
 
         Time time = new Time(Calendar.getInstance(TimeZone.getDefault()));
 
@@ -341,6 +337,11 @@ public class LogManager {
         }
 
         logToFile(c, logLevel, message, time);
+
+        // Printing the Stack Trace if the Exception Exists
+        if (exception != null) {
+            logStackTrace(exception);
+        }
 
         if (logToWebhook) {
             logToWebhook(c, logLevel, message, time);
