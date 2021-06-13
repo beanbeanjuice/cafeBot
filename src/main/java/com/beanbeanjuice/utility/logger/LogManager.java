@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -63,7 +64,40 @@ public class LogManager {
         log(LogManager.class, LogLevel.INFO, "Starting the Uncaught Exception Handler", true, false);
         Thread.setDefaultUncaughtExceptionHandler((thread, exception) -> {
             CafeBot.getLogManager().log(thread.getClass(), LogLevel.WARN, "Unhandled Exception: " + exception.getMessage());
+            CafeBot.getLogManager().logStackTrace(exception);
         });
+    }
+
+    private void logStackTrace(@NotNull Throwable exception) {
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        PrintWriter printWriter = null;
+
+        try {
+
+            fileWriter = new FileWriter(currentLogFileName, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            printWriter = new PrintWriter(bufferedWriter);
+
+            // Appends this to the current log file.
+            exception.printStackTrace(printWriter);
+
+            // Flushes the print writer.
+            printWriter.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                printWriter.close();
+                bufferedWriter.close();;
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        exception.printStackTrace();
     }
 
     /**
@@ -241,6 +275,15 @@ public class LogManager {
         log(c, logLevel, message, true, true);
     }
 
+    public void log(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Throwable exception) {
+        log(c, logLevel, message, true, true, exception);
+    }
+
+    public void log(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message,
+                    @NotNull Boolean logToWebhook, @NotNull Boolean logToLogChannel) {
+        log(c, logLevel, message, logToWebhook, logToLogChannel, null);
+    }
+
     /**
      * This is for optionally choosing to log to the webhook and Discord channel.
      * @param c The class that called the log.
@@ -248,7 +291,12 @@ public class LogManager {
      * @param message The message contents for the log.
      */
     public void log(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message,
-                    @NotNull Boolean logToWebhook, @NotNull Boolean logToLogChannel) {
+                    @NotNull Boolean logToWebhook, @NotNull Boolean logToLogChannel, @Nullable Throwable exception) {
+
+        // Printing the Stack Trace if the Exception Exists
+        if (exception != null) {
+            logStackTrace(exception);
+        }
 
         Time time = new Time(Calendar.getInstance(TimeZone.getDefault()));
 
@@ -284,6 +332,7 @@ public class LogManager {
         }
 
         logToConsole(c, logLevel, message, time);
+
     }
 
     private void logToConsole(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Time time) {
