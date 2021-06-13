@@ -15,6 +15,7 @@ public class CustomSong {
     private final String author;
     private final Long length;
     private final User requester;
+    private final boolean isExplicit;
 
     /**
      * Creates a new {@link CustomSong} object.
@@ -22,12 +23,14 @@ public class CustomSong {
      * @param author The author for the {@link CustomSong}.
      * @param length The length in milliseconds of the {@link CustomSong}.
      * @param requester The {@link User} who requested the {@link CustomSong}.
+     * @param isExplicit Whether or not the {@link CustomSong} is specified as explicit.
      */
-    public CustomSong(@NotNull String name, @NotNull String author, @NotNull Long length, @NotNull User requester) {
+    public CustomSong(@NotNull String name, @NotNull String author, @NotNull Long length, @NotNull User requester, @NotNull Boolean isExplicit) {
         this.name = name;
         this.author = author;
         this.length = length;
         this.requester = requester;
+        this.isExplicit = isExplicit;
     }
 
     /**
@@ -59,7 +62,11 @@ public class CustomSong {
      */
     @NotNull
     public String getSearchString() {
-        return "ytsearch:" + name + " by " + author;
+        String message = "ytsearch:" + name + " by " + author;
+        if (isExplicit) {
+            message += " uncensored";
+        }
+        return message;
     }
 
     /**
