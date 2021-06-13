@@ -195,31 +195,9 @@ public class PlayCommand implements ICommand {
     }
 
     @NotNull
-    private String getLinkFromSpotifyTrack(@NotNull Track track) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(track.getName()).append(" by ")
-                .append(track.getArtists()[0].getName());
-
-        if (track.getArtists().length > 1) {
-            stringBuilder.append(" and ")
-                    .append(track.getArtists()[1].getName());
-        }
-        return stringBuilder.toString();
-    }
-
-    @NotNull
     private MessageEmbed userMustBeInVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription("Sorry, you must be in a voice channel to use this command.");
-        embedBuilder.setColor(Color.red);
-        return embedBuilder.build();
-    }
-
-    @NotNull
-    private MessageEmbed emptySpotifyPlaylist() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Empty Spotify Playlist");
-        embedBuilder.setDescription("The spotify playlist you requested is currently empty.");
         embedBuilder.setColor(Color.red);
         return embedBuilder.build();
     }
