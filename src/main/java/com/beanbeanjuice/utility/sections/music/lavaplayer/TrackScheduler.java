@@ -9,7 +9,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import net.dv8tion.jda.api.entities.Guild;
 
-import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -71,8 +70,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     @Override
     public void onTrackException(AudioPlayer player, AudioTrack track, FriendlyException exception) {
-        CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Track Exception on Track `" + track.getInfo().title + "`: " + exception.getMessage(), true, false);
-        exception.printStackTrace();
+        CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Track Exception on Track `" + track.getInfo().title + "`: " + exception.getMessage(), true, false, exception);
     }
 
     @Override

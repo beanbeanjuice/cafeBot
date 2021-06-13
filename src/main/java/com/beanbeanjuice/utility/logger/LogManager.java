@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -63,7 +64,40 @@ public class LogManager {
         log(LogManager.class, LogLevel.INFO, "Starting the Uncaught Exception Handler", true, false);
         Thread.setDefaultUncaughtExceptionHandler((thread, exception) -> {
             CafeBot.getLogManager().log(thread.getClass(), LogLevel.WARN, "Unhandled Exception: " + exception.getMessage());
+            CafeBot.getLogManager().logStackTrace(exception);
         });
+    }
+
+    private void logStackTrace(@NotNull Throwable exception) {
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        PrintWriter printWriter = null;
+
+        try {
+
+            fileWriter = new FileWriter(currentLogFileName, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            printWriter = new PrintWriter(bufferedWriter);
+
+            // Appends this to the current log file.
+            exception.printStackTrace(printWriter);
+
+            // Flushes the print writer.
+            printWriter.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                printWriter.close();
+                bufferedWriter.close();;
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        exception.printStackTrace();
     }
 
     /**
@@ -79,6 +113,10 @@ public class LogManager {
         logToFile(formattedMessage);
     }
 
+    /**
+     * This is used to log a message to a file.
+     * @param message The message to log.
+     */
     private void logToFile(@NotNull String message) {
         FileWriter fileWriter = null;
         BufferedWriter bufferedWriter = null;
@@ -242,13 +280,42 @@ public class LogManager {
     }
 
     /**
+     * This is for optionally choosing to log with an exception to everything.
+     * @param c The {@link Class} that called the log.
+     * @param logLevel The {@link LogLevel} for the log.
+     * @param message The message contents for the log.
+     * @param exception The {@link Throwable} that goes with the log.
+     */
+    public void log(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Throwable exception) {
+        log(c, logLevel, message, true, true, exception);
+    }
+
+    /**
+     * This is for optionally choosing to log without an exception.
+     * @param c The {@link Class} that called the log.
+     * @param logLevel The current {@link LogLevel} of the log to be created.
+     * @param message The message contents for the log.
+     * @param logToWebhook Whether or not to log to the webhook.
+     * @param logToLogChannel Whether or not to log to the log channel.
+     */
+    public void log(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message,
+                    @NotNull Boolean logToWebhook, @NotNull Boolean logToLogChannel) {
+        log(c, logLevel, message, logToWebhook, logToLogChannel, null);
+    }
+
+    /**
      * This is for optionally choosing to log to the webhook and Discord channel.
      * @param c The class that called the log.
      * @param logLevel The current {@link LogLevel} of the log to be created.
      * @param message The message contents for the log.
      */
     public void log(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message,
-                    @NotNull Boolean logToWebhook, @NotNull Boolean logToLogChannel) {
+                    @NotNull Boolean logToWebhook, @NotNull Boolean logToLogChannel, @Nullable Throwable exception) {
+
+        // Printing the Stack Trace if the Exception Exists
+        if (exception != null) {
+            logStackTrace(exception);
+        }
 
         Time time = new Time(Calendar.getInstance(TimeZone.getDefault()));
 
@@ -284,13 +351,25 @@ public class LogManager {
         }
 
         logToConsole(c, logLevel, message, time);
+
     }
 
+    /**
+     * A method used to log to the {@link org.springframework.boot.autoconfigure.SpringBootApplication SpringBoot} console.
+     * @param c The {@link Class} that threw the log.
+     * @param logLevel The {@link LogLevel} of the log.
+     * @param message The message to send.
+     * @param time The {@link Time} the log was sent.
+     */
     private void logToConsole(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Time time) {
         String formattedMessage = "[" + time.toString("{HH}:{mm}:{ss} {Z}") + "]" + " [" + c.getSimpleName() + "/" + logLevel + "]: " + message;
         logToConsole(formattedMessage);
     }
 
+    /**
+     * An optional message to log a message to the console.
+     * @param message The message to log.
+     */
     private void logToConsole(@NotNull String message) {
         if (sendingOperations != null) {
             ChatMessage chatMessage = ChatMessage.builder()
