@@ -4,7 +4,6 @@ import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
