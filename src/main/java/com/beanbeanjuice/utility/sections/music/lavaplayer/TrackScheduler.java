@@ -71,7 +71,8 @@ public class TrackScheduler extends AudioEventAdapter {
 
     @Override
     public void onTrackException(AudioPlayer player, AudioTrack track, FriendlyException exception) {
-        CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Track Exception on Track `" + track.getInfo().title + "`: " + Arrays.toString(exception.getStackTrace()), true, false);
+        CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Track Exception on Track `" + track.getInfo().title + "`: " + exception.getMessage(), true, false);
+        exception.printStackTrace();
     }
 
     @Override
