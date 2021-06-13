@@ -150,6 +150,21 @@ public class GeneralHelper {
     }
 
     /**
+     * Formats the specified time, including days.
+     * @param timeInMillis The time as a {@link Long} value.
+     * @return The formatted time {@link String}.
+     */
+    @NotNull
+    public String formatTimeDays(@NotNull Long timeInMillis) {
+        final long days = timeInMillis / TimeUnit.DAYS.toMillis(1);
+        final long hours = timeInMillis % TimeUnit.DAYS.toMillis(1) / TimeUnit.HOURS.toMillis(1);
+        final long minutes = timeInMillis % TimeUnit.DAYS.toMillis(1) % TimeUnit.HOURS.toMillis(1) / TimeUnit.MINUTES.toMillis(1);
+        final long seconds = timeInMillis % TimeUnit.DAYS.toMillis(1) % TimeUnit.HOURS.toMillis(1) % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
+
+        return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds);
+    }
+
+    /**
      * Checks if a specified {@link Integer} is a double digit.
      * @param number The {@link Integer} specified.
      * @return Whether or not the {@link Integer} is a double digit.
