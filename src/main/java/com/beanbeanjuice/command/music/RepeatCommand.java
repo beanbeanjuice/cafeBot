@@ -173,7 +173,7 @@ public class RepeatCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "song/playlist", false);
+        usage.addUsage(CommandType.TEXT, "Song/Playlist", false);
         return usage;
     }
 

@@ -107,7 +107,7 @@ public class UserInfoCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "Mentioned Discord User", false);
+        usage.addUsage(CommandType.USER, "Discord Mention", false);
         return usage;
     }
 

@@ -79,7 +79,7 @@ public class RemoveTwitchChannelCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "Twitch Channel Name", true);
+        usage.addUsage(CommandType.TEXT, "Twitch Username", true);
         return usage;
     }
 

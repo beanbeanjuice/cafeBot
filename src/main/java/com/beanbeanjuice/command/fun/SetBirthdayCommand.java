@@ -59,7 +59,7 @@ public class SetBirthdayCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.DATE, "Birthdate (YYYY-MM-DD)", true);
+        usage.addUsage(CommandType.DATE, "Birthday (YYYY-MM-DD)", true);
         return usage;
     }
 

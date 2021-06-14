@@ -97,7 +97,7 @@ public class BalanceCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "A discord user", false);
+        usage.addUsage(CommandType.USER, "Discord Mention", false);
         return usage;
     }
 

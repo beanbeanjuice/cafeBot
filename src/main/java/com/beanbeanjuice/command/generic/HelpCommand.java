@@ -66,13 +66,13 @@ public class HelpCommand implements ICommand {
 
         stringBuilder.append("`").append(prefix).append(command.getName());
         StringBuilder paramBuilder = new StringBuilder();
-        embedBuilder.setTitle(command.getName().toUpperCase() + " Command");
+        embedBuilder.setTitle(command.getName().toUpperCase() + "");
         ArrayList<CommandUsage> usages = command.getUsage().getUsages();
 
         for (int i = 0; i < usages.size(); i++) {
-            stringBuilder.append(" <").append("Argument ").append(i + 1).append(">");
-
             CommandUsage usage = usages.get(i);
+            stringBuilder.append(" <").append(usage.getType()).append(">");
+
             paramBuilder.append("***").append(i + 1).append("***. ").append(usage.getName());
 
             if (usage.isRequired()) {
