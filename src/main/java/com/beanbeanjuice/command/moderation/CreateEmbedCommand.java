@@ -8,6 +8,7 @@ import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
@@ -63,7 +64,13 @@ public class CreateEmbedCommand implements ICommand {
             }
         }
 
-        CafeBot.getGeneralHelper().getTextChannel(event.getGuild(), args.get(0)).sendMessage(createEmbed(embedMap)).queue();
+        TextChannel embedChannel = CafeBot.getGeneralHelper().getTextChannel(event.getGuild(), args.get(0));
+
+        embedChannel.sendMessage(createEmbed(embedMap)).queue();
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                "Created the Custom Message Embed",
+                "Successfully created the custom embed in " + embedChannel.getAsMention() + "!"
+        )).queue();
     }
 
     private MessageEmbed createEmbed(@NotNull HashMap<String, String> embedMap) {
