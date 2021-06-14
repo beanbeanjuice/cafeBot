@@ -132,7 +132,7 @@ public class OrderCommand implements ICommand {
         Usage usage = new Usage();
         usage.addUsage(CommandType.NUMBER, "The Menu Item Number", true);
         usage.addUsage(CommandType.USER, "The Person You Are Ordering For", true);
-        usage.addUsage(CommandType.SENTENCE, "A message you want to send to them.", false);
+        usage.addUsage(CommandType.SENTENCE, "Extra Message", false);
         return usage;
     }
 
