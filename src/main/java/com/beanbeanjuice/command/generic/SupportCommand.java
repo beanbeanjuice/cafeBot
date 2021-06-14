@@ -20,7 +20,7 @@ public class SupportCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         CafeBot.getGeneralHelper().pmUser(user, "Join this server for support! https://discord.gg/KrUFw3uHST");
-        
+
         event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                 "Support Discord Sent",
                 "Please check your direct messages for the discord link."

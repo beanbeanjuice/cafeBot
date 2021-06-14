@@ -357,14 +357,6 @@ public class CafeBot {
     }
 
     /**
-     * @return The current home {@link Guild} for the bot.
-     */
-    @NotNull
-    public static Guild getHomeGuild() {
-        return homeGuild;
-    }
-
-    /**
      * @return The current amount of commands run during this session.
      */
     @NotNull
