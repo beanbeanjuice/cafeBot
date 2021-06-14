@@ -91,14 +91,16 @@ public class OrderCommand implements ICommand {
         // Adding a personalised message.
         if (args.size() >= 3) {
             StringBuilder descriptionBuilder = new StringBuilder();
+            descriptionBuilder.append("\"");
             for (int i = 2; i < args.size(); i++) {
                 descriptionBuilder.append(args.get(i)).append(" ");
             }
+            descriptionBuilder.append("\"");
             embedBuilder.addField("Personalised Message", descriptionBuilder.toString(), false);
         }
 
         embedBuilder.setDescription("Awww... " + ordererUser.getAsMention() + " bought a " + item.getName()
-                + " for " + receiverUser.getAsMention() + " and lost `$" + item.getPrice() + "`!");
+                + " for " + receiverUser.getAsMention() + " and lost `" + item.getPrice() + "bC`!");
         embedBuilder.setFooter("So far, " + ordererUser.getName() + " has bought a total of " + (orderer.getOrdersBought()+1) + " menu items for other people. "
         + receiverUser.getName() + " has received a total of " + (receiver.getOrdersReceived()+1) + " menu items from other people.");
         embedBuilder.setThumbnail(item.getImageURL());
@@ -122,7 +124,7 @@ public class OrderCommand implements ICommand {
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "order 9 @beanbeanjuice`";
+        return "`" + prefix + "order 9 @beanbeanjuice` or `" + prefix + "order 9 @beanbeanjuice You're so cool :sunglasses:`";
     }
 
     @Override
@@ -130,7 +132,7 @@ public class OrderCommand implements ICommand {
         Usage usage = new Usage();
         usage.addUsage(CommandType.NUMBER, "The Menu Item Number", true);
         usage.addUsage(CommandType.USER, "The Person You Are Ordering For", true);
-        usage.addUsage(CommandType.SENTENCE, "A message you want to send to them.", false);
+        usage.addUsage(CommandType.SENTENCE, "Extra Message", false);
         return usage;
     }
 

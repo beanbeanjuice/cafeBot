@@ -33,11 +33,11 @@ public class QueueCommand implements ICommand {
             return;
         }
 
-        event.getChannel().sendMessage(queueEmbed(queue)).queue();
+        event.getChannel().sendMessage(queueEmbed(queue, CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getQueueLengthMS())).queue();
     }
 
     @NotNull
-    private MessageEmbed queueEmbed(@NotNull ArrayList<CustomSong> queue) {
+    private MessageEmbed queueEmbed(@NotNull ArrayList<CustomSong> queue, @NotNull Long queueTime) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Current Queue");
 
@@ -46,8 +46,8 @@ public class QueueCommand implements ICommand {
         for (int i = 0; i < queue.size() && i < 20; i++) {
             CustomSong customSong = queue.get(i);
 
-            message.append("*#").append(i + 1)
-                    .append("* `")
+            message.append("**#").append(i + 1)
+                    .append("** `")
                     .append(customSong.getName())
                     .append(" by ")
                     .append(customSong.getAuthor())
@@ -55,6 +55,8 @@ public class QueueCommand implements ICommand {
                     .append(customSong.getLengthString())
                     .append("`]\n");
         }
+
+        message.append("**Total Queue Time**: `").append(CafeBot.getGeneralHelper().formatTimeDays(queueTime)).append("`");
 
         embedBuilder.setDescription(message);
         embedBuilder.setColor(Color.cyan);
@@ -81,7 +83,9 @@ public class QueueCommand implements ICommand {
 
     @Override
     public ArrayList<String> getAliases() {
-        return new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("p");
+        return arrayList;
     }
 
     @Override

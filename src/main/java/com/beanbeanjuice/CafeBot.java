@@ -43,9 +43,6 @@ import com.beanbeanjuice.utility.sections.music.custom.CustomSongManager;
 import com.beanbeanjuice.utility.sql.SQLServer;
 import com.beanbeanjuice.utility.sections.twitch.TwitchHandler;
 import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
-import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -54,17 +51,12 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import org.apache.hc.core5.http.ParseException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.security.auth.login.LoginException;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * The main {@link CafeBot} class.
@@ -315,7 +307,8 @@ public class CafeBot {
                 new ClearChatCommand(),
                 new MuteCommand(),
                 new UnMuteCommand(),
-                new NotifyOnUpdateCommand()
+                new NotifyOnUpdateCommand(),
+                new CreateEmbedCommand()
         );
 
         jdaBuilder.addEventListeners(new Listener());
@@ -355,7 +348,6 @@ public class CafeBot {
         updateGuildPresence();
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
     }
-
 
     /**
      * @return The current amount of commands run during this session.

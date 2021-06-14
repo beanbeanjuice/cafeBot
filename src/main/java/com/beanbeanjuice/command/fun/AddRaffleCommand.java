@@ -107,6 +107,7 @@ public class AddRaffleCommand implements ICommand {
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("addraffle");
+        arrayList.add("raffle");
         arrayList.add("create-raffle");
         arrayList.add("createraffle");
         return arrayList;

@@ -150,6 +150,21 @@ public class GeneralHelper {
     }
 
     /**
+     * Formats the specified time, including days.
+     * @param timeInMillis The time as a {@link Long} value.
+     * @return The formatted time {@link String}.
+     */
+    @NotNull
+    public String formatTimeDays(@NotNull Long timeInMillis) {
+        final long days = timeInMillis / TimeUnit.DAYS.toMillis(1);
+        final long hours = timeInMillis % TimeUnit.DAYS.toMillis(1) / TimeUnit.HOURS.toMillis(1);
+        final long minutes = timeInMillis % TimeUnit.DAYS.toMillis(1) % TimeUnit.HOURS.toMillis(1) / TimeUnit.MINUTES.toMillis(1);
+        final long seconds = timeInMillis % TimeUnit.DAYS.toMillis(1) % TimeUnit.HOURS.toMillis(1) % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
+
+        return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds);
+    }
+
+    /**
      * Checks if a specified {@link Integer} is a double digit.
      * @param number The {@link Integer} specified.
      * @return Whether or not the {@link Integer} is a double digit.
@@ -260,6 +275,24 @@ public class GeneralHelper {
 
         try {
             return CafeBot.getJDA().getUserById(userID);
+        } catch (NullPointerException | NumberFormatException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Gets a {@link TextChannel} from the ID.
+     * @param guild The {@link Guild} that contains the {@link TextChannel}.
+     * @param textChannelID The ID of the {@link TextChannel}.
+     * @return The {@link TextChannel}.
+     */
+    @Nullable
+    public TextChannel getTextChannel(@NotNull Guild guild, @NotNull String textChannelID) {
+        textChannelID = textChannelID.replace("<#", "");
+        textChannelID = textChannelID.replace(">", "");
+
+        try {
+            return guild.getTextChannelById(textChannelID);
         } catch (NullPointerException | NumberFormatException e) {
             return null;
         }

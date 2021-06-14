@@ -49,7 +49,7 @@ public class GetBirthdayCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setTitle(user.getName() + "'s Birthday");
-        embedBuilder.setDescription("Their birthday is on " + birthday.toString() + ". (YYYY/MM/DD)");
+        embedBuilder.setDescription("Their birthday is on `" + birthday + "`. (YYYY/MM/DD)");
         return embedBuilder.build();
     }
 
