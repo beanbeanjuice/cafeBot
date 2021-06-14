@@ -188,7 +188,7 @@ public class ClearChatCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.NUMBER, "Amount of messages to clear.", true);
+        usage.addUsage(CommandType.NUMBER, "Clear Amount", true);
         return usage;
     }
 

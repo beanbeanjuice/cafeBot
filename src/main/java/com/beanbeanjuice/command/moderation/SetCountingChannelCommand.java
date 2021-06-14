@@ -84,7 +84,7 @@ public class SetCountingChannelCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "disable/remove/0", false);
+        usage.addUsage(CommandType.TEXT, "Disable/Remove/0", false);
         return usage;
     }
 

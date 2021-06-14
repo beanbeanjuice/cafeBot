@@ -93,7 +93,7 @@ public class EditWelcomeMessageCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.SENTENCE, "thumbnail image, big image, description", true);
+        usage.addUsage(CommandType.SENTENCE, "Welcome Information from Example", true);
         return usage;
     }
 
