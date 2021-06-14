@@ -68,28 +68,25 @@ public class HelpCommand implements ICommand {
         StringBuilder paramBuilder = new StringBuilder();
         embedBuilder.setTitle(command.getName().toUpperCase() + " Command");
         ArrayList<CommandUsage> usages = command.getUsage().getUsages();
-        paramBuilder.append("`");
 
         for (int i = 0; i < usages.size(); i++) {
-            stringBuilder.append(" <").append("Parameter ").append(i + 1).append(">");
+            stringBuilder.append(" <").append("Argument ").append(i + 1).append(">");
 
             CommandUsage usage = usages.get(i);
-            paramBuilder.append(i + 1).append(". ").append("<DESCRIPTION:").append(usage.getName()).append(">:")
-                    .append("<TYPE:").append(usage.getType().getDescription()).append(">:");
+            paramBuilder.append("***").append(i + 1).append("***. ").append(usage.getName());
 
             if (usage.isRequired()) {
-                paramBuilder.append("<REQUIRED>\n");
+                paramBuilder.append(" - *__REQUIRED__*\n");
             } else if (!usage.isRequired()) {
-                paramBuilder.append("<OPTIONAL>\n");
+                paramBuilder.append(" - *__OPTIONAL__*\n");
             }
         }
         stringBuilder.append("`");
-        paramBuilder.append("`");
 
         embedBuilder.addField("Usage", stringBuilder.toString(), false);
 
         if (!usages.isEmpty()) {
-            embedBuilder.addField("Parameters", paramBuilder.toString(), false);
+            embedBuilder.addField("Arguments", paramBuilder.toString(), false);
         }
 
         if (!command.getAliases().isEmpty()) {
@@ -105,7 +102,7 @@ public class HelpCommand implements ICommand {
             embedBuilder.addField("Aliases", stringBuilder.toString(), false);
         }
 
-        embedBuilder.addField("Example Usage", command.exampleUsage(prefix), false);
+        embedBuilder.addField("Example", command.exampleUsage(prefix), false);
         embedBuilder.addField("Description", command.getDescription(), false);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
@@ -189,7 +186,7 @@ public class HelpCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "command name or section name", false);
+        usage.addUsage(CommandType.TEXT, "Command/Section Name", false);
         return usage;
     }
 
