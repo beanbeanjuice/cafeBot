@@ -124,7 +124,7 @@ public class OrderCommand implements ICommand {
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "order 9 @beanbeanjuice`";
+        return "`" + prefix + "order 9 @beanbeanjuice` or `" + prefix + "order 9 @beanbeanjuice You're so cool :sunglasses:`";
     }
 
     @Override
