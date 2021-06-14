@@ -356,6 +356,13 @@ public class CafeBot {
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
     }
 
+    /**
+     * @return The current home {@link Guild} for the bot.
+     */
+    @NotNull
+    public static Guild getHomeGuild() {
+        return homeGuild;
+    }
 
     /**
      * @return The current amount of commands run during this session.
