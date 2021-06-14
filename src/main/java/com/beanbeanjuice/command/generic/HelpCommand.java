@@ -102,11 +102,11 @@ public class HelpCommand implements ICommand {
                 }
             }
             stringBuilder.append("`");
-            embedBuilder.addField("Command Aliases", stringBuilder.toString(), false);
+            embedBuilder.addField("Aliases", stringBuilder.toString(), false);
         }
 
-        embedBuilder.addField("Command Example", command.exampleUsage(prefix), false);
-        embedBuilder.addField("Command Description", command.getDescription(), false);
+        embedBuilder.addField("Example Usage", command.exampleUsage(prefix), false);
+        embedBuilder.addField("Description", command.getDescription(), false);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
         return embedBuilder.build();
@@ -120,7 +120,7 @@ public class HelpCommand implements ICommand {
 
         for (ICommand command : CafeBot.getCommandManager().getCommands()) {
             if (command.getCategoryType().equals(categoryType)) {
-                stringBuilder.append(count++).append(". ").append("`").append(prefix).append(command.getName());
+                stringBuilder.append("**").append(count++).append("** `").append(prefix).append(command.getName());
                 stringBuilder.append("`\n");
             }
         }
@@ -143,14 +143,14 @@ public class HelpCommand implements ICommand {
         int count = 1;
 
         for (CategoryType categoryType : CategoryType.values()) {
-            stringBuilder.append(count++).append(". ").append("`").append(categoryType.toString());
+            stringBuilder.append("**").append(count++).append("** `").append(categoryType.toString());
 
             stringBuilder.append("`\n");
         }
 
         embedBuilder.addField("**Command Categories**", stringBuilder.toString(), true);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setFooter("If you're stuck, use " + prefix + "help (category name).");
+        embedBuilder.setFooter("If you're stuck, use " + prefix + "help (category name/number).");
         return embedBuilder.build();
     }
 

@@ -58,7 +58,7 @@ public class PingCommand implements ICommand {
                 .append("**CPU Usage** - `").append(cpuLoad).append("%`\n")
                 .append("**OS Memory Usage** - `").append(systemMemoryUsage).append("` mb / `").append(systemMemoryTotal).append("` mb\n")
                 .append("**Bot Memory Usage** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
-                .append("**Bot Uptime** - `").append(formatTime(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
+                .append("**Bot Uptime** - `").append(CafeBot.getGeneralHelper().formatTimeDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
                 .append("**Commands Run** - `").append(CafeBot.getCommandsRun()).append("`\n\n")
                 .append("Hello there! How are you? Would you like to order some coffee?");
         embedBuilder.setDescription(descriptionBuilder.toString());
@@ -66,15 +66,6 @@ public class PingCommand implements ICommand {
         embedBuilder.setThumbnail(CafeBot.getDiscordAvatarUrl());
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
-    }
-
-    private String formatTime(@NotNull Long timeInMillis) {
-        final long days = timeInMillis / TimeUnit.DAYS.toMillis(1);
-        final long hours = timeInMillis % TimeUnit.DAYS.toMillis(1) / TimeUnit.HOURS.toMillis(1);
-        final long minutes = timeInMillis % TimeUnit.DAYS.toMillis(1) % TimeUnit.HOURS.toMillis(1) / TimeUnit.MINUTES.toMillis(1);
-        final long seconds = timeInMillis % TimeUnit.DAYS.toMillis(1) % TimeUnit.HOURS.toMillis(1) % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
-
-        return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.sections.music.custom;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -36,6 +37,25 @@ public class CustomGuildSongQueueHandler {
         customSongQueue = new ArrayList<>();
         unshuffledQueue = new ArrayList<>();
         repeatQueue = new ArrayList<>();
+    }
+
+    @NotNull
+    public Long getQueueLengthMS() {
+        GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(CafeBot.getGuildHandler().getGuild(guildID));
+        if (customSongQueue.isEmpty() && musicManager.audioPlayer.getPlayingTrack() == null) {
+            return 0L;
+        }
+
+        long totalTime = 0;
+
+        if (musicManager.audioPlayer.getPlayingTrack() != null) {
+            totalTime += musicManager.audioPlayer.getPlayingTrack().getDuration() - musicManager.audioPlayer.getPlayingTrack().getPosition();
+        }
+
+        for (CustomSong customSong : customSongQueue) {
+            totalTime += customSong.getLengthMS();
+        }
+        return totalTime;
     }
 
     /**

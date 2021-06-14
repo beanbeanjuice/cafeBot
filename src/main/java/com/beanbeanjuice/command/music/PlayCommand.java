@@ -10,6 +10,7 @@ import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import com.beanbeanjuice.utility.sections.music.custom.CustomSong;
+import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.Paging;
@@ -100,14 +101,15 @@ public class PlayCommand implements ICommand {
                     return;
                 }
 
-//                link = "ytsearch:" + getLinkFromSpotifyTrack(track) + " audio";
-//                PlayerManager.getInstance().loadAndPlay(channel, link, false);
+                String estimatedTimeString = CafeBot.getGeneralHelper().formatTimeDays(CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getQueueLengthMS());
                 CafeBot.getCustomSongManager().addSongToGuild(event.getGuild(), track, user);
                 event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                         "Queued Song",
                         "`" + track.getName() + "` by `" + track.getArtists()[0].getName() + "` [`"
                                 + CafeBot.getGeneralHelper().formatTime(track.getDurationMs().longValue()) + "`]\n\n" +
-                                "**Requested By**: " + user.getAsMention()
+                                "**Requested By**: " + user.getAsMention() +
+                                "\n**Estimated Time Until Playing**: `" + estimatedTimeString + "`\n" +
+                                "**Place In Queue**: " + CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().getCustomSongQueue().size()
                 )).queue();
                 return;
 
@@ -148,16 +150,6 @@ public class PlayCommand implements ICommand {
                 for (PlaylistTrack playlistTrack : playlistTracksUnconverted) {
 
                     Track track = (Track) playlistTrack.getTrack();
-
-//                    StringBuilder stringBuilder = new StringBuilder();
-//                    stringBuilder.append(track.getName()).append(" by ")
-//                            .append(track.getArtists()[0].getName());
-//
-//                    if (track.getArtists().length > 1) {
-//                        stringBuilder.append(" and ").append(track.getArtists()[1].getName());
-//                    }
-
-//                    PlayerManager.getInstance().loadAndPlay(channel, "ytsearch:" + stringBuilder.toString() + " audio", true);
                     CafeBot.getCustomSongManager().addSongToGuild(event.getGuild(), track, user);
                 }
                 event.getChannel().sendMessage(loadedPlaylist()).queue();
@@ -203,31 +195,9 @@ public class PlayCommand implements ICommand {
     }
 
     @NotNull
-    private String getLinkFromSpotifyTrack(@NotNull Track track) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(track.getName()).append(" by ")
-                .append(track.getArtists()[0].getName());
-
-        if (track.getArtists().length > 1) {
-            stringBuilder.append(" and ")
-                    .append(track.getArtists()[1].getName());
-        }
-        return stringBuilder.toString();
-    }
-
-    @NotNull
     private MessageEmbed userMustBeInVoiceChannelEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setDescription("Sorry, you must be in a voice channel to use this command.");
-        embedBuilder.setColor(Color.red);
-        return embedBuilder.build();
-    }
-
-    @NotNull
-    private MessageEmbed emptySpotifyPlaylist() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Empty Spotify Playlist");
-        embedBuilder.setDescription("The spotify playlist you requested is currently empty.");
         embedBuilder.setColor(Color.red);
         return embedBuilder.build();
     }

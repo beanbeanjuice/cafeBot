@@ -228,6 +228,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `mute` - Mute a specified user.
 * `un-mute` - Unmute a specified user.
 * `notify-on-update` - `Enable` or `Disable` bot notifications. This is `Enabled` by default.
+* `create-embed` - Send a customised `embedded message` in a specified channel!
 
 
 <!-- ROADMAP -->
