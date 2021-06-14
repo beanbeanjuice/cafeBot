@@ -281,6 +281,24 @@ public class GeneralHelper {
     }
 
     /**
+     * Gets a {@link TextChannel} from the ID.
+     * @param guild The {@link Guild} that contains the {@link TextChannel}.
+     * @param textChannelID The ID of the {@link TextChannel}.
+     * @return The {@link TextChannel}.
+     */
+    @Nullable
+    public TextChannel getTextChannel(@NotNull Guild guild, @NotNull String textChannelID) {
+        textChannelID = textChannelID.replace("<#", "");
+        textChannelID = textChannelID.replace(">", "");
+
+        try {
+            return guild.getTextChannelById(textChannelID);
+        } catch (NullPointerException | NumberFormatException e) {
+            return null;
+        }
+    }
+
+    /**
      * Gets a {@link Role} from the ID.
      * @param guild The {@link Guild} that contains the {@link Role}.
      * @param roleID The ID of the {@link Role}.

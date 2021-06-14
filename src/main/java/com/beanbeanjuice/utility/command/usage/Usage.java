@@ -139,6 +139,15 @@ public class Usage {
                     }
                 }
 
+                case TEXTCHANNEL -> {
+                    incorrect = !isTextChannel(guild, args.get(count));
+                    if (incorrect) {
+                        incorrectIndex = count;
+                        errorType = CommandErrorType.TEXTCHANNEL;
+                        return getErrorType();
+                    }
+                }
+
             }
 
             // I have no idea what this does.
@@ -223,7 +232,27 @@ public class Usage {
     }
 
     /**
+     * Checks whether or not the provided {@link String} is a {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+     * @param guild The {@link Guild} that contains the {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+     * @param textChannelID The ID of the {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+     * @return Whether or not the specified {@link String} is a {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+     */
+    @NotNull
+    private Boolean isTextChannel(@NotNull Guild guild, @NotNull String textChannelID) {
+        textChannelID = textChannelID.replace("<#", "");
+        textChannelID = textChannelID.replace(">", "");
+
+        try {
+            guild.getTextChannelById(textChannelID);
+        } catch (NullPointerException | NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Checks whether or not the provided {@link String} is a {@link net.dv8tion.jda.api.entities.User User}.
+     * @param guild The {@link Guild} that contains the {@link net.dv8tion.jda.api.entities.Role Role}.
      * @param roleID The ID of the {@link net.dv8tion.jda.api.entities.Role Role}.
      * @return Whether or not the specified {@link String} is a {@link net.dv8tion.jda.api.entities.Role Role}.
      */
