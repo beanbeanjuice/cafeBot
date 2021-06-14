@@ -102,7 +102,7 @@ public class SetMutedRoleCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.ROLE, "Mentioned Role", true);
+        usage.addUsage(CommandType.ROLE, "Role Mention/ID", true);
         return usage;
     }
 

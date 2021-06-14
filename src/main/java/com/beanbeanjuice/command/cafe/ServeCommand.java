@@ -134,7 +134,7 @@ public class ServeCommand implements ICommand {
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.TEXT, "Any English Word", true);
-        usage.addUsage(CommandType.USER, "A Mentioned User", false);
+        usage.addUsage(CommandType.USER, "Discord Mention", false);
         return usage;
     }
 

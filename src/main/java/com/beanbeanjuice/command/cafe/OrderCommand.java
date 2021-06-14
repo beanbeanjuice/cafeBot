@@ -130,8 +130,8 @@ public class OrderCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.NUMBER, "The Menu Item Number", true);
-        usage.addUsage(CommandType.USER, "The Person You Are Ordering For", true);
+        usage.addUsage(CommandType.NUMBER, "Menu Item Number", true);
+        usage.addUsage(CommandType.USER, "Discord Mention", true);
         usage.addUsage(CommandType.SENTENCE, "Extra Message", false);
         return usage;
     }
