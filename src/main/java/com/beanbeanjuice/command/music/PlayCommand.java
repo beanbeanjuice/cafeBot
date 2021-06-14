@@ -262,7 +262,7 @@ public class PlayCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.SENTENCE, "link/playlist", false);
+        usage.addUsage(CommandType.SENTENCE, "Song Name/Link/Spotify Playlist", false);
         return usage;
     }
 

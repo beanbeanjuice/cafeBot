@@ -76,7 +76,7 @@ public class ConnectFourCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "Opponent Mention", true);
+        usage.addUsage(CommandType.USER, "Discord Mention", true);
         return usage;
     }
 

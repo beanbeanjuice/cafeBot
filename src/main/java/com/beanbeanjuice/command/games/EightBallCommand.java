@@ -79,7 +79,7 @@ public class EightBallCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.SENTENCE, "A yes or no question.", true);
+        usage.addUsage(CommandType.SENTENCE, "Yes or No Question", true);
         return usage;
     }
 
