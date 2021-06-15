@@ -11,11 +11,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * A custom {@link ListenerAdapter} for listening to when a user joins a {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel} that
+ * has a {@link net.dv8tion.jda.api.entities.Role} bounded to it.
+ *
+ * @author beanbeanjuice
+ */
 public class VoiceChatListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
-        ArrayList<String> roleIDs = new ArrayList<>(CafeBot.getVoiceChatRoleBindHandler().getBindedRoles(event.getGuild().getId(), event.getChannelJoined().getId()));
+        ArrayList<String> roleIDs = new ArrayList<>(CafeBot.getVoiceChatRoleBindHandler().getBoundRoles(event.getGuild().getId(), event.getChannelJoined().getId()));
 
         for (String roleID : roleIDs) {
             try {
@@ -30,7 +36,7 @@ public class VoiceChatListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
-        ArrayList<String> roleIDs = new ArrayList<>(CafeBot.getVoiceChatRoleBindHandler().getBindedRoles(event.getGuild().getId(), event.getChannelLeft().getId()));
+        ArrayList<String> roleIDs = new ArrayList<>(CafeBot.getVoiceChatRoleBindHandler().getBoundRoles(event.getGuild().getId(), event.getChannelLeft().getId()));
 
         for (String roleID : roleIDs) {
             try {

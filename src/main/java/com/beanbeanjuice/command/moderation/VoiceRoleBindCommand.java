@@ -26,7 +26,7 @@ public class VoiceRoleBindCommand implements ICommand {
         String roleID = CafeBot.getGeneralHelper().getRole(event.getGuild(), args.get(1)).getId();
 
         // Checking if it has not been binded.
-        if (!CafeBot.getVoiceChatRoleBindHandler().getBindedRoles(guildID, voiceChannelID).contains(roleID)) {
+        if (!CafeBot.getVoiceChatRoleBindHandler().getBoundRoles(guildID, voiceChannelID).contains(roleID)) {
             if (CafeBot.getVoiceChatRoleBindHandler().bind(guildID, voiceChannelID, roleID)) {
                 event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                         "Role Bound to Voice Channel",
