@@ -313,7 +313,8 @@ public class CafeBot {
                 new MuteCommand(),
                 new UnMuteCommand(),
                 new NotifyOnUpdateCommand(),
-                new CreateEmbedCommand()
+                new CreateEmbedCommand(),
+                new VoiceRoleBindCommand()
         );
 
         jdaBuilder.addEventListeners(new Listener());

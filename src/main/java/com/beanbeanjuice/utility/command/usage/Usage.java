@@ -4,6 +4,8 @@ import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.usage.types.CommandErrorType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -148,6 +150,15 @@ public class Usage {
                     }
                 }
 
+                case VOICECHANNEL -> {
+                    incorrect = !isVoiceChannel(guild, args.get(count));
+                    if (incorrect) {
+                        incorrectIndex = count;
+                        errorType = CommandErrorType.VOICECHANNEL;
+                        return getErrorType();
+                    }
+                }
+
             }
 
             // I have no idea what this does.
@@ -190,6 +201,26 @@ public class Usage {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * Checks whether or not the provided {@link String} is a valid {@link VoiceChannel}.
+     * @param guild The {@link Guild} to check.
+     * @param voiceChannelID The ID of the {@link VoiceChannel}.
+     * @return Whether or not the {@link String} is a {@link VoiceChannel} in the {@link Guild}.
+     */
+    @NotNull
+    private Boolean isVoiceChannel(@NotNull Guild guild, @NotNull String voiceChannelID) {
+        try {
+            VoiceChannel channel = guild.getVoiceChannelById(voiceChannelID);
+
+            if (channel == null) {
+                return false;
+            }
+        } catch (NullPointerException | NumberFormatException e) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -243,7 +274,11 @@ public class Usage {
         textChannelID = textChannelID.replace(">", "");
 
         try {
-            guild.getTextChannelById(textChannelID);
+            TextChannel channel = guild.getTextChannelById(textChannelID);
+
+            if (channel == null) {
+                return false;
+            }
         } catch (NullPointerException | NumberFormatException e) {
             return false;
         }
