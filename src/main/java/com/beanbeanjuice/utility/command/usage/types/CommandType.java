@@ -16,6 +16,7 @@ public enum CommandType {
     ROLE ("ROLE"),
     DATE ("DATE"),
     TEXTCHANNEL ("TEXT CHANNEL ID"),
+    VOICECHANNEL ("VOICE CHANNEL ID"),
     SENTENCE ("SENTENCE"); // This must be the last one added.
 
     private final String description;
