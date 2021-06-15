@@ -22,21 +22,24 @@ public class VoiceChatListener extends ListenerAdapter {
 
     @Override
     public void onGuildVoiceMove(@NotNull GuildVoiceMoveEvent event) {
-        ArrayList<String> roleIDs = new ArrayList<>(CafeBot.getVoiceChatRoleBindHandler().getBoundRoles(event.getGuild().getId(), event.getChannelLeft().getId()));
+        ArrayList<String> fromIDs = new ArrayList<>(CafeBot.getVoiceChatRoleBindHandler().getBoundRoles(event.getGuild().getId(), event.getChannelLeft().getId()));
+        ArrayList<String> toIDs = new ArrayList<>(CafeBot.getVoiceChatRoleBindHandler().getBoundRoles(event.getGuild().getId(), event.getChannelJoined().getId()));
 
-        for (String roleID : roleIDs) {
+        // Get bound roles from the channel left and compare it to the bound roles from the channel joined.
+        // Remove any roles from the 'from' array list that match.
+        fromIDs.removeAll(toIDs);
+
+        for (String roleID : fromIDs) {
             try {
                 event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRoleById(roleID)).queue();
             } catch (NullPointerException | IllegalArgumentException e) {
-                CafeBot.getVoiceChatRoleBindHandler().unBind(event.getGuild().getId(), event.getChannelLeft().getId(), roleID);
+                CafeBot.getVoiceChatRoleBindHandler().unBind(event.getGuild().getId(), event.getChannelJoined().getId(), roleID);
             } catch (InsufficientPermissionException e) {
                 CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).log(new VoiceRoleBindCommand(), LogLevel.ERROR, "Insufficient Permissions", "The role I am trying to remove from a user is higher than the bot.");
             }
         }
 
-        roleIDs = new ArrayList<>(CafeBot.getVoiceChatRoleBindHandler().getBoundRoles(event.getGuild().getId(), event.getChannelJoined().getId()));
-
-        for (String roleID : roleIDs) {
+        for (String roleID : toIDs) {
             try {
                 event.getGuild().addRoleToMember(event.getMember(), event.getGuild().getRoleById(roleID)).queue();
             } catch (NullPointerException | IllegalArgumentException e) {
