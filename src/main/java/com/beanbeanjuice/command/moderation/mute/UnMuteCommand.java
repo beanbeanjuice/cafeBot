@@ -106,7 +106,7 @@ public class UnMuteCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "Discord User Mention", true);
+        usage.addUsage(CommandType.USER, "Discord Mention", true);
         return usage;
     }
 

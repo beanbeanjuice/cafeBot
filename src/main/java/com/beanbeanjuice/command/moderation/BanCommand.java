@@ -107,7 +107,7 @@ public class BanCommand implements ICommand {
     public Usage getUsage() {
         Usage usage = new Usage();
         usage.addUsage(CommandType.USER, "Discord Mention", true);
-        usage.addUsage(CommandType.SENTENCE, "Reason for Ban", false);
+        usage.addUsage(CommandType.SENTENCE, "Reason", false);
         return usage;
     }
 

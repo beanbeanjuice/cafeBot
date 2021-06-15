@@ -106,7 +106,7 @@ public class KickCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "Discord User", true);
+        usage.addUsage(CommandType.USER, "Discord Mention", true);
         usage.addUsage(CommandType.SENTENCE, "Reason", false);
         return usage;
     }

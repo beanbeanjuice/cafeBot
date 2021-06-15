@@ -36,6 +36,7 @@ public class LogManager {
     private SimpMessageSendingOperations sendingOperations;
     private String currentLogFileName;
     private String filePath;
+    private String logFileTime;
 
     /**
      * Create a {@link LogManager LogManager} instance.
@@ -49,6 +50,20 @@ public class LogManager {
 
         webhookURLs = new ArrayList<>(); // Creates the ArrayList
 
+        checkFiles();
+
+        log(LogManager.class, LogLevel.INFO, "Starting the Uncaught Exception Handler", true, false);
+        Thread.setDefaultUncaughtExceptionHandler((thread, exception) -> {
+            CafeBot.getLogManager().log(thread.getClass(), LogLevel.WARN, "Unhandled Exception: " + exception.getMessage());
+            CafeBot.getLogManager().logStackTrace(exception);
+        });
+    }
+
+    private void checkFiles() {
+
+        // Setting the current log file time.
+        logFileTime = new Time(Calendar.getInstance(TimeZone.getDefault())).toString("{MM}-{dd}-{yyyy}");
+
         File file = new File(filePath);
         if (!file.exists()) {
             file.mkdir();
@@ -60,12 +75,6 @@ public class LogManager {
         if (!createLogFile(filePath)) {
             log(this.getClass(), LogLevel.INFO, "Log for today has already been created.");
         }
-
-        log(LogManager.class, LogLevel.INFO, "Starting the Uncaught Exception Handler", true, false);
-        Thread.setDefaultUncaughtExceptionHandler((thread, exception) -> {
-            CafeBot.getLogManager().log(thread.getClass(), LogLevel.WARN, "Unhandled Exception: " + exception.getMessage());
-            CafeBot.getLogManager().logStackTrace(exception);
-        });
     }
 
     private void logStackTrace(@NotNull Throwable exception) {
@@ -312,8 +321,11 @@ public class LogManager {
     public void log(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message,
                     @NotNull Boolean logToWebhook, @NotNull Boolean logToLogChannel, @Nullable Throwable exception) {
 
-
         Time time = new Time(Calendar.getInstance(TimeZone.getDefault()));
+        if (!time.toString("{MM}-{dd}-{yyyy}").equals(logFileTime)) {
+            checkFiles();
+            log(this.getClass(), LogLevel.INFO, "New day... creating new log file.", true, false);
+        }
 
         Logger logger = LoggerFactory.getLogger(c);
 

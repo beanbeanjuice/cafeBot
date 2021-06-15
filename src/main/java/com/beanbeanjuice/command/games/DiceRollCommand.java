@@ -66,7 +66,7 @@ public class DiceRollCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.NUMBER, "What number?", true);
+        usage.addUsage(CommandType.NUMBER, "Any Number", true);
         return usage;
     }
 
