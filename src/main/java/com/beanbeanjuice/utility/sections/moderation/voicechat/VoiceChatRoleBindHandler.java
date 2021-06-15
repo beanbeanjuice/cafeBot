@@ -40,9 +40,9 @@ public class VoiceChatRoleBindHandler {
             ResultSet resultSet = statement.executeQuery(arguments);
 
             while (resultSet.next()) {
-                String guildID = String.valueOf(resultSet.getLong(0));
-                String voiceChannelID = String.valueOf(resultSet.getLong(1));
-                String roleID = String.valueOf(resultSet.getLong(2));
+                String guildID = String.valueOf(resultSet.getLong(1));
+                String voiceChannelID = String.valueOf(resultSet.getLong(2));
+                String roleID = String.valueOf(resultSet.getLong(3));
 
                 createIfNotExists(guildID, voiceChannelID);
 

@@ -15,6 +15,7 @@ public enum CommandErrorType {
     ROLE ("A mentioned role is required."),
     DATE ("A date is required. Use the format (YYYY-MM-DD)."),
     TEXTCHANNEL ("A text channel ID is required. You can right click on a text channel and press copy ID, or you can use #example-channel."),
+    VOICECHANNEL ("A voice channel ID is required. You can right click on a voice channel and press copy ID. Please google for more information."),
     SUCCESS ("Successful command."),
     TOO_MANY_ARGUMENTS ("There are too many arguments."),
     NOT_ENOUGH_ARGUMENTS ("There are not enough arguments.");
