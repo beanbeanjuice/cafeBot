@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation;
+package com.beanbeanjuice.command.moderation.voicebind;
 
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -20,6 +20,10 @@ public class VoiceRoleBindCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
+
+        if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
+            return;
+        }
 
         String guildID = event.getGuild().getId();
         String voiceChannelID = args.get(0);

@@ -16,6 +16,8 @@ import com.beanbeanjuice.command.moderation.mute.UnMuteCommand;
 import com.beanbeanjuice.command.moderation.SetPollChannelCommand;
 import com.beanbeanjuice.command.moderation.SetRaffleChannelCommand;
 import com.beanbeanjuice.command.moderation.SetUpdateChannelCommand;
+import com.beanbeanjuice.command.moderation.voicebind.GetVoiceRoleBindsCommand;
+import com.beanbeanjuice.command.moderation.voicebind.VoiceRoleBindCommand;
 import com.beanbeanjuice.command.moderation.welcome.EditWelcomeMessageCommand;
 import com.beanbeanjuice.command.moderation.welcome.SetWelcomeChannelCommand;
 import com.beanbeanjuice.command.music.*;
@@ -314,7 +316,8 @@ public class CafeBot {
                 new UnMuteCommand(),
                 new NotifyOnUpdateCommand(),
                 new CreateEmbedCommand(),
-                new VoiceRoleBindCommand()
+                new VoiceRoleBindCommand(),
+                new GetVoiceRoleBindsCommand()
         );
 
         jdaBuilder.addEventListeners(new Listener());
