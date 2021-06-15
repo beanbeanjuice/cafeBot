@@ -92,6 +92,7 @@
 * Moderation Commands
 * Poll/Raffle Commands
 * Music Player
+* Bind Roles to Voice Channels
 * And more to come...
 
 
