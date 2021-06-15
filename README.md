@@ -229,6 +229,8 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `un-mute` - Unmute a specified user.
 * `notify-on-update` - `Enable` or `Disable` bot notifications. This is `Enabled` by default.
 * `create-embed` - Send a customised `embedded message` in a specified channel!
+* `voice-role-bind` - Bind specific role(s) to a `voice channel`!
+* `get-voice-role-binds` - See which `voice channels` have `roles` bound to them!
 
 
 <!-- ROADMAP -->
