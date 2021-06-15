@@ -16,6 +16,8 @@ import com.beanbeanjuice.command.moderation.mute.UnMuteCommand;
 import com.beanbeanjuice.command.moderation.SetPollChannelCommand;
 import com.beanbeanjuice.command.moderation.SetRaffleChannelCommand;
 import com.beanbeanjuice.command.moderation.SetUpdateChannelCommand;
+import com.beanbeanjuice.command.moderation.voicebind.GetVoiceRoleBindsCommand;
+import com.beanbeanjuice.command.moderation.voicebind.VoiceRoleBindCommand;
 import com.beanbeanjuice.command.moderation.welcome.EditWelcomeMessageCommand;
 import com.beanbeanjuice.command.moderation.welcome.SetWelcomeChannelCommand;
 import com.beanbeanjuice.command.music.*;
@@ -38,6 +40,8 @@ import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.logger.LogManager;
 import com.beanbeanjuice.utility.sections.fun.poll.PollHandler;
 import com.beanbeanjuice.utility.sections.fun.raffle.RaffleHandler;
+import com.beanbeanjuice.utility.sections.moderation.voicechat.VoiceChatListener;
+import com.beanbeanjuice.utility.sections.moderation.voicechat.VoiceChatRoleBindHandler;
 import com.beanbeanjuice.utility.sections.moderation.welcome.WelcomeHandler;
 import com.beanbeanjuice.utility.sections.music.custom.CustomSongManager;
 import com.beanbeanjuice.utility.sql.SQLServer;
@@ -148,6 +152,9 @@ public class CafeBot {
 
     // Song Stuff
     private static CustomSongManager customSongManager;
+
+    // Voice Chat Role Bind Handler
+    private static VoiceChatRoleBindHandler voiceChatRoleBindHandler;
 
     public static void main(String[] args) throws LoginException, InterruptedException {
 
@@ -308,7 +315,9 @@ public class CafeBot {
                 new MuteCommand(),
                 new UnMuteCommand(),
                 new NotifyOnUpdateCommand(),
-                new CreateEmbedCommand()
+                new CreateEmbedCommand(),
+                new VoiceRoleBindCommand(),
+                new GetVoiceRoleBindsCommand()
         );
 
         jdaBuilder.addEventListeners(new Listener());
@@ -341,12 +350,23 @@ public class CafeBot {
         welcomeListener = new WelcomeListener();
         jda.addEventListener(welcomeListener);
 
+        voiceChatRoleBindHandler = new VoiceChatRoleBindHandler();
+        jda.addEventListener(new VoiceChatListener());
+
         customSongManager = new CustomSongManager();
 
         // Final Things
         logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
         updateGuildPresence();
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
+    }
+
+    /**
+     * @return The current {@link VoiceChatRoleBindHandler} for this session.
+     */
+    @NotNull
+    public static VoiceChatRoleBindHandler getVoiceChatRoleBindHandler() {
+        return voiceChatRoleBindHandler;
     }
 
     /**

@@ -93,7 +93,7 @@ public class SetLiveNotificationsRoleCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "Role ID or Mention", true);
+        usage.addUsage(CommandType.TEXT, "Role Mention/ID", true);
         return usage;
     }
 
