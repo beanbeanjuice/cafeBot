@@ -5,7 +5,6 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -22,7 +21,7 @@ public class GetVoiceRoleBindsCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        if (args.size() == 0) {
+        if (!event.getMember().getVoiceState().inVoiceChannel()) {
             ArrayList<VoiceChannel> voiceChannels = new ArrayList<>();
             CafeBot.getVoiceChatRoleBindHandler().getBoundChannels(event.getGuild().getId()).forEach((voiceChannelID, roles) -> {
                 try {
@@ -63,20 +62,22 @@ public class GetVoiceRoleBindsCommand implements ICommand {
             return;
         }
 
-        if (args.size() == 1) {
+        if (event.getMember().getVoiceState().inVoiceChannel()) {
             ArrayList<Role> roles = new ArrayList<>();
 
-            for (String roleID : new ArrayList<>(CafeBot.getVoiceChatRoleBindHandler().getBoundRoles(event.getGuild().getId(), args.get(0)))) {
+            VoiceChannel voiceChannel = event.getMember().getVoiceState().getChannel();
+
+            for (String roleID : new ArrayList<>(CafeBot.getVoiceChatRoleBindHandler().getBoundRoles(event.getGuild().getId(), voiceChannel.getId()))) {
                 Role role = CafeBot.getGeneralHelper().getRole(event.getGuild(), roleID);
 
                 if (role == null) {
-                    CafeBot.getVoiceChatRoleBindHandler().unBind(event.getGuild().getId(), args.get(0), roleID);
+                    CafeBot.getVoiceChatRoleBindHandler().unBind(event.getGuild().getId(), voiceChannel.getId(), roleID);
                 }
                 roles.add(role);
             }
 
             StringBuilder descriptionBuilder = new StringBuilder();
-            descriptionBuilder.append("**Current List of Roles for the Specified Voice Channel**\n\n");
+            descriptionBuilder.append("**Current List of Roles for the Current Voice Channel**\n\n");
 
             for (int i = 0; i < roles.size(); i++) {
                 descriptionBuilder.append(roles.get(i).getAsMention());
@@ -114,19 +115,18 @@ public class GetVoiceRoleBindsCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Get a list of voice channels that have roles bound to them!";
+        return "Get a list of voice channels that have roles bound to them! If you want to get a list of roles bound to a " +
+                "specific channel, just join the VC you want to check and run the command!";
     }
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "get-binds` or `" + prefix + "get-binds 798830793380069378`";
+        return "`" + prefix + "get-binds`";
     }
 
     @Override
     public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.VOICECHANNEL, "Voice Channel ID", false);
-        return usage;
+        return new Usage();
     }
 
     @Override
