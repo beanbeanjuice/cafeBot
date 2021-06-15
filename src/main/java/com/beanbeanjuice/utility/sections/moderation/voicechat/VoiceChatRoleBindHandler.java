@@ -3,13 +3,16 @@ package com.beanbeanjuice.utility.sections.moderation.voicechat;
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import javax.management.relation.Role;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * A handler for {@link net.dv8tion.jda.api.entities.VoiceChannel} and their corresponding {@link net.dv8tion.jda.api.entities.Role Roles}.
+ *
+ * @author beanbeanjuice
+ */
 public class VoiceChatRoleBindHandler {
 
     /**
@@ -17,13 +20,22 @@ public class VoiceChatRoleBindHandler {
      */
     private HashMap<String, HashMap<String, ArrayList<String>>> guildVoiceBinds;
 
+    /**
+     * Creates a new {@link VoiceChatRoleBindHandler} object.
+     */
     public VoiceChatRoleBindHandler() {
         guildVoiceBinds = new HashMap<>();
         updateCache();
     }
 
+    /**
+     * Gets the bound roles for the specified {@link net.dv8tion.jda.api.entities.Guild Guild} and {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel}.
+     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @param voiceChannelID The ID of the {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel}.
+     * @return The {@link ArrayList<String>} of {@link net.dv8tion.jda.api.entities.Role} IDs bound to the {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel}.
+     */
     @NotNull
-    public ArrayList<String> getBindedRoles(@NotNull String guildID, @NotNull String voiceChannelID) {
+    public ArrayList<String> getBoundRoles(@NotNull String guildID, @NotNull String voiceChannelID) {
         try {
             return guildVoiceBinds.get(guildID).get(voiceChannelID);
         } catch (NullPointerException e) {
@@ -31,7 +43,10 @@ public class VoiceChatRoleBindHandler {
         }
     }
 
-    public void updateCache() {
+    /**
+     * Updates the cache in the database.
+     */
+    private void updateCache() {
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM cafeBot.voice_channel_role_binds;";
 
@@ -53,6 +68,11 @@ public class VoiceChatRoleBindHandler {
         }
     }
 
+    /**
+     * Creates a table in the cache if it does not exist.
+     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @param voiceChannelID The ID of the {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel} in the {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     */
     private void createIfNotExists(@NotNull String guildID, @NotNull String voiceChannelID) {
         // Checking if the guild exists in the cache.
         if (!guildVoiceBinds.containsKey(guildID)) {
@@ -65,6 +85,13 @@ public class VoiceChatRoleBindHandler {
         }
     }
 
+    /**
+     * Bind a {@link net.dv8tion.jda.api.entities.Role Role} to a specified {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel}.
+     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild} to remove the {@link net.dv8tion.jda.api.entities.Role Role} from.
+     * @param voiceChannelID The ID of the {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel} in the {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @param roleID The ID of the {@link net.dv8tion.jda.api.entities.Role Role} in the specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @return Whether or not binding it was successful.
+     */
     @NotNull
     public Boolean bind(@NotNull String guildID, @NotNull String voiceChannelID, @NotNull String roleID) {
         createIfNotExists(guildID, voiceChannelID);
@@ -91,6 +118,13 @@ public class VoiceChatRoleBindHandler {
         return false;
     }
 
+    /**
+     * Unbind a {@link net.dv8tion.jda.api.entities.Role Role} from a specified {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel}.
+     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild} to remove the {@link net.dv8tion.jda.api.entities.Role Role} from.
+     * @param voiceChannelID The ID of the {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel} in the {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @param roleID The ID of the {@link net.dv8tion.jda.api.entities.Role Role} in the specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @return Whether or not unbinding it was successful.
+     */
     @NotNull
     public Boolean unBind(@NotNull String guildID, @NotNull String voiceChannelID, @NotNull String roleID) {
 
