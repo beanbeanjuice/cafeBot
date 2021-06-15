@@ -4,6 +4,7 @@ import com.beanbeanjuice.CafeBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -146,7 +147,15 @@ public class ConnectFourGame {
                             r.retrieveUsers().queue(notPlayers -> {
                                 for (User user : notPlayers) {
                                     if (!user.isBot()) {
-                                        r.removeReaction(user).queue();
+                                        try {
+                                            r.removeReaction(user).queue();
+                                        } catch (InsufficientPermissionException e) {
+                                            r.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                                                    "Insufficient Permissions",
+                                                    "The bot has insufficient permissions: " + e.getMessage() + ".\n" +
+                                                            "Please make sure the bot has the correct permissions."
+                                            )).queue();
+                                        }
                                     }
                                 }
                             });
