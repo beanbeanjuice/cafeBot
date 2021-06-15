@@ -37,9 +37,32 @@ public class VoiceChatRoleBindHandler {
     @NotNull
     public ArrayList<String> getBoundRoles(@NotNull String guildID, @NotNull String voiceChannelID) {
         try {
-            return guildVoiceBinds.get(guildID).get(voiceChannelID);
+            ArrayList<String> roles = guildVoiceBinds.get(guildID).get(voiceChannelID);
+            if (roles == null) {
+                return new ArrayList<>();
+            }
+            return roles;
         } catch (NullPointerException e) {
             return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Gets the {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannels} in a specified {@link net.dv8tion.jda.api.entities.Guild Guild} that has
+     * {@link net.dv8tion.jda.api.entities.Role Roles} bounded to them.
+     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild}.
+     * @return The {@link HashMap} that contains the {@link net.dv8tion.jda.api.entities.Guild Guild} ID as the key.
+     */
+    @NotNull
+    public HashMap<String, ArrayList<String>> getBoundChannels(@NotNull String guildID) {
+        try {
+            HashMap<String, ArrayList<String>> channels = guildVoiceBinds.get(guildID);
+            if (channels == null) {
+                return new HashMap<>();
+            }
+            return channels;
+        } catch (NullPointerException e) {
+            return new HashMap<>();
         }
     }
 
