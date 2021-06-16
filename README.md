@@ -167,7 +167,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `tic-tac-toe` - Play tic tac toe with someone!
 * `connect-four` - Play connect four with someone!
 ##### 5. **SOCIAL**
-* Nothing here yet...
+* `vent` - Anonymously vent to the server! ~~If the server has anonymous venting enabled...~~
 ##### 6. **INTERACTION**
 * `hug` - Hug someone!
 * `punch` - Punch someone!
@@ -232,6 +232,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `create-embed` - Send a customised `embedded message` in a specified channel!
 * `voice-role-bind` - Bind specific role(s) to a `voice channel`!
 * `get-voice-role-binds` - See which `voice channels` have `roles` bound to them!
+* `set-venting-channel` - Sets the current channel to an anonymous venting channel!
 
 
 <!-- ROADMAP -->
