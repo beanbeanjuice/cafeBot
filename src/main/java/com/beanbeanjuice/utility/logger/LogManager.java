@@ -411,7 +411,7 @@ public class LogManager {
     private void logToWebhook(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Time time) {
         String temp = "``[" + time.toString("{HH}:{mm}:{ss} {Z}") + "]" + " [" + c.getName() + "/" + logLevel + "]: " + message + "``";
 
-        temp = shortenToLimit(temp, 2000); // Shortens it to 2000 characters.
+        temp = CafeBot.getGeneralHelper().shortenToLimit(temp, 2000); // Shortens it to 2000 characters.
 
         for (String url : webhookURLs) {
             Webhook hook = new Webhook(url);
@@ -438,29 +438,13 @@ public class LogManager {
         embedBuilder.setAuthor(logLevel.toString());
         embedBuilder.setThumbnail(logLevel.getImageURL());
         embedBuilder.setTitle("`" + c.getSimpleName() + "`");
-        embedBuilder.setDescription(shortenToLimit(message, 4000));
+        embedBuilder.setDescription(CafeBot.getGeneralHelper().shortenToLimit(message, 4000));
         embedBuilder.setColor(logLevel.getColor());
         embedBuilder.setTimestamp(new Date().toInstant());
 
         try {
             logChannel.sendMessage(embedBuilder.build()).complete();
         } catch (NullPointerException ignored) {}
-    }
-
-    /**
-     * Shorten the message to a certain limit.
-     * @param message The contents of the message.
-     * @param limit The limit of the new message.
-     * @return The new, limited message.
-     */
-    @NotNull
-    private String shortenToLimit(@NotNull String message, @NotNull Integer limit) {
-        message = message.replace("\"", "\\\"");
-        if (message.length() >= limit) {
-            return message.substring(0, limit - 3) + "...";
-        }
-
-        return message;
     }
 
     /**
