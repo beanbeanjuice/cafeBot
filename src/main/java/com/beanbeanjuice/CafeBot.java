@@ -21,6 +21,7 @@ import com.beanbeanjuice.command.moderation.voicebind.VoiceRoleBindCommand;
 import com.beanbeanjuice.command.moderation.welcome.EditWelcomeMessageCommand;
 import com.beanbeanjuice.command.moderation.welcome.SetWelcomeChannelCommand;
 import com.beanbeanjuice.command.music.*;
+import com.beanbeanjuice.command.social.VentCommand;
 import com.beanbeanjuice.command.twitch.*;
 import com.beanbeanjuice.utility.listener.WelcomeListener;
 import com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler;
@@ -160,9 +161,8 @@ public class CafeBot {
 
         SpringApplication.run(CafeBot.class, args);
 
-        logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
-
         generalHelper = new GeneralHelper();
+        logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
 
         countingHelper = new CountingHelper();
         twitchHandler = new TwitchHandler();
@@ -242,6 +242,7 @@ public class CafeBot {
 
         // Social Commands
         commandManager.addCommands(
+                new VentCommand()
         );
 
         // Interaction Commands
