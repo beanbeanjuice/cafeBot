@@ -133,6 +133,20 @@ public class CustomGuild {
     }
 
     /**
+     * Sets the venting {@link TextChannel} for the {@link Guild}.
+     * @param ventingChannelID The ID of the venting {@link TextChannel}.
+     * @return Whether or not updating the venting {@link TextChannel} was successful.
+     */
+    @NotNull
+    public Boolean setVentingChannelID(@NotNull String ventingChannelID) {
+        if (CafeBot.getGuildHandler().updateVentingChannelID(guildID, ventingChannelID)) {
+            this.ventingChannelID = ventingChannelID;
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @return The log {@link TextChannel} for the {@link Guild}.
      */
     @Nullable
