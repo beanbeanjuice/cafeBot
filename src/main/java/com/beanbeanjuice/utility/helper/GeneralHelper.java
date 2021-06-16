@@ -318,12 +318,37 @@ public class GeneralHelper {
     }
 
     /**
+     * Shorten the message to a certain limit.
+     * @param message The contents of the message.
+     * @param limit The limit of the new message.
+     * @return The new, limited message.
+     */
+    @NotNull
+    public String shortenToLimit(@NotNull String message, @NotNull Integer limit) {
+        message = message.replace("\"", "\\\"");
+        if (message.length() >= limit) {
+            return message.substring(0, limit - 3) + "...";
+        }
+
+        return message;
+    }
+
+    /**
      * Private message's a specified {@link User}.
      * @param user The {@link User} to be messaged.
      * @param message The contents of the message.
      */
     public void pmUser(@NotNull User user, @NotNull String message) {
         user.openPrivateChannel().flatMap(channel -> channel.sendMessage(message)).queue();
+    }
+
+    /**
+     * Private messages a specified {@link User}.
+     * @param user The {@link User} to be messaged.
+     * @param embed The {@link MessageEmbed} to be sent.
+     */
+    public void pmUser(@NotNull User user, @NotNull MessageEmbed embed) {
+        user.openPrivateChannel().flatMap(channel -> channel.sendMessage(embed)).queue();
     }
 
     /**
