@@ -35,6 +35,7 @@ public class CustomGuild {
     private String birthdayChannelID;
     private String welcomeChannelID;
     private String logChannelID;
+    private String ventingChannelID;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -58,12 +59,14 @@ public class CustomGuild {
      * @param pollChannelID The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.sections.fun.poll.Poll Poll}s.
      * @param birthdayChannelID The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler Birthday} notifications.
      * @param welcomeChannelID The ID of the {@link TextChannel} being used for the Welcome notifications.
+     * @param ventingChannelID The ID of the {@link TextChannel} being used for anonymous venting.
      */
     public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID,
                        @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
                        @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID,
                        @NotNull String countingChannelID, @NotNull String pollChannelID, @NotNull String raffleChannelID,
-                       @NotNull String birthdayChannelID, @NotNull String welcomeChannelID, @NotNull String logChannelID) {
+                       @NotNull String birthdayChannelID, @NotNull String welcomeChannelID, @NotNull String logChannelID,
+                       @NotNull String ventingChannelID) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
@@ -79,6 +82,7 @@ public class CustomGuild {
         this.birthdayChannelID = birthdayChannelID;
         this.welcomeChannelID = welcomeChannelID;
         this.logChannelID = logChannelID;
+        this.ventingChannelID = ventingChannelID;
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
@@ -114,6 +118,32 @@ public class CustomGuild {
             embedBuilder.setTimestamp(new Date().toInstant());
             getLogChannel().sendMessage(embedBuilder.build()).queue();
         }
+    }
+
+    /**
+     * @return The venting {@link TextChannel} for the {@link Guild}.
+     */
+    @Nullable
+    public TextChannel getVentingChannel() {
+        try {
+            return CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(ventingChannelID);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Sets the venting {@link TextChannel} for the {@link Guild}.
+     * @param ventingChannelID The ID of the venting {@link TextChannel}.
+     * @return Whether or not updating the venting {@link TextChannel} was successful.
+     */
+    @NotNull
+    public Boolean setVentingChannelID(@NotNull String ventingChannelID) {
+        if (CafeBot.getGuildHandler().updateVentingChannelID(guildID, ventingChannelID)) {
+            this.ventingChannelID = ventingChannelID;
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -59,12 +59,14 @@ public class GuildHandler {
                 String birthdayChannelID = String.valueOf(resultSet.getLong(12));
                 String welcomeChannelID = String.valueOf(resultSet.getLong(13));
                 String logChannelID = String.valueOf(resultSet.getLong(14));
+                String ventingChannelID = String.valueOf(resultSet.getLong(15));
 
                 guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
                         twitchChannelID, twitchChannels, mutedRoleID,
                         liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
                         countingChannelID, pollChannelID, raffleChannelID,
-                        birthdayChannelID, welcomeChannelID, logChannelID));
+                        birthdayChannelID, welcomeChannelID, logChannelID,
+                        ventingChannelID));
             }
         } catch (SQLException e) {
             CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
@@ -380,7 +382,8 @@ public class GuildHandler {
                     "0", new ArrayList<>(), "0",
                     "0", true, "0",
                     "0", "0", "0",
-                    "0", "0", "0"));
+                    "0", "0", "0",
+                    "0"));
             return true;
         } catch (SQLException e) {
             CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to add Guild to SQL database: " + e.getMessage());
@@ -412,7 +415,7 @@ public class GuildHandler {
     }
 
     /**
-     * Updated the welcome {@link TextChannel} in the specified {@link Guild}.
+     * Update the welcome {@link TextChannel} in the specified {@link Guild}.
      * @param guildID The ID of the {@link Guild} to update the {@link TextChannel} in.
      * @param welcomeChannelID The ID of the {@link TextChannel} to set the welcome {@link TextChannel} to in the {@link Guild}.
      * @return Whether or not the welcome {@link TextChannel} ID was updated successfully.
@@ -430,7 +433,31 @@ public class GuildHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Welcome Channel: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Welcome Channel: " + e.getMessage(), e);
+            return false;
+        }
+    }
+
+    /**
+     * Update the venting {@link TextChannel} for the specified {@link Guild}.
+     * @param guildID The ID of the {@link Guild} to update the {@link TextChannel} in.
+     * @param ventingChannelID The ID of the {@link TextChannel} to set the venting {@link TextChannel} in the {@link Guild}.
+     * @return Whether or not the venting {@link TextChannel} ID was updated successfully.
+     */
+    @NotNull
+    protected Boolean updateVentingChannelID(@NotNull String guildID, @NotNull String ventingChannelID) {
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "UPDATE cafeBot.guild_information SET venting_channel_id = (?) WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(ventingChannelID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Venting Channel: " + e.getMessage(), e);
             return false;
         }
     }
