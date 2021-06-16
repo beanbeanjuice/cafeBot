@@ -59,12 +59,14 @@ public class GuildHandler {
                 String birthdayChannelID = String.valueOf(resultSet.getLong(12));
                 String welcomeChannelID = String.valueOf(resultSet.getLong(13));
                 String logChannelID = String.valueOf(resultSet.getLong(14));
+                String ventingChannelID = String.valueOf(resultSet.getLong(15));
 
                 guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
                         twitchChannelID, twitchChannels, mutedRoleID,
                         liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
                         countingChannelID, pollChannelID, raffleChannelID,
-                        birthdayChannelID, welcomeChannelID, logChannelID));
+                        birthdayChannelID, welcomeChannelID, logChannelID,
+                        ventingChannelID));
             }
         } catch (SQLException e) {
             CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
@@ -380,7 +382,8 @@ public class GuildHandler {
                     "0", new ArrayList<>(), "0",
                     "0", true, "0",
                     "0", "0", "0",
-                    "0", "0", "0"));
+                    "0", "0", "0",
+                    "0"));
             return true;
         } catch (SQLException e) {
             CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to add Guild to SQL database: " + e.getMessage());
