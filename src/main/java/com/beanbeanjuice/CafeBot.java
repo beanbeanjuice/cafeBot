@@ -317,7 +317,8 @@ public class CafeBot {
                 new NotifyOnUpdateCommand(),
                 new CreateEmbedCommand(),
                 new VoiceRoleBindCommand(),
-                new GetVoiceRoleBindsCommand()
+                new GetVoiceRoleBindsCommand(),
+                new SetVentingChannelCommand()
         );
 
         jdaBuilder.addEventListeners(new Listener());
