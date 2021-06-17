@@ -5,16 +5,11 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * An {@link ICommand} used to vent anonymously.
@@ -37,26 +32,15 @@ public class VentCommand implements ICommand {
             return;
         }
 
-        StringBuilder contentBuilder = new StringBuilder();
-        for (int i = 0; i < args.size(); i++) {
-            contentBuilder.append(args.get(i));
-
-            if (i != args.size() - 1) {
-                contentBuilder.append(" ");
-            }
+        if (!CafeBot.getVentHandler().addVent(user.getId(), event.getGuild().getId())) {
+            CafeBot.getGeneralHelper().pmUser(user, CafeBot.getGeneralHelper().errorEmbed(
+                    "Venting Timer Started",
+                    "You already have a venting timer started. To cancel the timer, do `!!cancel`."
+            ));
+            return;
         }
 
-        ventChannel.sendMessage(ventBuilder(CafeBot.getGeneralHelper().shortenToLimit(contentBuilder.toString(), 2048))).queue();
-    }
-
-    private MessageEmbed ventBuilder(@NotNull String ventContent) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Anonymous Vent");
-        embedBuilder.setThumbnail("http://cdn.beanbeanjuice.com/images/cafeBot/social/anonymous_venting.png");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setDescription(ventContent);
-        embedBuilder.setTimestamp(new Date().toInstant());
-        return embedBuilder.build();
+        CafeBot.getVentHandler().getVent(user.getId()).startVentTimer();
     }
 
     @Override
@@ -79,14 +63,12 @@ public class VentCommand implements ICommand {
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "vent I hate eggs...`";
+        return "`" + prefix + "vent`";
     }
 
     @Override
     public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.SENTENCE, "Stuff To Vent About", true);
-        return usage;
+        return new Usage();
     }
 
     @Override
