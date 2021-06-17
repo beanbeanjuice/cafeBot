@@ -3,9 +3,7 @@ package com.beanbeanjuice.utility.command.usage;
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.usage.types.CommandErrorType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -84,6 +82,10 @@ public class Usage {
         // Checking if there are too many arguments.
         if (args.size() > usages.size()) {
             incorrectIndex = usages.size();
+
+            if (usages.size() == 0) {
+                return CommandErrorType.TOO_MANY_ARGUMENTS;
+            }
 
             if (!usages.get(usages.size() - 1).getType().equals(CommandType.SENTENCE)) {
                 return CommandErrorType.TOO_MANY_ARGUMENTS;
@@ -213,7 +215,6 @@ public class Usage {
     private Boolean isVoiceChannel(@NotNull Guild guild, @NotNull String voiceChannelID) {
         try {
             VoiceChannel channel = guild.getVoiceChannelById(voiceChannelID);
-
             if (channel == null) {
                 return false;
             }
@@ -235,7 +236,7 @@ public class Usage {
         }
 
         try {
-            int d = Integer.parseInt(string);
+            Integer.parseInt(string);
         } catch (NumberFormatException e) {
             return false;
         }
@@ -255,7 +256,10 @@ public class Usage {
         userID = userID.replace("<@", "");
 
         try {
-            CafeBot.getJDA().getUserById(userID);
+            User user = CafeBot.getJDA().getUserById(userID);
+            if (user == null) {
+                return false;
+            }
         } catch (NumberFormatException e) {
             return false;
         }
@@ -275,7 +279,6 @@ public class Usage {
 
         try {
             TextChannel channel = guild.getTextChannelById(textChannelID);
-
             if (channel == null) {
                 return false;
             }
@@ -298,7 +301,10 @@ public class Usage {
         roleID = roleID.replace(">", "");
 
         try {
-            guild.getRoleById(roleID);
+            Role role = guild.getRoleById(roleID);
+            if (role == null) {
+                return false;
+            }
         } catch (NumberFormatException e) {
             return false;
         }
