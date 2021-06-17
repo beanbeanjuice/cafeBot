@@ -33,7 +33,10 @@ public class OrderCommand implements ICommand {
             return;
         }
 
-        CafeCustomer receiver = CafeBot.getServeHandler().getCafeCustomer(CafeBot.getGeneralHelper().getUser(args.get(1)));
+        CafeCustomer receiver = null;
+        try {
+            receiver = CafeBot.getServeHandler().getCafeCustomer(CafeBot.getGeneralHelper().getUser(args.get(1)));
+        } catch (NullPointerException ignored) {}
 
         // Checking if the receiver is null.
         if (receiver == null) {
