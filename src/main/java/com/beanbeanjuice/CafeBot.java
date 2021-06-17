@@ -45,6 +45,7 @@ import com.beanbeanjuice.utility.sections.moderation.voicechat.VoiceChatListener
 import com.beanbeanjuice.utility.sections.moderation.voicechat.VoiceChatRoleBindHandler;
 import com.beanbeanjuice.utility.sections.moderation.welcome.WelcomeHandler;
 import com.beanbeanjuice.utility.sections.music.custom.CustomSongManager;
+import com.beanbeanjuice.utility.sections.social.vent.VentHandler;
 import com.beanbeanjuice.utility.sql.SQLServer;
 import com.beanbeanjuice.utility.sections.twitch.TwitchHandler;
 import com.wrapper.spotify.SpotifyApi;
@@ -154,6 +155,9 @@ public class CafeBot {
     // Song Stuff
     private static CustomSongManager customSongManager;
 
+    // Social Stuff
+    private static VentHandler ventHandler;
+
     // Voice Chat Role Bind Handler
     private static VoiceChatRoleBindHandler voiceChatRoleBindHandler;
 
@@ -169,6 +173,8 @@ public class CafeBot {
         sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
         sqlServer.startConnection();
         generalHelper.startMySQLRefreshTimer();
+
+        ventHandler = new VentHandler();
 
         logManager.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
         logManager.log(CafeBot.class, LogLevel.OKAY, "Starting bot!", true, false);
@@ -361,6 +367,14 @@ public class CafeBot {
         logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
         updateGuildPresence();
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
+    }
+
+    /**
+     * @return The current {@link VentHandler} for this session.
+     */
+    @NotNull
+    public static VentHandler getVentHandler() {
+        return ventHandler;
     }
 
     /**
