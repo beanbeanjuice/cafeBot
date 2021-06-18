@@ -31,7 +31,6 @@ import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
-import com.beanbeanjuice.utility.helper.JSONHelper;
 import com.beanbeanjuice.utility.helper.VersionHelper;
 import com.beanbeanjuice.utility.sections.games.connectfour.ConnectFourHandler;
 import com.beanbeanjuice.utility.sections.games.tictactoe.TicTacToeHandler;
@@ -72,14 +71,9 @@ import javax.security.auth.login.LoginException;
 @SpringBootApplication
 public class CafeBot {
 
-    // File Information
-    // -- 'beta.json' -> Beta Bot Information
-    // -- 'release.json' -> Release Bot Information
-    private static final String FILE_INFO = "beta.json";
-
     // General Bot Info
-    private static final String BOT_VERSION = JSONHelper.getValue(FILE_INFO, "bot", "version").textValue();
-    private static final String BOT_TOKEN = JSONHelper.getValue(FILE_INFO, "bot", "token").textValue();
+    private static final String BOT_VERSION = System.getenv("CAFEBOT_VERSION");
+    private static final String BOT_TOKEN = System.getenv("CAFEBOT_TOKEN");
     private static final String BOT_USER_AGENT = "java:com.beanbeanjuice.cafeBot:" + BOT_VERSION;
     private static JDA jda;
     private static JDABuilder jdaBuilder;
@@ -88,10 +82,10 @@ public class CafeBot {
 
     // Logging Stuff
     private static Guild homeGuild;
-    private static final String HOME_GUILD_ID = JSONHelper.getValue(FILE_INFO, "bot", "guild_id").textValue();
+    private static final String HOME_GUILD_ID = System.getenv("CAFEBOT_GUILD_ID");
     private static TextChannel homeGuildLogChannel;
-    private static final String HOME_GUILD_LOG_CHANNEL_ID = JSONHelper.getValue(FILE_INFO, "bot", "guild_log_channel_id").textValue();
-    private static final String HOME_GUILD_WEBHOOK_URL = JSONHelper.getValue(FILE_INFO, "bot", "guild_webhook_url").textValue();
+    private static final String HOME_GUILD_LOG_CHANNEL_ID = System.getenv("CAFEBOT_GUILD_LOG_CHANNEL_ID");
+    private static final String HOME_GUILD_WEBHOOK_URL = System.getenv("CAFEBOT_GUILD_WEBHOOK_URL");
 
     private static final String BOT_PREFIX = "!!";
 
@@ -103,20 +97,20 @@ public class CafeBot {
 
     // Spotify Stuff
     private static SpotifyApi spotifyApi;
-    private static final String SPOTIFY_API_CLIENT_ID = JSONHelper.getValue(FILE_INFO, "spotify", "id").textValue();
-    private static final String SPOTIFY_API_CLIENT_SECRET = JSONHelper.getValue(FILE_INFO, "spotify", "secret").textValue();
+    private static final String SPOTIFY_API_CLIENT_ID = System.getenv("CAFEBOT_SPOTIFY_ID");
+    private static final String SPOTIFY_API_CLIENT_SECRET = System.getenv("CAFEBOT_SPOTIFY_SECRET");
 
     // Twitch Stuff
-    private static final String TWITCH_ACCESS_TOKEN = JSONHelper.getValue(FILE_INFO, "twitch", "access_token").textValue();
+    private static final String TWITCH_ACCESS_TOKEN = System.getenv("CAFEBOT_TWITCH_ACCESS_TOKEN");
     private static TwitchHandler twitchHandler;
 
     // SQL Stuff
     private static SQLServer sqlServer;
-    private static final String SQL_URL = JSONHelper.getValue(FILE_INFO, "mysql", "url").textValue();
-    private static final String SQL_PORT = JSONHelper.getValue(FILE_INFO, "mysql", "port").textValue();
-    private static final String SQL_USERNAME = JSONHelper.getValue(FILE_INFO, "mysql", "username").textValue();
-    private static final String SQL_PASSWORD = JSONHelper.getValue(FILE_INFO, "mysql", "password").textValue();
-    private static final boolean SQL_ENCRYPT = JSONHelper.getValue(FILE_INFO, "mysql", "encrypt").booleanValue();
+    private static final String SQL_URL = System.getenv("CAFEBOT_MYSQL_URL");
+    private static final String SQL_PORT = System.getenv("CAFEBOT_MYSQL_PORT");
+    private static final String SQL_USERNAME = System.getenv("CAFEBOT_MYSQL_USERNAME");
+    private static final String SQL_PASSWORD = System.getenv("CAFEBOT_MYSQL_PASSWORD");
+    private static final boolean SQL_ENCRYPT = Boolean.parseBoolean(System.getenv("CAFEBOT_MYSQL_ENCRYPT"));
 
     // Logging
     private static LogManager logManager;
@@ -161,10 +155,7 @@ public class CafeBot {
     // Voice Chat Role Bind Handler
     private static VoiceChatRoleBindHandler voiceChatRoleBindHandler;
 
-    public static void main(String[] args) throws LoginException, InterruptedException {
-
-        SpringApplication.run(CafeBot.class, args);
-
+    public CafeBot() throws LoginException, InterruptedException {
         generalHelper = new GeneralHelper();
         logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
 
@@ -367,6 +358,11 @@ public class CafeBot {
         logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
         updateGuildPresence();
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
+    }
+
+    public static void main(String[] args) throws LoginException, InterruptedException {
+        SpringApplication.run(CafeBot.class, args);
+        new CafeBot();
     }
 
     /**
