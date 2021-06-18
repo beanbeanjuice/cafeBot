@@ -10,13 +10,13 @@ jobs:
       - uses: actions/checkout@v2
       - name: Set up JDK 15
         env:
-          CAFEBOT_MYSQL_URL: ${{ secrets.CAFEBOT_MYSQL_ENCRYPT }}
-          CAFEBOT_MYSQL_PORT: ${{ secrets.CAFEBOT_MYSQL_PORT }}
-          CAFEBOT_MYSQL_USERNAME: ${{ secrets.CAFEBOT_MYSQL_USERNAME }}
-          CAFEBOT_MYSQL_PASSWORD: ${{ secrets.CAFEBOT_MYSQL_PASSWORD }}
-          CAFEBOT_MYSQL_ENCRYPT: ${{ secrets.CAFEBOT_MYSQL_ENCRYPT }}
-          CAFEBOT_SPOTIFY_ID: ${{ secrets.CAFEBOT_SPOTIFY_ID }}
-          CAFEBOT_SPOTIFY_SECRET: ${{ secrets.CAFEBOT_SPOTIFY_SECRET }}
+          CAFEBOT_MYSQL_URL: ${{ env.CAFEBOT_MYSQL_ENCRYPT }}
+          CAFEBOT_MYSQL_PORT: ${{ env.CAFEBOT_MYSQL_PORT }}
+          CAFEBOT_MYSQL_USERNAME: ${{ env.CAFEBOT_MYSQL_USERNAME }}
+          CAFEBOT_MYSQL_PASSWORD: ${{ env.CAFEBOT_MYSQL_PASSWORD }}
+          CAFEBOT_MYSQL_ENCRYPT: ${{ env.CAFEBOT_MYSQL_ENCRYPT }}
+          CAFEBOT_SPOTIFY_ID: ${{ env.CAFEBOT_SPOTIFY_ID }}
+          CAFEBOT_SPOTIFY_SECRET: ${{ env.CAFEBOT_SPOTIFY_SECRET }}
         uses: actions/setup-java@v1
         with:
           java-version: 15
