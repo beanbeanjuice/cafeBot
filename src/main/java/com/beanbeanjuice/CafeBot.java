@@ -155,10 +155,7 @@ public class CafeBot {
     // Voice Chat Role Bind Handler
     private static VoiceChatRoleBindHandler voiceChatRoleBindHandler;
 
-    public static void main(String[] args) throws LoginException, InterruptedException {
-
-        SpringApplication.run(CafeBot.class, args);
-
+    public CafeBot() throws LoginException, InterruptedException {
         generalHelper = new GeneralHelper();
         logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
 
@@ -361,6 +358,11 @@ public class CafeBot {
         logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
         updateGuildPresence();
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
+    }
+
+    public static void main(String[] args) throws LoginException, InterruptedException {
+        SpringApplication.run(CafeBot.class, args);
+        new CafeBot();
     }
 
     /**
