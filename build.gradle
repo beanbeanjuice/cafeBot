@@ -26,8 +26,7 @@ shadowJar {
 def versionName
 
 try {
-    def result = new groovy.json.JsonSlurper().parseText(file('release.json').text)
-    versionName = result.bot.version
+    versionName = System.getenv("BOT_VERSION").toString()
 } catch (ignored) {
     versionName = 'v0.0.0'
 }
@@ -103,6 +102,9 @@ dependencies {
     // Lombok
     implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
+
+    // Environment Variables
+    implementation group: 'io.github.cdimascio', name: 'java-dotenv', version: '5.2.2'
 
 }
 
