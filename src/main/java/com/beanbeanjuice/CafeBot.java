@@ -360,7 +360,7 @@ public class CafeBot {
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
     }
 
-    public static void main(String[] args) throws LoginException, InterruptedException {
+    public static void main(String[] args) {
         SpringApplication.run(CafeBot.class, args);
     }
 
