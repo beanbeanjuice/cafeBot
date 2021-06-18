@@ -14,11 +14,20 @@ jobs:
           java-version: 15
       - name: Build with Gradle
         env:
-          CAFEBOT_MYSQL_URL: ${{ secrets.CAFEBOT_MYSQL_ENCRYPT }}
+          CAFEBOT_MYSQL_URL: ${{ secrets.CAFEBOT_MYSQL_URL }}
           CAFEBOT_MYSQL_PORT: ${{ secrets.CAFEBOT_MYSQL_PORT }}
           CAFEBOT_MYSQL_USERNAME: ${{ secrets.CAFEBOT_MYSQL_USERNAME }}
           CAFEBOT_MYSQL_PASSWORD: ${{ secrets.CAFEBOT_MYSQL_PASSWORD }}
           CAFEBOT_MYSQL_ENCRYPT: ${{ secrets.CAFEBOT_MYSQL_ENCRYPT }}
+
+          CAFEBOT_VERSION: ${{ secrets.CAFEBOT_VERSION }}
+          CAFEBOT_TOKEN: ${{ secrets.CAFEBOT_TOKEN }}
+          CAFEBOT_GUILD_ID: ${{ secrets.CAFEBOT_GUILD_ID }}
+          CAFEBOT_GUILD_LOG_CHANNEL_ID: ${{ secrets.CAFEBOT_GUILD_LOG_CHANNEL_ID }}
+          CAFEBOT_GUILD_WEBHOOK_URL: ${{ secrets.CAFEBOT_GUILD_WEBHOOK_URL }}
+
           CAFEBOT_SPOTIFY_ID: ${{ secrets.CAFEBOT_SPOTIFY_ID }}
           CAFEBOT_SPOTIFY_SECRET: ${{ secrets.CAFEBOT_SPOTIFY_SECRET }}
+          
+          CAFEBOT_TWITCH_ACCESS_TOKEN: ${{ secrets.CAFEBOT_TWITCH_ACCESS_TOKEN }}
         run: gradle build
