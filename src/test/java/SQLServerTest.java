@@ -16,11 +16,11 @@ public class SQLServerTest {
     @DisplayName("SQL Server Test")
     public void test() {
         SQLServer sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
-        Assertions.assertNotNull(SQL_URL);
-        Assertions.assertNotNull(SQL_PORT);
-        Assertions.assertTrue(SQL_ENCRYPT);
-        Assertions.assertNotNull(SQL_USERNAME);
-        Assertions.assertNotNull(SQL_PASSWORD);
+        Assertions.assertNotNull(SQL_URL, "URL is null.");
+        Assertions.assertNotNull(SQL_PORT, "PORT is null.");
+        Assertions.assertTrue(SQL_ENCRYPT, "SQL encryption is disabled.");
+        Assertions.assertNotNull(SQL_USERNAME, "USERNAME is null.");
+        Assertions.assertNotNull(SQL_PASSWORD, "PASSWORD is null.");
         Assertions.assertTrue(sqlServer.startConnection());
         Assertions.assertTrue(sqlServer.testConnection());
     }
