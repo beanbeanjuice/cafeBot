@@ -362,7 +362,6 @@ public class CafeBot {
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         SpringApplication.run(CafeBot.class, args);
-        new CafeBot();
     }
 
     /**
