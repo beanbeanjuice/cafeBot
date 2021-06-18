@@ -77,6 +77,10 @@ public class Vent {
                 }
 
                 CafeBot.getVentHandler().sendVent(CafeBot.getGeneralHelper().shortenToLimit(event.getMessage().getContentRaw(), 2048), ventChannel);
+                CafeBot.getGeneralHelper().pmUser(event.getAuthor(), CafeBot.getGeneralHelper().successEmbed(
+                        "Vent Successfully Sent",
+                        "Your vent should now show up in the server! I hope that got off of your chest!"
+                ));
                 stopVentTimer();
             }
         };
