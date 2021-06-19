@@ -25,3 +25,8 @@ If applicable, add screenshots or videos to help explain your problem. Links are
 
 **__Additional Context__**
 Add any other context about the problem here.
+
+# Checklist:
+
+- [ ] I have checked for similar issues.
+- [ ] This is a bug report, not an improvement request or feature request.
