@@ -102,7 +102,7 @@ public class GeneralHelper {
                 } catch (IOException | SpotifyWebApiException | org.apache.hc.core5.http.ParseException e) {
                     CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, e.getMessage());
                 }
-                CafeBot.getLogManager().log(this.getClass(), LogLevel.OKAY, "Established Spotify Connection...", true, false);
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.OKAY, "Successfully established the Spotify connection!", true, false);
             }
         };
         spotifyRefreshTimer.scheduleAtFixedRate(spotifyRefreshTimerTask, 0, 1800000);
