@@ -9,6 +9,7 @@ import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import com.beanbeanjuice.utility.sections.fun.poll.Poll;
 import com.beanbeanjuice.utility.sections.fun.poll.PollEmoji;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -19,6 +20,7 @@ import java.awt.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * A command used to add a {@link com.beanbeanjuice.utility.sections.fun.poll.Poll Poll}.
@@ -45,10 +47,45 @@ public class AddPollCommand implements ICommand {
             return;
         }
 
-        String title = CafeBot.getGeneralHelper().removeUnderscores(args.get(0));
-        String description = CafeBot.getGeneralHelper().removeUnderscores(args.get(1));
-        ArrayList<String> arguments = convertToList(args.get(2));
-        Integer minutes = Integer.parseInt(args.get(3));
+        HashMap<String, String> parsedMap = CafeBot.getGeneralHelper().createCommandTermMap(getCommandTerms(), args);
+
+        String title = parsedMap.get("title");
+        if (title == null) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Missing Argument",
+                    "You are missing the `title` argument."
+            )).queue();
+            return;
+        }
+
+        String description = parsedMap.get("description");
+        if (description == null) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Missing Argument",
+                    "You are missing the `description` argument."
+            )).queue();
+            return;
+        }
+
+        ArrayList<String> arguments = convertToList(parsedMap.get("arguments"));
+        if (arguments.size() == 0) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Missing Argument",
+                    "You are missing the `arguments` argument."
+            )).queue();
+            return;
+        }
+
+        Integer minutes;
+        try {
+            minutes = Integer.parseInt(parsedMap.get("time"));
+        } catch (NumberFormatException e) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Invalid Time Amount",
+                    "The amount you have entered for time is not valid. Please enter a whole number."
+            )).queue();
+            return;
+        }
 
         // Making sure the poll channel exists.
         TextChannel pollChannel = ctx.getCustomGuild().getPollChannel();
@@ -72,27 +109,38 @@ public class AddPollCommand implements ICommand {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() + (minutes*60000));
 
         // Sending a message in the poll channel.
-        pollChannel.sendMessage(startingPollEmbed()).queue(message -> {
-            Poll poll = new Poll(event.getGuild().getId(), message.getId(), timestamp);
+        if (parsedMap.get("message") != null) {
+            pollChannel.sendMessage(parsedMap.get("message")).embed(startingPollEmbed()).queue(message -> {
+                editMessage(message, event, timestamp, title, description, minutes, arguments);
+            });
+        } else {
+            pollChannel.sendMessage(startingPollEmbed()).queue(message -> {
+                editMessage(message, event, timestamp, title, description, minutes, arguments);
+            });
+        }
+    }
 
-            if (!CafeBot.getPollHandler().addPoll(poll)) {
-                message.delete().queue();
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
-                return;
-            }
+    private void editMessage(Message message, GuildMessageReceivedEvent event, Timestamp timestamp,
+                             String title, String description, Integer minutes, ArrayList<String> arguments) {
+        Poll poll = new Poll(event.getGuild().getId(), message.getId(), timestamp);
 
-            message.editMessage(pollEmbed(title, description, minutes, arguments)).queue();
+        if (!CafeBot.getPollHandler().addPoll(poll)) {
+            message.delete().queue();
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            return;
+        }
 
-            ArrayList<PollEmoji> pollEmojis = new ArrayList<>(Arrays.asList(PollEmoji.values()));
-            for (int i = 0; i < arguments.size(); i++) {
-                message.addReaction(pollEmojis.get(i).getUnicode()).queue();
-            }
+        message.editMessage(pollEmbed(title, description, minutes, arguments)).queue();
 
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                    "Poll Created",
-                    "A poll has been successfully created! Check the " + message.getTextChannel().getAsMention() + " channel."
-            )).queue();
-        });
+        ArrayList<PollEmoji> pollEmojis = new ArrayList<>(Arrays.asList(PollEmoji.values()));
+        for (int i = 0; i < arguments.size(); i++) {
+            message.addReaction(pollEmojis.get(i).getUnicode()).queue();
+        }
+
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                "Poll Created",
+                "A poll has been successfully created! Check the " + message.getTextChannel().getAsMention() + " channel."
+        )).queue();
     }
 
     @NotNull
@@ -133,9 +181,24 @@ public class AddPollCommand implements ICommand {
     @NotNull
     private ArrayList<String> convertToList(@NotNull String string) {
         ArrayList<String> arrayList = new ArrayList<>();
-        for (String argument : string.split(",")) {
-            arrayList.add(CafeBot.getGeneralHelper().removeUnderscores(argument));
+        try {
+            for (String argument : string.split(",")) {
+                arrayList.add(CafeBot.getGeneralHelper().removeUnderscores(argument));
+            }
+        } catch (NullPointerException e) {
+            return new ArrayList<>();
         }
+        return arrayList;
+    }
+
+    @NotNull
+    private ArrayList<String> getCommandTerms() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("title");
+        arrayList.add("description");
+        arrayList.add("arguments");
+        arrayList.add("time");
+        arrayList.add("message");
         return arrayList;
     }
 
@@ -156,21 +219,18 @@ public class AddPollCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Start a poll!";
+        return "Start a poll! Please check the example above to see how to use this.";
     }
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "add-poll Red_or_Blue? Which_colour_is_the_best? Red,Blue 12`";
+        return "`" + prefix + "add-poll title:Red or Blue? description:Which colour is the best? message:@fakeRole, please answer this poll. arguments:Red,Blue time:12`";
     }
 
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "Poll Title", true);
-        usage.addUsage(CommandType.TEXT, "Poll Description", true);
-        usage.addUsage(CommandType.TEXT, "Poll Arguments", true);
-        usage.addUsage(CommandType.NUMBER, "Poll Duration (In Minutes)", true);
+        usage.addUsage(CommandType.SENTENCE, "Poll Arguments", true);
         return usage;
     }
 

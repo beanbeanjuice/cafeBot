@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -31,46 +32,39 @@ public class CreateEmbedCommand implements ICommand {
             return;
         }
 
-        HashMap<String, String> embedMap = new HashMap<>();
+        TextChannel embedChannel = CafeBot.getGeneralHelper().getTextChannel(event.getGuild(), args.remove(0));
+        HashMap<String, String> embedMap = CafeBot.getGeneralHelper().createCommandTermMap(getCommandTerms(), args);
 
-        for (String string : args) {
-
-            if (string.startsWith("title:")) {
-                embedMap.put("title", CafeBot.getGeneralHelper().removeUnderscores(string.split("title:")[1]));
-            }
-
-            else if (string.startsWith("author:")) {
-                embedMap.put("author", CafeBot.getGeneralHelper().removeUnderscores(string.split("author:")[1]));
-            }
-
-            else if (string.startsWith("description:")) {
-                embedMap.put("description", CafeBot.getGeneralHelper().removeUnderscores(string.split("description:")[1]));
-            }
-
-            else if (string.startsWith("image:")) {
-                embedMap.put("image", string.split("image:")[1]);
-            }
-
-            else if (string.startsWith("thumbnail:")) {
-                embedMap.put("thumbnail", string.split("thumbnail:")[1]);
-            }
-
-            else if (string.startsWith("footer:")) {
-                embedMap.put("footer", CafeBot.getGeneralHelper().removeUnderscores(string.split("footer:")[1]));
-            }
-
-            else if (string.startsWith("color:")) {
-                embedMap.put("color", string.split("color:")[1]);
-            }
+        if (embedMap.get("message") != null) {
+            embedChannel.sendMessage(embedMap.get("message")).embed(createEmbed(embedMap)).queue();
+        } else {
+            embedChannel.sendMessage(createEmbed(embedMap)).queue();
         }
 
-        TextChannel embedChannel = CafeBot.getGeneralHelper().getTextChannel(event.getGuild(), args.get(0));
+        try {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                    "Created the Custom Message Embed",
+                    "Successfully created the custom embed in " + embedChannel.getAsMention() + "!"
+            )).queue();
+        } catch (ErrorResponseException e) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Invalid URL",
+                    "The URL you have entered for the image or thumbnail is not valid."
+            )).queue();
+        }
+    }
 
-        embedChannel.sendMessage(createEmbed(embedMap)).queue();
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                "Created the Custom Message Embed",
-                "Successfully created the custom embed in " + embedChannel.getAsMention() + "!"
-        )).queue();
+    private ArrayList<String> getCommandTerms() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("color");
+        arrayList.add("footer");
+        arrayList.add("thumbnail");
+        arrayList.add("image");
+        arrayList.add("description");
+        arrayList.add("author");
+        arrayList.add("title");
+        arrayList.add("message");
+        return arrayList;
     }
 
     private MessageEmbed createEmbed(@NotNull HashMap<String, String> embedMap) {
@@ -123,12 +117,13 @@ public class CreateEmbedCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Create a custom embed for your server! For the description, you can use `\\n` to make a new line!";
+        return "Create a custom embed for your server! For the description, you can use `\\n` to make a new line!\n" +
+                "Command terms are `title`, `author`, `message`, `description`, `image`, `thumbnail`, `footer`, and `color`.";
     }
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "add-embed #announcements title:Cool_Announcement author:people_person color:#FFC0CB description:Wow_awesome_description!\\nWow_so_cool! image:https://cool_image.png thumbnail:https://cool_image.png footer:Cool_Footer!`";
+        return "`" + prefix + "add-embed #announcements message:@everyone, check this out! title:Cool Announcement author:people person color:#FFC0CB description:Wow awesome description!\\nWow so cool! image:https://cool_image.png thumbnail:https://cool_image.png footer:Cool Footer!`";
     }
 
     @Override
