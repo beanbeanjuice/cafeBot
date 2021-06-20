@@ -23,6 +23,10 @@ public class EditWelcomeMessageCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
+        if (!CafeBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
+            return;
+        }
+
         HashMap<String, String> parsedMap = CafeBot.getGeneralHelper().createCommandTermMap(getCommandTerms(), args);
         String thumbnail = parsedMap.get("thumbnail");
         String image = parsedMap.get("image");
