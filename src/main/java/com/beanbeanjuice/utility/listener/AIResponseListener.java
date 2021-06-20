@@ -8,7 +8,7 @@ public class AIResponseListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
-        
+
     }
 
 }
