@@ -19,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.IOException;
-import java.sql.Array;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
