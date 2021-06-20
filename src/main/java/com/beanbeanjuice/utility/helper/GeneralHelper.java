@@ -24,9 +24,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -106,6 +104,61 @@ public class GeneralHelper {
             }
         };
         spotifyRefreshTimer.scheduleAtFixedRate(spotifyRefreshTimerTask, 0, 1800000);
+    }
+
+    /**
+     * Creates a term {@link HashMap} with the command term as
+     * a {@link String} and the argument as a {@link String}.
+     * @param commandTerms The {@link ArrayList<String>} of command terms.
+     * @param arguments The {@link ArrayList<String>} of arguments.
+     * @return The new {@link HashMap}.
+     */
+    public HashMap<String, String> createCommandTermMap(@NotNull ArrayList<String> commandTerms, @NotNull ArrayList<String> arguments) {
+        HashMap<String, String> mappedUnderscores = new HashMap<>();
+
+        StringBuilder currentWord = new StringBuilder();
+        String currentCommandTerm = "";
+        int currentArgumentIndex = -1;
+
+        // Goes through each argument once.
+        for (String argument : arguments) {
+
+            // Finds the index of the command term
+            int termIndex = getTermIndex(commandTerms, argument);
+
+            // If the current argument does not contain a command term,
+            // then do not continue to the next command term.
+            if (termIndex != -1) {
+                mappedUnderscores.put(currentCommandTerm, currentWord.toString());
+                currentWord = new StringBuilder();
+                currentCommandTerm = commandTerms.get(termIndex);
+                currentWord.append(argument.replace(currentCommandTerm + ":", ""));
+            } else {
+                currentWord.append(" ").append(argument);
+            }
+            currentArgumentIndex++;
+
+            // Base case for when the arguments is full.
+            if (currentArgumentIndex == arguments.size() - 1) {
+                mappedUnderscores.put(currentCommandTerm, currentWord.toString());
+            }
+        }
+        return mappedUnderscores;
+    }
+
+    /**
+     * Checks the index of the command term.
+     * @param terms The {@link ArrayList<String>} containing the command terms.
+     * @param string The current {@link String} to check if they have the command term.
+     * @return The {@link Integer} index of the command term. Returns -1 if it does not contain the command term.
+     */
+    private Integer getTermIndex(@NotNull ArrayList<String> terms, @NotNull String string) {
+        for (int i = 0; i < terms.size(); i++) {
+            if (string.startsWith(terms.get(i) + ":")) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**

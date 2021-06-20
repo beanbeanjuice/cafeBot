@@ -6,11 +6,13 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.moderation.welcome.GuildWelcome;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * An {@link ICommand} used to edit the welcome {@link String}.
@@ -21,49 +23,33 @@ public class EditWelcomeMessageCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
-        String thumbnail = null;
-        String image = null;
-        String description = null;
-
-        ArrayList<String> thingsToRemove = new ArrayList<>();
-
-        for (String string : args) {
-            if (string.startsWith("thumbnail:")) {
-                thumbnail = string.replace("thumbnail:", "");
-                thingsToRemove.add(string);
-            }
-
-            if (string.startsWith("image:")) {
-                image = string.replace("image:", "");
-                thingsToRemove.add(string);
-            }
+        if (!CafeBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
+            return;
         }
 
-        for (String removeString : thingsToRemove) {
-            args.remove(removeString);
-        }
+        HashMap<String, String> parsedMap = CafeBot.getGeneralHelper().createCommandTermMap(getCommandTerms(), args);
+        String thumbnail = parsedMap.get("thumbnail");
+        String image = parsedMap.get("image");
+        String description = parsedMap.get("description");
+        String message = parsedMap.get("message");
 
-        if (args.size() > 0) {
-            StringBuilder descriptionBuilder = new StringBuilder();
-            for (int i = 0; i < args.size(); i++) {
-                descriptionBuilder.append(args.get(i));
-
-                if (i != args.size() - 1) {
-                    descriptionBuilder.append(" ");
-                }
-            }
-            description = descriptionBuilder.toString();
-        }
-
-        GuildWelcome guildWelcome = new GuildWelcome(description, thumbnail, image);
+        GuildWelcome guildWelcome = new GuildWelcome(description, thumbnail, image, message);
 
         if (CafeBot.getWelcomeHandler().setGuildWelcome(event.getGuild().getId(), guildWelcome)) {
-            event.getChannel().sendMessage(CafeBot.getWelcomeListener().getWelcomeEmbed(guildWelcome, user)).queue();
+            event.getChannel().sendMessage(guildWelcome.getMessage()).embed(CafeBot.getWelcomeListener().getWelcomeEmbed(guildWelcome, user)).queue();
             return;
         }
 
         event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+    }
+
+    private ArrayList<String> getCommandTerms() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("thumbnail");
+        arrayList.add("image");
+        arrayList.add("description");
+        arrayList.add("message");
+        return arrayList;
     }
 
     @Override
@@ -82,12 +68,13 @@ public class EditWelcomeMessageCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Edit the welcome message! You can use `\\n` to make a new line in the description! Check the usage below for help!";
+        return "Edit the welcome message! You can use `\\n` to make a new line in the description! Check the usage above for help!\n" +
+                "Command terms are `message`, `description`, `image`, and `thumbnail`.";
     }
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "edit-welcome thumbnail:https://www.fakeImageurl.png image:https://www.fakeImageUrl.png2 Welcome, {user} to the server!\\nYou're cool!` or `" + prefix + "edit-welcome Welcome to the server!`";
+        return "`" + prefix + "edit-welcome message:@awesomerole, someone joined the server! thumbnail:https://www.fakeImageurl.png image:https://www.fakeImageUrl.png2 description:Welcome, {user} to the server!\\nYou're cool!` or `" + prefix + "edit-welcome description:Welcome to the server!`";
     }
 
     @Override
