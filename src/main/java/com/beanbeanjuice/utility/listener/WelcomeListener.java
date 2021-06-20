@@ -20,7 +20,11 @@ public class WelcomeListener extends ListenerAdapter {
         TextChannel welcomeChannel = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getWelcomeChannel();
         if (welcomeChannel != null) {
             GuildWelcome guildWelcome = CafeBot.getWelcomeHandler().getGuildWelcome(event.getGuild().getId());
-            welcomeChannel.sendMessage(getWelcomeEmbed(guildWelcome, event.getMember().getUser())).queue();
+            if (guildWelcome.getMessage() != null) {
+                welcomeChannel.sendMessage(guildWelcome.getMessage()).embed(getWelcomeEmbed(guildWelcome, event.getMember().getUser())).queue();
+            } else {
+                welcomeChannel.sendMessage(getWelcomeEmbed(guildWelcome, event.getMember().getUser())).queue();
+            }
         }
     }
 
