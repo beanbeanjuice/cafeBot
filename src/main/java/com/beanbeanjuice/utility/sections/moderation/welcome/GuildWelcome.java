@@ -11,6 +11,7 @@ public class GuildWelcome {
     private String description;
     private String thumbnailURL;
     private String imageURL;
+    private String message;
 
     /**
      * Creates a new {@link GuildWelcome}.
@@ -18,10 +19,11 @@ public class GuildWelcome {
      * @param thumbnailURL The thumbnail URL of the {@link GuildWelcome}.
      * @param imageURL The thumbnail URL of the {@link GuildWelcome}.
      */
-    public GuildWelcome(@Nullable String description, @Nullable String thumbnailURL, @Nullable String imageURL) {
+    public GuildWelcome(@Nullable String description, @Nullable String thumbnailURL, @Nullable String imageURL, @Nullable String message) {
         this.description = description;
         this.thumbnailURL = thumbnailURL;
         this.imageURL = imageURL;
+        this.message = message;
     }
 
     /**
@@ -33,6 +35,14 @@ public class GuildWelcome {
             return "Welcome to the server {user}!";
         }
         return description;
+    }
+
+    /**
+     * @return The separate message of the {@link GuildWelcome}.
+     */
+    @Nullable
+    public String getMessage() {
+        return message;
     }
 
     /**
