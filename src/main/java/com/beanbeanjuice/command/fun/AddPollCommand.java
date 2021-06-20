@@ -47,7 +47,7 @@ public class AddPollCommand implements ICommand {
             return;
         }
 
-        HashMap<String, String> parsedMap = CafeBot.getGeneralHelper().parseUnderscores(getCommandTerms(), args);
+        HashMap<String, String> parsedMap = CafeBot.getGeneralHelper().createCommandTermMap(getCommandTerms(), args);
 
         String title = parsedMap.get("title");
         if (title == null) {
