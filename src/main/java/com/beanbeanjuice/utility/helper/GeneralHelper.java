@@ -107,7 +107,14 @@ public class GeneralHelper {
         spotifyRefreshTimer.scheduleAtFixedRate(spotifyRefreshTimerTask, 0, 1800000);
     }
 
-    public HashMap<String, String> parseUnderscores(@NotNull ArrayList<String> commandTerms, @NotNull ArrayList<String> arguments) {
+    /**
+     * Creates a term {@link HashMap} with the command term as
+     * a {@link String} and the argument as a {@link String}.
+     * @param commandTerms The {@link ArrayList<String>} of command terms.
+     * @param arguments The {@link ArrayList<String>} of arguments.
+     * @return The new {@link HashMap}.
+     */
+    public HashMap<String, String> createCommandTermMap(@NotNull ArrayList<String> commandTerms, @NotNull ArrayList<String> arguments) {
         HashMap<String, String> mappedUnderscores = new HashMap<>();
 
         StringBuilder currentWord = new StringBuilder();

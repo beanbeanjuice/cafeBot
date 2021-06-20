@@ -33,7 +33,7 @@ public class CreateEmbedCommand implements ICommand {
         }
 
         TextChannel embedChannel = CafeBot.getGeneralHelper().getTextChannel(event.getGuild(), args.remove(0));
-        HashMap<String, String> embedMap = CafeBot.getGeneralHelper().parseUnderscores(getCommandTerms(), args);
+        HashMap<String, String> embedMap = CafeBot.getGeneralHelper().createCommandTermMap(getCommandTerms(), args);
 
         if (embedMap.get("message") != null) {
             embedChannel.sendMessage(embedMap.get("message")).embed(createEmbed(embedMap)).queue();
