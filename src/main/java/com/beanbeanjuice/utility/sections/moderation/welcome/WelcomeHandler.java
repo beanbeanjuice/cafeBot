@@ -34,10 +34,11 @@ public class WelcomeHandler {
             String description = resultSet.getString(2);
             String thumbnailURL = resultSet.getString(3);
             String imageURL = resultSet.getString(4);
+            String message = resultSet.getString(5);
 
-            return new GuildWelcome(description, thumbnailURL, imageURL);
+            return new GuildWelcome(description, thumbnailURL, imageURL, message);
         } catch (SQLException e) {
-            return new GuildWelcome(null, null, null);
+            return new GuildWelcome(null, null, null, null);
         }
     }
 
@@ -78,7 +79,7 @@ public class WelcomeHandler {
 
         if (!welcomeExists) {
             Connection connection = CafeBot.getSQLServer().getConnection();
-            String arguments = "INSERT INTO cafeBot.welcome_information (guild_id, description, thumbnail_url, image_url) VALUES (?,?,?,?);";
+            String arguments = "INSERT INTO cafeBot.welcome_information (guild_id, description, thumbnail_url, image_url, message) VALUES (?,?,?,?,?);";
 
             try {
                 PreparedStatement statement = connection.prepareStatement(arguments);
@@ -86,6 +87,7 @@ public class WelcomeHandler {
                 statement.setString(2, guildWelcome.getDescription());
                 statement.setString(3, guildWelcome.getThumbnailURL());
                 statement.setString(4, guildWelcome.getImageURL());
+                statement.setString(5, guildWelcome.getMessage());
 
                 statement.execute();
                 return true;
@@ -95,14 +97,15 @@ public class WelcomeHandler {
             }
         } else {
             Connection connection = CafeBot.getSQLServer().getConnection();
-            String arguments = "UPDATE cafeBot.welcome_information SET description = (?), thumbnail_url = (?), image_url = (?) WHERE guild_id = (?);";
+            String arguments = "UPDATE cafeBot.welcome_information SET description = (?), thumbnail_url = (?), image_url = (?), message = (?) WHERE guild_id = (?);";
 
             try {
                 PreparedStatement statement = connection.prepareStatement(arguments);
                 statement.setString(1, guildWelcome.getDescription());
                 statement.setString(2, guildWelcome.getThumbnailURL());
                 statement.setString(3, guildWelcome.getImageURL());
-                statement.setLong(4, Long.parseLong(guildID));
+                statement.setString(4, guildWelcome.getMessage());
+                statement.setLong(5, Long.parseLong(guildID));
 
                 statement.execute();
                 return true;
