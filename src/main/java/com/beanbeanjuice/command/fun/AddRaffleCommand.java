@@ -8,6 +8,7 @@ import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import com.beanbeanjuice.utility.sections.fun.raffle.Raffle;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -17,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A command used for {@link com.beanbeanjuice.utility.sections.fun.raffle.Raffle Raffle}s.
@@ -32,10 +34,47 @@ public class AddRaffleCommand implements ICommand {
             return;
         }
 
-        String title = CafeBot.getGeneralHelper().removeUnderscores(args.get(0));
-        String description = CafeBot.getGeneralHelper().removeUnderscores(args.get(1));
-        int winnerAmount = Integer.parseInt(args.get(2));
-        int minutes = Integer.parseInt(args.get(3));
+        HashMap<String, String> parsedMap = CafeBot.getGeneralHelper().parseUnderscores(getCommandTerms(), args);
+
+        String title = parsedMap.get("title");
+        if (title == null) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Missing Argument",
+                    "You are missing the `title` argument."
+            )).queue();
+            return;
+        }
+
+        String description = parsedMap.get("description");
+        if (description == null) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Missing Argument",
+                    "You are missing the `description` argument."
+            )).queue();
+            return;
+        }
+
+        Integer minutes;
+        try {
+            minutes = Integer.parseInt(parsedMap.get("time"));
+        } catch (NumberFormatException e) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Invalid Time Amount",
+                    "The amount you have entered for time is not valid. Please enter a whole number."
+            )).queue();
+            return;
+        }
+
+        Integer winnerAmount;
+        try {
+            winnerAmount = Integer.parseInt(parsedMap.get("winners"));
+        } catch (NumberFormatException e) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Invalid Time Amount",
+                    "The amount you have entered for winners is not valid. Please enter a whole number."
+            )).queue();
+            return;
+        }
 
         // Check if the amount of raffles the server has is more than 3
         if (CafeBot.getRaffleHandler().getRafflesForGuild(event.getGuild()).size()+1 > 3) {
@@ -56,25 +95,47 @@ public class AddRaffleCommand implements ICommand {
             return;
         }
 
-        raffleChannel.sendMessage(creatingRaffle()).queue(message -> {
-            Raffle raffle = new Raffle(event.getGuild().getId(), message.getId(), new Timestamp(System.currentTimeMillis() + (minutes*60000)), winnerAmount);
-
-            if (!CafeBot.getRaffleHandler().addRaffle(raffle)) {
-                message.delete().queue();
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
-                return;
-            }
-
-            message.editMessage(raffleEmbed(title, description, minutes, winnerAmount)).queue();
-            message.addReaction("U+2705").queue();
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                    "Raffle Created",
-                    "A raffle has been successfully created! Check the " + message.getTextChannel().getAsMention() + " channel."
-            )).queue();
-
-        });
+        if (parsedMap.get("message") != null) {
+            raffleChannel.sendMessage(parsedMap.get("message")).embed(creatingRaffle()).queue(message -> {
+                editMessage(message, event, title, description, minutes, winnerAmount);
+            });
+        } else {
+            raffleChannel.sendMessage(creatingRaffle()).queue(message -> {
+                editMessage(message, event, title, description, minutes, winnerAmount);
+            });
+        }
     }
 
+    private void editMessage(Message message, GuildMessageReceivedEvent event,
+                             String title, String description, Integer minutes, Integer winnerAmount) {
+        Raffle raffle = new Raffle(event.getGuild().getId(), message.getId(), new Timestamp(System.currentTimeMillis() + (minutes*60000)), winnerAmount);
+
+        if (!CafeBot.getRaffleHandler().addRaffle(raffle)) {
+            message.delete().queue();
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            return;
+        }
+
+        message.editMessage(raffleEmbed(title, description, minutes, winnerAmount)).queue();
+        message.addReaction("U+2705").queue();
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                "Raffle Created",
+                "A raffle has been successfully created! Check the " + message.getTextChannel().getAsMention() + " channel."
+        )).queue();
+    }
+
+    @NotNull
+    private ArrayList<String> getCommandTerms() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("title");
+        arrayList.add("description");
+        arrayList.add("message");
+        arrayList.add("winners");
+        arrayList.add("time");
+        return arrayList;
+    }
+
+    @NotNull
     private MessageEmbed raffleEmbed(@NotNull String title, @NotNull String description,
                                      @NotNull Integer minutes, @NotNull Integer winnerAmount) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -120,16 +181,13 @@ public class AddRaffleCommand implements ICommand {
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "addraffle RTX_3080_Giveaway Do_you_want_to_win_an_rtx_3080? 2 30`";
+        return "`" + prefix + "addraffle message:@fakeRole, check this out! title:RTX 3080 Giveaway description:Do you want to win an rtx 3080? winners:2 time:30`";
     }
 
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "Raffle Title", true);
-        usage.addUsage(CommandType.TEXT, "Raffle Description", true);
-        usage.addUsage(CommandType.NUMBER, "Raffle Winner Amount", true);
-        usage.addUsage(CommandType.NUMBER, "Raffle Timer (In Minutes)", true);
+        usage.addUsage(CommandType.SENTENCE, "Raffle Arguments", true);
         return usage;
     }
 
