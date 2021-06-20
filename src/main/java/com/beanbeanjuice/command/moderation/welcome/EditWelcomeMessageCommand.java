@@ -64,12 +64,13 @@ public class EditWelcomeMessageCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Edit the welcome message! You can use `\\n` to make a new line in the description! Check the usage below for help!";
+        return "Edit the welcome message! You can use `\\n` to make a new line in the description! Check the usage above for help!\n" +
+                "Command terms are `message`, `description`, `image`, and `thumbnail`.";
     }
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "edit-welcome thumbnail:https://www.fakeImageurl.png image:https://www.fakeImageUrl.png2 Welcome, {user} to the server!\\nYou're cool!` or `" + prefix + "edit-welcome Welcome to the server!`";
+        return "`" + prefix + "edit-welcome message:@awesomerole, someone joined the server! thumbnail:https://www.fakeImageurl.png image:https://www.fakeImageUrl.png2 description:Welcome, {user} to the server!\\nYou're cool!` or `" + prefix + "edit-welcome description:Welcome to the server!`";
     }
 
     @Override
