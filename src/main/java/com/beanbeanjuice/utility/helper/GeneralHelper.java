@@ -19,14 +19,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -106,6 +105,44 @@ public class GeneralHelper {
             }
         };
         spotifyRefreshTimer.scheduleAtFixedRate(spotifyRefreshTimerTask, 0, 1800000);
+    }
+
+    public HashMap<String, String> parseUnderscores(@NotNull ArrayList<String> commandTerms, @NotNull ArrayList<String> arguments) {
+        HashMap<String, String> mappedUnderscores = new HashMap<>();
+
+        StringBuilder currentWord = new StringBuilder();
+        String currentCommandTerm = "";
+        int currentArgumentIndex = -1;
+
+        for (String argument : arguments) {
+
+            int termIndex = getTermIndex(commandTerms, argument);
+
+            if (termIndex != -1) {
+                mappedUnderscores.put(currentCommandTerm, currentWord.toString());
+                currentWord = new StringBuilder();
+                currentCommandTerm = commandTerms.get(termIndex);
+                currentWord.append(argument.replace(currentCommandTerm + ":", ""));
+            } else {
+                currentWord.append(" ").append(argument);
+            }
+
+            currentArgumentIndex++;
+
+            if (currentArgumentIndex == arguments.size() - 1) {
+                mappedUnderscores.put(currentCommandTerm, currentWord.toString());
+            }
+        }
+        return mappedUnderscores;
+    }
+
+    private Integer getTermIndex(@NotNull ArrayList<String> terms, @NotNull String string) {
+        for (int i = 0; i < terms.size(); i++) {
+            if (string.startsWith(terms.get(i) + ":")) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
