@@ -121,10 +121,14 @@ public class GeneralHelper {
         String currentCommandTerm = "";
         int currentArgumentIndex = -1;
 
+        // Goes through each argument once.
         for (String argument : arguments) {
 
+            // Finds the index of the command term
             int termIndex = getTermIndex(commandTerms, argument);
 
+            // If the current argument does not contain a command term,
+            // then do not continue to the next command term.
             if (termIndex != -1) {
                 mappedUnderscores.put(currentCommandTerm, currentWord.toString());
                 currentWord = new StringBuilder();
@@ -133,9 +137,9 @@ public class GeneralHelper {
             } else {
                 currentWord.append(" ").append(argument);
             }
-
             currentArgumentIndex++;
 
+            // Base case for when the arguments is full.
             if (currentArgumentIndex == arguments.size() - 1) {
                 mappedUnderscores.put(currentCommandTerm, currentWord.toString());
             }
@@ -143,6 +147,12 @@ public class GeneralHelper {
         return mappedUnderscores;
     }
 
+    /**
+     * Checks the index of the command term.
+     * @param terms The {@link ArrayList<String>} containing the command terms.
+     * @param string The current {@link String} to check if they have the command term.
+     * @return The {@link Integer} index of the command term. Returns -1 if it does not contain the command term.
+     */
     private Integer getTermIndex(@NotNull ArrayList<String> terms, @NotNull String string) {
         for (int i = 0; i < terms.size(); i++) {
             if (string.startsWith(terms.get(i) + ":")) {
