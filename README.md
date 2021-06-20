@@ -93,6 +93,7 @@
 * Poll/Raffle Commands
 * Music Player
 * Bind Roles to Voice Channels
+* AI Responses to Certain Words
 * And more to come...
 
 
@@ -233,6 +234,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `voice-role-bind` - Bind specific role(s) to a `voice channel`!
 * `get-voice-role-binds` - See which `voice channels` have `roles` bound to them!
 * `set-venting-channel` - Sets the current channel to an anonymous venting channel!
+* `ai-status` - Sets the `AI Status` for the server. This can `enable` or `disable` the AI module.
 
 
 <!-- ROADMAP -->
