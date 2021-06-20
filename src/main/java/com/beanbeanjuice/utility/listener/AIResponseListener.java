@@ -31,6 +31,9 @@ public class AIResponseListener extends ListenerAdapter {
         createLOLMaps();
         createSproutMaps();
         createCafeBotMaps();
+        createKenzieMaps();
+        createMadisonMaps();
+        createSorryMaps();
     }
 
     private void createHelloMaps() {
@@ -116,6 +119,53 @@ public class AIResponseListener extends ListenerAdapter {
         responses.add("Hey, that's me! ^-^");
         responses.add("Someone called?");
         responses.add("Am I a real human yet?");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createKenzieMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("kenzie");
+        commandTerms.add("kenzieisme");
+
+        responses.add("Kenzie? The doctor?");
+        responses.add("Did someone say Kenzie? The one who has an AMD gpu? Pepelaugh?");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createMadisonMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("madison");
+        commandTerms.add("madie");
+
+        responses.add("Madison? The one who's short?");
+        responses.add("Madison moment...");
+        responses.add("Imagine being 5 feet tall. Oh wait... Madison doesn't have to imagine.");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createSorryMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("im sorry");
+        commandTerms.add("i'm sorry");
+        commandTerms.add("im sorry.");
+        commandTerms.add("i'm sorry.");
+        commandTerms.add("i am sorry");
+        commandTerms.add("i am sorry.");
+        commandTerms.add("sorry");
+        commandTerms.add("sorry.");
+
+        responses.add("Don't worry, {user}! Everything will be forgiven and everything will be alright.");
+        responses.add("Why are you sorry? Everything will be okay in the future. Don't worry.");
+        responses.add("It's okay that you're sorry, but try not to be so hard on yourself! ^-^");
 
         messageMap.put(commandTerms, responses);
     }
