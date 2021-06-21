@@ -21,8 +21,10 @@ public class BotUpvoteCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                 "Bot Upvote",
-                "Thank you for upvoting! Please click the links below\n\n" +
-                        "**Link 1**: [top.gg](https://top.gg/bot/787162619504492554)."
+                """
+                        If you want to show your support for the bot, please click the links below! Please click the links below
+
+                        **Link 1**: [top.gg](https://top.gg/bot/787162619504492554)."""
         )).queue();
     }
 
