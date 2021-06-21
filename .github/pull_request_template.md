@@ -37,3 +37,4 @@ Fixes # (issue)
 - [ ] New and existing Gradle CI tests have passed.
 - [ ] The pull request is properly merging into the correct branch.
 - [ ] All existing local code has been pushed to the GitHub repository.
+- [ ] Changes have been documented in the current draft [cafeBot Releases](https://github.com/beanbeanjuice/cafeBot/releases) update.
