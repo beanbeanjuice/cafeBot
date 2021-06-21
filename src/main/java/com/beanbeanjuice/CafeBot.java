@@ -203,7 +203,9 @@ public class CafeBot {
                 new SupportCommand(),
                 new BotInviteCommand(),
                 new UserInfoCommand(),
-                new MemberCountCommand()
+                new MemberCountCommand(),
+                new BotUpvoteCommand(),
+                new BotDonateCommand()
         );
 
         // Cafe Commands
