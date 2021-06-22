@@ -273,7 +273,8 @@ public class CafeBot {
                 new SleepCommand(),
                 new DieCommand(),
                 new WelcomeCommand(),
-                new LickCommand()
+                new LickCommand(),
+                new ShushCommand()
         );
 
         // Music Commands

@@ -30,9 +30,10 @@ public enum InteractionType {
     SLEEP("sleep_amount"),
     DIE("die_amount"),
     WELCOME("welcome_amount"),
-    LICK("lick_amount");
+    LICK("lick_amount"),
+    SHUSH("shush_amount");
 
-    private String sqlColumn;
+    private final String sqlColumn;
 
     InteractionType(@NotNull String sqlColumn) {
         this.sqlColumn = sqlColumn;
