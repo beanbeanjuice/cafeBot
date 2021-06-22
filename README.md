@@ -199,6 +199,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `die` - Just straight up die.
 * `welcome` - Welcome someone... for something!
 * `lick` - Lick... someone... ummm why?
+* `shush` - Shush someone if they're being too loud!
 ##### 7. **MUSIC**
 * `THIS CATEGORY IS CURRENTLY EXPERIMENTAL`
 ##### 8. **TWITCH**
