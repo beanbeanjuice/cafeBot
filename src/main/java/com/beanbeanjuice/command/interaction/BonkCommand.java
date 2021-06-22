@@ -50,7 +50,7 @@ public class BonkCommand implements ICommand {
         if (receivers.size() == 0) {
             message = "**" + sender + "** *bonked* themselves! They sent themselves to ***__H O R N I__*** jail!";
         } else {
-            message = "**" + sender + "** *bonked* **" + CafeBot.getInteractionHandler().getReceiverString(receivers) + "** and send them to ***__H O R N I__*** jail!";
+            message = "**" + sender + "** *bonked* **" + CafeBot.getInteractionHandler().getReceiverString(receivers) + "** and sent them to ***__H O R N I__*** jail!";
 
             if (receivers.size() == 1) {
                 int sendAmount = CafeBot.getInteractionHandler().getSender(user.getId(), InteractionType.BONK) + 1;
