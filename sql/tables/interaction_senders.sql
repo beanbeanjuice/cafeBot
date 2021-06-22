@@ -26,4 +26,5 @@ bonk_amount INT DEFAULT 0,
 sleep_amount INT DEFAULT 0,
 die_amount INT DEFAULT 0,
 welcome_amount INT DEFAULT 0,
-lick_amount INT DEFAULT 0)
+lick_amount INT DEFAULT 0,
+shush_amount INT DEFAULT 0);
