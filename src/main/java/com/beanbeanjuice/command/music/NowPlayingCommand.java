@@ -119,6 +119,6 @@ public class NowPlayingCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.MUSIC;
+        return CategoryType.EXPERIMENTAL;
     }
 }

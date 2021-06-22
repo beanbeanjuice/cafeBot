@@ -203,7 +203,9 @@ public class CafeBot {
                 new SupportCommand(),
                 new BotInviteCommand(),
                 new UserInfoCommand(),
-                new MemberCountCommand()
+                new MemberCountCommand(),
+                new BotUpvoteCommand(),
+                new BotDonateCommand()
         );
 
         // Cafe Commands
@@ -271,7 +273,8 @@ public class CafeBot {
                 new SleepCommand(),
                 new DieCommand(),
                 new WelcomeCommand(),
-                new LickCommand()
+                new LickCommand(),
+                new ShushCommand()
         );
 
         // Music Commands

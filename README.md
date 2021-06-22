@@ -144,6 +144,8 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `invite-bot` - A command to get an invite link for the bot!
 * `user-info` - Get user information about someone.
 * `member-count` - Get the member count for your server!
+* `bot-upvote` - Upvote the bot!
+* `bot-donate` - Donate for the bot!
 ##### 2. **CAFE**
 * `menu` - Show the list of Cafe menu items.
 * `serve` - Get beanCoins! Essentially you run this command by doing `!!serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.
@@ -197,15 +199,9 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `die` - Just straight up die.
 * `welcome` - Welcome someone... for something!
 * `lick` - Lick... someone... ummm why?
+* `shush` - Shush someone if they're being too loud!
 ##### 7. **MUSIC**
-* `play` - Play a song or playlist!
-* `now-playing` - Show the current song playing.
-* `pause` - Pause the current song.
-* `queue` - Check the current queue.
-* `repeat` - Choose to repeat the song or playlist!
-* `shuffle` - Shuffle the current playlist.
-* `skip` - Skip the current song.
-* `stop` - Stop the queue and make the bot leave the channel.
+* `THIS CATEGORY IS CURRENTLY EXPERIMENTAL`
 ##### 8. **TWITCH**
 * `set-live-channel` - Set the current channel to receive twitch live notifications. You need to add twitch channels for this to work.
 * `add-twitch-channel` - Add a twitch channel to leave bot notifications for.
@@ -235,7 +231,15 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `get-voice-role-binds` - See which `voice channels` have `roles` bound to them!
 * `set-venting-channel` - Sets the current channel to an anonymous venting channel!
 * `ai-status` - Sets the `AI Status` for the server. This can `enable` or `disable` the AI module.
-
+##### 10. **EXPERIMENTAL**
+* `play` - Play a song or playlist!
+* `now-playing` - Show the current song playing.
+* `pause` - Pause the current song.
+* `queue` - Check the current queue.
+* `repeat` - Choose to repeat the song or playlist!
+* `shuffle` - Shuffle the current playlist.
+* `skip` - Skip the current song.
+* `stop` - Stop the queue and make the bot leave the channel.
 
 <!-- ROADMAP -->
 # Roadmap

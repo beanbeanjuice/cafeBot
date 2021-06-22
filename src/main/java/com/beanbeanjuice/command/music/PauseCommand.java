@@ -97,6 +97,6 @@ public class PauseCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.MUSIC;
+        return CategoryType.EXPERIMENTAL;
     }
 }
