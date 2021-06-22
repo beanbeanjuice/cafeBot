@@ -52,7 +52,7 @@ public class AIResponseListener extends ListenerAdapter {
         responses.add("Hey, {user}! How are you?");
         responses.add("Hello, {user}.");
         responses.add("Hi! ^-^ The weather's nice today right? I can't tell... I'm just a robot...");
-        responses.add("Hi hi {user}! How has your day been so far? Well, I hope its been well...");
+        responses.add("Hi hi {user}! How has your day been so far? Well, I hope it has been well...");
         responses.add("Hey hey {user}! Do you want to order some coffee from me?");
 
         messageMap.put(commandTerms, responses);
