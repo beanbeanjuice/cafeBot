@@ -96,7 +96,10 @@ public class CustomSongManager {
 
             @Override
             public void noMatches() {
-                CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "No Matches: " + searchString);
+                CafeBot.getGuildHandler().getCustomGuild(guild).getLastMusicChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                        "No Matches",
+                        "No matches were found for the specified song..."
+                )).queue();
             }
 
             @Override
