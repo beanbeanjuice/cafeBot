@@ -113,6 +113,7 @@ public class HelpCommand implements ICommand {
     private MessageEmbed searchCategoriesEmbed(@NotNull String prefix, @NotNull CategoryType categoryType) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(categoryType.getMessage() + "\n\n");
         int count = 1;
 
         for (ICommand command : CafeBot.getCommandManager().getCommands()) {
@@ -126,7 +127,8 @@ public class HelpCommand implements ICommand {
             stringBuilder.append("There are no commands here right now :( but if this section is here, that means I'm working on it!");
         }
 
-        embedBuilder.addField("**Commands in " + categoryType + "**", stringBuilder.toString(), true);
+        embedBuilder.setTitle(categoryType.toString());
+        embedBuilder.setDescription(stringBuilder.toString());
         embedBuilder.setThumbnail(categoryType.getLink());
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setFooter("For help with a specific command, do " + prefix + "help (command name).");
@@ -145,7 +147,8 @@ public class HelpCommand implements ICommand {
             stringBuilder.append("`\n");
         }
 
-        embedBuilder.addField("**Command Categories**", stringBuilder.toString(), true);
+        embedBuilder.setDescription(stringBuilder.toString());
+        embedBuilder.setTitle("Command Categories");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setFooter("If you're stuck, use " + prefix + "help (category name/number).");
         return embedBuilder.build();
