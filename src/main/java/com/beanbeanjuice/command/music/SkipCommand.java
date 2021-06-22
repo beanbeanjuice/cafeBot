@@ -148,7 +148,7 @@ public class SkipCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.MUSIC;
+        return CategoryType.EXPERIMENTAL;
     }
 
 }
