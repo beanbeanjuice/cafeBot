@@ -13,15 +13,13 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to bonk people.
- *
- * @author beanbeanjuice
+ * An {@link ICommand} used to shush people.
  */
-public class BonkCommand implements ICommand {
+public class ShushCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        String url = CafeBot.getInteractionHandler().getBonkImage();
+        String url = CafeBot.getInteractionHandler().getShushImage();
         String sender = user.getName();
 
         ArrayList<User> receivers = new ArrayList<>();
@@ -48,18 +46,18 @@ public class BonkCommand implements ICommand {
         String footer = null;
 
         if (receivers.size() == 0) {
-            message = "**" + sender + "** *bonked* themselves! They sent themselves to ***__H O R N I__*** jail!";
+            message = "**" + sender + "** *shushed* themselves! HUH?!?!?";
         } else {
-            message = "**" + sender + "** *bonked* **" + CafeBot.getInteractionHandler().getReceiverString(receivers) + "** and sent them to ***__H O R N I__*** jail!";
+            message = "**" + sender + "** *shushed* **" + CafeBot.getInteractionHandler().getReceiverString(receivers) + "**!";
 
             if (receivers.size() == 1) {
-                int sendAmount = CafeBot.getInteractionHandler().getSender(user.getId(), InteractionType.BONK) + 1;
-                int receiveAmount = CafeBot.getInteractionHandler().getReceiver(receivers.get(0).getId(), InteractionType.BONK) + 1;
+                int sendAmount = CafeBot.getInteractionHandler().getSender(user.getId(), InteractionType.SHUSH) + 1;
+                int receiveAmount = CafeBot.getInteractionHandler().getReceiver(receivers.get(0).getId(), InteractionType.SHUSH) + 1;
 
-                CafeBot.getInteractionHandler().updateSender(user.getId(), InteractionType.BONK, sendAmount);
-                CafeBot.getInteractionHandler().updateReceiver(receivers.get(0).getId(), InteractionType.BONK, receiveAmount);
+                CafeBot.getInteractionHandler().updateSender(user.getId(), InteractionType.SHUSH, sendAmount);
+                CafeBot.getInteractionHandler().updateReceiver(receivers.get(0).getId(), InteractionType.SHUSH, receiveAmount);
 
-                footer = user.getName() + " bonked others " + sendAmount + " times. " + receivers.get(0).getName() + " was bonked " + receiveAmount + " times.";
+                footer = user.getName() + " shushed others " + sendAmount + " times. " + receivers.get(0).getName() + " was shushed " + receiveAmount + " times.";
             }
         }
 
@@ -72,22 +70,25 @@ public class BonkCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "bonk";
+        return "shush";
     }
 
     @Override
     public ArrayList<String> getAliases() {
-        return new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("shh");
+        arrayList.add("shhh");
+        return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Bonk someone!";
+        return "Shush someone!";
     }
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "bonk @beanbeanjuice` or `" + prefix + "bonk @beanbeanjuice :O`";
+        return "`" + prefix + "shush @beanbeanjuice` or `" + prefix + "shush @beanbeanjuice SHUT UP`";
     }
 
     @Override
@@ -101,6 +102,5 @@ public class BonkCommand implements ICommand {
     public CategoryType getCategoryType() {
         return CategoryType.INTERACTION;
     }
-
 
 }

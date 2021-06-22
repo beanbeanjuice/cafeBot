@@ -30,9 +30,11 @@ Fixes # (issue)
 - [ ] The code follows the style [guidlines]().
 - [ ] A self-review of the code was performed in GitHub.
 - [ ] Appropriate comments were added in the code.
-- [ ] Appropriate changes have been made to documentation.
+- [ ] Appropriate changes have been made to the documentation.
 - [ ] Appropriate changes have been made to the `README.md` file.
 - [ ] No warnings are produced when the code is run.
 - [ ] Appropriate tests exist for this pull request.
 - [ ] New and existing Gradle CI tests have passed.
 - [ ] The pull request is properly merging into the correct branch.
+- [ ] All existing local code has been pushed to the GitHub repository.
+- [ ] Changes have been documented in the current draft [cafeBot Releases](https://github.com/beanbeanjuice/cafeBot/releases) update.

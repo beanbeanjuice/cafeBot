@@ -5,57 +5,51 @@ import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.ArrayList;
 
 /**
- * A command used for sending the user a feature request link.
+ * An {@link ICommand} used to upvote the bot.
  *
  * @author beanbeanjuice
  */
-public class FeatureRequestCommand implements ICommand {
-
-    private final String FEATURE_REQUEST_URL = "https://github.com/beanbeanjuice/cafeBot/issues/new/choose";
+public class BotUpvoteCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(featureRequestEmbed()).queue();
-    }
+        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                "Bot Upvote",
+                """
+                        If you want to show your support for the bot, please click the links below! Please click the links below
 
-    private MessageEmbed featureRequestEmbed() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Feature Request", FEATURE_REQUEST_URL);
-        embedBuilder.setDescription("You can submit a [feature request](" + FEATURE_REQUEST_URL + ") on github!");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        return embedBuilder.build();
+                        **Link 1**: [top.gg](https://top.gg/bot/787162619504492554)."""
+        )).queue();
     }
 
     @Override
     public String getName() {
-        return "feature-request";
+        return "bot-upvote";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("featurerequest");
-        arrayList.add("request-feature");
-        arrayList.add("requestfeature");
+        arrayList.add("botupvote");
+        arrayList.add("upvote-bot");
+        arrayList.add("upvotebot");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Request a feature!";
+        return "Upvote the bot on [top.gg](https://top.gg/bot/787162619504492554)!";
     }
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "feature-request`";
+        return "`" + prefix + "upvote-bot`";
     }
 
     @Override

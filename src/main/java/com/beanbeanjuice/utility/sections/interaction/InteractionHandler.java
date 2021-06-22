@@ -590,6 +590,26 @@ public class InteractionHandler {
     }
 
     /**
+     * @return a random shush image.
+     */
+    @NotNull
+    public String getShushImage() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/shushes/1.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/shushes/2.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/shushes/3.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/shushes/4.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/shushes/5.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/shushes/6.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/shushes/7.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/shushes/8.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/shushes/9.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/shushes/10.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/shushes/11.gif");
+        return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()));
+    }
+
+    /**
      * Checks if the {@link User} has any {@link InteractionType}.
      * @param userID The ID of the {@link User} specified.
      * @return Whether or not if the user exists.

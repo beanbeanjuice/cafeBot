@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class BugReportCommand implements ICommand {
 
-    private final String BUG_REPORT_URL = "https://github.com/beanbeanjuice/cafeBot/issues/new?assignees=beanbeanjuice&labels=bug&template=bug-report.md&title=%5BBUG%5D+%2A%2ADESCRIBE+YOUR+ISSUE+AS+SHORT+AS+POSSIBLE+IN+THIS+BOX%2A%2A";
+    private final String BUG_REPORT_URL = "https://github.com/beanbeanjuice/cafeBot/issues/new/choose";
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
