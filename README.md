@@ -14,9 +14,6 @@
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![WakaTime][wakatime-shield]][wakatime-url]
 
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
@@ -67,13 +64,10 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 # About The Project
 
 [![Product Name Screen Shot][product-title]](https://www.beanbeanjuice.com/cafeBot.html)
-
 
 ### Built With
 
@@ -96,8 +90,6 @@
 * AI Responses to Certain Words
 * And more to come...
 
-
-
 <!-- GETTING STARTED -->
 # Getting Started
 
@@ -114,8 +106,6 @@ This is an example of how to list things you need to use the software and how to
 1. Click this [link](https://discord.com/api/oauth2/authorize?client_id=787162619504492554&permissions=305654886&scope=bot).
 2. Give the bot administrative access. `I promise it's safe. You can view all the code for yourself.`
 3. Enjoy!
-
-
 
 <!-- USAGE EXAMPLES -->
 # Usage
@@ -246,8 +236,6 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 
 See the [open issues](https://github.com/beanbeanjuice/cafeBot/issues) for a list of proposed features (and known issues).
 
-
-
 <!-- CONTRIBUTING -->
 # Contributing
 
@@ -259,14 +247,10 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
 <!-- LICENSE -->
 # License
 
 Distributed under the GPL-3.0 License. See `LICENSE` for more information.
-
-
 
 <!-- CONTACT -->
 # Contact
