@@ -40,7 +40,7 @@ public class PlayLastCommand implements ICommand {
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Next Song");
-        embedBuilder.setDescription("`" + firstSong.getName() + "` by `" + firstSong.getAuthor() + "` `[" + firstSong.getLengthString() + "]`\n\n" +
+        embedBuilder.setDescription("`" + firstSong.getName() + "` by `" + firstSong.getAuthor() + "` [`" + firstSong.getLengthString() + "`]\n\n" +
                 "**Requested By**: " + firstSong.getRequester().getAsMention());
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         event.getChannel().sendMessage(embedBuilder.build()).queue();
