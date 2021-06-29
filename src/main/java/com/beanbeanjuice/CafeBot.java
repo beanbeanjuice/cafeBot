@@ -57,6 +57,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.discordbots.api.client.DiscordBotListAPI;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.boot.SpringApplication;
@@ -113,6 +114,11 @@ public class CafeBot {
     private static final String SQL_PASSWORD = System.getenv("CAFEBOT_MYSQL_PASSWORD");
     private static final boolean SQL_ENCRYPT = Boolean.parseBoolean(System.getenv("CAFEBOT_MYSQL_ENCRYPT"));
 
+    // Top.GG API
+    private static DiscordBotListAPI topGGAPI;
+    private static final String TOPGG_ID = System.getenv("CAFEBOT_TOPGG_ID");
+    private static final String TOPGG_TOKEN = System.getenv("CAFEBOT_TOPGG_TOKEN");
+
     // Logging
     private static LogManager logManager;
 
@@ -163,8 +169,16 @@ public class CafeBot {
         countingHelper = new CountingHelper();
         twitchHandler = new TwitchHandler();
         sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
+
+        // APIs
         sqlServer.startConnection();
         generalHelper.startMySQLRefreshTimer();
+
+        logManager.log(CafeBot.class, LogLevel.OKAY, "Connecting to the Top.GG API", true, false);
+        topGGAPI = new DiscordBotListAPI.Builder()
+                .token(TOPGG_TOKEN)
+                .botId(TOPGG_ID)
+                .build();
 
         ventHandler = new VentHandler();
 
@@ -286,7 +300,8 @@ public class CafeBot {
                 new RepeatCommand(),
                 new ShuffleCommand(),
                 new SkipCommand(),
-                new StopCommand()
+                new StopCommand(),
+                new PlayLastCommand()
         );
 
         // Twitch Commands
@@ -370,6 +385,14 @@ public class CafeBot {
 
     public static void main(String[] args) {
         SpringApplication.run(CafeBot.class, args);
+    }
+
+    /**
+     * @return The current {@link DiscordBotListAPI} for this session.
+     */
+    @NotNull
+    public static DiscordBotListAPI getTopGGAPI() {
+        return topGGAPI;
     }
 
     /**

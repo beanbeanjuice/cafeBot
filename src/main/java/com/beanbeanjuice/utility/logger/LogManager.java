@@ -203,7 +203,6 @@ public class LogManager {
 
                         // Deletes the file once it has been compressed.
                         Path fileFromPath = Paths.get(filePath + fileName);
-                        System.out.println(filePath + fileName);
                         fileFromPath.toFile().delete();
                     } catch (IOException e) {
                         e.printStackTrace();

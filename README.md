@@ -230,6 +230,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `shuffle` - Shuffle the current playlist.
 * `skip` - Skip the current song.
 * `stop` - Stop the queue and make the bot leave the channel.
+* `play-last` - Puts the song that is at the back of the queue in the front of the queue.
 
 <!-- ROADMAP -->
 # Roadmap
