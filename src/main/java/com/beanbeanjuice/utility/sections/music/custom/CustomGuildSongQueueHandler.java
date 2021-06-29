@@ -24,7 +24,7 @@ import java.util.TimerTask;
  */
 public class CustomGuildSongQueueHandler {
 
-    private String guildID;
+    private final String guildID;
     private ArrayList<CustomSong> customSongQueue;
     private ArrayList<CustomSong> unshuffledQueue;
     private ArrayList<CustomSong> repeatQueue;
@@ -45,6 +45,13 @@ public class CustomGuildSongQueueHandler {
         customSongQueue = new ArrayList<>();
         unshuffledQueue = new ArrayList<>();
         repeatQueue = new ArrayList<>();
+    }
+
+    /**
+     * Reorders the last {@link CustomSong} in the queue.
+     */
+    public void reorderLast() {
+        customSongQueue.add(0, customSongQueue.remove(customSongQueue.size() - 1));
     }
 
     @NotNull

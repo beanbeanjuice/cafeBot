@@ -301,7 +301,8 @@ public class CafeBot {
                 new RepeatCommand(),
                 new ShuffleCommand(),
                 new SkipCommand(),
-                new StopCommand()
+                new StopCommand(),
+                new PlayLastCommand()
         );
 
         // Twitch Commands
