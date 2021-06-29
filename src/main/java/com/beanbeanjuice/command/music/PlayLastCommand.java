@@ -60,7 +60,7 @@ public class PlayLastCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Puts the last song in the queue at the top of the queue.";
+        return "Puts the last song in the queue at the front of the queue.";
     }
 
     @Override
