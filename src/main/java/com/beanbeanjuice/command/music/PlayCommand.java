@@ -65,7 +65,7 @@ public class PlayCommand implements ICommand {
             ctx.getGuild().getAudioManager().openAudioConnection(event.getMember().getVoiceState().getChannel());
 
             // Start listening for the audio connection.
-            ctx.getCustomGuild().startAudioChecking();
+            ctx.getCustomGuild().getCustomGuildSongQueue().startAudioChecking();
         } else {
 
             try {

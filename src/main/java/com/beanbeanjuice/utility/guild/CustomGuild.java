@@ -133,7 +133,7 @@ public class CustomGuild {
 
     /**
      * Updates the ai status for the {@link CustomGuild}.
-     * @param aiEnabled The new {@link Boolean} status to set it to.
+     * @param aiState The new {@link Boolean} status to set it to.
      * @return Whether or not it was successfully updated.
      */
     @NotNull
@@ -469,94 +469,10 @@ public class CustomGuild {
     }
 
     /**
-     * Starts checking for an {@link net.dv8tion.jda.internal.audio.AudioConnection AudioConnection} in the current {@link Guild}.
-     */
-    public void startAudioChecking() {
-        timer = new Timer();
-        final int[] seconds = {0};
-        int secondsToLeave = 300;
-        timerTask = new TimerTask() {
-
-            @Override
-            public void run() {
-                boolean voicePassed = false;
-                boolean queuePassed = false;
-                seconds[0] += 1;
-                Guild guild = CafeBot.getGuildHandler().getGuild(guildID);
-                Member selfMember = guild.getSelfMember();
-                GuildVoiceState selfVoiceState = selfMember.getVoiceState();
-
-
-                ArrayList<Member> membersInVoiceChannel;
-
-                try {
-                    membersInVoiceChannel = new ArrayList<>(selfVoiceState.getChannel().getMembers());
-                } catch (NullPointerException e) {
-                    return;
-                }
-
-                membersInVoiceChannel.remove(selfMember);
-                GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(CafeBot.getGuildHandler().getGuild(guildID));
-
-                if (selfVoiceState.inVoiceChannel()) {
-                    musicManager.scheduler.inVoiceChannel = true;
-                } else {
-                    musicManager.scheduler.inVoiceChannel = false;
-                }
-
-                // Checking if the bot is alone in the VC.
-                if (membersInVoiceChannel.isEmpty() && seconds[0] >= secondsToLeave) {
-                    EmbedBuilder embedBuilder = new EmbedBuilder();
-                    embedBuilder.setTitle("Music Bot");
-                    embedBuilder.setDescription("Aww... it's lonely in this voice channel. I guess I'll go...");
-                    embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-                    sendMessageInLastMusicChannel(embedBuilder.build());
-                    musicManager.scheduler.player.stopTrack();
-                    musicManager.scheduler.queue.clear();
-                    customGuildSongQueueHandler.clear();
-                    guild.getAudioManager().closeAudioConnection();
-                    musicManager.scheduler.inVoiceChannel = false;
-                    timer.cancel();
-                    return;
-                }
-
-                // This means that they are in a Voice Channel.
-                voicePassed = !membersInVoiceChannel.isEmpty();
-
-                // Checks if the bot is currently playing something and if the queue is empty.
-                if (musicManager.scheduler.queue.isEmpty() && musicManager.audioPlayer.getPlayingTrack() == null && seconds[0] >= secondsToLeave) {
-                    guild.getAudioManager().closeAudioConnection();
-                    EmbedBuilder embedBuilder = new EmbedBuilder();
-                    embedBuilder.setTitle("Music Bot");
-                    embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-                    embedBuilder.setDescription("There's no music playing... sooooo I'm gonna go because this is boring.");
-                    sendMessageInLastMusicChannel(embedBuilder.build());
-                    guild.getAudioManager().closeAudioConnection();
-                    musicManager.scheduler.queue.clear();
-                    musicManager.scheduler.inVoiceChannel = false;
-                    customGuildSongQueueHandler.clear();
-                    timer.cancel();
-                    return;
-                }
-
-                // This means that there are songs in the queue and a song is currently playing.
-                if (!musicManager.scheduler.queue.isEmpty() || musicManager.audioPlayer.getPlayingTrack() != null) {
-                    queuePassed = true;
-                }
-
-                if (voicePassed && queuePassed) {
-                    seconds[0] = 0;
-                }
-            }
-        };
-        timer.scheduleAtFixedRate(timerTask, 1000, 1000);
-    }
-
-    /**
      * Sends a message in the specified last music {@link TextChannel}.
      * @param embed The {@link MessageEmbed} to be sent.
      */
-    private void sendMessageInLastMusicChannel(MessageEmbed embed) {
+    public void sendMessageInLastMusicChannel(MessageEmbed embed) {
         try {
             lastMusicChannel.sendMessage(embed).queue();
         } catch (NullPointerException ignored) {}
