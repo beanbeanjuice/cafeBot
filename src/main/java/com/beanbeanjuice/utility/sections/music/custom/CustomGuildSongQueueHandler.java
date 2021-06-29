@@ -317,8 +317,6 @@ public class CustomGuildSongQueueHandler {
                 if (voicePassed && queuePassed) {
                     seconds = 0;
                 }
-
-                CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Timer Still Going: " + seconds, false, false);
             }
         };
         audioTimer.scheduleAtFixedRate(audioTimerTask, 1000, 1000);
