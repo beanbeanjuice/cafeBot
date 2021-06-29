@@ -60,7 +60,7 @@ public class PingCommand implements ICommand {
                 .append("**Bot Memory Usage** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
                 .append("**Bot Uptime** - `").append(CafeBot.getGeneralHelper().formatTimeDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
                 .append("**Commands Run** - `").append(CafeBot.getCommandsRun()).append("`\n");
-        CafeBot.getTopGGAPI().getBot("787162619504492554").whenCompleteAsync((bot, e) -> {
+        CafeBot.getTopGGAPI().getBot("787162619504492554").whenComplete((bot, e) -> {
             descriptionBuilder.append("**Bot Upvotes** - `").append(bot.getPoints()).append("`\n\n");
         });
         descriptionBuilder.append("Hello there! How are you? Would you like to order some coffee?");
