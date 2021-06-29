@@ -35,6 +35,7 @@ public class AIResponseListener extends ListenerAdapter {
         createMadisonMaps();
         createSorryMaps();
         createLillyMaps();
+        createBanzaiMaps();
     }
 
     private void createHelloMaps() {
@@ -97,6 +98,7 @@ public class AIResponseListener extends ListenerAdapter {
         responses.add("Imagine breaking a bee hive without silk touch in Minecraft...");
         responses.add("Stfu sprout...");
         responses.add("Soap?");
+        responses.add("Who? Asked?");
 
         messageMap.put(commandTerms, responses);
     }
@@ -188,6 +190,16 @@ public class AIResponseListener extends ListenerAdapter {
         responses.add("Lilly baby :pleading_face:!");
 
         messageMap.put(commandTerms, responses);
+    }
+
+    private void createBanzaiMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("banzai");
+
+        responses.add("More like `bottom fragzai`. Lmao.");
+        responses.add("Who? Asked?");
     }
 
     @Override
