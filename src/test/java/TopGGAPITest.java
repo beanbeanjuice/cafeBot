@@ -1,23 +1,18 @@
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.logger.LogLevel;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javax.security.auth.login.LoginException;
+import java.util.concurrent.ExecutionException;
 
 public class TopGGAPITest {
 
     @Test
     @DisplayName("Top.GG API Test")
-    public void test() throws LoginException, InterruptedException {
+    public void test() throws LoginException, InterruptedException, ExecutionException {
         new CafeBot();
-        CafeBot.getTopGGAPI().getBot(CafeBot.getJDA().getSelfUser().getId()).whenComplete((bot, e) -> {
-            System.out.println(bot.getPrefix());
-        });
-
-        CafeBot.getTopGGAPI().getStats("").whenCompleteAsync((stats, e) -> {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Bot Servers: " + stats.getServerCount());
-        });
+        Assertions.assertEquals(CafeBot.getPrefix(), CafeBot.getTopGGAPI().getBot(System.getenv("CAFEBOT_TOPGG_ID")).toCompletableFuture().get().getPrefix());
     }
 
 }
