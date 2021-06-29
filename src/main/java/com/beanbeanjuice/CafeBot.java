@@ -22,7 +22,6 @@ import com.beanbeanjuice.command.moderation.welcome.EditWelcomeMessageCommand;
 import com.beanbeanjuice.command.moderation.welcome.SetWelcomeChannelCommand;
 import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.social.VentCommand;
-import com.beanbeanjuice.command.testing.TestCommand;
 import com.beanbeanjuice.command.twitch.*;
 import com.beanbeanjuice.utility.listener.AIResponseListener;
 import com.beanbeanjuice.utility.listener.WelcomeListener;
@@ -338,11 +337,6 @@ public class CafeBot {
                 new GetVoiceRoleBindsCommand(),
                 new SetVentingChannelCommand(),
                 new SetAIStateCommand()
-        );
-
-        // Experimental
-        commandManager.addCommands(
-                new TestCommand()
         );
 
         jdaBuilder.addEventListeners(
