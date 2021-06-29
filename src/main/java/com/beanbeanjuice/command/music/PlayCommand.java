@@ -12,6 +12,7 @@ import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import com.beanbeanjuice.utility.sections.music.custom.CustomSong;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.Playlist;
@@ -192,6 +193,9 @@ public class PlayCommand implements ICommand {
 
         }
         CafeBot.getCustomSongManager().addSongToGuild(event.getGuild(), link, user);
+
+        // Unpauses the bot
+        PlayerManager.getInstance().getMusicManager(ctx.getGuild()).audioPlayer.setPaused(false);
     }
 
     @NotNull
