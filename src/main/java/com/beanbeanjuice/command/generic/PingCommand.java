@@ -1,6 +1,5 @@
 package com.beanbeanjuice.command.generic;
 
-import ch.qos.logback.core.util.SystemInfo;
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -19,10 +18,9 @@ import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 /**
- * A general ping command to show bot information.
+ * A general ping {@link ICommand} to show bot information.
  *
  * @author beanbeanjuice
  */
@@ -63,7 +61,7 @@ public class PingCommand implements ICommand {
                 .append("**Commands Run** - `").append(CafeBot.getCommandsRun()).append("`\n");
 
         try {
-            descriptionBuilder.append("**Bot Upvotes** - `").append(CafeBot.getTopGGAPI().getBot("787162619504492554").toCompletableFuture().get()
+            descriptionBuilder.append("**Bot Upvotes** - `").append(CafeBot.getTopGGAPI().getBot(System.getenv("CAFEBOT_TOPGG_ID")).toCompletableFuture().get()
                     .getPoints()).append("`\n\n");
         } catch (InterruptedException | ExecutionException e) {
             descriptionBuilder.append("**Bot Upvotes** - `Unable to Get Vote Count`\n\n");

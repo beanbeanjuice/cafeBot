@@ -4,7 +4,6 @@ import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
