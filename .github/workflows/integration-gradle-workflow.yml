@@ -30,4 +30,7 @@ jobs:
           CAFEBOT_SPOTIFY_SECRET: ${{ secrets.CAFEBOT_SPOTIFY_SECRET }}
           
           CAFEBOT_TWITCH_ACCESS_TOKEN: ${{ secrets.CAFEBOT_TWITCH_ACCESS_TOKEN }}
+
+          CAFEBOT_TOPGG_ID: ${{ secrets.CAFEBOT_TOPGG_ID }}
+          CAFEBOT_TOPGG_TOKEN: ${{ secrets.CAFEBOT_TOPGG_TOKEN }}
         run: gradle build
