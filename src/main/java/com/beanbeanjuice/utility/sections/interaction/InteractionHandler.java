@@ -87,6 +87,16 @@ public class InteractionHandler {
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/13.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/14.gif");
         arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/15.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/16.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/17.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/18.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/19.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/20.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/21.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/22.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/23.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/24.gif");
+        arrayList.add("http://cdn.beanbeanjuice.com/images/cafeBot/interaction/kisses/25.gif");
         return arrayList.get(CafeBot.getGeneralHelper().getRandomNumber(0, arrayList.size()));
     }
 
