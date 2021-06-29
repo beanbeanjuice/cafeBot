@@ -41,10 +41,8 @@ repositories {
     // Central Maven repository.
     mavenCentral()
 
-    maven {
-        url 'https://m2.dv8tion.net/releases'
-    }
-
+    maven {url 'https://m2.dv8tion.net/releases' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -105,6 +103,9 @@ dependencies {
 
     // Environment Variables
     implementation group: 'io.github.cdimascio', name: 'java-dotenv', version: '5.2.2'
+
+    // Top.GG API
+    implementation group: 'org.discordbots', name: 'DBL-Java-Library', version: '2.0.1'
 
 }
 

@@ -1,15 +1,21 @@
 package com.beanbeanjuice.utility.sections.music.custom;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.GuildVoiceState;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A {@link CustomGuildSongQueueHandler} class for handling {@link CustomSong} in a {@link net.dv8tion.jda.api.entities.Guild Guild}.
@@ -18,7 +24,7 @@ import java.util.Collections;
  */
 public class CustomGuildSongQueueHandler {
 
-    private String guildID;
+    private final String guildID;
     private ArrayList<CustomSong> customSongQueue;
     private ArrayList<CustomSong> unshuffledQueue;
     private ArrayList<CustomSong> repeatQueue;
@@ -27,6 +33,8 @@ public class CustomGuildSongQueueHandler {
     private boolean playlistRepeat = false;
     private boolean songRepeat = false;
     private boolean shuffle = false;
+    private Timer audioTimer;
+    private TimerTask audioTimerTask;
 
     /**
      * Creates a new {@link CustomGuildSongQueueHandler} object.
@@ -37,6 +45,13 @@ public class CustomGuildSongQueueHandler {
         customSongQueue = new ArrayList<>();
         unshuffledQueue = new ArrayList<>();
         repeatQueue = new ArrayList<>();
+    }
+
+    /**
+     * Reorders the last {@link CustomSong} in the queue.
+     */
+    public void reorderLast() {
+        customSongQueue.add(0, customSongQueue.remove(customSongQueue.size() - 1));
     }
 
     @NotNull
@@ -134,6 +149,9 @@ public class CustomGuildSongQueueHandler {
         shuffle = false;
         currentSong = null;
         songPlaying = false;
+
+        // Unpauses the Music Player
+        PlayerManager.getInstance().getMusicManager(CafeBot.getGuildHandler().getGuild(guildID)).audioPlayer.setPaused(false);
     }
 
     /**
@@ -225,6 +243,90 @@ public class CustomGuildSongQueueHandler {
      */
     public void setSongPlayingStatus(@NotNull Boolean bool) {
         songPlaying = bool;
+    }
+
+    /**
+     * Starts checking for an {@link net.dv8tion.jda.internal.audio.AudioConnection AudioConnection} in the current {@link Guild}.
+     */
+    public void startAudioChecking() {
+
+        if (audioTimer != null) {
+            audioTimer.cancel();
+            audioTimer = null;
+            audioTimerTask.cancel();
+            audioTimerTask = null;
+        }
+
+        audioTimer = new Timer();
+        int secondsToLeave = 300;
+        audioTimerTask = new TimerTask() {
+
+            int seconds = 0;
+            final Guild guild = CafeBot.getGuildHandler().getGuild(guildID);
+            final Member selfMember = guild.getSelfMember();
+
+            @Override
+            public void run() {
+                boolean voicePassed = false;
+                boolean queuePassed = false;
+                seconds += 1;
+
+                GuildVoiceState selfVoiceState = selfMember.getVoiceState();
+                GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(CafeBot.getGuildHandler().getGuild(guildID));
+                ArrayList<Member> membersInVoiceChannel = new ArrayList<>(selfVoiceState.getChannel().getMembers());
+
+                if (selfVoiceState.inVoiceChannel()) {
+                    musicManager.scheduler.inVoiceChannel = true;
+                } else {
+                    musicManager.scheduler.inVoiceChannel = false;
+                }
+
+                // Checking if the bot is alone in the VC.
+                if (membersInVoiceChannel.size() == 1 && seconds >= secondsToLeave) {
+                    EmbedBuilder embedBuilder = new EmbedBuilder();
+                    embedBuilder.setTitle("Music Bot");
+                    embedBuilder.setDescription("Aww... it's lonely in this voice channel. I guess I'll go...");
+                    embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+                    CafeBot.getGuildHandler().getCustomGuild(guild).sendMessageInLastMusicChannel(embedBuilder.build());
+                    musicManager.scheduler.player.stopTrack();
+                    musicManager.scheduler.queue.clear();
+                    clear();
+                    guild.getAudioManager().closeAudioConnection();
+                    musicManager.scheduler.inVoiceChannel = false;
+                    audioTimer.cancel();
+                    return;
+                }
+
+                // This means that they are in a Voice Channel.
+                voicePassed = !(membersInVoiceChannel.size() == 1);
+
+                // Checks if the bot is currently playing something and if the queue is empty.
+                if (musicManager.scheduler.queue.isEmpty() && musicManager.audioPlayer.getPlayingTrack() == null && seconds >= secondsToLeave) {
+                    guild.getAudioManager().closeAudioConnection();
+                    EmbedBuilder embedBuilder = new EmbedBuilder();
+                    embedBuilder.setTitle("Music Bot");
+                    embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+                    embedBuilder.setDescription("There's no music playing... sooooo I'm gonna go because this is boring.");
+                    CafeBot.getGuildHandler().getCustomGuild(guild).sendMessageInLastMusicChannel(embedBuilder.build());
+                    guild.getAudioManager().closeAudioConnection();
+                    musicManager.scheduler.queue.clear();
+                    musicManager.scheduler.inVoiceChannel = false;
+                    clear();
+                    audioTimer.cancel();
+                    return;
+                }
+
+                // This means that there are songs in the queue and a song is currently playing.
+                if (!musicManager.scheduler.queue.isEmpty() || musicManager.audioPlayer.getPlayingTrack() != null) {
+                    queuePassed = true;
+                }
+
+                if (voicePassed && queuePassed) {
+                    seconds = 0;
+                }
+            }
+        };
+        audioTimer.scheduleAtFixedRate(audioTimerTask, 1000, 1000);
     }
 
 }
