@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -60,9 +61,13 @@ public class PingCommand implements ICommand {
                 .append("**Bot Memory Usage** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
                 .append("**Bot Uptime** - `").append(CafeBot.getGeneralHelper().formatTimeDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
                 .append("**Commands Run** - `").append(CafeBot.getCommandsRun()).append("`\n");
-        CafeBot.getTopGGAPI().getBot("787162619504492554").whenComplete((bot, e) -> {
-            descriptionBuilder.append("**Bot Upvotes** - `").append(bot.getPoints()).append("`\n\n");
-        });
+
+        try {
+            descriptionBuilder.append("**Bot Upvotes** - `").append(CafeBot.getTopGGAPI().getBot("787162619504492554").toCompletableFuture().get()
+                    .getPoints()).append("`\n\n");
+        } catch (InterruptedException | ExecutionException e) {
+            descriptionBuilder.append("**Bot Upvotes** - `Unable to Get Vote Count`\n\n");
+        }
         descriptionBuilder.append("Hello there! How are you? Would you like to order some coffee?");
         embedBuilder.setDescription(descriptionBuilder.toString());
         embedBuilder.setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/cafeBot");
