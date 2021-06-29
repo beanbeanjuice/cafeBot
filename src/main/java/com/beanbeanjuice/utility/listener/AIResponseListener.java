@@ -18,7 +18,7 @@ import java.util.HashMap;
  */
 public class AIResponseListener extends ListenerAdapter {
 
-    private HashMap<ArrayList<String>, ArrayList<String>> messageMap;
+    private final HashMap<ArrayList<String>, ArrayList<String>> messageMap;
 
     public AIResponseListener() {
         messageMap = new HashMap<>();
@@ -34,6 +34,7 @@ public class AIResponseListener extends ListenerAdapter {
         createKenzieMaps();
         createMadisonMaps();
         createSorryMaps();
+        createLillyMaps();
     }
 
     private void createHelloMaps() {
@@ -168,6 +169,23 @@ public class AIResponseListener extends ListenerAdapter {
         responses.add("Don't worry, {user}! Everything will be forgiven and everything will be alright.");
         responses.add("Why are you sorry? Everything will be okay in the future. Don't worry.");
         responses.add("It's okay that you're sorry, but try not to be so hard on yourself! ^-^");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createLillyMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("lilly");
+        commandTerms.add("otter pop");
+
+        responses.add("You know who likes otter pops? Lilly. That's who.");
+        responses.add("{user}, do you know Lilly? She's super cute.");
+        responses.add("Lilly is SO CUTE.");
+        responses.add("Who else thinks Lilly is adorable? Everyone, of course.");
+        responses.add("Lilly pop!");
+        responses.add("Lilly baby :pleading_face:!");
 
         messageMap.put(commandTerms, responses);
     }
