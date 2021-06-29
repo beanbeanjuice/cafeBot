@@ -1,6 +1,5 @@
 package com.beanbeanjuice.command.generic;
 
-import ch.qos.logback.core.util.SystemInfo;
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -18,10 +17,10 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutionException;
 
 /**
- * A general ping command to show bot information.
+ * A general ping {@link ICommand} to show bot information.
  *
  * @author beanbeanjuice
  */
@@ -59,8 +58,15 @@ public class PingCommand implements ICommand {
                 .append("**OS Memory Usage** - `").append(systemMemoryUsage).append("` mb / `").append(systemMemoryTotal).append("` mb\n")
                 .append("**Bot Memory Usage** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
                 .append("**Bot Uptime** - `").append(CafeBot.getGeneralHelper().formatTimeDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
-                .append("**Commands Run** - `").append(CafeBot.getCommandsRun()).append("`\n\n")
-                .append("Hello there! How are you? Would you like to order some coffee?");
+                .append("**Commands Run** - `").append(CafeBot.getCommandsRun()).append("`\n");
+
+        try {
+            descriptionBuilder.append("**Bot Upvotes** - `").append(CafeBot.getTopGGAPI().getBot(System.getenv("CAFEBOT_TOPGG_ID")).toCompletableFuture().get()
+                    .getPoints()).append("`\n\n");
+        } catch (InterruptedException | ExecutionException e) {
+            descriptionBuilder.append("**Bot Upvotes** - `Unable to Get Vote Count`\n\n");
+        }
+        descriptionBuilder.append("Hello there! How are you? Would you like to order some coffee?");
         embedBuilder.setDescription(descriptionBuilder.toString());
         embedBuilder.setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/cafeBot");
         embedBuilder.setThumbnail(CafeBot.getDiscordAvatarUrl());

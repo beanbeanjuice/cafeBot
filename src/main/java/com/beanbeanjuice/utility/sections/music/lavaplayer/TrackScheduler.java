@@ -36,16 +36,19 @@ public class TrackScheduler extends AudioEventAdapter {
      */
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
+        if (endReason == AudioTrackEndReason.LOAD_FAILED) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Loading Track", true, false);
+            AudioTrack audioTrack = this.player.getPlayingTrack().makeClone();
+            this.player.startTrack(audioTrack, false);
+            return;
+        }
+
         if (endReason.mayStartNext) {
             if (CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().getSongRepeating()) {
                 this.player.startTrack(track.makeClone(), false);
                 return;
             }
             nextTrack();
-        }
-
-        if (endReason == AudioTrackEndReason.LOAD_FAILED) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Loading Track", true, false);
         }
     }
 
@@ -76,6 +79,7 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackStuck(AudioPlayer player, AudioTrack track, long thresholdMS) {
         CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Providing Audio: " + thresholdMS, true, false);
+        nextTrack();
     }
 
 }
