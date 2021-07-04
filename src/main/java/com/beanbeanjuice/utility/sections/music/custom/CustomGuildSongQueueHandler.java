@@ -1,7 +1,6 @@
 package com.beanbeanjuice.utility.sections.music.custom;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -62,6 +61,9 @@ public class CustomGuildSongQueueHandler {
         customSongQueue.add(0, lastSong);
     }
 
+    /**
+     * @return The length of the current song queue in milliseconds.
+     */
     @NotNull
     public Long getQueueLengthMS() {
         GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(CafeBot.getGuildHandler().getGuild(guildID));
