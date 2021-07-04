@@ -37,9 +37,26 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         if (endReason == AudioTrackEndReason.LOAD_FAILED) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Loading Track", true, false);
-            AudioTrack audioTrack = this.player.getPlayingTrack().makeClone();
-            this.player.startTrack(audioTrack, false);
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Restarting Track: " + track.getInfo().title, true, false);
+
+            // Stops the track from playing.
+            this.player.stopTrack();
+
+            // Makes a clone of the track.
+            AudioTrack audioTrackClone = track.makeClone();
+
+            // Test Variables
+            int count = 0;
+            boolean startedTrack = this.player.startTrack(audioTrackClone, false);
+
+            // Keep retrying until it reaches 200 retries or if the track has started.
+            while (!startedTrack || count >= 200) {
+                startedTrack = this.player.startTrack(audioTrackClone, false);
+                count++;
+            }
+
+            // Log that the track could not start.
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Tried 200 times. Track could not start.", true, false);
             return;
         }
 
