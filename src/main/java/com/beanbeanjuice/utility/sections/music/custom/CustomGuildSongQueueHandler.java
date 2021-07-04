@@ -12,10 +12,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * A {@link CustomGuildSongQueueHandler} class for handling {@link CustomSong} in a {@link net.dv8tion.jda.api.entities.Guild Guild}.
@@ -29,6 +26,7 @@ public class CustomGuildSongQueueHandler {
     private ArrayList<CustomSong> unshuffledQueue;
     private ArrayList<CustomSong> repeatQueue;
     private CustomSong currentSong;
+    private Stack<CustomSong> songOrderStack;
     private boolean songPlaying = false;
     private boolean playlistRepeat = false;
     private boolean songRepeat = false;
@@ -45,13 +43,23 @@ public class CustomGuildSongQueueHandler {
         customSongQueue = new ArrayList<>();
         unshuffledQueue = new ArrayList<>();
         repeatQueue = new ArrayList<>();
+        songOrderStack = new Stack<>();
+    }
+
+    /**
+     * @return The {@link Stack} of {@link CustomSong} that were added.
+     */
+    public Stack<CustomSong> getSongOrderStack() {
+        return songOrderStack;
     }
 
     /**
      * Reorders the last {@link CustomSong} in the queue.
      */
-    public void reorderLast() {
-        customSongQueue.add(0, customSongQueue.remove(customSongQueue.size() - 1));
+    public void moveLast() {
+        CustomSong lastSong = songOrderStack.pop();
+        customSongQueue.remove(lastSong);
+        customSongQueue.add(0, lastSong);
     }
 
     @NotNull
@@ -79,6 +87,9 @@ public class CustomGuildSongQueueHandler {
      * @param fromRepeat Whether or not the {@link CustomSong} was added from the repeat mechanism.
      */
     public void addCustomSong(@NotNull CustomSong customSong, @NotNull Boolean fromRepeat) {
+
+        // Adds the song to the "undo" stack.
+        songOrderStack.add(customSong);
 
         // Adds the song randomly if needed.
         if (shuffle) {
