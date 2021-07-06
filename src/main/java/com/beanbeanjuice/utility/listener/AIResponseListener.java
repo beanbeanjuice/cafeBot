@@ -201,7 +201,7 @@ public class AIResponseListener extends ListenerAdapter {
 
         messageMap.forEach((commandTerms, commandResponses) -> {
             if (commandTerms.contains(message.replace(".", "").replace("?", ""))) {
-                event.getChannel().sendMessage(parseMessage(
+                event.getMessage().reply(parseMessage(
                         commandResponses.get(CafeBot.getGeneralHelper().getRandomNumber(0, commandResponses.size())),
                         event.getAuthor()
                 )).queue();
