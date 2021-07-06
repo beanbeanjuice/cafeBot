@@ -179,7 +179,7 @@ public class RepeatCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.EXPERIMENTAL;
+        return CategoryType.MUSIC;
     }
 
 }
