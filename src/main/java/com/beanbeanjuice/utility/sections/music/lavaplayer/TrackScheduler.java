@@ -39,7 +39,6 @@ public class TrackScheduler extends AudioEventAdapter {
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         if (endReason == AudioTrackEndReason.LOAD_FAILED) {
             // Re-Adds the Track if it has failed.
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Re-Adding Track: " + track.getInfo().title);
             CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().reAddSong(new CustomSong(
                     track.getInfo().title,
                     track.getInfo().author,
