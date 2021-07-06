@@ -45,9 +45,6 @@ public class AIResponseListener extends ListenerAdapter {
         commandTerms.add("hello");
         commandTerms.add("hi");
         commandTerms.add("hey");
-        commandTerms.add("hello.");
-        commandTerms.add("hi.");
-        commandTerms.add("hey.");
 
         responses.add("Hi, {user}!");
         responses.add("Hey hey, {user}! ^-^");
@@ -65,20 +62,12 @@ public class AIResponseListener extends ListenerAdapter {
         ArrayList<String> responses = new ArrayList<>();
 
         commandTerms.add("lol");
-        commandTerms.add("lol.");
         commandTerms.add("haha");
-        commandTerms.add("haha.");
         commandTerms.add("lmao");
-        commandTerms.add("lmao.");
         commandTerms.add("xd");
-        commandTerms.add("xd.");
         commandTerms.add("bruh");
-        commandTerms.add("bruh.");
-        commandTerms.add(":joy:");
         commandTerms.add("bro");
-        commandTerms.add("bro.");
         commandTerms.add("lmfao");
-        commandTerms.add("lmfao.");
 
         responses.add("Really? That's all you can do to respond?");
         responses.add("That response was dryer than the Sahara Desert.");
@@ -111,15 +100,9 @@ public class AIResponseListener extends ListenerAdapter {
 
         commandTerms.add("cafebot");
         commandTerms.add("cafe bot");
-        commandTerms.add("cafebot.");
-        commandTerms.add("cafe bot.");
-        commandTerms.add("what is cafebot?");
         commandTerms.add("what is cafebot");
-        commandTerms.add("who is cafebot?");
         commandTerms.add("who is cafebot");
-        commandTerms.add("what is cafe bot?");
         commandTerms.add("what is cafe bot");
-        commandTerms.add("who is cafe bot?");
         commandTerms.add("who is cafe bot");
 
         responses.add("Hi, {user}. I'm cafeBot! A general-purpose bot who can also serve you some coffee!");
@@ -163,12 +146,8 @@ public class AIResponseListener extends ListenerAdapter {
 
         commandTerms.add("im sorry");
         commandTerms.add("i'm sorry");
-        commandTerms.add("im sorry.");
-        commandTerms.add("i'm sorry.");
         commandTerms.add("i am sorry");
-        commandTerms.add("i am sorry.");
         commandTerms.add("sorry");
-        commandTerms.add("sorry.");
 
         responses.add("Don't worry, {user}! Everything will be forgiven and everything will be alright.");
         responses.add("Why are you sorry? Everything will be okay in the future. Don't worry.");
@@ -202,6 +181,8 @@ public class AIResponseListener extends ListenerAdapter {
 
         responses.add("More like `bottom fragzai`. Lmao.");
         responses.add("Who? Asked?");
+
+        messageMap.put(commandTerms, responses);
     }
 
     @Override
@@ -219,7 +200,7 @@ public class AIResponseListener extends ListenerAdapter {
         String message = event.getMessage().getContentRaw().toLowerCase();
 
         messageMap.forEach((commandTerms, commandResponses) -> {
-            if (commandTerms.contains(message.replace(".", ""))) {
+            if (commandTerms.contains(message.replace(".", "").replace("?", ""))) {
                 event.getChannel().sendMessage(parseMessage(
                         commandResponses.get(CafeBot.getGeneralHelper().getRandomNumber(0, commandResponses.size())),
                         event.getAuthor()
