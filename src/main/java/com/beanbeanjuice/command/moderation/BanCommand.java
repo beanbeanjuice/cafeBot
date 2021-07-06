@@ -66,10 +66,10 @@ public class BanCommand implements ICommand {
             return;
         }
 
-        CafeBot.getGeneralHelper().pmUser(punishee, "You have been banned: " + reason.toString());
+        CafeBot.getGeneralHelper().pmUser(punishee, "You have been banned: " + reason);
         event.getChannel().sendMessage(successfulBanWithReasonEmbed(punishee, user, reason.toString())).queue();
         CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).log(this, LogLevel.INFO, "User Banned", "`" + punishee.getAsTag() + "` was banned by " +
-                 user.getAsMention() + " for: `" + reason.toString() + "`");
+                 user.getAsMention() + " for: `" + reason + "`\n\n**Discord ID**: `" + punishee.getId() + "`");
     }
 
     @NotNull
