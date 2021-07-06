@@ -69,7 +69,7 @@ public class KickCommand implements ICommand {
         CafeBot.getGeneralHelper().pmUser(punishee, "You have been kicked: " + reason);
         event.getChannel().sendMessage(successfulKickEmbed(punishee, user, reason.toString())).queue();
         CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).log(this, LogLevel.INFO, "User Kicked", "`" + punishee.getAsTag() + "` was kicked by " +
-                user.getAsMention() + " for: `" + reason + "`");
+                user.getAsMention() + " for: `" + reason + "`\n\n**Discord ID**: `" + punishee.getId() + "`");
     }
 
     @NotNull
