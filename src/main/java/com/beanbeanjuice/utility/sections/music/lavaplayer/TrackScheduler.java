@@ -2,6 +2,7 @@ package com.beanbeanjuice.utility.sections.music.lavaplayer;
 
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import com.beanbeanjuice.utility.sections.music.custom.CustomSong;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
@@ -37,10 +38,14 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         if (endReason == AudioTrackEndReason.LOAD_FAILED) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Loading Track", true, false);
-            AudioTrack audioTrack = this.player.getPlayingTrack().makeClone();
-            this.player.startTrack(audioTrack, false);
-            return;
+            // Re-Adds the Track if it has failed.
+            CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().reAddSong(new CustomSong(
+                    track.getInfo().title,
+                    track.getInfo().author,
+                    track.getDuration(),
+                    CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().getCurrentSong().getRequester(),
+                    false
+            ));
         }
 
         if (endReason.mayStartNext) {
@@ -73,7 +78,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     @Override
     public void onTrackException(AudioPlayer player, AudioTrack track, FriendlyException exception) {
-        CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Track Exception on Track `" + track.getInfo().title + "`: " + exception.getMessage(), true, false, exception);
+//        CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Track Exception on Track `" + track.getInfo().title + "`: " + exception.getMessage(), true, false, exception);
     }
 
     @Override

@@ -77,7 +77,9 @@ public class HmphCommand implements ICommand {
 
     @Override
     public ArrayList<String> getAliases() {
-        return new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("hmpf");
+        return arrayList;
     }
 
     @Override
