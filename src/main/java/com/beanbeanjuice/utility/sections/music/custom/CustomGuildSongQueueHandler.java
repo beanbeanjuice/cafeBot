@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.sections.music.custom;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -32,6 +33,7 @@ public class CustomGuildSongQueueHandler {
     private boolean shuffle = false;
     private Timer audioTimer;
     private TimerTask audioTimerTask;
+    private boolean loadHasFailed = false;
 
     /**
      * Creates a new {@link CustomGuildSongQueueHandler} object.
@@ -111,6 +113,15 @@ public class CustomGuildSongQueueHandler {
     }
 
     /**
+     * Adds a song to the front of the queue.
+     * @param customSong The {@link CustomSong} to be added.
+     */
+    public void reAddSong(@NotNull CustomSong customSong) {
+        customSongQueue.add(0, customSong);
+        loadHasFailed = true;
+    }
+
+    /**
      * Queues up the next {@link CustomSong}.
      */
     public void queueNextSong() {
@@ -119,9 +130,17 @@ public class CustomGuildSongQueueHandler {
             currentSong = customSongQueue.remove(0);
             unshuffledQueue.remove(currentSong);
             PlayerManager.getInstance().loadAndPlay(currentSong.getSearchString(), CafeBot.getGuildHandler().getGuild(guildID));
-            try {
-                CafeBot.getGuildHandler().getCustomGuild(guildID).getLastMusicChannel().sendMessage(nowPlaying()).queue();
-            } catch (NullPointerException ignored) {}
+
+            // If the load has failed, don't say queueing next song.
+            if (!loadHasFailed) {
+                try {
+                    CafeBot.getGuildHandler().getCustomGuild(guildID).getLastMusicChannel().sendMessage(nowPlaying()).queue();
+                } catch (NullPointerException ignored) {
+                }
+            }
+
+            // Resets the `loadHasFailed` variable.
+            loadHasFailed = false;
         } catch (IndexOutOfBoundsException e) {
             if (playlistRepeat) {
                 songPlaying = false;
@@ -277,6 +296,17 @@ public class CustomGuildSongQueueHandler {
             int seconds = 0;
             final Guild guild = CafeBot.getGuildHandler().getGuild(guildID);
             final Member selfMember = guild.getSelfMember();
+            final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(CafeBot.getGuildHandler().getGuild(guildID));
+
+            // Takes all of the necessary precautions to disconnect and leave the voice channel.
+            public void disconnectFromChannel() {
+                musicManager.scheduler.player.stopTrack();
+                musicManager.scheduler.queue.clear();
+                clear();
+                guild.getAudioManager().closeAudioConnection();
+                musicManager.scheduler.inVoiceChannel = false;
+                audioTimer.cancel();
+            }
 
             @Override
             public void run() {
@@ -285,33 +315,43 @@ public class CustomGuildSongQueueHandler {
                 seconds += 1;
 
                 GuildVoiceState selfVoiceState = selfMember.getVoiceState();
-                GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(CafeBot.getGuildHandler().getGuild(guildID));
-                ArrayList<Member> membersInVoiceChannel = new ArrayList<>(selfVoiceState.getChannel().getMembers());
 
-                if (selfVoiceState.inVoiceChannel()) {
-                    musicManager.scheduler.inVoiceChannel = true;
-                } else {
-                    musicManager.scheduler.inVoiceChannel = false;
-                }
-
-                // Checking if the bot is alone in the VC.
-                if (membersInVoiceChannel.size() == 1 && seconds >= secondsToLeave) {
-                    EmbedBuilder embedBuilder = new EmbedBuilder();
-                    embedBuilder.setTitle("Music Bot");
-                    embedBuilder.setDescription("Aww... it's lonely in this voice channel. I guess I'll go...");
-                    embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-                    CafeBot.getGuildHandler().getCustomGuild(guild).sendMessageInLastMusicChannel(embedBuilder.build());
-                    musicManager.scheduler.player.stopTrack();
-                    musicManager.scheduler.queue.clear();
-                    clear();
-                    guild.getAudioManager().closeAudioConnection();
-                    musicManager.scheduler.inVoiceChannel = false;
-                    audioTimer.cancel();
+                // Checks if the voice state is still in the channel.
+                try {
+                    if (!selfVoiceState.inVoiceChannel()) {
+                        musicManager.scheduler.inVoiceChannel = false;
+                    }
+                } catch (NullPointerException e) {
+                    disconnectFromChannel();
+                    CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Error Getting Voice State for Guild: " + guildID, true, false, e);
                     return;
                 }
 
-                // This means that they are in a Voice Channel.
-                voicePassed = !(membersInVoiceChannel.size() == 1);
+                musicManager.scheduler.inVoiceChannel = selfVoiceState.inVoiceChannel();
+
+                try {
+                    ArrayList<Member> membersInVoiceChannel = new ArrayList<>(selfVoiceState.getChannel().getMembers());
+                    CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "People in VC: " + membersInVoiceChannel.size(), false, false);
+
+                    // Removes all the bots from the ArrayList
+                    membersInVoiceChannel.removeIf(member -> member.getUser().isBot());
+
+                    CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Members in VC: " + membersInVoiceChannel.size(), false, false);
+
+                    // Checking if the bot is alone in the VC.
+                    if (membersInVoiceChannel.isEmpty() && seconds >= secondsToLeave) {
+                        EmbedBuilder embedBuilder = new EmbedBuilder();
+                        embedBuilder.setTitle("Music Bot");
+                        embedBuilder.setDescription("Aww... it's lonely in this voice channel. I guess I'll go...");
+                        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+                        CafeBot.getGuildHandler().getCustomGuild(guild).sendMessageInLastMusicChannel(embedBuilder.build());
+                        disconnectFromChannel();
+                        return;
+                    }
+
+                    // This means that they are in a Voice Channel.
+                    voicePassed = !(membersInVoiceChannel.isEmpty());
+                } catch (NullPointerException ignored) {}
 
                 // Checks if the bot is currently playing something and if the queue is empty.
                 if (musicManager.scheduler.queue.isEmpty() && musicManager.audioPlayer.getPlayingTrack() == null && seconds >= secondsToLeave) {
@@ -321,11 +361,7 @@ public class CustomGuildSongQueueHandler {
                     embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
                     embedBuilder.setDescription("There's no music playing... sooooo I'm gonna go because this is boring.");
                     CafeBot.getGuildHandler().getCustomGuild(guild).sendMessageInLastMusicChannel(embedBuilder.build());
-                    guild.getAudioManager().closeAudioConnection();
-                    musicManager.scheduler.queue.clear();
-                    musicManager.scheduler.inVoiceChannel = false;
-                    clear();
-                    audioTimer.cancel();
+                    disconnectFromChannel();
                     return;
                 }
 
@@ -337,6 +373,8 @@ public class CustomGuildSongQueueHandler {
                 if (voicePassed && queuePassed) {
                     seconds = 0;
                 }
+
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Seconds: " + seconds, false, false);
             }
         };
         audioTimer.scheduleAtFixedRate(audioTimerTask, 1000, 1000);

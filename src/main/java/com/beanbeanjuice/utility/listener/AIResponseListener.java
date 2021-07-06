@@ -77,6 +77,8 @@ public class AIResponseListener extends ListenerAdapter {
         commandTerms.add(":joy:");
         commandTerms.add("bro");
         commandTerms.add("bro.");
+        commandTerms.add("lmfao");
+        commandTerms.add("lmfao.");
 
         responses.add("Really? That's all you can do to respond?");
         responses.add("That response was dryer than the Sahara Desert.");
@@ -217,7 +219,7 @@ public class AIResponseListener extends ListenerAdapter {
         String message = event.getMessage().getContentRaw().toLowerCase();
 
         messageMap.forEach((commandTerms, commandResponses) -> {
-            if (commandTerms.contains(message)) {
+            if (commandTerms.contains(message.replace(".", ""))) {
                 event.getChannel().sendMessage(parseMessage(
                         commandResponses.get(CafeBot.getGeneralHelper().getRandomNumber(0, commandResponses.size())),
                         event.getAuthor()
