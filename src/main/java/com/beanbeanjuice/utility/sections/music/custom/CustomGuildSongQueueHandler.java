@@ -1,7 +1,6 @@
 package com.beanbeanjuice.utility.sections.music.custom;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -323,7 +322,6 @@ public class CustomGuildSongQueueHandler {
                     }
                 } catch (NullPointerException e) {
                     disconnectFromChannel();
-                    CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Error Getting Voice State for Guild: " + guildID, true, false, e);
                     return;
                 }
 
@@ -331,12 +329,9 @@ public class CustomGuildSongQueueHandler {
 
                 try {
                     ArrayList<Member> membersInVoiceChannel = new ArrayList<>(selfVoiceState.getChannel().getMembers());
-                    CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "People in VC: " + membersInVoiceChannel.size(), false, false);
 
                     // Removes all the bots from the ArrayList
                     membersInVoiceChannel.removeIf(member -> member.getUser().isBot());
-
-                    CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Members in VC: " + membersInVoiceChannel.size(), false, false);
 
                     // Checking if the bot is alone in the VC.
                     if (membersInVoiceChannel.isEmpty() && seconds >= secondsToLeave) {
@@ -373,8 +368,6 @@ public class CustomGuildSongQueueHandler {
                 if (voicePassed && queuePassed) {
                     seconds = 0;
                 }
-
-                CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Seconds: " + seconds, false, false);
             }
         };
         audioTimer.scheduleAtFixedRate(audioTimerTask, 1000, 1000);
