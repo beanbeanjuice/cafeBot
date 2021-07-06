@@ -92,6 +92,8 @@ public class PlayerManager {
                             "There has been a catastrophic error playing: `" + trackURL + "`.\n\n**ERROR**: " + e.getMessage()
                     )).queue();
                 } catch (NullPointerException ignored) {}
+
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Catastrophic Error for URL: " + trackURL + "\nError Message: " + e.getMessage(), false, false, e);
             }
         });
     }

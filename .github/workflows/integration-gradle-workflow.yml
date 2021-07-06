@@ -33,4 +33,5 @@ jobs:
 
           CAFEBOT_TOPGG_ID: ${{ secrets.CAFEBOT_TOPGG_ID }}
           CAFEBOT_TOPGG_TOKEN: ${{ secrets.CAFEBOT_TOPGG_TOKEN }}
+          CAFEBOT_SPRING_BOOT_PORT: ${{ secrets.CAFEBOT_SPRING_BOOT_PORT }}
         run: gradle build

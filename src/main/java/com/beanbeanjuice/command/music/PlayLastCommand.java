@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * An {@link ICommand} used to put the last song in the queue in the front of the queue.
@@ -23,10 +24,10 @@ public class PlayLastCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         CustomGuildSongQueueHandler customQueueHandler = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue();
-        ArrayList<CustomSong> customSongQueue = customQueueHandler.getCustomSongQueue();
+        Stack<CustomSong> songStack = customQueueHandler.getSongOrderStack();
 
         // Checking if the song queue is empty.
-        if (customSongQueue.isEmpty()) {
+        if (songStack.isEmpty()) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
                     "Empty Queue",
                     "The song queue is currently empty."
@@ -35,7 +36,7 @@ public class PlayLastCommand implements ICommand {
         }
 
         // Puts the last song in the queue in the front.
-        customQueueHandler.reorderLast();
+        customQueueHandler.moveLast();
         CustomSong firstSong = customQueueHandler.getCustomSongQueue().get(0);
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
