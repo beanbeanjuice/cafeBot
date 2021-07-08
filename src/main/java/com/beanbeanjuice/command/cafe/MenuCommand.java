@@ -48,9 +48,19 @@ public class MenuCommand implements ICommand {
             return;
         }
 
+        // Checking if the Category Index is out of bounds.
+        int categoryIndex = Integer.parseInt(args.get(0));
+
+        if (categoryIndex > CafeCategory.values().length || categoryIndex <= 0) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Unknown Category",
+                    "Unknown category for \"" + categoryIndex + "\". Please use an existing category."
+            )).queue();
+            return;
+        }
+
         // If argument, make sure it is a number in the range
         if (args.size() == 1) {
-            int categoryIndex = Integer.parseInt(args.get(0));
             CafeCategory category = CafeCategory.values()[categoryIndex - 1];
             ArrayList<MenuItem> itemsInCategory = CafeBot.getMenuHandler().getMenu(category);
 
@@ -73,10 +83,18 @@ public class MenuCommand implements ICommand {
 
         // If 2, make sure both are numbers in the range
         if (args.size() == 2) {
-            int categoryIndex = Integer.parseInt(args.get(0));
             int itemNumber = Integer.parseInt(args.get(1));
             CafeCategory category = CafeCategory.values()[categoryIndex - 1];
             MenuItem item = CafeBot.getMenuHandler().getItem(category, itemNumber - 1);
+
+            // Checking if the menu item was NOT found.
+            if (item == null) {
+                event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                        "Item Not Found",
+                        "A menu item with that ID was not found."
+                )).queue();
+                return;
+            }
 
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setTitle(item.getName());
