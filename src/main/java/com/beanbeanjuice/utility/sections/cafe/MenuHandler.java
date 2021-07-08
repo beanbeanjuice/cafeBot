@@ -5,6 +5,7 @@ import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.sections.cafe.object.MenuItem;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -113,9 +114,13 @@ public class MenuHandler {
         menu.put(CafeCategory.SECRET, secrets);
     }
 
-    @NotNull
+    @Nullable
     public MenuItem getItem(@NotNull CafeCategory category, @NotNull Integer itemNumber) {
-        return menu.get(category).get(itemNumber);
+        try {
+            return menu.get(category).get(itemNumber);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     @NotNull
@@ -155,7 +160,7 @@ public class MenuHandler {
             statement.execute();
             return true;
         } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Receiver: " + e.getMessage());
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Receiver: " + e.getMessage(), e);
             return false;
         }
     }
