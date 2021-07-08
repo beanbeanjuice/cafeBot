@@ -2,7 +2,6 @@ package com.beanbeanjuice;
 
 import com.beanbeanjuice.command.cafe.BalanceCommand;
 import com.beanbeanjuice.command.cafe.MenuCommand;
-import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.cafe.ServeCommand;
 import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.games.*;
@@ -226,7 +225,7 @@ public class CafeBot {
         commandManager.addCommands(
                 new MenuCommand(),
                 new ServeCommand(),
-                new OrderCommand(),
+//                new OrderCommand(),
                 new BalanceCommand()
         );
 

@@ -1,6 +1,7 @@
 package com.beanbeanjuice.command.cafe;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.utility.sections.cafe.CafeCategory;
 import com.beanbeanjuice.utility.sections.cafe.object.MenuItem;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -25,55 +26,68 @@ public class MenuCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
+        // If no arguments, show menu sections
         if (args.size() == 0) {
-            StringBuilder stringBuilder = new StringBuilder();
-            ArrayList<MenuItem> menu = CafeBot.getMenuHandler().getMenu();
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle("Cafe Menu");
+            embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+            embedBuilder.setFooter("If you're stuck, use " + ctx.getPrefix() + "menu (category number)");
+            StringBuilder descriptionBuilder = new StringBuilder();
+            int count = 1;
 
-            for (int i = 0; i < menu.size(); i++) {
-                stringBuilder.append("**").append(i + 1)
-                        .append("** *").append(menu.get(i).getName()).append("* - `")
-                        .append(menu.get(i).getPrice()).append("bC`\n");
+            for (CafeCategory category : CafeCategory.values()) {
+
+                // Don't show the "Secret Menu"
+                if (!category.getTitle().equals("Secret Menu")) {
+                    descriptionBuilder.append("**").append(count++).append("** `")
+                            .append(category.getTitle()).append("`\n");
+                }
             }
-
-            event.getChannel().sendMessage(menuEmbed(stringBuilder.toString(), ctx.getPrefix())).queue();
-        } else {
-            int itemIndex = Integer.parseInt(args.get(0)) - 1;
-
-            // Checking if the item exists
-            if (itemIndex >= CafeBot.getMenuHandler().getMenu().size()) {
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
-                        "Unknown Item",
-                        "The item `" + args.get(0) + "` does not exist. " +
-                                "To view the menu, do `" + ctx.getPrefix() + "menu`!"
-                )).queue();
-                return;
-            }
-
-            MenuItem item = CafeBot.getMenuHandler().getItem(itemIndex);
-            event.getChannel().sendMessage(menuItemEmbed(item, itemIndex)).queue();
+            embedBuilder.setDescription(descriptionBuilder.toString());
+            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            return;
         }
-    }
 
-    @NotNull
-    private MessageEmbed menuItemEmbed(@NotNull MenuItem menuItem, @NotNull Integer itemIndex) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Menu Item - " + menuItem.getName());
-        embedBuilder.addField("Price", "`" + menuItem.getPrice() + "bC`", true);
-        embedBuilder.addField("Item Number", String.valueOf(itemIndex+1), true);
-        embedBuilder.setDescription(menuItem.getDescription());
-        embedBuilder.setThumbnail(menuItem.getImageURL());
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        return embedBuilder.build();
-    }
+        // If argument, make sure it is a number in the range
+        if (args.size() == 1) {
+            int categoryIndex = Integer.parseInt(args.get(0));
+            CafeCategory category = CafeCategory.values()[categoryIndex - 1];
+            ArrayList<MenuItem> itemsInCategory = CafeBot.getMenuHandler().getMenu(category);
 
-    @NotNull
-    private MessageEmbed menuEmbed(@NotNull String description, @NotNull String prefix) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Menu Items");
-        embedBuilder.setDescription(description);
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setFooter("For more details, do '" + prefix + "menu (item number)'! I hope you enjoy your stay!~");
-        return embedBuilder.build();
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle(category.getTitle());
+            embedBuilder.setFooter("For information on a single item, do " + ctx.getPrefix() + "menu " + category + " (item number)");
+            embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+            StringBuilder descriptionBuilder = new StringBuilder();
+
+            for (int i = 0; i < itemsInCategory.size(); i++) {
+                MenuItem item = itemsInCategory.get(i);
+                descriptionBuilder.append("**").append((i+1)).append("** ")
+                        .append("*").append(item.getName()).append("* - `")
+                        .append(item.getPrice()).append("bC` -- (").append(categoryIndex).append(" ").append(i + 1).append(")\n");
+            }
+            embedBuilder.setDescription(descriptionBuilder.toString());
+            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            return;
+        }
+
+        // If 2, make sure both are numbers in the range
+        if (args.size() == 2) {
+            int categoryIndex = Integer.parseInt(args.get(0));
+            int itemNumber = Integer.parseInt(args.get(1));
+            CafeCategory category = CafeCategory.values()[categoryIndex - 1];
+            MenuItem item = CafeBot.getMenuHandler().getItem(category, itemNumber - 1);
+
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle(item.getName());
+            embedBuilder.setDescription(item.getDescription());
+            embedBuilder.addField("Price", "`" + item.getPrice() + "bC`", true);
+            embedBuilder.addField("Item ID", "(" + categoryIndex + " " + itemNumber + ")", true);
+            embedBuilder.setThumbnail(item.getImageURL());
+            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            return;
+        }
+
     }
 
     @Override
@@ -93,13 +107,14 @@ public class MenuCommand implements ICommand {
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "menu` or `" + prefix + "menu 9`";
+        return "`" + prefix + "menu` or `" + prefix + "menu 2` or `" + prefix + "menu 2 3`";
     }
 
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.NUMBER, "Menu Item Number", false);
+        usage.addUsage(CommandType.NUMBER, "Category Number", false);
+        usage.addUsage(CommandType.NUMBER, "Item Number", false);
         return usage;
     }
 
