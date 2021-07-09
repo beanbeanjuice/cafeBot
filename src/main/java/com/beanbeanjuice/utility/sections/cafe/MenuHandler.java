@@ -20,7 +20,7 @@ import java.util.HashMap;
  */
 public class MenuHandler {
 
-    private HashMap<CafeCategory, ArrayList<MenuItem>> menu;
+    private final HashMap<CafeCategory, ArrayList<MenuItem>> menu;
 
     public MenuHandler() {
         menu = new HashMap<>();
@@ -44,73 +44,73 @@ public class MenuHandler {
 
         // Sandwiches and Burgers
         ArrayList<MenuItem> sandwiches = new ArrayList<>();
-        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "Ham Sandwich", 4.25, "A ham sandwich with cheese!", ""));
-        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "Turkey Sandwich", 4.25, "A turkey sandwich with cheese!", ""));
-        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "Chicken Burger", 5.25, "A chicken burger! For if you don't want a ham burger I guess...", ""));
-        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "Ham Burger", 5.5, "A regular ham burger! Very juicy, very yummy.", ""));
-        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "Cheese Burger", 5.75, "A cheese burger! This is immaculate...", ""));
-        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "Grilled Cheese", 3.5, "Perfect for a quick bite!", ""));
-        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "BLT Sammy", 4.25, "The trifecta of sandwiches!", ""));
+        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "Ham Sandwich", 4.25, "A ham sandwich with cheese!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sandwiches/ham_sandwich.jpg"));
+        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "Turkey Sandwich", 4.25, "A turkey sandwich with cheese!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sandwiches/turkey_sandwich.jpeg"));
+        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "Chicken Burger", 5.25, "A chicken burger! For if you don't want a ham burger I guess...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sandwiches/chicken_burger.jpg"));
+        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "Ham Burger", 5.5, "A regular ham burger! Very juicy, very yummy.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sandwiches/ham_burger.jpg"));
+        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "Cheese Burger", 5.75, "A cheese burger! This is immaculate...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sandwiches/cheese_burger.jpg"));
+        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "Grilled Cheese", 3.5, "Perfect for a quick bite!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sandwiches/grilled_cheese.jpg"));
+        sandwiches.add(new MenuItem(CafeCategory.SANDWICH, "BLT Sammy", 4.25, "The trifecta of sandwiches!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sandwiches/blt_sandwich.jpg"));
         menu.put(CafeCategory.SANDWICH, sandwiches);
 
         // Soup
         ArrayList<MenuItem> soups = new ArrayList<>();
-        soups.add(new MenuItem(CafeCategory.SOUP, "Chicken Noodle Soup", 3.25, "Chicken noodle soup to get you over a cold!", ""));
-        soups.add(new MenuItem(CafeCategory.SOUP, "Tomato Soup", 3.25, "This would go GREAT with a grilled cheese!", ""));
-        soups.add(new MenuItem(CafeCategory.SOUP, "Loaded Baked Potato Soup", 3.25, "This soup is absolutely amazing!", ""));
-        soups.add(new MenuItem(CafeCategory.SOUP, "Mushroom Soup", 3.25, "I've personally never had this...", ""));
-        soups.add(new MenuItem(CafeCategory.SOUP, "Lobster Bisque", 3.25, "Yummy yummy in my tummy!", ""));
-        soups.add(new MenuItem(CafeCategory.SOUP, "Clam Chowder", 3.25, "This is... honestly really good.", ""));
+        soups.add(new MenuItem(CafeCategory.SOUP, "Chicken Noodle Soup", 3.25, "Chicken noodle soup to get you over a cold!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/soups/chicken_noodle_soup.jpg"));
+        soups.add(new MenuItem(CafeCategory.SOUP, "Tomato Soup", 3.25, "This would go GREAT with a grilled cheese!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/soups/tomato_soup.jpg"));
+        soups.add(new MenuItem(CafeCategory.SOUP, "Loaded Baked Potato Soup", 3.25, "This soup is absolutely amazing!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/soups/loaded_baked_potato_soup.jpg"));
+        soups.add(new MenuItem(CafeCategory.SOUP, "Mushroom Soup", 3.25, "I've personally never had this...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/soups/mushroom_soup.jpg"));
+        soups.add(new MenuItem(CafeCategory.SOUP, "Lobster Bisque", 3.25, "Yummy yummy in my tummy!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/soups/lobster_bisque.jpg"));
+        soups.add(new MenuItem(CafeCategory.SOUP, "Clam Chowder", 3.25, "This is... honestly really good.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/soups/clam_chowder_soup.jpg"));
         menu.put(CafeCategory.SOUP, soups);
 
         // Sides and Condiments
         ArrayList<MenuItem> sides = new ArrayList<>();
-        sides.add(new MenuItem(CafeCategory.SIDES, "Fries", 0.5, "Some fries to go along with your order!", ""));
-        sides.add(new MenuItem(CafeCategory.SIDES, "Cheese Sticks", 0.5, "Some cheese sticks! You can pull this into string cheese!", ""));
-        sides.add(new MenuItem(CafeCategory.SIDES, "Mozzarella Sticks", 0.5, "Mmmm... this is *my* personal favourite!", ""));
-        sides.add(new MenuItem(CafeCategory.SIDES, "Ketchup", 0.1, "For your fries!", ""));
-        sides.add(new MenuItem(CafeCategory.SIDES, "Cream", 0.5, "Extra cream for your coffee. Very... creamy...", "https://i.pinimg.com/736x/f6/c3/81/f6c3819b8c55b2e31276b0fec659559e.jpg"));
-        sides.add(new MenuItem(CafeCategory.SIDES, "Sugar", 0.5, "Sugar cubes for the ones who are too weak for black coffee.", "https://tasteofenglishtea.files.wordpress.com/2011/10/sugar-cubes.jpg"));
-        sides.add(new MenuItem(CafeCategory.SIDES, "Saltines", 0.1, "Some crackers to put in your soup!", ""));
+        sides.add(new MenuItem(CafeCategory.SIDES, "Fries", 0.5, "Some fries to go along with your order!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/fries.jpg"));
+        sides.add(new MenuItem(CafeCategory.SIDES, "Cheese Sticks", 0.5, "Some cheese sticks! You can pull this into string cheese!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/cheese_sticks.webp"));
+        sides.add(new MenuItem(CafeCategory.SIDES, "Mozzarella Sticks", 0.5, "Mmmm... this is *my* personal favourite!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/mozarella_sticks.jpg"));
+        sides.add(new MenuItem(CafeCategory.SIDES, "Ketchup", 0.1, "For your fries!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/ketchup.webp"));
+        sides.add(new MenuItem(CafeCategory.SIDES, "Cream", 0.5, "Extra cream for your coffee. Very... creamy...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/cream.jpg"));
+        sides.add(new MenuItem(CafeCategory.SIDES, "Sugar", 0.5, "Sugar cubes for the ones who are too weak for black coffee.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/sugar.jpg"));
+        sides.add(new MenuItem(CafeCategory.SIDES, "Saltines", 0.1, "Some crackers to put in your soup!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/saltines.jpg"));
         menu.put(CafeCategory.SIDES, sides);
 
         // Fruits
         ArrayList<MenuItem> fruits = new ArrayList<>();
-        fruits.add(new MenuItem(CafeCategory.FRUITS, "Banana", 0.25, "A small banana for your potassium!", ""));
-        fruits.add(new MenuItem(CafeCategory.FRUITS, "Apple", 0.25, "An apple a day keeps the doctors away!", ""));
-        fruits.add(new MenuItem(CafeCategory.FRUITS, "Apple Sauce", 0.5, "Smooth apple... mmmmmmmm", ""));
-        fruits.add(new MenuItem(CafeCategory.FRUITS, "Strawberry", 0.25, "A small bowl of strawberries!", ""));
-        fruits.add(new MenuItem(CafeCategory.FRUITS, "Blueberry", 0.25, "A small bowl of blueberries!", ""));
-        fruits.add(new MenuItem(CafeCategory.FRUITS, "Mango", 0.25, "A sweet and tangy mango!", ""));
+        fruits.add(new MenuItem(CafeCategory.FRUITS, "Banana", 0.25, "A small banana for your potassium!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/fruits/banana.jpg"));
+        fruits.add(new MenuItem(CafeCategory.FRUITS, "Apple", 0.25, "An apple a day keeps the doctors away!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/fruits/apple.jpg"));
+        fruits.add(new MenuItem(CafeCategory.FRUITS, "Apple Sauce", 0.5, "Smooth apple... mmmmmmmm", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/fruits/apple_sauce.jpg"));
+        fruits.add(new MenuItem(CafeCategory.FRUITS, "Strawberry", 0.25, "A small bowl of strawberries!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/fruits/strawberry.jpg"));
+        fruits.add(new MenuItem(CafeCategory.FRUITS, "Blueberry", 0.25, "A small bowl of blueberries!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/fruits/blueberry.jpg"));
+        fruits.add(new MenuItem(CafeCategory.FRUITS, "Mango", 0.25, "A sweet and tangy mango!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/fruits/mango.jpeg"));
         menu.put(CafeCategory.FRUITS, fruits);
 
         // Bread and Sweets
         ArrayList<MenuItem> sweets = new ArrayList<>();
-        sweets.add(new MenuItem(CafeCategory.SWEETS, "Scone", 2.0, "A soft scone. Possible pair with a coffee!", "https://i.pinimg.com/564x/fb/90/11/fb9011044679899c05c717009f41ebc9--carry-on-aesthetic-simon-snow-aesthetic.jpg"));
-        sweets.add(new MenuItem(CafeCategory.SWEETS, "Croissant", 4.25, "A buttery croissant. Pair with a mocha... or maybe a friend?", "https://i.pinimg.com/474x/f9/0e/7a/f90e7abb9383dbf0073e5fc8c9d87c49.jpg"));
-        sweets.add(new MenuItem(CafeCategory.SWEETS, "Donut", 2.5, "A regular glazed donut. This might be good with some regular milk. Want some?", "https://wallpaperaccess.com/full/1179350.jpg"));
-        sweets.add(new MenuItem(CafeCategory.SWEETS, "Muffin", 1.75, "Blueberry or chocolate. Take your pick!", "https://www.thegreatcoursesdaily.com/wp-content/uploads/2017/04/ThinkstockPhotos-539085530-678x381.jpg"));
-        sweets.add(new MenuItem(CafeCategory.SWEETS, "Cookie", 1.5, "A chocolate chip cookie! I wouldn't want it any other way.", "https://i.pinimg.com/originals/be/60/2f/be602f901b6d09f7d1afc5274de36e53.png"));
-        sweets.add(new MenuItem(CafeCategory.SWEETS, "Banana Bread", 3.0, "[Want some bread?](https://www.youtube.com/watch?v=AQHnPBz3Kx4)", "https://cdn.dribbble.com/users/1981371/screenshots/6547358/bananabread.gif"));
-        sweets.add(new MenuItem(CafeCategory.SWEETS, "Cinnamon Bun", 2.25, "A sweet cinnamon bun! It has some pecans on it! ^-^", ""));
-        sweets.add(new MenuItem(CafeCategory.SWEETS, "Vanilla Ice Cream", 0.75, "A scoop of vanilla ice cream. I'm sorry... we ran out of other flavours...", ""));
+        sweets.add(new MenuItem(CafeCategory.SWEETS, "Scone", 2.0, "A soft scone. Possible pair with a coffee!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/scone.jpg"));
+        sweets.add(new MenuItem(CafeCategory.SWEETS, "Croissant", 4.25, "A buttery croissant. Pair with a mocha... or maybe a friend?", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/croissant.jpg"));
+        sweets.add(new MenuItem(CafeCategory.SWEETS, "Donut", 2.5, "A regular glazed donut. This might be good with some regular milk. Want some?", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/donut.jpg"));
+        sweets.add(new MenuItem(CafeCategory.SWEETS, "Chocolate Muffin", 1.75, "These are very yummy and the perfect size for your mouth!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/muffin.jpg"));
+        sweets.add(new MenuItem(CafeCategory.SWEETS, "Chocolate Chip Cookie", 1.5, "A chocolate chip cookie! I wouldn't want it any other way.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/chocolate_chip_cookie.png"));
+        sweets.add(new MenuItem(CafeCategory.SWEETS, "Banana Bread", 3.0, "[Want some bread?](https://www.youtube.com/watch?v=AQHnPBz3Kx4)", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/banana_bread.gif"));
+        sweets.add(new MenuItem(CafeCategory.SWEETS, "Cinnamon Bun", 2.25, "A sweet cinnamon bun! It has some pecans on it! ^-^", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/cinnamon_bun.jpeg"));
+        sweets.add(new MenuItem(CafeCategory.SWEETS, "Vanilla Ice Cream", 0.75, "A scoop of vanilla ice cream. I'm sorry... we ran out of other flavours...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/vanilla_ice_cream.gif"));
         menu.put(CafeCategory.SWEETS, sweets);
 
         // Alcohol
         ArrayList<MenuItem> alcohol = new ArrayList<>();
-        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Rum and Coke", 7.0, "Something not too light but not too heavy!", ""));
-        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Draft Beer", 7.0, "The yummy version of beer.", ""));
-        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Bottled Beer", 7.0, "The less yummy version of beer.", ""));
-        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Wine", 7.0, "Something to go along with your sandwich I guess...", ""));
-        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Sake", 7.0, "A Japanese alcoholic drink! ||~~Weeb...~~||", ""));
+        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Rum and Coke", 7.0, "Something not too light but not too heavy!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/rum_and_coke.jpg"));
+        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Draft Beer", 7.0, "The yummy version of beer.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/draft_beer.jpg"));
+        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Bottled Beer", 7.0, "The less yummy version of beer.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/bottled_beer.jpg"));
+        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Red Wine", 7.0, "Something to go along with your sandwich I guess...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/red_wine.jpg"));
+        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Sake", 7.0, "A Japanese alcoholic drink! ||~~Weeb...~~||", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/japanese_sake.jpg"));
         menu.put(CafeCategory.ALCOHOL, alcohol);
 
         // Secret
         ArrayList<MenuItem> secrets = new ArrayList<>();
-        secrets.add(new MenuItem(CafeCategory.SECRET, "The \"One Tap\"", 10.0, "A 69oz cup of Swedish fish GFUEL.", ""));
-        secrets.add(new MenuItem(CafeCategory.SECRET, "Otter Pops", 4.0, "A nice cold otter pop to get you through a hot day. They're Lilly Baby's favourite!", ""));
-        secrets.add(new MenuItem(CafeCategory.SECRET, "The Duo", 20.0, "A giant bucket of popcorn and extra cheddar goldfish mixed together. Enough for two! A signature dish by Lilly and Will. ❤", ""));
-        secrets.add(new MenuItem(CafeCategory.SECRET, "The Kenzie Special", 7.0, "An entire bottle of vodka and some apple juice...", ""));
+        secrets.add(new MenuItem(CafeCategory.SECRET, "The \"One Tap\"", 10.0, "A 69oz cup of Swedish fish GFUEL.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/the_one_tap.webp"));
+        secrets.add(new MenuItem(CafeCategory.SECRET, "Otter Pop", 4.0, "A nice cold otter pop to get you through a hot day. They're Lilly's favourite!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/otter_pop.jpg"));
+        secrets.add(new MenuItem(CafeCategory.SECRET, "The Duo", 20.0, "A giant bucket of popcorn and extra cheddar goldfish mixed together. Enough for two! A signature dish by Lilly and Will. ❤", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/the_duo.webp"));
+        secrets.add(new MenuItem(CafeCategory.SECRET, "The Kenzie Special", 7.0, "An entire bottle of vodka and some apple juice...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/the_kenzie_special.jpg"));
         menu.put(CafeCategory.SECRET, secrets);
     }
 

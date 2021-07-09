@@ -101,7 +101,8 @@ public class MenuCommand implements ICommand {
             embedBuilder.setDescription(item.getDescription());
             embedBuilder.addField("Price", "`" + item.getPrice() + "bC`", true);
             embedBuilder.addField("Item ID", "(" + categoryIndex + " " + itemNumber + ")", true);
-            embedBuilder.setThumbnail(item.getImageURL());
+            embedBuilder.setImage(item.getImageURL());
+            embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
             event.getChannel().sendMessage(embedBuilder.build()).queue();
             return;
         }
