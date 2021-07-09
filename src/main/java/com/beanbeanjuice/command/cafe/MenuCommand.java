@@ -66,7 +66,7 @@ public class MenuCommand implements ICommand {
 
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setTitle(category.getTitle());
-            embedBuilder.setFooter("For information on a single item, do " + ctx.getPrefix() + "menu " + category + " (item number)");
+            embedBuilder.setFooter("For information on a single item, do " + ctx.getPrefix() + "menu " + categoryIndex + " (item number)");
             embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
             StringBuilder descriptionBuilder = new StringBuilder();
 
@@ -104,6 +104,7 @@ public class MenuCommand implements ICommand {
             embedBuilder.addField("Item ID", "(" + categoryIndex + " " + itemNumber + ")", true);
             embedBuilder.setImage(item.getImageURL());
             embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+            embedBuilder.setFooter("To order this item, do " + ctx.getPrefix() + "order " + categoryIndex + " " + itemNumber + " (User)");
             event.getChannel().sendMessage(embedBuilder.build()).queue();
             return;
         }
