@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MenuItem {
 
-    private CafeCategory category;
+    private final CafeCategory category;
     private final String name;
     private final double price;
     private final String description;
