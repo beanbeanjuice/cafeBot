@@ -77,6 +77,7 @@ public class MenuCommand implements ICommand {
                         .append(item.getPrice()).append("bC` -- (").append(categoryIndex).append(" ").append(i + 1).append(")\n");
             }
             embedBuilder.setDescription(descriptionBuilder.toString());
+            embedBuilder.setThumbnail(category.getImageURL());
             event.getChannel().sendMessage(embedBuilder.build()).queue();
             return;
         }
