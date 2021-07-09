@@ -1,6 +1,7 @@
 package com.beanbeanjuice.command.cafe;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.utility.sections.cafe.CafeCategory;
 import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.sections.cafe.object.MenuItem;
 import com.beanbeanjuice.utility.command.CommandContext;
@@ -35,7 +36,7 @@ public class OrderCommand implements ICommand {
 
         CafeCustomer receiver = null;
         try {
-            receiver = CafeBot.getServeHandler().getCafeCustomer(CafeBot.getGeneralHelper().getUser(args.get(1)));
+            receiver = CafeBot.getServeHandler().getCafeCustomer(CafeBot.getGeneralHelper().getUser(args.get(2)));
         } catch (NullPointerException ignored) {}
 
         // Checking if the receiver is null.
@@ -44,19 +45,29 @@ public class OrderCommand implements ICommand {
             return;
         }
 
-        int itemIndex = Integer.parseInt(args.get(0)) - 1;
+        // Checking if the Category Index is out of bounds.
+        int categoryIndex = Integer.parseInt(args.get(0));
 
-        // Checking if the menu item is null.
-        if (itemIndex >= CafeBot.getMenuHandler().getMenu().size()) {
+        if (categoryIndex > CafeCategory.values().length || categoryIndex <= 0) {
             event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
-                    "Unknown Item",
-                    "The item `" + args.get(0) + "` does not exist. " +
-                            "To view the menu, do `" + ctx.getPrefix() + "menu`!"
+                    "Unknown Category",
+                    "Unknown category for \"" + categoryIndex + "\". Please use an existing category."
             )).queue();
             return;
         }
 
-        MenuItem item = CafeBot.getMenuHandler().getItem(itemIndex);
+        int itemNumber = Integer.parseInt(args.get(1));
+        CafeCategory category = CafeCategory.values()[categoryIndex - 1];
+        MenuItem item = CafeBot.getMenuHandler().getItem(category, itemNumber - 1);
+
+        // Checking if the menu item was NOT found.
+        if (item == null) {
+            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                    "Item Not Found",
+                    "A menu item with that ID was not found."
+            )).queue();
+            return;
+        }
 
         // Checking if they have enough money.
         if (orderer.getBeanCoinAmount() < item.getPrice()) {
@@ -127,13 +138,14 @@ public class OrderCommand implements ICommand {
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "order 9 @beanbeanjuice` or `" + prefix + "order 9 @beanbeanjuice You're so cool :sunglasses:`";
+        return "`" + prefix + "order 1 2 @beanbeanjuice` or `" + prefix + "order 1 2 @beanbeanjuice You're so cool :sunglasses:`";
     }
 
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.NUMBER, "Menu Item Number", true);
+        usage.addUsage(CommandType.NUMBER, "Category Number", true);
+        usage.addUsage(CommandType.NUMBER, "Item Number", true);
         usage.addUsage(CommandType.USER, "Discord Mention", true);
         usage.addUsage(CommandType.SENTENCE, "Extra Message", false);
         return usage;
