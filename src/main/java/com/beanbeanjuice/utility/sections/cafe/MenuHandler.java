@@ -101,11 +101,11 @@ public class MenuHandler {
 
         // Alcohol
         ArrayList<MenuItem> alcohol = new ArrayList<>();
-        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Rum and Coke", 7.0, "Something not too light but not too heavy!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/rum_and_coke.jpg"));
-        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Draft Beer", 7.0, "The yummy version of beer.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/draft_beer.jpg"));
-        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Bottled Beer", 7.0, "The less yummy version of beer.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/bottled_beer.jpg"));
-        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Red Wine", 7.0, "Something to go along with your sandwich I guess...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/red_wine.jpg"));
-        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Sake", 7.0, "A Japanese alcoholic drink! ||~~Weeb...~~||", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/japanese_sake.jpg"));
+        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Not Rum and Coke", 7.0, "Something not too light but not too heavy!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/rum_and_coke.jpg"));
+        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Not Draft Beer", 7.0, "The yummy version of beer.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/draft_beer.jpg"));
+        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Not Bottled Beer", 7.0, "The less yummy version of beer.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/bottled_beer.jpg"));
+        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Not Red Wine", 7.0, "Something to go along with your sandwich I guess...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/red_wine.jpg"));
+        alcohol.add(new MenuItem(CafeCategory.ALCOHOL, "Not Sake", 7.0, "A Japanese alcoholic drink! ||~~Weeb...~~||", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/japanese_sake.jpg"));
         menu.put(CafeCategory.ALCOHOL, alcohol);
 
         // Secret
@@ -113,7 +113,7 @@ public class MenuHandler {
         secrets.add(new MenuItem(CafeCategory.SECRET, "The \"One Tap\"", 10.0, "A 69oz cup of Swedish fish GFUEL.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/the_one_tap.webp"));
         secrets.add(new MenuItem(CafeCategory.SECRET, "Otter Pop", 4.0, "A nice cold otter pop to get you through a hot day. They're Lilly's favourite!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/otter_pop.jpg"));
         secrets.add(new MenuItem(CafeCategory.SECRET, "The Duo", 20.0, "A giant bucket of popcorn and extra cheddar goldfish mixed together. Enough for two! A signature dish by Lilly and Will. ❤", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/the_duo.webp"));
-        secrets.add(new MenuItem(CafeCategory.SECRET, "The Kenzie Special", 7.0, "An entire bottle of vodka and some apple juice...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/the_kenzie_special.jpg"));
+        secrets.add(new MenuItem(CafeCategory.SECRET, "The Kenzie Special", 7.0, "An entire bottle of *not* vodka and some apple juice...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/the_kenzie_special.jpg"));
         menu.put(CafeCategory.SECRET, secrets);
     }
 

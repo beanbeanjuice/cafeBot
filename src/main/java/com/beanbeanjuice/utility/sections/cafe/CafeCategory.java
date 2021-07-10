@@ -15,7 +15,7 @@ public enum CafeCategory {
     SIDE("Sides and Condiments", "Things to go along with your meal!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_category/side.jpg"),
     FRUIT("Fruits", "Some healthy snacks to go along with your coffee!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_category/fruit.jpg"),
     SWEET("Bread and Sweets", "Something sweet to satisfy that sweet tooth of yours!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_category/sweet.jpg"),
-    ALCOHOL("Alcohol", "Really? I'm gonna need to see some ID.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_category/alcohol.jpg"),
+    ALCOHOL("\"Magical Water\"", "Really? I'm gonna need to see some ID.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_category/alcohol.jpg"),
     SECRET("Secret Menu", "If you found this, then congratulations!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_category/secret.jpeg");
 
     private final String title;
