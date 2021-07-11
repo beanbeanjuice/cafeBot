@@ -36,6 +36,7 @@ public class AIResponseListener extends ListenerAdapter {
         createSorryMaps();
         createLillyMaps();
         createBanzaiMaps();
+        createAttackMaps();
     }
 
     private void createHelloMaps() {
@@ -162,6 +163,7 @@ public class AIResponseListener extends ListenerAdapter {
 
         commandTerms.add("lilly");
         commandTerms.add("otter pop");
+        commandTerms.add("who's lilly");
 
         responses.add("You know who likes otter pops? Lilly. That's who.");
         responses.add("{user}, do you know Lilly? She's super cute.");
@@ -169,6 +171,26 @@ public class AIResponseListener extends ListenerAdapter {
         responses.add("Who else thinks Lilly is adorable? Everyone, of course.");
         responses.add("Lilly pop!");
         responses.add("Lilly baby :pleading_face:!");
+        responses.add("Lilly *LOVES* being wrapped in a blanket burrito.");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createAttackMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("stfu cafebot");
+        commandTerms.add("cafebot sucks");
+        commandTerms.add("cafebot is bad");
+
+        responses.add("Who asked? Literally? Who?");
+        responses.add("I still have more of a purpose than you do.");
+        responses.add("Imagine talking back to someone made of code?");
+        responses.add("I'm still more intelligent than you.");
+        responses.add("Imagine thinking I care?");
+        responses.add("Imagine having an argument with a bot? Pepelaugh? Pepelaugh.");
+        responses.add("You need friends don't you? You're literally arguing with code.");
 
         messageMap.put(commandTerms, responses);
     }
