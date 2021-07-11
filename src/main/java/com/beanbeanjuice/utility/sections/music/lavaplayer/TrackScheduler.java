@@ -84,6 +84,13 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackStuck(AudioPlayer player, AudioTrack track, long thresholdMS) {
         CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Providing Audio: " + thresholdMS, true, false);
+        CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().reAddSong(new CustomSong(
+                track.getInfo().title,
+                track.getInfo().author,
+                track.getDuration(),
+                CafeBot.getGuildHandler().getCustomGuild(guild).getCustomGuildSongQueue().getCurrentSong().getRequester(),
+                false
+        ), true);
         nextTrack();
     }
 
