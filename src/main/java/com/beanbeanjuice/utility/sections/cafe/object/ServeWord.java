@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ServeWord {
 
-    private String word;
-    private int uses;
+    private final String word;
+    private final int uses;
 
     /**
      * Creates a new {@link ServeWord} object.

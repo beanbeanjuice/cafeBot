@@ -33,6 +33,7 @@ public class CustomGuildSongQueueHandler {
     private Timer audioTimer;
     private TimerTask audioTimerTask;
     private boolean loadHasFailed = false;
+    private boolean fromTrackStuck = false;
 
     /**
      * Creates a new {@link CustomGuildSongQueueHandler} object.
@@ -121,6 +122,27 @@ public class CustomGuildSongQueueHandler {
     }
 
     /**
+     * Adds a song to the front of the queue.
+     * @param customSong The {@link CustomSong} to be added.
+     * @param fromTrackStuck Whether or not re-adding was because the {@link com.sedmelluq.discord.lavaplayer.track.AudioTrack AudioTrack} was stuck.
+     */
+    public void reAddSong(@NotNull CustomSong customSong, @NotNull Boolean fromTrackStuck) {
+        /*
+         * If the track is already stuck, do nothing. This is to prevent
+         * the track from being completely stuck over and over again.
+         *
+         * If the track wasn't stuck, and it is now, then
+         * re-add the song and make sure the trackStuck variable is true.
+         */
+        if (!this.fromTrackStuck) {
+            if (fromTrackStuck) {
+                this.fromTrackStuck = true;
+                reAddSong(customSong);
+            }
+        }
+    }
+
+    /**
      * Queues up the next {@link CustomSong}.
      */
     public void queueNextSong() {
@@ -139,7 +161,9 @@ public class CustomGuildSongQueueHandler {
             }
 
             // Resets the `loadHasFailed` variable.
+            // Resets the `fromTrackStuck` variable.
             loadHasFailed = false;
+            fromTrackStuck = false;
         } catch (IndexOutOfBoundsException e) {
             if (playlistRepeat) {
                 songPlaying = false;
