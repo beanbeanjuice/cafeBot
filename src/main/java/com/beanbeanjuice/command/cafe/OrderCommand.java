@@ -97,18 +97,38 @@ public class OrderCommand implements ICommand {
         }
 
         event.getChannel().sendMessageEmbeds(orderEmbed(orderer, receivers, item, args)).queue();
+
+        for (CafeCustomer receiver : receivers) {
+            if (receiver.getUserID().equals(ctx.getSelfMember().getId())) {
+                event.getMessage().reply("Awww! Thank you for buying for me! I really appreciate it ^-^").queue();
+            }
+        }
     }
 
     @NotNull
     private ArrayList<CafeCustomer> getReceivers(@NotNull ArrayList<String> arguments) {
         ArrayList<CafeCustomer> receivers = new ArrayList<>();
+        ArrayList<String> receiversIDs = new ArrayList<>();
+
+        // Removes the first 2 indexes in the arguments. This is the category and item number.
         arguments.remove(0);
         arguments.remove(0);
+
         argumentIndex = 2;
         for (String argument : arguments) {
             try {
-                receivers.add(CafeBot.getServeHandler().getCafeCustomer(CafeBot.getGeneralHelper().getUser(argument)));
-                argumentIndex += 1;
+                User user = CafeBot.getGeneralHelper().getUser(argument);
+
+                // Checks if the receiver is already in the receiver ArrayList.
+                // This is to prevent duplicate orders.
+                if (!receiversIDs.contains(user.getId())) {
+                    CafeCustomer newReceiver = CafeBot.getServeHandler().getCafeCustomer(user);
+                    receivers.add(newReceiver);
+                    argumentIndex += 1;
+                    receiversIDs.add(user.getId());
+                } else {
+                    argumentIndex += 1;
+                }
             } catch (NullPointerException e) {
                 return receivers;
             }
