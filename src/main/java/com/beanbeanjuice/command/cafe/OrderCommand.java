@@ -193,7 +193,7 @@ public class OrderCommand implements ICommand {
         Usage usage = new Usage();
         usage.addUsage(CommandType.NUMBER, "Category Number", true);
         usage.addUsage(CommandType.NUMBER, "Item Number", true);
-        usage.addUsage(CommandType.USER, "Discord Mention", true);
+        usage.addUsage(CommandType.USER, "Discord Mentions", true);
         usage.addUsage(CommandType.SENTENCE, "Extra Message", false);
         return usage;
     }
