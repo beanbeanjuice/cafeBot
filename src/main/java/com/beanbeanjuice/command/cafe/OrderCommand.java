@@ -175,7 +175,9 @@ public class OrderCommand implements ICommand {
 
     @Override
     public ArrayList<String> getAliases() {
-        return new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("buy");
+        return arrayList;
     }
 
     @Override
@@ -185,7 +187,7 @@ public class OrderCommand implements ICommand {
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "order 1 2 @beanbeanjuice` or `" + prefix + "order 1 2 @beanbeanjuice You're so cool :sunglasses:`";
+        return "`" + prefix + "order 1 2 @beanbeanjuice` or `" + prefix + "order 1 2 @beanbeanjuice @testUser1 You're so cool :sunglasses:`";
     }
 
     @Override
