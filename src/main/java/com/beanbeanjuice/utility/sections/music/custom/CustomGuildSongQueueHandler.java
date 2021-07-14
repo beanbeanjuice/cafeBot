@@ -330,7 +330,6 @@ public class CustomGuildSongQueueHandler {
                 clear();
                 guild.getAudioManager().closeAudioConnection();
                 musicManager.scheduler.inVoiceChannel = false;
-                audioTimer.cancel();
             }
 
             @Override
