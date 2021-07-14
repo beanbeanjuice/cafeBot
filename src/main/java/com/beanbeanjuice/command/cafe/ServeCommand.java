@@ -33,7 +33,7 @@ public class ServeCommand implements ICommand {
 
         // Checking if the word entered is a word.
         if (serveWord == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Not A Word",
                     "`" + word + "` is not a word. If this is a mistake, please create a " +
                             "bug report using `" + ctx.getPrefix() + "bug-report`."
@@ -45,13 +45,13 @@ public class ServeCommand implements ICommand {
 
         // Checking if CafeCustomer is null.
         if (cafeCustomer == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
         // Checking if the user CAN serve someone.
         if (!CafeBot.getServeHandler().canServe(cafeCustomer)) {
-            event.getChannel().sendMessage(cannotServeEmbed(CafeBot.getServeHandler().minutesBetween(cafeCustomer))).queue();
+            event.getChannel().sendMessageEmbeds(cannotServeEmbed(CafeBot.getServeHandler().minutesBetween(cafeCustomer))).queue();
             return;
         }
 
@@ -60,20 +60,20 @@ public class ServeCommand implements ICommand {
 
         // Updates the Balance for the User
         if (!CafeBot.getServeHandler().updateTip(cafeCustomer, currentDate, calculatedTip)) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
         // Updates the Word Used
         if (!CafeBot.getServeHandler().updateWord(serveWord)) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
         if (args.size() == 1) {
-            event.getChannel().sendMessage(serveSingleEmbed(word, calculatedTip, (cafeCustomer.getBeanCoinAmount()) + calculatedTip)).queue();
+            event.getChannel().sendMessageEmbeds(serveSingleEmbed(word, calculatedTip, (cafeCustomer.getBeanCoinAmount()) + calculatedTip)).queue();
         } else {
-            event.getChannel().sendMessage(serveSomeoneEmbed(word, calculatedTip, (cafeCustomer.getBeanCoinAmount() + calculatedTip),
+            event.getChannel().sendMessageEmbeds(serveSomeoneEmbed(word, calculatedTip, (cafeCustomer.getBeanCoinAmount() + calculatedTip),
                     user, CafeBot.getGeneralHelper().getUser(args.get(1)))).queue();
         }
 

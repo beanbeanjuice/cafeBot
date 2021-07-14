@@ -29,11 +29,11 @@ public class BalanceCommand implements ICommand {
             CafeCustomer cafeCustomer = CafeBot.getServeHandler().getCafeCustomer(user);
 
             if (cafeCustomer == null) {
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
 
-            event.getChannel().sendMessage(selfBalanceEmbed(cafeCustomer)).queue();
+            event.getChannel().sendMessageEmbeds(selfBalanceEmbed(cafeCustomer)).queue();
             return;
         }
 
@@ -41,11 +41,11 @@ public class BalanceCommand implements ICommand {
         CafeCustomer cafeCustomer = CafeBot.getServeHandler().getCafeCustomer(person);
 
         if (cafeCustomer == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
-        event.getChannel().sendMessage(otherBalanceEmbed(person, cafeCustomer)).queue();
+        event.getChannel().sendMessageEmbeds(otherBalanceEmbed(person, cafeCustomer)).queue();
     }
 
     public MessageEmbed selfBalanceEmbed(@NotNull CafeCustomer cafeCustomer) {

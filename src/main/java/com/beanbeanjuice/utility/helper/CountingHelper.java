@@ -20,8 +20,12 @@ import java.sql.*;
  */
 public class CountingHelper {
 
+    /**
+     * Checks the current number for the {@link Guild}.
+     * @param event The {@link GuildMessageReceivedEvent} for the {@link Guild}.
+     * @param currentNumber The current number for the {@link Guild}.
+     */
     public void checkNumber(@NotNull GuildMessageReceivedEvent event, @NotNull Integer currentNumber) {
-
         Guild guild = event.getGuild();
 
         Integer lastNumber = getLastNumber(guild);
@@ -29,7 +33,7 @@ public class CountingHelper {
         String lastUserID = getLastUserID(guild);
 
         if (lastNumber == null || highestNumber == null || lastUserID == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
@@ -38,43 +42,50 @@ public class CountingHelper {
             // Set the last number to the current number
             // If it fails, say so and return.
             if (!setLastNumber(guild, currentNumber)) {
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
 
+            // Checking if the current number is now the highest number.
             if (currentNumber > highestNumber) {
                 // Set the highest number to the current number.
                 // If it fails, say so and return.
                 if (!setHighestNumber(guild, currentNumber)) {
-                    event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+                    event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
                     return;
                 }
+                event.getMessage().addReaction("☑").queue(); // Blue Checkmark Reaction
+            } else {
+                event.getMessage().addReaction("U+2705").queue(); // Green Checkmark Reaction
             }
 
+            // Checks if able to set the last user ID.
             if (!setLastUserID(guild, event.getAuthor().getId())) {
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
-            event.getMessage().addReaction("U+2705").queue(); // Green Checkmark Reaction
 
+            // Checks if the current number is divisible by 100.
             if (currentNumber % 100 == 0) {
                 event.getMessage().addReaction("U+1F31F").queue(); // Star Reaction for if they get to a number that is divisible by 100.
             }
 
         } else {
 
+            // Checks if able to set the last number back to 0.
             if (!setLastNumber(guild, 0)) {
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
 
+            // Checks if able to set the last user ID to 0.
             if (!setLastUserID(guild, "0")) {
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
 
             event.getMessage().addReaction("U+274C").queue();
-            event.getChannel().sendMessage(failedEmbed(event.getMember(), lastNumber, highestNumber)).queue();
+            event.getChannel().sendMessageEmbeds(failedEmbed(event.getMember(), lastNumber, highestNumber)).queue();
         }
     }
 
@@ -121,6 +132,7 @@ public class CountingHelper {
             statement.execute();
             return true;
         } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Setting Last User ID: " + e.getMessage(), e);
             return false;
         }
     }
@@ -131,7 +143,6 @@ public class CountingHelper {
      */
     @Nullable
     private String getLastUserID(@NotNull Guild guild) {
-
         Connection connection = CafeBot.getSQLServer().getConnection();
         String arguments = "SELECT * FROM cafeBot.counting_information WHERE guild_id = (?);";
 
@@ -142,6 +153,7 @@ public class CountingHelper {
             resultSet.next();
             return resultSet.getString(4);
         } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Getting Last User ID: " + e.getMessage(), e);
             return null;
         }
     }
@@ -182,6 +194,7 @@ public class CountingHelper {
             statement.execute();
             return true;
         } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Setting Highest Number: " + e.getMessage(), e);
             return false;
         }
     }
@@ -204,6 +217,7 @@ public class CountingHelper {
             statement.execute();
             return true;
         } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Setting Last Number: " + e.getMessage(), e);
             return false;
         }
     }
@@ -228,6 +242,7 @@ public class CountingHelper {
             statement.execute();
             return true;
         } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Creating New Counting Row: " + e.getMessage(), e);
             return false;
         }
     }
@@ -251,6 +266,7 @@ public class CountingHelper {
             resultSet.next();
             return resultSet.getInt(2);
         } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Getting Highest Number: " + e.getMessage(), e);
             return null;
         }
     }
@@ -274,6 +290,7 @@ public class CountingHelper {
             resultSet.next();
             return resultSet.getInt(3);
         } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Getting Last Number: " + e.getMessage(), e);
             return null;
         }
     }
