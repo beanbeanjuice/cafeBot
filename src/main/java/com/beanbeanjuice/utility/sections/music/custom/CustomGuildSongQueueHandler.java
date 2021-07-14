@@ -204,6 +204,8 @@ public class CustomGuildSongQueueHandler {
         shuffle = false;
         currentSong = null;
         songPlaying = false;
+        audioTimer.cancel();
+        audioTimerTask.cancel();
 
         // Unpauses the Music Player
         PlayerManager.getInstance().getMusicManager(CafeBot.getGuildHandler().getGuild(guildID)).audioPlayer.setPaused(false);
