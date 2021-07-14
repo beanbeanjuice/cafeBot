@@ -44,7 +44,7 @@ public class MenuCommand implements ICommand {
                 }
             }
             embedBuilder.setDescription(descriptionBuilder.toString());
-            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
             return;
         }
 
@@ -52,7 +52,7 @@ public class MenuCommand implements ICommand {
         int categoryIndex = Integer.parseInt(args.get(0));
 
         if (categoryIndex > CafeCategory.values().length || categoryIndex <= 0) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Unknown Category",
                     "Unknown category for \"" + categoryIndex + "\". Please use an existing category."
             )).queue();
@@ -78,7 +78,7 @@ public class MenuCommand implements ICommand {
             }
             embedBuilder.setDescription(descriptionBuilder.toString());
             embedBuilder.setThumbnail(category.getImageURL());
-            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
             return;
         }
 
@@ -105,7 +105,7 @@ public class MenuCommand implements ICommand {
             embedBuilder.setImage(item.getImageURL());
             embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
             embedBuilder.setFooter("To order this item, do " + ctx.getPrefix() + "order " + categoryIndex + " " + itemNumber + " (User)");
-            event.getChannel().sendMessage(embedBuilder.build()).queue();
+            event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
             return;
         }
 
