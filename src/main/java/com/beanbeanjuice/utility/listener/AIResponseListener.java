@@ -37,6 +37,9 @@ public class AIResponseListener extends ListenerAdapter {
         createLillyMaps();
         createBanzaiMaps();
         createAttackMaps();
+        createPPMaps();
+        createNahMaps();
+        createSTFUMaps();
     }
 
     private void createHelloMaps() {
@@ -74,6 +77,11 @@ public class AIResponseListener extends ListenerAdapter {
         responses.add("That response was dryer than the Sahara Desert.");
         responses.add("How long did it take you to think of that response?");
         responses.add("Maybe if you thought up a better response, you wouldn't be seeing this message.");
+        responses.add("You're fun to talk to in a conversation huh?");
+        responses.add("If that's all you can say, then you need some help...");
+        responses.add("Is there nothing else you have to say?");
+        responses.add("Can you be less of a dry texter?");
+        responses.add("Could you speak any less? (If you can, please do. That responses was dryer than this gin.");
 
         messageMap.put(commandTerms, responses);
     }
@@ -203,6 +211,41 @@ public class AIResponseListener extends ListenerAdapter {
 
         responses.add("More like `bottom fragzai`. Lmao.");
         responses.add("Who? Asked?");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createPPMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("pp");
+
+        responses.add("poopoo");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createNahMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("nah");
+
+        responses.add("yah");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createSTFUMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("stfu");
+        commandTerms.add("shut up");
+
+        responses.add("You stfu, {user}...");
+        responses.add("You shut up, {user}.");
 
         messageMap.put(commandTerms, responses);
     }
