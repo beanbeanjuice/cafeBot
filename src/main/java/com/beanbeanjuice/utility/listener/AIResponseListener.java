@@ -191,6 +191,8 @@ public class AIResponseListener extends ListenerAdapter {
         commandTerms.add("stfu cafebot");
         commandTerms.add("cafebot sucks");
         commandTerms.add("cafebot is bad");
+        commandTerms.add("shut up cafebot");
+        commandTerms.add("cafebot is a bitch");
 
         responses.add("Who asked? Literally? Who?");
         responses.add("I still have more of a purpose than you do.");
