@@ -18,7 +18,7 @@ public enum CategoryType {
     MUSIC("Commands used for music.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/music.webp"),
     TWITCH("Commands used for twitch.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/twitch.jpg"),
     MODERATION("Commands used for moderation.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/moderation.png"),
-    EXPERIMENTAL("Commands that are still experimental, but work.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/experimental.gif");
+    EXPERIMENTAL("Commands that are still experimental, but *may* work.", "http://cdn.beanbeanjuice.com/images/cafeBot/category_type/experimental.gif");
 
     private final String message;
     private final String link;
