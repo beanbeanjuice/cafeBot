@@ -213,8 +213,6 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `set-poll-channel` - Sets the current channel to an active poll channel. This is needed if you want to run polls on your server!
 * `set-raffle-channel` - Sets the current channel to an active raffle channel. This is needed if you want to run raffles on your server!
 * `set-birthday-channel` - Sets the current channel to an active birthday channel. Be notified when one of the members in your server is having a birthday!
-* `set-welcome-channel` - Sets the current channel to welcome users when they join!
-* `edit-welcome-message` - Edits the welcome message that is sent when users join. (Make sure to check the usage for this command doing `help edit-welcome-message` because this one is a little complicated!)
 * `set-moderator-role` - Set the moderator role for the server. This is needed so that users with this role can run commands that require a moderator role.
 * `set-muted-role` - Set the muted role for the server. This is needed so that users with this role can be stopped from talking in channels. This requires you to set it this way in each channel. This will not mute them if the role does not have the right permissions.
 * `change-prefix` - Change the prefix from the bot to your desired prefix.
@@ -230,7 +228,8 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `set-venting-channel` - Sets the current channel to an anonymous venting channel!
 * `ai-status` - Sets the `AI Status` for the server. This can `enable` or `disable` the AI module.
 ##### 10. **EXPERIMENTAL**
-* `There is currently nothing here...`
+* `set-welcome-channel` - Sets the current channel to welcome users when they join!
+* `edit-welcome-message` - Edits the welcome message that is sent when users join. (Make sure to check the usage for this command doing `help edit-welcome-message` because this one is a little complicated!)
 
 <!-- ROADMAP -->
 # Roadmap

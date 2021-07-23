@@ -322,8 +322,6 @@ public class CafeBot {
                 new SetPollChannelCommand(),
                 new SetRaffleChannelCommand(),
                 new SetBirthdayChannelCommand(),
-                new SetWelcomeChannelCommand(),
-                new EditWelcomeMessageCommand(),
                 new SetModeratorRoleCommand(),
                 new SetMutedRoleCommand(),
                 new ChangePrefixCommand(),
@@ -338,6 +336,12 @@ public class CafeBot {
                 new GetVoiceRoleBindsCommand(),
                 new SetVentingChannelCommand(),
                 new SetAIStateCommand()
+        );
+
+        // Experimental Commands
+        commandManager.addCommands(
+                new SetWelcomeChannelCommand(),
+                new EditWelcomeMessageCommand()
         );
 
         jdaBuilder.addEventListeners(
