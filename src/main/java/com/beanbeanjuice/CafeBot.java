@@ -192,14 +192,15 @@ public class CafeBot {
         jdaBuilder.enableIntents(
                 GatewayIntent.GUILD_VOICE_STATES,
                 GatewayIntent.GUILD_BANS,
-                GatewayIntent.GUILD_EMOJIS,
-                GatewayIntent.GUILD_MEMBERS
+                GatewayIntent.GUILD_EMOJIS
+//                GatewayIntent.GUILD_MEMBERS,
+//                GatewayIntent.DIRECT_MESSAGES
         );
         jdaBuilder.enableCache(
-                CacheFlag.EMOTE,
-                CacheFlag.VOICE_STATE
+                CacheFlag.EMOTE
+//                CacheFlag.VOICE_STATE
         );
-        jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
+//        jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
         jdaBuilder.setChunkingFilter(ChunkingFilter.ALL);
 
         serveHandler = new ServeHandler();
