@@ -68,7 +68,7 @@ public class VentHandler {
      * @param channel The {@link TextChannel} to send the {@link Vent} in.
      */
     public void sendVent(@NotNull String content, @NotNull TextChannel channel) {
-        channel.sendMessage(ventBuilder(content)).queue();
+        channel.sendMessageEmbeds(ventBuilder(content)).queue();
     }
 
     private MessageEmbed ventBuilder(@NotNull String ventContent) {
