@@ -13,8 +13,8 @@ import java.io.IOException;
 public class SpotifyAPITest {
 
     @Test
-    @DisplayName("SpotifyAPI Test")
-    public void test() throws IOException, ParseException, SpotifyWebApiException {
+    @DisplayName("Spotify API Test")
+    public void spotifyAPITest() throws IOException, ParseException, SpotifyWebApiException {
         SpotifyApi spotifyApi = new SpotifyApi.Builder()
                 .setClientId(CafeBot.getSpotifyApiClientID())
                 .setClientSecret(CafeBot.getSpotifyApiClientSecret())

@@ -10,7 +10,7 @@ public class TopGGAPITest {
 
     @Test
     @DisplayName("Top.GG API Test")
-    public void test() throws LoginException, InterruptedException, ExecutionException {
+    public void topAPITest() throws LoginException, InterruptedException, ExecutionException {
         new CafeBot();
         Assertions.assertEquals(CafeBot.getPrefix(), CafeBot.getTopGGAPI().getBot(System.getenv("CAFEBOT_TOPGG_ID")).toCompletableFuture().get().getPrefix());
     }

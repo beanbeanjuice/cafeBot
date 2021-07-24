@@ -10,7 +10,7 @@ public class SQLServerTest {
 
     @Test
     @DisplayName("SQL Server Test")
-    public void test() throws LoginException, InterruptedException {
+    public void sqlServerTest() throws LoginException, InterruptedException {
         new CafeBot();
         CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Testing the Beta SQL Database Connection...");
         Assertions.assertTrue(CafeBot.getSQLServer().testConnection());

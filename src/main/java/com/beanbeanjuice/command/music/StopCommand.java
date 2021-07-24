@@ -33,17 +33,17 @@ public class StopCommand implements ICommand {
         final GuildVoiceState selfVoiceState = self.getVoiceState();
 
         if (!selfVoiceState.inVoiceChannel()) {
-            event.getChannel().sendMessage(botMustBeInVoiceChannelEmbed()).queue();
+            event.getChannel().sendMessageEmbeds(botMustBeInVoiceChannelEmbed()).queue();
             return;
         }
 
         if (!event.getMember().getVoiceState().inVoiceChannel()) {
-            event.getChannel().sendMessage(userMustBeInVoiceChannelEmbed()).queue();
+            event.getChannel().sendMessageEmbeds(userMustBeInVoiceChannelEmbed()).queue();
             return;
         }
 
         if (!event.getMember().getVoiceState().getChannel().equals(self.getVoiceState().getChannel())) {
-            event.getChannel().sendMessage(userMustBeInSameVoiceChannelEmbed()).queue();
+            event.getChannel().sendMessageEmbeds(userMustBeInSameVoiceChannelEmbed()).queue();
             return;
         }
 
@@ -53,9 +53,8 @@ public class StopCommand implements ICommand {
         CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomGuildSongQueue().clear();
         ctx.getGuild().getAudioManager().closeAudioConnection();
 
-        // Stop listening for the audio connection and leave.
-        CafeBot.getGuildHandler().getCustomGuild(event.getGuild().getId()).stopAudioChecking();
-        event.getChannel().sendMessage(successEmbed()).queue();
+        // Sends that the bot successfully left the channel.
+        event.getChannel().sendMessageEmbeds(successEmbed()).queue();
     }
 
     @NotNull
