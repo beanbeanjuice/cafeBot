@@ -50,7 +50,8 @@ public class SetDailyChannelCommand implements ICommand {
             event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().successEmbed(
                     "Updated Daily Channel",
                     "Successfully set the daily channel to this channel. " +
-                            "To remove the daily channel, just delete the channel."
+                            "To remove the daily channel, just delete the channel. Just a reminder, " +
+                            "any integrations you have with this channel will be deleted upon the copy of this channel."
             )).queue();
 
             return;
