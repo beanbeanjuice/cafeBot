@@ -23,6 +23,7 @@ import com.beanbeanjuice.command.moderation.welcome.SetWelcomeChannelCommand;
 import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.social.VentCommand;
 import com.beanbeanjuice.command.twitch.*;
+import com.beanbeanjuice.utility.helper.DailyChannelHelper;
 import com.beanbeanjuice.utility.listener.AIResponseListener;
 import com.beanbeanjuice.utility.listener.WelcomeListener;
 import com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler;
@@ -161,6 +162,9 @@ public class CafeBot {
 
     // Voice Chat Role Bind Handler
     private static VoiceChatRoleBindHandler voiceChatRoleBindHandler;
+
+    // Daily Stuff
+    private static DailyChannelHelper dailyChannelHelper;
 
     public CafeBot() throws LoginException, InterruptedException {
         generalHelper = new GeneralHelper();
@@ -382,6 +386,8 @@ public class CafeBot {
         jda.addEventListener(new VoiceChatListener());
 
         customSongManager = new CustomSongManager();
+
+        dailyChannelHelper = new DailyChannelHelper();
 
         // Final Things
         logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
