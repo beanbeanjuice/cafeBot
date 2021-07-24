@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class GuildHandler {
 
-    private HashMap<String, CustomGuild> guildDatabase;
+    private final HashMap<String, CustomGuild> guildDatabase;
 
     /**
      * Creates a new {@link GuildHandler} object.
@@ -61,13 +61,14 @@ public class GuildHandler {
                 String logChannelID = String.valueOf(resultSet.getLong(14));
                 String ventingChannelID = String.valueOf(resultSet.getLong(15));
                 Boolean aiState = resultSet.getBoolean(16);
+                String dailyChannelID = String.valueOf(resultSet.getLong(17));
 
                 guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
                         twitchChannelID, twitchChannels, mutedRoleID,
                         liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
                         countingChannelID, pollChannelID, raffleChannelID,
                         birthdayChannelID, welcomeChannelID, logChannelID,
-                        ventingChannelID, aiState));
+                        ventingChannelID, aiState, dailyChannelID));
             }
         } catch (SQLException e) {
             CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
@@ -121,6 +122,30 @@ public class GuildHandler {
             return true;
         } catch (SQLException e) {
             CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating AI Reponse: " + e.getMessage(), e);
+            return false;
+        }
+    }
+
+    /**
+     * Sets the daily {@link TextChannel} ID for the {@link Guild}.
+     * @param guildID The ID of the {@link Guild} to update.
+     * @param dailyChannelID The ID of the daily {@link TextChannel}.
+     * @return True of the daily {@link TextChannel} was successfully updated.
+     */
+    @NotNull
+    protected Boolean setDailyChannelID(@NotNull String guildID, @NotNull String dailyChannelID) {
+        Connection connection = CafeBot.getSQLServer().getConnection();
+        String arguments = "UPDATE cafeBot.guild_information SET daily_channel_id = (?) WHERE guild_id = (?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(arguments);
+            statement.setLong(1, Long.parseLong(dailyChannelID));
+            statement.setLong(2, Long.parseLong(guildID));
+
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating daily Channel: " + e.getMessage(), e);
             return false;
         }
     }
@@ -420,7 +445,7 @@ public class GuildHandler {
                     "0", true, "0",
                     "0", "0", "0",
                     "0", "0", "0",
-                    "0", false));
+                    "0", false, "0"));
             return true;
         } catch (SQLException e) {
             CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to add Guild to SQL database: " + e.getMessage());
