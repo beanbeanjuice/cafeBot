@@ -20,7 +20,7 @@ import java.util.*;
  */
 public class CustomGuild {
 
-    private String guildID;
+    private final String guildID;
     private String prefix;
     private String moderatorRoleID;
     private String liveChannelID;
@@ -37,14 +37,13 @@ public class CustomGuild {
     private String logChannelID;
     private String ventingChannelID;
     private Boolean aiState;
+    private String dailyChannelID;
 
-    private Timer timer;
-    private TimerTask timerTask;
     private TextChannel lastMusicChannel;
 
-    private ArrayList<TextChannel> deletingMessagesChannels;
+    private final ArrayList<TextChannel> deletingMessagesChannels;
 
-    private CustomGuildSongQueueHandler customGuildSongQueueHandler;
+    private final CustomGuildSongQueueHandler customGuildSongQueueHandler;
 
     /**
      * Creates a new {@link CustomGuild} object.
@@ -68,7 +67,7 @@ public class CustomGuild {
                        @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID,
                        @NotNull String countingChannelID, @NotNull String pollChannelID, @NotNull String raffleChannelID,
                        @NotNull String birthdayChannelID, @NotNull String welcomeChannelID, @NotNull String logChannelID,
-                       @NotNull String ventingChannelID, @NotNull Boolean aiState) {
+                       @NotNull String ventingChannelID, @NotNull Boolean aiState, @NotNull String dailyChannelID) {
         this.guildID = guildID;
         this.prefix = prefix;
         this.moderatorRoleID = moderatorRoleID;
@@ -86,6 +85,7 @@ public class CustomGuild {
         this.logChannelID = logChannelID;
         this.ventingChannelID = ventingChannelID;
         this.aiState = aiState;
+        this.dailyChannelID = dailyChannelID;
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
@@ -119,7 +119,7 @@ public class CustomGuild {
             embedBuilder.setColor(level.getColor());
             embedBuilder.setFooter(command.getName() + " command");
             embedBuilder.setTimestamp(new Date().toInstant());
-            getLogChannel().sendMessage(embedBuilder.build()).queue();
+            getLogChannel().sendMessageEmbeds(embedBuilder.build()).queue();
         }
     }
 
@@ -166,6 +166,32 @@ public class CustomGuild {
     public Boolean setVentingChannelID(@NotNull String ventingChannelID) {
         if (CafeBot.getGuildHandler().updateVentingChannelID(guildID, ventingChannelID)) {
             this.ventingChannelID = ventingChannelID;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return The daily {@link TextChannel} for the {@link Guild}. Null if does not exist.
+     */
+    @Nullable
+    public TextChannel getDailyChannel() {
+        try {
+            return CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(dailyChannelID);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Sets the daily {@link TextChannel} for the current {@link Guild}.
+     * @param dailyChannelID The ID of the daily {@link TextChannel}.
+     * @return True if the daily {@link TextChannel} was updated successfully.
+     */
+    @NotNull
+    public Boolean setDailyChannelID(@NotNull String dailyChannelID) {
+        if (CafeBot.getGuildHandler().setDailyChannelID(guildID, dailyChannelID)) {
+            this.dailyChannelID = dailyChannelID;
             return true;
         }
         return false;
@@ -474,17 +500,8 @@ public class CustomGuild {
      */
     public void sendMessageInLastMusicChannel(MessageEmbed embed) {
         try {
-            lastMusicChannel.sendMessage(embed).queue();
+            lastMusicChannel.sendMessageEmbeds(embed).queue();
         } catch (NullPointerException ignored) {}
-    }
-
-    /**
-     * Stops checking for an {@link net.dv8tion.jda.internal.audio.AudioConnection AudioConnection} in the current {@link Guild}.
-     */
-    public void stopAudioChecking() {
-        if (timer != null) {
-            timer.cancel();
-        }
     }
 
     /**
