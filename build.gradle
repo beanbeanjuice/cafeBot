@@ -31,7 +31,7 @@ try {
     versionName = 'v0.0.0'
 }
 
-sourceCompatibility = '15'
+sourceCompatibility = '16'
 group 'com.beanbeanjuice'
 mainClassName = 'com.beanbeanjuice.CafeBot'
 version versionName
