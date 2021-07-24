@@ -335,7 +335,8 @@ public class CafeBot {
                 new VoiceRoleBindCommand(),
                 new GetVoiceRoleBindsCommand(),
                 new SetVentingChannelCommand(),
-                new SetAIStateCommand()
+                new SetAIStateCommand(),
+                new SetDailyChannelCommand()
         );
 
         // Experimental Commands
