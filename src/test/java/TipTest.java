@@ -8,7 +8,7 @@ public class TipTest {
 
     @Test
     @DisplayName("Tip Test")
-    public void test1() {
+    public void tipTest() {
 
         ServeHandler serveHandler = new ServeHandler();
         ServeWord word1 = new ServeWord("bruh", 1000);
