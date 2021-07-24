@@ -401,6 +401,14 @@ public class CafeBot {
     }
 
     /**
+     * @return The current {@link DailyChannelHelper} for the session.
+     */
+    @NotNull
+    public static DailyChannelHelper getDailyChannelHelper() {
+        return dailyChannelHelper;
+    }
+
+    /**
      * @return The current {@link DiscordBotListAPI} for this session.
      */
     @NotNull
