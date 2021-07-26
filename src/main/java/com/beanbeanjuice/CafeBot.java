@@ -23,6 +23,7 @@ import com.beanbeanjuice.command.moderation.welcome.SetWelcomeChannelCommand;
 import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.social.VentCommand;
 import com.beanbeanjuice.command.twitch.*;
+import com.beanbeanjuice.utility.helper.DailyChannelHelper;
 import com.beanbeanjuice.utility.listener.AIResponseListener;
 import com.beanbeanjuice.utility.listener.WelcomeListener;
 import com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler;
@@ -162,6 +163,9 @@ public class CafeBot {
     // Voice Chat Role Bind Handler
     private static VoiceChatRoleBindHandler voiceChatRoleBindHandler;
 
+    // Daily Stuff
+    private static DailyChannelHelper dailyChannelHelper;
+
     public CafeBot() throws LoginException, InterruptedException {
         generalHelper = new GeneralHelper();
         logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
@@ -192,14 +196,15 @@ public class CafeBot {
         jdaBuilder.enableIntents(
                 GatewayIntent.GUILD_VOICE_STATES,
                 GatewayIntent.GUILD_BANS,
-                GatewayIntent.GUILD_EMOJIS,
-                GatewayIntent.GUILD_MEMBERS
+                GatewayIntent.GUILD_EMOJIS
+//                GatewayIntent.GUILD_MEMBERS,
+//                GatewayIntent.DIRECT_MESSAGES
         );
         jdaBuilder.enableCache(
-                CacheFlag.EMOTE,
-                CacheFlag.VOICE_STATE
+                CacheFlag.EMOTE
+//                CacheFlag.VOICE_STATE
         );
-        jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
+//        jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
         jdaBuilder.setChunkingFilter(ChunkingFilter.ALL);
 
         serveHandler = new ServeHandler();
@@ -219,7 +224,9 @@ public class CafeBot {
                 new UserInfoCommand(),
                 new MemberCountCommand(),
                 new BotUpvoteCommand(),
-                new BotDonateCommand()
+                new BotDonateCommand(),
+                new RemoveMyDataCommand(),
+                new GenerateCodeCommand()
         );
 
         // Cafe Commands
@@ -321,8 +328,6 @@ public class CafeBot {
                 new SetPollChannelCommand(),
                 new SetRaffleChannelCommand(),
                 new SetBirthdayChannelCommand(),
-                new SetWelcomeChannelCommand(),
-                new EditWelcomeMessageCommand(),
                 new SetModeratorRoleCommand(),
                 new SetMutedRoleCommand(),
                 new ChangePrefixCommand(),
@@ -336,7 +341,15 @@ public class CafeBot {
                 new VoiceRoleBindCommand(),
                 new GetVoiceRoleBindsCommand(),
                 new SetVentingChannelCommand(),
-                new SetAIStateCommand()
+                new SetAIStateCommand(),
+                new SetDailyChannelCommand(),
+                new GetCustomChannelsCommand()
+        );
+
+        // Experimental Commands
+        commandManager.addCommands(
+                new SetWelcomeChannelCommand(),
+                new EditWelcomeMessageCommand()
         );
 
         jdaBuilder.addEventListeners(
@@ -377,6 +390,8 @@ public class CafeBot {
 
         customSongManager = new CustomSongManager();
 
+        dailyChannelHelper = new DailyChannelHelper();
+
         // Final Things
         logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
         updateGuildPresence();
@@ -385,6 +400,14 @@ public class CafeBot {
 
     public static void main(String[] args) {
         SpringApplication.run(CafeBot.class, args);
+    }
+
+    /**
+     * @return The current {@link DailyChannelHelper} for the session.
+     */
+    @NotNull
+    public static DailyChannelHelper getDailyChannelHelper() {
+        return dailyChannelHelper;
     }
 
     /**

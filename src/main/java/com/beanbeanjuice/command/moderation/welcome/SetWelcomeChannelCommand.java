@@ -88,6 +88,6 @@ public class SetWelcomeChannelCommand implements ICommand {
 
     @Override
     public CategoryType getCategoryType() {
-        return CategoryType.MODERATION;
+        return CategoryType.EXPERIMENTAL;
     }
 }
