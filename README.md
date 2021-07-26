@@ -136,6 +136,8 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `member-count` - Get the member count for your server!
 * `bot-upvote` - Upvote the bot!
 * `bot-donate` - Donate for the bot!
+* `remove-my-data` - Request to remove your data from the bot!
+* `generate-code` - Generate a random 32-digit long code!
 ##### 2. **CAFE**
 * `menu` - Show the list of Cafe menu items.
 * `serve` - Get beanCoins! Essentially you run this command by doing `!!serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.
