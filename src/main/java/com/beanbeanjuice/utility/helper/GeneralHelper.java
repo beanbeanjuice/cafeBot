@@ -107,6 +107,38 @@ public class GeneralHelper {
     }
 
     /**
+     * Generates a Random Alpha-Numeric {@link String}.
+     * @param n The length of the random alpha-numeric {@link String}.
+     * @return The randomly generated alpha-numeric {@link String}.
+     */
+    @NotNull
+    public String getRandomAlphaNumericString(@NotNull Integer n) {
+
+        // Chooses a Random Character from This String
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        // Creates a String Builder with the specified size
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+
+            // generate a random number between
+            // 0 to AlphaNumericString variable length
+            int index
+                    = (int)(AlphaNumericString.length()
+                    * Math.random());
+
+            // add Character one by one in end of sb
+            sb.append(AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb.toString();
+    }
+
+    /**
      * Creates a term {@link HashMap} with the command term as
      * a {@link String} and the argument as a {@link String}.
      * @param commandTerms The {@link ArrayList<String>} of command terms.
