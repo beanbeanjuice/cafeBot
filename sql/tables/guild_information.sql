@@ -14,4 +14,5 @@ birthday_channel_id BIGINT DEFAULT 0,
 welcome_channel_id BIGINT DEFAULT 0,
 log_channel_id BIGINT DEFAULT 0,
 venting_channel_id BIGINT DEFAULT 0,
-ai_response TINYINT DEFAULT 0);
+ai_response TINYINT DEFAULT 0,
+daily_channel_id BIGINT DEFAULT 0);

@@ -120,7 +120,7 @@ This is an example of how to list things you need to use the software and how to
   <img src=http://cdn.beanbeanjuice.com/images/cafeBot/readme/help.png>
 </p>
 
-As you can see, this was shown using the command `!!help order`. It shows each parameter you can run. For example, `<parameter 1>` needs to be a number and it is `REQUIRED` and `<parameter 2>` is a discord user and is also `REQUIRED`. So this means, to run the `order` command, I would do something like, `!!order 2 @beanbeanjuice`.
+As you can see, this was shown using the command `!!help order`. It shows each parameter you can run. For example, the first `<NUMBER>` is the `CATEGORY NUMBER` for the menu, needs to be a number, and is required. The `help` command also provides an example on how to actually use the command if you are stuck!
 
 #### **Command Section**
 *There are many command sections, with more coming soon. To show the commands in a specific section, do `!!help (command section)` or for example, `!!help moderation`!* Doing `!!help (command)` will also show you an example of how to use the command.
@@ -136,6 +136,8 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `member-count` - Get the member count for your server!
 * `bot-upvote` - Upvote the bot!
 * `bot-donate` - Donate for the bot!
+* `remove-my-data` - Request to remove your data from the bot!
+* `generate-code` - Generate a random 32-digit long code!
 ##### 2. **CAFE**
 * `menu` - Show the list of Cafe menu items.
 * `serve` - Get beanCoins! Essentially you run this command by doing `!!serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.
@@ -213,8 +215,6 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `set-poll-channel` - Sets the current channel to an active poll channel. This is needed if you want to run polls on your server!
 * `set-raffle-channel` - Sets the current channel to an active raffle channel. This is needed if you want to run raffles on your server!
 * `set-birthday-channel` - Sets the current channel to an active birthday channel. Be notified when one of the members in your server is having a birthday!
-* `set-welcome-channel` - Sets the current channel to welcome users when they join!
-* `edit-welcome-message` - Edits the welcome message that is sent when users join. (Make sure to check the usage for this command doing `help edit-welcome-message` because this one is a little complicated!)
 * `set-moderator-role` - Set the moderator role for the server. This is needed so that users with this role can run commands that require a moderator role.
 * `set-muted-role` - Set the muted role for the server. This is needed so that users with this role can be stopped from talking in channels. This requires you to set it this way in each channel. This will not mute them if the role does not have the right permissions.
 * `change-prefix` - Change the prefix from the bot to your desired prefix.
@@ -229,8 +229,11 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `get-voice-role-binds` - See which `voice channels` have `roles` bound to them!
 * `set-venting-channel` - Sets the current channel to an anonymous venting channel!
 * `ai-status` - Sets the `AI Status` for the server. This can `enable` or `disable` the AI module.
+* `set-daily-channel` - Sets the current channel to a daily channel. This channel is deleted and re-made once a day!
+* `get-custom-channels` - Gets ALL of the custom channels currently being used in the server!
 ##### 10. **EXPERIMENTAL**
-* `There is currently nothing here...`
+* `set-welcome-channel` - Sets the current channel to welcome users when they join!
+* `edit-welcome-message` - Edits the welcome message that is sent when users join. (Make sure to check the usage for this command doing `help edit-welcome-message` because this one is a little complicated!)
 
 <!-- ROADMAP -->
 # Roadmap
