@@ -224,7 +224,9 @@ public class CafeBot {
                 new UserInfoCommand(),
                 new MemberCountCommand(),
                 new BotUpvoteCommand(),
-                new BotDonateCommand()
+                new BotDonateCommand(),
+                new RemoveMyDataCommand(),
+                new GenerateCodeCommand()
         );
 
         // Cafe Commands
