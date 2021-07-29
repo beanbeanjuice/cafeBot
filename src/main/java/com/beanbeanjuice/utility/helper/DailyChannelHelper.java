@@ -2,6 +2,7 @@ package com.beanbeanjuice.utility.helper;
 
 import com.beanbeanjuice.CafeBot;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 
 import java.util.Calendar;
 import java.util.Timer;
@@ -25,16 +26,24 @@ public class DailyChannelHelper {
                     // If the channel does exist.
                     if (dailyChannel != null) {
 
-                        // Creates a copy of the channel.
-                        dailyChannel.createCopy().queue(channel -> {
+                        try {
 
-                            // If the channel was successfully changed, then delete it. Else, delete the copied channel.
-                            if (CafeBot.getGuildHandler().getCustomGuild(guildID).setDailyChannelID(channel.getId())) {
-                                dailyChannel.delete().queue();
-                            } else {
-                                channel.delete().queue();
-                            }
-                        });
+                            // Creates a copy of the channel.
+                            dailyChannel.createCopy().queue(channel -> {
+
+                                // If the channel was successfully changed, then delete it. Else, delete the copied channel.
+                                if (CafeBot.getGuildHandler().getCustomGuild(guildID).setDailyChannelID(channel.getId())) {
+                                    dailyChannel.delete().queue();
+                                } else {
+                                    channel.delete().queue();
+                                }
+                            });
+                        } catch (PermissionException e) {
+                            dailyChannel.sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                                    "Missing Permission",
+                                    e.getMessage()
+                            )).queue();
+                        }
                     }
                 });
             }
