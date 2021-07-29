@@ -231,9 +231,10 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `ai-status` - Sets the `AI Status` for the server. This can `enable` or `disable` the AI module.
 * `set-daily-channel` - Sets the current channel to a daily channel. This channel is deleted and re-made once a day!
 * `get-custom-channels` - Gets ALL of the custom channels currently being used in the server!
-##### 10. **EXPERIMENTAL**
 * `set-welcome-channel` - Sets the current channel to welcome users when they join!
 * `edit-welcome-message` - Edits the welcome message that is sent when users join. (Make sure to check the usage for this command doing `help edit-welcome-message` because this one is a little complicated!)
+##### 10. **EXPERIMENTAL**
+* `Nothing here yet!`
 
 <!-- ROADMAP -->
 # Roadmap
