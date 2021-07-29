@@ -81,7 +81,7 @@ public class AIResponseListener extends ListenerAdapter {
         responses.add("If that's all you can say, then you need some help...");
         responses.add("Is there nothing else you have to say?");
         responses.add("Can you be less of a dry texter?");
-        responses.add("Could you speak any less? (If you can, please do. That responses was dryer than this gin.");
+        responses.add("Could you speak any less? (If you can, please do. That responses was dryer than this gin.)");
 
         messageMap.put(commandTerms, responses);
     }
