@@ -196,13 +196,13 @@ public class CafeBot {
         jdaBuilder.enableIntents(
                 GatewayIntent.GUILD_VOICE_STATES,
                 GatewayIntent.GUILD_BANS,
-                GatewayIntent.GUILD_EMOJIS
-//                GatewayIntent.GUILD_MEMBERS,
-//                GatewayIntent.DIRECT_MESSAGES
+                GatewayIntent.GUILD_EMOJIS,
+                GatewayIntent.GUILD_MEMBERS,
+                GatewayIntent.DIRECT_MESSAGES
         );
         jdaBuilder.enableCache(
-                CacheFlag.EMOTE
-//                CacheFlag.VOICE_STATE
+                CacheFlag.EMOTE,
+                CacheFlag.VOICE_STATE
         );
 //        jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
         jdaBuilder.setChunkingFilter(ChunkingFilter.ALL);
@@ -343,13 +343,13 @@ public class CafeBot {
                 new SetVentingChannelCommand(),
                 new SetAIStateCommand(),
                 new SetDailyChannelCommand(),
-                new GetCustomChannelsCommand()
+                new GetCustomChannelsCommand(),
+                new SetWelcomeChannelCommand(),
+                new EditWelcomeMessageCommand()
         );
 
         // Experimental Commands
         commandManager.addCommands(
-                new SetWelcomeChannelCommand(),
-                new EditWelcomeMessageCommand()
         );
 
         jdaBuilder.addEventListeners(
