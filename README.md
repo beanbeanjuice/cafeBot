@@ -59,6 +59,7 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
+    <li><a href="#data">What data does this bot store?</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
@@ -256,6 +257,31 @@ Contributions are what make the open source community such an amazing place to b
 # License
 
 Distributed under the GPL-3.0 License. See `LICENSE` for more information.
+
+<!-- DATA THIS BOT STORED -->
+# Data
+
+Here is ALL of the data that this bot could *possibly* store on you. This, of course, is subject to change. None of these can be accessed by other servers (that you are not a part of) by the bot.
+
+- *__Discord Data__*
+  - Your Discord ID.`*`
+    - This data is needed in order to keep track of the amount of money `(beanCoins)` with the bot. Additionally, it is used for the counting module to enforce the rule that the same Discord user cannot play the counting game twice in a row.
+  - Your Discord Server ID.`*`
+    - This data is needed in order to remember specific settings you have for the server, such as the prefix you use for the bot, the twitch channels you have added, the moderation role ID, the log channel ID, etc.
+  - Your Discord Server Role IDs.`**`
+    - Needed in conjunction with your `Discord Server ID` in order to keep track of specific roles to add to users when they join a VC or a moderation role ID.
+  - Your Discord Server Text Channel IDs.`**`
+    - Needed in order to keep track of which channels are which. For example, to know if the text channel you are talking in is the `counting` channel.
+  - Your Discord Server Voice Channel IDs.`**`
+    - Needed in order to know what role to add to what voice channel when joining.
+
+- *__Other Data__*
+  - Your birthday.`***`
+    - Your birthday can be removed any time. It can only be accessed by people in the same server as you. If they are not in the same server as you, they cannot see this.
+
+##### * - This is already public information anyway, and is crucial for having the bot work.
+##### ** - This is something that is needed for the bot to do things like apply a role to someone when they join a specific voice channel, or to duplicate a voice channel when needed.
+##### *** - Your birthday is only stored WHEN specified, and can even be removed at anytime by simply using the `remove-birthday` command.
 
 <!-- CONTACT -->
 # Contact
