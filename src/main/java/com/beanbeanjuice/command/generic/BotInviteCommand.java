@@ -21,7 +21,7 @@ public class BotInviteCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                 "Bot Invite Link",
-                "Click [this](https://discord.com/api/oauth2/authorize?client_id=787162619504492554&permissions=305917254&scope=bot) to invite the bot to your server!"
+                "Click [this](https://discord.com/api/oauth2/authorize?client_id=787162619504492554&permissions=8&scope=bot) to invite the bot to your server!"
         )).queue();
     }
 
