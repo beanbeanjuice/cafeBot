@@ -14,6 +14,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletionException;
 
+/**
+ * A helper used to get specific releases from GitHub.
+ *
+ * @author beanbeanjuice
+ */
 public class GitHubReleaseHelper {
 
     private final String GITHUB_API_URL = "https://api.github.com/repos/beanbeanjuice/cafeBot/releases/tags/";
@@ -22,8 +27,13 @@ public class GitHubReleaseHelper {
     private String github_name;
     private String github_body;
 
+    /**
+     * A method used to get a {@link MessageEmbed} containing all release information.
+     * @param versionTag The specific version number for the GitHub release.
+     * @return The completed {@link MessageEmbed} to be sent.
+     * @throws CompletionException Thrown when no release exists for the specific version tag.
+     */
     public MessageEmbed getVersion(@NotNull String versionTag) throws CompletionException {
-
         github_tag = versionTag;
 
         HttpClient client = HttpClient.newHttpClient();
