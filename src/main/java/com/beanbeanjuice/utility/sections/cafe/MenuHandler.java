@@ -173,7 +173,7 @@ public class MenuHandler {
     /**
      * Updates the {@link CafeCustomer} in the database.
      * @param cafeCustomer The {@link CafeCustomer} to update.
-     * @return Whether or not the {@link CafeCustomer} was successfully updated.
+     * @return True if the {@link CafeCustomer} was successfully updated.
      */
     @NotNull
     public Boolean updateReceiver(@NotNull CafeCustomer cafeCustomer) {
