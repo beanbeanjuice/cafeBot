@@ -26,6 +26,7 @@ import com.beanbeanjuice.command.twitch.*;
 import com.beanbeanjuice.utility.helper.DailyChannelHelper;
 import com.beanbeanjuice.utility.listener.AIResponseListener;
 import com.beanbeanjuice.utility.listener.WelcomeListener;
+import com.beanbeanjuice.utility.sections.cafe.BeanCoinDonationHandler;
 import com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler;
 import com.beanbeanjuice.utility.sections.cafe.MenuHandler;
 import com.beanbeanjuice.utility.sections.cafe.ServeHandler;
@@ -56,7 +57,6 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
-import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.jetbrains.annotations.NotNull;
@@ -165,6 +165,9 @@ public class CafeBot {
 
     // Daily Stuff
     private static DailyChannelHelper dailyChannelHelper;
+
+    // beanCoin Donation Stuff
+    private static BeanCoinDonationHandler beanCoinDonationHandler;
 
     public CafeBot() throws LoginException, InterruptedException {
         generalHelper = new GeneralHelper();
@@ -392,6 +395,8 @@ public class CafeBot {
 
         dailyChannelHelper = new DailyChannelHelper();
 
+        beanCoinDonationHandler = new BeanCoinDonationHandler();
+
         // Final Things
         logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
         updateGuildPresence();
@@ -400,6 +405,14 @@ public class CafeBot {
 
     public static void main(String[] args) {
         SpringApplication.run(CafeBot.class, args);
+    }
+
+    /**
+     * @return The current {@link BeanCoinDonationHandler} for the session.
+     */
+    @NotNull
+    public static BeanCoinDonationHandler getBeanCoinDonationHandler() {
+        return beanCoinDonationHandler;
     }
 
     /**
