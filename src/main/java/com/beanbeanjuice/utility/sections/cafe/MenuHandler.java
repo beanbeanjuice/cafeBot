@@ -114,6 +114,8 @@ public class MenuHandler {
         secrets.add(new MenuItem(CafeCategory.SECRET, "Otter Pop", 4.0, "A nice cold otter pop to get you through a hot day. They're Lilly's favourite!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/otter_pop.jpg"));
         secrets.add(new MenuItem(CafeCategory.SECRET, "The Duo", 20.0, "A giant bucket of popcorn and extra cheddar goldfish mixed together. Enough for two! A signature dish by Lilly and Will. ❤", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/the_duo.webp"));
         secrets.add(new MenuItem(CafeCategory.SECRET, "The Kenzie Special", 7.0, "An entire bottle of *not* vodka and some apple juice...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/the_kenzie_special.jpg"));
+        secrets.add(new MenuItem(CafeCategory.SECRET, "Chicken Coop", 12.5, "Some fluffy nuggets, a choco puff drink for your thirst, and some sunflower seeds!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/chicken_coop.gif"));
+        secrets.add(new MenuItem(CafeCategory.SECRET, "Sprout Moment", 3.0, "A yummy, cold aloe drink! Just a little refreshing signature drink from Sprout!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/sprout_moment.jpg"));
         menu.put(CafeCategory.SECRET, secrets);
     }
 
@@ -171,7 +173,7 @@ public class MenuHandler {
     /**
      * Updates the {@link CafeCustomer} in the database.
      * @param cafeCustomer The {@link CafeCustomer} to update.
-     * @return Whether or not the {@link CafeCustomer} was successfully updated.
+     * @return True if the {@link CafeCustomer} was successfully updated.
      */
     @NotNull
     public Boolean updateReceiver(@NotNull CafeCustomer cafeCustomer) {
