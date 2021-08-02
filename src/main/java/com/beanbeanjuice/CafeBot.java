@@ -1,9 +1,6 @@
 package com.beanbeanjuice;
 
-import com.beanbeanjuice.command.cafe.BalanceCommand;
-import com.beanbeanjuice.command.cafe.MenuCommand;
-import com.beanbeanjuice.command.cafe.OrderCommand;
-import com.beanbeanjuice.command.cafe.ServeCommand;
+import com.beanbeanjuice.command.cafe.*;
 import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.games.*;
 import com.beanbeanjuice.command.generic.*;
@@ -27,6 +24,7 @@ import com.beanbeanjuice.utility.helper.DailyChannelHelper;
 import com.beanbeanjuice.utility.helper.api.GitHubUpdateChecker;
 import com.beanbeanjuice.utility.listener.AIResponseListener;
 import com.beanbeanjuice.utility.listener.WelcomeListener;
+import com.beanbeanjuice.utility.sections.cafe.BeanCoinDonationHandler;
 import com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler;
 import com.beanbeanjuice.utility.sections.cafe.MenuHandler;
 import com.beanbeanjuice.utility.sections.cafe.ServeHandler;
@@ -165,6 +163,9 @@ public class CafeBot {
     // Daily Stuff
     private static DailyChannelHelper dailyChannelHelper;
 
+    // beanCoin Donation Stuff
+    private static BeanCoinDonationHandler beanCoinDonationHandler;
+
     public CafeBot() throws LoginException, InterruptedException {
         generalHelper = new GeneralHelper();
         logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
@@ -234,7 +235,8 @@ public class CafeBot {
                 new MenuCommand(),
                 new ServeCommand(),
                 new OrderCommand(),
-                new BalanceCommand()
+                new BalanceCommand(),
+                new BeanCoinDonateCommand()
         );
 
         // Fun Commands
@@ -392,6 +394,8 @@ public class CafeBot {
 
         dailyChannelHelper = new DailyChannelHelper();
 
+        beanCoinDonationHandler = new BeanCoinDonationHandler();
+
         // Final Things
         logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
         updateGuildPresence();
@@ -400,6 +404,14 @@ public class CafeBot {
 
     public static void main(String[] args) {
         SpringApplication.run(CafeBot.class, args);
+    }
+
+    /**
+     * @return The current {@link BeanCoinDonationHandler} for the session.
+     */
+    @NotNull
+    public static BeanCoinDonationHandler getBeanCoinDonationHandler() {
+        return beanCoinDonationHandler;
     }
 
     /**
