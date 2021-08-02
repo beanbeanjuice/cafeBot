@@ -319,7 +319,7 @@ public class Usage {
     @NotNull
     private Boolean isDate(@NotNull String dateString) {
         try {
-            new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+            new SimpleDateFormat("yyyy-MM-dd").parse("2000-" + dateString);
             return true;
         } catch (ParseException e) {
             return false;

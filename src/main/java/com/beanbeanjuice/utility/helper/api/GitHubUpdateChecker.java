@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.helper;
+package com.beanbeanjuice.utility.helper.api;
 
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.guild.CustomGuild;
@@ -26,7 +26,7 @@ import java.util.HashMap;
  *
  * @author beanbeanjuice
  */
-public class VersionHelper {
+public class GitHubUpdateChecker {
 
     private final String GITHUB_API_URL = "https://api.github.com/repos/beanbeanjuice/cafeBot/releases";
     private String github_url;

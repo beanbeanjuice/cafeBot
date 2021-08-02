@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -35,7 +36,7 @@ public class GetBirthdayCommand implements ICommand {
 
         // Checking if the user's birthday is null.
         if (birthday == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "No Birthday Set",
                     "The user specified does not have a birthday set."
             )).queue();
@@ -49,7 +50,10 @@ public class GetBirthdayCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setTitle(user.getName() + "'s Birthday");
-        embedBuilder.setDescription("Their birthday is on `" + birthday + "`. (YYYY-MM-DD)");
+
+        String pattern = "MMMM, d";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        embedBuilder.setDescription("Their birthday is on `" + simpleDateFormat.format(birthday) + "`.");
         return embedBuilder.build();
     }
 
