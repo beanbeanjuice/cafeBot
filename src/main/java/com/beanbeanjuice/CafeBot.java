@@ -24,6 +24,7 @@ import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.social.VentCommand;
 import com.beanbeanjuice.command.twitch.*;
 import com.beanbeanjuice.utility.helper.DailyChannelHelper;
+import com.beanbeanjuice.utility.helper.api.GitHubUpdateChecker;
 import com.beanbeanjuice.utility.listener.AIResponseListener;
 import com.beanbeanjuice.utility.listener.WelcomeListener;
 import com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler;
@@ -33,7 +34,6 @@ import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
-import com.beanbeanjuice.utility.helper.VersionHelper;
 import com.beanbeanjuice.utility.sections.games.connectfour.ConnectFourHandler;
 import com.beanbeanjuice.utility.sections.games.tictactoe.TicTacToeHandler;
 import com.beanbeanjuice.utility.sections.interaction.InteractionHandler;
@@ -56,7 +56,6 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
-import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.jetbrains.annotations.NotNull;
@@ -127,7 +126,7 @@ public class CafeBot {
     private static GeneralHelper generalHelper;
 
     // Version Helper
-    private static VersionHelper versionHelper;
+    private static GitHubUpdateChecker gitHubUpdateChecker;
 
     // Counting Helper
     private static CountingHelper countingHelper;
@@ -226,7 +225,8 @@ public class CafeBot {
                 new BotUpvoteCommand(),
                 new BotDonateCommand(),
                 new RemoveMyDataCommand(),
-                new GenerateCodeCommand()
+                new GenerateCodeCommand(),
+                new GetBotReleaseVersionCommand()
         );
 
         // Cafe Commands
@@ -368,8 +368,8 @@ public class CafeBot {
 
         guildHandler = new GuildHandler();
 
-        versionHelper = new VersionHelper();
-        versionHelper.contactGuilds();
+        gitHubUpdateChecker = new GitHubUpdateChecker();
+        gitHubUpdateChecker.contactGuilds();
 
         pollHandler = new PollHandler();
         raffleHandler = new RaffleHandler();
