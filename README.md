@@ -164,6 +164,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `dice-roll` - Roll a dice!
 * `tic-tac-toe` - Play tic tac toe with someone!
 * `connect-four` - Play connect four with someone!
+* `get-game-data` - See your win streaks for the mini-games that support it!
 ##### 5. **SOCIAL**
 * `vent` - Anonymously vent to the server! ~~If the server has anonymous venting enabled...~~
 ##### 6. **INTERACTION**

@@ -32,6 +32,7 @@ import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
+import com.beanbeanjuice.utility.sections.games.WinStreakHandler;
 import com.beanbeanjuice.utility.sections.games.connectfour.ConnectFourHandler;
 import com.beanbeanjuice.utility.sections.games.tictactoe.TicTacToeHandler;
 import com.beanbeanjuice.utility.sections.interaction.InteractionHandler;
@@ -146,6 +147,7 @@ public class CafeBot {
     // Game Stuff
     private static TicTacToeHandler ticTacToeHandler;
     private static ConnectFourHandler connectFourHandler;
+    private static WinStreakHandler winStreakHandler;
 
     // Welcome Stuff
     private static WelcomeHandler welcomeHandler;
@@ -260,7 +262,8 @@ public class CafeBot {
                 new CoinFlipCommand(),
                 new DiceRollCommand(),
                 new TicTacToeCommand(),
-                new ConnectFourCommand()
+                new ConnectFourCommand(),
+                new GetGameDataCommand()
         );
 
         // Social Commands
@@ -382,6 +385,7 @@ public class CafeBot {
 
         ticTacToeHandler = new TicTacToeHandler();
         connectFourHandler = new ConnectFourHandler();
+        winStreakHandler = new WinStreakHandler();
 
         welcomeHandler = new WelcomeHandler();
         welcomeListener = new WelcomeListener();
@@ -507,6 +511,14 @@ public class CafeBot {
     @NotNull
     public static TicTacToeHandler getTicTacToeHandler() {
         return ticTacToeHandler;
+    }
+
+    /**
+     * @return The current {@link WinStreakHandler}.
+     */
+    @NotNull
+    public static WinStreakHandler getWinStreakHandler() {
+        return winStreakHandler;
     }
 
     /**
