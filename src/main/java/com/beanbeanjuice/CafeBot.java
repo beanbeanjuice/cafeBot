@@ -1,9 +1,6 @@
 package com.beanbeanjuice;
 
-import com.beanbeanjuice.command.cafe.BalanceCommand;
-import com.beanbeanjuice.command.cafe.MenuCommand;
-import com.beanbeanjuice.command.cafe.OrderCommand;
-import com.beanbeanjuice.command.cafe.ServeCommand;
+import com.beanbeanjuice.command.cafe.*;
 import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.games.*;
 import com.beanbeanjuice.command.generic.*;
@@ -24,8 +21,10 @@ import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.social.VentCommand;
 import com.beanbeanjuice.command.twitch.*;
 import com.beanbeanjuice.utility.helper.DailyChannelHelper;
+import com.beanbeanjuice.utility.helper.api.GitHubUpdateChecker;
 import com.beanbeanjuice.utility.listener.AIResponseListener;
 import com.beanbeanjuice.utility.listener.WelcomeListener;
+import com.beanbeanjuice.utility.sections.cafe.BeanCoinDonationHandler;
 import com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler;
 import com.beanbeanjuice.utility.sections.cafe.MenuHandler;
 import com.beanbeanjuice.utility.sections.cafe.ServeHandler;
@@ -33,7 +32,7 @@ import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
-import com.beanbeanjuice.utility.helper.VersionHelper;
+import com.beanbeanjuice.utility.sections.games.WinStreakHandler;
 import com.beanbeanjuice.utility.sections.games.connectfour.ConnectFourHandler;
 import com.beanbeanjuice.utility.sections.games.tictactoe.TicTacToeHandler;
 import com.beanbeanjuice.utility.sections.interaction.InteractionHandler;
@@ -56,7 +55,6 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
-import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.jetbrains.annotations.NotNull;
@@ -127,7 +125,7 @@ public class CafeBot {
     private static GeneralHelper generalHelper;
 
     // Version Helper
-    private static VersionHelper versionHelper;
+    private static GitHubUpdateChecker gitHubUpdateChecker;
 
     // Counting Helper
     private static CountingHelper countingHelper;
@@ -149,6 +147,7 @@ public class CafeBot {
     // Game Stuff
     private static TicTacToeHandler ticTacToeHandler;
     private static ConnectFourHandler connectFourHandler;
+    private static WinStreakHandler winStreakHandler;
 
     // Welcome Stuff
     private static WelcomeHandler welcomeHandler;
@@ -165,6 +164,9 @@ public class CafeBot {
 
     // Daily Stuff
     private static DailyChannelHelper dailyChannelHelper;
+
+    // beanCoin Donation Stuff
+    private static BeanCoinDonationHandler beanCoinDonationHandler;
 
     public CafeBot() throws LoginException, InterruptedException {
         generalHelper = new GeneralHelper();
@@ -226,7 +228,8 @@ public class CafeBot {
                 new BotUpvoteCommand(),
                 new BotDonateCommand(),
                 new RemoveMyDataCommand(),
-                new GenerateCodeCommand()
+                new GenerateCodeCommand(),
+                new GetBotReleaseVersionCommand()
         );
 
         // Cafe Commands
@@ -234,7 +237,8 @@ public class CafeBot {
                 new MenuCommand(),
                 new ServeCommand(),
                 new OrderCommand(),
-                new BalanceCommand()
+                new BalanceCommand(),
+                new BeanCoinDonateCommand()
         );
 
         // Fun Commands
@@ -258,7 +262,8 @@ public class CafeBot {
                 new CoinFlipCommand(),
                 new DiceRollCommand(),
                 new TicTacToeCommand(),
-                new ConnectFourCommand()
+                new ConnectFourCommand(),
+                new GetGameDataCommand()
         );
 
         // Social Commands
@@ -368,8 +373,8 @@ public class CafeBot {
 
         guildHandler = new GuildHandler();
 
-        versionHelper = new VersionHelper();
-        versionHelper.contactGuilds();
+        gitHubUpdateChecker = new GitHubUpdateChecker();
+        gitHubUpdateChecker.contactGuilds();
 
         pollHandler = new PollHandler();
         raffleHandler = new RaffleHandler();
@@ -380,6 +385,7 @@ public class CafeBot {
 
         ticTacToeHandler = new TicTacToeHandler();
         connectFourHandler = new ConnectFourHandler();
+        winStreakHandler = new WinStreakHandler();
 
         welcomeHandler = new WelcomeHandler();
         welcomeListener = new WelcomeListener();
@@ -392,6 +398,8 @@ public class CafeBot {
 
         dailyChannelHelper = new DailyChannelHelper();
 
+        beanCoinDonationHandler = new BeanCoinDonationHandler();
+
         // Final Things
         logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
         updateGuildPresence();
@@ -400,6 +408,14 @@ public class CafeBot {
 
     public static void main(String[] args) {
         SpringApplication.run(CafeBot.class, args);
+    }
+
+    /**
+     * @return The current {@link BeanCoinDonationHandler} for the session.
+     */
+    @NotNull
+    public static BeanCoinDonationHandler getBeanCoinDonationHandler() {
+        return beanCoinDonationHandler;
     }
 
     /**
@@ -495,6 +511,14 @@ public class CafeBot {
     @NotNull
     public static TicTacToeHandler getTicTacToeHandler() {
         return ticTacToeHandler;
+    }
+
+    /**
+     * @return The current {@link WinStreakHandler}.
+     */
+    @NotNull
+    public static WinStreakHandler getWinStreakHandler() {
+        return winStreakHandler;
     }
 
     /**
