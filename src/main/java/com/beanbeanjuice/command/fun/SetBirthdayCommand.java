@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -21,17 +22,19 @@ public class SetBirthdayCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        Date date = CafeBot.getGeneralHelper().parseDate(args.get(0));
+        String pattern = "MMMM, d";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        Date date = CafeBot.getGeneralHelper().parseDate("2000-" + args.get(0));
         if (CafeBot.getBirthdayHandler().updateBirthday(user.getId(), date)) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().successEmbed(
                     "Updated Birthday",
-                    "Successfully updated your birthday to " + date + " (YYYY-MM-DD)\n\n*By setting your birthday, " +
-                            "you are agreeing to be notified in EVERY server that this bot is in, granted that they have enabled " +
+                    "Successfully updated your birthday to " + simpleDateFormat.format(date) + " (Month, Day)\n\n*By setting your birthday, " +
+                            "you are agreeing to be notified in EVERY server that this bot is in and that you are in, granted that they have enabled " +
                             "birthday notifications. To opt out, do `" + ctx.getPrefix() + "remove-birthday`.*"
             )).queue();
             return;
         }
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+        event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
     }
 
     @Override
@@ -48,18 +51,18 @@ public class SetBirthdayCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Set your birthday! Use the format `(YYYY-MM-DD)`!";
+        return "Set your birthday! Use the format `(MM-DD)`!";
     }
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "set-birthday 2000-02-02` - This sets it to February 2, 2002.";
+        return "`" + prefix + "set-birthday 02-02` - This sets it to February 2.";
     }
 
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.DATE, "Birthday (YYYY-MM-DD)", true);
+        usage.addUsage(CommandType.DATE, "Birthday (MM-DD)", true);
         return usage;
     }
 

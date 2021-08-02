@@ -153,7 +153,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `add-raffle` - Create a raffle! Currently, you can only have 3 raffles due to server costs. This will go up in the future!
 * `avatar` - Get yours or someone else's avatar image!
 * `get-birthday` - Get yours or someone else's birthday!
-* `set-birthday` - Set your birthday! `(YYYY-MM-DD)`
+* `set-birthday` - Set your birthday! `(MM-DD)`
 * `remove-birthday` - Remove your birthday.
 * `counting-statistics` - Get counting information for your server!
 ##### 4. **GAMES**
