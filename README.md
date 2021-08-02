@@ -145,6 +145,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `serve` - Get beanCoins! Essentially you run this command by doing `!!serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.
 * `order` - Order a menu item for someone!
 * `balance` - Check your balance!
+* `bc-donate` - Donate some of your `beanCoins` to someone! (Only up to 25 every hour though!)
 ##### 3. **FUN**
 * `coffee-meme` - Get a coffee meme!
 * `tea-meme` - Get a tea meme!

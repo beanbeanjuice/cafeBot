@@ -9,6 +9,7 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.music.custom.CustomSong;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.GuildMusicManager;
 import com.beanbeanjuice.utility.sections.music.lavaplayer.PlayerManager;
@@ -63,7 +64,18 @@ public class PlayCommand implements ICommand {
 
             // Join the channel and play music and say you joined
             PlayerManager.getInstance().getMusicManager(event.getGuild()).scheduler.inVoiceChannel = true;
-            ctx.getGuild().getAudioManager().openAudioConnection(event.getMember().getVoiceState().getChannel());
+
+            // Checks for enough spots in the VC to join.
+            try {
+                ctx.getGuild().getAudioManager().openAudioConnection(event.getMember().getVoiceState().getChannel());
+            } catch (UnsupportedOperationException e) {
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                        "Unable to Join VC",
+                        "Make sure there are enough spots for me to join!: " + e.getMessage()
+                )).queue();
+                CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).log(this, LogLevel.WARN, "Error Joining VC", e.getMessage());
+                return;
+            }
 
             // Start listening for the audio connection.
             ctx.getCustomGuild().getCustomGuildSongQueue().startAudioChecking();

@@ -54,7 +54,7 @@ public class BalanceCommand implements ICommand {
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.addField("Orders Bought", cafeCustomer.getOrdersBought().toString(), true);
         embedBuilder.addField("Orders Received", cafeCustomer.getOrdersReceived().toString(), true);
-        embedBuilder.setDescription("Your current balance is `" + CafeBot.getServeHandler().roundDouble(cafeCustomer.getBeanCoinAmount()) + "` bC (beanCoins)!");
+        embedBuilder.setDescription("Your current balance is `" + CafeBot.getGeneralHelper().roundDouble(cafeCustomer.getBeanCoinAmount()) + "` bC (beanCoins)!");
         return embedBuilder.build();
     }
 
@@ -64,7 +64,7 @@ public class BalanceCommand implements ICommand {
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.addField("Orders Bought", cafeCustomer.getOrdersBought().toString(), true);
         embedBuilder.addField("Orders Received", cafeCustomer.getOrdersReceived().toString(), true);
-        embedBuilder.setDescription(user.getAsMention() + " has a current balance of `$" + CafeBot.getServeHandler().roundDouble(cafeCustomer.getBeanCoinAmount()) + "` beanCoins!");
+        embedBuilder.setDescription(user.getAsMention() + " has a current balance of `$" + CafeBot.getGeneralHelper().roundDouble(cafeCustomer.getBeanCoinAmount()) + "` beanCoins!");
         return embedBuilder.build();
     }
 
