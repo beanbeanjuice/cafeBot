@@ -1,9 +1,6 @@
 package com.beanbeanjuice;
 
-import com.beanbeanjuice.command.cafe.BalanceCommand;
-import com.beanbeanjuice.command.cafe.MenuCommand;
-import com.beanbeanjuice.command.cafe.OrderCommand;
-import com.beanbeanjuice.command.cafe.ServeCommand;
+import com.beanbeanjuice.command.cafe.*;
 import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.games.*;
 import com.beanbeanjuice.command.generic.*;
@@ -237,7 +234,8 @@ public class CafeBot {
                 new MenuCommand(),
                 new ServeCommand(),
                 new OrderCommand(),
-                new BalanceCommand()
+                new BalanceCommand(),
+                new BeanCoinDonateCommand()
         );
 
         // Fun Commands

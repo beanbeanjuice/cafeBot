@@ -70,16 +70,6 @@ public class ServeHandler {
     }
 
     /**
-     * Round the specified {@link Double} to 2 decimal places.
-     * @param amount The {@link Double} to round.
-     * @return The rounded {@link Double}.
-     */
-    @NotNull
-    public Double roundDouble(@NotNull Double amount) {
-        return Math.round(amount * 100.0) / 100.0;
-    }
-
-    /**
      * Get a specified {@link CafeCustomer} from their Discord user ID.
      * @param userID The user ID of the {@link CafeCustomer}.
      * @return The specified {@link CafeCustomer}.
