@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.sections.games.connectfour;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.utility.sections.games.MiniGame;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
@@ -405,11 +406,35 @@ public class ConnectFourGame {
         boardBuilder.append("|\n");
         boardBuilder.append("\n**").append(user.getName()).append("** wins!");
         embedBuilder.setDescription(boardBuilder.toString());
+
+        Integer currentWinStreak = CafeBot.getWinStreakHandler().getUserWinStreak(user.getId(), MiniGame.CONNECT_FOUR);
+        User loser;
+
+        if (user == player1) {
+            loser = player2;
+        } else {
+            loser = player1;
+        }
+        Integer loserWinStreak = CafeBot.getWinStreakHandler().getUserWinStreak(loser.getId(), MiniGame.CONNECT_FOUR);
+
+        if (currentWinStreak != null) {
+            currentWinStreak += 1;
+            if (!CafeBot.getWinStreakHandler().setUserWinStreak(user.getId(), MiniGame.CONNECT_FOUR, currentWinStreak)) {
+                currentWinStreak = null;
+            }
+
+            if (!CafeBot.getWinStreakHandler().setUserWinStreak(loser.getId(), MiniGame.CONNECT_FOUR, 0)) {
+                loserWinStreak = null;
+            }
+        }
+        embedBuilder.setFooter(user.getName() + " now has a win streak of " + currentWinStreak + ". " + loser.getName() + " has lost their " +
+                "win streak of " + loserWinStreak + "!");
+
         stopGameTimer();
 
         if (checkGameExists()) {
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID)
-                    .editMessageById(currentMessageID, embedBuilder.build()).queue(message -> {
+                    .editMessageEmbedsById(currentMessageID, embedBuilder.build()).queue(message -> {
                         message.clearReactions().queue();
             });
         }
