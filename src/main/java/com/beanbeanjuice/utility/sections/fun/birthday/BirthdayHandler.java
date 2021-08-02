@@ -62,7 +62,7 @@ public class BirthdayHandler {
                                     TextChannel birthdayChannel = CafeBot.getGuildHandler().getCustomGuild(guild).getBirthdayChannel();
 
                                     if (birthdayChannel != null) {
-                                        birthdayChannel.sendMessage(birthdayEmbed(member)).queue();
+                                        birthdayChannel.sendMessageEmbeds(birthdayEmbed(member)).queue();
                                     }
                                 }
                             }

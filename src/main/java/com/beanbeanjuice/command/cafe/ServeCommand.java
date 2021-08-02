@@ -92,8 +92,8 @@ public class ServeCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Successfully Served!");
         embedBuilder.setDescription("You have successfully served a `" + word + "`!");
-        embedBuilder.addField("Tip From Serving", CafeBot.getServeHandler().roundDouble(tipFromWord).toString(), true);
-        embedBuilder.addField("Current Balance", CafeBot.getServeHandler().roundDouble(currentBalance).toString(), true);
+        embedBuilder.addField("Tip From Serving", CafeBot.getGeneralHelper().roundDouble(tipFromWord).toString(), true);
+        embedBuilder.addField("Current Balance", CafeBot.getGeneralHelper().roundDouble(currentBalance).toString(), true);
         embedBuilder.addField("Time Until Next Serving", CafeBot.getServeHandler().getMinutesUntilCanServe().toString(), true);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
@@ -103,8 +103,8 @@ public class ServeCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Successfully Served!");
         embedBuilder.setDescription(server.getAsMention() + " has successfully served a `" + word + "` to " + userServed.getAsMention() + "!");
-        embedBuilder.addField("Tip From Serving", CafeBot.getServeHandler().roundDouble(tipFromWord).toString(), true);
-        embedBuilder.addField("Current Balance", CafeBot.getServeHandler().roundDouble(currentBalance).toString(), true);
+        embedBuilder.addField("Tip From Serving", CafeBot.getGeneralHelper().roundDouble(tipFromWord).toString(), true);
+        embedBuilder.addField("Current Balance", CafeBot.getGeneralHelper().roundDouble(currentBalance).toString(), true);
         embedBuilder.addField("Time Until Next Serving", CafeBot.getServeHandler().getMinutesUntilCanServe().toString(), true);
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         return embedBuilder.build();
