@@ -65,7 +65,7 @@ public class DefineCommand implements ICommand {
 
     @Override
     public String exampleUsage(String prefix) {
-        return null;
+        return "`" + prefix + "define cat` or `" + prefix + "define hola es`";
     }
 
     @Override
