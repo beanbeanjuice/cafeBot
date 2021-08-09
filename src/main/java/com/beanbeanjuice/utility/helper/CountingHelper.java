@@ -250,7 +250,7 @@ public class CountingHelper {
     /**
      * The highest number from the {@link Guild}.
      * @param guild The {@link Guild} specified.
-     * @return The highest number for the {@link Guild}.
+     * @return Null, if highest number does not exist. The highest number for the {@link Guild}.
      */
     @Nullable
     public Integer getHighestNumber(@NotNull Guild guild) {
@@ -266,7 +266,7 @@ public class CountingHelper {
             resultSet.next();
             return resultSet.getInt(2);
         } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Getting Highest Number: " + e.getMessage(), e);
+//            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Getting Highest Number: " + e.getMessage(), e);
             return null;
         }
     }
