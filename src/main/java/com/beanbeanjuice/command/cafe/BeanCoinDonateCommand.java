@@ -36,10 +36,22 @@ public class BeanCoinDonateCommand implements ICommand {
             )).queue();
             return;
         }
-        Long minutesToDonate = CafeBot.getBeanCoinDonationHandler().timeUntilDonate(CafeBot.getGeneralHelper().getUser(args.get(1)).getId());
+        long minutesToDonate = CafeBot.getBeanCoinDonationHandler().timeUntilDonate(CafeBot.getGeneralHelper().getUser(args.get(1)).getId());
         if (minutesToDonate <= -1) {
+
+            User donateeUser = CafeBot.getGeneralHelper().getUser(args.get(1));
+
+            // Checking if the donator is trying to donate to themselves.
+            if (user.equals(donateeUser)) {
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                        "You Cannot Donate to Yourself",
+                        "There's an error. You can't donate to yourself!"
+                )).queue();
+                return;
+            }
+
             CafeCustomer donator = CafeBot.getServeHandler().getCafeCustomer(user);
-            CafeCustomer donatee = CafeBot.getServeHandler().getCafeCustomer(CafeBot.getGeneralHelper().getUser(args.get(1)));
+            CafeCustomer donatee = CafeBot.getServeHandler().getCafeCustomer(donateeUser);
 
             // Making sure they can only donate the amount that is in their balance.
             if (donator.getBeanCoinAmount() < amountToDonate) {
