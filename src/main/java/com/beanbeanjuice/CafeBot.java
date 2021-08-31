@@ -1,5 +1,6 @@
 package com.beanbeanjuice;
 
+import com.beanbeanjuice.cafeapi.CafeAPI;
 import com.beanbeanjuice.command.cafe.*;
 import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.games.*;
