@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.helper;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.CafeAPI;
 import com.beanbeanjuice.utility.guild.CustomGuild;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import com.beanbeanjuice.utility.logger.LogLevel;
@@ -39,6 +40,9 @@ public class GeneralHelper {
 
     private Timer mysqlRefreshTimer;
     private TimerTask mysqlRefreshTimerTask;
+
+    private Timer cafeAPITimer;
+    private TimerTask cafeAPITimerTask;
 
     public void startMySQLRefreshTimer() {
         mysqlRefreshTimer = new Timer();
@@ -104,6 +108,22 @@ public class GeneralHelper {
             }
         };
         spotifyRefreshTimer.scheduleAtFixedRate(spotifyRefreshTimerTask, 0, 1800000);
+    }
+
+    /**
+     * Updates the {@link CafeAPI} every hour.
+     */
+    public void startCafeAPIRefreshTimer() {
+        cafeAPITimer = new Timer();
+        cafeAPITimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                CafeBot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD")));
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds");
+            }
+        };
+        cafeAPITimer.scheduleAtFixedRate(cafeAPITimerTask, 0, 3400000);
     }
 
     /**

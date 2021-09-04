@@ -1,6 +1,9 @@
 package com.beanbeanjuice.utility.sections.cafe;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
+import com.beanbeanjuice.cafeapi.cafebot.words.Word;
+import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.sections.cafe.object.ServeWord;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
@@ -24,109 +27,9 @@ public class ServeHandler {
     private final Integer MINUTES_UNTIL_CAN_SERVE = 60;
     private final Integer LETTER_STOP_AMOUNT = 20;
 
-    /**
-     * Gets the dictionary word from the SQL database.
-     * @param word The word to check for.
-     * @return The word converted to a {@link ServeWord}.
-     */
-    @Nullable
-    public ServeWord getWord(@NotNull String word) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM cafeBot.serve_words WHERE word = (?);";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setString(1, word);
-            ResultSet resultSet = statement.executeQuery();
-
-            resultSet.next();
-            return new ServeWord(resultSet.getString(1), resultSet.getInt(2));
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Updates the specified {@link ServeWord} in the database.
-     * @param serveWord The {@link ServeWord} to update.
-     * @return Whether or not updating the word was successful.
-     */
-    @NotNull
-    public Boolean updateWord(@NotNull ServeWord serveWord) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.serve_words SET uses = (?) WHERE word = (?);";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setInt(1, serveWord.getUses()+1);
-            statement.setString(2, serveWord.getWord());
-
-            statement.execute();
-            return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Update Cafe Word: " + e.getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * Get a specified {@link CafeCustomer} from their Discord user ID.
-     * @param userID The user ID of the {@link CafeCustomer}.
-     * @return The specified {@link CafeCustomer}.
-     */
-    @Nullable
-    public CafeCustomer getCafeCustomer(@NotNull String userID) {
-
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM cafeBot.cafe_information WHERE user_id = (?);";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(userID));
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-
-            // Already Have userID.
-            Double beanCountAmount = resultSet.getDouble(2);
-            Timestamp lastServingTime = resultSet.getTimestamp(3);
-            Integer ordersBought = resultSet.getInt(4);
-            Integer ordersReceived = resultSet.getInt(5);
-
-            return new CafeCustomer(userID, beanCountAmount, lastServingTime, ordersBought, ordersReceived);
-        } catch (SQLException e) {
-
-            arguments = "INSERT INTO cafeBot.cafe_information (user_id) VALUES (?);";
-
-            try {
-                PreparedStatement catchStatement = connection.prepareStatement(arguments);
-                catchStatement.setLong(1, Long.parseLong(userID));
-
-                catchStatement.execute();
-                return new CafeCustomer(userID, 0.0, null, 0, 0);
-            } catch (SQLException catchE) {
-                return null;
-            }
-        }
-    }
-
-    /**
-     * Get a specified {@link CafeCustomer} from their Discord {@link User}.
-     * @param user The Discord {@link User}.
-     * @return The specified {@link CafeCustomer}.
-     */
-    @Nullable
-    public CafeCustomer getCafeCustomer(@NotNull User user) {
-        return getCafeCustomer(user.getId());
-    }
-
-    /**
-     * Calculate the Tip for the {@link ServeWord}.
-     * @param serveWord The {@link ServeWord} to check for.
-     * @return The amount of tip to receive.
-     */
-    public Double calculateTip(@NotNull ServeWord serveWord) {
-        int length = serveWord.getWord().length();
-        int uses = serveWord.getUses();
+    public Double calculateTip(@NotNull Word word) {
+        int length = word.getWord().length();
+        int uses = word.getUses();
 
         // Randomly Between $5-$20
         Random random = new Random();
@@ -155,65 +58,27 @@ public class ServeHandler {
         return tip + addedTip;
     }
 
-    /**
-     * Get the amount of minutes that has passed between now and
-     * the last time the {@link CafeCustomer} served something.
-     * @param cafeCustomer The {@link CafeCustomer} to check.
-     * @return The amount of minutes that has passed.
-     */
     @NotNull
-    public Integer minutesBetween(@NotNull CafeCustomer cafeCustomer) {
+    public Integer minutesBetween(@NotNull CafeUser cafeUser) {
 
-        if (cafeCustomer.getLastServingTime() == null) {
+        if (cafeUser.getLastServingTime() == null) {
             return MINUTES_UNTIL_CAN_SERVE + 10;
         }
 
+        Timestamp currentTimestamp = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis()).toString());
+
         try {
-            return Math.round(CafeBot.getGeneralHelper().compareTwoTimeStamps(cafeCustomer.getLastServingTime(), new Timestamp(System.currentTimeMillis()), TimestampDifference.MINUTES));
+            return Math.round(CafeBot.getGeneralHelper().compareTwoTimeStamps(cafeUser.getLastServingTime(), currentTimestamp, TimestampDifference.MINUTES));
         } catch (UnsupportedTemporalTypeException e) {
             return MINUTES_UNTIL_CAN_SERVE + 10;
         }
     }
 
-    /**
-     * @param cafeCustomer THe {@link CafeCustomer} to check.
-     * @return Whether or not the specified {@link CafeCustomer} can serve.
-     */
     @NotNull
-    public Boolean canServe(@NotNull CafeCustomer cafeCustomer) {
-        return minutesBetween(cafeCustomer) >= MINUTES_UNTIL_CAN_SERVE;
+    public Boolean canServe(@NotNull CafeUser cafeUser) {
+        return minutesBetween(cafeUser) >= MINUTES_UNTIL_CAN_SERVE;
     }
 
-    /**
-     * Updates the amount of money for the {@link CafeCustomer}.
-     * @param cafeCustomer The specified {@link CafeCustomer}.
-     * @param currentDate The current {@link Timestamp}.
-     * @param tipToAdd The amount of tip to add to the {@link CafeCustomer}.
-     * @return Whether or not updating the {@link CafeCustomer} was successful.
-     */
-    @NotNull
-    public Boolean updateTip(@NotNull CafeCustomer cafeCustomer, @NotNull Timestamp currentDate, @NotNull Double tipToAdd) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.cafe_information SET bean_coins = (?), last_serving_time = (?) WHERE user_id = (?);";
-
-        double newTip = cafeCustomer.getBeanCoinAmount() + tipToAdd;
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setDouble(1, newTip);
-            statement.setTimestamp(2, currentDate);
-            statement.setLong(3, Long.parseLong(cafeCustomer.getUserID()));
-            statement.execute();
-            return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Tip: " + e.getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * @return The amount of minutes maximum that has to pass until they can serve again.
-     */
     @NotNull
     public Integer getMinutesUntilCanServe() {
         return MINUTES_UNTIL_CAN_SERVE;

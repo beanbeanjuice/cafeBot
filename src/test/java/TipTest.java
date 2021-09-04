@@ -11,7 +11,7 @@ public class TipTest {
     public void tipTest() {
 
         ServeHandler serveHandler = new ServeHandler();
-        ServeWord word1 = new ServeWord("bruh", 1000);
+
 
         boolean answer = false;
         Double tip = serveHandler.calculateTip(word1);
