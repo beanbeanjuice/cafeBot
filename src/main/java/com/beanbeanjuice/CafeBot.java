@@ -82,6 +82,9 @@ public class CafeBot {
     private static final String DISCORD_AVATAR_URL = "http://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif";
     private static int commandsRun = 0;
 
+    // CAFE API STUFF
+    private static CafeAPI cafeAPI;
+
     // Logging Stuff
     private static Guild homeGuild;
     private static final String HOME_GUILD_ID = System.getenv("CAFEBOT_GUILD_ID");
@@ -170,8 +173,10 @@ public class CafeBot {
     private static BeanCoinDonationHandler beanCoinDonationHandler;
 
     public CafeBot() throws LoginException, InterruptedException {
+
         generalHelper = new GeneralHelper();
         logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
+        generalHelper.startCafeAPIRefreshTimer();
 
         countingHelper = new CountingHelper();
         twitchHandler = new TwitchHandler();
@@ -236,10 +241,10 @@ public class CafeBot {
         // Cafe Commands
         commandManager.addCommands(
                 new MenuCommand(),
-                new ServeCommand(),
-                new OrderCommand(),
-                new BalanceCommand(),
-                new BeanCoinDonateCommand()
+                new ServeCommand() // TODO: Re-Add These
+//                new OrderCommand(),
+//                new BalanceCommand(),
+//                new BeanCoinDonateCommand()
         );
 
         // Fun Commands
@@ -409,6 +414,14 @@ public class CafeBot {
 
     public static void main(String[] args) {
         SpringApplication.run(CafeBot.class, args);
+    }
+
+    public static CafeAPI getCafeAPI() {
+        return cafeAPI;
+    }
+
+    public static void setCafeAPI(@NotNull CafeAPI newCafeAPI) {
+        cafeAPI = newCafeAPI;
     }
 
     /**
