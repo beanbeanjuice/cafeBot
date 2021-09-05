@@ -1,6 +1,10 @@
 package com.beanbeanjuice.command.moderation;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.exception.AuthorizationException;
+import com.beanbeanjuice.cafeapi.exception.CafeException;
+import com.beanbeanjuice.cafeapi.exception.ConflictException;
+import com.beanbeanjuice.cafeapi.exception.ResponseException;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -28,17 +32,17 @@ public class SetCountingChannelCommand implements ICommand {
             String commandTerm = args.get(0);
             if (commandTerm.equalsIgnoreCase("remove") || commandTerm.equalsIgnoreCase("disable") || commandTerm.equalsIgnoreCase("0")) {
                 if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setCountingChannel("0")) {
-                    event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                    event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().successEmbed(
                             "Removed Counting Channel",
                             "Successfully removed the counting channel."
                     )).queue();
                     return;
                 }
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
                 return;
             }
 
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Incorrect Extra Term",
                     "You can run this command without extra arguments. You had the extra argument `" + commandTerm + "`. " +
                             "The available command terms for this command are `disable`, `remove`, and `0`."
@@ -47,16 +51,25 @@ public class SetCountingChannelCommand implements ICommand {
         }
 
         if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setCountingChannel(event.getChannel().getId())) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().successEmbed(
                     "Updated Counting Channel",
                     "Successfully set the counting channel to this channel. " +
                             "To remove counting, just delete the channel."
             )).queue();
 
-            CafeBot.getCountingHelper().createNewRow(event.getGuild());
+            try {
+                CafeBot.getCafeAPI().countingInformations().createGuildCountingInformation(event.getGuild().getId());
+            } catch (ConflictException ignored) {}
+            catch (AuthorizationException | ResponseException e) {
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                        "Error Creating Counting Information",
+                        "There has been an error creating counting information. Please re-add the counting channel."
+                )).queue();
+                return;
+            }
             return;
         }
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+        event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
     }
 
     @Override
@@ -68,6 +81,8 @@ public class SetCountingChannelCommand implements ICommand {
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("setcountingchannel");
+        arrayList.add("set-counting");
+        arrayList.add("setcounting");
         return arrayList;
     }
 
