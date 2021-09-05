@@ -1,6 +1,8 @@
 package com.beanbeanjuice.command.fun;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.cafebot.counting.CountingInformation;
+import com.beanbeanjuice.cafeapi.exception.NotFoundException;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -23,29 +25,27 @@ public class CountingStatisticsCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        Integer highestNumber = CafeBot.getCountingHelper().getHighestNumber(event.getGuild());
-        Integer currentNumber = CafeBot.getCountingHelper().getLastNumber(event.getGuild());
+        CountingInformation countingInformation = CafeBot.getCountingHelper().getCountingInformation(event.getGuild());
 
-        if (highestNumber == null || currentNumber == null) {
-            sendSQLError(event.getChannel());
+        // Checks if there was an error getting the counting information.
+        if (countingInformation == null) {
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                    "Error Getting Counting Information",
+                    "There has been an error retrieving this Discord server's counting information."
+            )).queue();
             return;
         }
 
-        Integer leaderboardPlace = CafeBot.getCountingHelper().getCountingLeaderboardPlace(highestNumber);
+        Integer leaderboardPlace = CafeBot.getCountingHelper().getCountingLeaderboardPlace(countingInformation.getHighestNumber());
         if (leaderboardPlace == null) {
-            sendSQLError(event.getChannel());
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError(
+                    "There was an error getting counting statistics. There are eitehr no counting statistics for this server " +
+                            "on this bot, or there is an SQL server error."
+            )).queue();
             return;
         }
 
-        event.getChannel().sendMessage(countingStatisticsEmbed(highestNumber, currentNumber, leaderboardPlace)).queue();
-    }
-
-    private void sendSQLError(@NotNull TextChannel textChannel) {
-        textChannel.sendMessage(CafeBot.getGeneralHelper().errorEmbed(
-                "Error Getting Counting Statistics",
-                "There was an error getting counting statistics. There are either no counting statistics " +
-                        "for the server on this bot, or there is an SQL server error."
-        )).queue();
+        event.getChannel().sendMessageEmbeds(countingStatisticsEmbed(countingInformation.getHighestNumber(), countingInformation.getLastNumber(), leaderboardPlace)).queue();
     }
 
     @NotNull
