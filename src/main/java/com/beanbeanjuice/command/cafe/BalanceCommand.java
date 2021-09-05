@@ -2,12 +2,6 @@ package com.beanbeanjuice.command.cafe;
 
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
-import com.beanbeanjuice.cafeapi.exception.AuthorizationException;
-import com.beanbeanjuice.cafeapi.exception.CafeException;
-import com.beanbeanjuice.cafeapi.exception.ConflictException;
-import com.beanbeanjuice.cafeapi.exception.ResponseException;
-import com.beanbeanjuice.utility.logger.LogLevel;
-import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
