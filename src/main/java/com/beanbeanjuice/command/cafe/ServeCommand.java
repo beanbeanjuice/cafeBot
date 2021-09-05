@@ -4,8 +4,10 @@ import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.cafeapi.cafebot.cafe.CafeType;
 import com.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
 import com.beanbeanjuice.cafeapi.cafebot.words.Word;
+import com.beanbeanjuice.cafeapi.exception.AuthorizationException;
 import com.beanbeanjuice.cafeapi.exception.CafeException;
 import com.beanbeanjuice.cafeapi.exception.NotFoundException;
+import com.beanbeanjuice.cafeapi.exception.ResponseException;
 import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
@@ -40,7 +42,7 @@ public class ServeCommand implements ICommand {
         try {
             // Checking if the word entered is a word.
             serveWord = CafeBot.getCafeAPI().words().getWord(word);
-        } catch (NotFoundException e) {
+        } catch (CafeException e) {
             event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Not A Word",
                     "`" + word + "` is not a word. If this is a mistake, please create a " +
@@ -49,23 +51,14 @@ public class ServeCommand implements ICommand {
             return;
         }
 
-        CafeUser cafeUser;
+        CafeUser cafeUser = CafeBot.getServeHandler().getCafeUser(user);
 
-        // Checking if the cafe customer exists
-        try {
-            cafeUser = CafeBot.getCafeAPI().cafeUsers().getCafeUser(user.getId());
-        } catch (NotFoundException e) {
-            try {
-                CafeBot.getCafeAPI().cafeUsers().createCafeUser(user.getId());
-                cafeUser = CafeBot.getCafeAPI().cafeUsers().getCafeUser(user.getId());
-            } catch (CafeException e2) {
-                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
-                        "Error Creating User",
-                        "There has been an error creating a new user. Please try again or report this issue using `" + ctx.getPrefix() + "bug-report`! " + e2.getMessage()
-                )).queue();
-                CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating User: " + e2.getMessage(), e2);
-                return;
-            }
+        if (cafeUser == null) {
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                    "Error Getting User Information",
+                    "There has been an error getting your user information. Please try again."
+            )).queue();
+            return;
         }
 
         // Converting Timestamp to UTC time.
@@ -101,6 +94,7 @@ public class ServeCommand implements ICommand {
                     "Error Updating Word",
                     "You have still received your tip from the word, but there has been an error updating it. " + e.getMessage()
             )).queue();
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Word '" + word + "': " + e.getMessage(), e);
         }
 
         // Sends the message embed.

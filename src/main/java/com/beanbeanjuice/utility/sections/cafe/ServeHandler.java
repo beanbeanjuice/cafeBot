@@ -3,6 +3,10 @@ package com.beanbeanjuice.utility.sections.cafe;
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
 import com.beanbeanjuice.cafeapi.cafebot.words.Word;
+import com.beanbeanjuice.cafeapi.exception.AuthorizationException;
+import com.beanbeanjuice.cafeapi.exception.CafeException;
+import com.beanbeanjuice.cafeapi.exception.ConflictException;
+import com.beanbeanjuice.cafeapi.exception.ResponseException;
 import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.sections.cafe.object.ServeWord;
@@ -56,6 +60,29 @@ public class ServeHandler {
             }
         }
         return tip + addedTip;
+    }
+
+    @Nullable
+    public CafeUser getCafeUser(@NotNull User user) {
+        return getCafeUser(user.getId());
+    }
+
+    @Nullable
+    public CafeUser getCafeUser(@NotNull String userID) {
+        try {
+            CafeBot.getCafeAPI().cafeUsers().createCafeUser(userID);
+        } catch (ConflictException ignored) {}
+        catch (AuthorizationException | ResponseException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating User: " + e.getMessage(), e);
+        }
+
+        try {
+            return CafeBot.getCafeAPI().cafeUsers().getCafeUser(userID);
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Getting User: " + e.getMessage());
+        }
+
+        return null;
     }
 
     @NotNull

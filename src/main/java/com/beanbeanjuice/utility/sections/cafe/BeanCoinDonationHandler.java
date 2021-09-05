@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.sections.cafe;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.exception.CafeException;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
@@ -15,41 +16,52 @@ import java.util.TimerTask;
  * A handler used for beanCoin donations.
  */
 public class BeanCoinDonationHandler {
-//
-//    private final HashMap<String, Timestamp> beanCoinDonationUsersCache;
-//    private final int MINUTES = 60;
-//
-//    /**
-//     * Creates a new {@link BeanCoinDonationHandler}.
-//     */
-//    public BeanCoinDonationHandler() {
-//        beanCoinDonationUsersCache = new HashMap<>();
-//        cacheBeanCoinDonationUsers();
-//        startTimer();
-//    }
-//
-//    /**
-//     * Starts the {@link Timer}.
-//     */
-//    private void startTimer() {
-//        Timer timer = new Timer();
-//        TimerTask timerTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//
-//                // Iterates Through Everything in the HashMap
-//                new HashMap<>(beanCoinDonationUsersCache).forEach((userID, timeStamp) -> {
-//                    if (timeUntilDonate(userID) <= -1) {
-//                        if (!removeUser(userID)) {
-//                            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Remove User from Donation Cooldowns");
-//                        }
-//                    }
-//                });
-//            }
-//        };
-//        timer.scheduleAtFixedRate(timerTask, 0, 30000);
-//    }
-//
+
+    private HashMap<String, Timestamp> beanCoinDonationUsersCache;
+    private final int MINUTES = 60;
+
+    /**
+     * Creates a new {@link BeanCoinDonationHandler}.
+     */
+    public BeanCoinDonationHandler() {
+        beanCoinDonationUsersCache = new HashMap<>();
+        cacheBeanCoinDonationUsers();
+        startTimer();
+    }
+
+    private void cacheBeanCoinDonationUsers() {
+        try {
+            beanCoinDonationUsersCache = CafeBot.getCafeAPI().donationUsers().getAllUserDonationTimes();
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Getting Donation Users Cooldowns: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Starts the {@link Timer}.
+     */
+    private void startTimer() {
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+
+                // Iterates Through Everything in the HashMap
+                new HashMap<>(beanCoinDonationUsersCache).forEach((userID, timeStamp) -> {
+                    if (timeUntilDonate(userID) <= -1) {
+                        try {
+                            CafeBot.getCafeAPI().donationUsers().deleteDonationUser(userID);
+                        } catch (CafeException e) {
+                            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Remove User from Donation Cooldowns: " + e.getMessage(), e);
+                            beanCoinDonationUsersCache.remove(userID);
+                        }
+                    }
+                });
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, 30000);
+    }
+
 //    /**
 //     * Updates the cache from the database.
 //     */
@@ -71,7 +83,7 @@ public class BeanCoinDonationHandler {
 //            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Caching beanCoin Donation Users: " + e.getMessage(), e);
 //        }
 //    }
-//
+
 //    /**
 //     * Removes a specified {@link net.dv8tion.jda.api.entities.User User} from the cooldown database.
 //     * @param userID The ID of the {@link net.dv8tion.jda.api.entities.User User}.
@@ -97,7 +109,7 @@ public class BeanCoinDonationHandler {
 //            return false;
 //        }
 //    }
-//
+
 //    /**
 //     * Updates the {@link CafeCustomer} in the database.
 //     * @param cafeCustomer THe specified {@link CafeCustomer}.
@@ -120,7 +132,7 @@ public class BeanCoinDonationHandler {
 //            return false;
 //        }
 //    }
-//
+
 //    /**
 //     * Adds a {@link net.dv8tion.jda.api.entities.User User} to the cooldown database.
 //     * @param userID The ID of the {@link net.dv8tion.jda.api.entities.User User} to add.
@@ -150,18 +162,18 @@ public class BeanCoinDonationHandler {
 //            return false;
 //        }
 //    }
-//
-//    /**
-//     * Gets the amount of minutes you have until you can donate to another person.
-//     * @param userID The ID of the {@link net.dv8tion.jda.api.entities.User}.
-//     * @return The amount of minutes until the {@link net.dv8tion.jda.api.entities.User} can donate again as a {@link Long}.
-//     */
-//    @NotNull
-//    public Long timeUntilDonate (@NotNull String userID) {
-//        if (!beanCoinDonationUsersCache.containsKey(userID)) {
-//            return -1L;
-//        }
-//        return CafeBot.getGeneralHelper().compareTwoTimeStamps(new Timestamp(System.currentTimeMillis()), beanCoinDonationUsersCache.get(userID), TimestampDifference.MINUTES);
-//    }
+
+    /**
+     * Gets the amount of minutes you have until you can donate to another person.
+     * @param userID The ID of the {@link net.dv8tion.jda.api.entities.User}.
+     * @return The amount of minutes until the {@link net.dv8tion.jda.api.entities.User} can donate again as a {@link Long}.
+     */
+    @NotNull
+    public Long timeUntilDonate (@NotNull String userID) {
+        if (!beanCoinDonationUsersCache.containsKey(userID)) {
+            return -1L;
+        }
+        return CafeBot.getGeneralHelper().compareTwoTimeStamps(new Timestamp(System.currentTimeMillis()), beanCoinDonationUsersCache.get(userID), TimestampDifference.MINUTES);
+    }
 
 }
