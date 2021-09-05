@@ -241,10 +241,10 @@ public class CafeBot {
         // Cafe Commands
         commandManager.addCommands(
                 new MenuCommand(),
-                new ServeCommand() // TODO: Re-Add These
-//                new OrderCommand(),
-//                new BalanceCommand(),
-//                new BeanCoinDonateCommand()
+                new ServeCommand(),
+                new OrderCommand(),
+                new BalanceCommand(),
+                new BeanCoinDonateCommand()
         );
 
         // Fun Commands

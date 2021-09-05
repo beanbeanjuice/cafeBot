@@ -144,52 +144,52 @@ public class MenuHandler {
         return menu.get(category);
     }
 
-    /**
-     * Updates the {@link CafeCustomer} in the database.
-     * @param cafeCustomer The {@link CafeCustomer} to update.
-     * @param cost The {@link Double} cost of the order.
-     * @return Whether or not the {@link CafeCustomer} was successfully updated.
-     */
-    @NotNull
-    public Boolean updateOrderer(@NotNull CafeCustomer cafeCustomer, @NotNull Double cost) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.cafe_information SET bean_coins = (?), orders_bought = (?) WHERE user_id = (?);";
+//    /**
+//     * Updates the {@link CafeCustomer} in the database.
+//     * @param cafeCustomer The {@link CafeCustomer} to update.
+//     * @param cost The {@link Double} cost of the order.
+//     * @return Whether or not the {@link CafeCustomer} was successfully updated.
+//     */
+//    @NotNull
+//    public Boolean updateOrderer(@NotNull CafeCustomer cafeCustomer, @NotNull Double cost) {
+//        Connection connection = CafeBot.getSQLServer().getConnection();
+//        String arguments = "UPDATE cafeBot.cafe_information SET bean_coins = (?), orders_bought = (?) WHERE user_id = (?);";
+//
+//        double newTip = cafeCustomer.getBeanCoinAmount() - cost;
+//
+//        try {
+//            PreparedStatement statement = connection.prepareStatement(arguments);
+//            statement.setDouble(1, newTip);
+//            statement.setInt(2, cafeCustomer.getOrdersBought() + 1);
+//            statement.setLong(3, Long.parseLong(cafeCustomer.getUserID()));
+//            statement.execute();
+//            return true;
+//        } catch (SQLException e) {
+//            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Orderer: " + e.getMessage());
+//            return false;
+//        }
+//    }
 
-        double newTip = cafeCustomer.getBeanCoinAmount() - cost;
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setDouble(1, newTip);
-            statement.setInt(2, cafeCustomer.getOrdersBought() + 1);
-            statement.setLong(3, Long.parseLong(cafeCustomer.getUserID()));
-            statement.execute();
-            return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Orderer: " + e.getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * Updates the {@link CafeCustomer} in the database.
-     * @param cafeCustomer The {@link CafeCustomer} to update.
-     * @return True if the {@link CafeCustomer} was successfully updated.
-     */
-    @NotNull
-    public Boolean updateReceiver(@NotNull CafeCustomer cafeCustomer) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.cafe_information SET orders_received = (?) WHERE user_id = (?);";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setInt(1, cafeCustomer.getOrdersReceived() + 1);
-            statement.setLong(2, Long.parseLong(cafeCustomer.getUserID()));
-            statement.execute();
-            return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Receiver: " + e.getMessage(), e);
-            return false;
-        }
-    }
+//    /**
+//     * Updates the {@link CafeCustomer} in the database.
+//     * @param cafeCustomer The {@link CafeCustomer} to update.
+//     * @return True if the {@link CafeCustomer} was successfully updated.
+//     */
+//    @NotNull
+//    public Boolean updateReceiver(@NotNull CafeCustomer cafeCustomer) {
+//        Connection connection = CafeBot.getSQLServer().getConnection();
+//        String arguments = "UPDATE cafeBot.cafe_information SET orders_received = (?) WHERE user_id = (?);";
+//
+//        try {
+//            PreparedStatement statement = connection.prepareStatement(arguments);
+//            statement.setInt(1, cafeCustomer.getOrdersReceived() + 1);
+//            statement.setLong(2, Long.parseLong(cafeCustomer.getUserID()));
+//            statement.execute();
+//            return true;
+//        } catch (SQLException e) {
+//            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Receiver: " + e.getMessage(), e);
+//            return false;
+//        }
+//    }
 
 }
