@@ -8,8 +8,6 @@ import com.beanbeanjuice.cafeapi.exception.CafeException;
 import com.beanbeanjuice.cafeapi.exception.ConflictException;
 import com.beanbeanjuice.cafeapi.exception.ResponseException;
 import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
-import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
-import com.beanbeanjuice.utility.sections.cafe.object.ServeWord;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.entities.User;
@@ -31,6 +29,11 @@ public class ServeHandler {
     private final Integer MINUTES_UNTIL_CAN_SERVE = 60;
     private final Integer LETTER_STOP_AMOUNT = 20;
 
+    /**
+     * Calculates the {@link Double tip} to be given for a {@link String word}.
+     * @param word The {@link String word} specified.
+     * @return The calculated {@link Double tip}.
+     */
     public Double calculateTip(@NotNull Word word) {
         int length = word.getWord().length();
         int uses = word.getUses();
@@ -62,13 +65,26 @@ public class ServeHandler {
         return tip + addedTip;
     }
 
+    /**
+     * Gets a specified {@link CafeUser}.
+     * @param user The {@link User} of the {@link CafeUser}.
+     * @return The {@link CafeUser} specified. Null, if there was an error.
+     */
     @Nullable
     public CafeUser getCafeUser(@NotNull User user) {
         return getCafeUser(user.getId());
     }
 
+    /**
+     * Gets a specified {@link CafeUser}.
+     * @param userID The {@link String userID} of the {@link CafeUser}.
+     * @return The {@link CafeUser} specified. Null, if there was an error.
+     */
     @Nullable
     public CafeUser getCafeUser(@NotNull String userID) {
+
+        // Tries to create the user first. If there is an error, it catches the error that says
+        // a user already exists.
         try {
             CafeBot.getCafeAPI().cafeUsers().createCafeUser(userID);
         } catch (ConflictException ignored) {}
@@ -76,6 +92,7 @@ public class ServeHandler {
             CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating User: " + e.getMessage(), e);
         }
 
+        // Now tries to retrieve the user.
         try {
             return CafeBot.getCafeAPI().cafeUsers().getCafeUser(userID);
         } catch (CafeException e) {
@@ -85,9 +102,13 @@ public class ServeHandler {
         return null;
     }
 
+    /**
+     * Gets the amount of {@link Integer minutes} until a {@link CafeUser} can serve again.
+     * @param cafeUser The specified {@link CafeUser}.
+     * @return The {@link Integer minutes} until a {@link CafeUser} can serve again.
+     */
     @NotNull
     public Integer minutesBetween(@NotNull CafeUser cafeUser) {
-
         if (cafeUser.getLastServingTime() == null) {
             return MINUTES_UNTIL_CAN_SERVE + 10;
         }
@@ -101,11 +122,20 @@ public class ServeHandler {
         }
     }
 
+    /**
+     * Checks if a {@link CafeUser} can serve.
+     * @param cafeUser The {@link CafeUser} specified.
+     * @return True, if the {@link CafeUser} can serve.
+     */
     @NotNull
     public Boolean canServe(@NotNull CafeUser cafeUser) {
         return minutesBetween(cafeUser) >= MINUTES_UNTIL_CAN_SERVE;
     }
 
+    /**
+     * Gets the {@link Integer minutes} until a {@link CafeUser} can serve again.
+     * @return The {@link Integer minutes}.
+     */
     @NotNull
     public Integer getMinutesUntilCanServe() {
         return MINUTES_UNTIL_CAN_SERVE;

@@ -6,7 +6,6 @@ import com.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
 import com.beanbeanjuice.cafeapi.exception.*;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.cafe.CafeCategory;
-import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.sections.cafe.object.MenuItem;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
