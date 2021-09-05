@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.helper.api;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.exception.CafeException;
 import com.beanbeanjuice.utility.guild.CustomGuild;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,12 +14,12 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.sql.*;
 import java.util.HashMap;
 
 /**
@@ -35,56 +36,17 @@ public class GitHubUpdateChecker {
     private String github_body;
 
     /**
-     * Updates the Bot Version Number in the Database
-     * @param currentVersion The {@link String} of the current version.
-     * @return Whether or not updating was successful.
-     */
-    public Boolean updateVersionInDatabase(@NotNull String currentVersion) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.bot_information SET version = (?) WHERE id = (?);";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setString(1, currentVersion);
-            statement.setInt(2, 1);
-
-            statement.execute();
-            return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Update Version in Database: " + e.getMessage());
-            return false;
-        }
-    }
-
-    /**
      * Compares the current version to the one stored in the database.
      * @param currentVersion The {@link String} of the current version.
-     * @return Whether or not the current version is the one stored in the database.
+     * @return True, if the version in the database, is the one that is current.
      */
-    public Boolean compareVersions(@NotNull String currentVersion) {
-        String lastVersion = getLastVersion();
-        if (lastVersion == null) {
-            return true;
-        }
-        return currentVersion.startsWith(lastVersion);
-    }
-
-    /**
-     * @return The last version number that is in the SQL database.
-     */
-    public String getLastVersion() {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM cafeBot.bot_information WHERE id = (?);";
-
+    private Boolean compareVersions(@NotNull String currentVersion) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setInt(1, 1);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            return resultSet.getString(2);
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Get Previous Version From Database: " + e.getMessage());
-            return null;
+            String lastVersion = CafeBot.getCafeAPI().versions().getCurrentCafeBotVersion();
+            return currentVersion.startsWith(lastVersion);
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Getting Current Bot Version: " + e.getMessage(), e);
+            return true;
         }
     }
 
@@ -113,7 +75,10 @@ public class GitHubUpdateChecker {
         }
 
         // Updating the Version in the Database
-        if (!updateVersionInDatabase(CafeBot.getBotVersion())) {
+        try {
+            CafeBot.getCafeAPI().versions().updateCurrentCafeBotVersion(CafeBot.getBotVersion());
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Version in Database: " + e.getMessage(), e);
             return;
         }
 
@@ -139,6 +104,10 @@ public class GitHubUpdateChecker {
         });
     }
 
+    /**
+     * @return The {@link MessageEmbed updateEmbed}.
+     */
+    @NotNull
     private MessageEmbed updateEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(github_name, github_url);
@@ -153,6 +122,12 @@ public class GitHubUpdateChecker {
         return embedBuilder.build();
     }
 
+    /**
+     * Parses the {@link JsonNode responseBody}.
+     * @param responseBody The {@link JsonNode responseBody} as a {@link String}.
+     * @return The {@link String parsedBody}.
+     */
+    @Nullable
     private String parse(String responseBody) {
         ObjectMapper defaultObjectMapper = new ObjectMapper();
         try {
