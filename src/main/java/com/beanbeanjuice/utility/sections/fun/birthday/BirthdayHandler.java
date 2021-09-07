@@ -1,6 +1,11 @@
 package com.beanbeanjuice.utility.sections.fun.birthday;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday;
+import com.beanbeanjuice.cafeapi.cafebot.birthdays.BirthdayMonth;
+import com.beanbeanjuice.cafeapi.exception.CafeException;
+import com.beanbeanjuice.cafeapi.exception.NotFoundException;
+import com.beanbeanjuice.cafeapi.exception.TeaPotException;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -14,7 +19,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,19 +28,16 @@ import java.util.TimerTask;
  */
 public class BirthdayHandler {
 
-    private HashMap<String, Date> birthdays;
+    private HashMap<String, Birthday> birthdays;
     private Timer birthdayTimer;
     private TimerTask birthdayTimerTask;
-
-    private ArrayList<String> mentionedBirthdays;
 
     /**
      * Create a new {@link BirthdayHandler}.
      */
     public BirthdayHandler() {
         birthdays = new HashMap<>();
-        mentionedBirthdays = new ArrayList<>();
-        cacheBirthdays();
+        getAllBirthdays();
         startBirthdayTimer();
     }
 
@@ -53,7 +54,7 @@ public class BirthdayHandler {
                 birthdays.forEach((userID, birthday) -> {
 
                     if (isBirthday(birthday)) {
-                        if (!mentionedBirthdays.contains(userID)) {
+                        if (!birthday.alreadyMentioned()) {
                             for (Guild guild : CafeBot.getJDA().getGuilds()) {
                                 Member member = guild.getMemberById(userID);
                                 if (member != null) {
@@ -71,20 +72,20 @@ public class BirthdayHandler {
                             CafeBot.getGeneralHelper().pmUser(CafeBot.getGeneralHelper().getUser(userID), "Hey... we don't know if anyone wished you " +
                                     "a happy birthday, but happy birthday <3!");
 
-                            mentionedBirthdays.add(userID);
                             updateMentionedBirthday(userID, true);
                         }
 
                     } else {
-                        if (mentionedBirthdays.contains(userID)) {
-                            mentionedBirthdays.remove(userID);
+                        if (birthday.alreadyMentioned() && !isBirthday(birthday)) {
                             updateMentionedBirthday(userID, false);
                         }
                     }
                 });
+
+                getAllBirthdays();
             }
         };
-        birthdayTimer.scheduleAtFixedRate(birthdayTimerTask, 0, 7200000); // Should be 7200000
+        birthdayTimer.scheduleAtFixedRate(birthdayTimerTask, 0, 7200000); // Should be 7200000 for 1 day
     }
 
     /**
@@ -102,144 +103,103 @@ public class BirthdayHandler {
     }
 
     /**
-     * Update the mentioned birthday for a specified {@link net.dv8tion.jda.api.entities.User User}.
-     * @param userID The ID of the specified {@link net.dv8tion.jda.api.entities.User User}.
-     * @param isMentioned Whether or not they have already been mentioned today.
+     * Updates the {@link Boolean mentioned} status of a {@link Birthday}.
+     * @param userID The {@link String userID} of the {@link Birthday}.
+     * @param isMentioned The new {@link Boolean mentioned} status.
      */
     private void updateMentionedBirthday(@NotNull String userID, @NotNull Boolean isMentioned) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.birthdays SET already_mentioned = (?) WHERE user_id = (?);";
-
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setBoolean(1, isMentioned);
-            statement.setLong(2, Long.parseLong(userID));
-
-            statement.execute();
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Already Mentioned Birthdays: " + e.getMessage());
+            CafeBot.getCafeAPI().birthdays().updateUserBirthdayMention(userID, isMentioned);
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Updating User Birthday Mention: " + e.getMessage(), e);
         }
     }
 
     /**
-     * Update the birthday cache.
+     * Retrieves all {@link Birthday} from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      */
-    private void cacheBirthdays() {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM cafeBot.birthdays";
-
+    private void getAllBirthdays() {
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(arguments);
-
-            while (resultSet.next()) {
-                String userID = String.valueOf(resultSet.getLong(1));
-                Date birthday = resultSet.getDate(2);
-                birthdays.put(userID, CafeBot.getGeneralHelper().parseDate(birthday.toString()));
-
-                if (resultSet.getBoolean(3)) {
-                    mentionedBirthdays.add(userID);
-                }
-            }
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Getting Birthdays: " + e.getMessage());
+            birthdays = CafeBot.getCafeAPI().birthdays().getAllBirthdays();
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Retrieving Birthdays: " + e.getMessage(), e);
+            return;
         }
     }
 
     /**
-     * Remove a birthday from the database.
-     * @param userID The ID of the {@link net.dv8tion.jda.api.entities.User User} to remove.
-     * @return Whether or not it was successfully removed.
+     * Removes a {@link Birthday} from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * @param userID The {@link String userID} of the {@link Birthday} to remove.
+     * @return True, if the {@link Birthday} was removed successfully.
      */
     @NotNull
     public Boolean removeBirthday(@NotNull String userID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "DELETE FROM cafeBot.birthdays WHERE user_id = (?);";
-
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(userID));
-            statement.execute();
-
+            CafeBot.getCafeAPI().birthdays().removeUserBirthday(userID);
             birthdays.remove(userID);
-            mentionedBirthdays.remove(userID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Removing Birthday: " + e.getMessage());
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Removing Birthday: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Update the birthday {@link Date} for a specified {@link net.dv8tion.jda.api.entities.User User}.
-     * @param userID The ID of the {@link net.dv8tion.jda.api.entities.User User}.
-     * @param birthday The new {@link Date}.
-     * @return Whether or not updating it was successful.
+     * Updates/Creates a {@link Birthday} for a specified {@link String userID}.
+     * @param userID The {@link String userID} to create the {@link Birthday} for.
+     * @param month The {@link BirthdayMonth month} of the {@link Birthday}.
+     * @param day The {@link Integer day} of the {@link Birthday}.
+     * @return True, if the {@link Birthday} was successfully created.
+     * @throws TeaPotException Thrown when the {@link BirthdayMonth month} or {@link Integer day} is invalid.
      */
     @NotNull
-    public Boolean updateBirthday(@NotNull String userID, @NotNull Date birthday) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-
-        if (!birthdays.containsKey(userID)) {
-            String arguments = "INSERT INTO cafeBot.birthdays (user_id, birth_date) VALUES (?,?);";
+    public Boolean updateBirthday(@NotNull String userID, @NotNull BirthdayMonth month, @NotNull Integer day) throws TeaPotException {
+        try {
+            CafeBot.getCafeAPI().birthdays().updateUserBirthday(userID, month, day);
+            birthdays.put(userID, new Birthday(month, day, false));
+            updateMentionedBirthday(userID, false);
+            return true;
+        } catch (NotFoundException e) {
             try {
-                PreparedStatement statement = connection.prepareStatement(arguments);
-                statement.setLong(1, Long.parseLong(userID));
-                statement.setDate(2, birthday);
-
-                statement.execute();
-            } catch (SQLException e) {
-                CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Add Birthday: " + e.getMessage());
+                CafeBot.getCafeAPI().birthdays().createUserBirthday(userID, month, day);
+                birthdays.put(userID, new Birthday(month, day, false));
+                updateMentionedBirthday(userID, false);
+                return true;
+            } catch (CafeException e2) {
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating Birthday: " + e2.getMessage(), e2);
                 return false;
             }
-        } else {
-            String arguments = "UPDATE cafeBot.birthdays SET birth_date = (?) WHERE user_id = (?);";
-            try {
-                PreparedStatement statement = connection.prepareStatement(arguments);
-                statement.setDate(1, birthday);
-                statement.setLong(2, Long.parseLong(userID));
-
-                statement.execute();
-            } catch (SQLException e) {
-                CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Update Birthday: " + e.getMessage());
-                return false;
-            }
+        }catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Updating Birthday: " + e.getMessage(), e);
+            return false;
         }
-        birthdays.put(userID, birthday);
-        return true;
     }
 
     /**
-     * Get the birthday {@link Date} for a specified {@link net.dv8tion.jda.api.entities.User User}.
-     * @param userID The ID of the {@link net.dv8tion.jda.api.entities.User User}.
-     * @return The birthday {@link Date} of the {@link net.dv8tion.jda.api.entities.User User}.
+     * Retrieves a {@link Birthday} for a specified {@link String userID}.
+     * @param userID The specified {@link String userID}.
+     * @return The {@link Birthday} for the {@link String userID}. Null, if the {@link Birthday} does not exist.
      */
     @Nullable
-    public Date getBirthday(@NotNull String userID) {
-        if (birthdays.containsKey(userID)) {
-            return birthdays.get(userID);
+    public Birthday getBirthday(@NotNull String userID) {
+        try {
+            return CafeBot.getCafeAPI().birthdays().getUserBirthday(userID);
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Retrieving User Birthday: " + e.getMessage(), e);
+            return null;
         }
-        return null;
     }
 
     /**
-     * Check if todays day and month match the birthday day and month.
-     * @param checkDate The {@link Date} to check.
-     * @return Whether or not it is someone's birthday.
+     * @param birthday The {@link Birthday} to check.
+     * @return True, if the current {@link Date} is a {@link Birthday}.
      */
     @NotNull
-    public Boolean isBirthday(@NotNull Date checkDate) {
+    private Boolean isBirthday(@NotNull Birthday birthday) {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-
         LocalDate today = formatter.parseLocalDate(new Date(System.currentTimeMillis()).toString());
-        LocalDate birthday = formatter.parseLocalDate(checkDate.toString());
 
-        int todayDay = today.getDayOfMonth();
-        int birthdayDay = birthday.getDayOfMonth();
-        int todayMonth = today.getMonthOfYear();
-        int birthdayMonth = birthday.getMonthOfYear();
-
-        return birthdayMonth == todayMonth && birthdayDay == todayDay;
+        return today.getDayOfMonth() == birthday.getDay() && today.getMonthOfYear() == birthday.getMonth().getMonthNumber();
     }
 
 }
