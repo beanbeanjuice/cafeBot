@@ -1,6 +1,7 @@
 package com.beanbeanjuice.command.fun;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -32,28 +33,34 @@ public class GetBirthdayCommand implements ICommand {
         } else {
             birthdayUser = CafeBot.getGeneralHelper().getUser(args.get(0));
         }
-        Date birthday = CafeBot.getBirthdayHandler().getBirthday(birthdayUser.getId());
 
-        // Checking if the user's birthday is null.
+        Birthday birthday = CafeBot.getBirthdayHandler().getBirthday(birthdayUser.getId());
+
+        // Checks if the birthday exists.
         if (birthday == null) {
             event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
-                    "No Birthday Set",
-                    "The user specified does not have a birthday set."
+                    "Error Getting Birthday",
+                    "There has either been an error getting the birthday, or the birthday has not been set."
             )).queue();
             return;
         }
+
         event.getChannel().sendMessageEmbeds(birthdayEmbed(birthdayUser, birthday)).queue();
     }
 
+    /**
+     * Creates a {@link MessageEmbed} for the {@link Birthday} for a {@link User}.
+     * @param user The specified {@link User}.
+     * @param birthday The {@link Birthday} for the {@link User}.
+     * @return The created {@link MessageEmbed} for the {@link Birthday}.
+     */
     @NotNull
-    private MessageEmbed birthdayEmbed(@NotNull User user, @NotNull Date birthday) {
+    private MessageEmbed birthdayEmbed(@NotNull User user, @NotNull Birthday birthday) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
         embedBuilder.setTitle(user.getName() + "'s Birthday");
 
-        String pattern = "MMMM, d";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        embedBuilder.setDescription("Their birthday is on `" + simpleDateFormat.format(birthday) + "`.");
+        embedBuilder.setDescription("Birthday is on `" + birthday.getMonth() + ", " + birthday.getDay() + "`.");
         return embedBuilder.build();
     }
 
