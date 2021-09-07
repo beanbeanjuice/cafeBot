@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.sections.fun.poll;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,51 +12,28 @@ import java.sql.Timestamp;
  *
  * @author beanbeanjuice
  */
-public class Poll {
-
-    private String guildID;
-    private String messageID;
-    private Timestamp pollEndTime;
+public class Poll extends com.beanbeanjuice.cafeapi.cafebot.polls.Poll {
 
     /**
-     * Creates a new {@link Poll} object.
-     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild} associated with the {@link Poll}.
-     * @param messageID The ID of the {@link net.dv8tion.jda.api.entities.Message Message} associated with the {@link Poll}.
-     * @param pollEndTime The ending {@link Timestamp} for the {@link Poll}.
+     * Creates a new {@link Poll}.
+     * @param messageID The {@link String messageID} of the {@link Poll}.
+     * @param endingTime The {@link Timestamp endingTime}.
      */
-    public Poll(@NotNull String guildID, @NotNull String messageID, @NotNull Timestamp pollEndTime) {
-        this.guildID = guildID;
-        this.messageID = messageID;
-        this.pollEndTime = pollEndTime;
+    public Poll(@NotNull String messageID, @NotNull Timestamp endingTime) {
+        super(messageID, endingTime);
     }
 
     /**
-     * @return The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild} associated with the {@link Poll}.
+     * @return True, if the {@link Poll} is finished.
      */
-    @NotNull
-    public String getGuildID() {
-        return guildID;
-    }
-
-    /**
-     * @return The ID of the {@link net.dv8tion.jda.api.entities.Message} associated with the {@link Poll}.
-     */
-    @NotNull
-    public String getMessageID() {
-        return messageID;
-    }
-
-    /**
-     * @return The ending {@link Timestamp} of the {@link Poll}.
-     */
-    @NotNull
-    public Timestamp getPollEndTime() {
-        return pollEndTime;
-    }
-
     @NotNull
     public Boolean isFinished() {
-        return CafeBot.getGeneralHelper().compareTwoTimeStamps(pollEndTime, new Timestamp(System.currentTimeMillis()), TimestampDifference.MINUTES) > 0;
+        Timestamp currentTime = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis()).toString());
+
+        return CafeBot.getGeneralHelper().compareTwoTimeStamps(
+                getEndingTime(),
+                currentTime,
+                TimestampDifference.SECONDS) > 0;
     }
 
 }

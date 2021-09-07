@@ -1,6 +1,7 @@
 package com.beanbeanjuice.command.fun;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
@@ -29,6 +30,8 @@ import java.util.HashMap;
  */
 public class AddPollCommand implements ICommand {
 
+    private final int MAX_POLLS = 3;
+
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
@@ -38,8 +41,8 @@ public class AddPollCommand implements ICommand {
         }
 
         // Makes sure that guilds only have 3 polls.
-        if (CafeBot.getPollHandler().getPollsForGuild(event.getGuild()).size()+1 > 3) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+        if (CafeBot.getCafeAPI().polls().getGuildPolls(event.getGuild().getId()).size()+1 > MAX_POLLS) {
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Too Many Polls",
                     "You can currently only have a total of " +
                             "3 polls per Discord Server. This is due to server costs."
@@ -49,38 +52,42 @@ public class AddPollCommand implements ICommand {
 
         HashMap<String, String> parsedMap = CafeBot.getGeneralHelper().createCommandTermMap(getCommandTerms(), args);
 
+        // Makes sure there is a title.
         String title = parsedMap.get("title");
         if (title == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Missing Argument",
                     "You are missing the `title` argument."
             )).queue();
             return;
         }
 
+        // Makes sure there is a description.
         String description = parsedMap.get("description");
         if (description == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Missing Argument",
                     "You are missing the `description` argument."
             )).queue();
             return;
         }
 
+        // Makes sure there are arguments for the poll.
         ArrayList<String> arguments = convertToList(parsedMap.get("arguments"));
         if (arguments.size() == 0) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Missing Argument",
                     "You are missing the `arguments` argument."
             )).queue();
             return;
         }
 
-        Integer minutes;
+        // Makes sure there are minutes.
+        int minutes;
         try {
             minutes = Integer.parseInt(parsedMap.get("time"));
         } catch (NumberFormatException e) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Invalid Time Amount",
                     "The amount you have entered for time is not valid. Please enter a whole number."
             )).queue();
@@ -90,7 +97,7 @@ public class AddPollCommand implements ICommand {
         // Making sure the poll channel exists.
         TextChannel pollChannel = ctx.getCustomGuild().getPollChannel();
         if (pollChannel == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "No Poll Channel",
                     "You do not currently have a poll channel set."
             )).queue();
@@ -99,50 +106,68 @@ public class AddPollCommand implements ICommand {
 
         // Making sure there are less than 20 arguments.
         if (arguments.size() > 20) {
-            pollChannel.sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            pollChannel.sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Too Many Items",
                     "You can only have 20 items. Please try again. Discord only supports 20 message reactions."
             )).queue();
             return;
         }
 
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis() + (minutes*60000));
+        Timestamp timestamp = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + (minutes*60000)).toString());
 
         // Sending a message in the poll channel.
         if (parsedMap.get("message") != null) {
-            pollChannel.sendMessage(parsedMap.get("message")).embed(startingPollEmbed()).queue(message -> {
+            pollChannel.sendMessage(parsedMap.get("message")).setEmbeds(startingPollEmbed()).queue(message -> {
                 editMessage(message, event, timestamp, title, description, minutes, arguments);
             });
         } else {
-            pollChannel.sendMessage(startingPollEmbed()).queue(message -> {
+            pollChannel.sendMessageEmbeds(startingPollEmbed()).queue(message -> {
                 editMessage(message, event, timestamp, title, description, minutes, arguments);
             });
         }
     }
 
+    /**
+     * Edits the specified {@link Message}.
+     * @param message The {@link Message} to edit.
+     * @param event The {@link GuildMessageReceivedEvent event} that triggered the {@link Message}.
+     * @param timestamp The {@link Timestamp} to end the {@link }.
+     * @param title The {@link String title} of the {@link Poll}.
+     * @param description The {@link String description} of the {@link Poll}.
+     * @param minutes The length in {@link Integer minutes} of the {@link Poll}.
+     * @param arguments The {@link ArrayList} of {@link String argument}.
+     */
     private void editMessage(Message message, GuildMessageReceivedEvent event, Timestamp timestamp,
                              String title, String description, Integer minutes, ArrayList<String> arguments) {
-        Poll poll = new Poll(event.getGuild().getId(), message.getId(), timestamp);
+        Poll poll = new Poll(message.getId(), timestamp);
 
-        if (!CafeBot.getPollHandler().addPoll(poll)) {
+        // Tries to create the poll.
+        if (!CafeBot.getPollHandler().addPoll(event.getGuild().getId(), poll)) {
+            // If it can't, say why.
             message.delete().queue();
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                    "Error Creating Poll",
+                    "There has been an error creating the Poll..."
+            )).queue();
             return;
         }
 
-        message.editMessage(pollEmbed(title, description, minutes, arguments)).queue();
+        message.editMessageEmbeds(pollEmbed(title, description, minutes, arguments)).queue();
 
         ArrayList<PollEmoji> pollEmojis = new ArrayList<>(Arrays.asList(PollEmoji.values()));
         for (int i = 0; i < arguments.size(); i++) {
             message.addReaction(pollEmojis.get(i).getUnicode()).queue();
         }
 
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+        event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().successEmbed(
                 "Poll Created",
                 "A poll has been successfully created! Check the " + message.getTextChannel().getAsMention() + " channel."
         )).queue();
     }
 
+    /**
+     * @return The {@link MessageEmbed} to send when starting a {@link Poll}.
+     */
     @NotNull
     private MessageEmbed startingPollEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -152,6 +177,14 @@ public class AddPollCommand implements ICommand {
         return embedBuilder.build();
     }
 
+    /**
+     * The {@link MessageEmbed} to change to when the {@link Poll} has been created.
+     * @param pollTitle The {@link String title} of the {@link Poll}.
+     * @param pollDescription The {@link String description} of the {@link Poll}.
+     * @param pollTime The {@link Integer length} of the {@link Poll} in minutes.
+     * @param arguments The {@link ArrayList} of {@link String argument} for the {@link Poll}.
+     * @return The created {@link MessageEmbed} for the {@link Poll}.
+     */
     @NotNull
     private MessageEmbed pollEmbed(@NotNull String pollTitle, @NotNull String pollDescription,
                                    @NotNull Integer pollTime, @NotNull ArrayList<String> arguments) {
@@ -178,6 +211,11 @@ public class AddPollCommand implements ICommand {
         return embedBuilder.build();
     }
 
+    /**
+     * Converts a {@link String} with commas into an {@link ArrayList} of {@link String}.
+     * @param string The {@link String} with commas.
+     * @return The {@link ArrayList} of separated {@link String}.
+     */
     @NotNull
     private ArrayList<String> convertToList(@NotNull String string) {
         ArrayList<String> arrayList = new ArrayList<>();
@@ -191,6 +229,9 @@ public class AddPollCommand implements ICommand {
         return arrayList;
     }
 
+    /**
+     * @return The {@link ArrayList} of {@link String commandTerms} for the {@link Poll}.
+     */
     @NotNull
     private ArrayList<String> getCommandTerms() {
         ArrayList<String> arrayList = new ArrayList<>();
