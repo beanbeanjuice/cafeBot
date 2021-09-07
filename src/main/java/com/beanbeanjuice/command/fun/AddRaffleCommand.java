@@ -1,11 +1,14 @@
 package com.beanbeanjuice.command.fun;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.exception.CafeException;
+import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.fun.raffle.Raffle;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -27,49 +30,57 @@ import java.util.HashMap;
  */
 public class AddRaffleCommand implements ICommand {
 
+    private final int MAX_RAFFLES = 3;
+
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
+        // Checking if the user is a moderator.
         if (!CafeBot.getGeneralHelper().isModerator(event.getMember(), event.getGuild(), event)) {
             return;
         }
 
+        // Parsing the arguments.
         HashMap<String, String> parsedMap = CafeBot.getGeneralHelper().createCommandTermMap(getCommandTerms(), args);
 
+        // Checking the title of the raffle.
         String title = parsedMap.get("title");
         if (title == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Missing Argument",
                     "You are missing the `title` argument."
             )).queue();
             return;
         }
 
+        // Checking the description of the raffle.
         String description = parsedMap.get("description");
         if (description == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Missing Argument",
                     "You are missing the `description` argument."
             )).queue();
             return;
         }
 
+        // Checking the amount of minutes.
         Integer minutes;
         try {
             minutes = Integer.parseInt(parsedMap.get("time"));
         } catch (NumberFormatException e) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Invalid Time Amount",
                     "The amount you have entered for time is not valid. Please enter a whole number."
             )).queue();
             return;
         }
 
+        // Checking the amount of winners.
         Integer winnerAmount;
         try {
             winnerAmount = Integer.parseInt(parsedMap.get("winners"));
         } catch (NumberFormatException e) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Invalid Time Amount",
                     "The amount you have entered for winners is not valid. Please enter a whole number."
             )).queue();
@@ -77,18 +88,27 @@ public class AddRaffleCommand implements ICommand {
         }
 
         // Check if the amount of raffles the server has is more than 3
-        if (CafeBot.getRaffleHandler().getRafflesForGuild(event.getGuild()).size()+1 > 3) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
-                    "Too Many Raffles",
-                    "Your guild currently has 3 raffles. This is a limitation due to server costs."
+        try {
+            if (CafeBot.getCafeAPI().raffles().getGuildRaffles(event.getGuild().getId()).size()+1 > MAX_RAFFLES) {
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                        "Too Many Raffles",
+                        "Your guild currently has 3 raffles. This is a limitation due to server costs."
+                )).queue();
+                return;
+            }
+        } catch (CafeException e) {
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                    "Error Adding Raffle",
+                    "There was an error checking how many raffles this Discord server has. Please try again later."
             )).queue();
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Checking Raffle Amount: " + e.getMessage(), e);
             return;
         }
 
         TextChannel raffleChannel = ctx.getCustomGuild().getRaffleChannel();
 
         if (raffleChannel == null) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Raffle Channel Not Set",
                     "You currently do not have a raffle channel set."
             )).queue();
@@ -96,29 +116,42 @@ public class AddRaffleCommand implements ICommand {
         }
 
         if (parsedMap.get("message") != null) {
-            raffleChannel.sendMessage(parsedMap.get("message")).embed(creatingRaffle()).queue(message -> {
+            raffleChannel.sendMessage(parsedMap.get("message")).setEmbeds(creatingRaffle()).queue(message -> {
                 editMessage(message, event, title, description, minutes, winnerAmount);
             });
         } else {
-            raffleChannel.sendMessage(creatingRaffle()).queue(message -> {
+            raffleChannel.sendMessageEmbeds(creatingRaffle()).queue(message -> {
                 editMessage(message, event, title, description, minutes, winnerAmount);
             });
         }
     }
 
+    /**
+     * Edits the specified {@link Message}.
+     * @param message The specified {@link Message}.
+     * @param event The {@link GuildMessageReceivedEvent event} that triggered the {@link Message}.
+     * @param title The {@link String title} of the {@link Raffle}.
+     * @param description The {@link String description} of the {@link Raffle}.
+     * @param minutes The amount of {@link Integer minutes} for the {@link Raffle}.
+     * @param winnerAmount The amount of {@link Integer winners} for the {@link Raffle}.
+     */
     private void editMessage(Message message, GuildMessageReceivedEvent event,
                              String title, String description, Integer minutes, Integer winnerAmount) {
-        Raffle raffle = new Raffle(event.getGuild().getId(), message.getId(), new Timestamp(System.currentTimeMillis() + (minutes*60000)), winnerAmount);
 
-        if (!CafeBot.getRaffleHandler().addRaffle(raffle)) {
+        // Converts the ending time to UTC time.
+        Timestamp endingTime = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + (minutes*60000)).toString());
+
+        Raffle raffle = new Raffle(message.getId(), endingTime, winnerAmount);
+
+        if (!CafeBot.getRaffleHandler().addRaffle(event.getGuild().getId(), raffle)) {
             message.delete().queue();
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
-        message.editMessage(raffleEmbed(title, description, minutes, winnerAmount)).queue();
+        message.editMessageEmbeds(raffleEmbed(title, description, minutes, winnerAmount)).queue();
         message.addReaction("U+2705").queue();
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+        event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().successEmbed(
                 "Raffle Created",
                 "A raffle has been successfully created! Check the " + message.getTextChannel().getAsMention() + " channel."
         )).queue();
