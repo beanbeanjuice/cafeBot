@@ -25,7 +25,7 @@ public class ConnectFourCommand implements ICommand {
         User player2 = CafeBot.getGeneralHelper().getUser(args.get(0));
 
         if (player1.equals(player2)) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Cannot Play Yourself",
                     "You cannot play a connect four game against yourself!"
             )).queue();
@@ -33,7 +33,7 @@ public class ConnectFourCommand implements ICommand {
         }
 
         if (player2.isBot()) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Cannot Play Against Bot",
                     "You cannot play this game against a bot!"
             )).queue();
@@ -42,7 +42,7 @@ public class ConnectFourCommand implements ICommand {
 
         ConnectFourGame game = new ConnectFourGame(player1, player2, event.getChannel());
         if (!CafeBot.getConnectFourHandler().createGame(event.getGuild().getId(), game)) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Error Creating Connect Four Game",
                     "There is already an active connect four game on this server. Please wait for it to end."
             )).queue();

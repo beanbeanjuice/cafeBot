@@ -1,12 +1,12 @@
 package com.beanbeanjuice.command.games;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.MinigameType;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import com.beanbeanjuice.utility.sections.games.MiniGame;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to get {@link MiniGame} win streaks for a {@link User}.
+ * An {@link ICommand} used to get {@link com.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.WinStreak WinStreak} for a {@link User}.
  *
  * @author beanbeanjuice
  */
@@ -37,8 +37,8 @@ public class GetGameDataCommand implements ICommand {
         embedBuilder.setTitle(user.getName() + "'s Game Win Streaks");
         StringBuilder descriptionBuilder = new StringBuilder();
 
-        for (MiniGame miniGame : MiniGame.values()) {
-            descriptionBuilder.append("**").append(miniGame.getName()).append("**: ");
+        for (MinigameType miniGame : MinigameType.values()) {
+            descriptionBuilder.append("**").append(miniGame.getType()).append("**: ");
             descriptionBuilder.append("*").append(CafeBot.getWinStreakHandler().getUserWinStreak(user.getId(), miniGame)).append("*\n");
         }
 
@@ -86,4 +86,5 @@ public class GetGameDataCommand implements ICommand {
     public CategoryType getCategoryType() {
         return CategoryType.GAMES;
     }
+
 }
