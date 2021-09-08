@@ -24,7 +24,7 @@ public class ConnectFourHandler {
      * Creates a new {@link ConnectFourGame} for the {@link net.dv8tion.jda.api.entities.Guild Guild}.
      * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild} specified.
      * @param game The {@link ConnectFourGame} to add.
-     * @return Whether or not it can be added.
+     * @return True, if the {@link ConnectFourGame} was created successfully.
      */
     @NotNull
     public Boolean createGame(@NotNull String guildID, @NotNull ConnectFourGame game) {
