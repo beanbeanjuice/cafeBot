@@ -111,7 +111,7 @@ dependencies {
     // Top.GG API
     implementation group: 'org.discordbots', name: 'DBL-Java-Library', version: '2.0.1'
 
-    implementation files('libs/cafe-api-wrapper.jar')
+    implementation files('libs/cafe-api-v1.0.0.jar')
     implementation files('libs/cafe-api-v1.0.0-sources.jar')
     implementation files('libs/cafe-api-v1.0.0-javadoc.jar')
 }
