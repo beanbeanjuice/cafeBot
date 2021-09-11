@@ -1,12 +1,13 @@
 package com.beanbeanjuice.command.interaction;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import com.beanbeanjuice.utility.sections.interaction.InteractionType;
+import com.beanbeanjuice.utility.sections.interaction.Interaction;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -21,53 +22,13 @@ public class DabCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        String url = CafeBot.getInteractionHandler().getDabImage();
-        String sender = user.getName();
-
-        ArrayList<User> receivers = new ArrayList<>();
-        int count = 0;
-
-        if (!args.isEmpty()) {
-            while (CafeBot.getGeneralHelper().getUser(args.get(count)) != null) {
-                receivers.add(CafeBot.getGeneralHelper().getUser(args.get(count++)));
-                if (count == args.size()) {
-                    break;
-                }
-            }
-        }
-
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = count; i < args.size(); i++) {
-            stringBuilder.append(args.get(i));
-            if (i != args.size() - 1) {
-                stringBuilder.append(" ");
-            }
-        }
-
-        String message;
-        String footer = null;
-
-        if (receivers.size() == 0) {
-            message = "**" + sender + "** *dabbed* by themselves! Gross...";
-        } else {
-            message = "**" + sender + "** *dabbed* at **" + CafeBot.getInteractionHandler().getReceiverString(receivers) + "**! I hope this is ironic.";
-
-            if (receivers.size() == 1) {
-                int sendAmount = CafeBot.getInteractionHandler().getSender(user.getId(), InteractionType.DAB) + 1;
-                int receiveAmount = CafeBot.getInteractionHandler().getReceiver(receivers.get(0).getId(), InteractionType.DAB) + 1;
-
-                CafeBot.getInteractionHandler().updateSender(user.getId(), InteractionType.DAB, sendAmount);
-                CafeBot.getInteractionHandler().updateReceiver(receivers.get(0).getId(), InteractionType.DAB, receiveAmount);
-
-                footer = user.getName() + " dabbed at others " + sendAmount + " times. " + receivers.get(0).getName() + " was dabbed at " + receiveAmount + " times.";
-            }
-        }
-
-        if (stringBuilder.isEmpty()) {
-            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionEmbed(url, footer)).queue();
-        } else {
-            event.getChannel().sendMessage(message).embed(CafeBot.getInteractionHandler().actionWithDescriptionEmbed(url, stringBuilder.toString(), footer)).queue();
-        }
+        new Interaction(InteractionType.DAB,
+                "**{sender}** *dabbed*! Umm... this isn't 2016. <:madison_moment:843672933176311808>",
+                "**{sender}** *dabbed* at **{receiver}**! <:madison_moment:843672933176311808>",
+                "{sender} dabbed at others {amount_sent} times. {receiver} was dabbed at {amount_received} times.",
+                user,
+                args,
+                event.getChannel());
     }
 
     @Override
