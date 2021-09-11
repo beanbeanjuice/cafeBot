@@ -1,6 +1,11 @@
 package com.beanbeanjuice.utility.sections.moderation.voicechat;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.cafeapi.CafeAPI;
+import com.beanbeanjuice.cafeapi.cafebot.voicebinds.VoiceChannelBind;
+import com.beanbeanjuice.cafeapi.exception.CafeException;
+import com.beanbeanjuice.cafeapi.exception.ConflictException;
+import com.beanbeanjuice.command.moderation.voicebind.VoiceRoleBindCommand;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,160 +21,137 @@ import java.util.HashMap;
 public class VoiceChatRoleBindHandler {
 
     /**
-     * A map of Guild IDs containing a map of Voice Chat IDs and Role IDs.
+     * A map of Guild IDs containing a map of Voice Chat IDs and Voice Channel Binds.
      */
-    private HashMap<String, HashMap<String, ArrayList<String>>> guildVoiceBinds;
+    private HashMap<String, ArrayList<VoiceChannelBind>> guildVoiceBinds;
 
     /**
      * Creates a new {@link VoiceChatRoleBindHandler} object.
      */
     public VoiceChatRoleBindHandler() {
         guildVoiceBinds = new HashMap<>();
-        updateCache();
+        updateVoiceBindCache();
     }
 
     /**
-     * Gets the bound roles for the specified {@link net.dv8tion.jda.api.entities.Guild Guild} and {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel}.
-     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild}.
-     * @param voiceChannelID The ID of the {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel}.
-     * @return The {@link ArrayList<String>} of {@link net.dv8tion.jda.api.entities.Role} IDs bound to the {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel}.
+     * Retrieves all bound {@link String roleIDs} for a specified {@link String voiceChannelID}.
+     * @param guildID The {@link String guildID} that contains the {@link ArrayList} of {@link VoiceChannelBind}.
+     * @param voiceChannelID The specified {@link String voiceChannelID} to look for.
+     * @return The {@link ArrayList} of {@link String roleID} for the {@link String voiceChannelID}.
      */
     @NotNull
-    public ArrayList<String> getBoundRoles(@NotNull String guildID, @NotNull String voiceChannelID) {
+    public ArrayList<String> getBoundRolesForChannel(@NotNull String guildID, @NotNull String voiceChannelID) {
+        ArrayList<String> roleIDs = new ArrayList<>();
         try {
-            ArrayList<String> roles = guildVoiceBinds.get(guildID).get(voiceChannelID);
-            if (roles == null) {
-                return new ArrayList<>();
+
+            // Goes through each bind and makes sure it gets the one that has the channel specified.
+            for (VoiceChannelBind bind : guildVoiceBinds.get(guildID)) {
+                if (bind.getVoiceChannelID().equals(voiceChannelID)) {
+                    roleIDs.add(bind.getRoleID());
+                }
             }
-            return roles;
+            return roleIDs;
         } catch (NullPointerException e) {
-            return new ArrayList<>();
+            // If this runs, the guildID does not exist.
+            return roleIDs;
         }
     }
 
     /**
-     * Gets the {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannels} in a specified {@link net.dv8tion.jda.api.entities.Guild Guild} that has
-     * {@link net.dv8tion.jda.api.entities.Role Roles} bounded to them.
-     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild}.
-     * @return The {@link HashMap} that contains the {@link net.dv8tion.jda.api.entities.Guild Guild} ID as the key.
+     * Retrieves all {@link VoiceChannelBind} in the {@link CafeAPI} for a specified {@link String guildID}.
+     * @param guildID The {@link String guildID} to look for.
+     * @return The {@link HashMap} with keys of {@link String voiceChannelID} and a value of {@link ArrayList} of {@link String roleID}.
      */
     @NotNull
-    public HashMap<String, ArrayList<String>> getBoundChannels(@NotNull String guildID) {
+    public HashMap<String, ArrayList<String>> getAllBoundChannelsForGuild(@NotNull String guildID) {
+        HashMap<String, ArrayList<String>> channels = new HashMap<>();
+
+        // Goes through each bind.
         try {
-            HashMap<String, ArrayList<String>> channels = guildVoiceBinds.get(guildID);
-            if (channels == null) {
-                return new HashMap<>();
-            }
+            guildVoiceBinds.get(guildID).forEach((bind) -> {
+
+                String voiceChannelID = bind.getVoiceChannelID();
+                String roleID = bind.getRoleID();
+
+                // If the key doesn't exist. Make a new one.
+                if (!channels.containsKey(voiceChannelID)) {
+                    channels.put(voiceChannelID, new ArrayList<>());
+                }
+
+                channels.get(voiceChannelID).add(roleID);
+            });
+
             return channels;
         } catch (NullPointerException e) {
-            return new HashMap<>();
+            return channels;
         }
     }
 
     /**
-     * Updates the cache in the database.
+     * Updates the cache for the {@link VoiceChannelBind}.
      */
-    private void updateCache() {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM cafeBot.voice_channel_role_binds;";
-
+    private void updateVoiceBindCache() {
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(arguments);
-
-            while (resultSet.next()) {
-                String guildID = String.valueOf(resultSet.getLong(1));
-                String voiceChannelID = String.valueOf(resultSet.getLong(2));
-                String roleID = String.valueOf(resultSet.getLong(3));
-
-                createIfNotExists(guildID, voiceChannelID);
-
-                guildVoiceBinds.get(guildID).get(voiceChannelID).add(roleID);
-            }
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(VoiceChatRoleBindHandler.class, LogLevel.WARN, "Error Updating Voice Channel Bind Cache: " + e.getMessage(), e);
+            guildVoiceBinds = CafeBot.getCafeAPI().voiceChannelBinds().getAllVoiceChannelBinds();
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Caching Voice Binds: " + e.getMessage(), e);
         }
     }
 
     /**
-     * Creates a table in the cache if it does not exist.
-     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild}.
-     * @param voiceChannelID The ID of the {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel} in the {@link net.dv8tion.jda.api.entities.Guild Guild}.
-     */
-    private void createIfNotExists(@NotNull String guildID, @NotNull String voiceChannelID) {
-        // Checking if the guild exists in the cache.
-        if (!guildVoiceBinds.containsKey(guildID)) {
-            guildVoiceBinds.put(guildID, new HashMap<>());
-        }
-
-        // Checking if the voice channel ID exists in the cache.
-        if (!guildVoiceBinds.get(guildID).containsKey(voiceChannelID)) {
-            guildVoiceBinds.get(guildID).put(voiceChannelID, new ArrayList<>());
-        }
-    }
-
-    /**
-     * Bind a {@link net.dv8tion.jda.api.entities.Role Role} to a specified {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel}.
-     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild} to remove the {@link net.dv8tion.jda.api.entities.Role Role} from.
-     * @param voiceChannelID The ID of the {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel} in the {@link net.dv8tion.jda.api.entities.Guild Guild}.
-     * @param roleID The ID of the {@link net.dv8tion.jda.api.entities.Role Role} in the specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
-     * @return Whether or not binding it was successful.
+     * Binds a {@link String roleID} to a specified {@link String voiceChannelID}.
+     * @param guildID The {@link String guildID} that contains the {@link String voiceChannelID}.
+     * @param voiceChannelID The {@link String voiceChannelID} to bind to.
+     * @param roleID The {@link String roleID} to bind to the {@link String voiceChannelID}.
+     * @return True, if the {@link String roleID} was successfully bound to the {@link String voiceChannelID}.
      */
     @NotNull
-    public Boolean bind(@NotNull String guildID, @NotNull String voiceChannelID, @NotNull String roleID) {
-        createIfNotExists(guildID, voiceChannelID);
+    public Boolean bindRoleToVoiceChannel(@NotNull String guildID, @NotNull String voiceChannelID, @NotNull String roleID) {
+        try {
+            VoiceChannelBind voiceChannelBind = new VoiceChannelBind(voiceChannelID, roleID);
 
-        if (!guildVoiceBinds.get(guildID).get(voiceChannelID).contains(roleID)) {
+            CafeBot.getCafeAPI().voiceChannelBinds().addVoiceChannelBind(guildID, voiceChannelBind);
 
-            Connection connection = CafeBot.getSQLServer().getConnection();
-            String arguments = "INSERT INTO cafeBot.voice_channel_role_binds (guild_id, voice_channel_id, role_id) VALUES (?,?,?);";
-
-            try {
-                PreparedStatement statement = connection.prepareStatement(arguments);
-                statement.setLong(1, Long.parseLong(guildID));
-                statement.setLong(2, Long.parseLong(voiceChannelID));
-                statement.setLong(3, Long.parseLong(roleID));
-                statement.execute();
-                guildVoiceBinds.get(guildID).get(voiceChannelID).add(roleID);
-                return true;
-            } catch (SQLException e) {
-                CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Binding Role to Voice Channel: " + e.getMessage(), e);
-                return false;
+            if (!guildVoiceBinds.containsKey(guildID)) {
+                guildVoiceBinds.put(guildID, new ArrayList<>());
             }
 
-        }
-        return false;
-    }
-
-    /**
-     * Unbind a {@link net.dv8tion.jda.api.entities.Role Role} from a specified {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel}.
-     * @param guildID The ID of the {@link net.dv8tion.jda.api.entities.Guild Guild} to remove the {@link net.dv8tion.jda.api.entities.Role Role} from.
-     * @param voiceChannelID The ID of the {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel} in the {@link net.dv8tion.jda.api.entities.Guild Guild}.
-     * @param roleID The ID of the {@link net.dv8tion.jda.api.entities.Role Role} in the specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
-     * @return Whether or not unbinding it was successful.
-     */
-    @NotNull
-    public Boolean unBind(@NotNull String guildID, @NotNull String voiceChannelID, @NotNull String roleID) {
-
-        if (!guildVoiceBinds.get(guildID).get(voiceChannelID).contains(roleID)) {
-            return false;
-        }
-
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "DELETE FROM cafeBot.voice_channel_role_binds WHERE guild_id = (?) AND voice_channel_id = (?) AND role_id = (?);";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(guildID));
-            statement.setLong(2, Long.parseLong(voiceChannelID));
-            statement.setLong(3, Long.parseLong(roleID));
-            statement.execute();
-            guildVoiceBinds.get(guildID).get(voiceChannelID).remove(roleID);
+            guildVoiceBinds.get(guildID).add(voiceChannelBind);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Un-Binding Role from Voice Channel: " + e.getMessage(), e);
+        } catch (ConflictException e) {
+            return false;
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Updating Bind: " + e.getMessage(), e);
             return false;
         }
+    }
+
+    /**
+     * Unbinds a {@link String roleID} from a specified {@link String voiceChannelID}.
+     * @param guildID The {@link String guildID} containing the {@link String voiceChannelID}.
+     * @param voiceChannelID The {@link String voiceChannelID} to remove the {@link String roleID} from.
+     * @param roleID The {@link String roleID} to remove.
+     * @return True, if the {@link String roleID} was successfully unbound from the {@link String voiceChannelID}.
+     */
+    @NotNull
+    public Boolean unBindRoleFromVoiceChannel(@NotNull String guildID, @NotNull String voiceChannelID, @NotNull String roleID) {
+
+        try {
+            CafeBot.getCafeAPI().voiceChannelBinds().deleteVoiceChannelBind(guildID, new VoiceChannelBind(voiceChannelID, roleID));
+
+            if (guildVoiceBinds.containsKey(guildID)) {
+                ArrayList<VoiceChannelBind> tempBindList = new ArrayList<>(guildVoiceBinds.get(guildID));
+                tempBindList.forEach((bind) -> {
+                    guildVoiceBinds.get(guildID).remove(bind);
+                });
+            }
+
+            return true;
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Removing Bind: " + e.getMessage(), e);
+            return false;
+        }
+
     }
 
 }
