@@ -23,11 +23,25 @@ public class GuildWelcomeTest {
         // Makes sure that the amount of guilds in the guild's welcome is more than 0.
         Assertions.assertTrue(cafeAPI.welcomes().getAllGuildWelcomes().size() > 0);
 
+        // Makes sure that the current welcome is set properly.
+        Assertions.assertTrue(cafeAPI.welcomes().updateGuildWelcome(new GuildWelcome(
+                "798830792938881024",
+                "Welcome, {user} to the bot testing server!\\nI hope you enjoy your stay! :heart:\\nMake sure to...\\n Check out #polls,\\nCheck out #logger,\\n and Check out #cafebot-beta-log!",
+                "https://i.pinimg.com/originals/3f/33/75/3f3375eaef9ed7529d0e1bb5b63a814a.gif",
+                "https://i.pinimg.com/originals/3f/33/75/3f3375eaef9ed7529d0e1bb5b63a814a.gif",
+                null
+        )));
+
+        // Makes sure that the message is null.
+        Assertions.assertNull(cafeAPI.welcomes().getGuildWelcome("798830792938881024").getMessage());
+
         // Makes sure that the first guild is equal to the home guild ID.
         Assertions.assertEquals("798830792938881024", cafeAPI.welcomes().getAllGuildWelcomes().get(0).getGuildID());
 
         // Makes sure that the description of the retrieved guild is "test description"
-        Assertions.assertEquals("test description", cafeAPI.welcomes().getGuildWelcome("798830792938881024").getDescription());
+        Assertions.assertEquals(
+                "Welcome, {user} to the bot testing server!\\nI hope you enjoy your stay! :heart:\\nMake sure to...\\n Check out #polls,\\nCheck out #logger,\\n and Check out #cafebot-beta-log!",
+                cafeAPI.welcomes().getGuildWelcome("798830792938881024").getDescription());
 
         // Makes sure that this throws a NotFoundException as the guild "bruhmoment" does not exist.
         Assertions.assertThrows(NotFoundException.class, () -> {

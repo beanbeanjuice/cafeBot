@@ -44,7 +44,6 @@ import com.beanbeanjuice.utility.sections.fun.poll.PollHandler;
 import com.beanbeanjuice.utility.sections.fun.raffle.RaffleHandler;
 import com.beanbeanjuice.utility.sections.moderation.voicechat.VoiceChatListener;
 import com.beanbeanjuice.utility.sections.moderation.voicechat.VoiceChatRoleBindHandler;
-import com.beanbeanjuice.utility.sections.moderation.welcome.WelcomeHandler;
 import com.beanbeanjuice.utility.sections.music.custom.CustomSongManager;
 import com.beanbeanjuice.utility.sections.social.vent.VentHandler;
 import com.beanbeanjuice.utility.sql.SQLServer;
@@ -154,7 +153,6 @@ public class CafeBot {
     private static WinStreakHandler winStreakHandler;
 
     // Welcome Stuff
-    private static WelcomeHandler welcomeHandler;
     private static WelcomeListener welcomeListener;
 
     // Song Stuff
@@ -393,7 +391,6 @@ public class CafeBot {
         connectFourHandler = new ConnectFourHandler();
         winStreakHandler = new WinStreakHandler();
 
-        welcomeHandler = new WelcomeHandler();
         welcomeListener = new WelcomeListener();
         jda.addEventListener(welcomeListener);
 
@@ -493,14 +490,6 @@ public class CafeBot {
     @NotNull
     public static String getBotUserAgent() {
         return BOT_USER_AGENT;
-    }
-
-    /**
-     * @return The current {@link WelcomeHandler}.
-     */
-    @NotNull
-    public static WelcomeHandler getWelcomeHandler() {
-        return welcomeHandler;
     }
 
     /**
