@@ -1,15 +1,15 @@
 package com.beanbeanjuice.utility.sections.cafe;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
-import com.beanbeanjuice.cafeapi.cafebot.words.Word;
-import com.beanbeanjuice.cafeapi.exception.AuthorizationException;
-import com.beanbeanjuice.cafeapi.exception.CafeException;
-import com.beanbeanjuice.cafeapi.exception.ConflictException;
-import com.beanbeanjuice.cafeapi.exception.ResponseException;
-import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
+import io.github.beanbeanjuice.cafeapi.cafebot.words.Word;
+import io.github.beanbeanjuice.cafeapi.exception.AuthorizationException;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
+import io.github.beanbeanjuice.cafeapi.exception.ResponseException;
+import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

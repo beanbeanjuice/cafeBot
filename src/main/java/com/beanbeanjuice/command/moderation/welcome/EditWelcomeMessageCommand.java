@@ -1,15 +1,15 @@
 package com.beanbeanjuice.command.moderation.welcome;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.cafeapi.cafebot.welcomes.GuildWelcome;
-import com.beanbeanjuice.cafeapi.exception.CafeException;
-import com.beanbeanjuice.cafeapi.exception.ConflictException;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import io.github.beanbeanjuice.cafeapi.cafebot.welcomes.GuildWelcome;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +52,7 @@ public class EditWelcomeMessageCommand implements ICommand {
     }
 
     /**
-     * Sets the {@link GuildWelcome} in the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Sets the {@link GuildWelcome} in the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      * @param guildWelcome The {@link GuildWelcome} to set.
      * @return True, if the {@link GuildWelcome} was set successfully.
      */

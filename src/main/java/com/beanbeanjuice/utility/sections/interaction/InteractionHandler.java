@@ -1,11 +1,11 @@
 package com.beanbeanjuice.utility.sections.interaction;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
-import com.beanbeanjuice.cafeapi.exception.CafeException;
-import com.beanbeanjuice.cafeapi.exception.ConflictException;
-import com.beanbeanjuice.cafeapi.exception.NotFoundException;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import io.github.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
+import io.github.beanbeanjuice.cafeapi.exception.NotFoundException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 public class InteractionHandler {
 
     /**
-     * Retrieves a random image {@link String URL} from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Retrieves a random image {@link String URL} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      * @param type The {@link Interaction type} of image.
      * @return The {@link String URL} of the image.
      */

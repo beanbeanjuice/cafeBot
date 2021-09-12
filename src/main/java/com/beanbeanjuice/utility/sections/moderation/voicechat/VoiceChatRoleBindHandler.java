@@ -1,15 +1,12 @@
 package com.beanbeanjuice.utility.sections.moderation.voicechat;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.cafeapi.CafeAPI;
-import com.beanbeanjuice.cafeapi.cafebot.voicebinds.VoiceChannelBind;
-import com.beanbeanjuice.cafeapi.exception.CafeException;
-import com.beanbeanjuice.cafeapi.exception.ConflictException;
-import com.beanbeanjuice.command.moderation.voicebind.VoiceRoleBindCommand;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import io.github.beanbeanjuice.cafeapi.cafebot.voicebinds.VoiceChannelBind;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -58,7 +55,7 @@ public class VoiceChatRoleBindHandler {
     }
 
     /**
-     * Retrieves all {@link VoiceChannelBind} in the {@link CafeAPI} for a specified {@link String guildID}.
+     * Retrieves all {@link VoiceChannelBind} in the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI} for a specified {@link String guildID}.
      * @param guildID The {@link String guildID} to look for.
      * @return The {@link HashMap} with keys of {@link String voiceChannelID} and a value of {@link ArrayList} of {@link String roleID}.
      */

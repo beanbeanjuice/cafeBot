@@ -1,6 +1,5 @@
 package com.beanbeanjuice;
 
-import com.beanbeanjuice.cafeapi.CafeAPI;
 import com.beanbeanjuice.command.cafe.*;
 import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.games.*;
@@ -49,6 +48,7 @@ import com.beanbeanjuice.utility.sections.social.vent.VentHandler;
 import com.beanbeanjuice.utility.sql.SQLServer;
 import com.beanbeanjuice.utility.sections.twitch.TwitchHandler;
 import com.wrapper.spotify.SpotifyApi;
+import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;

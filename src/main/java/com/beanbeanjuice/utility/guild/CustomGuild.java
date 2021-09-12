@@ -130,7 +130,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setAIState(@NotNull Boolean aiState) {
-        if (CafeBot.getGuildHandler().updateAiResponse(guildID, aiState)) {
+        if (CafeBot.getGuildHandler().updateAIResponse(guildID, aiState)) {
             this.aiState = aiState;
             return true;
         }

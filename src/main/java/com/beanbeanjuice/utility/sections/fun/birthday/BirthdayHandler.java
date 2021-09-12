@@ -1,12 +1,12 @@
 package com.beanbeanjuice.utility.sections.fun.birthday;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday;
-import com.beanbeanjuice.cafeapi.cafebot.birthdays.BirthdayMonth;
-import com.beanbeanjuice.cafeapi.exception.CafeException;
-import com.beanbeanjuice.cafeapi.exception.NotFoundException;
-import com.beanbeanjuice.cafeapi.exception.TeaPotException;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import io.github.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday;
+import io.github.beanbeanjuice.cafeapi.cafebot.birthdays.BirthdayMonth;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.NotFoundException;
+import io.github.beanbeanjuice.cafeapi.exception.TeaPotException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -116,7 +116,7 @@ public class BirthdayHandler {
     }
 
     /**
-     * Retrieves all {@link Birthday} from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Retrieves all {@link Birthday} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      */
     private void getAllBirthdays() {
         try {
@@ -128,7 +128,7 @@ public class BirthdayHandler {
     }
 
     /**
-     * Removes a {@link Birthday} from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Removes a {@link Birthday} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      * @param userID The {@link String userID} of the {@link Birthday} to remove.
      * @return True, if the {@link Birthday} was removed successfully.
      */

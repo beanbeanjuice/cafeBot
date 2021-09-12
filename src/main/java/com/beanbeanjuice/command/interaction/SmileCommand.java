@@ -1,13 +1,12 @@
 package com.beanbeanjuice.command.interaction;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import com.beanbeanjuice.utility.sections.interaction.Interaction;
+import io.github.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
