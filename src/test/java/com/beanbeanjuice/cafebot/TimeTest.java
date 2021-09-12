@@ -14,7 +14,7 @@ public class TimeTest {
     public void testDefaultTime() {
         Time t = new Time(Calendar.getInstance(TimeZone.getDefault()));
 
-        System.out.println(t.toString());
+        System.out.println(t);
     }
 
     @Test
