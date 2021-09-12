@@ -130,7 +130,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setAIState(@NotNull Boolean aiState) {
-        if (CafeBot.getGuildHandler().updateAIResponse(guildID, aiState)) {
+        if (CafeBot.getGuildHandler().setAIState(guildID, aiState)) {
             this.aiState = aiState;
             return true;
         }
@@ -156,7 +156,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setVentingChannelID(@NotNull String ventingChannelID) {
-        if (CafeBot.getGuildHandler().updateVentingChannelID(guildID, ventingChannelID)) {
+        if (CafeBot.getGuildHandler().setVentingChannelID(guildID, ventingChannelID)) {
             customChannelIDs.put(CustomChannel.VENTING, ventingChannelID);
             return true;
         }
@@ -208,7 +208,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setLogChannelID(@NotNull String logChannelID) {
-        if (CafeBot.getGuildHandler().updateLogChannelID(guildID, logChannelID)) {
+        if (CafeBot.getGuildHandler().setLogChannelID(guildID, logChannelID)) {
             customChannelIDs.put(CustomChannel.LOG, logChannelID);
             return true;
         }
@@ -234,7 +234,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setWelcomeChannelID(@NotNull String welcomeChannelID) {
-        if (CafeBot.getGuildHandler().updateWelcomeChannelID(guildID, welcomeChannelID)) {
+        if (CafeBot.getGuildHandler().setWelcomeChannelID(guildID, welcomeChannelID)) {
             customChannelIDs.put(CustomChannel.WELCOME, welcomeChannelID);
             return true;
         }
@@ -382,7 +382,7 @@ public class CustomGuild {
     /**
      * Sets the {@link Boolean} for if the {@link Guild} should be notified on an update.
      * @param answer The {@link Boolean} answer.
-     * @return Whether or not updating it was successful.
+     * @return True, if updating it was successful.
      */
     @NotNull
     public Boolean setNotifyOnUpdate(@NotNull Boolean answer) {
@@ -403,18 +403,8 @@ public class CustomGuild {
 
     /**
      * Sets the Live Notifications {@link Role} ID for the {@link Guild}.
-     * @param role The {@link Role} for the Live Notifications {@link Role}.
-     * @return Whether or not it was successful.
-     */
-    @NotNull
-    public Boolean setLiveNotificationsRole(@NotNull Role role) {
-        return setLiveNotificationsRoleID(role.getId());
-    }
-
-    /**
-     * Sets the Live Notifications {@link Role} ID for the {@link Guild}.
      * @param roleID The ID for the Live Notifications {@link Role}.
-     * @return Whether or not it was successful.
+     * @return True, if it was successful.
      */
     @NotNull
     public Boolean setLiveNotificationsRoleID(@NotNull String roleID) {
@@ -504,7 +494,7 @@ public class CustomGuild {
     @NotNull
     public Boolean setMutedRoleID(String mutedRoleID) {
 
-        if (CafeBot.getGuildHandler().updateGuildMutedRole(guildID, mutedRoleID)) {
+        if (CafeBot.getGuildHandler().setMutedRoleID(guildID, mutedRoleID)) {
             this.mutedRoleID = mutedRoleID;
             return true;
         }
@@ -518,7 +508,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setModeratorRoleID(@NotNull String moderatorRoleID) {
-        if (CafeBot.getGuildHandler().updateGuildModeratorRole(guildID, moderatorRoleID)) {
+        if (CafeBot.getGuildHandler().setModeratorRoleID(guildID, moderatorRoleID)) {
             this.moderatorRoleID = moderatorRoleID;
             return true;
         }
@@ -548,7 +538,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setPrefix(String newPrefix) {
-        if (CafeBot.getGuildHandler().updateGuildPrefix(guildID, newPrefix)) {
+        if (CafeBot.getGuildHandler().setPrefix(guildID, newPrefix)) {
             this.prefix = newPrefix;
             return true;
         }
@@ -627,7 +617,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean updateTwitchDiscordChannel(String liveChannelID) {
-        if (CafeBot.getGuildHandler().updateTwitchChannelID(guildID, liveChannelID)) {
+        if (CafeBot.getGuildHandler().setTwitchChannelID(guildID, liveChannelID)) {
             customChannelIDs.put(CustomChannel.LIVE, liveChannelID);
             return true;
         }
