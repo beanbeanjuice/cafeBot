@@ -1,9 +1,8 @@
-package cafeapi;
+package io.github.beanbeanjuice.cafeapi;
 
-import com.beanbeanjuice.cafeapi.CafeAPI;
-import com.beanbeanjuice.cafeapi.cafebot.raffles.Raffle;
-import com.beanbeanjuice.cafeapi.exception.ConflictException;
-import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
+import io.github.beanbeanjuice.cafeapi.cafebot.raffles.Raffle;
+import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
+import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

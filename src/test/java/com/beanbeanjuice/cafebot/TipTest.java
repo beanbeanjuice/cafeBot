@@ -1,3 +1,5 @@
+package com.beanbeanjuice.cafebot;
+
 import com.beanbeanjuice.cafeapi.cafebot.words.Word;
 import com.beanbeanjuice.utility.sections.cafe.ServeHandler;
 import org.junit.jupiter.api.Assertions;

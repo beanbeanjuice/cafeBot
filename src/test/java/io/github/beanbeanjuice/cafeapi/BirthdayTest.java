@@ -1,10 +1,9 @@
-package cafeapi;
+package io.github.beanbeanjuice.cafeapi;
 
-import com.beanbeanjuice.cafeapi.CafeAPI;
-import com.beanbeanjuice.cafeapi.cafebot.birthdays.BirthdayMonth;
-import com.beanbeanjuice.cafeapi.exception.ConflictException;
-import com.beanbeanjuice.cafeapi.exception.NotFoundException;
-import com.beanbeanjuice.cafeapi.exception.TeaPotException;
+import io.github.beanbeanjuice.cafeapi.cafebot.birthdays.BirthdayMonth;
+import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
+import io.github.beanbeanjuice.cafeapi.exception.NotFoundException;
+import io.github.beanbeanjuice.cafeapi.exception.TeaPotException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,6 @@
-package cafeapi;
+package io.github.beanbeanjuice.cafeapi;
 
-import com.beanbeanjuice.cafeapi.CafeAPI;
-import com.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
+import io.github.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
