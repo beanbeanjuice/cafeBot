@@ -413,6 +413,7 @@ public class CafeBot {
         SpringApplication.run(CafeBot.class, args);
     }
 
+    @NotNull
     public static CafeAPI getCafeAPI() {
         return cafeAPI;
     }
@@ -606,7 +607,7 @@ public class CafeBot {
     /**
      * @return The current {@link SpotifyApi}.
      */
-    @Nullable
+    @NotNull
     public static SpotifyApi getSpotifyApi() {
         return spotifyApi;
     }
@@ -638,7 +639,7 @@ public class CafeBot {
     /**
      * @return The current {@link GeneralHelper}.
      */
-    @Nullable
+    @NotNull
     public static GeneralHelper getGeneralHelper() {
         return generalHelper;
     }
@@ -646,7 +647,7 @@ public class CafeBot {
     /**
      * @return The current {@link GuildHandler}.
      */
-    @Nullable
+    @NotNull
     public static GuildHandler getGuildHandler() {
         return guildHandler;
     }
@@ -670,7 +671,7 @@ public class CafeBot {
     /**
      * @return The current {@link LogManager}.
      */
-    @Nullable
+    @NotNull
     public static LogManager getLogManager() {
         return logManager;
     }
@@ -678,7 +679,7 @@ public class CafeBot {
     /**
      * @return The current {@link SQLServer}.
      */
-    @Nullable
+    @NotNull
     public static SQLServer getSQLServer() {
         return sqlServer;
     }
@@ -734,7 +735,7 @@ public class CafeBot {
     /**
      * @return The current {@link CommandManager}.
      */
-    @Nullable
+    @NotNull
     public static CommandManager getCommandManager() {
         return commandManager;
     }

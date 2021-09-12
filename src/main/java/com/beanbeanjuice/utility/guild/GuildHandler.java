@@ -5,11 +5,8 @@ import com.beanbeanjuice.utility.logger.LogLevel;
 import io.github.beanbeanjuice.cafeapi.cafebot.guilds.GuildInformationType;
 import io.github.beanbeanjuice.cafeapi.exception.CafeException;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,51 +29,9 @@ public class GuildHandler {
         checkGuilds();
     }
 
-//    /**
-//     * Updates the current {@link Guild} cache.
-//     */
-//    public void updateGuildCache() {
-//        guildDatabase.clear();
-//
-//        Connection connection = CafeBot.getSQLServer().getConnection();
-//        String arguments = "SELECT * FROM cafeBot.guild_information;";
-//
-//        try {
-//            Statement statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery(arguments);
-//
-//            while (resultSet.next()) {
-//                String guildID = String.valueOf(resultSet.getLong(1));
-//                String prefix = resultSet.getString(2);
-//                String moderatorRoleID = String.valueOf(resultSet.getLong(3));
-//                String twitchChannelID = String.valueOf(resultSet.getLong(4));
-//                String mutedRoleID = String.valueOf(resultSet.getLong(5));
-//                ArrayList<String> twitchChannels = getTwitchChannels(guildID);
-//                String liveNotificationsRoleID = String.valueOf(resultSet.getLong(6));
-//                Boolean notifyOnUpdate = resultSet.getBoolean(7);
-//                String updateChannelID = String.valueOf(resultSet.getLong(8));
-//                String countingChannelID = String.valueOf(resultSet.getLong(9));
-//                String pollChannelID = String.valueOf(resultSet.getLong(10));
-//                String raffleChannelID = String.valueOf(resultSet.getLong(11));
-//                String birthdayChannelID = String.valueOf(resultSet.getLong(12));
-//                String welcomeChannelID = String.valueOf(resultSet.getLong(13));
-//                String logChannelID = String.valueOf(resultSet.getLong(14));
-//                String ventingChannelID = String.valueOf(resultSet.getLong(15));
-//                Boolean aiState = resultSet.getBoolean(16);
-//                String dailyChannelID = String.valueOf(resultSet.getLong(17));
-//
-//                guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
-//                        twitchChannelID, twitchChannels, mutedRoleID,
-//                        liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
-//                        countingChannelID, pollChannelID, raffleChannelID,
-//                        birthdayChannelID, welcomeChannelID, logChannelID,
-//                        ventingChannelID, aiState, dailyChannelID));
-//            }
-//        } catch (SQLException e) {
-//            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
-//        }
-//    }
-
+    /**
+     * Updates the current {@link Guild} cache.
+     */
     public void updateGuildCache() {
         guildDatabase.clear();
 
@@ -114,34 +69,11 @@ public class GuildHandler {
         }
     }
 
-//    /**
-//     * Gets the {@link ArrayList<String>} of Twitch Channels for the {@link Guild}.
-//     * @param guildID The ID of the {@link Guild}.
-//     * @return the {@link ArrayList<String>} of Twitch Channel Names
-//     */
-//    public ArrayList<String> getTwitchChannels(String guildID) {
-//        Connection connection = CafeBot.getSQLServer().getConnection();
-//        String arguments = "SELECT * FROM cafeBot.guild_twitch WHERE guild_id = ?;";
-//
-//        try {
-//            PreparedStatement statement = connection.prepareStatement(arguments);
-//            statement.setLong(1, Long.parseLong(guildID));
-//            ResultSet resultSet = statement.executeQuery();
-//
-//            ArrayList<String> twitchNames = new ArrayList<>();
-//
-//            while (resultSet.next()) {
-//                twitchNames.add(resultSet.getString(2));
-//            }
-//
-//            return twitchNames;
-//        } catch (SQLException e) {
-//            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to retrieve twitch channels from database.", true, false);
-//            return new ArrayList<>();
-//        }
-//    }
-
-
+    /**
+     * Retrieves an {@link ArrayList} of {@link String twitchChannelName} for a specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @return The {@link ArrayList} of {@link String twitchChannelName} associated with the specified {@link String guildID}.
+     */
     @NotNull
     public ArrayList<String> getTwitchChannels(@NotNull String guildID) {
         try {
@@ -152,34 +84,16 @@ public class GuildHandler {
         }
     }
 
-//    /**
-//     * Sets the AI response behaviour for the {@link Guild}.
-//     * @param guildID The ID of the {@link Guild} to update.
-//     * @param aiEnabled The {@link Boolean} to set the ai response behaviour to.
-//     * @return Whether or not the AI response was updated successfully.
-//     */
-//    @NotNull
-//    protected Boolean updateAiResponse(@NotNull String guildID, @NotNull Boolean aiEnabled) {
-//        Connection connection = CafeBot.getSQLServer().getConnection();
-//        String arguments = "UPDATE cafeBot.guild_information SET ai_response = (?) WHERE guild_id = (?);";
-//
-//        try {
-//            PreparedStatement statement = connection.prepareStatement(arguments);
-//            statement.setBoolean(1, aiEnabled);
-//            statement.setLong(2, Long.parseLong(guildID));
-//
-//            statement.execute();
-//            return true;
-//        } catch (SQLException e) {
-//            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating AI Reponse: " + e.getMessage(), e);
-//            return false;
-//        }
-//    }
-
+    /**
+     * Sets the {@link Boolean aiState} of the {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param aiState The new {@link Boolean aiState}.
+     * @return True, if the {@link Boolean aiState} was updated successfully.
+     */
     @NotNull
-    protected Boolean updateAIResponse(@NotNull String guildID, @NotNull Boolean aiStatus) {
+    protected Boolean setAIState(@NotNull String guildID, @NotNull Boolean aiState) {
         try {
-            return CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.AI_RESPONSE, aiStatus.toString());
+            return CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.AI_RESPONSE, aiState);
         } catch (CafeException e) {
             CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating AI Response Status: " + e.getMessage(), e);
             return false;
@@ -187,227 +101,162 @@ public class GuildHandler {
     }
 
     /**
-     * Sets the daily {@link TextChannel} ID for the {@link Guild}.
-     * @param guildID The ID of the {@link Guild} to update.
-     * @param dailyChannelID The ID of the daily {@link TextChannel}.
-     * @return True of the daily {@link TextChannel} was successfully updated.
+     * Sets the {@link String dailyChannelID} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param dailyChannelID The new {@link String dailyChannelID}.
+     * @return True, if the {@link String dailyChannelID} was successfully updated.
      */
     @NotNull
     protected Boolean setDailyChannelID(@NotNull String guildID, @NotNull String dailyChannelID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information SET daily_channel_id = (?) WHERE guild_id = (?);";
-
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(dailyChannelID));
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.DAILY_CHANNEL_ID, dailyChannelID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating daily Channel: " + e.getMessage(), e);
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Daily Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Sets the birthday {@link TextChannel} ID for the {@link Guild}.
-     * @param guildID The ID of the {@link Guild} to update.
-     * @param birthdayChannelID The ID of the birthday {@link TextChannel}.
-     * @return Whether or not the birthday {@link TextChannel} ID was updated successfully in the database.
+     * Sets the {@link String birthdayChannelID} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param birthdayChannelID The new {@link String birthdayChannelID}.
+     * @return True, if the {@link String birthdayChannelID} was successfully updated.
      */
     @NotNull
     protected Boolean setBirthdayChannelID(@NotNull String guildID, @NotNull String birthdayChannelID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information SET birthday_channel_id = (?) WHERE guild_id = (?);";
-
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(birthdayChannelID));
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.BIRTHDAY_CHANNEL_ID, birthdayChannelID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Birthday Channel: " + e.getMessage(), e);
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Birthday Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Sets the {@link com.beanbeanjuice.utility.sections.fun.raffle.Raffle Raffle} {@link TextChannel} ID for the {@link Guild}.
-     * @param guildID The ID of the {@link Guild} to update.
-     * @param raffleChannelID The ID of the {@link com.beanbeanjuice.utility.sections.fun.raffle.Raffle Raffle} {@link TextChannel}.
-     * @return Whether or not the {@link com.beanbeanjuice.utility.sections.fun.raffle.Raffle Raffle} {@link TextChannel} ID was updated successfully.
+     * Sets the {@link String raffleChannelID} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param raffleChannelID The new {@link String raffleChannelID}.
+     * @return True, if the {@link String raffleChannelID} was successfully updated.
      */
     @NotNull
     protected Boolean setRaffleChannelID(@NotNull String guildID, @NotNull String raffleChannelID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information SET raffle_channel_id = (?) WHERE guild_id = (?);";
-
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(raffleChannelID));
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.RAFFLE_CHANNEL_ID, raffleChannelID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Raffle Channel: " + e.getMessage());
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Raffle Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Sets the poll {@link TextChannel} for the {@link Guild}.
-     * @param guildID The ID for the {@link Guild} to update.
-     * @param pollChannelID The ID of the {@link TextChannel} used for polls.
-     * @return Whether or not updating the poll ID was successful.
+     * Sets the {@link String pollChannelID} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param pollChannelID The new {@link String pollChannelID}.
+     * @return True, if the {@link String pollChannelID} was successfully updated.
      */
     @NotNull
     protected Boolean setPollChannelID(@NotNull String guildID, @NotNull String pollChannelID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information SET poll_channel_id = (?) WHERE guild_id = (?);";
-
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(pollChannelID));
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.POLL_CHANNEL_ID, pollChannelID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Poll Channel: " + e.getMessage());
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Poll Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Sets the counting {@link TextChannel} for the {@link Guild}.
-     * @param guildID The ID for the {@link Guild} to update.
-     * @param countingChannelID The ID of the {@link TextChannel} used for counting.
-     * @return Whether or not updating the counting ID was successful.
+     * Sets the {@link String countingChannelID} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param countingChannelID The new {@link String countingChannelID}.
+     * @return True, if the {@link String countingChannelID} was successfully updated.
      */
     @NotNull
     protected Boolean setCountingChannelID(@NotNull String guildID, @NotNull String countingChannelID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information SET counting_channel_id = (?) WHERE guild_id = (?);";
-
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(countingChannelID));
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.COUNTING_CHANNEL_ID, countingChannelID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Counting Channel: " + e.getMessage());
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Counting Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Sets the update {@link TextChannel} for the {@link Guild}.
-     * @param guildID The ID of the {@link Guild} to update.
-     * @param updateChannelID The ID of the {@link TextChannel} to send bot updates.
-     * @return Whether or not updating the update channel ID was successful.
+     * Sets the {@link String updateChannelID} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param updateChannelID The new {@link String countingChannelID}.
+     * @return True, if the {@link String countingChannelID} was successfully updated.
      */
     @NotNull
     protected Boolean setUpdateChannelID(@NotNull String guildID, @NotNull String updateChannelID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information SET update_channel_id = (?) WHERE guild_id = (?);";
-
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(updateChannelID));
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.UPDATE_CHANNEL_ID, updateChannelID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Update the Update Channel ID: " + e.getMessage());
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Counting Channel ID: " + e.getMessage(), e);
+            return true;
+        }
+    }
+
+    /**
+     * Sets the {@link Boolean notifyOnUpdate} state for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param notifyOnUpdate The new {@link Boolean notifyOnUpdate} state.
+     * @return True, if the {@link Boolean notifyOnUpdate} state was successfully updated.
+     */
+    @NotNull
+    protected Boolean setNotifyOnUpdate(@NotNull String guildID, @NotNull Boolean notifyOnUpdate) {
+        try {
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.NOTIFY_ON_UPDATE, notifyOnUpdate);
+            return true;
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Notify On Update: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Sets the {@link Boolean} for if the {@link Guild} should be notified on an update.
-     * @param guildID The ID of the {@link Guild} provided.
-     * @param answer The {@link Boolean} provided.
-     * @return Whether or not updating it was successful.
+     * Sets the {@link String liveNotificationsRoleID} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param liveNotificationsRoleID The new {@link String liveNotificationsRoleID}.
+     * @return True, if the {@link String liveNotificationsRoleID} was successfully updated.
      */
     @NotNull
-    protected Boolean setNotifyOnUpdate(@NotNull String guildID, @NotNull Boolean answer) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information SET notify_on_update = (?) WHERE guild_id = (?);";
-
+    protected Boolean setLiveNotificationsRoleID(@NotNull String guildID, @NotNull String liveNotificationsRoleID) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setBoolean(1, answer);
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.LIVE_NOTIFICATIONS_ROLE_ID, liveNotificationsRoleID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to Update the Notify On Update Parameter: " + e.getMessage());
-            return false;
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Live Notifications Role ID: " + e.getMessage(), e);
+            return true;
         }
     }
 
     /**
-     * Sets the Live Notifications {@link Role} for the {@link Guild}.
-     * @param guildID The ID of the {@link Guild}.
-     * @param roleID The ID of the Live Notifications {@link Role}.
-     * @return Whether or not it was successfully updated in the database.
+     * Sets the {@link String prefix} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param prefix The new {@link String prefix}.
+     * @return True, if the {@link String prefix} was successfully updated.
      */
     @NotNull
-    protected Boolean setLiveNotificationsRoleID(@NotNull String guildID, @NotNull String roleID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information SET live_notifications_role_id = (?) WHERE guild_id = (?);";
-
+    protected Boolean setPrefix(@NotNull String guildID, @NotNull String prefix) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(roleID));
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.PREFIX, prefix);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to Update the Live Notifications Role ID: " + e.getMessage());
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Guild Prefix: " + e.getMessage(), e);
             return false;
         }
-    }
-
-    /**
-     * Updates the prefix for a specific {@link Guild}.
-     * @param guildID The ID of the {@link Guild}.
-     * @param newPrefix The new prefix for the {@link Guild}.
-     * @return Whether or not the prefix was updated successfully.
-     */
-    @NotNull
-    protected Boolean updateGuildPrefix(@NotNull String guildID, @NotNull String newPrefix) {
-
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information SET prefix = (?) WHERE guild_id = " + guildID + ";";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setString(1, newPrefix);
-
-            statement.execute();
-            return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(CustomGuild.class, LogLevel.ERROR, "Unable to reach the SQL database.");
-            return false;
-        }
-
     }
 
     /**
      * Checks all the current {@link Guild} in the database.
      */
     public void checkGuilds() {
-
         updateGuildCache();
 
         List<Guild> guildsHasBot = CafeBot.getJDA().getGuilds();
@@ -430,47 +279,31 @@ public class GuildHandler {
         });
 
         updateGuildCache();
-
     }
 
     /**
-     * Removes a {@link Guild} from the database.
-     * @param guildID The ID of the {@link Guild}.
-     * @return Whether or not the {@link Guild} was removed successfully.
+     * Removes a specified {@link String guildID}.
+     * @param guildID The {@link String guildID} to remove.
+     * @return True, if the {@link String guildID} was successfully removed.
      */
     @NotNull
     public Boolean removeGuild(@NotNull String guildID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "DELETE FROM cafeBot.guild_information " +
-                "WHERE guild_id = (?);";
-
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(guildID));
-            statement.execute();
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Error Removing Guild: " + e.getMessage());
+            CafeBot.getCafeAPI().guildInformations().deleteGuildInformation(guildID);
+            CafeBot.getCafeAPI().guildTwitches().getGuildTwitches(guildID).forEach((channelName) -> {
+                CafeBot.getCafeAPI().guildTwitches().removeGuildTwitch(guildID, channelName);
+            });
+            return true;
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Removing Guild: " + e.getMessage(), e);
             return false;
         }
-
-        arguments = "DELETE FROM cafeBot.guild_twitch WHERE guild_id = (?);";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(guildID));
-            statement.execute();
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.WARN, "Error Removing Guild's Twitch: " + e.getMessage());
-            return false;
-        }
-
-        return true;
     }
 
     /**
      * Removes a {@link Guild} from the database.
      * @param guild The ID of the {@link Guild} to be removed.
-     * @return Whether or not the {@link Guild} was removed successfully.
+     * @return True, if the {@link Guild} was removed successfully.
      */
     @NotNull
     public Boolean removeGuild(@NotNull Guild guild) {
@@ -482,243 +315,163 @@ public class GuildHandler {
     }
 
     /**
-     * Adds a {@link Guild} to the database.
-     * @param guildID The ID of the {@link Guild} to be added.
-     * @return Whether or not the {@link Guild} was added successfully.
+     * Adds a new {@link String guildID}.
+     * @param guildID The {@link String guildID} to add.
+     * @return True, if the {@link String guildID} was successfully added.
      */
     @NotNull
     public Boolean addGuild(@NotNull String guildID) {
-
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "INSERT INTO cafeBot.guild_information " +
-                "(guild_id, prefix) " +
-                "VALUES (?,?);";
-
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(guildID));
-            statement.setString(2, CafeBot.getPrefix());
+            CafeBot.getCafeAPI().guildInformations().createGuildInformation(guildID);
 
-            statement.execute();
             guildDatabase.put(guildID, new CustomGuild(guildID, CafeBot.getPrefix(), "0",
                     "0", new ArrayList<>(), "0",
                     "0", true, "0",
                     "0", "0", "0",
                     "0", "0", "0",
                     "0", false, "0"));
+
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to add Guild to SQL database: " + e.getMessage());
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Adding Guild: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Update the log {@link TextChannel} for the specified {@link Guild}.
-     * @param guildID The ID of the {@link Guild}.
-     * @param logChannelID The ID of the {@link TextChannel}.
-     * @return Whether or not updating the log {@link TextChannel} was successful.
+     * Sets the {@link String logChannelID} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param logChannelID The new {@link String logChannelID}.
+     * @return True, if the {@link String logChannelID} was successfully updated.
      */
     @NotNull
-    protected Boolean updateLogChannelID(@NotNull String guildID, @NotNull String logChannelID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information SET log_channel_id = (?) WHERE guild_id = (?);";
-
+    protected Boolean setLogChannelID(@NotNull String guildID, @NotNull String logChannelID) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(logChannelID));
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.LOG_CHANNEL_ID, logChannelID);
             return true;
-        } catch (SQLException e) {
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Log Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Update the welcome {@link TextChannel} in the specified {@link Guild}.
-     * @param guildID The ID of the {@link Guild} to update the {@link TextChannel} in.
-     * @param welcomeChannelID The ID of the {@link TextChannel} to set the welcome {@link TextChannel} to in the {@link Guild}.
-     * @return Whether or not the welcome {@link TextChannel} ID was updated successfully.
+     * Sets the {@link String welcomeChannelID} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param welcomeChannelID The new {@link String welcomeChannelID}.
+     * @return True, if the {@link String welcomeChannelID} was successfully updated.
      */
     @NotNull
-    protected Boolean updateWelcomeChannelID(@NotNull String guildID, @NotNull String welcomeChannelID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information SET welcome_channel_id = (?) WHERE guild_id = (?);";
-
+    protected Boolean setWelcomeChannelID(@NotNull String guildID, @NotNull String welcomeChannelID) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(welcomeChannelID));
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.WELCOME_CHANNEL_ID, welcomeChannelID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Welcome Channel: " + e.getMessage(), e);
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Welcome Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Update the venting {@link TextChannel} for the specified {@link Guild}.
-     * @param guildID The ID of the {@link Guild} to update the {@link TextChannel} in.
-     * @param ventingChannelID The ID of the {@link TextChannel} to set the venting {@link TextChannel} in the {@link Guild}.
-     * @return Whether or not the venting {@link TextChannel} ID was updated successfully.
+     * Sets the {@link String ventingChannelID} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param ventingChannelID The new {@link String ventingChannelID}.
+     * @return True, if the {@link String ventingChannelID} was successfully updated.
      */
     @NotNull
-    protected Boolean updateVentingChannelID(@NotNull String guildID, @NotNull String ventingChannelID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information SET venting_channel_id = (?) WHERE guild_id = (?);";
-
+    protected Boolean setVentingChannelID(@NotNull String guildID, @NotNull String ventingChannelID) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(ventingChannelID));
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.VENTING_CHANNEL_ID, ventingChannelID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Venting Channel: " + e.getMessage(), e);
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Venting Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Updates the muted {@link Role} in the specified {@link Guild}.
-     * @param guildID The ID of the {@link Guild} to have the {@link Role} updated in.
-     * @param roleID The ID of the {@link Role} to be given to the muted {@link net.dv8tion.jda.api.entities.Member Member}.
-     * @return Whether or not updating the {@link Role} in the database was successful.
+     * Sets the {@link String mutedRoleID} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param mutedRoleID The new {@link String mutedRoleID}.
+     * @return True, if the {@link String mutedRoleID} was successfully updated.
      */
     @NotNull
-    protected Boolean updateGuildMutedRole(@NotNull String guildID, @NotNull String roleID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information " +
-                "SET muted_role_id = (?) " +
-                "WHERE guild_id = (?);";
-
+    protected Boolean setMutedRoleID(@NotNull String guildID, @NotNull String mutedRoleID) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(roleID));
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.MUTED_ROLE_ID, mutedRoleID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Muted Role ID: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Updates the moderator {@link Role} for the {@link Guild}.
-     * @param guildID The ID of the {@link Guild} to have the {@link Role} updated.
-     * @param roleID The ID of the {@link Role} to set as the moderator {@link Role}.
-     * @return Whether or not updating the moderator {@link Role} was successful.
+     * Sets the {@link String moderatorRoleID} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param moderatorRoleID The new {@link String moderatorRoleID}.
+     * @return True, if the {@link String moderatorRoleID} was successfully updated.
      */
     @NotNull
-    protected Boolean updateGuildModeratorRole(@NotNull String guildID, @NotNull String roleID) {
-
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information " +
-                "SET moderator_role_id = (?) " +
-                "WHERE guild_id = (?);";
-
+    protected Boolean setModeratorRoleID(@NotNull String guildID, @NotNull String moderatorRoleID) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(roleID));
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.MODERATOR_ROLE_ID, moderatorRoleID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Moderator Role ID: " + e.getMessage(), e);
             return false;
         }
-
     }
 
     /**
-     * Adds a twitch channel for a specified {@link Guild}.
-     * @param guildID The ID of the specified {@link Guild}.
-     * @param twitchChannel Thw twitch channel to be added.
-     * @return Whether or not adding the twitch channel was successful.
+     * Adds a {@link String twitchChannelName} to a specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param twitchChannelName The {@link String twitchChannelName} to add.
+     * @return True, if the {@link String twitchChannelName} was successfully added.
      */
     @NotNull
-    protected Boolean addTwitchChannel(@NotNull String guildID, @NotNull String twitchChannel) {
-
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "INSERT INTO cafeBot.guild_twitch " +
-                "(guild_id, twitch_channel) " +
-                "VALUES (?,?);";
-
+    protected Boolean addTwitchChannel(@NotNull String guildID, @NotNull String twitchChannelName) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(guildID));
-            statement.setString(2, twitchChannel);
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildTwitches().addGuildTwitch(guildID, twitchChannelName);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Unable to reach the SQL database.");
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Adding Twitch Channel to Guild: " + e.getMessage(), e);
             return false;
         }
-
     }
 
     /**
-     * Remove a twitch channel for a specified {@link Guild}.
-     * @param guildID The ID of the specified {@link Guild}.
-     * @param twitchChannel The twitch channel to be removed.
-     * @return Whether or not removing the twitch channel was successful.
+     * Removes a {@link String twitchChannelName} from a specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param twitchChannelName The {@link String twitchChannelName} to remove.
+     * @return True, if the {@link String twitchChannelName} was successfully removed.
      */
     @NotNull
-    protected Boolean removeTwitchChannel(@NotNull String guildID, @NotNull String twitchChannel) {
-
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "DELETE FROM cafeBot.guild_twitch " +
-                "WHERE guild_id = (?) AND twitch_channel = (?);";
-
+    protected Boolean removeTwitchChannel(@NotNull String guildID, @NotNull String twitchChannelName) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(guildID));
-            statement.setString(2, twitchChannel);
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildTwitches().removeGuildTwitch(guildID, twitchChannelName);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to reach the SQL database.");
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Removing Twitch Channel from Guild: " + e.getMessage());
             return false;
         }
-
     }
 
     /**
-     * Update the Twitch Notification Channel for the specified {@link Guild}.
-     * @param guildID The ID for the {@link Guild} specified.
-     * @param textChannelID The ID for the {@link TextChannel} specified.
-     * @return Whether or not updating was successful.
+     * Sets the {@link String twitchChannelID} for the specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param twitchChannelID The new {@link String twitchChannelID}.
+     * @return True, if the {@link String twitchChannelID} was successfully updated.
      */
     @NotNull
-    public Boolean updateTwitchChannelID(@NotNull String guildID, @NotNull String textChannelID) {
-
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information " +
-                "SET twitch_channel_id = (?) " +
-                "WHERE guild_id = (?);";
-
+    protected Boolean setTwitchChannelID(@NotNull String guildID, @NotNull String twitchChannelID) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(textChannelID));
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
+            CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.TWITCH_CHANNEL_ID, twitchChannelID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to reach the SQL database.");
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Twitch Channel ID: " + e.getMessage(), e);
             return false;
         }
-
     }
 
     /**
