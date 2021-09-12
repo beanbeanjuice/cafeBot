@@ -1,12 +1,12 @@
 package com.beanbeanjuice.utility.helper.api;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.cafeapi.exception.CafeException;
 import com.beanbeanjuice.utility.guild.CustomGuild;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;

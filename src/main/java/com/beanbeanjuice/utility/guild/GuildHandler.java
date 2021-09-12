@@ -2,6 +2,8 @@ package com.beanbeanjuice.utility.guild;
 
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import io.github.beanbeanjuice.cafeapi.cafebot.guilds.GuildInformationType;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -30,98 +32,156 @@ public class GuildHandler {
         checkGuilds();
     }
 
-    /**
-     * Updates the current {@link Guild} cache.
-     */
+//    /**
+//     * Updates the current {@link Guild} cache.
+//     */
+//    public void updateGuildCache() {
+//        guildDatabase.clear();
+//
+//        Connection connection = CafeBot.getSQLServer().getConnection();
+//        String arguments = "SELECT * FROM cafeBot.guild_information;";
+//
+//        try {
+//            Statement statement = connection.createStatement();
+//            ResultSet resultSet = statement.executeQuery(arguments);
+//
+//            while (resultSet.next()) {
+//                String guildID = String.valueOf(resultSet.getLong(1));
+//                String prefix = resultSet.getString(2);
+//                String moderatorRoleID = String.valueOf(resultSet.getLong(3));
+//                String twitchChannelID = String.valueOf(resultSet.getLong(4));
+//                String mutedRoleID = String.valueOf(resultSet.getLong(5));
+//                ArrayList<String> twitchChannels = getTwitchChannels(guildID);
+//                String liveNotificationsRoleID = String.valueOf(resultSet.getLong(6));
+//                Boolean notifyOnUpdate = resultSet.getBoolean(7);
+//                String updateChannelID = String.valueOf(resultSet.getLong(8));
+//                String countingChannelID = String.valueOf(resultSet.getLong(9));
+//                String pollChannelID = String.valueOf(resultSet.getLong(10));
+//                String raffleChannelID = String.valueOf(resultSet.getLong(11));
+//                String birthdayChannelID = String.valueOf(resultSet.getLong(12));
+//                String welcomeChannelID = String.valueOf(resultSet.getLong(13));
+//                String logChannelID = String.valueOf(resultSet.getLong(14));
+//                String ventingChannelID = String.valueOf(resultSet.getLong(15));
+//                Boolean aiState = resultSet.getBoolean(16);
+//                String dailyChannelID = String.valueOf(resultSet.getLong(17));
+//
+//                guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
+//                        twitchChannelID, twitchChannels, mutedRoleID,
+//                        liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
+//                        countingChannelID, pollChannelID, raffleChannelID,
+//                        birthdayChannelID, welcomeChannelID, logChannelID,
+//                        ventingChannelID, aiState, dailyChannelID));
+//            }
+//        } catch (SQLException e) {
+//            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
+//        }
+//    }
+
     public void updateGuildCache() {
         guildDatabase.clear();
 
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM cafeBot.guild_information;";
-
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(arguments);
-
-            while (resultSet.next()) {
-                String guildID = String.valueOf(resultSet.getLong(1));
-                String prefix = resultSet.getString(2);
-                String moderatorRoleID = String.valueOf(resultSet.getLong(3));
-                String twitchChannelID = String.valueOf(resultSet.getLong(4));
-                String mutedRoleID = String.valueOf(resultSet.getLong(5));
+            CafeBot.getCafeAPI().guildInformations().getAllGuildInformation().forEach((guildID, guildInformation) -> {
+                String prefix = guildInformation.getPrefix();
+                String moderationRoleID = guildInformation.getModeratorRoleID();
+                String twitchChannelID = guildInformation.getTwitchChannelID();
                 ArrayList<String> twitchChannels = getTwitchChannels(guildID);
-                String liveNotificationsRoleID = String.valueOf(resultSet.getLong(6));
-                Boolean notifyOnUpdate = resultSet.getBoolean(7);
-                String updateChannelID = String.valueOf(resultSet.getLong(8));
-                String countingChannelID = String.valueOf(resultSet.getLong(9));
-                String pollChannelID = String.valueOf(resultSet.getLong(10));
-                String raffleChannelID = String.valueOf(resultSet.getLong(11));
-                String birthdayChannelID = String.valueOf(resultSet.getLong(12));
-                String welcomeChannelID = String.valueOf(resultSet.getLong(13));
-                String logChannelID = String.valueOf(resultSet.getLong(14));
-                String ventingChannelID = String.valueOf(resultSet.getLong(15));
-                Boolean aiState = resultSet.getBoolean(16);
-                String dailyChannelID = String.valueOf(resultSet.getLong(17));
+                String mutedRoleID = guildInformation.getMutedRoleID();
+                String liveNotificationsRoleID =  guildInformation.getLiveNotificationsRoleID();
+                Boolean notifyOnUpdate = guildInformation.getNotifyOnUpdate();
+                String updateChannelID = guildInformation.getUpdateChannelID();
+                String countingChannelID = guildInformation.getCountingChannelID();
+                String pollChannelID = guildInformation.getPollChannelID();
+                String raffleChannelID = guildInformation.getRaffleChannelID();
+                String birthdayChannelID = guildInformation.getBirthdayChannelID();
+                String welcomeChannelID = guildInformation.getWelcomeChannelID();
+                String logChannelID = guildInformation.getLogChannelID();
+                String ventingChannelID = guildInformation.getVentingChannelID();
+                Boolean aiState = guildInformation.getAiResponseStatus();
+                String dailyChannelID = guildInformation.getDailyChannelID();
 
-                guildDatabase.put(guildID, new CustomGuild(guildID, prefix, moderatorRoleID,
+                guildDatabase.put(guildID, new CustomGuild(
+                        guildID, prefix, moderationRoleID,
                         twitchChannelID, twitchChannels, mutedRoleID,
                         liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
                         countingChannelID, pollChannelID, raffleChannelID,
                         birthdayChannelID, welcomeChannelID, logChannelID,
-                        ventingChannelID, aiState, dailyChannelID));
-            }
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(GuildHandler.class, LogLevel.ERROR, "Unable to update Guild Cache: " + e.getMessage());
+                        ventingChannelID, aiState, dailyChannelID
+                ));
+            });
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Updating Custom Guild Cache: " + e.getMessage(), e);
         }
     }
 
-    /**
-     * Gets the {@link ArrayList<String>} of Twitch Channels for the {@link Guild}.
-     * @param guildID The ID of the {@link Guild}.
-     * @return the {@link ArrayList<String>} of Twitch Channel Names
-     */
-    public ArrayList<String> getTwitchChannels(String guildID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM cafeBot.guild_twitch WHERE guild_id = ?;";
+//    /**
+//     * Gets the {@link ArrayList<String>} of Twitch Channels for the {@link Guild}.
+//     * @param guildID The ID of the {@link Guild}.
+//     * @return the {@link ArrayList<String>} of Twitch Channel Names
+//     */
+//    public ArrayList<String> getTwitchChannels(String guildID) {
+//        Connection connection = CafeBot.getSQLServer().getConnection();
+//        String arguments = "SELECT * FROM cafeBot.guild_twitch WHERE guild_id = ?;";
+//
+//        try {
+//            PreparedStatement statement = connection.prepareStatement(arguments);
+//            statement.setLong(1, Long.parseLong(guildID));
+//            ResultSet resultSet = statement.executeQuery();
+//
+//            ArrayList<String> twitchNames = new ArrayList<>();
+//
+//            while (resultSet.next()) {
+//                twitchNames.add(resultSet.getString(2));
+//            }
+//
+//            return twitchNames;
+//        } catch (SQLException e) {
+//            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to retrieve twitch channels from database.", true, false);
+//            return new ArrayList<>();
+//        }
+//    }
 
+
+    @NotNull
+    public ArrayList<String> getTwitchChannels(@NotNull String guildID) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(guildID));
-            ResultSet resultSet = statement.executeQuery();
-
-            ArrayList<String> twitchNames = new ArrayList<>();
-
-            while (resultSet.next()) {
-                twitchNames.add(resultSet.getString(2));
-            }
-
-            return twitchNames;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to retrieve twitch channels from database.", true, false);
+            return CafeBot.getCafeAPI().guildTwitches().getGuildTwitches(guildID);
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Retrieving Guild Twitch: " + e.getMessage(), e);
             return new ArrayList<>();
         }
     }
 
-    /**
-     * Sets the AI response behaviour for the {@link Guild}.
-     * @param guildID The ID of the {@link Guild} to update.
-     * @param aiEnabled The {@link Boolean} to set the ai response behaviour to.
-     * @return Whether or not the AI response was updated successfully.
-     */
+//    /**
+//     * Sets the AI response behaviour for the {@link Guild}.
+//     * @param guildID The ID of the {@link Guild} to update.
+//     * @param aiEnabled The {@link Boolean} to set the ai response behaviour to.
+//     * @return Whether or not the AI response was updated successfully.
+//     */
+//    @NotNull
+//    protected Boolean updateAiResponse(@NotNull String guildID, @NotNull Boolean aiEnabled) {
+//        Connection connection = CafeBot.getSQLServer().getConnection();
+//        String arguments = "UPDATE cafeBot.guild_information SET ai_response = (?) WHERE guild_id = (?);";
+//
+//        try {
+//            PreparedStatement statement = connection.prepareStatement(arguments);
+//            statement.setBoolean(1, aiEnabled);
+//            statement.setLong(2, Long.parseLong(guildID));
+//
+//            statement.execute();
+//            return true;
+//        } catch (SQLException e) {
+//            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating AI Reponse: " + e.getMessage(), e);
+//            return false;
+//        }
+//    }
+
     @NotNull
-    protected Boolean updateAiResponse(@NotNull String guildID, @NotNull Boolean aiEnabled) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.guild_information SET ai_response = (?) WHERE guild_id = (?);";
-
+    protected Boolean updateAIResponse(@NotNull String guildID, @NotNull Boolean aiStatus) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setBoolean(1, aiEnabled);
-            statement.setLong(2, Long.parseLong(guildID));
-
-            statement.execute();
-            return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating AI Reponse: " + e.getMessage(), e);
+            return CafeBot.getCafeAPI().guildInformations().updateGuildInformation(guildID, GuildInformationType.AI_RESPONSE, aiStatus.toString());
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating AI Response Status: " + e.getMessage(), e);
             return false;
         }
     }

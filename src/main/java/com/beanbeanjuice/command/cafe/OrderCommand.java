@@ -1,9 +1,6 @@
 package com.beanbeanjuice.command.cafe;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.cafeapi.cafebot.cafe.CafeType;
-import com.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
-import com.beanbeanjuice.cafeapi.exception.*;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.cafe.CafeCategory;
 import com.beanbeanjuice.utility.sections.cafe.object.MenuItem;
@@ -12,6 +9,9 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeType;
+import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;

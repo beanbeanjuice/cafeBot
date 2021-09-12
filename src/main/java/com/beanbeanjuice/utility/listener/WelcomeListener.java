@@ -1,10 +1,10 @@
 package com.beanbeanjuice.utility.listener;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.cafeapi.cafebot.welcomes.GuildWelcome;
-import com.beanbeanjuice.cafeapi.exception.NotFoundException;
 import com.beanbeanjuice.command.moderation.welcome.EditWelcomeMessageCommand;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import io.github.beanbeanjuice.cafeapi.cafebot.welcomes.GuildWelcome;
+import io.github.beanbeanjuice.cafeapi.exception.NotFoundException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -84,14 +84,14 @@ public class WelcomeListener extends ListenerAdapter {
     }
 
     /**
-     * Retrieves the {@link GuildWelcome} from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Retrieves the {@link GuildWelcome} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      * @param guildID The {@link String guildID} for the {@link GuildWelcome}.
      * @return The {@link GuildWelcome}.
      */
     @NotNull
     public GuildWelcome getGuildWelcome(@NotNull String guildID) {
         try {
-            com.beanbeanjuice.cafeapi.cafebot.welcomes.GuildWelcome guildWelcome = CafeBot.getCafeAPI().welcomes().getGuildWelcome(guildID);
+            GuildWelcome guildWelcome = CafeBot.getCafeAPI().welcomes().getGuildWelcome(guildID);
             return new GuildWelcome(
                     guildWelcome.getGuildID(),
                     guildWelcome.getDescription(),
