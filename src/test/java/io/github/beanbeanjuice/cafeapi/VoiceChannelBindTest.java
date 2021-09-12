@@ -1,14 +1,13 @@
-package cafeapi;
+package io.github.beanbeanjuice.cafeapi;
 
-import com.beanbeanjuice.cafeapi.CafeAPI;
-import com.beanbeanjuice.cafeapi.cafebot.voicebinds.VoiceChannelBind;
-import com.beanbeanjuice.cafeapi.exception.ConflictException;
+import io.github.beanbeanjuice.cafeapi.cafebot.voicebinds.VoiceChannelBind;
+import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * A test class used to test all aspects of the {@link com.beanbeanjuice.cafeapi.cafebot.voicebinds.VoiceChannelBinds VoiceChannelBinds} module.
+ * A test class used to test all aspects of the {@link io.github.beanbeanjuice.cafeapi.cafebot.voicebinds.VoiceChannelBinds VoiceChannelBinds} module.
  *
  * @author beanbeanjuice
  */

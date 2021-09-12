@@ -1,9 +1,8 @@
-package cafeapi;
+package io.github.beanbeanjuice.cafeapi;
 
-import com.beanbeanjuice.cafeapi.CafeAPI;
-import com.beanbeanjuice.cafeapi.cafebot.guilds.GuildInformationType;
-import com.beanbeanjuice.cafeapi.exception.ConflictException;
-import com.beanbeanjuice.cafeapi.exception.NotFoundException;
+import io.github.beanbeanjuice.cafeapi.cafebot.guilds.GuildInformationType;
+import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
+import io.github.beanbeanjuice.cafeapi.exception.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,7 +53,7 @@ public class GuildInformationTest {
 
         // Makes sure notify on update is default and can be changed.
         Assertions.assertEquals(true, cafeAPI.guildInformations().getAllGuildInformation().get("816880157490675732").getNotifyOnUpdate());
-        Assertions.assertTrue(cafeAPI.guildInformations().updateGuildInformation("816880157490675732", GuildInformationType.NOTIFY_ON_UPDATE, "false"));
+        Assertions.assertTrue(cafeAPI.guildInformations().updateGuildInformation("816880157490675732", GuildInformationType.NOTIFY_ON_UPDATE, false));
         Assertions.assertEquals(false, cafeAPI.guildInformations().getGuildInformation("816880157490675732").getNotifyOnUpdate());
 
         // Makes sure the update channel ID is default and can be changed.
@@ -99,7 +98,7 @@ public class GuildInformationTest {
 
         // Makes sure the AI response status is default and can be changed.
         Assertions.assertEquals(false, cafeAPI.guildInformations().getAllGuildInformation().get("816880157490675732").getAiResponseStatus());
-        Assertions.assertTrue(cafeAPI.guildInformations().updateGuildInformation("816880157490675732", GuildInformationType.AI_RESPONSE, "1"));
+        Assertions.assertTrue(cafeAPI.guildInformations().updateGuildInformation("816880157490675732", GuildInformationType.AI_RESPONSE, true));
         Assertions.assertEquals(true, cafeAPI.guildInformations().getGuildInformation("816880157490675732").getAiResponseStatus());
 
         // Makes sure the daily channel ID is default and can be changed.
@@ -108,7 +107,7 @@ public class GuildInformationTest {
         Assertions.assertEquals("606222472274116676", cafeAPI.guildInformations().getGuildInformation("816880157490675732").getDailyChannelID());
 
         // Makes sure the guild "bruh" doesn't exist.
-        Assertions.assertThrows(NotFoundException.class, () -> cafeAPI.guildInformations().updateGuildInformation("bruh", GuildInformationType.NOTIFY_ON_UPDATE, "false"));
+        Assertions.assertThrows(NotFoundException.class, () -> cafeAPI.guildInformations().updateGuildInformation("bruh", GuildInformationType.NOTIFY_ON_UPDATE, false));
 
         // Makes sure the guild is deleted beforehand.
         Assertions.assertTrue(cafeAPI.guildInformations().deleteGuildInformation("816880157490675732"));

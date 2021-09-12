@@ -1,3 +1,5 @@
+package com.beanbeanjuice.cafebot;
+
 import com.beanbeanjuice.CafeBot;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
