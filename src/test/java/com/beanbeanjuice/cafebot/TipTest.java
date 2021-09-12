@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafebot;
 
-import com.beanbeanjuice.cafeapi.cafebot.words.Word;
 import com.beanbeanjuice.utility.sections.cafe.ServeHandler;
+import io.github.beanbeanjuice.cafeapi.cafebot.words.Word;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
