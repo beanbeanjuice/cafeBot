@@ -197,7 +197,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `welcome` - Welcome someone... for something!
 * `lick` - Lick... someone... ummm why?
 * `shush` - Shush someone if they're being too loud!
-##### 7. **MUSIC**
+##### 7. **MUSIC** - Removed because of YouTube
 * `play` - Play a song or playlist!
 * `now-playing` - Show the current song playing.
 * `pause` - Pause the current song.
