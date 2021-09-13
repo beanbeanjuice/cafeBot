@@ -1,12 +1,9 @@
-package com.beanbeanjuice.utility.helper;
+package com.beanbeanjuice.utility.helper.counting;
 
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import io.github.beanbeanjuice.cafeapi.cafebot.counting.CountingInformation;
-import io.github.beanbeanjuice.cafeapi.exception.AuthorizationException;
 import io.github.beanbeanjuice.cafeapi.exception.CafeException;
-import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
-import io.github.beanbeanjuice.cafeapi.exception.ResponseException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -16,10 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.*;
 
 /**
  * A class used for helping with counting.
@@ -27,6 +21,30 @@ import java.sql.SQLException;
  * @author beanbeanjuice
  */
 public class CountingHelper {
+
+    private HashMap<String, CountingInformation> countingInformationMap;
+
+    /**
+     * Creates a new {@link CountingHelper} class.
+     */
+    public CountingHelper() {
+        countingInformationMap = new HashMap<>();
+        cacheCountingInformation();
+    }
+
+    /**
+     * Caches the current counting information from the database.
+     */
+    public void cacheCountingInformation() {
+        CafeBot.getLogManager().log(this.getClass(), LogLevel.LOADING, "Caching Counting Information...");
+
+        try {
+            countingInformationMap = CafeBot.getCafeAPI().countingInformations().getAllCountingInformation();
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.OKAY, "Successfully Cached Counting Information.");
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Getting Guild Counting Information: " + e.getMessage(), e);
+        }
+    }
 
     /**
      * Checks the current number for the {@link Guild}.
@@ -64,6 +82,7 @@ public class CountingHelper {
 
             try {
                 CafeBot.getCafeAPI().countingInformations().updateGuildCountingInformation(guild.getId(), newCountingInformation);
+                countingInformationMap.put(guild.getId(), newCountingInformation);
             } catch (CafeException e) {
                 event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                         "Error Updating Counting Information",
@@ -89,11 +108,12 @@ public class CountingHelper {
 
         } else {
 
+            // Resetting back to 0.
             try {
-                CafeBot.getCafeAPI().countingInformations().updateGuildCountingInformation(
-                        guild.getId(),
-                        countingInformation.getHighestNumber(),
-                        0, "0");
+                CountingInformation newCountingInformation = new CountingInformation(countingInformation.getHighestNumber(), 0, "0");
+                CafeBot.getCafeAPI().countingInformations().updateGuildCountingInformation(guild.getId(), newCountingInformation);
+                countingInformationMap.put(guild.getId(), newCountingInformation);
+
             } catch (CafeException e) {
                 event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                         "Error Resetting Counting Information",
@@ -124,19 +144,20 @@ public class CountingHelper {
      */
     @Nullable
     public CountingInformation getCountingInformation(@NotNull String guildID) {
-        try {
-            CafeBot.getCafeAPI().countingInformations().createGuildCountingInformation(guildID);
-        } catch (ConflictException ignored) {}
-        catch (AuthorizationException | ResponseException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating Counting Information: " + e.getMessage(), e);
-            return null;
+        if (!countingInformationMap.containsKey(guildID)) {
+            try {
+                CafeBot.getCafeAPI().countingInformations().createGuildCountingInformation(guildID);
+
+                CountingInformation countingInformation = new CountingInformation(0, 0, "0");
+                countingInformationMap.put(guildID, countingInformation);
+                return countingInformation;
+            } catch (CafeException e) {
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating Counting Information: " + e.getMessage(), e);
+                return null;
+            }
         }
 
-        try {
-            return CafeBot.getCafeAPI().countingInformations().getGuildCountingInformation(guildID);
-        } catch (CafeException e) {
-            return null;
-        }
+        return countingInformationMap.get(guildID);
     }
 
     /**
@@ -146,22 +167,20 @@ public class CountingHelper {
      */
     @Nullable
     public Integer getCountingLeaderboardPlace(@NotNull Integer limit) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM cafeBot.counting_information WHERE counting_information.highest_number>=(?) ORDER BY counting_information.highest_number DESC;";
+        ArrayList<Integer> places = new ArrayList<>();
 
-        try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setInt(1, limit);
-            ResultSet resultSet = statement.executeQuery();
-            int count = 0;
-            while (resultSet.next()) {
-                count++;
+        countingInformationMap.forEach((guildID, countingInformation) -> {
+            if (places.contains(countingInformation.getHighestNumber())) {
+                places.add(0);
+            } else {
+                places.add(countingInformation.getHighestNumber());
             }
-            return count;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(CountingHelper.class, LogLevel.WARN, "Error Getting Leaderboard: " + e.getMessage());
-            return null;
-        }
+        });
+
+        // Sorts the places in descending order.
+        places.sort(Collections.reverseOrder());
+
+        return places.indexOf(limit) + 1;
     }
 
     /**
