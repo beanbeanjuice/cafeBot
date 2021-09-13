@@ -299,15 +299,15 @@ public class CafeBot {
 
         // Music Commands
         commandManager.addCommands(
-                new PlayCommand(),
-                new NowPlayingCommand(),
-                new PauseCommand(),
-                new QueueCommand(),
-                new RepeatCommand(),
-                new ShuffleCommand(),
-                new SkipCommand(),
-                new StopCommand(),
-                new PlayLastCommand()
+//                new PlayCommand(),
+//                new NowPlayingCommand(),
+//                new PauseCommand(),
+//                new QueueCommand(),
+//                new RepeatCommand(),
+//                new ShuffleCommand(),
+//                new SkipCommand(),
+//                new StopCommand(),
+//                new PlayLastCommand()
         );
 
         // Twitch Commands
