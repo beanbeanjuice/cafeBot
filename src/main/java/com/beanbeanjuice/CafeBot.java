@@ -30,7 +30,7 @@ import com.beanbeanjuice.utility.sections.cafe.MenuHandler;
 import com.beanbeanjuice.utility.sections.cafe.ServeHandler;
 import com.beanbeanjuice.utility.command.CommandManager;
 import com.beanbeanjuice.utility.guild.GuildHandler;
-import com.beanbeanjuice.utility.helper.CountingHelper;
+import com.beanbeanjuice.utility.helper.counting.CountingHelper;
 import com.beanbeanjuice.utility.helper.GeneralHelper;
 import com.beanbeanjuice.utility.sections.games.WinStreakHandler;
 import com.beanbeanjuice.utility.sections.games.connectfour.ConnectFourHandler;
@@ -45,7 +45,6 @@ import com.beanbeanjuice.utility.sections.moderation.voicechat.VoiceChatListener
 import com.beanbeanjuice.utility.sections.moderation.voicechat.VoiceChatRoleBindHandler;
 import com.beanbeanjuice.utility.sections.music.custom.CustomSongManager;
 import com.beanbeanjuice.utility.sections.social.vent.VentHandler;
-import com.beanbeanjuice.utility.sql.SQLServer;
 import com.beanbeanjuice.utility.sections.twitch.TwitchHandler;
 import com.wrapper.spotify.SpotifyApi;
 import io.github.beanbeanjuice.cafeapi.CafeAPI;
@@ -108,14 +107,6 @@ public class CafeBot {
     private static final String TWITCH_ACCESS_TOKEN = System.getenv("CAFEBOT_TWITCH_ACCESS_TOKEN");
     private static TwitchHandler twitchHandler;
 
-    // SQL Stuff
-    private static SQLServer sqlServer;
-    private static final String SQL_URL = System.getenv("CAFEBOT_MYSQL_URL");
-    private static final String SQL_PORT = System.getenv("CAFEBOT_MYSQL_PORT");
-    private static final String SQL_USERNAME = System.getenv("CAFEBOT_MYSQL_USERNAME");
-    private static final String SQL_PASSWORD = System.getenv("CAFEBOT_MYSQL_PASSWORD");
-    private static final boolean SQL_ENCRYPT = Boolean.parseBoolean(System.getenv("CAFEBOT_MYSQL_ENCRYPT"));
-
     // Top.GG API
     private static DiscordBotListAPI topGGAPI;
     private static final String TOPGG_ID = System.getenv("CAFEBOT_TOPGG_ID");
@@ -174,21 +165,18 @@ public class CafeBot {
 
         generalHelper = new GeneralHelper();
         logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
-        generalHelper.startCafeAPIRefreshTimer();
-
-        countingHelper = new CountingHelper();
-        twitchHandler = new TwitchHandler();
-        sqlServer = new SQLServer(SQL_URL, SQL_PORT, SQL_ENCRYPT, SQL_USERNAME, SQL_PASSWORD);
 
         // APIs
-        sqlServer.startConnection();
-        generalHelper.startMySQLRefreshTimer();
-
+        cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"));
+        generalHelper.startCafeAPIRefreshTimer();
         logManager.log(CafeBot.class, LogLevel.OKAY, "Connecting to the Top.GG API", true, false);
         topGGAPI = new DiscordBotListAPI.Builder()
                 .token(TOPGG_TOKEN)
                 .botId(TOPGG_ID)
                 .build();
+
+        countingHelper = new CountingHelper();
+        twitchHandler = new TwitchHandler();
 
         ventHandler = new VentHandler();
 
@@ -372,7 +360,7 @@ public class CafeBot {
         homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
         logManager.setLogChannel(homeGuildLogChannel);
 
-        logManager.log(this.getClass(), LogLevel.LOADING, "Enabled Discord Logging...");
+        logManager.log(this.getClass(), LogLevel.LOADING, "Enabled Discord Logging...", false, false);
 
         // Connecting to the Spotify API
         generalHelper.startSpotifyRefreshTimer();
@@ -676,62 +664,6 @@ public class CafeBot {
     @NotNull
     public static LogManager getLogManager() {
         return logManager;
-    }
-
-    /**
-     * @return The current {@link SQLServer}.
-     */
-    @NotNull
-    public static SQLServer getSQLServer() {
-        return sqlServer;
-    }
-
-    /**
-     * Set the new main {@link SQLServer}.
-     * @param newSQLServer The new {@link SQLServer} object.
-     */
-    public static void setSQLServer(@NotNull SQLServer newSQLServer) {
-        sqlServer = newSQLServer;
-    }
-
-    /**
-     * @return The current URL for the main {@link SQLServer}.
-     */
-    @NotNull
-    public static String getSQLURL() {
-        return SQL_URL;
-    }
-
-    /**
-     * @return The current port for the main {@link SQLServer}.
-     */
-    @NotNull
-    public static String getSQLPort() {
-        return SQL_PORT;
-    }
-
-    /**
-     * @return Whether or not to encrypt the connection for the main {@link SQLServer}.
-     */
-    @NotNull
-    public static Boolean getSQLEncrypt() {
-        return SQL_ENCRYPT;
-    }
-
-    /**
-     * @return The username for the main {@link SQLServer}.
-     */
-    @NotNull
-    public static String getSQLUsername() {
-        return SQL_USERNAME;
-    }
-
-    /**
-     * @return The password for the main {@link SQLServer}.
-     */
-    @NotNull
-    public static String getSQLPassword() {
-        return SQL_PASSWORD;
     }
 
     /**
