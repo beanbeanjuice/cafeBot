@@ -372,6 +372,8 @@ public class CafeBot {
         homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
         logManager.setLogChannel(homeGuildLogChannel);
 
+        logManager.log(this.getClass(), LogLevel.LOADING, "Enabled Discord Logging...");
+
         // Connecting to the Spotify API
         generalHelper.startSpotifyRefreshTimer();
 
