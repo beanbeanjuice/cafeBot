@@ -29,11 +29,11 @@ public class RemoveTwitchChannelCommand implements ICommand {
         }
 
         if (!ctx.getCustomGuild().removeTwitchChannel(args.get(0))) {
-            event.getChannel().sendMessage(notAddedEmbed()).queue();
+            event.getChannel().sendMessageEmbeds(notAddedEmbed()).queue();
             return;
         }
 
-        event.getChannel().sendMessage(successfulRemoveEmbed(args.get(0))).queue();
+        event.getChannel().sendMessageEmbeds(successfulRemoveEmbed(args.get(0))).queue();
     }
 
     @NotNull

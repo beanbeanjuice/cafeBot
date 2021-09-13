@@ -29,11 +29,11 @@ public class AddTwitchChannelCommand implements ICommand {
         }
 
         if (!ctx.getCustomGuild().addTwitchChannel(args.get(0))) {
-            event.getChannel().sendMessage(alreadyAddedEmbed()).queue();
+            event.getChannel().sendMessageEmbeds(alreadyAddedEmbed()).queue();
             return;
         }
 
-        event.getChannel().sendMessage(successfulAddEmbed(args.get(0))).queue();
+        event.getChannel().sendMessageEmbeds(successfulAddEmbed(args.get(0))).queue();
     }
 
     @NotNull
