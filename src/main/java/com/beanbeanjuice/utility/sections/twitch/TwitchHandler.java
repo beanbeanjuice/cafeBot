@@ -88,10 +88,16 @@ public class TwitchHandler {
         }
     }
 
-    //TODO: Update twitch channel cache when one is added.
+    /**
+     * Adds a link between a {@link String guildID} and a specified {@link String twitchChannel}.
+     * @param guildID The {@link String guildID} specified.
+     * @param twitchChannel The linked {@link String twitchChannel}.
+     * @return True, if the link was successfully created.
+     */
     @NotNull
     public Boolean addCache(@NotNull String guildID, @NotNull String twitchChannel) {
         twitchChannel = twitchChannel.toLowerCase();
+        addTwitchChannel(twitchChannel);
         if (!guildTwitches.containsKey(twitchChannel)) {
             guildTwitches.put(twitchChannel, new ArrayList<>());
         }
@@ -104,7 +110,12 @@ public class TwitchHandler {
         return true;
     }
 
-    //TODO: Update twitch channel cache when one is removed.
+    /**
+     * Removes the link between a specified {@link String guildID} and a specified {@link String twitchChannel}.
+     * @param guildID The {@link String guildID} specified.
+     * @param twitchChannel The linked {@link String twitchChannel}.
+     * @return True, if the link was successfully removed.
+     */
     @NotNull
     public Boolean removeCache(@NotNull String guildID, @NotNull String twitchChannel) {
         twitchChannel = twitchChannel.toLowerCase();

@@ -572,7 +572,7 @@ public class CustomGuild {
     /**
      * Add a twitch channel to the {@link Guild}.
      * @param twitchChannel The name of the twitch channel to add.
-     * @return Whether or not the twitch channel was successfully added.
+     * @return True, if the twitch channel was successfully added.
      */
     @NotNull
     public Boolean addTwitchChannel(String twitchChannel) {
@@ -585,15 +585,17 @@ public class CustomGuild {
         if (CafeBot.getGuildHandler().addTwitchChannel(guildID, twitchChannel)) {
             twitchChannels.add(twitchChannel.toLowerCase());
             CafeBot.getTwitchHandler().addTwitchChannel(twitchChannel);
-            return true;
+
+            return CafeBot.getTwitchHandler().addCache(guildID, twitchChannel);
         }
+
         return false;
     }
 
     /**
      * Removes a twitch channel from the {@link Guild}.
      * @param twitchChannel The name of the twitch channel to be removed.
-     * @return Whether or not the twitch channel was successfully removed.
+     * @return True, if the twitch channel was successfully removed.
      */
     @NotNull
     public Boolean removeTwitchChannel(String twitchChannel) {
@@ -605,15 +607,17 @@ public class CustomGuild {
 
         if (CafeBot.getGuildHandler().removeTwitchChannel(guildID, twitchChannel)) {
             twitchChannels.remove(twitchChannel.toLowerCase());
-            return true;
+
+            return CafeBot.getTwitchHandler().removeCache(guildID, twitchChannel);
         }
+
         return false;
     }
 
     /**
      * Update the twitch channel for the {@link CustomGuild}.
      * @param liveChannelID The new channel ID for the channel.
-     * @return Whether or not the channel was successfully updated.
+     * @return True, if the channel was successfully updated.
      */
     @NotNull
     public Boolean updateTwitchDiscordChannel(String liveChannelID) {
