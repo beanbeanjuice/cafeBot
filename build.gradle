@@ -111,9 +111,6 @@ dependencies {
     implementation group: 'org.discordbots', name: 'DBL-Java-Library', version: '2.0.1'
 
     implementation group: 'io.github.beanbeanjuice', name: 'cafe-api-wrapper', version: 'v1.0.0-SNAPSHOT'
-//    implementation files('libs/cafe-api-v1.0.0.jar')
-//    implementation files('libs/cafe-api-v1.0.0-sources.jar')
-//    implementation files('libs/cafe-api-v1.0.0-javadoc.jar')
 }
 
 test {

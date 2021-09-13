@@ -53,6 +53,11 @@ public class TwitchHandler {
         }
     }
 
+    /**
+     * Retrieve the {@link ArrayList} of {@link String guildID} for the specified {@link String channelName}.
+     * @param channelName The specified {@link String channelName}.
+     * @return The {@link ArrayList} of {@link String guildID}.
+     */
     @NotNull
     public ArrayList<String> getGuildsForChannel(@NotNull String channelName) {
         channelName = channelName.toLowerCase();
@@ -64,6 +69,9 @@ public class TwitchHandler {
         return new ArrayList<>();
     }
 
+    /**
+     * Caches the twitch channels for every {@link net.dv8tion.jda.api.entities.Invite.Guild Guild}.
+     */
     private void cacheTwitchChannels() {
         try {
             CafeBot.getCafeAPI().guildTwitches().getAllTwitches().forEach((guild, twitchChannels) -> {

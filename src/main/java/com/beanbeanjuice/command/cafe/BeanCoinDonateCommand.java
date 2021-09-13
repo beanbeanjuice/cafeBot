@@ -116,6 +116,13 @@ public class BeanCoinDonateCommand implements ICommand {
         }
     }
 
+    /**
+     * Creates the money {@link MessageEmbed}.
+     * @param donator The {@link CafeUser donator}.
+     * @param donatee The {@link CafeUser donatee}.
+     * @param amount The {@link Integer amount} donated.
+     * @return The created {@link MessageEmbed}.
+     */
     private MessageEmbed moneyEmbed(@NotNull CafeUser donator, @NotNull CafeUser donatee, @NotNull Integer amount) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("beanCoin Donation");

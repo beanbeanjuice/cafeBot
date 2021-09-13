@@ -56,6 +56,11 @@ public class BalanceCommand implements ICommand {
         event.getChannel().sendMessageEmbeds(otherBalanceEmbed(person, cafeUser)).queue();
     }
 
+    /**
+     * Creates the balance {@link MessageEmbed} for getting a self balance.
+     * @param cafeUser The {@link CafeUser} to get the balance of.
+     * @return The created {@link MessageEmbed}.
+     */
     public MessageEmbed selfBalanceEmbed(@NotNull CafeUser cafeUser) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("beanCoin Balance");
@@ -66,6 +71,12 @@ public class BalanceCommand implements ICommand {
         return embedBuilder.build();
     }
 
+    /**
+     * Creates the balance {@link MessageEmbed} for getting the balance of a {@link CafeUser}.
+     * @param user The {@link User}.
+     * @param cafeUser The {@link CafeUser} specified.
+     * @return The created {@link MessageEmbed}.
+     */
     public MessageEmbed otherBalanceEmbed(@NotNull User user, @NotNull CafeUser cafeUser) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("beanCoin Balance");
