@@ -119,6 +119,11 @@ public class OrderCommand implements ICommand {
         }
     }
 
+    /**
+     * Retrieves the {@link ArrayList} of {@link CafeUser} receiving the {@link MenuItem}.
+     * @param arguments The {@link ArrayList} of {@link String argument} to parse.
+     * @return The parsed {@link ArrayList} of {@link CafeUser}.
+     */
     @NotNull
     private ArrayList<CafeUser> getReceivers(@NotNull ArrayList<String> arguments) {
         ArrayList<CafeUser> receivers = new ArrayList<>();
@@ -150,6 +155,14 @@ public class OrderCommand implements ICommand {
         return receivers;
     }
 
+    /**
+     * Creates the order {@link MessageEmbed}.
+     * @param orderer The {@link CafeUser orderer}.
+     * @param receivers The {@link ArrayList} of {@link CafeUser receiver}.
+     * @param item The {@link MenuItem} being purchased.
+     * @param args The {@link ArrayList} of {@link String args} to send.
+     * @return The created {@link MessageEmbed}.
+     */
     @NotNull
     private MessageEmbed orderEmbed(@NotNull CafeUser orderer, @NotNull ArrayList<CafeUser> receivers, @NotNull MenuItem item, @NotNull ArrayList<String> args) {
         User ordererUser = CafeBot.getJDA().getUserById(orderer.getUserID());

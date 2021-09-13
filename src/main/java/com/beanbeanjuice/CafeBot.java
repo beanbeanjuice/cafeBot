@@ -360,7 +360,7 @@ public class CafeBot {
         homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
         logManager.setLogChannel(homeGuildLogChannel);
 
-        logManager.log(this.getClass(), LogLevel.LOADING, "Enabled Discord Logging...", false, false);
+        logManager.log(this.getClass(), LogLevel.LOADING, "Enabled Discord Logging...", true, true);
 
         // Connecting to the Spotify API
         generalHelper.startSpotifyRefreshTimer();
@@ -403,11 +403,18 @@ public class CafeBot {
         SpringApplication.run(CafeBot.class, args);
     }
 
+    /**
+     * @return The current {@link CafeAPI}.
+     */
     @NotNull
     public static CafeAPI getCafeAPI() {
         return cafeAPI;
     }
 
+    /**
+     * Sets the current {@link CafeAPI}.
+     * @param newCafeAPI The new {@link CafeAPI}.
+     */
     public static void setCafeAPI(@NotNull CafeAPI newCafeAPI) {
         cafeAPI = newCafeAPI;
     }
