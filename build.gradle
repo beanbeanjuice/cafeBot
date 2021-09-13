@@ -86,9 +86,6 @@ dependencies {
     // Logback
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 
-    // SQL Connection
-    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.3'
-
     // Time Stuff (For Birthdays)
     implementation group: 'joda-time', name: 'joda-time', version: '2.10.10'
 
