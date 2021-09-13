@@ -22,6 +22,7 @@ import com.beanbeanjuice.command.social.VentCommand;
 import com.beanbeanjuice.command.twitch.*;
 import com.beanbeanjuice.utility.helper.DailyChannelHelper;
 import com.beanbeanjuice.utility.helper.api.GitHubUpdateChecker;
+import com.beanbeanjuice.utility.helper.api.dictionary.DictionaryAPI;
 import com.beanbeanjuice.utility.listener.AIResponseListener;
 import com.beanbeanjuice.utility.listener.WelcomeListener;
 import com.beanbeanjuice.utility.sections.cafe.BeanCoinDonationHandler;
@@ -221,7 +222,8 @@ public class CafeBot {
                 new BotDonateCommand(),
                 new RemoveMyDataCommand(),
                 new GenerateCodeCommand(),
-                new GetBotReleaseVersionCommand()
+                new GetBotReleaseVersionCommand(),
+                new DefineCommand()
         );
 
         // Cafe Commands

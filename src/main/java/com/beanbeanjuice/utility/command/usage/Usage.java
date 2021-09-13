@@ -11,6 +11,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class used for containing {@link CommandUsage}.
@@ -143,20 +144,29 @@ public class Usage {
                     }
                 }
 
-                case TEXTCHANNEL -> {
+                case TEXT_CHANNEL -> {
                     incorrect = !isTextChannel(guild, args.get(count));
                     if (incorrect) {
                         incorrectIndex = count;
-                        errorType = CommandErrorType.TEXTCHANNEL;
+                        errorType = CommandErrorType.TEXT_CHANNEL;
                         return getErrorType();
                     }
                 }
 
-                case VOICECHANNEL -> {
+                case VOICE_CHANNEL -> {
                     incorrect = !isVoiceChannel(guild, args.get(count));
                     if (incorrect) {
                         incorrectIndex = count;
-                        errorType = CommandErrorType.VOICECHANNEL;
+                        errorType = CommandErrorType.VOICE_CHANNEL;
+                        return getErrorType();
+                    }
+                }
+
+                case LANGUAGE_CODE -> {
+                    incorrect = !isLanguageCode(args.get(count));
+                    if (incorrect) {
+                        incorrectIndex = count;
+                        errorType = CommandErrorType.LANGUAGE_CODE;
                         return getErrorType();
                     }
                 }
@@ -286,6 +296,17 @@ public class Usage {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Checks if the provided {@link String} is a language code.
+     * @param languageCode The language code specified.
+     * @return True, if the language code exists.
+     */
+    @NotNull
+    private Boolean isLanguageCode(@NotNull String languageCode) {
+        String[] languageCodes = new String[]{"en_US", "hi", "es", "fr", "ja", "ru", "en_GB", "de", "it", "ko", "pt-BR", "ar", "tr"};
+        return new ArrayList<>(List.of(languageCodes)).contains(languageCode);
     }
 
     /**

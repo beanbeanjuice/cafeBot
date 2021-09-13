@@ -129,7 +129,7 @@ public class CreateEmbedCommand implements ICommand {
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXTCHANNEL, "Channel Mention/ID", true);
+        usage.addUsage(CommandType.TEXT_CHANNEL, "Channel Mention/ID", true);
         usage.addUsage(CommandType.SENTENCE, "Embed Information from Example", true);
         return usage;
     }
