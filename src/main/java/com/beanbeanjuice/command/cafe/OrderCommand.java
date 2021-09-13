@@ -1,14 +1,17 @@
 package com.beanbeanjuice.command.cafe;
 
 import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.cafe.CafeCategory;
-import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.sections.cafe.object.MenuItem;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeType;
+import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
@@ -28,15 +31,17 @@ public class OrderCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        CafeCustomer orderer = CafeBot.getServeHandler().getCafeCustomer(user);
+        CafeUser orderer = CafeBot.getServeHandler().getCafeUser(user);
 
-        // Checking if the person who ordered is null.
         if (orderer == null) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                    "Error Getting User",
+                    "There has been an error getting the Cafe User."
+            )).queue();
             return;
         }
 
-        ArrayList<CafeCustomer> receivers = getReceivers(new ArrayList<>(args));
+        ArrayList<CafeUser> receivers = getReceivers(new ArrayList<>(args));
 
         // Checking if there are no receivers.
         if (receivers.isEmpty()) {
@@ -74,7 +79,7 @@ public class OrderCommand implements ICommand {
         // Checking if they have enough money.
         double totalPrice = receivers.size()*item.getPrice();
 
-        if (orderer.getBeanCoinAmount() < totalPrice) {
+        if (orderer.getBeanCoins() < totalPrice) {
             event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "You Are Broke",
                     "You do not have enough money to purchase " + receivers.size() + "x `" + item.getName() + "`..."
@@ -82,32 +87,46 @@ public class OrderCommand implements ICommand {
             return;
         }
 
-        // Updating the person who ordered the item(s).
-        if (!CafeBot.getMenuHandler().updateOrderer(orderer, totalPrice)) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
+        try {
+            CafeBot.getCafeAPI().cafeUsers().updateCafeUser(orderer.getUserID(), CafeType.BEAN_COINS, orderer.getBeanCoins() - totalPrice);
+            CafeBot.getCafeAPI().cafeUsers().updateCafeUser(orderer.getUserID(), CafeType.ORDERS_BOUGHT, orderer.getOrdersBought() + 1);
+        } catch (CafeException e) {
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                    "Error Updating User",
+                    e.getMessage()
+            )).queue();
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "There was an error updating the orderer: " + e.getMessage(), e);
             return;
         }
 
         // Updating the people who received the order.
-        for (CafeCustomer receiver : receivers) {
-            if (!CafeBot.getMenuHandler().updateReceiver(receiver)) {
-                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
+        for (CafeUser receiver : receivers) {
+
+            try {
+                CafeBot.getCafeAPI().cafeUsers().updateCafeUser(receiver.getUserID(), CafeType.ORDERS_RECEIVED, receiver.getOrdersReceived() + 1);
+            } catch (CafeException e) {
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Updating Receiver: " + e.getMessage(), e);
                 return;
             }
         }
 
         event.getChannel().sendMessageEmbeds(orderEmbed(orderer, receivers, item, args)).queue();
 
-        for (CafeCustomer receiver : receivers) {
+        for (CafeUser receiver : receivers) {
             if (receiver.getUserID().equals(ctx.getSelfMember().getId())) {
                 event.getMessage().reply("Awww! Thank you for buying for me! I really appreciate it ^-^").queue();
             }
         }
     }
 
+    /**
+     * Retrieves the {@link ArrayList} of {@link CafeUser} receiving the {@link MenuItem}.
+     * @param arguments The {@link ArrayList} of {@link String argument} to parse.
+     * @return The parsed {@link ArrayList} of {@link CafeUser}.
+     */
     @NotNull
-    private ArrayList<CafeCustomer> getReceivers(@NotNull ArrayList<String> arguments) {
-        ArrayList<CafeCustomer> receivers = new ArrayList<>();
+    private ArrayList<CafeUser> getReceivers(@NotNull ArrayList<String> arguments) {
+        ArrayList<CafeUser> receivers = new ArrayList<>();
         ArrayList<String> receiversIDs = new ArrayList<>();
 
         // Removes the first 2 indexes in the arguments. This is the category and item number.
@@ -122,7 +141,7 @@ public class OrderCommand implements ICommand {
                 // Checks if the receiver is already in the receiver ArrayList.
                 // This is to prevent duplicate orders.
                 if (!receiversIDs.contains(user.getId())) {
-                    CafeCustomer newReceiver = CafeBot.getServeHandler().getCafeCustomer(user);
+                    CafeUser newReceiver = CafeBot.getServeHandler().getCafeUser(user.getId());
                     receivers.add(newReceiver);
                     argumentIndex += 1;
                     receiversIDs.add(user.getId());
@@ -136,8 +155,16 @@ public class OrderCommand implements ICommand {
         return receivers;
     }
 
+    /**
+     * Creates the order {@link MessageEmbed}.
+     * @param orderer The {@link CafeUser orderer}.
+     * @param receivers The {@link ArrayList} of {@link CafeUser receiver}.
+     * @param item The {@link MenuItem} being purchased.
+     * @param args The {@link ArrayList} of {@link String args} to send.
+     * @return The created {@link MessageEmbed}.
+     */
     @NotNull
-    private MessageEmbed orderEmbed(@NotNull CafeCustomer orderer, @NotNull ArrayList<CafeCustomer> receivers, @NotNull MenuItem item, @NotNull ArrayList<String> args) {
+    private MessageEmbed orderEmbed(@NotNull CafeUser orderer, @NotNull ArrayList<CafeUser> receivers, @NotNull MenuItem item, @NotNull ArrayList<String> args) {
         User ordererUser = CafeBot.getJDA().getUserById(orderer.getUserID());
 
         EmbedBuilder embedBuilder = new EmbedBuilder();

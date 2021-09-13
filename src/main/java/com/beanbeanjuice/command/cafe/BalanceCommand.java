@@ -1,12 +1,12 @@
 package com.beanbeanjuice.command.cafe;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
@@ -25,46 +25,65 @@ public class BalanceCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
+        // Checking if there is no specified user to check for.
         if (args.size() == 0) {
-            CafeCustomer cafeCustomer = CafeBot.getServeHandler().getCafeCustomer(user);
+            CafeUser cafeUser = CafeBot.getServeHandler().getCafeUser(user);
 
-            if (cafeCustomer == null) {
-                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            if (cafeUser == null) {
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                        "Error Getting User",
+                        "There has been an error getting the Cafe User from the database. Please try again."
+                )).queue();
                 return;
             }
 
-            event.getChannel().sendMessageEmbeds(selfBalanceEmbed(cafeCustomer)).queue();
+            event.getChannel().sendMessageEmbeds(selfBalanceEmbed(cafeUser)).queue();
             return;
         }
 
+        // Getting the specified user.
         User person = CafeBot.getGeneralHelper().getUser(args.get(0));
-        CafeCustomer cafeCustomer = CafeBot.getServeHandler().getCafeCustomer(person);
+        CafeUser cafeUser = CafeBot.getServeHandler().getCafeUser(person);
 
-        if (cafeCustomer == null) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
+        if (cafeUser == null) {
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                    "Error Getting User",
+                    "There has been an error getting the Cafe User from the database. Please try again."
+            )).queue();
             return;
         }
 
-        event.getChannel().sendMessageEmbeds(otherBalanceEmbed(person, cafeCustomer)).queue();
+        event.getChannel().sendMessageEmbeds(otherBalanceEmbed(person, cafeUser)).queue();
     }
 
-    public MessageEmbed selfBalanceEmbed(@NotNull CafeCustomer cafeCustomer) {
+    /**
+     * Creates the balance {@link MessageEmbed} for getting a self balance.
+     * @param cafeUser The {@link CafeUser} to get the balance of.
+     * @return The created {@link MessageEmbed}.
+     */
+    public MessageEmbed selfBalanceEmbed(@NotNull CafeUser cafeUser) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("beanCoin Balance");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.addField("Orders Bought", cafeCustomer.getOrdersBought().toString(), true);
-        embedBuilder.addField("Orders Received", cafeCustomer.getOrdersReceived().toString(), true);
-        embedBuilder.setDescription("Your current balance is `" + CafeBot.getGeneralHelper().roundDouble(cafeCustomer.getBeanCoinAmount()) + "` bC (beanCoins)!");
+        embedBuilder.addField("Orders Bought", cafeUser.getOrdersBought().toString(), true);
+        embedBuilder.addField("Orders Received", cafeUser.getOrdersReceived().toString(), true);
+        embedBuilder.setDescription("Your current balance is `" + CafeBot.getGeneralHelper().roundDouble(cafeUser.getBeanCoins()) + "` bC (beanCoins)!");
         return embedBuilder.build();
     }
 
-    public MessageEmbed otherBalanceEmbed(@NotNull User user, @NotNull CafeCustomer cafeCustomer) {
+    /**
+     * Creates the balance {@link MessageEmbed} for getting the balance of a {@link CafeUser}.
+     * @param user The {@link User}.
+     * @param cafeUser The {@link CafeUser} specified.
+     * @return The created {@link MessageEmbed}.
+     */
+    public MessageEmbed otherBalanceEmbed(@NotNull User user, @NotNull CafeUser cafeUser) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("beanCoin Balance");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.addField("Orders Bought", cafeCustomer.getOrdersBought().toString(), true);
-        embedBuilder.addField("Orders Received", cafeCustomer.getOrdersReceived().toString(), true);
-        embedBuilder.setDescription(user.getAsMention() + " has a current balance of `$" + CafeBot.getGeneralHelper().roundDouble(cafeCustomer.getBeanCoinAmount()) + "` beanCoins!");
+        embedBuilder.addField("Orders Bought", cafeUser.getOrdersBought().toString(), true);
+        embedBuilder.addField("Orders Received", cafeUser.getOrdersReceived().toString(), true);
+        embedBuilder.setDescription(user.getAsMention() + " has a current balance of `$" + CafeBot.getGeneralHelper().roundDouble(cafeUser.getBeanCoins()) + "` beanCoins!");
         return embedBuilder.build();
     }
 

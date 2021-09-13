@@ -9,6 +9,7 @@ import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class VoiceRoleBindCommand implements ICommand {
 
         // Checking if the member is in a voice channel.
         if (!event.getMember().getVoiceState().inVoiceChannel()) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Not In Voice Channel",
                     "You must be in a voice channel to use this command."
             )).queue();
@@ -42,9 +43,9 @@ public class VoiceRoleBindCommand implements ICommand {
         String roleID = CafeBot.getGeneralHelper().getRole(event.getGuild(), args.get(0)).getId();
 
         // Checking if it has not been bound.
-        if (!CafeBot.getVoiceChatRoleBindHandler().getBoundRoles(guildID, voiceChannelID).contains(roleID)) {
-            if (CafeBot.getVoiceChatRoleBindHandler().bind(guildID, voiceChannelID, roleID)) {
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+        if (!CafeBot.getVoiceChatRoleBindHandler().getBoundRolesForChannel(guildID, voiceChannelID).contains(roleID)) {
+            if (CafeBot.getVoiceChatRoleBindHandler().bindRoleToVoiceChannel(guildID, voiceChannelID, roleID)) {
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().successEmbed(
                         "Role Bound to Voice Channel",
                         event.getGuild().getRoleById(roleID).getAsMention() + " has been successfully bound to " +
                                 event.getGuild().getVoiceChannelById(voiceChannelID).getAsMention() + "!"
@@ -55,15 +56,15 @@ public class VoiceRoleBindCommand implements ICommand {
                     for (Member voiceMember : event.getGuild().getVoiceChannelById(voiceChannelID).getMembers()) {
                         event.getGuild().addRoleToMember(voiceMember, event.getGuild().getRoleById(roleID)).queue();
                     }
-                } catch (InsufficientPermissionException e) {
-                    event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                } catch (InsufficientPermissionException | HierarchyException e) {
+                    event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                             "Error Adding Roles",
                             "There was an error adding roles to existing users: " + e.getMessage()
                     )).queue();
                 }
                 return;
             }
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Error Binding Role to Voice Channel",
                     "There was an error binding the role to the specified voice channel."
             )).queue();
@@ -71,8 +72,8 @@ public class VoiceRoleBindCommand implements ICommand {
         }
 
         // If it has been bound, remove it.
-        if (CafeBot.getVoiceChatRoleBindHandler().unBind(guildID, voiceChannelID, roleID)) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+        if (CafeBot.getVoiceChatRoleBindHandler().unBindRoleFromVoiceChannel(guildID, voiceChannelID, roleID)) {
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().successEmbed(
                     "Role Unbound from Voice Channel",
                     event.getGuild().getRoleById(roleID).getAsMention() + " has been successfully unbound from "
                             + event.getGuild().getVoiceChannelById(voiceChannelID).getAsMention() + "!"
@@ -84,7 +85,7 @@ public class VoiceRoleBindCommand implements ICommand {
                     event.getGuild().removeRoleFromMember(voiceMember, event.getGuild().getRoleById(roleID)).queue();
                 }
             } catch (InsufficientPermissionException e) {
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                         "Error Removing Roles",
                         "There was an error removing roles from existing users: " + e.getMessage()
                 )).queue();
@@ -92,7 +93,7 @@ public class VoiceRoleBindCommand implements ICommand {
             return;
         }
 
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+        event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                 "Error Unbinding Role from Voice Channel",
                 "There was an error unbinding the role from the specified voice channel."
         )).queue();
