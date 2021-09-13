@@ -51,18 +51,26 @@ public class BeanCoinDonateCommand implements ICommand {
             CafeUser donator = CafeBot.getServeHandler().getCafeUser(user);
             CafeUser donatee = CafeBot.getServeHandler().getCafeUser(CafeBot.getGeneralHelper().getUser(args.get(1)));
 
-            if (donator == null) {
-                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
-                        "Error Getting User Information",
-                        "There has been an error retrieving your user information in the database."
-                )).queue();
-                return;
-            }
-
             if (donatee == null) {
                 event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                         "Error Getting User Information",
                         "There has been an error retrieving the specified user's information in the database."
+                )).queue();
+                return;
+            }
+
+            if (donatee.getUserID().equals(user.getId())) {
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                        "Cannot Donate to Self",
+                        "You cannot donate to yourself!"
+                )).queue();
+                return;
+            }
+
+            if (donator == null) {
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                        "Error Getting User Information",
+                        "There has been an error retrieving your user information in the database."
                 )).queue();
                 return;
             }
