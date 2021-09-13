@@ -37,7 +37,9 @@ public class KissCommand implements ICommand {
 
     @Override
     public ArrayList<String> getAliases() {
-        return new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("mwah");
+        return arrayList;
     }
 
     @Override
