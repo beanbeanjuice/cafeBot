@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.*;
 
 /**
@@ -16,7 +17,7 @@ import java.util.*;
  */
 public class PollHandler {
 
-    private HashMap<String, ArrayList<Poll>> activePolls;
+    private final HashMap<String, ArrayList<Poll>> activePolls;
     private Timer pollTimer;
     private TimerTask pollTimerTask;
 
@@ -126,16 +127,17 @@ public class PollHandler {
         embedBuilder.setTitle(pollTitle);
         embedBuilder.setDescription(pollDescription);
         embedBuilder.setFooter("This poll has ended.");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
 
         StringBuilder winnersBuilder = new StringBuilder();
 
         if (winners.isEmpty()) {
             winnersBuilder.append("No one voted...");
+            embedBuilder.setColor(Color.gray);
         } else {
             for (MessageReaction.ReactionEmote emote : winners) {
                 winnersBuilder.append(emote.getEmoji()).append(" ");
             }
+            embedBuilder.setColor(Color.red);
         }
         embedBuilder.addField("Poll Results", winnersBuilder.toString(), true);
         return embedBuilder.build();

@@ -175,7 +175,7 @@ public class AddRaffleCommand implements ICommand {
         embedBuilder.setTitle(title);
         embedBuilder.addField("Raffle Details", description, false);
         embedBuilder.addField("Winner Amount", winnerAmount.toString(), false);
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(Color.green);
         if (minutes == 1) {
             embedBuilder.setFooter("This raffle will end in " + minutes + " minute from when the message was posted.");
         } else {
