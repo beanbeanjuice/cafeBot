@@ -124,11 +124,12 @@ public class TicTacToeGame {
                             if (users.contains(currentUser)) {
                                 if (getBoardEmojis().contains(r.getReactionEmote().getEmoji()) && !r.isSelf()) {
 
+                                    // Checking if the emote is part of the list and if they are allowed to use that emote.
                                     if (!parseTurn(r.getReactionEmote())) {
+                                        r.removeReaction(currentUser).queue();
                                         return;
                                     }
 
-                                    message.clearReactions(r.getReactionEmote().getEmoji()).queue();
                                     emojiListeners.remove(r.getMessageIdLong());
 
                                     if (!hasWinner) {
