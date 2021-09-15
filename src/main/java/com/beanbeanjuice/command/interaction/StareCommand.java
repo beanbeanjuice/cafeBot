@@ -21,13 +21,17 @@ public class StareCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.STARE,
+        Interaction interaction = new Interaction(InteractionType.STARE,
                 "**{sender}** *stared* at themselves!",
                 "**{sender}** *stared* at **{receiver}**!",
                 "{sender} stared at others {amount_sent} times. {receiver} was stared at {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Like what you see? :3").queue();
+        }
     }
 
     @Override

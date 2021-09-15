@@ -21,13 +21,17 @@ public class BlushCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.BLUSH,
+        Interaction interaction = new Interaction(InteractionType.BLUSH,
                 "**{sender}** *blushed*! How cute!~",
                 "**{sender}** *blushed* at **{receiver}**!",
                 "{sender} blushed at others {amount_sent} times. {receiver} was blushed at {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Aww! Blushing at me?").queue();
+        }
     }
 
     @Override

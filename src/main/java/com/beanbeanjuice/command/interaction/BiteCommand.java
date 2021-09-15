@@ -1,10 +1,12 @@
 package com.beanbeanjuice.command.interaction;
 
+import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.sections.interaction.Interaction;
 import io.github.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
 import net.dv8tion.jda.api.entities.User;
@@ -21,13 +23,20 @@ public class BiteCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.BITE,
+        Interaction interaction = new Interaction(InteractionType.BITE,
                 "**{sender}** *bit* themselves! Ow!",
                 "**{sender}** *bit* **{receiver}**! What did they do?!?!?!?",
         "{sender} bit others {amount_sent} times. {receiver} was bitten {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, ctx.getSelfMember().getId());
+        CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, user.getId());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Ow! Why would you do that to me?!?").queue();
+        }
     }
 
     @Override

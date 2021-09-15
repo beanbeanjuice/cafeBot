@@ -21,13 +21,17 @@ public class HeadPatCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.HEADPAT,
+        Interaction interaction = new Interaction(InteractionType.HEADPAT,
                 "**{sender}** *headpat* themselves! Ummm... what?",
                 "**{sender}** *headpat* **{receiver}**! <:madison_when_short:843673314990882836>",
                 "{sender} headpat others {amount_sent} times. {receiver} was headpat {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Thank you :pleading_face: :3").queue();
+        }
     }
 
     @Override

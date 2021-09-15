@@ -21,13 +21,17 @@ public class DanceCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.DANCE,
+        Interaction interaction = new Interaction(InteractionType.DANCE,
                 "**{sender}** *danced*! How cute!~ <a:wiggle:886217792578269236>",
                 "**{sender}** *danced* with **{receiver}**! <a:wiggle:886217792578269236>",
                 "{sender} danced with others {amount_sent} times. {receiver} was danced with {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("I love dancing ^-^").queue();
+        }
     }
 
     @Override

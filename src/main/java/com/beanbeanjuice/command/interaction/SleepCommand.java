@@ -21,13 +21,17 @@ public class SleepCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.SLEEP,
+        Interaction interaction = new Interaction(InteractionType.SLEEP,
                 "**{sender}** *is sleeping*! Anyone wanna join in? <:kuromi_question:841921649132568576>",
                 "**{sender}** *is sleeping* with **{receiver}**!",
                 "{sender} slept with others {amount_sent} times. {receiver} was slept with {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Sleepy times!! >~<").queue();
+        }
     }
 
     @Override

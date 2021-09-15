@@ -21,13 +21,17 @@ public class KissCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.KISS,
+        Interaction interaction = new Interaction(InteractionType.KISS,
                 "**{sender}** *kissed themselves*! You kissed your hand right **{sender}**? Right?!?",
                 "**{sender}** *kissed* **{receiver}**!",
                 "{sender} kissed others {amount_sent} times. {receiver} was kissed {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("I- :flushed:").queue();
+        }
     }
 
     @Override

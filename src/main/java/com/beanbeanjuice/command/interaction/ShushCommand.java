@@ -19,13 +19,17 @@ public class ShushCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.SHUSH,
+        Interaction interaction = new Interaction(InteractionType.SHUSH,
                 "**{sender}** *shushed* themselves! :zipper_mouth:",
                 "**{sender}** *shushed* **{receiver}**!",
                 "{sender} shushed others {amount_sent} times. {receiver} was shushed {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Ooop ~~I'm sorry I'll shush...~~").queue();
+        }
     }
 
     @Override

@@ -21,13 +21,17 @@ public class NomCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.NOM,
+        Interaction interaction = new Interaction(InteractionType.NOM,
                 "**{sender}** *nommed* themselves! DOESN'T THAT HURT? <:zerotwo_scream:841921420904497163>",
                 "**{sender}** *nommed* **{receiver}**!",
                 "{sender} nommed others {amount_sent} times. {receiver} was nommed {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Nom noms!").queue();
+        }
     }
 
     @Override

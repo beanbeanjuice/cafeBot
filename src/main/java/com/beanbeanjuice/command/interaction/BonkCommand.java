@@ -21,13 +21,17 @@ public class BonkCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.BONK,
+        Interaction interaction = new Interaction(InteractionType.BONK,
                 "**{sender}** *bonked* themselves! ~~**H O R N I B L O C K**~~",
                 "**{sender}** *bonked* **{receiver}**! They sent them to ~~**H O R N I**~~ jail!",
                 "{sender} bonked others {amount_sent} times. {receiver} was bonked {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("THAT HURTS! PLEASE?!? STOP?!?").queue();
+        }
     }
 
     @Override
