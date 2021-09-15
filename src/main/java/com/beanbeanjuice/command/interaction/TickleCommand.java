@@ -21,13 +21,17 @@ public class TickleCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.TICKLE,
+        Interaction interaction = new Interaction(InteractionType.TICKLE,
                 "**{sender}** *tickled* themselves! Ohhh... okay?",
                 "**{sender}** *tickled* **{receiver}**!",
                 "{sender} tickled others {amount_sent} times. {receiver} was tickled {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("S- STOP I am *very* ticklish...").queue();
+        }
     }
 
     @Override

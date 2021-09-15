@@ -21,13 +21,17 @@ public class CryCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.CRY,
+        Interaction interaction = new Interaction(InteractionType.CRY,
                 "**{sender}** *is crying*! Oh no! Someone come give them a hug <:stab_u:886216384864997406>...",
                 "**{sender}** *is crying* at **{receiver}**! **{receiver}**, why are they crying?",
                 "{sender} cried at others {amount_sent} times. {receiver} caused people to cry {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Ow! Why would you do that to me?!?").queue();
+        }
     }
 
     @Override

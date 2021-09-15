@@ -21,13 +21,17 @@ public class WelcomeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.WELCOME,
+        Interaction interaction = new Interaction(InteractionType.WELCOME,
                 "**{sender}** *welcomed* themselves! Awww.. won't someone besides yourself welcome you, **{sender}**?",
                 "**{sender}** *welcomed* **{receiver}**!",
                 "{sender} welcomed others {amount_sent} times. {receiver} was welcomed {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Thank you for the welcome! ^-^").queue();
+        }
     }
 
     @Override

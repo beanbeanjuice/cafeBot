@@ -21,13 +21,17 @@ public class DabCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.DAB,
+        Interaction interaction = new Interaction(InteractionType.DAB,
                 "**{sender}** *dabbed*! Umm... this isn't 2016. <:madison_moment:843672933176311808>",
                 "**{sender}** *dabbed* at **{receiver}**! <:madison_moment:843672933176311808>",
                 "{sender} dabbed at others {amount_sent} times. {receiver} was dabbed at {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("That's... kind of cringe...").queue();
+        }
     }
 
     @Override

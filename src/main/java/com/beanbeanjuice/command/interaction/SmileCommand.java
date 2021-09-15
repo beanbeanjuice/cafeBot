@@ -21,13 +21,17 @@ public class SmileCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.SMILE,
+        Interaction interaction = new Interaction(InteractionType.SMILE,
                 "**{sender}** *is smiling*!",
                 "**{sender}** *smiled* at **{receiver}**!",
                 "{sender} smiled at others {amount_sent} times. {receiver} was smiled at {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("*smiles back*").queue();
+        }
     }
 
     @Override
