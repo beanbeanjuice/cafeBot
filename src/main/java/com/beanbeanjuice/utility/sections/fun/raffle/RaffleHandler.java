@@ -20,7 +20,7 @@ import java.util.TimerTask;
  */
 public class RaffleHandler {
 
-    private HashMap<String, ArrayList<Raffle>> raffles;
+    private final HashMap<String, ArrayList<Raffle>> raffles;
     private Timer raffleTimer;
     private TimerTask raffleTimerTask;
 
@@ -127,12 +127,13 @@ public class RaffleHandler {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(title);
         embedBuilder.addField("Description", description, false);
-        embedBuilder.setColor(Color.green);
 
         if (winners.isEmpty()) {
             embedBuilder.addField("Winner", "No one entered the raffle...", false);
+            embedBuilder.setColor(Color.gray);
         } else if (winners.size() == 1) {
             embedBuilder.addField("Winner", winners.get(0).getAsMention(), false);
+            embedBuilder.setColor(Color.red);
         } else {
             StringBuilder winnerBuilder = new StringBuilder();
             for (int i = 0; i < winners.size(); i++) {
