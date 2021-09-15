@@ -17,28 +17,25 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * A command to set the muted {@link Role}.
+ * A class used for changing the countingFailure {@link Role}.
  *
  * @author beanbeanjuice
  */
-public class SetMutedRoleCommand implements ICommand {
+public class SetCountingFailureRoleCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
         if (!CafeBot.getGeneralHelper().isAdministrator(event.getMember(), event)) {
             return;
         }
 
         String argument = args.get(0).replace("<@&", "").replace(">", "");
 
-        Role role = event.getGuild().getRoleById(argument);
-
         if (args.get(0).equals("0")) {
-            if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setMutedRoleID("0")) {
+            if (CafeBot.getCountingHelper().setCountingFailureRoleID(event.getGuild().getId(), "0")) {
                 event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().successEmbed(
-                        "Removed Muted Role",
-                        "Successfully removed the muted role."
+                        "Removed Counting Failure Role",
+                        "Successfully removed the counting failure role."
                 )).queue();
                 return;
             }
@@ -46,12 +43,14 @@ public class SetMutedRoleCommand implements ICommand {
             return;
         }
 
+        Role role = event.getGuild().getRoleById(argument);
+
         if (role == null) {
             event.getChannel().sendMessageEmbeds(unknownRoleEmbed(argument)).queue();
             return;
         }
 
-        if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setMutedRoleID(role.getId())) {
+        if (!CafeBot.getCountingHelper().setCountingFailureRoleID(event.getGuild().getId(), role.getId())) {
             event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
@@ -72,37 +71,39 @@ public class SetMutedRoleCommand implements ICommand {
     private MessageEmbed successfulRoleChangeEmbed(@NotNull Role role) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setTitle("Successfully changed the Muted Role");
-        embedBuilder.setDescription("Successfully changed the muted role to " + role.getAsMention());
+        embedBuilder.setTitle("Successfully changed the Counting Failure Role");
+        embedBuilder.setDescription("Successfully changed the counting failure role to " + role.getAsMention());
         return embedBuilder.build();
     }
 
     @Override
     public String getName() {
-        return "set-muted-role";
+        return "set-counting-failure-role";
     }
 
     @Override
     public ArrayList<String> getAliases() {
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("setmutedrole");
+        arrayList.add("setcountingfailurerole");
+        arrayList.add("counting-failure-role");
+        arrayList.add("countingfailurerole");
         return arrayList;
     }
 
     @Override
     public String getDescription() {
-        return "Sets the muted role for the server.";
+        return "Sets a role to give someone when they fail counting.";
     }
 
     @Override
     public String exampleUsage(String prefix) {
-        return "`" + prefix + "setmutedrole 0` or `" + prefix + "setmutedrole @MutedRole`";
+        return "`" + prefix + "set-counting-failure-role @bad at counting` or `" + prefix + "set-counting-failure-role 0`";
     }
 
     @Override
     public Usage getUsage() {
         Usage usage = new Usage();
-        usage.addUsage(CommandType.ROLE, "Role Mention/ID", true);
+        usage.addUsage(CommandType.ROLE, "Role/0", true);
         return usage;
     }
 

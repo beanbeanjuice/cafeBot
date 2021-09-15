@@ -8,7 +8,10 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -77,7 +80,7 @@ public class CountingHelper {
             }
 
             CountingInformation newCountingInformation = new CountingInformation(
-                    highestNumber, currentNumber, event.getAuthor().getId()
+                    highestNumber, currentNumber, event.getAuthor().getId(), countingInformation.getFailureRoleID()
             );
 
             try {
@@ -110,7 +113,12 @@ public class CountingHelper {
 
             // Resetting back to 0.
             try {
-                CountingInformation newCountingInformation = new CountingInformation(countingInformation.getHighestNumber(), 0, "0");
+                CountingInformation newCountingInformation = new CountingInformation(
+                        countingInformation.getHighestNumber(),
+                        0,
+                        "0",
+                        countingInformation.getFailureRoleID()
+                );
                 CafeBot.getCafeAPI().countingInformations().updateGuildCountingInformation(guild.getId(), newCountingInformation);
                 countingInformationMap.put(guild.getId(), newCountingInformation);
 
@@ -124,6 +132,26 @@ public class CountingHelper {
 
             event.getMessage().addReaction("U+274C").queue();
             event.getChannel().sendMessageEmbeds(failedEmbed(event.getMember(), lastNumber, highestNumber)).queue();
+
+            // Giving the counting failure role.
+            Role failureRole = CafeBot.getGeneralHelper().getRole(event.getGuild(), countingInformation.getFailureRoleID());
+
+            if (failureRole != null) {
+                try {
+                    event.getGuild().addRoleToMember(event.getMember(), failureRole).queue();
+                } catch (IllegalArgumentException ignored) {}
+                catch (InsufficientPermissionException e) {
+                    event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                            "Error Giving Counting Failure Role",
+                            "I do not have permissions to change/add/remove roles :("
+                    )).queue();
+                } catch (HierarchyException e) {
+                    event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                            "Error Giving Counting Failure Role",
+                            "The role I am trying to give is higher than the roles I have :("
+                    )).queue();
+                }
+            }
         }
     }
 
@@ -148,7 +176,7 @@ public class CountingHelper {
             try {
                 CafeBot.getCafeAPI().countingInformations().createGuildCountingInformation(guildID);
 
-                CountingInformation countingInformation = new CountingInformation(0, 0, "0");
+                CountingInformation countingInformation = new CountingInformation(0, 0, "0", "0");
                 countingInformationMap.put(guildID, countingInformation);
                 return countingInformation;
             } catch (CafeException e) {
@@ -158,6 +186,35 @@ public class CountingHelper {
         }
 
         return countingInformationMap.get(guildID);
+    }
+
+    /**
+     * Sets a {@link net.dv8tion.jda.api.entities.Role countinFailureRole} for a specified {@link String guildID}.
+     * @param guildID The specified {@link String guildID}.
+     * @param countingFailureRoleID The new {@link String countingFailureRoleID}.
+     * @return True, if updated successfully.
+     */
+    @NotNull
+    public Boolean setCountingFailureRoleID(@NotNull String guildID, @NotNull String countingFailureRoleID) {
+        CountingInformation currentCountingInformation = getCountingInformation(guildID);
+        if (currentCountingInformation == null) {
+            return false;
+        }
+
+        try {
+            CountingInformation newCountingInformation = new CountingInformation(
+                    currentCountingInformation.getHighestNumber(),
+                    currentCountingInformation.getLastNumber(),
+                    currentCountingInformation.getLastUserID(),
+                    countingFailureRoleID);
+            CafeBot.getCafeAPI().countingInformations().updateGuildCountingInformation(guildID, newCountingInformation);
+
+            countingInformationMap.put(guildID, newCountingInformation);
+            return true;
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Updating Counting Failure Role: " + e.getMessage(), e);
+            return false;
+        }
     }
 
     /**
