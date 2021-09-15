@@ -21,13 +21,17 @@ public class RageCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.RAGE,
+        Interaction interaction = new Interaction(InteractionType.RAGE,
                 "**{sender}** *is raging*! You- you should calm down... <:madison_moment:843672933176311808>",
                 "**{sender}** *is raging* at **{receiver}**!",
                 "{sender} raged at others {amount_sent} times. {receiver} was raged at {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("WELL I CAN RAGE TOO IF YOU RAGE AT ME I AM THE QUEEN OF RAGING").queue();
+        }
     }
 
     @Override

@@ -21,13 +21,17 @@ public class StabCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.STAB,
+        Interaction interaction = new Interaction(InteractionType.STAB,
                 "**{sender}** *stabbed* themselves! STOP??? DON'T DO THAT IN THE CAFE?!? <:madison_pissed:842061821774004304>",
                 "**{sender}** *stabbed* **{receiver}**!",
                 "{sender} stabbed others {amount_sent} times. {receiver} was stabbed at {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Knives don't work on me.").queue();
+        }
     }
 
     @Override

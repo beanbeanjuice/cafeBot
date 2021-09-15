@@ -21,13 +21,17 @@ public class PokeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.POKE,
+        Interaction interaction = new Interaction(InteractionType.POKE,
                 "**{sender}** *poked* themselves! Why?",
                 "**{sender}** *poked* **{receiver}**!",
                 "{sender} poked others {amount_sent} times. {receiver} was poked {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Don't poke me too much or I might explode >:(").queue();
+        }
     }
 
     @Override

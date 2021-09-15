@@ -169,4 +169,18 @@ public class Interaction {
         return embedBuilder.build();
     }
 
+    /**
+     * Checks if the {@link Interaction} contains the bot.
+     * @return True, if the {@link Interaction} contains the bot.
+     */
+    @NotNull
+    public Boolean containsCafeBot() {
+        for (User user : receivers) {
+            if (user.getId().equals(CafeBot.getJDA().getSelfUser().getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -21,13 +21,17 @@ public class HmphCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.HMPH,
+        Interaction interaction = new Interaction(InteractionType.HMPH,
                 "**{sender}** *hmphed*! What's wrong **{sender}**?",
                 "**{sender}** *hmphed* at **{receiver}**!",
                 "{sender} hmphed at others {amount_sent} times. {receiver} was hmphed at {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("What did I do this time...").queue();
+        }
     }
 
     @Override

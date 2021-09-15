@@ -21,13 +21,17 @@ public class PoutCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.POUT,
+        Interaction interaction = new Interaction(InteractionType.POUT,
                 "**{sender}** *is pouting*! What's wrong **{sender}**?",
                 "**{sender}** *is pouting* at **{receiver}**!",
                 "{sender} pouted at others {amount_sent} times. {receiver} was pouted at {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Aww poor baby... why are you pouting?").queue();
+        }
     }
 
     @Override

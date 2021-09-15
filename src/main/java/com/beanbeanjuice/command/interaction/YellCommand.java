@@ -21,13 +21,17 @@ public class YellCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.YELL,
+        Interaction interaction = new Interaction(InteractionType.YELL,
                 "**{sender}** *yelled*! SHUSH... some people are trying to work! <:madison_moment:843672933176311808>",
                 "**{sender}** *yelled* at **{receiver}**!",
                 "{sender} yelled at others {amount_sent} times. {receiver} was yelled at {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Excuse me, but no yelling in the Cafe.").queue();
+        }
     }
 
     @Override

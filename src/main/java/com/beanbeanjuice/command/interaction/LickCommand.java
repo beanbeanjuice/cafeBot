@@ -21,13 +21,17 @@ public class LickCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.LICK,
+        Interaction interaction = new Interaction(InteractionType.LICK,
                 "**{sender}** *licked* themselves! You at least washed whatever you licked right?",
                 "**{sender}** *licked* **{receiver}**! :flushed:",
                 "{sender} licked others {amount_sent} times. {receiver} was licked {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("Th- that's not sanitary! B- but I don't mind...").queue();
+        }
     }
 
     @Override

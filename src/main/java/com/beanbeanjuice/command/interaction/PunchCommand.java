@@ -21,13 +21,17 @@ public class PunchCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.PUNCH,
+        Interaction interaction = new Interaction(InteractionType.PUNCH,
                 "**{sender}** *punched* themselves! STOP!!! <:madison_when_short:843673314990882836>",
                 "**{sender}** *punched* **{receiver}**!",
                 "{sender} punched others {amount_sent} times. {receiver} was punched {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("You punched a robot. Your hands are now broken.").queue();
+        }
     }
 
     @Override
