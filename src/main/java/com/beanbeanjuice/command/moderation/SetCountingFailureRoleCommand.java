@@ -83,7 +83,11 @@ public class SetCountingFailureRoleCommand implements ICommand {
 
     @Override
     public ArrayList<String> getAliases() {
-        return new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("setcountingfailurerole");
+        arrayList.add("counting-failure-role");
+        arrayList.add("countingfailurerole");
+        return arrayList;
     }
 
     @Override
