@@ -45,10 +45,6 @@ repositories {
     maven { url 'https://jitpack.io' }
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/' }
-
-    flatDir {
-        dirs 'libs'
-    }
 }
 
 dependencies {
@@ -67,7 +63,7 @@ dependencies {
     implementation group: 'net.dv8tion', name: 'JDA', version: '4.3.0_299'
 
     // Twitch Connections
-    implementation group: 'com.github.twitch4j', name: 'twitch4j', version: '1.5.0'
+    implementation group: 'com.github.twitch4j', name: 'twitch4j', version: '1.5.1'
 
     // Lava Player
     implementation group: 'com.sedmelluq', name: 'lavaplayer', version: '1.3.78'
