@@ -21,13 +21,17 @@ public class ThrowCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.THROW,
+        Interaction interaction = new Interaction(InteractionType.THROW,
                 "**{sender}** *threw* themselves! I-... how? <:bean_moment:841922879166742529>",
                 "**{sender}** *threw* **{receiver}**!",
                 "{sender} threw others {amount_sent} times. {receiver} was thrown {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("H- how were you able to pick me up?!?!?").queue();
+        }
     }
 
     @Override

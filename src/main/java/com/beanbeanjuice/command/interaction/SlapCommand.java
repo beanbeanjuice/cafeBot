@@ -21,13 +21,17 @@ public class SlapCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.SLAP,
+        Interaction interaction = new Interaction(InteractionType.SLAP,
                 "**{sender}** *slapped* themselves! DON'T DO THAT! <a:man_scream:841921434732724224>",
                 "**{sender}** *slapped* **{receiver}**!",
                 "{sender} slapped others {amount_sent} times. {receiver} was slapped {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("E- excuse me?!?!?").queue();
+        }
     }
 
     @Override

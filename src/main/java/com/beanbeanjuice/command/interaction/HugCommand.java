@@ -21,13 +21,17 @@ public class HugCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.HUG,
+        Interaction interaction = new Interaction(InteractionType.HUG,
                 "**{sender}** *hugged* themselves! Umm... how?",
                 "**{sender}** *hugged* **{receiver}**!",
                 "{sender} hugged others {amount_sent} times. {receiver} was hugged {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("UwU I love huggy wuggies").queue();
+        }
     }
 
     @Override

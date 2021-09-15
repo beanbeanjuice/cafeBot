@@ -21,13 +21,17 @@ public class CuddleCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        new Interaction(InteractionType.CUDDLE,
+        Interaction interaction = new Interaction(InteractionType.CUDDLE,
                 "**{sender}** *cuddled* themselves! That's... kind of sad... <:madison_moment:843672933176311808>",
                 "**{sender}** *cuddled* **{receiver}**! That's adorable! <a:wowowow:886217210010431508>",
                 "{sender} cuddled others {amount_sent} times. {receiver} was cuddled {amount_received} times.",
                 user,
                 args,
                 event.getChannel());
+
+        if (interaction.containsCafeBot()) {
+            event.getMessage().reply("So cute! Come here~").queue();
+        }
     }
 
     @Override
