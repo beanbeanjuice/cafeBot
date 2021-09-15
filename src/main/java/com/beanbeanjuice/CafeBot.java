@@ -324,6 +324,7 @@ public class CafeBot {
                 new SetLogChannelCommand(),
                 new SetUpdateChannelCommand(),
                 new SetCountingChannelCommand(),
+                new SetCountingFailureRoleCommand(),
                 new SetPollChannelCommand(),
                 new SetRaffleChannelCommand(),
                 new SetBirthdayChannelCommand(),
