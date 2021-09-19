@@ -4,6 +4,7 @@ import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
@@ -76,7 +77,30 @@ public class BeanCoinDonationHandler {
         if (!beanCoinDonationUsersCache.containsKey(userID)) {
             return -1L;
         }
-        return CafeBot.getGeneralHelper().compareTwoTimeStamps(new Timestamp(System.currentTimeMillis()), beanCoinDonationUsersCache.get(userID), TimestampDifference.MINUTES);
+
+        // Converts to UTC time.
+        Timestamp currentTime = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis()).toString());
+        return CafeBot.getGeneralHelper().compareTwoTimeStamps(currentTime, beanCoinDonationUsersCache.get(userID), TimestampDifference.MINUTES);
+    }
+
+    /**
+     * Adds a {@link String userID} to the {@link HashMap cache}.
+     * @param userID The specified {@link String userID}.
+     * @param endingTime The new {@link Timestamp endingTime}.
+     * @return True, if added successfully.
+     */
+    @NotNull
+    public Boolean addUser(@NotNull String userID, @NotNull Timestamp endingTime) {
+        beanCoinDonationUsersCache.put(userID, endingTime);
+        return true;
+    }
+
+    /**
+     * @return The {@link Integer cooldown} in minutes.
+     */
+    @NotNull
+    public Integer getCooldown() {
+        return MINUTES * 60000;
     }
 
 }

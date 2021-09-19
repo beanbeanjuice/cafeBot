@@ -43,7 +43,8 @@ public class BeanCoinDonateCommand implements ICommand {
         }
 
         // Checking if they CAN donate.
-        long minutesToDonate = CafeBot.getBeanCoinDonationHandler().timeUntilDonate(CafeBot.getGeneralHelper().getUser(args.get(1)).getId());
+        User donateeUser = CafeBot.getGeneralHelper().getUser(args.get(1));
+        long minutesToDonate = CafeBot.getBeanCoinDonationHandler().timeUntilDonate(donateeUser.getId());
 
         // If they can...
         if (minutesToDonate <= -1) {
@@ -106,9 +107,11 @@ public class BeanCoinDonateCommand implements ICommand {
                 return;
             }
 
-            // Updating the Donatee's Cooldown
+            // Updating the Donatee's Cooldown as well as in the cache
             try {
-                CafeBot.getCafeAPI().donationUsers().addDonationUser(donatee.getUserID(), CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis()).toString()));
+                Timestamp endingTime = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + CafeBot.getBeanCoinDonationHandler().getCooldown()).toString());
+                CafeBot.getCafeAPI().donationUsers().addDonationUser(donatee.getUserID(), endingTime);
+                CafeBot.getBeanCoinDonationHandler().addUser(donatee.getUserID(), endingTime);
             } catch (CafeException e) {
                 CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Cooldown Not Created for User `" + donatee.getUserID() + "`: " + e.getMessage(), e);
                 return;
@@ -121,6 +124,7 @@ public class BeanCoinDonateCommand implements ICommand {
                     "Donation Error",
                     "That user has a donation cooldown. They cannot be donated to for `" + (minutesToDonate + 1) + "` minute(s)."
             )).queue();
+            return;
         }
     }
 
