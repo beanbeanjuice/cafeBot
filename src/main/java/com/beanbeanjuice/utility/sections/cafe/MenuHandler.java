@@ -29,6 +29,15 @@ public class MenuHandler {
      */
     private void createMenuItems() {
 
+        // Breakfasts
+        ArrayList<MenuItem> breakfasts = new ArrayList<>();
+        breakfasts.add(new MenuItem(CafeCategory.BREAKFAST, "Normal Pancakes", 7.25, "Normal pancakes with a side of 2 eggs and 2 pieces of bacon!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/breakfasts/pancakes.jpg"));
+        breakfasts.add(new MenuItem(CafeCategory.BREAKFAST, "Chocolate Chip Pancakes", 7.5, "Chocolate chip pancakes with a side of 2 eggs and 2 pieces of bacon!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/breakfasts/chocolate_chip_pancakes.jpg"));
+        breakfasts.add(new MenuItem(CafeCategory.BREAKFAST, "Everything Omelette", 8.25, "An everything omelette! This has eggs, bacon, cheese, and so much more!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/breakfasts/omelette.jpg"));
+        breakfasts.add(new MenuItem(CafeCategory.BREAKFAST, "French Toast", 4.75, "Some french toast with maple syrup!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/breakfasts/french_toast.webp"));
+        breakfasts.add(new MenuItem(CafeCategory.BREAKFAST, "Breakfast Sandwich", 5.5, "Bacon, egg, and cheese sandwich!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/breakfasts/bacon_egg_and_cheese_sandwich.jpg"));
+        menu.put(CafeCategory.BREAKFAST, breakfasts);
+
         // Drinks
         ArrayList<MenuItem> drinks = new ArrayList<>();
         drinks.add(new MenuItem(CafeCategory.DRINK, "Tea", 3.0, "A warm cup of tea for your cozy day!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/drinks/tea.webp"));
@@ -73,6 +82,9 @@ public class MenuHandler {
         sides.add(new MenuItem(CafeCategory.SIDE, "Cream", 0.5, "Extra cream for your coffee. Very... creamy...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/cream.jpg"));
         sides.add(new MenuItem(CafeCategory.SIDE, "Sugar", 0.5, "Sugar cubes for the ones who are too weak for black coffee.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/sugar.jpg"));
         sides.add(new MenuItem(CafeCategory.SIDE, "Saltines", 0.1, "Some crackers to put in your soup!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/saltines.jpg"));
+        sides.add(new MenuItem(CafeCategory.SIDE, "Popcorn Chicken", 1.5, "MMmmmm these are my favourite...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/popcorn_chicken.jpg"));
+        sides.add(new MenuItem(CafeCategory.SIDE, "Egg Puffs", 1.5, "Some cheese egg puffs! These might go well with some coffee! *wink*", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/egg_puffs.jpg"));
+        sides.add(new MenuItem(CafeCategory.SIDE, "Chicken Nuggets", 1.5, "Chicken nuggets with sweet and sour sauce. As it should be!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/chicken_nuggets.jpg"));
         menu.put(CafeCategory.SIDE, sides);
 
         // Fruits
@@ -95,6 +107,8 @@ public class MenuHandler {
         sweets.add(new MenuItem(CafeCategory.SWEET, "Banana Bread", 3.0, "[Want some bread?](https://www.youtube.com/watch?v=AQHnPBz3Kx4)", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/banana_bread.gif"));
         sweets.add(new MenuItem(CafeCategory.SWEET, "Cinnamon Bun", 2.25, "A sweet cinnamon bun! It has some pecans on it! ^-^", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/cinnamon_bun.jpeg"));
         sweets.add(new MenuItem(CafeCategory.SWEET, "Vanilla Ice Cream", 0.75, "A scoop of vanilla ice cream. I'm sorry... we ran out of other flavours...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/vanilla_ice_cream.gif"));
+        sweets.add(new MenuItem(CafeCategory.SWEET, "Ice Cream Waffles", 3.5, "A nice warm waffle with some nice cold vanilla ice cream!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/ice_cream_waffles.jpg"));
+        sweets.add(new MenuItem(CafeCategory.SWEET, "Cheese Cake", 2.5, "A nice warm slice of cheese cake!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/cheese_cake.jpg"));
         menu.put(CafeCategory.SWEET, sweets);
 
         // Alcohol
@@ -114,6 +128,7 @@ public class MenuHandler {
         secrets.add(new MenuItem(CafeCategory.SECRET, "The Kenzie Special", 7.0, "An entire bottle of *not* vodka and some apple juice...", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/the_kenzie_special.jpg"));
         secrets.add(new MenuItem(CafeCategory.SECRET, "Chicken Coop", 12.5, "Some fluffy nuggets, a choco puff drink for your thirst, and some sunflower seeds!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/chicken_coop.gif"));
         secrets.add(new MenuItem(CafeCategory.SECRET, "Sprout Moment", 3.0, "A yummy, cold aloe drink! Just a little refreshing signature drink from Sprout!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/sprout_moment.jpg"));
+        secrets.add(new MenuItem(CafeCategory.SECRET, "Boba GFUEL", 3.0, "A nice yum yum bubble tea in the GFUEL flavour of your choice!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/boba_gfuel.jpg"));
         menu.put(CafeCategory.SECRET, secrets);
     }
 
