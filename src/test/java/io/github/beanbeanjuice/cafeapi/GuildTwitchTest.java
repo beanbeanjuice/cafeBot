@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 public class GuildTwitchTest {
 
     @Test
@@ -28,7 +30,10 @@ public class GuildTwitchTest {
         Assertions.assertThrows(ConflictException.class, () -> cafeAPI.guildTwitches().addGuildTwitch("798830792938881024", "beanbeanjuice2"));
 
         // Makes sure "beanbeanjuice2" can be retrieved for the specified guild.
-        Assertions.assertEquals("beanbeanjuice2", cafeAPI.guildTwitches().getAllTwitches().get("798830792938881024").get(2));
+        Assertions.assertTrue(() -> {
+            ArrayList<String> twitchNames = cafeAPI.guildTwitches().getAllTwitches().get("798830792938881024");
+            return twitchNames.contains("beanbeanjuice2");
+        });
     }
 
 }
