@@ -361,6 +361,8 @@ public class CafeBot {
 
         jda = jdaBuilder.build().awaitReady();
 
+        guildHandler = new GuildHandler();
+
         homeGuild = jda.getGuildById(HOME_GUILD_ID);
         homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
         logManager.setLogChannel(homeGuildLogChannel);
@@ -369,8 +371,6 @@ public class CafeBot {
 
         // Connecting to the Spotify API
         generalHelper.startSpotifyRefreshTimer();
-
-        guildHandler = new GuildHandler();
 
         gitHubUpdateChecker = new GitHubUpdateChecker();
         gitHubUpdateChecker.contactGuilds();
