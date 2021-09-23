@@ -1,8 +1,10 @@
-package io.github.beanbeanjuice.cafeapi;
+package io.github.beanbeanjuice.cafeapi.beta;
 
+import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import io.github.beanbeanjuice.cafeapi.cafebot.guilds.GuildInformationType;
 import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
 import io.github.beanbeanjuice.cafeapi.exception.NotFoundException;
+import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,7 @@ public class GuildInformationTest {
     @Test
     @DisplayName("Guild Information API Test")
     public void testGuildInformationAPI() {
-        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"));
+        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
         // Makes sure the guild is deleted beforehand.
         Assertions.assertTrue(cafeAPI.guildInformations().deleteGuildInformation("816880157490675732"));

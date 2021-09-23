@@ -1,8 +1,10 @@
-package io.github.beanbeanjuice.cafeapi;
+package io.github.beanbeanjuice.cafeapi.beta;
 
+import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import io.github.beanbeanjuice.cafeapi.cafebot.counting.CountingInformation;
 import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
 import io.github.beanbeanjuice.cafeapi.exception.NotFoundException;
+import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,7 @@ public class CountingInformationTest {
     @Test
     @DisplayName("Counting Information API Test")
     public void testCountingInformationAPI() {
-        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"));
+        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
         // Makes sure the counting information for the guild is deleted beforehand.
         Assertions.assertTrue(cafeAPI.countingInformations().deleteGuildCountingInformation("605489113323536433"));
@@ -54,7 +56,7 @@ public class CountingInformationTest {
         // Makes sure the counting information can be deleted.
         Assertions.assertTrue(cafeAPI.countingInformations().deleteGuildCountingInformation("605489113323536433"));
 
-        // Makes sure the counting information throws a NotFounException when trying to retrieve it again.
+        // Makes sure the counting information throws a NotFoundException when trying to retrieve it again.
         Assertions.assertThrows(NotFoundException.class, () -> cafeAPI.countingInformations().getGuildCountingInformation("605489113323536433"));
     }
 }

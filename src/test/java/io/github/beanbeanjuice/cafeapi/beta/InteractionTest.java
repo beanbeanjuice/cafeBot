@@ -1,8 +1,10 @@
-package io.github.beanbeanjuice.cafeapi;
+package io.github.beanbeanjuice.cafeapi.beta;
 
+import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import io.github.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
 import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
 import io.github.beanbeanjuice.cafeapi.exception.NotFoundException;
+import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,7 @@ public class InteractionTest {
     @Test
     @DisplayName("Test Interactions API (SENDERS)")
     public void interactionSendersAPITest() {
-        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"));
+        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
         // Makes sure to delete the user before-hand.
         Assertions.assertTrue(cafeAPI.interactions().deleteUserInteractionsSent("879761226761109544"));
@@ -117,7 +119,7 @@ public class InteractionTest {
     @Test
     @DisplayName("Test Interactions API (RECEIVERS)")
     public void interactionReceiversAPITest() {
-        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"));
+        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
         // Makes sure to delete the user before-hand.
         Assertions.assertTrue(cafeAPI.interactions().deleteUserInteractionsReceived("879761226761109544"));

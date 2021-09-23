@@ -49,12 +49,14 @@ import com.beanbeanjuice.utility.sections.social.vent.VentHandler;
 import com.beanbeanjuice.utility.sections.twitch.TwitchHandler;
 import com.wrapper.spotify.SpotifyApi;
 import io.github.beanbeanjuice.cafeapi.CafeAPI;
+import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.jetbrains.annotations.NotNull;
@@ -168,7 +170,7 @@ public class CafeBot {
         logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
 
         // APIs
-        cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"));
+        cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
         generalHelper.startCafeAPIRefreshTimer();
         logManager.log(CafeBot.class, LogLevel.OKAY, "Connecting to the Top.GG API", true, false);
         topGGAPI = new DiscordBotListAPI.Builder()
@@ -199,7 +201,7 @@ public class CafeBot {
                 CacheFlag.EMOTE,
                 CacheFlag.VOICE_STATE
         );
-//        jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
+        jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
         jdaBuilder.setChunkingFilter(ChunkingFilter.ALL);
 
         serveHandler = new ServeHandler();
