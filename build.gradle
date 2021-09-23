@@ -107,7 +107,7 @@ dependencies {
     implementation group: 'org.discordbots', name: 'DBL-Java-Library', version: '2.0.1'
 
     // Cafe API
-    implementation group: 'io.github.beanbeanjuice', name: 'cafe-api-wrapper', version: 'v1.0.2-SNAPSHOT'
+    implementation group: 'io.github.beanbeanjuice', name: 'cafe-api-wrapper', version: 'v1.0.3-SNAPSHOT'
 }
 
 test {

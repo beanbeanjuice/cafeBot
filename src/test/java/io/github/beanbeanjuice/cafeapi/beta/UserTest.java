@@ -1,6 +1,8 @@
-package io.github.beanbeanjuice.cafeapi;
+package io.github.beanbeanjuice.cafeapi.beta;
 
+import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import io.github.beanbeanjuice.cafeapi.exception.AuthorizationException;
+import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,7 @@ public class UserTest {
     @Test
     @DisplayName("Test Users API")
     public void userAPITest() {
-        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"));
+        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
         // Making sure the first user's ID is 1.
         Assertions.assertEquals(1, cafeAPI.users().getUsers().get(0).getID());

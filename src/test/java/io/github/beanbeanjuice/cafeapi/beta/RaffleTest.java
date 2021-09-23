@@ -1,8 +1,10 @@
-package io.github.beanbeanjuice.cafeapi;
+package io.github.beanbeanjuice.cafeapi.beta;
 
+import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import io.github.beanbeanjuice.cafeapi.cafebot.raffles.Raffle;
 import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
 import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
+import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,7 @@ public class RaffleTest {
     @Test
     @DisplayName("Test Raffles API")
     public void rafflesAPITest() {
-        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"));
+        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
         long currentTime = System.currentTimeMillis();
         Timestamp currentTimestamp = CafeGeneric.parseTimestamp(new Timestamp(currentTime).toString());
