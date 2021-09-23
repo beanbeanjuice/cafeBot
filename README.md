@@ -18,7 +18,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/beanbeanjuice/cafeBot">
-    <img src="http://cdn.beanbeanjuice.com/images/cafeBot/readme/logo.gif" alt="Logo" width="260" height="186">
+    <img src="https://cdn.beanbeanjuice.com/images/cafeBot/readme/logo.gif" alt="Logo" width="260" height="186">
   </a>
 
   <h1 align="center">cafeBot</h1>
@@ -140,6 +140,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `remove-my-data` - Request to remove your data from the bot!
 * `generate-code` - Generate a random 32-digit long code!
 * `get-bot-release-version` - Gets a specific/the latest release notes for the bot!
+* `define` - Define a word!
 ##### 2. **CAFE**
 * `menu` - Show the list of Cafe menu items.
 * `serve` - Get beanCoins! Essentially you run this command by doing `!!serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.
@@ -196,7 +197,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `welcome` - Welcome someone... for something!
 * `lick` - Lick... someone... ummm why?
 * `shush` - Shush someone if they're being too loud!
-##### 7. **MUSIC**
+##### 7. **MUSIC** - Removed because of YouTube
 * `play` - Play a song or playlist!
 * `now-playing` - Show the current song playing.
 * `pause` - Pause the current song.
@@ -216,6 +217,7 @@ As you can see, this was shown using the command `!!help order`. It shows each p
 * `set-log-channel` - Sets the log channel for the guild.
 * `set-update-channel` - Sets the current channel to the update channel. This means if you have `notify-on-update` set to `Enabled`, you will receive bot updates in this channel.
 * `set-counting-channel` - Sets the current channel to the counting channel. This does exactly as it says. Try to count as high as you can without messing up!
+* `set-counting-failure-role` - Sets the role to give a user when they fail counting.
 * `set-poll-channel` - Sets the current channel to an active poll channel. This is needed if you want to run polls on your server!
 * `set-raffle-channel` - Sets the current channel to an active raffle channel. This is needed if you want to run raffles on your server!
 * `set-birthday-channel` - Sets the current channel to an active birthday channel. Be notified when one of the members in your server is having a birthday!

@@ -1,7 +1,7 @@
 package com.beanbeanjuice.utility.sections.games.connectfour;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.sections.games.MiniGame;
+import io.github.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.MinigameType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
@@ -23,15 +23,15 @@ import java.util.function.Consumer;
  */
 public class ConnectFourGame {
 
-    private String[][] board;
-    private boolean[][] takenSpots;
+    private final String[][] board;
+    private final boolean[][] takenSpots;
     private User currentUser;
-    private User player1;
-    private User player2;
+    private final User player1;
+    private final User player2;
 
     private String currentMessageID = null;
-    private String currentTextChannelID;
-    private String guildID;
+    private final String currentTextChannelID;
+    private final String guildID;
 
     private Timer gameTimer;
     private TimerTask gameTimerTask;
@@ -40,8 +40,8 @@ public class ConnectFourGame {
     private int count = 0;
     private boolean hasWinner = false;
 
-    private HashMap<Long, Consumer<MessageReaction>> emojiListeners = new HashMap<>();
-    private ListenerAdapter reactionListener;
+    private final HashMap<Long, Consumer<MessageReaction>> emojiListeners = new HashMap<>();
+    private final ListenerAdapter reactionListener;
 
     /**
      * Creates a new {@link ConnectFourGame} object.
@@ -80,18 +80,18 @@ public class ConnectFourGame {
      * @return The ID of the {@link Guild} the {@link ConnectFourGame} is in.
      */
     @NotNull
-    public String getGuildID() {
+    protected String getGuildID() {
         return guildID;
     }
 
     /**
      * Starts the {@link ConnectFourGame}.
      */
-    public void startGame() {
+    protected void startGame() {
         startGameTimer();
 
         try {
-            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessage(getBoardEmbed()).queue(message -> {
+            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessageEmbeds(getBoardEmbed()).queue(message -> {
                 currentMessageID = message.getId();
                 editMessage();
             });
@@ -106,7 +106,7 @@ public class ConnectFourGame {
     private void editMessage() {
         try {
 
-            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).editMessageById(currentMessageID, getBoardEmbed()).queue(message -> {
+            CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).editMessageEmbedsById(currentMessageID, getBoardEmbed()).queue(message -> {
                 addReactions(message);
 
                 // Adds this message to the reaction listeners.
@@ -121,7 +121,7 @@ public class ConnectFourGame {
                                     CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
                                         String title = retrievedMessage.getEmbeds().get(0).getTitle();
                                         String description = retrievedMessage.getEmbeds().get(0).getDescription();
-                                        retrievedMessage.editMessage(endGameEmbed(title, description, "The game was cancelled.")).queue();
+                                        retrievedMessage.editMessageEmbeds(endGameEmbed(title, description, "The game was cancelled.")).queue();
                                     });
                                 }
                                 return;
@@ -151,7 +151,7 @@ public class ConnectFourGame {
                                         try {
                                             r.removeReaction(user).queue();
                                         } catch (InsufficientPermissionException e) {
-                                            r.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                                            r.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                                                     "Insufficient Permissions",
                                                     "The bot has insufficient permissions: " + e.getMessage() + ".\n" +
                                                             "Please make sure the bot has the correct permissions."
@@ -171,7 +171,7 @@ public class ConnectFourGame {
     }
 
     /**
-     * @return Whether or not the {@link ConnectFourGame} exists.
+     * @return True, if the {@link ConnectFourGame} exists.
      */
     @NotNull
     private Boolean checkGameExists() {
@@ -219,7 +219,7 @@ public class ConnectFourGame {
                         CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
                             String title = retrievedMessage.getEmbeds().get(0).getTitle();
                             String description = retrievedMessage.getEmbeds().get(0).getDescription();
-                            retrievedMessage.editMessage(endGameEmbed(title, description, "The game ended because you didn't respond in time.")).queue(e -> {
+                            retrievedMessage.editMessageEmbeds(endGameEmbed(title, description, "The game ended because you didn't respond in time.")).queue(e -> {
                                 e.clearReactions().queue();
                                 e.addReaction("❌").queue();
                             });
@@ -407,7 +407,7 @@ public class ConnectFourGame {
         boardBuilder.append("\n**").append(user.getName()).append("** wins!");
         embedBuilder.setDescription(boardBuilder.toString());
 
-        Integer currentWinStreak = CafeBot.getWinStreakHandler().getUserWinStreak(user.getId(), MiniGame.CONNECT_FOUR);
+        Integer currentWinStreak = CafeBot.getWinStreakHandler().getUserWinStreak(user.getId(), MinigameType.CONNECT_FOUR);
         User loser;
 
         if (user == player1) {
@@ -415,15 +415,14 @@ public class ConnectFourGame {
         } else {
             loser = player1;
         }
-        Integer loserWinStreak = CafeBot.getWinStreakHandler().getUserWinStreak(loser.getId(), MiniGame.CONNECT_FOUR);
+        Integer loserWinStreak = CafeBot.getWinStreakHandler().getUserWinStreak(loser.getId(), MinigameType.CONNECT_FOUR);
 
         if (currentWinStreak != null) {
-            currentWinStreak += 1;
-            if (!CafeBot.getWinStreakHandler().setUserWinStreak(user.getId(), MiniGame.CONNECT_FOUR, currentWinStreak)) {
+            if (!CafeBot.getWinStreakHandler().updateUserWinStreak(user.getId(), MinigameType.CONNECT_FOUR, ++currentWinStreak)) {
                 currentWinStreak = null;
             }
 
-            if (!CafeBot.getWinStreakHandler().setUserWinStreak(loser.getId(), MiniGame.CONNECT_FOUR, 0)) {
+            if (!CafeBot.getWinStreakHandler().updateUserWinStreak(loser.getId(), MinigameType.CONNECT_FOUR, 0)) {
                 loserWinStreak = null;
             }
         }
@@ -476,7 +475,7 @@ public class ConnectFourGame {
 
         if (checkGameExists()) {
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID)
-                    .editMessageById(currentMessageID, embedBuilder.build()).queue(message -> {
+                    .editMessageEmbedsById(currentMessageID, embedBuilder.build()).queue(message -> {
                         message.clearReactions().queue();
             });
         }
@@ -489,7 +488,7 @@ public class ConnectFourGame {
      * @return Whether or not the turn was used.
      */
     @NotNull
-    public Boolean useTurn(@NotNull Integer x, @NotNull Integer y) {
+    private Boolean useTurn(@NotNull Integer x, @NotNull Integer y) {
         if (!takenSpots[x][y]) {
             takenSpots[x][y] = true;
 
@@ -514,7 +513,7 @@ public class ConnectFourGame {
      * @return The top value of the board. Returns -1 if null.
      */
     @NotNull
-    public Integer getTopValue(@NotNull Integer x) {
+    private Integer getTopValue(@NotNull Integer x) {
         for (int y = 0; y < 6; y++) {
             if (board[x][y].equals("⬜")) {
                 return y;
@@ -528,7 +527,7 @@ public class ConnectFourGame {
      * @return The completed {@link MessageEmbed}.
      */
     @NotNull
-    public MessageEmbed getBoardEmbed() {
+    private MessageEmbed getBoardEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Connect Four");
         embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());

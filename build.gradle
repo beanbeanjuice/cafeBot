@@ -43,6 +43,8 @@ repositories {
 
     maven { url 'https://m2.dv8tion.net/releases' }
     maven { url 'https://jitpack.io' }
+    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/' }
 }
 
 dependencies {
@@ -61,7 +63,7 @@ dependencies {
     implementation group: 'net.dv8tion', name: 'JDA', version: '4.3.0_299'
 
     // Twitch Connections
-    implementation group: 'com.github.twitch4j', name: 'twitch4j', version: '1.5.0'
+    implementation group: 'com.github.twitch4j', name: 'twitch4j', version: '1.5.1'
 
     // Lava Player
     implementation group: 'com.sedmelluq', name: 'lavaplayer', version: '1.3.78'
@@ -79,9 +81,6 @@ dependencies {
 
     // Logback
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
-
-    // SQL Connection
-    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.3'
 
     // Time Stuff (For Birthdays)
     implementation group: 'joda-time', name: 'joda-time', version: '2.10.10'
@@ -107,6 +106,8 @@ dependencies {
     // Top.GG API
     implementation group: 'org.discordbots', name: 'DBL-Java-Library', version: '2.0.1'
 
+    // Cafe API
+    implementation group: 'io.github.beanbeanjuice', name: 'cafe-api-wrapper', version: 'v1.0.3-SNAPSHOT'
 }
 
 test {

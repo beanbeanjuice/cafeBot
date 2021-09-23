@@ -2,12 +2,12 @@ package com.beanbeanjuice.utility.sections.fun.raffle;
 
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -20,7 +20,7 @@ import java.util.TimerTask;
  */
 public class RaffleHandler {
 
-    private HashMap<String, ArrayList<Raffle>> raffles;
+    private final HashMap<String, ArrayList<Raffle>> raffles;
     private Timer raffleTimer;
     private TimerTask raffleTimerTask;
 
@@ -29,7 +29,7 @@ public class RaffleHandler {
      */
     public RaffleHandler() {
         raffles = new HashMap<>();
-        getRafflesFromDatabase();
+        getAllRaffles();
         startPollTimer();
     }
 
@@ -43,18 +43,19 @@ public class RaffleHandler {
             @Override
             public void run() {
 
-                raffles.forEach((key, value) -> {
-                    for (Raffle raffle : value) {
+                raffles.forEach((guildID, raffles) -> {
+                    for (Raffle raffle : raffles) {
 
                         // Checking if it SHOULD be checked.
                         if (raffle.isFinished()) {
 
                             // Checking if the PollChannel is Null
-                            TextChannel raffleChannel = CafeBot.getGuildHandler().getCustomGuild(key).getRaffleChannel();
+                            TextChannel raffleChannel = CafeBot.getGuildHandler().getCustomGuild(guildID).getRaffleChannel();
 
                             if (raffleChannel == null) {
-                                removeRaffleFromDatabase(raffle);
-                                value.remove(raffle);
+                                if (removeRaffle(guildID, raffle)) {
+                                    raffles.remove(raffle);
+                                }
                             } else {
 
                                 // If its not null, check if the message is null.
@@ -91,17 +92,19 @@ public class RaffleHandler {
                                         String title = message.getEmbeds().get(0).getTitle();
                                         String description = message.getEmbeds().get(0).getFields().get(0).getValue();
 
-                                        message.editMessage(winnerEmbed(title, description, winners)).queue();
+                                        message.editMessageEmbeds(winnerEmbed(title, description, winners)).queue();
 
                                         // Remove it
-                                        removeRaffleFromDatabase(raffle);
-                                        value.remove(raffle);
+                                        if (removeRaffle(guildID, raffle)) {
+                                            raffles.remove(raffle);
+                                        }
                                     });
                                 }, (failure) -> {
 
                                     // This means the message does not exist.
-                                    removeRaffleFromDatabase(raffle);
-                                    value.remove(raffle);
+                                    if (removeRaffle(guildID, raffle)) {
+                                        raffles.remove(raffle);
+                                    }
                                 });
                             }
                         }
@@ -124,12 +127,13 @@ public class RaffleHandler {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(title);
         embedBuilder.addField("Description", description, false);
-        embedBuilder.setColor(Color.green);
 
         if (winners.isEmpty()) {
             embedBuilder.addField("Winner", "No one entered the raffle...", false);
+            embedBuilder.setColor(Color.gray);
         } else if (winners.size() == 1) {
             embedBuilder.addField("Winner", winners.get(0).getAsMention(), false);
+            embedBuilder.setColor(Color.red);
         } else {
             StringBuilder winnerBuilder = new StringBuilder();
             for (int i = 0; i < winners.size(); i++) {
@@ -144,104 +148,64 @@ public class RaffleHandler {
     }
 
     /**
-     * Removes a {@link Raffle} from the database.
-     * @param raffle The {@link Raffle} to be removed.
-     * @return Whether or not the removal was successful.
-     */
-    @NotNull
-    private Boolean removeRaffleFromDatabase(@NotNull Raffle raffle) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "DELETE FROM cafeBot.raffles WHERE message_id = (?) and guild_id = (?);";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(raffle.getMessageID()));
-            statement.setLong(2, Long.parseLong(raffle.getGuildID()));
-            statement.execute();
-            return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Removing Raffle: " + e.getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * Add a {@link Raffle} to the database.
+     * Removes a {@link Raffle} for a {@link Guild} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * @param guildID The {@link String guildID} of the {@link Raffle}.
      * @param raffle The {@link Raffle} to add.
-     * @return Whether or not adding the {@link Raffle} was successful.
+     * @return True, if the {@link Raffle} was successfully removed from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      */
     @NotNull
-    public Boolean addRaffle(@NotNull Raffle raffle) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "INSERT INTO cafeBot.raffles (guild_id, message_id, ending_time, winner_amount) VALUES (?,?,?,?);";
-
+    private Boolean removeRaffle(@NotNull String guildID, @NotNull Raffle raffle) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(raffle.getGuildID()));
-            statement.setLong(2, Long.parseLong(raffle.getMessageID()));
-            statement.setTimestamp(3, raffle.getRaffleEndTime());
-            statement.setInt(4, raffle.getWinnerAmount());
-            statement.execute();
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Adding Raffle: " + e.getMessage());
+            CafeBot.getCafeAPI().raffles().deleteRaffle(guildID, raffle);
+            return true;
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Removing Raffle: " + e.getMessage(), e);
             return false;
         }
-
-        if (raffles.get(raffle.getGuildID()) == null) {
-            raffles.put(raffle.getGuildID(), new ArrayList<>());
-        }
-
-        raffles.get(raffle.getGuildID()).add(raffle);
-        return true;
     }
 
     /**
-     * Get the {@link ArrayList<Raffle>} for a specified {@link Guild}.
-     * @param guildID The ID of the {@link Guild}.
-     * @return The {@link ArrayList<Raffle>} for the {@link Guild}.
+     * Adds a {@link Raffle} to the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI} for a specified {@link Guild}.
+     * @param guildID The specified {@link String guildID}.
+     * @param raffle The {@link Raffle} to add.
+     * @return True, if the {@link Raffle} was successfully added.
      */
     @NotNull
-    public ArrayList<Raffle> getRafflesForGuild(@NotNull String guildID) {
-        if (raffles.get(guildID) != null) {
-            return raffles.get(guildID);
-        }
-        return new ArrayList<>();
-    }
-
-    /**
-     * Get the {@link ArrayList<Raffle>} for a specified {@link Guild}.
-     * @param guild The {@link Guild}.
-     * @return The {@link ArrayList<Raffle>} for the {@link Guild}.
-     */
-    @NotNull
-    public ArrayList<Raffle> getRafflesForGuild(@NotNull Guild guild) {
-        return getRafflesForGuild(guild.getId());
-    }
-
-    /**
-     * Refresh the {@link Raffle} cache.
-     */
-    private void getRafflesFromDatabase() {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM cafeBot.raffles;";
-
+    public Boolean addRaffle(@NotNull String guildID, @NotNull Raffle raffle) {
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(arguments);
-            while (resultSet.next()) {
-                String guildID = String.valueOf(resultSet.getLong(1));
-                String messageID = String.valueOf(resultSet.getLong(2));
-                Timestamp raffleEndTime = resultSet.getTimestamp(3);
-                Integer winnerAmount = resultSet.getInt(4);
+            CafeBot.getCafeAPI().raffles().createRaffle(guildID, raffle);
 
-                if (raffles.get(guildID) == null) {
-                    raffles.put(guildID, new ArrayList<>());
-                }
-
-                raffles.get(guildID).add(new Raffle(guildID, messageID, raffleEndTime, winnerAmount));
+            if (!raffles.containsKey(guildID)) {
+                raffles.put(guildID, new ArrayList<>());
             }
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Retrieving Raffles: " + e.getMessage());
+
+            raffles.get(guildID).add(raffle);
+            return true;
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating Raffle: " + e.getMessage(), e);
+            return false;
+        }
+    }
+
+    /**
+     * Retrieves all {@link Raffle} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     */
+    private void getAllRaffles() {
+        try {
+            CafeBot.getCafeAPI().raffles().getAllRaffles().forEach((guildID, raffles) -> {
+                for (io.github.beanbeanjuice.cafeapi.cafebot.raffles.Raffle raffle : raffles) {
+
+                    if (!this.raffles.containsKey(guildID)) {
+                        this.raffles.put(guildID, new ArrayList<>());
+                    }
+
+                    this.raffles.get(guildID).add(new Raffle(raffle.getMessageID(), raffle.getEndingTime(), raffle.getWinnerAmount()));
+                }
+            });
+
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.OKAY, "Successfully Retrieved All Raffles...");
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Retrieving Raffles from API: " + e.getMessage(), e);
         }
     }
 

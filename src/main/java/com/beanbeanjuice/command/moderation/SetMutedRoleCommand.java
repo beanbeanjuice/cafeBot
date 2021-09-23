@@ -36,27 +36,27 @@ public class SetMutedRoleCommand implements ICommand {
 
         if (args.get(0).equals("0")) {
             if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setMutedRoleID("0")) {
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().successEmbed(
                         "Removed Muted Role",
                         "Successfully removed the muted role."
                 )).queue();
                 return;
             }
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
         if (role == null) {
-            event.getChannel().sendMessage(unknownRoleEmbed(argument)).queue();
+            event.getChannel().sendMessageEmbeds(unknownRoleEmbed(argument)).queue();
             return;
         }
 
         if (!CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).setMutedRoleID(role.getId())) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
             return;
         }
 
-        event.getChannel().sendMessage(successfulRoleChangeEmbed(role)).queue();
+        event.getChannel().sendMessageEmbeds(successfulRoleChangeEmbed(role)).queue();
     }
 
     @NotNull

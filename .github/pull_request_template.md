@@ -22,12 +22,12 @@ Fixes # (issue)
 * Hardware:
     - CPU: 
     - GPU: 
-    - RAM:
-* SDK: Java Oracle 15
+    - RAM: 
+* SDK: Java Oracle 16
 
 # Checklist:
 
-- [ ] The code follows the style [guidlines]().
+- [ ] The code follows the style [guidlines](https://github.com/beanbeanjuice/cafeBot/blob/master/CONTRIBUTING.md).
 - [ ] A self-review of the code was performed in GitHub.
 - [ ] Appropriate comments were added in the code.
 - [ ] Appropriate changes have been made to the documentation.

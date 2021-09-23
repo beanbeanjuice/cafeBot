@@ -6,12 +6,13 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import io.github.beanbeanjuice.cafeapi.exception.AuthorizationException;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
+import io.github.beanbeanjuice.cafeapi.exception.ResponseException;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -23,27 +24,44 @@ public class GenerateCodeCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
+
+        // Deletes the message.
         event.getMessage().delete().queue();
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "REPLACE INTO cafeBot.generated_codes (user_id, generated_code) VALUES (?,?);";
+
+        // Generates the code.
         String generatedCode = CafeBot.getGeneralHelper().getRandomAlphaNumericString(32);
 
+        // Tries to create the code for the user in the database.
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(user.getId()));
-            statement.setString(2, generatedCode);
-            statement.execute();
+            CafeBot.getCafeAPI().generatedCodes().createUserGeneratedCode(user.getId(), generatedCode);
+        } catch (ConflictException e) {
 
-            CafeBot.getGeneralHelper().pmUser(user, CafeBot.getGeneralHelper().successEmbed(
-                    "Generated Code",
-                    "Your Generated Code Is: `" + generatedCode + "`."
-            ));
-        } catch (SQLException e) {
+            // If the code exists, then update it.
+            try {
+                CafeBot.getCafeAPI().generatedCodes().updateUserGeneratedCode(user.getId(), generatedCode);
+
+                CafeBot.getGeneralHelper().pmUser(user, CafeBot.getGeneralHelper().successEmbed(
+                        "Generated Code",
+                        "Your Generated Code Is: `" + generatedCode + "`."
+                ));
+                return;
+            } catch (CafeException e2) {
+                CafeBot.getGeneralHelper().pmUser(user, CafeBot.getGeneralHelper().errorEmbed(
+                        "Error Generating Code",
+                        "There has been an error generating the code, please try again. Error Updating."
+                ));
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Generating Code: " + e2.getMessage(), e2);
+                return;
+            }
+
+            // Otherwise catch the error.
+        } catch (AuthorizationException | ResponseException e) {
             CafeBot.getGeneralHelper().pmUser(user, CafeBot.getGeneralHelper().errorEmbed(
                     "Error Generating Code",
-                    "There has been an error generating the code, please try again."
+                    "There has been an error generating the code, please try again. Error creating."
             ));
             CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Generating Code: " + e.getMessage(), e);
+            return;
         }
 
     }

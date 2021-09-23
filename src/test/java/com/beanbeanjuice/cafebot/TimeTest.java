@@ -1,3 +1,5 @@
+package com.beanbeanjuice.cafebot;
+
 import com.beanbeanjuice.utility.time.Time;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,7 @@ public class TimeTest {
     public void testDefaultTime() {
         Time t = new Time(Calendar.getInstance(TimeZone.getDefault()));
 
-        System.out.println(t.toString());
+        System.out.println(t);
     }
 
     @Test

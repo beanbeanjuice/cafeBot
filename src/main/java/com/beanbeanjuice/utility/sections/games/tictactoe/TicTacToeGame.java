@@ -1,7 +1,7 @@
 package com.beanbeanjuice.utility.sections.games.tictactoe;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.sections.games.MiniGame;
+import io.github.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.MinigameType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
@@ -23,15 +23,15 @@ import java.util.function.Consumer;
  */
 public class TicTacToeGame {
 
-    private String[][] board;
-    private boolean[][] takenSpots;
+    private final String[][] board;
+    private final boolean[][] takenSpots;
     private User currentUser;
-    private User player1;
-    private User player2;
+    private final User player1;
+    private final User player2;
 
     private String currentMessageID = null;
-    private String currentTextChannelID;
-    private String guildID;
+    private final String currentTextChannelID;
+    private final String guildID;
 
     private Timer gameTimer;
     private TimerTask gameTimerTask;
@@ -40,8 +40,8 @@ public class TicTacToeGame {
     private int count = 0;
     private boolean hasWinner = false;
 
-    private HashMap<Long, Consumer<MessageReaction>> emojiListeners = new HashMap<>();
-    private ListenerAdapter reactionListener;
+    private final HashMap<Long, Consumer<MessageReaction>> emojiListeners = new HashMap<>();
+    private final ListenerAdapter reactionListener;
 
     /**
      * Creates a new {@link TicTacToeGame} object.
@@ -79,7 +79,7 @@ public class TicTacToeGame {
     /**
      * Starts the {@link TicTacToeGame}.
      */
-    public void startGame() {
+    protected void startGame() {
         startGameTimer();
 
         try {
@@ -98,7 +98,7 @@ public class TicTacToeGame {
     private void editMessage() {
         try {
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(message -> {
-                message.editMessage(getBoardEmbed()).queue(editedMessage -> {
+                message.editMessageEmbeds(getBoardEmbed()).queue(editedMessage -> {
                     addReactions(message);
 
                     // Adds this message to the reaction listeners.
@@ -113,7 +113,7 @@ public class TicTacToeGame {
                                         CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
                                             String title = retrievedMessage.getEmbeds().get(0).getTitle();
                                             String description = retrievedMessage.getEmbeds().get(0).getDescription();
-                                            retrievedMessage.editMessage(endGameEmbed(title, description, "The game was cancelled.")).queue();
+                                            retrievedMessage.editMessageEmbeds(endGameEmbed(title, description, "The game was cancelled.")).queue();
                                         });
                                     }
                                     return;
@@ -124,11 +124,12 @@ public class TicTacToeGame {
                             if (users.contains(currentUser)) {
                                 if (getBoardEmojis().contains(r.getReactionEmote().getEmoji()) && !r.isSelf()) {
 
+                                    // Checking if the emote is part of the list and if they are allowed to use that emote.
                                     if (!parseTurn(r.getReactionEmote())) {
+                                        r.removeReaction(currentUser).queue();
                                         return;
                                     }
 
-                                    message.clearReactions(r.getReactionEmote().getEmoji()).queue();
                                     emojiListeners.remove(r.getMessageIdLong());
 
                                     if (!hasWinner) {
@@ -143,7 +144,7 @@ public class TicTacToeGame {
                                             try {
                                                 r.removeReaction(user).queue();
                                             } catch (InsufficientPermissionException e) {
-                                                r.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                                                r.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                                                         "Insufficient Permissions",
                                                         "The bot has insufficient permissions: " + e.getMessage() + ".\n" +
                                                                 "Please make sure the bot has the correct permissions."
@@ -219,7 +220,7 @@ public class TicTacToeGame {
 
     /**
      * Makes sure the {@link TextChannel} and game {@link Message} still exist.
-     * @return Whether or not they exist.
+     * @return True, if the game exists.
      */
     @NotNull
     private Boolean checkGameExists() {
@@ -252,7 +253,7 @@ public class TicTacToeGame {
                         CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
                             String title = retrievedMessage.getEmbeds().get(0).getTitle();
                             String description = retrievedMessage.getEmbeds().get(0).getDescription();
-                            retrievedMessage.editMessage(endGameEmbed(title, description, "The game ended because you didn't respond in time.")).queue(e -> {
+                            retrievedMessage.editMessageEmbeds(endGameEmbed(title, description, "The game ended because you didn't respond in time.")).queue(e -> {
                                 e.clearReactions().queue();
                                 e.addReaction("❌").queue();
                             });
@@ -295,7 +296,7 @@ public class TicTacToeGame {
      * @return The {@link String} ID for the {@link Guild}.
      */
     @NotNull
-    public String getGuildID() {
+    protected String getGuildID() {
         return guildID;
     }
 
@@ -318,9 +319,9 @@ public class TicTacToeGame {
      * Checks to see if a {@link User} can use that turn.
      * @param x The X value of the button.
      * @param y The Y value of the button.
-     * @return Whether or not the turn was used.
+     * @return True, if turn was used.
      */
-    public Boolean useTurn(@NotNull Integer x, @NotNull Integer y) {
+    private Boolean useTurn(@NotNull Integer x, @NotNull Integer y) {
         if (!takenSpots[x][y]) {
             takenSpots[x][y] = true;
 
@@ -425,7 +426,7 @@ public class TicTacToeGame {
 
         if (checkGameExists()) {
             CafeBot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID)
-                    .editMessageById(currentMessageID, embedBuilder.build()).queue(message -> {
+                    .editMessageEmbedsById(currentMessageID, embedBuilder.build()).queue(message -> {
                         message.clearReactions().queue();
             });
         }
@@ -456,7 +457,7 @@ public class TicTacToeGame {
         boardBuilder.append("\n").append("**").append(user.getName()).append("** wins!");
         embedBuilder.setDescription(boardBuilder.toString());
 
-        Integer currentWinStreak = CafeBot.getWinStreakHandler().getUserWinStreak(user.getId(), MiniGame.TIC_TAC_TOE);
+        Integer currentWinStreak = CafeBot.getWinStreakHandler().getUserWinStreak(user.getId(), MinigameType.TIC_TAC_TOE);
         User loser;
 
         if (user == player1) {
@@ -464,15 +465,14 @@ public class TicTacToeGame {
         } else {
             loser = player1;
         }
-        Integer loserWinStreak = CafeBot.getWinStreakHandler().getUserWinStreak(loser.getId(), MiniGame.TIC_TAC_TOE);
+        Integer loserWinStreak = CafeBot.getWinStreakHandler().getUserWinStreak(loser.getId(), MinigameType.TIC_TAC_TOE);
 
         if (currentWinStreak != null) {
-            currentWinStreak += 1;
-            if (!CafeBot.getWinStreakHandler().setUserWinStreak(user.getId(), MiniGame.TIC_TAC_TOE, currentWinStreak)) {
+            if (!CafeBot.getWinStreakHandler().updateUserWinStreak(user.getId(), MinigameType.TIC_TAC_TOE, ++currentWinStreak)) {
                 currentWinStreak = null;
             }
 
-            if (!CafeBot.getWinStreakHandler().setUserWinStreak(loser.getId(), MiniGame.TIC_TAC_TOE, 0)) {
+            if (!CafeBot.getWinStreakHandler().updateUserWinStreak(loser.getId(), MinigameType.TIC_TAC_TOE, 0)) {
                 loserWinStreak = null;
             }
         }
@@ -492,10 +492,10 @@ public class TicTacToeGame {
     /**
      * Parses the {@link net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote ReactionEmote}.
      * @param emote The {@link net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote ReactionEmote} to parse.
-     * @return Whether or not that is a valid turn.
+     * @return True, if that is a valid turn.
      */
     @NotNull
-    public Boolean parseTurn(MessageReaction.ReactionEmote emote) {
+    private Boolean parseTurn(MessageReaction.ReactionEmote emote) {
         String emoji = emote.getEmoji();
 
         int x;
