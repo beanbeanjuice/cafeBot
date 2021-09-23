@@ -9,6 +9,7 @@ import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
 import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 import io.github.beanbeanjuice.cafeapi.CafeAPI;
+import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -80,7 +81,7 @@ public class GeneralHelper {
 
             @Override
             public void run() {
-                CafeBot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD")));
+                CafeBot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA));
                 CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
             }
         };

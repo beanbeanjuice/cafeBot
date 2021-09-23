@@ -1,9 +1,11 @@
-package io.github.beanbeanjuice.cafeapi;
+package io.github.beanbeanjuice.cafeapi.beta;
 
+import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import io.github.beanbeanjuice.cafeapi.cafebot.birthdays.BirthdayMonth;
 import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
 import io.github.beanbeanjuice.cafeapi.exception.NotFoundException;
 import io.github.beanbeanjuice.cafeapi.exception.TeaPotException;
+import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,7 @@ public class BirthdayTest {
     @Test
     @DisplayName("Birthdays Test API")
     public void testBirthdayAPI() {
-        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"));
+        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
         // Makes sure the user's birthday doesn't exist before starting.
         Assertions.assertTrue(cafeAPI.birthdays().removeUserBirthday("178272524533104642"));
@@ -39,7 +41,7 @@ public class BirthdayTest {
         // Makes sure only a valid month can be set
         Assertions.assertThrows(TeaPotException.class, () -> cafeAPI.birthdays().updateUserBirthday("178272524533104642", BirthdayMonth.ERROR, 10));
 
-        // Makes sure teh birthday can be changed.
+        // Makes sure the birthday can be changed.
         Assertions.assertTrue(cafeAPI.birthdays().updateUserBirthday("178272524533104642", BirthdayMonth.FEBRUARY, 29));
 
         // Makes sure the changed month is the same.

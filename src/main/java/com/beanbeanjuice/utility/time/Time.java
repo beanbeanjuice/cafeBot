@@ -61,7 +61,7 @@ public class Time {
         fields.put("QQQQ", QQQQ);
 
         fields.put("M", String.valueOf(calendar.get(Calendar.MONTH)));
-        fields.put("MM", pad(calendar.get(Calendar.MONTH), 2));
+        fields.put("MM", pad(calendar.get(Calendar.MONTH) + 1, 2));
 
         String month;
 
