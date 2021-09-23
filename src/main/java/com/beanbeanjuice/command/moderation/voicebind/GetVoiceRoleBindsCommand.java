@@ -23,14 +23,14 @@ public class GetVoiceRoleBindsCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         if (!event.getMember().getVoiceState().inVoiceChannel()) {
             ArrayList<VoiceChannel> voiceChannels = new ArrayList<>();
-            CafeBot.getVoiceChatRoleBindHandler().getBoundChannels(event.getGuild().getId()).forEach((voiceChannelID, roles) -> {
+            CafeBot.getVoiceChatRoleBindHandler().getAllBoundChannelsForGuild(event.getGuild().getId()).forEach((voiceChannelID, roles) -> {
                 try {
                     VoiceChannel voiceChannel = event.getGuild().getVoiceChannelById(voiceChannelID);
 
                     if (voiceChannel == null) {
                         // Remove every role in that voice channel if the voice channel does not exist.
                         for (String roleID : roles) {
-                            CafeBot.getVoiceChatRoleBindHandler().unBind(event.getGuild().getId(), voiceChannelID, roleID);
+                            CafeBot.getVoiceChatRoleBindHandler().unBindRoleFromVoiceChannel(event.getGuild().getId(), voiceChannelID, roleID);
                         }
                     }
 
@@ -39,7 +39,7 @@ public class GetVoiceRoleBindsCommand implements ICommand {
 
                     // Remove every role in that voice channel if the voice channel does not exist.
                     for (String roleID : roles) {
-                        CafeBot.getVoiceChatRoleBindHandler().unBind(event.getGuild().getId(), voiceChannelID, roleID);
+                        CafeBot.getVoiceChatRoleBindHandler().unBindRoleFromVoiceChannel(event.getGuild().getId(), voiceChannelID, roleID);
                     }
                 }
             });
@@ -48,14 +48,26 @@ public class GetVoiceRoleBindsCommand implements ICommand {
             descriptionBuilder.append("**Current List of Voice Channels with Bound Roles**\n\n");
 
             for (int i = 0; i < voiceChannels.size(); i++) {
-                descriptionBuilder.append(voiceChannels.get(i).getAsMention());
+                try {
+                    descriptionBuilder.append(voiceChannels.get(i).getAsMention());
 
-                if (i != voiceChannels.size() - 1) {
-                    descriptionBuilder.append(", ");
+                    if (i != voiceChannels.size() - 1) {
+                        descriptionBuilder.append(", ");
+                    }
+                } catch (NullPointerException e) {
+                    ArrayList<String> roleIDs = new ArrayList<>(CafeBot.getVoiceChatRoleBindHandler().getBoundRolesForChannel(
+                            event.getGuild().getId(), voiceChannels.get(i).toString()
+                    ));
+
+                    for (String roleID : roleIDs) {
+                        CafeBot.getVoiceChatRoleBindHandler().unBindRoleFromVoiceChannel(
+                                event.getGuild().getId(), voiceChannels.get(i).toString(), roleID
+                        );
+                    }
                 }
             }
 
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().successEmbed(
                     "Voice Channel Binds",
                     descriptionBuilder.toString()
             )).queue();
@@ -67,11 +79,11 @@ public class GetVoiceRoleBindsCommand implements ICommand {
 
             VoiceChannel voiceChannel = event.getMember().getVoiceState().getChannel();
 
-            for (String roleID : new ArrayList<>(CafeBot.getVoiceChatRoleBindHandler().getBoundRoles(event.getGuild().getId(), voiceChannel.getId()))) {
+            for (String roleID : new ArrayList<>(CafeBot.getVoiceChatRoleBindHandler().getBoundRolesForChannel(event.getGuild().getId(), voiceChannel.getId()))) {
                 Role role = CafeBot.getGeneralHelper().getRole(event.getGuild(), roleID);
 
                 if (role == null) {
-                    CafeBot.getVoiceChatRoleBindHandler().unBind(event.getGuild().getId(), voiceChannel.getId(), roleID);
+                    CafeBot.getVoiceChatRoleBindHandler().unBindRoleFromVoiceChannel(event.getGuild().getId(), voiceChannel.getId(), roleID);
                 }
                 roles.add(role);
             }
@@ -87,7 +99,7 @@ public class GetVoiceRoleBindsCommand implements ICommand {
                 }
             }
 
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().successEmbed(
                     "Voice Channel Binds",
                     descriptionBuilder.toString()
             )).queue();

@@ -2,94 +2,98 @@ package com.beanbeanjuice.utility.sections.games;
 
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import io.github.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.MinigameType;
+import io.github.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.WinStreak;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
+import io.github.beanbeanjuice.cafeapi.exception.NotFoundException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.*;
-
 /**
- * A handler used for {@link MiniGame} win streaks.
+ * A handler used for {@link WinStreak}.
  *
  * @author beanbeanjuice
  */
 public class WinStreakHandler {
 
     /**
-     * Gets the {@link MiniGame} win streaks for a specified {@link net.dv8tion.jda.api.entities.User User}.
-     * @param userID The ID of the {@link net.dv8tion.jda.api.entities.User User}.
-     * @param minigame The {@link MiniGame} to get the win streaks for.
-     * @return The amount of win streaks the user has for the specified {@link MiniGame}. Null, if there is an error.
+     * Retrieves a {@link WinStreak} for a specified {@link String userID}.
+     * @param userID The {@link String userID} specified.
+     * @return The {@link WinStreak} for the specified {@link String userID}. Null, if there was an error.
      */
     @Nullable
-    public Integer getUserWinStreak(@NotNull String userID, @NotNull MiniGame minigame) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM cafeBot.minigames_win_streaks WHERE user_id = (?);";
-
+    public WinStreak getUserWinStreak(@NotNull String userID) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(userID));
-            ResultSet resultSet = statement.executeQuery();
+            return CafeBot.getCafeAPI().winStreaks().getUserWinStreak(userID);
+        } catch (NotFoundException e) {
 
-            resultSet.next();
-
-            // Creates a new row if the user does not exist.
-            try {
-                resultSet.getLong(1);
-            } catch (SQLException e) {
-                if (!addUser(userID)) {
-                    return null;
-                }
-                return 0;
+            if (!createUserWinStreak(userID)) {
+                return null;
             }
 
-            return resultSet.getInt(minigame.getRowName());
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Retrieve User Win Streak: " + e.getMessage(), e);
+            return new WinStreak(0, 0);
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Retrieve Win Streak: " + e.getMessage(), e);
             return null;
         }
     }
 
     /**
-     * Adds a new row to the database.
-     * @param userID The ID of the specified {@link net.dv8tion.jda.api.entities.User User}.
-     * @return True, if the row was successfully added.
+     * Retrieves a specific {@link WinStreak} for a {@link MinigameType} for a specified {@link String userID}.
+     * @param userID The specified {@link String userID}.
+     * @param type The {@link MinigameType} to get the {@link WinStreak} for.
+     * @return The {@link Integer winStreak} for the specific {@link MinigameType} for the specified {@link String userID}. Null, if there was an error.
+     */
+    @Nullable
+    public Integer getUserWinStreak(@NotNull String userID, @NotNull MinigameType type) {
+        try {
+            if (type == MinigameType.CONNECT_FOUR) {
+                return getUserWinStreak(userID).getConnectFourWins();
+            }
+
+            if (type == MinigameType.TIC_TAC_TOE) {
+                return getUserWinStreak(userID).getTicTacToeWins();
+            }
+
+            return null;
+        } catch (NullPointerException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Winstreak Is Null: " + e.getMessage(), e);
+            return null;
+        }
+    }
+
+    /**
+     * Creates a new {@link WinStreak} for the {@link String userID}.
+     * @param userID The specified {@link String userID}.
+     * @return True, if the {@link WinStreak} was created successfully.
      */
     @NotNull
-    private Boolean addUser(@NotNull String userID) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "INSERT INTO cafeBot.minigames_win_streaks (user_id) VALUES (?);";
-
+    public Boolean createUserWinStreak(@NotNull String userID) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(userID));
-            statement.execute();
+            CafeBot.getCafeAPI().winStreaks().createUserWinStreak(userID);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Add User to Win Streaks: " + e.getMessage(), e);
+        } catch (ConflictException e) {
+            return false;
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating Win Streak: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Sets the {@link MiniGame} win streak for a specified {@link net.dv8tion.jda.api.entities.User User}.
-     * @param userID The ID of the {@link net.dv8tion.jda.api.entities.User User}.
-     * @param miniGame The {@link MiniGame} to get the win streak for.
-     * @param newStreak The new win streak to set it to.
-     * @return True, if successfully updated.
+     * Updates a {@link MinigameType} {@link WinStreak} for a specified {@link String userID}.
+     * @param userID The specified {@link String userID}.
+     * @param gameType The {@link MinigameType gameType}.
+     * @param winStreak The new {@link Integer winStreak}.
+     * @return True, if the {@link WinStreak} was successfully updated for the {@link MinigameType} for the {@link String userID}.
      */
     @NotNull
-    public Boolean setUserWinStreak(@NotNull String userID, @NotNull MiniGame miniGame, @NotNull Integer newStreak) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "UPDATE cafeBot.minigames_win_streaks SET " + miniGame.getRowName() + " = (?) WHERE user_id = (?);";
-
+    public Boolean updateUserWinStreak(@NotNull String userID, @NotNull MinigameType gameType, @NotNull Integer winStreak) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setInt(1, newStreak);
-            statement.setLong(2, Long.parseLong(userID));
-            statement.execute();
-            return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Set User Win Streak: " + e.getMessage(), e);
+            return CafeBot.getCafeAPI().winStreaks().updateUserWinStreak(userID, gameType, winStreak);
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Setting Win Streak: " + e.getMessage(), e);
             return false;
         }
     }

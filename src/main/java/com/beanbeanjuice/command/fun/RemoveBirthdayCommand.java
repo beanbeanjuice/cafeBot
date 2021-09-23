@@ -20,14 +20,14 @@ public class RemoveBirthdayCommand implements ICommand {
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         if (CafeBot.getBirthdayHandler().removeBirthday(user.getId())) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().successEmbed(
                     "Removed Birthday",
                     "Successfully removed your birthday!"
             )).queue();
             return;
         }
 
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().sqlServerError()).queue();
+        event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
     }
 
     @Override

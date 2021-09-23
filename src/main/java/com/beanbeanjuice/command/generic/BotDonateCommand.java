@@ -21,7 +21,7 @@ public class BotDonateCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
                 "Bot Donation",
-                "HellO! If you want to donate, follow this [link](https://streamelements.com/beanbeanjuice/tip)! Don't feel pressured though, even if " +
+                "Hello! If you want to donate, follow this [link](https://streamelements.com/beanbeanjuice/tip)! Don't feel pressured though, even if " +
                         "you don't donate, you will still get all of the features as the people who do, you just will get less of it. For example, " +
                         "instead of 10 polls, as a non-donator, you only get 3."
         )).queue();

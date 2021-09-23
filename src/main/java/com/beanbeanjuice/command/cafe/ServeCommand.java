@@ -1,13 +1,17 @@
 package com.beanbeanjuice.command.cafe;
 
 import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.sections.cafe.object.CafeCustomer;
-import com.beanbeanjuice.utility.sections.cafe.object.ServeWord;
+import com.beanbeanjuice.utility.logger.LogLevel;
 import com.beanbeanjuice.utility.command.CommandContext;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeType;
+import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
+import io.github.beanbeanjuice.cafeapi.cafebot.words.Word;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
@@ -19,7 +23,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
- * A command used to serve words.
+ * A command used to serve {@link Word}.
  *
  * @author beanbeanjuice
  */
@@ -29,10 +33,11 @@ public class ServeCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
 
         String word = args.get(0).toLowerCase();
-        ServeWord serveWord = CafeBot.getServeHandler().getWord(word);
-
-        // Checking if the word entered is a word.
-        if (serveWord == null) {
+        Word serveWord;
+        try {
+            // Checking if the word entered is a word.
+            serveWord = CafeBot.getCafeAPI().words().getWord(word);
+        } catch (CafeException e) {
             event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Not A Word",
                     "`" + word + "` is not a word. If this is a mistake, please create a " +
@@ -41,39 +46,57 @@ public class ServeCommand implements ICommand {
             return;
         }
 
-        CafeCustomer cafeCustomer = CafeBot.getServeHandler().getCafeCustomer(user);
+        CafeUser cafeUser = CafeBot.getServeHandler().getCafeUser(user);
 
-        // Checking if CafeCustomer is null.
-        if (cafeCustomer == null) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
+        if (cafeUser == null) {
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                    "Error Getting User Information",
+                    "There has been an error getting your user information. Please try again."
+            )).queue();
             return;
         }
+
+        // Converting Timestamp to UTC time.
+        Timestamp currentTimestamp = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis()).toString());
 
         // Checking if the user CAN serve someone.
-        if (!CafeBot.getServeHandler().canServe(cafeCustomer)) {
-            event.getChannel().sendMessageEmbeds(cannotServeEmbed(CafeBot.getServeHandler().minutesBetween(cafeCustomer))).queue();
+        if (!CafeBot.getServeHandler().canServe(cafeUser)) {
+            event.getChannel().sendMessageEmbeds(cannotServeEmbed(CafeBot.getServeHandler().minutesBetween(cafeUser))).queue();
             return;
         }
 
-        Timestamp currentDate = new Timestamp(System.currentTimeMillis());
+        // Calculates the tip
         Double calculatedTip = CafeBot.getServeHandler().calculateTip(serveWord);
 
-        // Updates the Balance for the User
-        if (!CafeBot.getServeHandler().updateTip(cafeCustomer, currentDate, calculatedTip)) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
+        // Updates the Balance and Last Serving Time for the user.
+        try {
+            CafeBot.getCafeAPI().cafeUsers().updateCafeUser(cafeUser.getUserID(), CafeType.LAST_SERVING_TIME, currentTimestamp);
+            CafeBot.getCafeAPI().cafeUsers().updateCafeUser(cafeUser.getUserID(), CafeType.BEAN_COINS, cafeUser.getBeanCoins() + calculatedTip);
+        } catch (CafeException e) {
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                    "Error Updating Cafe User",
+                    "There has been an error. " + e.getMessage()
+            )).queue();
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Updating Cafe User: " + e.getMessage(), e);
             return;
         }
 
-        // Updates the Word Used
-        if (!CafeBot.getServeHandler().updateWord(serveWord)) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().sqlServerError()).queue();
-            return;
+        // Attempts to update the word
+        try {
+            CafeBot.getCafeAPI().words().updateWord(serveWord.getWord(), serveWord.getUses() + 1);
+        } catch (CafeException e) {
+            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+                    "Error Updating Word",
+                    "You have still received your tip from the word, but there has been an error updating it. " + e.getMessage()
+            )).queue();
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Updating Word '" + word + "': " + e.getMessage(), e);
         }
 
+        // Sends the message embed.
         if (args.size() == 1) {
-            event.getChannel().sendMessageEmbeds(serveSingleEmbed(word, calculatedTip, (cafeCustomer.getBeanCoinAmount()) + calculatedTip)).queue();
+            event.getChannel().sendMessageEmbeds(serveSingleEmbed(word, calculatedTip, (cafeUser.getBeanCoins()) + calculatedTip)).queue();
         } else {
-            event.getChannel().sendMessageEmbeds(serveSomeoneEmbed(word, calculatedTip, (cafeCustomer.getBeanCoinAmount() + calculatedTip),
+            event.getChannel().sendMessageEmbeds(serveSomeoneEmbed(word, calculatedTip, (cafeUser.getBeanCoins() + calculatedTip),
                     user, CafeBot.getGeneralHelper().getUser(args.get(1)))).queue();
         }
 

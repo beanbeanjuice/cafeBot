@@ -4,11 +4,12 @@ import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.guild.CustomGuild;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import com.beanbeanjuice.utility.logger.LogLevel;
-import com.beanbeanjuice.utility.sql.SQLServer;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
 import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
+import io.github.beanbeanjuice.cafeapi.CafeAPI;
+import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -37,43 +38,8 @@ public class GeneralHelper {
     private Timer spotifyRefreshTimer;
     private TimerTask spotifyRefreshTimerTask;
 
-    private Timer mysqlRefreshTimer;
-    private TimerTask mysqlRefreshTimerTask;
-
-    public void startMySQLRefreshTimer() {
-        mysqlRefreshTimer = new Timer();
-        mysqlRefreshTimerTask = new TimerTask() {
-
-            @SneakyThrows
-            @Override
-            public void run() {
-                try {
-                    CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Refreshing MySQL Connection...", true, false);
-                    CafeBot.getSQLServer().getConnection().close(); // Closes the SQL Connection
-                    CafeBot.getSQLServer().startConnection(); // Reopens the SQL Connection
-
-                    // If the SQL Connection is still closed, then it must throw an sql exception.
-                    if (!CafeBot.getSQLServer().checkConnection()) {
-                        throw new SQLException("The connection is still closed.");
-                    }
-
-                    CafeBot.getLogManager().log(this.getClass(), LogLevel.OKAY, "Successfully refreshed the MySQL Connection!", true, false);
-                } catch (SQLException e) {
-                    CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Unable to Connect to the SQL Server: " + e.getMessage(), true, false);
-
-                    CafeBot.setSQLServer(new SQLServer(CafeBot.getSQLURL(), CafeBot.getSQLPort(), CafeBot.getSQLEncrypt(), CafeBot.getSQLUsername(), CafeBot.getSQLPassword()));
-                    CafeBot.getSQLServer().startConnection();
-
-                    Thread.sleep(3000);
-                    while (!CafeBot.getSQLServer().checkConnection()) {
-                        CafeBot.setSQLServer(new SQLServer(CafeBot.getSQLURL(), CafeBot.getSQLPort(), CafeBot.getSQLEncrypt(), CafeBot.getSQLUsername(), CafeBot.getSQLPassword()));
-                        CafeBot.getSQLServer().startConnection();
-                    }
-                }
-            }
-        };
-        mysqlRefreshTimer.scheduleAtFixedRate(mysqlRefreshTimerTask, 1800000, 1800000);
-    }
+    private Timer cafeAPITimer;
+    private TimerTask cafeAPITimerTask;
 
     /**
      * Starts the re-establishing of a Spotify Key Timer.
@@ -104,6 +70,22 @@ public class GeneralHelper {
             }
         };
         spotifyRefreshTimer.scheduleAtFixedRate(spotifyRefreshTimerTask, 0, 1800000);
+    }
+
+    /**
+     * Updates the {@link CafeAPI} every hour.
+     */
+    public void startCafeAPIRefreshTimer() {
+        cafeAPITimer = new Timer();
+        cafeAPITimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                CafeBot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA));
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
+            }
+        };
+        cafeAPITimer.scheduleAtFixedRate(cafeAPITimerTask, 3400000, 3400000);
     }
 
     /**

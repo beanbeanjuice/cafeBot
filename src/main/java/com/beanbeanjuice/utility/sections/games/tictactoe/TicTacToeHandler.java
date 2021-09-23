@@ -24,7 +24,7 @@ public class TicTacToeHandler {
      * Creates a {@link TicTacToeGame}.
      * @param guildID the ID of the {@link net.dv8tion.jda.api.entities.Guild Guild} to create the {@link TicTacToeGame} in.
      * @param game The {@link TicTacToeGame}.
-     * @return Whether or not it was successfully created.
+     * @return True, if the {@link TicTacToeGame} was created successfully.
      */
     @NotNull
     public Boolean createGame(@NotNull String guildID, @NotNull TicTacToeGame game) {

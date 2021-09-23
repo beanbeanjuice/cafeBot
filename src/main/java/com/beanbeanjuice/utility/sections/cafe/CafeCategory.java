@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public enum CafeCategory {
 
+    BREAKFAST("Breakfast", "Some food you can get to start up your day!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_category/breakfast.png"),
     DRINK("Drinks", "Non-alcoholic drinks of your choice!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_category/drink.jpg"),
     SANDWICH("Sandwiches and Burgers", "I mean... this is pretty self-explanatory.", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_category/sandwich.jpg"),
     SOUP("Soups", "Some warm yummy soup for your tummy!", "http://cdn.beanbeanjuice.com/images/cafeBot/cafe_category/soup.jpg"),

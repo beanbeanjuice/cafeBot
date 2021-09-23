@@ -2,21 +2,22 @@ package com.beanbeanjuice.utility.sections.fun.poll;
 
 import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import io.github.beanbeanjuice.cafeapi.exception.CafeException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.*;
+import java.awt.*;
 import java.util.*;
 
 /**
- * A class used for handling {@link Poll}s.
+ * A class used for handling {@link Poll}.
  *
  * @author beanbeanjuice
  */
 public class PollHandler {
 
-    private HashMap<String, ArrayList<Poll>> activePolls;
+    private final HashMap<String, ArrayList<Poll>> activePolls;
     private Timer pollTimer;
     private TimerTask pollTimerTask;
 
@@ -26,7 +27,7 @@ public class PollHandler {
     public PollHandler() {
         activePolls = new HashMap<>();
 
-        getPollsFromDatabase();
+        getAllPolls();
         startPollTimer();
     }
 
@@ -40,23 +41,23 @@ public class PollHandler {
             @Override
             public void run() {
 
-                activePolls.forEach((key, value) -> {
+                activePolls.forEach((guildID, polls) -> {
 
                     // Go through each poll
-                    for (Poll poll : value) {
+                    for (Poll poll : polls) {
 
                         // Check if the poll SHOULD be calculated
                         if (poll.isFinished()) {
                             // Check if the poll channel still exists.
-                            TextChannel pollChannel = CafeBot.getGuildHandler().getCustomGuild(key).getPollChannel();
+                            TextChannel pollChannel = CafeBot.getGuildHandler().getCustomGuild(guildID).getPollChannel();
 
                             if (pollChannel == null) {
-                                removePoll(poll);
-                                value.remove(poll);
+                                if (removePoll(guildID, poll)) {
+                                    polls.remove(poll);
+                                }
                             } else {
                                 // Poll Channel IS NOT Null
                                 // Check if the message is null
-
                                 pollChannel.retrieveMessageById(poll.getMessageID()).queue((message) -> {
                                     // Edit Message If Not Null
                                     // Get the reactions
@@ -74,6 +75,7 @@ public class PollHandler {
                                     // Now we have the highest reaction number.
                                     ArrayList<MessageReaction.ReactionEmote> highestReactions = new ArrayList<>();
 
+                                    // Gets the amount of reactions for that message.
                                     for (MessageReaction messageReaction : messageReactions) {
                                         if (messageReaction.getCount() == highestReaction && messageReaction.getCount() != 1) {
                                             highestReactions.add(messageReaction.getReactionEmote());
@@ -83,17 +85,19 @@ public class PollHandler {
                                     String title = message.getEmbeds().get(0).getTitle();
                                     String pollDescription = message.getEmbeds().get(0).getDescription();
 
-                                    message.editMessage(pollEmbed(title, pollDescription, highestReactions)).queue();
+                                    message.editMessageEmbeds(pollEmbed(title, pollDescription, highestReactions)).queue();
 
                                     // Remove it
-                                    removePoll(poll);
-                                    value.remove(poll);
+                                    if (removePoll(guildID, poll)) {
+                                        polls.remove(poll);
+                                    }
 
                                 }, (failure) -> {
 
                                     // This means the message does not exist.
-                                    removePoll(poll);
-                                    value.remove(poll);
+                                    if (removePoll(guildID, poll)) {
+                                        polls.remove(poll);
+                                    }
                                 });
 
                             }
@@ -109,6 +113,13 @@ public class PollHandler {
         pollTimer.scheduleAtFixedRate(pollTimerTask, 0, 30000);
     }
 
+    /**
+     * Creates a {@link Poll} {@link MessageEmbed}.
+     * @param pollTitle The {@link String title} of the {@link Poll}.
+     * @param pollDescription The {@link String description} of the {@link Poll}.
+     * @param winners The {@link net.dv8tion.jda.api.entities.MessageReaction.ReactionEmote winners} of the poll.
+     * @return The created {@link MessageEmbed}.
+     */
     @NotNull
     private MessageEmbed pollEmbed(@NotNull String pollTitle, @NotNull String pollDescription,
                                   @NotNull ArrayList<MessageReaction.ReactionEmote> winners) {
@@ -116,123 +127,80 @@ public class PollHandler {
         embedBuilder.setTitle(pollTitle);
         embedBuilder.setDescription(pollDescription);
         embedBuilder.setFooter("This poll has ended.");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
 
         StringBuilder winnersBuilder = new StringBuilder();
 
         if (winners.isEmpty()) {
             winnersBuilder.append("No one voted...");
+            embedBuilder.setColor(Color.gray);
         } else {
             for (MessageReaction.ReactionEmote emote : winners) {
                 winnersBuilder.append(emote.getEmoji()).append(" ");
             }
+            embedBuilder.setColor(Color.red);
         }
         embedBuilder.addField("Poll Results", winnersBuilder.toString(), true);
         return embedBuilder.build();
     }
 
     /**
-     * Add a poll to be checked.
-     * @param poll The {@link Poll} to add.
-     * @return Whether or not adding the {@link Poll} was successful.
+     * Gets all {@link Poll} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      */
-    public Boolean addPoll(Poll poll) {
-
-        String guildID = poll.getGuildID();
-        String messageID = poll.getMessageID();
-
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "INSERT INTO cafeBot.polls (guild_id, message_id, ending_time) VALUES (?,?,?);";
-
+    public void getAllPolls() {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(guildID));
-            statement.setLong(2, Long.parseLong(messageID));
-            statement.setTimestamp(3, poll.getPollEndTime());
-
-            statement.execute();
-        } catch (SQLException e) {
-            return false;
-        }
-
-        if (activePolls.get(guildID) == null) {
-            activePolls.put(guildID, new ArrayList<>());
-        }
-
-        activePolls.get(guildID).add(poll);
-        return true;
-    }
-
-    /**
-     * Refreshing the database cache for the {@link PollHandler}.
-     */
-    private void getPollsFromDatabase() {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "SELECT * FROM cafeBot.polls;";
-
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(arguments);
-
-            while (resultSet.next()) {
-                String guildID = String.valueOf(resultSet.getLong(1));
-                String messageID = String.valueOf(resultSet.getLong(2));
-                Timestamp pollEndTime = resultSet.getTimestamp(3);
-
-                if (activePolls.get(guildID) == null) {
+            CafeBot.getCafeAPI().polls().getAllPolls().forEach((guildID, polls) -> {
+                if (!activePolls.containsKey(guildID)) {
                     activePolls.put(guildID, new ArrayList<>());
                 }
 
-                activePolls.get(guildID).add(new Poll(guildID, messageID, pollEndTime));
-            }
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Retrieving Polls from Database: " + e.getMessage());
+                for (io.github.beanbeanjuice.cafeapi.cafebot.polls.Poll poll : polls) {
+                    activePolls.get(guildID).add(new Poll(poll.getMessageID(), poll.getEndingTime()));
+                }
+            });
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Getting Polls: " + e.getMessage(), e);
+            return;
         }
     }
 
     /**
-     * Removes a {@link Poll} from the database.
-     * @param poll The {@link Poll} to remove.
-     * @return Whether or not removing the {@link Poll} was successful.
+     * Adds a {@link Poll} to the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * @param guildID The {@link String guildID} of the {@link Poll}.
+     * @param poll The {@link Poll} to add.
+     * @return True, if the {@link Poll} was added successfully.
      */
     @NotNull
-    private Boolean removePoll(@NotNull Poll poll) {
-        Connection connection = CafeBot.getSQLServer().getConnection();
-        String arguments = "DELETE FROM cafeBot.polls WHERE guild_id = (?) AND message_id = (?);";
-
+    public Boolean addPoll(@NotNull String guildID, @NotNull Poll poll) {
         try {
-            PreparedStatement statement = connection.prepareStatement(arguments);
-            statement.setLong(1, Long.parseLong(poll.getGuildID()));
-            statement.setLong(2, Long.parseLong(poll.getMessageID()));
-            statement.execute();
+            CafeBot.getCafeAPI().polls().createPoll(guildID, poll);
+
+            if (!activePolls.containsKey(guildID)) {
+                activePolls.put(guildID, new ArrayList<>());
+            }
+
+            activePolls.get(guildID).add(poll);
             return true;
-        } catch (SQLException e) {
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Removing Poll from Database: " + e.getMessage());
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating Poll: " + e.getMessage(), e);
             return false;
         }
     }
 
     /**
-     * Gets the amount of {@link Poll}s that the {@link Guild} has.
-     * @param guildID The ID of the {@link Guild}.
-     * @return The {@link ArrayList<Poll> Polls} for the {@link Guild}.
+     * Removes a {@link Poll} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * @param guildID The {@link String guildID} of the {@link Poll}.
+     * @param poll The {@link Poll poll} to remove.
+     * @return True, if the {@link Poll} was removed successfully.
      */
     @NotNull
-    public ArrayList<Poll> getPollsForGuild(@NotNull String guildID) {
-        if (activePolls.get(guildID) != null) {
-            return activePolls.get(guildID);
+    private Boolean removePoll(@NotNull String guildID, @NotNull Poll poll) {
+        try {
+            CafeBot.getCafeAPI().polls().deletePoll(guildID, poll);
+            return true;
+        } catch (CafeException e) {
+            CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Removing Poll: " + e.getMessage());
+            return false;
         }
-        return new ArrayList<>();
-    }
-
-    /**
-     * Gets the amount of {@link Poll}s that the {@link Guild} has.
-     * @param guild The {@link Guild}.
-     * @return The {@link ArrayList<Poll> Polls} for the {@link Guild}.
-     */
-    @NotNull
-    public ArrayList<Poll> getPollsForGuild(@NotNull Guild guild) {
-        return getPollsForGuild(guild.getId());
     }
 
 

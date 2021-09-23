@@ -9,9 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 16
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
-          java-version: 16
+          java-version: '16'
+          distribution: 'adopt'
+          cache: gradle
       - name: Build with Gradle
         env:
           CAFEBOT_MYSQL_URL: ${{ secrets.CAFEBOT_MYSQL_URL }}
@@ -34,4 +36,10 @@ jobs:
           CAFEBOT_TOPGG_ID: ${{ secrets.CAFEBOT_TOPGG_ID }}
           CAFEBOT_TOPGG_TOKEN: ${{ secrets.CAFEBOT_TOPGG_TOKEN }}
           CAFEBOT_SPRING_BOOT_PORT: ${{ secrets.CAFEBOT_SPRING_BOOT_PORT }}
+          API_PASSWORD: ${{ secrets.API_PASSWORD }}
+          RELEASE_API_PASSWORD: ${{ secrets.RELEASE_API_PASSWORD }}
         run: gradle build
+      - name: Cleanup Gradle Cache
+        run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
