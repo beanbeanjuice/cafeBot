@@ -32,10 +32,10 @@ public class LogManager {
 
     private final String name;
     private TextChannel logChannel;
-    private ArrayList<String> webhookURLs;
+    private final ArrayList<String> webhookURLs;
     private SimpMessageSendingOperations sendingOperations;
     private String currentLogFileName;
-    private String filePath;
+    private final String filePath;
     private String logFileTime;
 
     /**
@@ -74,6 +74,8 @@ public class LogManager {
         // If the log file already exists, it doesn't need to make a new one.
         if (!createLogFile(filePath)) {
             log(this.getClass(), LogLevel.INFO, "Log for today has already been created.");
+        } else {
+            log(this.getClass(), LogLevel.OKAY, "Created Log File!");
         }
     }
 
@@ -303,8 +305,8 @@ public class LogManager {
      * @param c The {@link Class} that called the log.
      * @param logLevel The current {@link LogLevel} of the log to be created.
      * @param message The message contents for the log.
-     * @param logToWebhook Whether or not to log to the webhook.
-     * @param logToLogChannel Whether or not to log to the log channel.
+     * @param logToWebhook True, if logging to the webhook.
+     * @param logToLogChannel True, if logging to the Discord {@link TextChannel logChannel}.
      */
     public void log(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message,
                     @NotNull Boolean logToWebhook, @NotNull Boolean logToLogChannel) {
@@ -442,7 +444,7 @@ public class LogManager {
         embedBuilder.setTimestamp(new Date().toInstant());
 
         try {
-            logChannel.sendMessage(embedBuilder.build()).complete();
+            logChannel.sendMessageEmbeds(embedBuilder.build()).complete();
         } catch (NullPointerException ignored) {}
     }
 

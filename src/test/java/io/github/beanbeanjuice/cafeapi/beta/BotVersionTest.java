@@ -1,6 +1,8 @@
-package io.github.beanbeanjuice.cafeapi;
+package io.github.beanbeanjuice.cafeapi.beta;
 
+import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import io.github.beanbeanjuice.cafeapi.exception.TeaPotException;
+import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +12,7 @@ public class BotVersionTest {
     @Test
     @DisplayName("Bot Version API Test")
     public void testBotVersionAPI() {
-        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"));
+        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
         // Gets the current version of cafeBot.
         String currentVersion = cafeAPI.versions().getCurrentCafeBotVersion();
