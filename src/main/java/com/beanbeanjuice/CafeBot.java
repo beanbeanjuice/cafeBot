@@ -170,7 +170,7 @@ public class CafeBot {
         logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
 
         // APIs
-        cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.RELEASE);
+        cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
         generalHelper.startCafeAPIRefreshTimer();
         logManager.log(CafeBot.class, LogLevel.OKAY, "Connecting to the Top.GG API", true, false);
         topGGAPI = new DiscordBotListAPI.Builder()
