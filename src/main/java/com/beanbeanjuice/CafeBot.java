@@ -399,10 +399,11 @@ public class CafeBot {
         logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
         updateGuildPresence();
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
+
+        generalHelper.startHourlyUpdateTimer();
     }
 
     public static void main(String[] args) throws LoginException, InterruptedException {
-//        SpringApplication.run(CafeBot.class, args);
         new CafeBot();
     }
 
