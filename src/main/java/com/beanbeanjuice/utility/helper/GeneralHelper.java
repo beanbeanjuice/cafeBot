@@ -132,7 +132,7 @@ public class GeneralHelper {
 
             @Override
             public void run() {
-                CafeBot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA));
+                CafeBot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.RELEASE));
                 CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
             }
         };
