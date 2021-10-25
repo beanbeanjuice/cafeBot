@@ -30,7 +30,7 @@ public class CryCommand implements ICommand {
                 event.getChannel());
 
         if (interaction.containsCafeBot()) {
-            event.getMessage().reply("Ow! Why would you do that to me?!?").queue();
+            event.getMessage().reply("WHA- WHAT DID I DO?").queue();
         }
     }
 

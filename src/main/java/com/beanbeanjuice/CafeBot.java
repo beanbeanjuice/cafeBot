@@ -17,12 +17,10 @@ import com.beanbeanjuice.command.moderation.voicebind.GetVoiceRoleBindsCommand;
 import com.beanbeanjuice.command.moderation.voicebind.VoiceRoleBindCommand;
 import com.beanbeanjuice.command.moderation.welcome.EditWelcomeMessageCommand;
 import com.beanbeanjuice.command.moderation.welcome.SetWelcomeChannelCommand;
-import com.beanbeanjuice.command.music.*;
 import com.beanbeanjuice.command.social.VentCommand;
 import com.beanbeanjuice.command.twitch.*;
 import com.beanbeanjuice.utility.helper.DailyChannelHelper;
 import com.beanbeanjuice.utility.helper.api.GitHubUpdateChecker;
-import com.beanbeanjuice.utility.helper.api.dictionary.DictionaryAPI;
 import com.beanbeanjuice.utility.listener.AIResponseListener;
 import com.beanbeanjuice.utility.listener.WelcomeListener;
 import com.beanbeanjuice.utility.sections.cafe.BeanCoinDonationHandler;
@@ -61,7 +59,6 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.security.auth.login.LoginException;
@@ -170,7 +167,7 @@ public class CafeBot {
         logManager = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
 
         // APIs
-        cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.RELEASE);
+        cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
         generalHelper.startCafeAPIRefreshTimer();
         logManager.log(CafeBot.class, LogLevel.OKAY, "Connecting to the Top.GG API", true, false);
         topGGAPI = new DiscordBotListAPI.Builder()
@@ -402,10 +399,11 @@ public class CafeBot {
         logManager.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
         updateGuildPresence();
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
+
+        generalHelper.startHourlyUpdateTimer();
     }
 
     public static void main(String[] args) throws LoginException, InterruptedException {
-//        SpringApplication.run(CafeBot.class, args);
         new CafeBot();
     }
 
