@@ -31,9 +31,6 @@ public class BiteCommand implements ICommand {
                 args,
                 event.getChannel());
 
-        CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, ctx.getSelfMember().getId());
-        CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, user.getId());
-
         if (interaction.containsCafeBot()) {
             event.getMessage().reply("Ow! Why would you do that to me?!?").queue();
         }
