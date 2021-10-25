@@ -60,7 +60,10 @@ public class DictionaryAPI {
 
         for (int i = 0; i < dictionaryMeanings.size(); i++) {
             descriptionBuilder.append("**Definition #").append(i+1).append("** (*").append(dictionaryMeanings.get(i).getPartOfSpeech()).append("*): ").append(dictionaryMeanings.get(i).getDefinition()).append("\n");
-            descriptionBuilder.append("**Example**: ").append(dictionaryMeanings.get(i).getExample()).append("\n\n");
+            if (dictionaryMeanings.get(i).getExample() != null) {
+                descriptionBuilder.append("**Example**: ").append(dictionaryMeanings.get(i).getExample()).append("\n");
+            }
+            descriptionBuilder.append("\n");
         }
         embedBuilder.setDescription(descriptionBuilder.toString());
 
