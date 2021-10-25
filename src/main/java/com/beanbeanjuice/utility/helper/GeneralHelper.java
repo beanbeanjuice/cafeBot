@@ -4,13 +4,13 @@ import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.guild.CustomGuild;
 import com.beanbeanjuice.utility.helper.timestamp.TimestampDifference;
 import com.beanbeanjuice.utility.logger.LogLevel;
+import com.sun.management.OperatingSystemMXBean;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
 import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
-import lombok.SneakyThrows;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
@@ -20,12 +20,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,6 +41,56 @@ public class GeneralHelper {
 
     private Timer cafeAPITimer;
     private TimerTask cafeAPITimerTask;
+
+    private Timer updateTimer;
+    private TimerTask updateTimerTask;
+
+    public void startHourlyUpdateTimer() {
+        updateTimer = new Timer();
+        updateTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                User owner = CafeBot.getGeneralHelper().getUser("690927484199370753");
+
+                CafeBot.getJDA().getRestPing().queue((ping) -> {
+                    CafeBot.getGeneralHelper().pmUser(owner, getUpdateEmbed(ping, CafeBot.getJDA().getGatewayPing()));
+                });
+            }
+        };
+        updateTimer.scheduleAtFixedRate(updateTimerTask, 0, 3600000);
+    }
+
+    @NotNull
+    private MessageEmbed getUpdateEmbed(@NotNull Long botPing, @NotNull Long gatewayPing) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        StringBuilder descriptionBuilder = new StringBuilder();
+        double cpuLoad = (double) Math.round((ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCpuLoad()*100) * 100) / 100;
+        long systemMemoryTotal = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getTotalMemorySize()/1048576;
+        long systemMemoryUsage = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCommittedVirtualMemorySize()/1048576;
+        long dedicatedMemoryTotal = Runtime.getRuntime().maxMemory()/1048576;
+        long dedicatedMemoryUsage = Runtime.getRuntime().totalMemory()/1048576;
+        embedBuilder.setTitle("Hourly CafeBot Update");
+        descriptionBuilder.append("**__System Status__**: Online\n\n");
+        descriptionBuilder.append("**__Rest Ping__** - `").append(botPing).append("`\n")
+                .append("**__Gateway Ping__** - `").append(gatewayPing).append("`\n")
+                .append("**__Current Version__** - `").append(CafeBot.getBotVersion()).append("`\n")
+                .append("**__CPU Usage__** - `").append(cpuLoad).append("%`\n")
+                .append("**__OS Memory Usage__** - `").append(systemMemoryUsage).append("` mb / `").append(systemMemoryTotal).append("` mb\n")
+                .append("**__Bot Memory Usage__** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
+                .append("**__Bot Uptime__** - `").append(CafeBot.getGeneralHelper().formatTimeDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
+                .append("**__Commands Run__** - `").append(CafeBot.getCommandsRun()).append("`\n");
+
+        try {
+            descriptionBuilder.append("**__Bot Upvotes__** - `").append(CafeBot.getTopGGAPI().getBot(System.getenv("CAFEBOT_TOPGG_ID")).toCompletableFuture().get()
+                    .getPoints()).append("`\n\n");
+        } catch (InterruptedException | ExecutionException e) {
+            descriptionBuilder.append("**Bot Upvotes** - `Unable to Get Vote Count`\n\n");
+        }
+        embedBuilder.setDescription(descriptionBuilder.toString());
+        embedBuilder.setThumbnail(CafeBot.getDiscordAvatarUrl());
+        embedBuilder.setColor(Color.green);
+        return embedBuilder.build();
+    }
 
     /**
      * Starts the re-establishing of a Spotify Key Timer.

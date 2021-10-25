@@ -30,11 +30,11 @@ public class PingCommand implements ICommand {
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
         CafeBot.getJDA().getRestPing().queue(
                 (ping) -> event.getChannel()
-                        .sendMessage(messageEmbed(ping, CafeBot.getJDA().getGatewayPing())).queue()
+                        .sendMessageEmbeds(messageEmbed(ping, CafeBot.getJDA().getGatewayPing())).queue()
         );
 
         if (args.size() == 1) {
-            if (args.get(0).equals("log")) {
+            if (args.get(0).equals("testing")) {
                 Exception exception = new SQLException("Fake SQL Exception");
                 CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Testing Log: " + exception.getMessage(), exception);
             }
