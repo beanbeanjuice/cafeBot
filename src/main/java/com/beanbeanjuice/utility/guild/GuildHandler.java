@@ -19,14 +19,20 @@ import java.util.List;
 public class GuildHandler {
 
     private final HashMap<String, CustomGuild> guildDatabase;
+    private HashMap<String, ArrayList<String>> twitchChannels;
 
     /**
      * Creates a new {@link GuildHandler} object.
      */
     public GuildHandler() {
         guildDatabase = new HashMap<>();
+        getAllTwitchChannels();
 
         checkGuilds();
+    }
+
+    private void getAllTwitchChannels() {
+        twitchChannels = CafeBot.getCafeAPI().guildTwitches().getAllTwitches();
     }
 
     /**
@@ -40,7 +46,7 @@ public class GuildHandler {
                 String prefix = guildInformation.getPrefix();
                 String moderationRoleID = guildInformation.getModeratorRoleID();
                 String twitchChannelID = guildInformation.getTwitchChannelID();
-                ArrayList<String> twitchChannels = getTwitchChannels(guildID);
+                ArrayList<String> twitchChannels = this.twitchChannels.get(guildID);
                 String mutedRoleID = guildInformation.getMutedRoleID();
                 String liveNotificationsRoleID =  guildInformation.getLiveNotificationsRoleID();
                 Boolean notifyOnUpdate = guildInformation.getNotifyOnUpdate();
