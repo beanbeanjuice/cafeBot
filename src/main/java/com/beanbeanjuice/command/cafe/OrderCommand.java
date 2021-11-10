@@ -82,7 +82,8 @@ public class OrderCommand implements ICommand {
         if (orderer.getBeanCoins() < totalPrice) {
             event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "You Are Broke",
-                    "You do not have enough money to purchase " + receivers.size() + "x `" + item.getName() + "`..."
+                    "You do not have enough money to purchase " + receivers.size() + "x `" + item.getName() + "`... To learn how to make money, do " +
+                            "`" + ctx.getPrefix() + "help serve`!"
             )).queue();
             return;
         }
