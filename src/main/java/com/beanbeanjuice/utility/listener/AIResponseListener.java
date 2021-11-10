@@ -40,6 +40,7 @@ public class AIResponseListener extends ListenerAdapter {
         createPPMaps();
         createNahMaps();
         createSTFUMaps();
+        createGenevieveMaps();
     }
 
     private void createHelloMaps() {
@@ -248,6 +249,22 @@ public class AIResponseListener extends ListenerAdapter {
 
         responses.add("You stfu, {user}...");
         responses.add("You shut up, {user}.");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createGenevieveMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("gen");
+        commandTerms.add("genevieve");
+        commandTerms.add("lolitagiant");
+        commandTerms.add("lolita");
+
+        responses.add("Gen? Genevieve? She's so cute!");
+        responses.add("Genevieve has such cute outfits!");
+        responses.add("My creator knows someone named Genevieve! Apparently they're so cute!");
 
         messageMap.put(commandTerms, responses);
     }
