@@ -48,11 +48,10 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.junit.jupiter:junit-jupiter:5.7.0'
-    implementation 'junit:junit:4.13.1'
-
 
     // JUnit, for Unit Testing
+    implementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.7.0'
+    implementation group: 'junit', name: 'junit', version: '4.13.1'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.8.0-M1'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine'
 
