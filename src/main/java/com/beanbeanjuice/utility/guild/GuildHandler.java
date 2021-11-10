@@ -46,7 +46,11 @@ public class GuildHandler {
                 String prefix = guildInformation.getPrefix();
                 String moderationRoleID = guildInformation.getModeratorRoleID();
                 String twitchChannelID = guildInformation.getTwitchChannelID();
+
                 ArrayList<String> twitchChannels = this.twitchChannels.get(guildID);
+                if (twitchChannels == null) {
+                    twitchChannels = new ArrayList<>();
+                }
                 String mutedRoleID = guildInformation.getMutedRoleID();
                 String liveNotificationsRoleID =  guildInformation.getLiveNotificationsRoleID();
                 Boolean notifyOnUpdate = guildInformation.getNotifyOnUpdate();

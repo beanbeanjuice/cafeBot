@@ -271,26 +271,28 @@ public class AIResponseListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
-        Guild guild = event.getGuild();
+        try {
+            Guild guild = event.getGuild();
 
-        if (event.getAuthor().isBot()) {
-            return;
-        }
-
-        if (!CafeBot.getGuildHandler().getCustomGuild(guild).getAIState()) {
-            return;
-        }
-
-        String message = event.getMessage().getContentRaw().toLowerCase();
-
-        messageMap.forEach((commandTerms, commandResponses) -> {
-            if (commandTerms.contains(message.replace(".", "").replace("?", ""))) {
-                event.getMessage().reply(parseMessage(
-                        commandResponses.get(CafeBot.getGeneralHelper().getRandomNumber(0, commandResponses.size())),
-                        event.getAuthor()
-                )).queue();
+            if (event.getAuthor().isBot()) {
+                return;
             }
-        });
+
+            if (!CafeBot.getGuildHandler().getCustomGuild(guild).getAIState()) {
+                return;
+            }
+
+            String message = event.getMessage().getContentRaw().toLowerCase();
+
+            messageMap.forEach((commandTerms, commandResponses) -> {
+                if (commandTerms.contains(message.replace(".", "").replace("?", ""))) {
+                    event.getMessage().reply(parseMessage(
+                            commandResponses.get(CafeBot.getGeneralHelper().getRandomNumber(0, commandResponses.size())),
+                            event.getAuthor()
+                    )).queue();
+                }
+            });
+        } catch (NullPointerException ignored) {}
     }
 
     private String parseMessage(@NotNull String message, @NotNull User user) {
