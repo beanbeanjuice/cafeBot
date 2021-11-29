@@ -176,8 +176,9 @@ public class CountingHelper {
             try {
                 CafeBot.getCafeAPI().countingInformations().createGuildCountingInformation(guildID);
 
-                CountingInformation countingInformation = new CountingInformation(0, 0, "0", "0");
-                countingInformationMap.put(guildID, countingInformation);
+                CountingInformation countingInformation = new CountingInformation(0, 0, "0", "0"); // TODO: Error occurs here. Possibly an API issue.
+                countingInformationMap.put(guildID, countingInformation); // TODO: Uncomment
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Guild ID: " + guildID);
                 return countingInformation;
             } catch (CafeException e) {
                 CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating Counting Information: " + e.getMessage(), e);
