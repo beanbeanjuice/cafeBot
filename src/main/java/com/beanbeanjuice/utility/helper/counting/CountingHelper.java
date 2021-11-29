@@ -181,7 +181,7 @@ public class CountingHelper {
                 return countingInformation;
             } catch (CafeException e) {
                 CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating Counting Information: " + e.getMessage(), e);
-                return null;
+                return null; // FIXME: This is "broken". Maybe instead of returning null, we can return the actual counting information. Line 179 is not working if this is the case.
             }
         }
 
