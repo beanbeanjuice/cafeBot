@@ -4,6 +4,7 @@ import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import io.github.beanbeanjuice.cafeapi.cafebot.counting.CountingInformation;
 import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -180,8 +181,12 @@ public class CountingHelper {
                 countingInformationMap.put(guildID, countingInformation); // TODO: Uncomment
                 CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Guild ID: " + guildID);
                 return countingInformation;
-            } catch (CafeException e) {
-                CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating Counting Information: " + e.getMessage(), e);
+            } catch (ConflictException e1) {
+                CountingInformation countingInformation = CafeBot.getCafeAPI().countingInformations().getGuildCountingInformation(guildID);
+                countingInformationMap.put(guildID, countingInformation);
+                return countingInformation;
+            } catch (CafeException e2) {
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating Counting Information: " + e2.getMessage(), e2);
                 return null; // FIXME: This is "broken". Maybe instead of returning null, we can return the actual counting information. Line 179 is not working if this is the case.
             }
         }
