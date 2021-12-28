@@ -4,6 +4,7 @@ import com.beanbeanjuice.CafeBot;
 import com.beanbeanjuice.utility.logger.LogLevel;
 import io.github.beanbeanjuice.cafeapi.cafebot.counting.CountingInformation;
 import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -175,12 +176,16 @@ public class CountingHelper {
         if (!countingInformationMap.containsKey(guildID)) {
             try {
                 CafeBot.getCafeAPI().countingInformations().createGuildCountingInformation(guildID);
-
                 CountingInformation countingInformation = new CountingInformation(0, 0, "0", "0");
                 countingInformationMap.put(guildID, countingInformation);
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Guild ID: " + guildID);
                 return countingInformation;
-            } catch (CafeException e) {
-                CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating Counting Information: " + e.getMessage(), e);
+            } catch (ConflictException e1) {
+                CountingInformation countingInformation = CafeBot.getCafeAPI().countingInformations().getGuildCountingInformation(guildID);
+                countingInformationMap.put(guildID, countingInformation);
+                return countingInformation;
+            } catch (CafeException e2) {
+                CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating Counting Information: " + e2.getMessage(), e2);
                 return null;
             }
         }
