@@ -127,6 +127,9 @@ public class GeneralHelper {
      * Updates the {@link CafeAPI} every hour.
      */
     public void startCafeAPIRefreshTimer() {
+
+        CafeBot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA));
+
         cafeAPITimer = new Timer();
         cafeAPITimerTask = new TimerTask() {
 
