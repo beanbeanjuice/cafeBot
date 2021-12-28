@@ -82,7 +82,7 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.12.3'
 
     // Logback
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
 
     // Time Stuff (For Birthdays)
     implementation group: 'joda-time', name: 'joda-time', version: '2.10.10'
