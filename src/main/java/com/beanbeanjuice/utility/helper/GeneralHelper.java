@@ -127,12 +127,15 @@ public class GeneralHelper {
      * Updates the {@link CafeAPI} every hour.
      */
     public void startCafeAPIRefreshTimer() {
+
+        CafeBot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA));
+
         cafeAPITimer = new Timer();
         cafeAPITimerTask = new TimerTask() {
 
             @Override
             public void run() {
-                CafeBot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.RELEASE));
+                CafeBot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA));
                 CafeBot.getLogManager().log(this.getClass(), LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
             }
         };
