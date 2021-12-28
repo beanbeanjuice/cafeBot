@@ -265,6 +265,9 @@ public class AIResponseListener extends ListenerAdapter {
         responses.add("Gen? Genevieve? She's so cute!");
         responses.add("Genevieve has such cute outfits!");
         responses.add("My creator knows someone named Genevieve! Apparently they're so cute!");
+        responses.add("Honestly... I think Genevieve is pretty cute.");
+        responses.add("Genevieve??!? The gamer gurl? uwu");
+        responses.add("If you don't think Genevieve is hot girl sh*t then get out honestly...");
 
         messageMap.put(commandTerms, responses);
     }
