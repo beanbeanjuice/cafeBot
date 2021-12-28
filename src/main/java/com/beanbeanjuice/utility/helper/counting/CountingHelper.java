@@ -176,9 +176,8 @@ public class CountingHelper {
         if (!countingInformationMap.containsKey(guildID)) {
             try {
                 CafeBot.getCafeAPI().countingInformations().createGuildCountingInformation(guildID);
-
-                CountingInformation countingInformation = new CountingInformation(0, 0, "0", "0"); // TODO: Error occurs here. Possibly an API issue.
-                countingInformationMap.put(guildID, countingInformation); // TODO: Uncomment
+                CountingInformation countingInformation = new CountingInformation(0, 0, "0", "0");
+                countingInformationMap.put(guildID, countingInformation);
                 CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Guild ID: " + guildID);
                 return countingInformation;
             } catch (ConflictException e1) {
@@ -187,7 +186,7 @@ public class CountingHelper {
                 return countingInformation;
             } catch (CafeException e2) {
                 CafeBot.getLogManager().log(this.getClass(), LogLevel.ERROR, "Error Creating Counting Information: " + e2.getMessage(), e2);
-                return null; // FIXME: This is "broken". Maybe instead of returning null, we can return the actual counting information. Line 179 is not working if this is the case.
+                return null;
             }
         }
 
