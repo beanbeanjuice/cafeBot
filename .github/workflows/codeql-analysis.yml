@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: "CodeQL and Gradle CI"
 
 on:
   push:
@@ -85,3 +85,8 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
+
+    - name: Cleanup Gradle Cache
+      run: |
+        rm -f ~/.gradle/caches/modules-2/modules-2.lock
+        rm -f ~/.gradle/caches/modules-2/gc.properties
