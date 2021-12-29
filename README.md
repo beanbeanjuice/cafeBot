@@ -13,6 +13,7 @@
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![WakaTime][wakatime-shield]][wakatime-url]
+[![CodeFactor][codefactor-shield]][codefactor-url]
 
 <!-- PROJECT LOGO -->
 <br />
@@ -318,3 +319,5 @@ Here is ALL of the data that this bot could *possibly* store on you. This, of co
 [wakatime-shield]: https://wakatime.com/badge/github/beanbeanjuice/cafeBot.svg?style=for-the-badge
 [wakatime-url]: https://wakatime.com/badge/github/beanbeanjuice/cafeBot
 [product-title]: http://cdn.beanbeanjuice.com/images/cafeBot/readme/cafeBot.png
+[codefactor-shield]: https://www.codefactor.io/repository/github/beanbeanjuice/cafebot/badge?style=for-the-badge
+[codefactor-url]: https://www.codefactor.io/repository/github/beanbeanjuice/cafebot
