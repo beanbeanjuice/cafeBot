@@ -25,27 +25,18 @@ public class BalanceCommand implements ICommand {
 
     @Override
     public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
+        CafeUser cafeUser;
+        User person = null;
 
-        // Checking if there is no specified user to check for.
+        // Checking if there are no arguments. (Self Balance)
         if (args.size() == 0) {
-            CafeUser cafeUser = CafeBot.getServeHandler().getCafeUser(user);
-
-            if (cafeUser == null) {
-                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
-                        "Error Getting User",
-                        "There has been an error getting the Cafe User from the database. Please try again."
-                )).queue();
-                return;
-            }
-
-            event.getChannel().sendMessageEmbeds(selfBalanceEmbed(cafeUser, event.getGuild())).queue();
-            return;
+            cafeUser = CafeBot.getServeHandler().getCafeUser(user);
+        } else {
+            person = CafeBot.getGeneralHelper().getUser(args.get(0));
+            cafeUser = CafeBot.getServeHandler().getCafeUser(person);
         }
 
-        // Getting the specified user.
-        User person = CafeBot.getGeneralHelper().getUser(args.get(0));
-        CafeUser cafeUser = CafeBot.getServeHandler().getCafeUser(person);
-
+        // Checking if there is an error getting the balance.
         if (cafeUser == null) {
             event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Error Getting User",
@@ -54,7 +45,11 @@ public class BalanceCommand implements ICommand {
             return;
         }
 
-        event.getChannel().sendMessageEmbeds(otherBalanceEmbed(person, cafeUser, event.getGuild())).queue();
+        if (person == null) {
+            event.getChannel().sendMessageEmbeds(selfBalanceEmbed(cafeUser, event.getGuild())).queue();
+        } else {
+            event.getChannel().sendMessageEmbeds(otherBalanceEmbed(person, cafeUser, event.getGuild())).queue();
+        }
     }
 
     /**
