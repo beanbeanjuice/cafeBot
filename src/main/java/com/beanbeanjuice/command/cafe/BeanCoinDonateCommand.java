@@ -52,7 +52,7 @@ public class BeanCoinDonateCommand implements ICommand {
             CafeUser donator = CafeBot.getServeHandler().getCafeUser(user);
             CafeUser donatee = CafeBot.getServeHandler().getCafeUser(CafeBot.getGeneralHelper().getUser(args.get(1)));
 
-            if (donatee == null) {
+            if (donatee == null || donator == null) {
                 event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                         "Error Getting User Information",
                         "There has been an error retrieving the specified user's information in the database."
@@ -64,14 +64,6 @@ public class BeanCoinDonateCommand implements ICommand {
                 event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                         "Cannot Donate to Self",
                         "You cannot donate to yourself!"
-                )).queue();
-                return;
-            }
-
-            if (donator == null) {
-                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
-                        "Error Getting User Information",
-                        "There has been an error retrieving your user information in the database."
                 )).queue();
                 return;
             }
@@ -118,14 +110,13 @@ public class BeanCoinDonateCommand implements ICommand {
             }
 
             event.getChannel().sendMessageEmbeds(moneyEmbed(donator, donatee, amountToDonate)).queue();
-            return;
         } else {
             event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Donation Error",
                     "That user has a donation cooldown. They cannot be donated to for `" + (minutesToDonate + 1) + "` minute(s)."
             )).queue();
-            return;
         }
+        return;
     }
 
     /**
