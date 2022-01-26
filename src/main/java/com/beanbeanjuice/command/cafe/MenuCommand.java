@@ -9,6 +9,7 @@ import com.beanbeanjuice.utility.command.usage.Usage;
 import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
 import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -28,29 +29,13 @@ public class MenuCommand implements ICommand {
 
         // If no arguments, show menu sections
         if (args.size() == 0) {
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setTitle("Cafe Menu");
-            embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-            embedBuilder.setFooter("If you're stuck, use " + ctx.getPrefix() + "menu (category number)");
-            StringBuilder descriptionBuilder = new StringBuilder();
-            int count = 1;
-
-            for (CafeCategory category : CafeCategory.values()) {
-
-                // Don't show the "Secret Menu"
-                if (!category.getTitle().equals("Secret Menu")) {
-                    descriptionBuilder.append("**").append(count++).append("** `")
-                            .append(category.getTitle()).append("`\n");
-                }
-            }
-            embedBuilder.setDescription(descriptionBuilder.toString());
-            event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
+            event.getChannel().sendMessageEmbeds(cafeMenu(event.getGuild())).queue();
             return;
         }
 
-        // Checking if the Category Index is out of bounds.
         int categoryIndex = Integer.parseInt(args.get(0));
 
+        // Checking if the Category Index is out of bounds.
         if (categoryIndex > CafeCategory.values().length || categoryIndex <= 0) {
             event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                     "Unknown Category",
@@ -61,24 +46,7 @@ public class MenuCommand implements ICommand {
 
         // If argument, make sure it is a number in the range
         if (args.size() == 1) {
-            CafeCategory category = CafeCategory.values()[categoryIndex - 1];
-            ArrayList<MenuItem> itemsInCategory = CafeBot.getMenuHandler().getMenu(category);
-
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setTitle(category.getTitle());
-            embedBuilder.setFooter("For information on a single item, do " + ctx.getPrefix() + "menu " + categoryIndex + " (item number)");
-            embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-            StringBuilder descriptionBuilder = new StringBuilder();
-
-            for (int i = 0; i < itemsInCategory.size(); i++) {
-                MenuItem item = itemsInCategory.get(i);
-                descriptionBuilder.append("**").append((i+1)).append("** ")
-                        .append("*").append(item.getName()).append("* - `")
-                        .append(item.getPrice()).append("bC` -- (").append(categoryIndex).append(" ").append(i + 1).append(")\n");
-            }
-            embedBuilder.setDescription(descriptionBuilder.toString());
-            embedBuilder.setThumbnail(category.getImageURL());
-            event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
+            event.getChannel().sendMessageEmbeds(cafeCategoryMenu(event.getGuild(), categoryIndex)).queue();
             return;
         }
 
@@ -90,25 +58,91 @@ public class MenuCommand implements ICommand {
 
             // Checking if the menu item was NOT found.
             if (item == null) {
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
+                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
                         "Item Not Found",
                         "A menu item with that ID was not found."
                 )).queue();
                 return;
             }
 
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setTitle(item.getName());
-            embedBuilder.setDescription(item.getDescription());
-            embedBuilder.addField("Price", "`" + item.getPrice() + "bC`", true);
-            embedBuilder.addField("Item ID", "(" + categoryIndex + " " + itemNumber + ")", true);
-            embedBuilder.setImage(item.getImageURL());
-            embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-            embedBuilder.setFooter("To order this item, do " + ctx.getPrefix() + "order " + categoryIndex + " " + itemNumber + " (User)");
-            event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
+            event.getChannel().sendMessageEmbeds(cafeItemMenu(event.getGuild(), item, itemNumber, categoryIndex)).queue();
             return;
         }
+    }
 
+    /**
+     * Creates the {@link MessageEmbed menu}.
+     * @param guild THe {@link Guild guild} it is running for.
+     * @return The finalised {@link MessageEmbed} to be sent.
+     */
+    @NotNull
+    private MessageEmbed cafeMenu(Guild guild) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle("Cafe Menu");
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter("If you're stuck, use " + CafeBot.getGuildHandler().getCustomGuild(guild).getPrefix() + "menu (category number)");
+        StringBuilder descriptionBuilder = new StringBuilder();
+        int count = 1;
+
+        for (CafeCategory category : CafeCategory.values()) {
+
+            // Don't show the "Secret Menu"
+            if (!category.getTitle().equals("Secret Menu")) {
+                descriptionBuilder.append("**").append(count++).append("** `")
+                        .append(category.getTitle()).append("`\n");
+            }
+        }
+        embedBuilder.setDescription(descriptionBuilder.toString());
+        return embedBuilder.build();
+    }
+
+    /**
+     * Creates the {@link MessageEmbed categoryMenu}.
+     * @param guild The {@link Guild guild} to be run for.
+     * @param categoryIndex The {@link Integer categoryIndex} of the category specified.
+     * @return The finalised {@link MessageEmbed} to be sent.
+     */
+    @NotNull
+    private MessageEmbed cafeCategoryMenu(@NotNull Guild guild, @NotNull Integer categoryIndex) {
+        CafeCategory category = CafeCategory.values()[categoryIndex - 1];
+        ArrayList<MenuItem> itemsInCategory = CafeBot.getMenuHandler().getMenu(category);
+
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle(category.getTitle());
+        embedBuilder.setFooter("For information on a single item, do " + CafeBot.getGuildHandler().getCustomGuild(guild).getPrefix() + "menu " + categoryIndex + " (item number)");
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        StringBuilder descriptionBuilder = new StringBuilder();
+
+        for (int i = 0; i < itemsInCategory.size(); i++) {
+            MenuItem item = itemsInCategory.get(i);
+            descriptionBuilder.append("**").append((i+1)).append("** ")
+                    .append("*").append(item.getName()).append("* - `")
+                    .append(item.getPrice()).append("bC` -- (").append(categoryIndex).append(" ").append(i + 1).append(")\n");
+        }
+        embedBuilder.setDescription(descriptionBuilder.toString());
+        embedBuilder.setThumbnail(category.getImageURL());
+        return embedBuilder.build();
+    }
+
+    /**
+     * Creates the {@link MessageEmbed itemMenu}.
+     * @param guild The {@link Guild guild} to be run for.
+     * @param item The {@link MenuItem item} specified.
+     * @param itemNumber The {@link Integer itemNumber} for the {@link MenuItem item}.
+     * @param categoryIndex The {@link Integer categoryIndex} of the {@link MenuItem}.
+     * @return The finalised {@link MessageEmbed} to be sent.
+     */
+    @NotNull
+    private MessageEmbed cafeItemMenu(@NotNull Guild guild, @NotNull MenuItem item, @NotNull Integer itemNumber, @NotNull Integer categoryIndex) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle(item.getName());
+        embedBuilder.setDescription(item.getDescription());
+        embedBuilder.addField("Price", "`" + item.getPrice() + "bC`", true);
+        embedBuilder.addField("Item ID", "(" + categoryIndex + " " + itemNumber + ")", true);
+        embedBuilder.setImage(item.getImageURL());
+        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setFooter("To order this item, do " + CafeBot.getGuildHandler().getCustomGuild(guild).getPrefix() + "order " + categoryIndex + " " + itemNumber + " (User)");
+        return embedBuilder.build();
     }
 
     @Override
