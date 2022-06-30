@@ -16,6 +16,11 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 
+/**
+ * A basic {@link ICommand} for testing bot functions.
+ *
+ * @author beanbeanjuice
+ */
 public class PingCommand implements ICommand {
 
     @Override
@@ -86,6 +91,6 @@ public class PingCommand implements ICommand {
 
     @Override
     public @NotNull Boolean allowDM() {
-        return false;
+        return true;
     }
 }
