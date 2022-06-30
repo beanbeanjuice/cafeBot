@@ -1,9 +1,11 @@
 package com.beanbeanjuice;
 
+import com.beanbeanjuice.utility.Helper;
 import com.beanbeanjuice.utility.command.CommandHandler;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.logging.LogManager;
 import io.github.beanbeanjuice.cafeapi.CafeAPI;
+import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -25,6 +27,9 @@ public class Bot {
     private static final String BOT_TOKEN = System.getenv("CAFEBOT_TOKEN");
     private static JDA bot;
 
+    // API
+    private static CafeAPI cafeAPI;
+
     // Internal Items
     private static LogManager logger;
     private static Guild homeGuild;
@@ -39,6 +44,7 @@ public class Bot {
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         logger = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
+        Helper.startCafeAPIRefreshTimer(RequestLocation.BETA);
         logger.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
         logger.log(Bot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
@@ -70,6 +76,8 @@ public class Bot {
         logger.log(Bot.class, LogLevel.INFO, "Enabled Discord Logging...", true, true);
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         logger.log(Bot.class, LogLevel.OKAY, "The bot is online!");
+
+        logger.log(Bot.class, LogLevel.INFO, "There is " + cafeAPI.GUILD.getAllGuildInformation().size() + " server(s) in the database.");
     }
 
     /**
@@ -86,5 +94,21 @@ public class Bot {
     @NotNull
     public static LogManager getLogger() {
         return logger;
+    }
+
+    /**
+     * @return The current {@link CafeAPI}.
+     */
+    @NotNull
+    public static CafeAPI getCafeAPI() {
+        return cafeAPI;
+    }
+
+    /**
+     * Sets the current {@link CafeAPI}.
+     * @param newCafeAPI The new {@link CafeAPI}.
+     */
+    public static void setCafeAPI(@NotNull CafeAPI newCafeAPI) {
+        cafeAPI = newCafeAPI;
     }
 }

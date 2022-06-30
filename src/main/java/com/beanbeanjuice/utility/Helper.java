@@ -1,9 +1,15 @@
 package com.beanbeanjuice.utility;
 
+import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.logging.LogLevel;
+import io.github.beanbeanjuice.cafeapi.CafeAPI;
+import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -54,6 +60,22 @@ public class Helper {
         float g = random.nextFloat();
         float b = random.nextFloat();
         return new Color(r, g, b);
+    }
+
+    /**
+     * Updates the {@link CafeAPI} every hour.
+     */
+    public static void startCafeAPIRefreshTimer(@NotNull RequestLocation requestLocation) {
+        Timer cafeAPITimer = new Timer();
+        TimerTask cafeAPITimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                Bot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), requestLocation));
+                Bot.getLogger().log(this.getClass(), LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
+            }
+        };
+        cafeAPITimer.scheduleAtFixedRate(cafeAPITimerTask, 0, 3400000);
     }
 
 }
