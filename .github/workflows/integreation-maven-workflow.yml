@@ -13,5 +13,6 @@ jobs:
         with:
           java-version: '18'
           distribution: 'adopt'
+          cache: maven
       - name: Test with Maven
         run: mvn test
