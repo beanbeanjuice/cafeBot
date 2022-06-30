@@ -26,11 +26,11 @@
                                 <goal>sources</goal>
                                 <goal>resolve</goal>
                             </goals>
+                            <configuration>
+                                <classifier>javadoc</classifier>
+                            </configuration>
                         </execution>
                     </executions>
-                    <configuration>
-                        <classifier>javadoc</classifier>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -58,11 +58,19 @@
     </repositories>
 
     <dependencies>
+        <!-- Maven Dependency Plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+
         <!-- Cafe API -->
         <dependency>
             <groupId>io.github.beanbeanjuice</groupId>
             <artifactId>cafe-api-wrapper</artifactId>
-            <version>v1.1.1-SNAPSHOT</version>
+            <version>v1.1.2-SNAPSHOT</version>
         </dependency>
 
         <!-- Discord JDA -->
