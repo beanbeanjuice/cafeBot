@@ -16,6 +16,22 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.0.0-M7</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.3.0</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>sources</goal>
+                                <goal>resolve</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <classifier>javadoc</classifier>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -27,7 +43,24 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>sonatype-snapshots</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>sonatype-releases</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
+        <!-- Cafe API -->
+        <dependency>
+            <groupId>io.github.beanbeanjuice</groupId>
+            <artifactId>cafe-api-wrapper</artifactId>
+            <version>v1.1.1-SNAPSHOT</version>
+        </dependency>
 
         <!-- Discord JDA -->
         <dependency>
