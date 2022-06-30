@@ -62,7 +62,7 @@ public class LogManager {
     private void checkFiles() {
 
         // Setting the current log file time.
-        logFileTime = time.format("{MM}-{dd}-{yyyy}");
+        logFileTime = time.format("MM-dd-yyyy");
 
         File file = new File(filePath);
         if (!file.exists()) {
@@ -119,7 +119,7 @@ public class LogManager {
      * @param time The current {@link Time} the log was sent.
      */
     private void logToFile(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Time time) {
-        String formattedMessage = "[" + time.format("{hh}:{mm}:{ss} {a} {zzz}") + "] ["
+        String formattedMessage = "[" + time.format("hh:mm:ss a zzz") + "] ["
                 + c.getName() + "/" + logLevel + "]: " + message;
         logToFile(formattedMessage);
     }
@@ -167,7 +167,7 @@ public class LogManager {
     private Boolean createLogFile(@NotNull String fileName) {
         try {
             // Sets the current log file name.
-            currentLogFileName = fileName + time.format("{MM}-{dd}-{yyyy}") + ".log";
+            currentLogFileName = fileName + time.format("MM-dd-yyyy") + ".log";
             File file = new File(currentLogFileName);
 
             return file.createNewFile();
@@ -196,7 +196,7 @@ public class LogManager {
                 parsedFileName = parsedFileName.replace(".log", "");
 
                 // Compress the file
-                if (!parsedFileName.equals(time.format("{MM}-{dd}-{yyyy}"))) {
+                if (!parsedFileName.equals(time.format("MM-dd-yyyy"))) {
                     try {
                         compress(filePath, fileName, parsedFileName);
 
@@ -319,7 +319,7 @@ public class LogManager {
     public void log(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message,
                     @NotNull Boolean logToWebhook, @NotNull Boolean logToLogChannel, @Nullable Throwable exception) {
 
-        if (!time.format("{MM}-{dd}-{yyyy}").equals(logFileTime)) {
+        if (!time.format("MM-dd-yyyy").equals(logFileTime)) {
             checkFiles();
             log(this.getClass(), LogLevel.INFO, "New day... creating new log file.", true, false);
         }
@@ -369,7 +369,7 @@ public class LogManager {
      * @param message The message contents for the log.
      */
     private void logToWebhook(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Time time) {
-        String temp = "``[" + time.format("{HH}:{mm}:{ss} {Z}") + "]" + " [" + c.getName() + "/" + logLevel + "]: " + message + "``";
+        String temp = "``[" + time.format("HH:mm:ss Z") + "]" + " [" + c.getName() + "/" + logLevel + "]: " + message + "``";
 
         temp = Helper.shortenToLimit(temp, 2000); // Shortens it to 2000 characters.
 
