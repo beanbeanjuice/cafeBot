@@ -3,6 +3,7 @@ package com.beanbeanjuice;
 import com.beanbeanjuice.utility.command.CommandHandler;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.logging.LogManager;
+import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
