@@ -21,13 +21,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'java', 'javascript' ]
+        language: [ 'java' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://git.io/codeql-language-support
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -51,13 +51,13 @@ jobs:
     #    and modify them (or add more) to build your code if your project
     #    uses a compiled language
 
-    - name: Set up JDK 16
-      uses: actions/setup-java@v2
+    - name: Set up JDK 18
+      uses: actions/setup-java@v3
       with:
-        java-version: '16'
+        java-version: '18'
         distribution: 'adopt'
-        cache: gradle
-    - name: Build with Gradle
+        cache: maven
+    - name: Build with Maven
       env:
         CAFEBOT_MYSQL_URL: ${{ secrets.CAFEBOT_MYSQL_URL }}
         CAFEBOT_MYSQL_PORT: ${{ secrets.CAFEBOT_MYSQL_PORT }}
@@ -81,12 +81,7 @@ jobs:
         CAFEBOT_SPRING_BOOT_PORT: ${{ secrets.CAFEBOT_SPRING_BOOT_PORT }}
         API_PASSWORD: ${{ secrets.API_PASSWORD }}
         RELEASE_API_PASSWORD: ${{ secrets.RELEASE_API_PASSWORD }}
-      run: gradle build
+      run: mvn test
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
-
-    - name: Cleanup Gradle Cache
-      run: |
-        rm -f ~/.gradle/caches/modules-2/modules-2.lock
-        rm -f ~/.gradle/caches/modules-2/gc.properties
