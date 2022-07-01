@@ -1,7 +1,6 @@
 package com.beanbeanjuice.command.generic;
 
 import com.beanbeanjuice.Bot;
-import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.CommandOption;
@@ -11,7 +10,6 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -62,7 +60,7 @@ public class HelpCommand implements ICommand {
         ArrayList<CommandOption> options = command.getOptions();
 
         // Adding command options, if any.
-        for (int i = 0; options != null && i < options.size(); i++) {
+        for (int i = 0; i < options.size(); i++) {
             CommandOption option = options.get(i);
             stringBuilder.append(" <").append(option.getOptionType()).append(">");
 
@@ -78,7 +76,7 @@ public class HelpCommand implements ICommand {
 
         embedBuilder.addField("Usage", stringBuilder.toString(), false);
 
-        if (options != null && !options.isEmpty()) {
+        if (!options.isEmpty()) {
             embedBuilder.addField("Arguments", paramBuilder.toString(), false);
         }
 
@@ -156,7 +154,7 @@ public class HelpCommand implements ICommand {
         return "`/help` or `/help (section/section number)` or `/help (command name)`";
     }
 
-    @Nullable
+    @NotNull
     @Override
     public ArrayList<CommandOption> getOptions() {
         ArrayList<CommandOption> options = new ArrayList<>();
@@ -168,12 +166,6 @@ public class HelpCommand implements ICommand {
     @Override
     public CommandCategory getCategoryType() {
         return CommandCategory.GENERIC;
-    }
-
-    @Nullable
-    @Override
-    public ArrayList<ISubCommand> getSubCommands() {
-        return null;
     }
 
     @NotNull

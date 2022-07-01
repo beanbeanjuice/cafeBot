@@ -2,9 +2,7 @@ package com.beanbeanjuice.utility.command;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
 
 /**
@@ -35,8 +33,10 @@ public interface ICommand {
     /**
      * @return The various options available for the {@link ICommand}.
      */
-    @Nullable
-    ArrayList<CommandOption> getOptions();
+    @NotNull
+    default ArrayList<CommandOption> getOptions() {
+        return new ArrayList<>();
+    }
 
     /**
      * @return The {@link CommandCategory} for the {@link ICommand}.
@@ -44,9 +44,30 @@ public interface ICommand {
     @NotNull
     CommandCategory getCategoryType();
 
-    @Nullable
-    ArrayList<ISubCommand> getSubCommands();
+    /**
+     * @return The {@link ArrayList<ISubCommand>} for the specified {@link ICommand}.
+     */
+    @NotNull
+    default ArrayList<ISubCommand> getSubCommands() {
+        return new ArrayList<>();
+    }
 
+    /**
+     * Runs the {@link ISubCommand} for the specified {@link ICommand}.
+     * @param subCommandName The {@link String name} of the {@link ISubCommand}.
+     * @param event The {@link SlashCommandInteractionEvent event} that triggered the {@link ICommand}.
+     */
+    default void runSubCommand(@NotNull String subCommandName, @NotNull SlashCommandInteractionEvent event) {
+        for (ISubCommand subCommand : getSubCommands()) {
+            if (subCommand.getName().equals(subCommandName)) {
+                subCommand.handle(event);
+            }
+        }
+    }
+
+    /**
+     * @return True, if this command is allowed to be run in a DM.
+     */
     @NotNull
     Boolean allowDM();
 }

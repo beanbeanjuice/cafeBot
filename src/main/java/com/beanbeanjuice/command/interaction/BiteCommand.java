@@ -1,6 +1,5 @@
 package com.beanbeanjuice.command.interaction;
 
-import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.section.interaction.Interaction;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.CommandOption;
@@ -9,7 +8,6 @@ import io.github.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
@@ -36,7 +34,7 @@ public class BiteCommand implements ICommand {
         return "`/bite @beanbeanjuice HA!` or `/bite OW` or `/bite`";
     }
 
-    @Nullable
+    @NotNull
     @Override
     public ArrayList<CommandOption> getOptions() {
         ArrayList<CommandOption> options = new ArrayList<>();
@@ -49,12 +47,6 @@ public class BiteCommand implements ICommand {
     @Override
     public CommandCategory getCategoryType() {
         return CommandCategory.INTERACTION;
-    }
-
-    @Nullable
-    @Override
-    public ArrayList<ISubCommand> getSubCommands() {
-        return null;
     }
 
     @NotNull

@@ -29,6 +29,14 @@ public class Interaction {
     private String message;
     private String description;
 
+    /**
+     * Creates a new {@link Interaction} object.
+     * @param type The {@link InteractionType type} of {@link Interaction}.
+     * @param noUserAction The {@link String message} to send when no {@link User} is specified.
+     * @param userAction The {@link String message} to send when a {@link User} is specified.
+     * @param footer The {@link String footer} to attach to the {@link MessageEmbed}.
+     * @param event The {@link SlashCommandInteractionEvent event} that triggered the {@link Interaction}.
+     */
     public Interaction(@NotNull InteractionType type, @NotNull String noUserAction, @NotNull String userAction,
                        @NotNull String footer, @NotNull SlashCommandInteractionEvent event) {
         this.type = type;
