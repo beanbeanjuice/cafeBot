@@ -25,48 +25,50 @@ public class CommandHandler extends ListenerAdapter {
         commands = new TreeMap<>();
         List<SlashCommandData> slashCommands = new ArrayList<>();
 
-        /*
-            Commands Go Here
-         */
+        // ========================
+        //     COMMANDS GO HERE
+        // ========================
+
+        // Generic
         commands.put("ping", new PingCommand());
         commands.put("help", new HelpCommand());
 
+        // Cafe
+
+        // Fun
+
+        // Games
+
+        // Social
+
+        // Interaction
         commands.put("bite", new BiteCommand());
 
+        // Twitch
+
+        // Moderation
         commands.put("counting-channel", new CountingChannelCommand());
+
+        // =======================
+        //     END OF COMMANDS
+        // =======================
 
         commands.forEach((commandName, command) -> {
             SlashCommandData slashCommandData = Commands.slash(commandName, command.getDescription());
             slashCommandData.setGuildOnly(!command.allowDM());
 
-            // Checking if options are null and should be skipped
-            if (command.getOptions() != null) {
-                for (CommandOption option : command.getOptions()) {
-                    slashCommandData.addOption(option.getOptionType(), option.getName(), option.getDescription(), option.isRequired(), option.hasAutoComplete());
-                }
+            for (CommandOption option : command.getOptions()) {
+                slashCommandData.addOption(option.getOptionType(), option.getName(), option.getDescription(), option.isRequired(), option.hasAutoComplete());
             }
 
             List<SubcommandData> subCommands = new ArrayList<>();
 
-            // Checking if sub commands are null and should be skipped
-            if (command.getSubCommands() != null) {
-
-                for (ISubCommand subCommand : command.getSubCommands()) {
-                    SubcommandData subCommandData = new SubcommandData(subCommand.getName(), subCommand.getDescription());
-
-                    // Checking if the sub commands options are null and should be skipped
-
-                    if (command.getOptions() != null) {
-                        for (CommandOption option : command.getOptions()) {
-                            subCommandData.addOption(option.getOptionType(), option.getName(), option.getDescription(), option.isRequired(), option.hasAutoComplete());
-                        }
-                    }
-                    subCommands.add(subCommandData);
-                }
-
+            for (ISubCommand subCommand : command.getSubCommands()) {
+                SubcommandData subCommandData = new SubcommandData(subCommand.getName(), subCommand.getDescription());
+                subCommands.add(subCommandData);
             }
 
-            // Finally, adding the commands together.
+            // Adding sub commands if applicable.
             slashCommandData.addSubcommands(subCommands);
             slashCommands.add(slashCommandData);
         });
@@ -82,7 +84,13 @@ public class CommandHandler extends ListenerAdapter {
         event.deferReply().queue();
 
         if (commands.containsKey(event.getName())) {
-            commands.get(event.getName()).handle(event);
+
+            if (event.getSubcommandName() != null) {
+                commands.get(event.getName()).runSubCommand(event.getSubcommandName(), event);
+            } else {
+                commands.get(event.getName()).handle(event);
+            }
+
             Bot.commandsRun++;
         }
     }

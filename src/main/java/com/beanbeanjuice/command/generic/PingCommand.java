@@ -1,7 +1,6 @@
 package com.beanbeanjuice.command.generic;
 
 import com.beanbeanjuice.Bot;
-import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.CommandOption;
@@ -12,7 +11,6 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
@@ -75,7 +73,7 @@ public class PingCommand implements ICommand {
     }
 
     @Override
-    @Nullable
+    @NotNull
     public ArrayList<CommandOption> getOptions() {
         ArrayList<CommandOption> options = new ArrayList<>();
         options.add(new CommandOption(OptionType.STRING, "any_string", "Add any string to be repeated back to you.", false, false));
@@ -87,12 +85,6 @@ public class PingCommand implements ICommand {
     @NotNull
     public CommandCategory getCategoryType() {
         return CommandCategory.GENERIC;
-    }
-
-    @Nullable
-    @Override
-    public ArrayList<ISubCommand> getSubCommands() {
-        return null;
     }
 
     @Override

@@ -44,10 +44,19 @@ public class Time {
         TIME_ZONE = TimeZone.getTimeZone("UTC");
     }
 
+    /**
+     * Sets the default {@link String format} for the specified {@link Time} object.
+     * @param format The {@link String format} to be set.
+     */
     public void setDefaultFormat(@NotNull String format) {
         defaultFormat = format;
     }
 
+    /**
+     * Format the current time to a specified {@link String format}.
+     * @param format The {@link String format} to return.
+     * @return The {@link String formatted} {@link Time}.
+     */
     @NotNull
     public String format(@NotNull String format) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
@@ -55,6 +64,11 @@ public class Time {
         return simpleDateFormat.format(new Date());
     }
 
+    /**
+     * Format using the default formatting specified.
+     * @return The {@link String formatted} {@link Time}.
+     * @throws NullPointerException Thrown when there is no default {@link String format}.
+     */
     @NotNull
     public String format() throws NullPointerException {
         if (defaultFormat == null)
