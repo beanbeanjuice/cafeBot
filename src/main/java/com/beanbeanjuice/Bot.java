@@ -37,6 +37,7 @@ public class Bot {
     private static final String HOME_GUILD_ID = System.getenv("CAFEBOT_GUILD_ID");
     private static final String HOME_GUILD_LOG_CHANNEL_ID = System.getenv("CAFEBOT_GUILD_LOG_CHANNEL_ID");
     private static final String HOME_GUILD_WEBHOOK_URL = System.getenv("CAFEBOT_GUILD_WEBHOOK_URL");
+    private static CommandHandler commandHandler;
 
     // Additional Items
     public static int commandsRun = 0;
@@ -69,8 +70,9 @@ public class Bot {
         homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
 
         logger.log(Bot.class, LogLevel.LOADING, "Adding commands...", false, false);
+        commandHandler = new CommandHandler(bot);
         bot.addEventListener(
-                new CommandHandler(bot)
+                commandHandler
         );
 
         logger.setLogChannel(homeGuildLogChannel);
@@ -111,5 +113,13 @@ public class Bot {
      */
     public static void setCafeAPI(@NotNull CafeAPI newCafeAPI) {
         cafeAPI = newCafeAPI;
+    }
+
+    /**
+     * @return The current {@link CommandHandler}.
+     */
+    @NotNull
+    public static CommandHandler getCommandHandler() {
+        return commandHandler;
     }
 }

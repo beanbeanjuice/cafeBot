@@ -53,9 +53,13 @@ public class CommandHandler extends ListenerAdapter {
         event.deferReply().queue();
 
         if (commands.containsKey(event.getName())) {
-            ArrayList<OptionMapping> options = new ArrayList<>(event.getOptions());
-            commands.get(event.getName()).handle(options, event);
+            commands.get(event.getName()).handle(event);
             Bot.commandsRun++;
         }
+    }
+
+    @NotNull
+    public TreeMap<String, ICommand> getCommands() {
+        return commands;
     }
 }

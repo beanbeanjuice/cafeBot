@@ -24,13 +24,13 @@ import java.util.ArrayList;
 public class PingCommand implements ICommand {
 
     @Override
-    public void handle(@NotNull ArrayList<OptionMapping> args, @NotNull SlashCommandInteractionEvent event) {
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
         Bot.getBot().getRestPing().queue(
                 (ping) -> event.getHook().sendMessageEmbeds(messageEmbed(ping, Bot.getBot().getGatewayPing())).setEphemeral(true).queue()
         );
 
         if (event.getOption("any_string") != null) {
-            event.getHook().sendMessage(args.get(0).getAsString()).setEphemeral(true).queue();
+            event.getHook().sendMessage(event.getOption("any_string").getAsString()).setEphemeral(true).queue();
         }
     }
 

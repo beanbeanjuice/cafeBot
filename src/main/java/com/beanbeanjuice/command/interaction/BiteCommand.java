@@ -6,7 +6,6 @@ import com.beanbeanjuice.utility.command.CommandOption;
 import com.beanbeanjuice.utility.command.ICommand;
 import io.github.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 public class BiteCommand implements ICommand {
 
     @Override
-    public void handle(@NotNull ArrayList<OptionMapping> args, @NotNull SlashCommandInteractionEvent event) {
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
         new Interaction(InteractionType.BITE,
                 "**{sender}** *bit* themselves! Ow!",
                 "**{sender}** *bit* **{receiver}**! What did they do?!?!?!?",

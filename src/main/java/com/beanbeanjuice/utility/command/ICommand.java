@@ -17,7 +17,7 @@ public interface ICommand {
      * The main method for running the command.
      * @param event The {@link SlashCommandInteractionEvent}.
      */
-    void handle(@NotNull ArrayList<OptionMapping> args, @NotNull SlashCommandInteractionEvent event);
+    void handle(@NotNull SlashCommandInteractionEvent event);
 
     /**
      * @return The description for the {@link ICommand}.
