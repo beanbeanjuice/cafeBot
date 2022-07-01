@@ -68,16 +68,17 @@ public class Bot {
         homeGuild = bot.getGuildById(HOME_GUILD_ID);
         homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
 
+        logger.log(Bot.class, LogLevel.LOADING, "Adding commands...", false, false);
         bot.addEventListener(
                 new CommandHandler(bot)
         );
 
         logger.setLogChannel(homeGuildLogChannel);
         logger.log(Bot.class, LogLevel.INFO, "Enabled Discord Logging...", true, true);
+
+
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         logger.log(Bot.class, LogLevel.OKAY, "The bot is online!");
-
-        logger.log(Bot.class, LogLevel.INFO, "There is " + cafeAPI.GUILD.getAllGuildInformation().size() + " server(s) in the database.");
     }
 
     /**

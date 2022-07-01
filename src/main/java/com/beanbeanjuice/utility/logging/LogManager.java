@@ -382,7 +382,7 @@ public class LogManager {
             try {
                 hook.execute();
             } catch (IOException | WebhookException e) {
-                log(this.getClass(), LogLevel.WARN, "Webhook rate limit...", false, false, new WebhookException(url, e.getMessage()));
+                log(this.getClass(), LogLevel.WARN, "Webhook rate limit...", false, false);
             }
         }
     }

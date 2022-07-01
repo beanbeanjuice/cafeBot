@@ -20,12 +20,6 @@ public interface ICommand {
     void handle(@NotNull ArrayList<OptionMapping> args, @NotNull SlashCommandInteractionEvent event);
 
     /**
-     * @return The name of the {@link ICommand}.
-     */
-    @NotNull
-    String getName();
-
-    /**
      * @return The description for the {@link ICommand}.
      */
     @NotNull
@@ -35,7 +29,7 @@ public interface ICommand {
      * @return An example of how to use the {@link ICommand}.
      */
     @NotNull
-    String exampleUsage(String prefix);
+    String exampleUsage();
 
     /**
      * @return The various options available for the {@link ICommand}.

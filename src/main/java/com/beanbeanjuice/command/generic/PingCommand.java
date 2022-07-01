@@ -37,7 +37,7 @@ public class PingCommand implements ICommand {
     @NotNull
     private MessageEmbed messageEmbed(@NotNull Long botPing, @NotNull Long gatewayPing) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(getName() + "!", "https://www.beanbeanjuice.com/cafeBot.html");
+        embedBuilder.setTitle("ping!", "https://www.beanbeanjuice.com/cafeBot.html");
         StringBuilder descriptionBuilder = new StringBuilder();
         double cpuLoad = (double) Math.round((ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCpuLoad()*100) * 100) / 100;
         long systemMemoryTotal = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getTotalMemorySize()/1048576;
@@ -62,22 +62,20 @@ public class PingCommand implements ICommand {
     }
 
     @Override
-    public @NotNull String getName() {
-        return "ping";
-    }
-
-    @Override
-    public @NotNull String getDescription() {
+    @NotNull
+    public String getDescription() {
         return "Ping!";
     }
 
     @Override
-    public @NotNull String exampleUsage(String prefix) {
-        return "/ping";
+    @NotNull
+    public String exampleUsage() {
+        return "`/ping` or `/ping hello` or `/ping @beanbeanjuice`";
     }
 
     @Override
-    public @NotNull ArrayList<CommandOption> getOptions() {
+    @NotNull
+    public ArrayList<CommandOption> getOptions() {
         ArrayList<CommandOption> options = new ArrayList<>();
         options.add(new CommandOption(OptionType.STRING, "any_string", "Add any string to be repeated back to you.", false, false));
         options.add(new CommandOption(OptionType.USER, "user", "Add any user to be repeated back to you.", false, false));
@@ -85,12 +83,14 @@ public class PingCommand implements ICommand {
     }
 
     @Override
-    public @NotNull CommandCategory getCategoryType() {
+    @NotNull
+    public CommandCategory getCategoryType() {
         return CommandCategory.GENERIC;
     }
 
     @Override
-    public @NotNull Boolean allowDM() {
+    @NotNull
+    public Boolean allowDM() {
         return true;
     }
 }
