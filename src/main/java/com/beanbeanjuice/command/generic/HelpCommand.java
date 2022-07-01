@@ -1,20 +1,144 @@
 package com.beanbeanjuice.command.generic;
 
+import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.Helper;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.CommandOption;
 import com.beanbeanjuice.utility.command.ICommand;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class HelpCommand implements ICommand {
 
     @Override
-    public void handle(@NotNull ArrayList<OptionMapping> args, @NotNull SlashCommandInteractionEvent event) {
-        event.getHook().sendMessage("Worked!").setEphemeral(true).queue();
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        // Checking if the arguments is empty.
+        if (event.getOption("section-or-command") == null) {
+            event.getHook().sendMessageEmbeds(categoryEmbed()).setEphemeral(true).queue(); // Sends the list of categories.
+            return;
+        }
+
+        // Setting the Search Term
+        String search = event.getOption("section-or-command").getAsString();
+        int count = 1;
+
+        // Goes through each category. If the first argument is equal to the name, then print commands for that category.
+        for (CommandCategory categoryType : CommandCategory.values()) {
+            if (categoryType.toString().equalsIgnoreCase(search) || String.valueOf(count++).equals(search)) {
+                event.getHook().sendMessageEmbeds(searchCategoriesEmbed(categoryType)).setEphemeral(true).queue();
+                return;
+            }
+        }
+
+        ICommand command = Bot.getCommandHandler().getCommands().get(search.toLowerCase());
+
+        // Checks to see if any commands exist for that command.
+        if (command == null) {
+            event.getHook().sendMessageEmbeds(noCommandFoundEmbed(search)).setEphemeral(true).queue();
+            return;
+        }
+
+        // Logic to show command and optional parameters.
+        event.getHook().sendMessageEmbeds(commandEmbed(command, search)).setEphemeral(true).queue();
+    }
+
+    @NotNull
+    private MessageEmbed commandEmbed(@NotNull ICommand command, @NotNull String commandName) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("`/").append(commandName);
+        StringBuilder paramBuilder = new StringBuilder();
+        embedBuilder.setTitle(commandName.toUpperCase() + "");
+        ArrayList<CommandOption> options = command.getOptions();
+
+        for (int i = 0; i < options.size(); i++) {
+            CommandOption option = options.get(i);
+            stringBuilder.append(" <").append(option.getOptionType()).append(">");
+
+            paramBuilder.append("***").append(i + 1).append("***. ").append(option.getName());
+
+            if (option.isRequired()) {
+                paramBuilder.append(" - *__REQUIRED__*\n");
+            } else {
+                paramBuilder.append(" - *__OPTIONAL__*\n");
+            }
+        }
+        stringBuilder.append("`");
+
+        embedBuilder.addField("Usage", stringBuilder.toString(), false);
+
+        if (!options.isEmpty()) {
+            embedBuilder.addField("Arguments", paramBuilder.toString(), false);
+        }
+
+        embedBuilder.addField("Example", command.exampleUsage(), false);
+        embedBuilder.addField("Description", command.getDescription(), false);
+        embedBuilder.setColor(Helper.getRandomColor());
+        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
+        return embedBuilder.build();
+    }
+
+    @NotNull
+    private MessageEmbed searchCategoriesEmbed(@NotNull CommandCategory category) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(category.getMessage() + "\n\n");
+        int count = 1;
+
+        for (Map.Entry<String, ICommand> commandSet : Bot.getCommandHandler().getCommands().entrySet()) {
+            if (commandSet.getValue().getCategoryType().equals(category)) {
+                stringBuilder.append("**").append(count++).append("** `/").append(commandSet.getKey());
+                stringBuilder.append("`\n");
+            }
+        }
+
+        if (count == 1) {
+            stringBuilder.append("There are no commands here right now :( but if this section is here, that means I'm working on it!");
+        }
+
+        embedBuilder.setTitle(category.toString());
+        embedBuilder.setDescription(stringBuilder.toString());
+        embedBuilder.setThumbnail(category.getLink());
+        embedBuilder.setColor(Helper.getRandomColor());
+        embedBuilder.setFooter("For help with a specific command, do /help (command name).");
+        return embedBuilder.build();
+    }
+
+    @NotNull
+    private MessageEmbed categoryEmbed() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
+        int count = 1;
+
+        for (CommandCategory category : CommandCategory.values()) {
+            stringBuilder.append("**").append(count++).append("** `").append(category.toString());
+
+            stringBuilder.append("`\n");
+        }
+
+        embedBuilder.setDescription(stringBuilder.toString());
+        embedBuilder.setTitle("Command Categories");
+        embedBuilder.setColor(Helper.getRandomColor());
+        embedBuilder.setFooter("If you're stuck, use /help (category name/category number).");
+        return embedBuilder.build();
+    }
+
+    @NotNull
+    private MessageEmbed noCommandFoundEmbed(@NotNull String commandName) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle("No Command Found");
+        embedBuilder.setDescription("No command has been found for `" + commandName + "`.");
+        embedBuilder.setColor(Color.red);
+        embedBuilder.setFooter("Please see /help!");
+        return embedBuilder.build();
     }
 
     @NotNull
@@ -26,7 +150,7 @@ public class HelpCommand implements ICommand {
     @NotNull
     @Override
     public String exampleUsage() {
-        return "`/help` or `/help (section)` or `/help (command name)`";
+        return "`/help` or `/help (section/section number)` or `/help (command name)`";
     }
 
     @NotNull
