@@ -3,6 +3,7 @@ package com.beanbeanjuice.utility.command;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.command.generic.HelpCommand;
 import com.beanbeanjuice.command.generic.PingCommand;
+import com.beanbeanjuice.command.interaction.BiteCommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -28,6 +29,8 @@ public class CommandHandler extends ListenerAdapter {
          */
         commands.put("ping", new PingCommand());
         commands.put("help", new HelpCommand());
+
+        commands.put("bite", new BiteCommand());
 
         commands.forEach((commandName, command) -> {
             SlashCommandData slashCommandData = Commands.slash(commandName, command.getDescription());
