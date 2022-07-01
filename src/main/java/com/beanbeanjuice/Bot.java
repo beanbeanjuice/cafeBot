@@ -1,6 +1,7 @@
 package com.beanbeanjuice;
 
-import com.beanbeanjuice.utility.Helper;
+import com.beanbeanjuice.utility.helper.CountingHelper;
+import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.command.CommandHandler;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.listener.MessageListener;
@@ -42,6 +43,7 @@ public class Bot {
     private static final String HOME_GUILD_WEBHOOK_URL = System.getenv("CAFEBOT_GUILD_WEBHOOK_URL");
     private static CommandHandler commandHandler;
     private static GuildHandler guildHandler;
+    private static CountingHelper countingHelper;
 
     // Additional Items
     public static int commandsRun = 0;
@@ -52,6 +54,8 @@ public class Bot {
         Helper.startCafeAPIRefreshTimer(RequestLocation.BETA);
         logger.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
         logger.log(Bot.class, LogLevel.OKAY, "Starting bot!", true, false);
+
+        countingHelper = new CountingHelper();
 
         bot = JDABuilder.createDefault(BOT_TOKEN)
                 .setActivity(Activity.playing("The barista is starting..."))
@@ -137,12 +141,20 @@ public class Bot {
     public static void updateGuildPresence() {
         bot.getPresence().setActivity(Activity.playing("cafeBot " + BOT_VERSION + " - Currently in " + bot.getGuilds().size() + " servers!"));
     }
-    
+
     /**
      * @return The current {@link GuildHandler}.
      */
     @NotNull
     public static GuildHandler getGuildHandler() {
         return guildHandler;
+    }
+
+    /**
+     * @return The current {@link CountingHelper}.
+     */
+    @NotNull
+    public static CountingHelper getCountingHelper() {
+        return countingHelper;
     }
 }

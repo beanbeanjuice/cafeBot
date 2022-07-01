@@ -1,6 +1,6 @@
 package com.beanbeanjuice.utility.logging;
 
-import com.beanbeanjuice.utility.Helper;
+import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.exception.WebhookException;
 import com.beanbeanjuice.utility.time.Time;
 import com.beanbeanjuice.utility.webhook.Webhook;
