@@ -2,6 +2,9 @@ package com.beanbeanjuice;
 
 import com.beanbeanjuice.utility.Helper;
 import com.beanbeanjuice.utility.command.CommandHandler;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
+import com.beanbeanjuice.utility.listener.MessageListener;
+import com.beanbeanjuice.utility.listener.ServerListener;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.logging.LogManager;
 import io.github.beanbeanjuice.cafeapi.CafeAPI;
@@ -38,6 +41,7 @@ public class Bot {
     private static final String HOME_GUILD_LOG_CHANNEL_ID = System.getenv("CAFEBOT_GUILD_LOG_CHANNEL_ID");
     private static final String HOME_GUILD_WEBHOOK_URL = System.getenv("CAFEBOT_GUILD_WEBHOOK_URL");
     private static CommandHandler commandHandler;
+    private static GuildHandler guildHandler;
 
     // Additional Items
     public static int commandsRun = 0;
@@ -50,7 +54,7 @@ public class Bot {
         logger.log(Bot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
         bot = JDABuilder.createDefault(BOT_TOKEN)
-                .setActivity(Activity.playing("cafeBot " + BOT_VERSION)) // TODO: Eventually update with number of servers.
+                .setActivity(Activity.playing("The barista is starting..."))
                 .setStatus(OnlineStatus.IDLE)
                 .enableIntents(
                         GatewayIntent.GUILD_BANS,
@@ -66,13 +70,16 @@ public class Bot {
                 .build()
                 .awaitReady();
 
+        guildHandler = new GuildHandler();
         homeGuild = bot.getGuildById(HOME_GUILD_ID);
         homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
 
         logger.log(Bot.class, LogLevel.LOADING, "Adding commands...", false, false);
         commandHandler = new CommandHandler(bot);
         bot.addEventListener(
-                commandHandler
+                commandHandler,
+                new ServerListener(), // Listening for Guild Joins/Leaves
+                new MessageListener() // Listening for specific messages TODO: Add "AI" support.
         );
 
         logger.setLogChannel(homeGuildLogChannel);
@@ -80,6 +87,7 @@ public class Bot {
 
 
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
+        updateGuildPresence();
         logger.log(Bot.class, LogLevel.OKAY, "The bot is online!");
     }
 
@@ -121,5 +129,20 @@ public class Bot {
     @NotNull
     public static CommandHandler getCommandHandler() {
         return commandHandler;
+    }
+
+    /**
+     * Updates the presence for the {@link JDA}.
+     */
+    public static void updateGuildPresence() {
+        bot.getPresence().setActivity(Activity.playing("cafeBot " + BOT_VERSION + " - Currently in " + bot.getGuilds().size() + " servers!"));
+    }
+    
+    /**
+     * @return The current {@link GuildHandler}.
+     */
+    @NotNull
+    public static GuildHandler getGuildHandler() {
+        return guildHandler;
     }
 }
