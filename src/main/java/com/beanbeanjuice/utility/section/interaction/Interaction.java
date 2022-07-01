@@ -1,7 +1,7 @@
-package com.beanbeanjuice.command.section.interaction;
+package com.beanbeanjuice.utility.section.interaction;
 
 import com.beanbeanjuice.Bot;
-import com.beanbeanjuice.utility.Helper;
+import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import io.github.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
 import net.dv8tion.jda.api.EmbedBuilder;

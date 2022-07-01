@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.section.interaction;
+package com.beanbeanjuice.utility.section.interaction;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.logging.LogLevel;
