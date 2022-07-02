@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * An enum used for {@link CustomChannel}.
+ *
+ * @author beanbeanjuice
  */
 public enum CustomChannel {
 

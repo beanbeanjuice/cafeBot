@@ -48,7 +48,7 @@ public class CustomGuild {
 //     * @param birthdayChannelID       The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler Birthday} notifications.
      * @param welcomeChannelID        The ID of the {@link TextChannel} being used for the Welcome notifications.
      * @param ventingChannelID        The ID of the {@link TextChannel} being used for anonymous venting.
-     * @param aiState                 Whether or not the AI portion should be enabled for this {@link CustomGuild}.
+     * @param aiState                 True, if the AI portion should be enabled for this {@link CustomGuild}.
      */
     public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID,
                        @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,

@@ -174,4 +174,14 @@ public class Helper {
         }
     }
 
+    /**
+     * Round the specified {@link Double} to 2 decimal places.
+     * @param amount The {@link Double} to round.
+     * @return The rounded {@link Double}.
+     */
+    @NotNull
+    public static Double roundDouble(@NotNull Double amount) {
+        return Math.round(amount * 100.0) / 100.0;
+    }
+
 }
