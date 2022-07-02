@@ -3,7 +3,7 @@ package com.beanbeanjuice.utility.command;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.command.generic.HelpCommand;
 import com.beanbeanjuice.command.generic.PingCommand;
-import com.beanbeanjuice.command.interaction.BiteCommand;
+import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.counting.CountingChannelCommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import net.dv8tion.jda.api.JDA;
@@ -43,6 +43,33 @@ public class CommandHandler extends ListenerAdapter {
 
         // Interaction
         commands.put("bite", new BiteCommand());
+        commands.put("blush", new BlushCommand());
+        commands.put("bonk", new BonkCommand());
+        commands.put("cry", new CryCommand());
+        commands.put("cuddle", new CuddleCommand());
+        commands.put("dab", new DabCommand());
+        commands.put("dance", new DanceCommand());
+        commands.put("die", new DieCommand());
+        commands.put("headpat", new HeadpatCommand());
+        commands.put("hmph", new HmphCommand());
+        commands.put("hug", new HugCommand());
+        commands.put("kiss", new KissCommand());
+        commands.put("lick", new LickCommand());
+        commands.put("nom", new NomCommand());
+        commands.put("poke", new PokeCommand());
+        commands.put("pout", new PoutCommand());
+        commands.put("punch", new PunchCommand());
+        commands.put("rage", new RageCommand());
+        commands.put("shush", new ShushCommand());
+        commands.put("slap", new SlapCommand());
+        commands.put("sleep", new SleepCommand());
+        commands.put("smile", new SmileCommand());
+        commands.put("stab", new StabCommand());
+        commands.put("stare", new StareCommand());
+        commands.put("throw", new ThrowCommand());
+        commands.put("tickle", new TickleCommand());
+        commands.put("welcome", new WelcomeCommand());
+        commands.put("yell", new YellCommand());
 
         // Twitch
 
