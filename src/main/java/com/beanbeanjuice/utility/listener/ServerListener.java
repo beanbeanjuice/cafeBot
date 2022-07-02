@@ -13,6 +13,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
+/**
+ * A {@link ListenerAdapter} used for listening for server joins/leaves.
+ *
+ * @author beanbeanjuice
+ */
 public class ServerListener extends ListenerAdapter {
 
     @Override

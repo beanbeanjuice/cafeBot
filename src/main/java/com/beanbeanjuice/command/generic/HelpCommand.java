@@ -174,4 +174,10 @@ public class HelpCommand implements ICommand {
         return true;
     }
 
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
+    }
+
 }

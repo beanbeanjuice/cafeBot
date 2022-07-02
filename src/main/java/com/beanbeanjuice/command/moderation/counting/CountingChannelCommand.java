@@ -47,4 +47,10 @@ public class CountingChannelCommand implements ICommand {
         return false;
     }
 
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
+    }
+
 }

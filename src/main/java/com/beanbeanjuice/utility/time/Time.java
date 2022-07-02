@@ -2,6 +2,7 @@ package com.beanbeanjuice.utility.time;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -77,6 +78,42 @@ public class Time {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(defaultFormat);
         simpleDateFormat.setTimeZone(TIME_ZONE);
         return simpleDateFormat.format(new Date());
+    }
+
+    /**
+     * Compare the difference in time between two {@link Timestamp} objects.
+     * @param oldTime The old {@link Timestamp}.
+     * @param currentTime The new {@link Timestamp}.
+     * @param timestampDifference The {@link TimestampDifference} to choose.
+     * @return The difference in time as a {@link Long}.
+     */
+    @NotNull
+    public static Long compareTwoTimeStamps(@NotNull Timestamp oldTime, @NotNull Timestamp currentTime, @NotNull TimestampDifference timestampDifference) {
+        long milliseconds1 = oldTime.getTime();
+        long milliseconds2 = currentTime.getTime();
+        long diff = milliseconds2 - milliseconds1;
+
+        switch (timestampDifference) {
+            case SECONDS -> {
+                return diff / 1000;
+            }
+
+            case MINUTES -> {
+                return diff / (60 * 1000);
+            }
+
+            case HOURS -> {
+                return diff / (60 * 60 * 1000);
+            }
+
+            case DAYS -> {
+                return diff / (24 * 60 * 60 * 1000);
+            }
+
+            default -> {
+                return diff;
+            }
+        }
     }
 
 }

@@ -70,4 +70,12 @@ public interface ICommand {
      */
     @NotNull
     Boolean allowDM();
+
+    /**
+     * @return True, if this command should be hidden from others.
+     */
+    @NotNull
+    default Boolean isHidden() {
+        return false;
+    }
 }

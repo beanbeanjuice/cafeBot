@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.command;
 
 import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.command.cafe.BalanceCommand;
 import com.beanbeanjuice.command.generic.HelpCommand;
 import com.beanbeanjuice.command.generic.PingCommand;
 import com.beanbeanjuice.command.interaction.*;
@@ -34,6 +35,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("help", new HelpCommand());
 
         // Cafe
+        commands.put("balance", new BalanceCommand());
 
         // Fun
 
@@ -108,9 +110,14 @@ public class CommandHandler extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         super.onSlashCommandInteraction(event);
-        event.deferReply().queue();
 
         if (commands.containsKey(event.getName())) {
+
+            if (commands.get(event.getName()).isHidden()) {
+                event.deferReply(true).queue();
+            } else {
+                event.deferReply().queue();
+            }
 
             if (event.getSubcommandName() != null) {
                 commands.get(event.getName()).runSubCommand(event.getSubcommandName(), event);
@@ -126,4 +133,5 @@ public class CommandHandler extends ListenerAdapter {
     public TreeMap<String, ICommand> getCommands() {
         return commands;
     }
+
 }

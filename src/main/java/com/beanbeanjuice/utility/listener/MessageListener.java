@@ -9,11 +9,20 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A {@link ListenerAdapter} for listening to messages.
+ *
+ * @author beanbeanjuice
+ */
 public class MessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         super.onMessageReceived(event);
+
+        if (!event.isFromGuild()) {
+            return;
+        }
 
         CustomGuild guildInformation = Bot.getGuildHandler().getCustomGuild(event.getGuild());
 
@@ -46,4 +55,5 @@ public class MessageListener extends ListenerAdapter {
             event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
         }
     }
+
 }

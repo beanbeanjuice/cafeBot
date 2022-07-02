@@ -24,6 +24,11 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
 
+/**
+ * The main {@link JDA bot} class.
+ *
+ * @author beanbeanjuice
+ */
 public class Bot {
 
     // Bot Items

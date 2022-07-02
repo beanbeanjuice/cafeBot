@@ -92,4 +92,10 @@ public class PingCommand implements ICommand {
     public Boolean allowDM() {
         return true;
     }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
+    }
 }
