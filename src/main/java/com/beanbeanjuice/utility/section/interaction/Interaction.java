@@ -127,6 +127,10 @@ public class Interaction {
      */
     @NotNull
     public Boolean containsCafeBot() {
+        if (receiver == null) {
+            return false;
+        }
+
         return receiver.getId().equals(Bot.getBot().getSelfUser().getId());
     }
 
