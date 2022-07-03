@@ -1,5 +1,6 @@
 package com.beanbeanjuice;
 
+import com.beanbeanjuice.utility.handler.cafe.BeanCoinDonationHandler;
 import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.command.CommandHandler;
@@ -48,9 +49,14 @@ public class Bot {
     private static final String HOME_GUILD_ID = System.getenv("CAFEBOT_GUILD_ID");
     private static final String HOME_GUILD_LOG_CHANNEL_ID = System.getenv("CAFEBOT_GUILD_LOG_CHANNEL_ID");
     private static final String HOME_GUILD_WEBHOOK_URL = System.getenv("CAFEBOT_GUILD_WEBHOOK_URL");
+
+    // Handlers
     private static CommandHandler commandHandler;
     private static GuildHandler guildHandler;
+
+    // Helpers
     private static CountingHelper countingHelper;
+    private static BeanCoinDonationHandler beanCoinDonationHandler;
 
     // Additional Items
     public static int commandsRun = 0;
@@ -58,11 +64,14 @@ public class Bot {
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         logger = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
-        Helper.startCafeAPIRefreshTimer(RequestLocation.BETA);
+        Helper.startCafeAPIRefreshTimer(RequestLocation.BETA);  // TODO: Change in production.
+
         logger.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
         logger.log(Bot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
+        // Helpers that need to be instantiated.
         countingHelper = new CountingHelper();
+        beanCoinDonationHandler = new BeanCoinDonationHandler();
 
         bot = JDABuilder.createDefault(BOT_TOKEN)
                 .setActivity(Activity.playing("The barista is starting..."))
@@ -95,8 +104,7 @@ public class Bot {
 
         logger.setLogChannel(homeGuildLogChannel);
         logger.log(Bot.class, LogLevel.INFO, "Enabled Discord Logging...", true, true);
-
-
+        
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         updateGuildPresence();
         logger.log(Bot.class, LogLevel.OKAY, "The bot is online!");
@@ -121,7 +129,7 @@ public class Bot {
     /**
      * @return The current {@link CafeAPI}.
      */
-    @Nullable
+    @NotNull
     public static CafeAPI getCafeAPI() {
         return cafeAPI;
     }
@@ -164,4 +172,13 @@ public class Bot {
     public static CountingHelper getCountingHelper() {
         return countingHelper;
     }
+
+    /**
+     * @return The current {@link BeanCoinDonationHandler} for the session.
+     */
+    @NotNull
+    public static BeanCoinDonationHandler getBeanCoinDonationHandler() {
+        return beanCoinDonationHandler;
+    }
+
 }
