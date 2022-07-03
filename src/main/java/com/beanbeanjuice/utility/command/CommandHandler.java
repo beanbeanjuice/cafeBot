@@ -5,6 +5,7 @@ import com.beanbeanjuice.command.cafe.BalanceCommand;
 import com.beanbeanjuice.command.generic.HelpCommand;
 import com.beanbeanjuice.command.generic.PingCommand;
 import com.beanbeanjuice.command.interaction.*;
+import com.beanbeanjuice.command.moderation.ClearChatCommand;
 import com.beanbeanjuice.command.moderation.ListCustomChannelsCommand;
 import com.beanbeanjuice.command.moderation.counting.CountingChannelCommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
@@ -78,6 +79,7 @@ public class CommandHandler extends ListenerAdapter {
 
         // Moderation
         commands.put("counting-channel", new CountingChannelCommand());
+        commands.put("clear-chat", new ClearChatCommand());
         commands.put("list-custom-channels", new ListCustomChannelsCommand());
 
         // =======================
@@ -87,20 +89,13 @@ public class CommandHandler extends ListenerAdapter {
         commands.forEach((commandName, command) -> {
             SlashCommandData slashCommandData = Commands.slash(commandName, command.getDescription());
             slashCommandData.setGuildOnly(!command.allowDM());
-
-            for (CommandOption option : command.getOptions()) {
-                slashCommandData.addOption(option.getOptionType(), option.getName(), option.getDescription(), option.isRequired(), option.hasAutoComplete());
-            }
+            slashCommandData.addOptions(command.getOptions());
 
             List<SubcommandData> subCommands = new ArrayList<>();
 
             for (ISubCommand subCommand : command.getSubCommands()) {
                 SubcommandData subCommandData = new SubcommandData(subCommand.getName(), subCommand.getDescription());
-
-                for (CommandOption option : subCommand.getOptions()) {
-                    subCommandData.addOption(option.getOptionType(), option.getName(), option.getDescription(), option.isRequired(), option.hasAutoComplete());
-                }
-
+                subCommandData.addOptions(subCommand.getOptions());
                 subCommands.add(subCommandData);
             }
 

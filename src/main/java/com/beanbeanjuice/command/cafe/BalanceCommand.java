@@ -1,7 +1,6 @@
 package com.beanbeanjuice.command.cafe;
 
 import com.beanbeanjuice.utility.command.CommandCategory;
-import com.beanbeanjuice.utility.command.CommandOption;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.handler.cafe.ServeHandler;
 import com.beanbeanjuice.utility.helper.Helper;
@@ -11,6 +10,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -94,9 +94,9 @@ public class BalanceCommand implements ICommand {
 
     @NotNull
     @Override
-    public ArrayList<CommandOption> getOptions() {
-        ArrayList<CommandOption> options = new ArrayList<>();
-        options.add(new CommandOption(OptionType.USER, "user", "Person to check the balance of.", false, false));
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.USER, "user", "Person to check the balance of.", false, false));
         return options;
     }
 
