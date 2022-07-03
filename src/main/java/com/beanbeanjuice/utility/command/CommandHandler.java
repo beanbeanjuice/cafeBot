@@ -5,6 +5,7 @@ import com.beanbeanjuice.command.cafe.BalanceCommand;
 import com.beanbeanjuice.command.generic.HelpCommand;
 import com.beanbeanjuice.command.generic.PingCommand;
 import com.beanbeanjuice.command.interaction.*;
+import com.beanbeanjuice.command.moderation.ListCustomChannelsCommand;
 import com.beanbeanjuice.command.moderation.counting.CountingChannelCommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import net.dv8tion.jda.api.JDA;
@@ -77,6 +78,7 @@ public class CommandHandler extends ListenerAdapter {
 
         // Moderation
         commands.put("counting-channel", new CountingChannelCommand());
+        commands.put("list-custom-channels", new ListCustomChannelsCommand());
 
         // =======================
         //     END OF COMMANDS

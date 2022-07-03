@@ -45,12 +45,14 @@ public class CountingHelper {
     public void cacheCountingInformation() {
         Bot.getLogger().log(this.getClass(), LogLevel.LOADING, "Caching Counting Information...");
 
-        try {
-            countingInformationMap = Bot.getCafeAPI().COUNTING_INFORMATION.getAllCountingInformation();
-            Bot.getLogger().log(this.getClass(), LogLevel.OKAY, "Successfully Cached Counting Information.");
-        } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Getting Guild Counting Information: " + e.getMessage(), e);
-        }
+        do {
+            try {
+                countingInformationMap = Bot.getCafeAPI().COUNTING_INFORMATION.getAllCountingInformation();
+                Bot.getLogger().log(this.getClass(), LogLevel.OKAY, "Successfully Cached Counting Information.");
+            } catch (CafeException e) {
+                Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Getting Guild Counting Information: " + e.getMessage(), e);
+            }
+        } while (Bot.getCafeAPI() == null);
     }
 
     /**
