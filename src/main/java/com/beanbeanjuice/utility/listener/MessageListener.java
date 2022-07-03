@@ -22,9 +22,7 @@ public class MessageListener extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         super.onMessageReceived(event);
 
-        if (!event.isFromGuild()) {
-            return;
-        }
+        if (!event.isFromGuild()) { return; }
 
         CustomGuild guildInformation = Bot.getGuildHandler().getCustomGuild(event.getGuild());
 
@@ -44,7 +42,7 @@ public class MessageListener extends ListenerAdapter {
                 return;
             }
         }
-        
+
         if (event.getMessage().getContentRaw().startsWith(guildInformation.getPrefix())) {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setAuthor("ATTENTION!", "https://youtu.be/4XxcpBxSCiU")
