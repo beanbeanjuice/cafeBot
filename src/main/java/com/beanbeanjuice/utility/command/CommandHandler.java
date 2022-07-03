@@ -6,6 +6,7 @@ import com.beanbeanjuice.command.generic.HelpCommand;
 import com.beanbeanjuice.command.generic.PingCommand;
 import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.ClearChatCommand;
+import com.beanbeanjuice.command.moderation.CreateEmbedCommand;
 import com.beanbeanjuice.command.moderation.ListCustomChannelsCommand;
 import com.beanbeanjuice.command.moderation.counting.CountingChannelCommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
@@ -81,6 +82,7 @@ public class CommandHandler extends ListenerAdapter {
         // Moderation
         commands.put("counting-channel", new CountingChannelCommand());
         commands.put("clear-chat", new ClearChatCommand());
+        commands.put("create-embed", new CreateEmbedCommand());
         commands.put("list-custom-channels", new ListCustomChannelsCommand());
 
         // =======================
