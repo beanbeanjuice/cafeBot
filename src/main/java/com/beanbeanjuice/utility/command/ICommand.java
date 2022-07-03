@@ -1,9 +1,13 @@
 package com.beanbeanjuice.utility.command;
 
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 
 /**
@@ -78,5 +82,13 @@ public interface ICommand {
     @NotNull
     default Boolean isHidden() {
         return false;
+    }
+
+    /**
+     * @return The permissions members need to use this.
+     */
+    @Nullable
+    default ArrayList<Permission> getPermissions() {
+        return null;
     }
 }
