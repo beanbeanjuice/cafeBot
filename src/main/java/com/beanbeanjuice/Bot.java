@@ -21,8 +21,10 @@ import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.security.auth.login.LoginException;
+import javax.validation.constraints.Null;
 
 /**
  * The main {@link JDA bot} class.
@@ -119,7 +121,7 @@ public class Bot {
     /**
      * @return The current {@link CafeAPI}.
      */
-    @NotNull
+    @Nullable
     public static CafeAPI getCafeAPI() {
         return cafeAPI;
     }
