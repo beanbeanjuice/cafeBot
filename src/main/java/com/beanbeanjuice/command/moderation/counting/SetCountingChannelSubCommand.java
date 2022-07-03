@@ -10,6 +10,12 @@ import io.github.beanbeanjuice.cafeapi.exception.ResponseException;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * An {@link ISubCommand} used to set the counting {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}
+ * for a specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
+ *
+ * @author beanbeanjuice
+ */
 public class SetCountingChannelSubCommand implements ISubCommand {
 
     @Override

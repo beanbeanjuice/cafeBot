@@ -8,11 +8,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * A {@link ICommand} used for dealing with the {@link io.github.beanbeanjuice.cafeapi.cafebot.counting.CountingInformation CountingInformation}
+ * for the {@link net.dv8tion.jda.api.entities.Guild Guild}.
+ *
+ * @author beanbeanjuice
+ */
 public class CountingChannelCommand implements ICommand {
 
     @Override
-    public void handle(@NotNull SlashCommandInteractionEvent event) {
-    }
+    public void handle(@NotNull SlashCommandInteractionEvent event) { }  // Empty
 
     @NotNull
     @Override

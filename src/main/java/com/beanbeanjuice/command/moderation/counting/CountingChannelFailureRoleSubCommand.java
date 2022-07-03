@@ -14,6 +14,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * An {@link ISubCommand} used to set the counting failure {@link Role} for
+ * a specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
+ *
+ * @author beanbeanjuice
+ */
 public class CountingChannelFailureRoleSubCommand implements ISubCommand {
 
     @Override
@@ -35,6 +41,7 @@ public class CountingChannelFailureRoleSubCommand implements ISubCommand {
         // Otherwise, add the role.
         Role role;
 
+        // Error checking. Making sure the user has specified a failure role.
         try {
             role = event.getOption("failure_role").getAsRole();
         } catch (NullPointerException e) {
