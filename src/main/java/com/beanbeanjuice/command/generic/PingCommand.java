@@ -25,11 +25,11 @@ public class PingCommand implements ICommand {
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
         Bot.getBot().getRestPing().queue(
-                (ping) -> event.getHook().sendMessageEmbeds(messageEmbed(ping, Bot.getBot().getGatewayPing())).setEphemeral(true).queue()
+                (ping) -> event.getHook().sendMessageEmbeds(messageEmbed(ping, Bot.getBot().getGatewayPing())).queue()
         );
 
         if (event.getOption("any_string") != null) {
-            event.getHook().sendMessage(event.getOption("any_string").getAsString()).setEphemeral(true).queue();
+            event.getHook().sendMessage(event.getOption("any_string").getAsString()).queue();
         }
     }
 
@@ -43,20 +43,22 @@ public class PingCommand implements ICommand {
         long systemMemoryUsage = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCommittedVirtualMemorySize()/1048576;
         long dedicatedMemoryTotal = Runtime.getRuntime().maxMemory()/1048576;
         long dedicatedMemoryUsage = Runtime.getRuntime().totalMemory()/1048576;
-        descriptionBuilder.append("**Rest Ping** - `").append(botPing).append("`\n")
+        descriptionBuilder
+                .append("**Rest Ping** - `").append(botPing).append("`\n")
                 .append("**Gateway Ping** - `").append(gatewayPing).append("`\n")
                 .append("**Current Version** - `").append(Bot.BOT_VERSION).append("`\n")
                 .append("**CPU Usage** - `").append(cpuLoad).append("%`\n")
                 .append("**OS Memory Usage** - `").append(systemMemoryUsage).append("` mb / `").append(systemMemoryTotal).append("` mb\n")
                 .append("**Bot Memory Usage** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
                 .append("**Bot Uptime** - `").append(Helper.millisToDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
-                .append("**Commands Run** - `").append(Bot.commandsRun).append("`\n");
+                .append("**Commands Run** - `").append(Bot.commandsRun).append("`\n")
+                .append("Hello there! How are you? Would you like to order some coffee?");
 
-        descriptionBuilder.append("Hello there! How are you? Would you like to order some coffee?");
-        embedBuilder.setDescription(descriptionBuilder.toString());
-        embedBuilder.setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/cafeBot");
-        embedBuilder.setThumbnail(Bot.DISCORD_AVATAR_URL);
-        embedBuilder.setColor(Helper.getRandomColor());
+        embedBuilder
+                .setDescription(descriptionBuilder.toString())
+                .setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/cafeBot")
+                .setThumbnail(Bot.DISCORD_AVATAR_URL)
+                .setColor(Helper.getRandomColor());
         return embedBuilder.build();
     }
 
