@@ -24,7 +24,6 @@ public class BalanceCommand implements ICommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        event.deferReply().setEphemeral(true).queue();
         User user = event.getUser();
         boolean self = true;
 
@@ -43,12 +42,9 @@ public class BalanceCommand implements ICommand {
             )).queue();
             return;
         }
-
-        if (self) {
-            event.getHook().sendMessageEmbeds(selfBalanceEmbed(cafeUser)).queue();
-            return;
-        }
-        event.getHook().sendMessageEmbeds(otherBalanceEmbed(user, cafeUser)).queue();
+        
+        if (self) { event.getHook().sendMessageEmbeds(selfBalanceEmbed(cafeUser)).queue(); }
+        else { event.getHook().sendMessageEmbeds(otherBalanceEmbed(user, cafeUser)).queue(); }
     }
 
     /**
@@ -57,14 +53,14 @@ public class BalanceCommand implements ICommand {
      * @return The created {@link MessageEmbed}.
      */
     public MessageEmbed selfBalanceEmbed(@NotNull CafeUser cafeUser) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("beanCoin Balance");
-        embedBuilder.setColor(Helper.getRandomColor());
-        embedBuilder.addField("Orders Bought", cafeUser.getOrdersBought().toString(), true);
-        embedBuilder.addField("Orders Received", cafeUser.getOrdersReceived().toString(), true);
-        embedBuilder.setDescription("Your current balance is `" + Helper.roundDouble(cafeUser.getBeanCoins()) + "` bC (beanCoins)!");
-        embedBuilder.setFooter("To learn how to make money do /help serve");
-        return embedBuilder.build();
+        return new EmbedBuilder()
+                .setTitle("beanCoin Balance")
+                .setColor(Helper.getRandomColor())
+                .addField("Orders Bought", cafeUser.getOrdersBought().toString(), true)
+                .addField("Orders Received", cafeUser.getOrdersReceived().toString(), true)
+                .setDescription("Your current balance is `" + Helper.roundDouble(cafeUser.getBeanCoins()) + "` bC (beanCoins)!")
+                .setFooter("To learn how to make money do /help serve")
+                .build();
     }
 
     /**
@@ -74,14 +70,14 @@ public class BalanceCommand implements ICommand {
      * @return The created {@link MessageEmbed}.
      */
     public MessageEmbed otherBalanceEmbed(@NotNull User user, @NotNull CafeUser cafeUser) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("beanCoin Balance");
-        embedBuilder.setColor(Helper.getRandomColor());
-        embedBuilder.addField("Orders Bought", cafeUser.getOrdersBought().toString(), true);
-        embedBuilder.addField("Orders Received", cafeUser.getOrdersReceived().toString(), true);
-        embedBuilder.setDescription(user.getAsMention() + " has a current balance of `$" + Helper.roundDouble(cafeUser.getBeanCoins()) + "` beanCoins!");
-        embedBuilder.setFooter("To learn how to make money do /help serve");
-        return embedBuilder.build();
+        return new EmbedBuilder()
+                .setTitle("beanCoin Balance")
+                .setColor(Helper.getRandomColor())
+                .addField("Orders Bought", cafeUser.getOrdersBought().toString(), true)
+                .addField("Orders Received", cafeUser.getOrdersReceived().toString(), true)
+                .setDescription(user.getAsMention() + " has a current balance of `$" + Helper.roundDouble(cafeUser.getBeanCoins()) + "` beanCoins!")
+                .setFooter("To learn how to make money do /help serve")
+                .build();
     }
 
     @NotNull
