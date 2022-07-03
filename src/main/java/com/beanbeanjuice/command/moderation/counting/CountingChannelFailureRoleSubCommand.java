@@ -2,7 +2,6 @@ package com.beanbeanjuice.command.moderation.counting;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
-import com.beanbeanjuice.utility.command.CommandOption;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -10,6 +9,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -84,10 +84,10 @@ public class CountingChannelFailureRoleSubCommand implements ISubCommand {
 
     @NotNull
     @Override
-    public ArrayList<CommandOption> getOptions() {
-        ArrayList<CommandOption> options = new ArrayList<>();
-        options.add(new CommandOption(OptionType.BOOLEAN, "enable_failure_role", "Set to true to enable the failure role.", true, false));
-        options.add(new CommandOption(OptionType.ROLE, "failure_role", "The role to give a user when they suck at counting.", false, false));
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.BOOLEAN, "enable_failure_role", "Set to true to enable the failure role.", true, false));
+        options.add(new OptionData(OptionType.ROLE, "failure_role", "The role to give a user when they suck at counting.", false, false));
         return options;
     }
 

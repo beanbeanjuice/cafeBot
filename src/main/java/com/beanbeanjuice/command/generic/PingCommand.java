@@ -3,13 +3,13 @@ package com.beanbeanjuice.command.generic;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.command.CommandCategory;
-import com.beanbeanjuice.utility.command.CommandOption;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.sun.management.OperatingSystemMXBean;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.management.ManagementFactory;
@@ -76,10 +76,10 @@ public class PingCommand implements ICommand {
 
     @Override
     @NotNull
-    public ArrayList<CommandOption> getOptions() {
-        ArrayList<CommandOption> options = new ArrayList<>();
-        options.add(new CommandOption(OptionType.STRING, "any_string", "Add any string to be repeated back to you.", false, false));
-        options.add(new CommandOption(OptionType.USER, "user", "Add any user to be repeated back to you.", false, false));
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.STRING, "any_string", "Add any string to be repeated back to you.", false, false));
+        options.add(new OptionData(OptionType.USER, "user", "Add any user to be repeated back to you.", false, false));
         return options;
     }
 
