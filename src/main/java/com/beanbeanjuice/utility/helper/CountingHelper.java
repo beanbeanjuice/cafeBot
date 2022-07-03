@@ -52,7 +52,7 @@ public class CountingHelper {
                 Bot.getLogger().log(this.getClass(), LogLevel.OKAY, "Successfully Cached Counting Information.");
             } catch (CafeException e) {
                 Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Getting Guild Counting Information: " + e.getMessage(), e);
-            }
+            } catch (NullPointerException ignored) {}
         } while (Bot.getCafeAPI() == null);
     }
 
