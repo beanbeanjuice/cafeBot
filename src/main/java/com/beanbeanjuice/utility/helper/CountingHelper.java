@@ -68,7 +68,7 @@ public class CountingHelper {
             event.getChannel().sendMessageEmbeds(Helper.sqlServerError()).queue();
             return;
         }
-        
+
         Integer lastNumber = countingInformation.getLastNumber();
         Integer highestNumber = countingInformation.getHighestNumber();
         String lastUserID = countingInformation.getLastUserID();

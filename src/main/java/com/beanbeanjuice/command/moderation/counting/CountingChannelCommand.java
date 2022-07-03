@@ -38,6 +38,7 @@ public class CountingChannelCommand implements ICommand {
         ArrayList<ISubCommand> subCommands = new ArrayList<>();
         subCommands.add(new SetCountingChannelSubCommand());
         subCommands.add(new RemoveCountingChannelSubCommand());
+        subCommands.add(new CountingChannelFailureRoleSubCommand());
         return subCommands;
     }
 
