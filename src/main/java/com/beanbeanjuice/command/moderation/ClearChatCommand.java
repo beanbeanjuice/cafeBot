@@ -2,10 +2,12 @@ package com.beanbeanjuice.command.moderation;
 
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
@@ -19,6 +21,7 @@ public class ClearChatCommand implements ICommand {
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
         event.getHook().sendMessage("Cleared!").queue();
+
     }
 
     @NotNull
@@ -57,7 +60,15 @@ public class ClearChatCommand implements ICommand {
     @NotNull
     @Override
     public Boolean isHidden() {
-        return false;
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public ArrayList<Permission> getPermissions() {
+        ArrayList<Permission> permissions = new ArrayList<>();
+        permissions.add(Permission.MESSAGE_MANAGE);
+        return permissions;
     }
 
 }

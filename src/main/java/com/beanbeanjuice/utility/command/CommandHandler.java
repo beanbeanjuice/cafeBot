@@ -12,6 +12,7 @@ import com.beanbeanjuice.utility.logging.LogLevel;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
@@ -90,6 +91,11 @@ public class CommandHandler extends ListenerAdapter {
             SlashCommandData slashCommandData = Commands.slash(commandName, command.getDescription());
             slashCommandData.setGuildOnly(!command.allowDM());
             slashCommandData.addOptions(command.getOptions());
+
+            // Setting the permissions for commands.
+            if (command.getPermissions() != null) {
+                slashCommandData.setDefaultPermissions(DefaultMemberPermissions.enabledFor(command.getPermissions()));
+            }
 
             List<SubcommandData> subCommands = new ArrayList<>();
 
