@@ -45,6 +45,7 @@ public class CountingHelper {
     public void cacheCountingInformation() {
         Bot.getLogger().log(this.getClass(), LogLevel.LOADING, "Caching Counting Information...");
 
+        // Repeat until the CafeAPI has been connected.
         do {
             try {
                 countingInformationMap = Bot.getCafeAPI().COUNTING_INFORMATION.getAllCountingInformation();
