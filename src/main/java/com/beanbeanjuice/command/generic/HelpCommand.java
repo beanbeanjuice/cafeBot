@@ -83,7 +83,7 @@ public class HelpCommand implements ICommand {
         embedBuilder.addField("Example", command.exampleUsage(), false)
                 .addField("Description", command.getDescription(), false)
                 .setColor(Helper.getRandomColor())
-                .setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!")
+                .setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
         return embedBuilder.build();
     }
 
