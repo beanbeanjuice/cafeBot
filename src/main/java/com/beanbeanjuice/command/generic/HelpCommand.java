@@ -80,10 +80,10 @@ public class HelpCommand implements ICommand {
             embedBuilder.addField("Arguments", paramBuilder.toString(), false);
         }
 
-        embedBuilder.addField("Example", command.exampleUsage(), false);
-        embedBuilder.addField("Description", command.getDescription(), false);
-        embedBuilder.setColor(Helper.getRandomColor());
-        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
+        embedBuilder.addField("Example", command.exampleUsage(), false)
+                .addField("Description", command.getDescription(), false)
+                .setColor(Helper.getRandomColor())
+                .setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!")
         return embedBuilder.build();
     }
 
@@ -96,8 +96,9 @@ public class HelpCommand implements ICommand {
 
         for (Map.Entry<String, ICommand> commandSet : Bot.getCommandHandler().getCommands().entrySet()) {
             if (commandSet.getValue().getCategoryType().equals(category)) {
-                stringBuilder.append("**").append(count++).append("** `/").append(commandSet.getKey());
-                stringBuilder.append("`\n");
+                stringBuilder
+                        .append("**").append(count++).append("** `/").append(commandSet.getKey())
+                        .append("`\n");
             }
         }
 
@@ -105,11 +106,12 @@ public class HelpCommand implements ICommand {
             stringBuilder.append("There are no commands here right now :( but if this section is here, that means I'm working on it!");
         }
 
-        embedBuilder.setTitle(category.toString());
-        embedBuilder.setDescription(stringBuilder.toString());
-        embedBuilder.setThumbnail(category.getLink());
-        embedBuilder.setColor(Helper.getRandomColor());
-        embedBuilder.setFooter("For help with a specific command, do /help (command name).");
+        embedBuilder
+                .setTitle(category.toString())
+                .setDescription(stringBuilder.toString())
+                .setThumbnail(category.getLink())
+                .setColor(Helper.getRandomColor())
+                .setFooter("For help with a specific command, do /help (command name).");
         return embedBuilder.build();
     }
 
@@ -125,21 +127,22 @@ public class HelpCommand implements ICommand {
             stringBuilder.append("`\n");
         }
 
-        embedBuilder.setDescription(stringBuilder.toString());
-        embedBuilder.setTitle("Command Categories");
-        embedBuilder.setColor(Helper.getRandomColor());
-        embedBuilder.setFooter("If you're stuck, use /help (category name/category number).");
+        embedBuilder
+                .setDescription(stringBuilder.toString())
+                .setTitle("Command Categories")
+                .setColor(Helper.getRandomColor())
+                .setFooter("If you're stuck, use /help (category name/category number).");
         return embedBuilder.build();
     }
 
     @NotNull
     private MessageEmbed noCommandFoundEmbed(@NotNull String commandName) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("No Command Found");
-        embedBuilder.setDescription("No command has been found for `" + commandName + "`.");
-        embedBuilder.setColor(Color.red);
-        embedBuilder.setFooter("Please see /help!");
-        return embedBuilder.build();
+        return new EmbedBuilder()
+                .setTitle("No Command Found")
+                .setDescription("No command has been found for `" + commandName + "`.")
+                .setColor(Color.red)
+                .setFooter("Please see /help!")
+                .build();
     }
 
     @NotNull

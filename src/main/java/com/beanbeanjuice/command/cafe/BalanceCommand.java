@@ -42,7 +42,7 @@ public class BalanceCommand implements ICommand {
             )).queue();
             return;
         }
-        
+
         if (self) { event.getHook().sendMessageEmbeds(selfBalanceEmbed(cafeUser)).queue(); }
         else { event.getHook().sendMessageEmbeds(otherBalanceEmbed(user, cafeUser)).queue(); }
     }
