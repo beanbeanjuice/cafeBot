@@ -7,6 +7,12 @@ import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * An {@link ISubCommand} used to remove the counting {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}
+ * from a specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
+ *
+ * @author beanbeanjuice
+ */
 public class RemoveCountingChannelSubCommand implements ISubCommand {
 
     @Override
