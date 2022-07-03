@@ -71,16 +71,20 @@ public class Helper {
      * Updates the {@link CafeAPI} every hour.
      */
     public static void startCafeAPIRefreshTimer(@NotNull RequestLocation requestLocation) {
+        // TODO: There must be a way to do this. Somehow wait until cafeAPI is not null anymore.
+        Bot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), requestLocation));
+        Bot.getLogger().log(Helper.class, LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
+
         Timer cafeAPITimer = new Timer();
         TimerTask cafeAPITimerTask = new TimerTask() {
 
             @Override
             public void run() {
                 Bot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), requestLocation));
-                Bot.getLogger().log(this.getClass(), LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
+                Bot.getLogger().log(Helper.class, LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
             }
         };
-        cafeAPITimer.scheduleAtFixedRate(cafeAPITimerTask, 0, 3400000);
+        cafeAPITimer.scheduleAtFixedRate(cafeAPITimerTask, 3400000, 3400000);
     }
 
     /**

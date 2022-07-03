@@ -75,7 +75,7 @@ public class BalanceCommand implements ICommand {
                 .setColor(Helper.getRandomColor())
                 .addField("Orders Bought", cafeUser.getOrdersBought().toString(), true)
                 .addField("Orders Received", cafeUser.getOrdersReceived().toString(), true)
-                .setDescription(user.getAsMention() + " has a current balance of `$" + Helper.roundDouble(cafeUser.getBeanCoins()) + "` beanCoins!")
+                .setDescription(user.getAsMention() + " has a current balance of `$" + Helper.roundDouble(cafeUser.getBeanCoins()) + "` bC (beanCoins)!")
                 .setFooter("To learn how to make money do /help serve")
                 .build();
     }
