@@ -94,6 +94,11 @@ public class CommandHandler extends ListenerAdapter {
 
             for (ISubCommand subCommand : command.getSubCommands()) {
                 SubcommandData subCommandData = new SubcommandData(subCommand.getName(), subCommand.getDescription());
+
+                for (CommandOption option : subCommand.getOptions()) {
+                    subCommandData.addOption(option.getOptionType(), option.getName(), option.getDescription(), option.isRequired(), option.hasAutoComplete());
+                }
+
                 subCommands.add(subCommandData);
             }
 
