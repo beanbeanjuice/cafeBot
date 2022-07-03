@@ -1,7 +1,12 @@
 package com.beanbeanjuice.command.moderation.counting;
 
+import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
+import com.beanbeanjuice.utility.helper.Helper;
+import io.github.beanbeanjuice.cafeapi.exception.AuthorizationException;
+import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
+import io.github.beanbeanjuice.cafeapi.exception.ResponseException;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,7 +14,33 @@ public class SetCountingChannelSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        event.getHook().sendMessage("Set!").queue();
+
+        // Attempt to add the counting channel to the database.
+        if (Bot.getGuildHandler().getCustomGuild(event.getGuild()).setCountingChannel(event.getChannel().getId())) {
+
+            // Send a success embed if it worked.
+            event.getHook().sendMessageEmbeds(Helper.successEmbed(
+                    "Updated Counting Channel",
+                    "Successfully set the counting channel to this channel. " +
+                            "To remove counting, just delete the channel."
+            )).queue();
+
+            // Now, try to create "Counting Information" in the database.
+            try {
+                Bot.getCafeAPI().COUNTING_INFORMATION.createGuildCountingInformation(event.getGuild().getId());
+            }
+            catch (ConflictException ignored) {}  // Ignore this.
+            catch (AuthorizationException | ResponseException e) {
+                event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                        "Error Creating Counting Information",
+                        "There has been an error creating counting information. Please re-add the counting channel."
+                )).queue();
+            }
+            return;
+        }
+
+        // Send if there was an error.
+        event.getHook().sendMessageEmbeds(Helper.sqlServerError()).queue();
     }
 
     @NotNull
