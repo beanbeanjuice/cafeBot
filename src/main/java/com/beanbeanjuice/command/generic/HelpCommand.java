@@ -161,7 +161,8 @@ public class HelpCommand implements ICommand {
     @Override
     public ArrayList<OptionData> getOptions() {
         ArrayList<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING, "section-or-command", "Sub-argument for the help command.", false, false));
+        options.add(new OptionData(OptionType.STRING, "section-or-command", "Sub-argument for the help command.", false, false)
+                .setRequiredRange(1, CommandCategory.values().length));
         return options;
     }
 
