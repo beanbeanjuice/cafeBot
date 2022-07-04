@@ -5,11 +5,7 @@ import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 /**
  * An {@link ISubCommand} used to set the {@link com.beanbeanjuice.utility.handler.fun.poll.Poll Poll} {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
@@ -20,6 +16,8 @@ public class SetPollChannelSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
+
+        // Makes sure the poll channel has been added to the database.
         if (Bot.getGuildHandler().getCustomGuild(event.getGuild()).setPollChannel(event.getChannel().getId())) {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
                     "Set Poll Channel",

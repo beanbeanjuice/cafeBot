@@ -16,6 +16,8 @@ public class RemovePollChannelSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
+
+        // Makes sure the poll channel has been removed from the database.
         if (Bot.getGuildHandler().getCustomGuild(event.getGuild()).setPollChannel("0")) {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
                     "Removed Poll Channel",
