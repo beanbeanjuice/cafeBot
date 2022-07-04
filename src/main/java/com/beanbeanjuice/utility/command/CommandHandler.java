@@ -2,10 +2,7 @@ package com.beanbeanjuice.utility.command;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.command.cafe.*;
-import com.beanbeanjuice.command.fun.AvatarCommand;
-import com.beanbeanjuice.command.fun.CoffeeMemeCommand;
-import com.beanbeanjuice.command.fun.CountingStatisticsCommand;
-import com.beanbeanjuice.command.fun.JokeCommand;
+import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.fun.birthday.BirthdayCommand;
 import com.beanbeanjuice.command.moderation.poll.AddPollCommand;
 import com.beanbeanjuice.command.generic.HelpCommand;
@@ -57,6 +54,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("coffee-meme", new CoffeeMemeCommand());
         commands.put("counting-statistics", new CountingStatisticsCommand());
         commands.put("joke", new JokeCommand());
+        commands.put("meme", new MemeCommand());
 
         // Games
 
