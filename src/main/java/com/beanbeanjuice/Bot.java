@@ -38,6 +38,7 @@ public class Bot {
     // Bot Items
     public static final String BOT_VERSION = System.getenv("CAFEBOT_VERSION");
     private static final String BOT_TOKEN = System.getenv("CAFEBOT_TOKEN");
+    public static final String BOT_USER_AGENT = "java:com.beanbeanjuice.cafeBot:" + BOT_VERSION;
     private static JDA bot;
 
     // API
