@@ -1,7 +1,6 @@
 package com.beanbeanjuice.utility.handler.cafe;
 
 import com.beanbeanjuice.Bot;
-import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.time.Time;
 import com.beanbeanjuice.utility.time.TimestampDifference;

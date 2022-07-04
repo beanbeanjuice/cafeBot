@@ -1,6 +1,7 @@
 package com.beanbeanjuice;
 
 import com.beanbeanjuice.utility.handler.cafe.BeanCoinDonationHandler;
+import com.beanbeanjuice.utility.handler.cafe.MenuHandler;
 import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.command.CommandHandler;
@@ -53,6 +54,7 @@ public class Bot {
     // Handlers
     private static CommandHandler commandHandler;
     private static GuildHandler guildHandler;
+    private static MenuHandler menuHandler;
 
     // Helpers
     private static CountingHelper countingHelper;
@@ -72,6 +74,7 @@ public class Bot {
         // Helpers that need to be instantiated.
         countingHelper = new CountingHelper();
         beanCoinDonationHandler = new BeanCoinDonationHandler();
+        menuHandler = new MenuHandler();
 
         bot = JDABuilder.createDefault(BOT_TOKEN)
                 .setActivity(Activity.playing("The barista is starting..."))
@@ -104,7 +107,7 @@ public class Bot {
 
         logger.setLogChannel(homeGuildLogChannel);
         logger.log(Bot.class, LogLevel.INFO, "Enabled Discord Logging...", true, true);
-        
+
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         updateGuildPresence();
         logger.log(Bot.class, LogLevel.OKAY, "The bot is online!");
