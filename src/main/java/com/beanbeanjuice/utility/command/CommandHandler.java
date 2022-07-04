@@ -127,20 +127,22 @@ public class CommandHandler extends ListenerAdapter {
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         super.onSlashCommandInteraction(event);
 
+        // Checking if the commands is something that should be run.
         if (commands.containsKey(event.getName())) {
 
-            if (commands.get(event.getName()).isHidden()) {
+            // Checks if the reply should be hidden or not.
+            if (commands.get(event.getName()).isHidden())
                 event.deferReply(true).queue();
-            } else {
+            else
                 event.deferReply().queue();
-            }
 
-            if (event.getSubcommandName() != null) {
+            // Checks if it IS a sub command.
+            if (event.getSubcommandName() != null)
                 commands.get(event.getName()).runSubCommand(event.getSubcommandName(), event);
-            } else {
+            else
                 commands.get(event.getName()).handle(event);
-            }
-
+            
+            // Increment commands run for this bot.
             Bot.commandsRun++;
         }
     }
