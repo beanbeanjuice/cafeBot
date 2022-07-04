@@ -177,10 +177,6 @@ public class AddPollCommand implements ICommand {
         if (event.getOption("author") != null)
             embedBuilder.setAuthor(event.getOption("author").getAsString());
 
-        // Footer
-        if (event.getOption("footer") != null)
-            embedBuilder.setFooter(event.getOption("footer").getAsString());
-
         // Thumbnail
         if (event.getOption("thumbnail") != null && event.getOption("thumbnail").getAsAttachment().isImage())
             embedBuilder.setThumbnail(event.getOption("thumbnail").getAsAttachment().getUrl());
@@ -238,7 +234,6 @@ public class AddPollCommand implements ICommand {
         options.add(new OptionData(OptionType.STRING, "poll_options", "All of the poll options, using comma-separated value", true, false));
         options.add(new OptionData(OptionType.STRING, "author", "The author of the poll.", false, false));
         options.add(new OptionData(OptionType.STRING, "message", "The message that goes outside of the poll.", false, false));
-        options.add(new OptionData(OptionType.STRING, "footer", "A message to add at the bottom of the poll.", false, false));
         options.add(new OptionData(OptionType.ATTACHMENT, "thumbnail", "A thumbnail url to add to the poll.", false, false));
         options.add(new OptionData(OptionType.ATTACHMENT, "image", "An image url to add to the poll.", false, false));
         options.add(new OptionData(OptionType.STRING, "color", "Color hex code. Example: #FFC0CB", false, false));

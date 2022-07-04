@@ -115,16 +115,12 @@ public class AddRaffleCommand implements ICommand {
                                      @NotNull SlashCommandInteractionEvent event) {
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setTitle(title)
-                .addField("Raffle Details", description, false)
+                .setDescription(description)
                 .addField("Winner Amount", winnerAmount.toString(), false);
 
         // Author
         if (event.getOption("author") != null)
             embedBuilder.setAuthor(event.getOption("author").getAsString());
-
-        // Footer
-        if (event.getOption("footer") != null)
-            embedBuilder.setFooter(event.getOption("footer").getAsString());
 
         // Thumbnail
         if (event.getOption("thumbnail") != null && event.getOption("thumbnail").getAsAttachment().isImage())
@@ -181,7 +177,6 @@ public class AddRaffleCommand implements ICommand {
         options.add(new OptionData(OptionType.STRING, "description", "The message that goes INSIDE the raffle.", true, false));
         options.add(new OptionData(OptionType.STRING, "author", "The author of the raffle.", false, false));
         options.add(new OptionData(OptionType.STRING, "message", "The message that goes outside of the raffle.", false, false));
-        options.add(new OptionData(OptionType.STRING, "footer", "A message to add at the bottom of the raffle.", false, false));
         options.add(new OptionData(OptionType.ATTACHMENT, "thumbnail", "A thumbnail url to add to the raffle.", false, false));
         options.add(new OptionData(OptionType.ATTACHMENT, "image", "An image url to add to the raffle.", false, false));
         options.add(new OptionData(OptionType.STRING, "color", "Color hex code. Example: #FFC0CB", false, false));

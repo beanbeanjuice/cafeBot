@@ -137,7 +137,8 @@ public class RaffleHandler {
                                      @Nullable MessageEmbed.AuthorInfo authorInfo, @Nullable MessageEmbed.Thumbnail thumbnail, @Nullable MessageEmbed.ImageInfo image) {
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setTitle(title)
-                .addField("Description", description, false);
+                .addField("Description", description, false)
+                .setFooter("The raffle has ended.");
 
         if (authorInfo != null)
             embedBuilder.setAuthor(authorInfo.getName());
@@ -150,7 +151,7 @@ public class RaffleHandler {
 
         if (winners.isEmpty()) {
             embedBuilder.addField("Winner", "No one entered the raffle...", false);
-            embedBuilder.setColor(Color.gray);
+            embedBuilder.setColor(Color.orange);
         } else if (winners.size() == 1) {
             embedBuilder.addField("Winner", winners.get(0).getAsMention(), false);
             embedBuilder.setColor(Color.red);
