@@ -44,7 +44,7 @@ public class CustomGuild {
      * @param liveNotificationsRoleID The ID of the live notifications {@link Role} for the {@link Guild}.
      * @param notifyOnUpdate          The {@link Boolean} of whether or not to notify the {@link Guild} on an update to the Bot.
      * @param updateChannelID         The ID of the {@link TextChannel} to send the bot update notifications to.
-//     * @param pollChannelID           The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.sections.fun.poll.Poll Poll}s.
+     * @param pollChannelID           The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.section.moderation.poll.Poll Polls}.
 //     * @param birthdayChannelID       The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler Birthday} notifications.
      * @param welcomeChannelID        The ID of the {@link TextChannel} being used for the Welcome notifications.
      * @param ventingChannelID        The ID of the {@link TextChannel} being used for anonymous venting.
@@ -271,33 +271,32 @@ public class CustomGuild {
         return false;
     }
 
-//    /**
-//     * @return The {@link com.beanbeanjuice.utility.sections.fun.raffle.Raffle Raffle} {@link TextChannel} for the {@link Guild}.
-//     */
-//    @Nullable
-//    public TextChannel getRaffleChannel() {
-//        try {
-//            return Bot.getGuildHandler().getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.RAFFLE));
-//        } catch (NullPointerException e) {
-//            return null;
-//        }
-//    }
+    /**
+     * @return The {@link com.beanbeanjuice.utility.section.moderation.raffle.Raffle Raffle} {@link TextChannel} for the {@link Guild}.
+     */
+    @Nullable
+    public TextChannel getRaffleChannel() {
+        try {
+            return Bot.getGuildHandler().getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.RAFFLE));
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
 
-    // TODO: Implement raffles/polls
-//    /**
-//     * Sets the {@link com.beanbeanjuice.utility.sections.fun.raffle.Raffle Raffle} {@link TextChannel}.
-//     *
-//     * @param raffleChannelID The ID of the {@link TextChannel}.
-//     * @return Whether or not setting it was successful.
-//     */
-//    @NotNull
-//    public Boolean setRaffleChannel(@NotNull String raffleChannelID) {
-//        if (Bot.getGuildHandler().setRaffleChannelID(guildID, raffleChannelID)) {
-//            customChannelIDs.put(CustomChannel.RAFFLE, raffleChannelID);
-//            return true;
-//        }
-//        return false;
-//    }
+    /**
+     * Sets the {@link com.beanbeanjuice.utility.section.moderation.raffle.Raffle Raffle} {@link TextChannel} for the {@link Guild}.
+     *
+     * @param raffleChannelID The ID of the {@link TextChannel}.
+     * @return True, if setting it was successful.
+     */
+    @NotNull
+    public Boolean setRaffleChannel(@NotNull String raffleChannelID) {
+        if (Bot.getGuildHandler().setRaffleChannelID(guildID, raffleChannelID)) {
+            customChannelIDs.put(CustomChannel.RAFFLE, raffleChannelID);
+            return true;
+        }
+        return false;
+    }
 
     /**
      * @return The poll {@link TextChannel} for the {@link Guild}.
@@ -312,10 +311,10 @@ public class CustomGuild {
     }
 
     /**
-     * Set the poll {@link TextChannel} for the {@link Guild}.
+     * Set the {@link com.beanbeanjuice.utility.section.moderation.poll.Poll Poll} {@link TextChannel} for the {@link Guild}.
      *
      * @param pollChannelID The ID of the {@link TextChannel}.
-     * @return Whether or not setting the poll {@link TextChannel} was successful.
+     * @return True, if setting the poll {@link TextChannel} was successful.
      */
     @NotNull
     public Boolean setPollChannel(@NotNull String pollChannelID) {

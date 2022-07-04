@@ -11,6 +11,7 @@ import com.beanbeanjuice.utility.listener.MessageListener;
 import com.beanbeanjuice.utility.listener.ServerListener;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.logging.LogManager;
+import com.beanbeanjuice.utility.section.moderation.raffle.RaffleHandler;
 import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import net.dv8tion.jda.api.JDA;
@@ -55,6 +56,7 @@ public class Bot {
     private static GuildHandler guildHandler;
     private static MenuHandler menuHandler;
     private static PollHandler pollHandler;
+    private static RaffleHandler raffleHandler;
 
     // Helpers
     private static CountingHelper countingHelper;
@@ -106,8 +108,9 @@ public class Bot {
         // Helpers that need to be instantiated.
         countingHelper = new CountingHelper();
         beanCoinDonationHandler = new BeanCoinDonationHandler();
-        menuHandler = new MenuHandler();  // TODO: Not sure if this is needed.
-        pollHandler = new PollHandler();  // TODO: Not sure if this is needed.
+        menuHandler = new MenuHandler();  // TODO: Not sure if this is needed. Static class?
+        pollHandler = new PollHandler();  // TODO: Not sure if this is needed. Static class?
+        raffleHandler = new RaffleHandler();  // TODO: Not sure if this is needed. Static class?
 
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         updateGuildPresence();
@@ -191,6 +194,14 @@ public class Bot {
     @NotNull
     public static PollHandler getPollHandler() {
         return pollHandler;
+    }
+
+    /**
+     * @return The current {@link RaffleHandler}.
+     */
+    @NotNull
+    public static RaffleHandler getRaffleHandler() {
+        return raffleHandler;
     }
 
 }

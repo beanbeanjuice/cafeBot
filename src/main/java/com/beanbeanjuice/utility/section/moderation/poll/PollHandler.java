@@ -134,6 +134,8 @@ public class PollHandler {
 
             }
         };
+
+        // Run every 30 seconds.
         pollTimer.scheduleAtFixedRate(pollTimerTask, 0, 30000);
     }
 
