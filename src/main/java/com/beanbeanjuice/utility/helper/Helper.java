@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -197,6 +198,42 @@ public class Helper {
     @NotNull
     public static Integer getRandomNumber(@NotNull Integer minimum, @NotNull Integer maximum) {
         return (int) ((Math.random() * (maximum - minimum)) + minimum);
+    }
+
+    /**
+     * Private message's a specified {@link User}.
+     * @param user The {@link User} to be messaged.
+     * @param message The contents of the message.
+     */
+    public static void pmUser(@NotNull User user, @NotNull String message) {
+        user.openPrivateChannel().flatMap(channel -> channel.sendMessage(message)).queue();
+    }
+
+    /**
+     * Private messages a specified {@link User}.
+     * @param user The {@link User} to be messaged.
+     * @param embed The {@link MessageEmbed} to be sent.
+     */
+    public static void pmUser(@NotNull User user, @NotNull MessageEmbed embed) {
+        user.openPrivateChannel().flatMap(channel -> channel.sendMessageEmbeds(embed)).queue();
+    }
+
+    /**
+     * Gets a {@link User} from the ID.
+     * @param userID The ID of the {@link User}.
+     * @return The {@link User}.
+     */
+    @Nullable
+    public static User getUser(@NotNull String userID) {
+        userID = userID.replace("<@!", "");
+        userID = userID.replace("<@", ""); // Edge Case for Mobile
+        userID = userID.replace(">", "");
+
+        try {
+            return Bot.getBot().getUserById(userID);
+        } catch (NullPointerException | NumberFormatException e) {
+            return null;
+        }
     }
 
 }
