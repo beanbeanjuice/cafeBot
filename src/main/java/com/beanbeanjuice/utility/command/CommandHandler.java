@@ -4,6 +4,7 @@ import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.command.cafe.BalanceCommand;
 import com.beanbeanjuice.command.cafe.DonateBeanCoinsCommand;
 import com.beanbeanjuice.command.cafe.MenuCommand;
+import com.beanbeanjuice.command.cafe.OrderCommand;
 import com.beanbeanjuice.command.generic.HelpCommand;
 import com.beanbeanjuice.command.generic.PingCommand;
 import com.beanbeanjuice.command.interaction.*;
@@ -40,6 +41,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("balance", new BalanceCommand());
         commands.put("donate-beancoins", new DonateBeanCoinsCommand());
         commands.put("menu", new MenuCommand());
+        commands.put("order", new OrderCommand());
 
         // Fun
 
