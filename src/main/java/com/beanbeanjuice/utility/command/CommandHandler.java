@@ -18,6 +18,7 @@ import com.beanbeanjuice.command.moderation.counting.CountingChannelCommand;
 import com.beanbeanjuice.command.moderation.poll.PollChannelCommand;
 import com.beanbeanjuice.command.moderation.raffle.AddRaffleCommand;
 import com.beanbeanjuice.command.moderation.raffle.RaffleChannelCommand;
+import com.beanbeanjuice.command.social.CountMembersCommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -64,6 +65,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("help", new HelpCommand());
 
         // Social
+        commands.put("count-members", new CountMembersCommand());
 
         // Interaction
         commands.put("bite", new BiteCommand());
