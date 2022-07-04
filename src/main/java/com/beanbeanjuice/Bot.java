@@ -2,6 +2,7 @@ package com.beanbeanjuice;
 
 import com.beanbeanjuice.utility.section.cafe.BeanCoinDonationHandler;
 import com.beanbeanjuice.utility.section.cafe.MenuHandler;
+import com.beanbeanjuice.utility.section.fun.BirthdayHandler;
 import com.beanbeanjuice.utility.section.moderation.poll.PollHandler;
 import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.Helper;
@@ -58,6 +59,7 @@ public class Bot {
     private static MenuHandler menuHandler;
     private static PollHandler pollHandler;
     private static RaffleHandler raffleHandler;
+    private static BirthdayHandler birthdayHandler;
 
     // Helpers
     private static CountingHelper countingHelper;
@@ -112,6 +114,7 @@ public class Bot {
         menuHandler = new MenuHandler();  // TODO: Not sure if this is needed. Static class?
         pollHandler = new PollHandler();  // TODO: Not sure if this is needed. Static class?
         raffleHandler = new RaffleHandler();  // TODO: Not sure if this is needed. Static class?
+        birthdayHandler = new BirthdayHandler();  // TODO: Not sure if this is needed. Static class?
 
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         updateGuildPresence();
@@ -203,6 +206,14 @@ public class Bot {
     @NotNull
     public static RaffleHandler getRaffleHandler() {
         return raffleHandler;
+    }
+
+    /**
+     * @return The current {@link BirthdayHandler}.
+     */
+    @NotNull
+    public static BirthdayHandler getBirthdayHandler() {
+        return birthdayHandler;
     }
 
 }

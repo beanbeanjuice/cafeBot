@@ -5,6 +5,7 @@ import com.beanbeanjuice.command.cafe.*;
 import com.beanbeanjuice.command.fun.AvatarCommand;
 import com.beanbeanjuice.command.fun.CoffeeMemeCommand;
 import com.beanbeanjuice.command.fun.CountingStatisticsCommand;
+import com.beanbeanjuice.command.fun.GetBirthdayCommand;
 import com.beanbeanjuice.command.moderation.poll.AddPollCommand;
 import com.beanbeanjuice.command.generic.HelpCommand;
 import com.beanbeanjuice.command.generic.PingCommand;
@@ -52,6 +53,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("avatar", new AvatarCommand());
         commands.put("coffee-meme", new CoffeeMemeCommand());
         commands.put("counting-statistics", new CountingStatisticsCommand());
+        commands.put("get-birthday", new GetBirthdayCommand());
 
         // Games
 
