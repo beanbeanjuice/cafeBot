@@ -81,6 +81,7 @@ public class HelpCommand implements ICommand {
             embedBuilder.addField("Arguments", paramBuilder.toString(), false);
         }
 
+        // Creating Subcommands Text
         StringBuilder subCommandsBuilder = new StringBuilder();
         for (int i = 0; i < command.getSubCommands().size(); i++) {
             subCommandsBuilder.append("***").append(i + 1).append("***. ")
@@ -88,12 +89,28 @@ public class HelpCommand implements ICommand {
                     .append("\n");
         }
 
+        // Creating Permissions Text
+        StringBuilder permissionsBuilder = new StringBuilder();
+        if (command.getPermissions() == null) {
+            permissionsBuilder.append("**EVERYONE**");
+        } else {
+            for (int i = 0; i < command.getPermissions().size(); i++) {
+                permissionsBuilder.append("***").append(i + 1).append("***. ")
+                        .append(command.getPermissions().get(i).toString())
+                        .append("\n");
+            }
+        }
+
+        if (command.getSubCommands().size() > 0)
+            embedBuilder.addField("Sub Commands", subCommandsBuilder.toString(), false);
+
         embedBuilder
-                .addField("Sub Commands", subCommandsBuilder.toString(), false)
                 .addField("Example", command.exampleUsage(), false)
                 .addField("Description", command.getDescription(), false)
                 .setColor(Helper.getRandomColor())
-                .setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
+                .setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!")
+                .addField("Permissions", permissionsBuilder.toString(), false);
+
         return embedBuilder.build();
     }
 
