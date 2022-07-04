@@ -115,7 +115,7 @@ public class AddRaffleCommand implements ICommand {
                                      @NotNull SlashCommandInteractionEvent event) {
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setTitle(title)
-                .setDescription(description)
+                .addField("Raffle Details", description, false)
                 .addField("Winner Amount", winnerAmount.toString(), false);
 
         // Author
