@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.handler.fun.poll;
+package com.beanbeanjuice.utility.section.moderation.poll;
 
 import com.beanbeanjuice.utility.time.Time;
 import com.beanbeanjuice.utility.time.TimestampDifference;

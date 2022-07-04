@@ -1,9 +1,8 @@
 package com.beanbeanjuice;
 
-import com.beanbeanjuice.utility.handler.cafe.BeanCoinDonationHandler;
-import com.beanbeanjuice.utility.handler.cafe.MenuHandler;
-import com.beanbeanjuice.utility.handler.fun.poll.Poll;
-import com.beanbeanjuice.utility.handler.fun.poll.PollHandler;
+import com.beanbeanjuice.utility.section.cafe.BeanCoinDonationHandler;
+import com.beanbeanjuice.utility.section.cafe.MenuHandler;
+import com.beanbeanjuice.utility.section.moderation.poll.PollHandler;
 import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.command.CommandHandler;
@@ -25,10 +24,8 @@ import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.security.auth.login.LoginException;
-import javax.validation.constraints.Null;
 
 /**
  * The main {@link JDA bot} class.

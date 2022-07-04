@@ -3,10 +3,10 @@ package com.beanbeanjuice.command.cafe;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.handler.cafe.CafeCategory;
-import com.beanbeanjuice.utility.handler.cafe.MenuHandler;
-import com.beanbeanjuice.utility.handler.cafe.MenuItem;
-import com.beanbeanjuice.utility.handler.cafe.ServeHandler;
+import com.beanbeanjuice.utility.section.cafe.CafeCategory;
+import com.beanbeanjuice.utility.section.cafe.MenuHandler;
+import com.beanbeanjuice.utility.section.cafe.MenuItem;
+import com.beanbeanjuice.utility.section.cafe.ServeHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeType;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to order a {@link com.beanbeanjuice.utility.handler.cafe.MenuItem MenuItem}.
+ * An {@link ICommand} used to order a {@link MenuItem MenuItem}.
  *
  * @author beanbeanjuice
  */

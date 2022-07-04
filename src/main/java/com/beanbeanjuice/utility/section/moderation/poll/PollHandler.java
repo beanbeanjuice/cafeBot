@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.handler.fun.poll;
+package com.beanbeanjuice.utility.section.moderation.poll;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.logging.LogLevel;

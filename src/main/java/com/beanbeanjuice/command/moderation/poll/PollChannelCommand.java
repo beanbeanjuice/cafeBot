@@ -3,6 +3,7 @@ package com.beanbeanjuice.command.moderation.poll;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.ISubCommand;
+import com.beanbeanjuice.utility.section.moderation.poll.Poll;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to set/remove the {@link com.beanbeanjuice.utility.handler.fun.poll.Poll Poll} {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+ * An {@link ICommand} used to set/remove the {@link Poll Poll} {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */

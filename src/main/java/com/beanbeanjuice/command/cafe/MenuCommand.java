@@ -2,9 +2,9 @@ package com.beanbeanjuice.command.cafe;
 
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.handler.cafe.CafeCategory;
-import com.beanbeanjuice.utility.handler.cafe.MenuHandler;
-import com.beanbeanjuice.utility.handler.cafe.MenuItem;
+import com.beanbeanjuice.utility.section.cafe.CafeCategory;
+import com.beanbeanjuice.utility.section.cafe.MenuHandler;
+import com.beanbeanjuice.utility.section.cafe.MenuItem;
 import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;

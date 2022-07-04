@@ -4,11 +4,12 @@ import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.section.moderation.poll.Poll;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An {@link ISubCommand} used to remove the {@link com.beanbeanjuice.utility.handler.fun.poll.Poll Poll} {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+ * An {@link ISubCommand} used to remove the {@link Poll Poll} {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
