@@ -2,7 +2,7 @@ package com.beanbeanjuice.utility.command;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.command.cafe.*;
-import com.beanbeanjuice.command.fun.AddPollCommand;
+import com.beanbeanjuice.command.moderation.poll.AddPollCommand;
 import com.beanbeanjuice.command.generic.HelpCommand;
 import com.beanbeanjuice.command.generic.PingCommand;
 import com.beanbeanjuice.command.interaction.*;
@@ -10,6 +10,7 @@ import com.beanbeanjuice.command.moderation.ClearChatCommand;
 import com.beanbeanjuice.command.moderation.CreateEmbedCommand;
 import com.beanbeanjuice.command.moderation.ListCustomChannelsCommand;
 import com.beanbeanjuice.command.moderation.counting.CountingChannelCommand;
+import com.beanbeanjuice.command.moderation.poll.PollChannelCommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -43,7 +44,6 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("serve", new ServeCommand());
 
         // Fun
-        commands.put("add-poll", new AddPollCommand());
 
         // Games
 
@@ -87,6 +87,8 @@ public class CommandHandler extends ListenerAdapter {
 
         // Moderation
         commands.put("counting-channel", new CountingChannelCommand());
+        commands.put("add-poll", new AddPollCommand());
+        commands.put("poll-channel", new PollChannelCommand());
         commands.put("clear-chat", new ClearChatCommand());
         commands.put("create-embed", new CreateEmbedCommand());
         commands.put("list-custom-channels", new ListCustomChannelsCommand());
@@ -141,7 +143,7 @@ public class CommandHandler extends ListenerAdapter {
                 commands.get(event.getName()).runSubCommand(event.getSubcommandName(), event);
             else
                 commands.get(event.getName()).handle(event);
-            
+
             // Increment commands run for this bot.
             Bot.commandsRun++;
         }
