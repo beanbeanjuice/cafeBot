@@ -1,6 +1,7 @@
 package com.beanbeanjuice.command.generic;
 
 import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -80,7 +81,16 @@ public class HelpCommand implements ICommand {
             embedBuilder.addField("Arguments", paramBuilder.toString(), false);
         }
 
-        embedBuilder.addField("Example", command.exampleUsage(), false)
+        StringBuilder subCommandsBuilder = new StringBuilder();
+        for (int i = 0; i < command.getSubCommands().size(); i++) {
+            subCommandsBuilder.append("***").append(i + 1).append("***. ")
+                    .append(command.getSubCommands().get(i).getName())
+                    .append("\n");
+        }
+
+        embedBuilder
+                .addField("Sub Commands", subCommandsBuilder.toString(), false)
+                .addField("Example", command.exampleUsage(), false)
                 .addField("Description", command.getDescription(), false)
                 .setColor(Helper.getRandomColor())
                 .setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");

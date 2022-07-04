@@ -2,6 +2,8 @@ package com.beanbeanjuice;
 
 import com.beanbeanjuice.utility.handler.cafe.BeanCoinDonationHandler;
 import com.beanbeanjuice.utility.handler.cafe.MenuHandler;
+import com.beanbeanjuice.utility.handler.fun.poll.Poll;
+import com.beanbeanjuice.utility.handler.fun.poll.PollHandler;
 import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.command.CommandHandler;
@@ -55,6 +57,7 @@ public class Bot {
     private static CommandHandler commandHandler;
     private static GuildHandler guildHandler;
     private static MenuHandler menuHandler;
+    private static PollHandler pollHandler;
 
     // Helpers
     private static CountingHelper countingHelper;
@@ -70,11 +73,6 @@ public class Bot {
 
         logger.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
         logger.log(Bot.class, LogLevel.OKAY, "Starting bot!", true, false);
-
-        // Helpers that need to be instantiated.
-        countingHelper = new CountingHelper();
-        beanCoinDonationHandler = new BeanCoinDonationHandler();
-        menuHandler = new MenuHandler();
 
         bot = JDABuilder.createDefault(BOT_TOKEN)
                 .setActivity(Activity.playing("The barista is starting..."))
@@ -107,6 +105,12 @@ public class Bot {
 
         logger.setLogChannel(homeGuildLogChannel);
         logger.log(Bot.class, LogLevel.INFO, "Enabled Discord Logging...", true, true);
+
+        // Helpers that need to be instantiated.
+        countingHelper = new CountingHelper();
+        beanCoinDonationHandler = new BeanCoinDonationHandler();
+        menuHandler = new MenuHandler();  // TODO: Not sure if this is needed.
+        pollHandler = new PollHandler();  // TODO: Not sure if this is needed.
 
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         updateGuildPresence();
@@ -177,11 +181,19 @@ public class Bot {
     }
 
     /**
-     * @return The current {@link BeanCoinDonationHandler} for the session.
+     * @return The current {@link BeanCoinDonationHandler}.
      */
     @NotNull
     public static BeanCoinDonationHandler getBeanCoinDonationHandler() {
         return beanCoinDonationHandler;
+    }
+
+    /**
+     * @return The current {@link PollHandler}.
+     */
+    @NotNull
+    public static PollHandler getPollHandler() {
+        return pollHandler;
     }
 
 }

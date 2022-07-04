@@ -2,6 +2,7 @@ package com.beanbeanjuice.utility.command;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.command.cafe.*;
+import com.beanbeanjuice.command.fun.AddPollCommand;
 import com.beanbeanjuice.command.generic.HelpCommand;
 import com.beanbeanjuice.command.generic.PingCommand;
 import com.beanbeanjuice.command.interaction.*;
@@ -42,6 +43,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("serve", new ServeCommand());
 
         // Fun
+        commands.put("add-poll", new AddPollCommand());
 
         // Games
 
