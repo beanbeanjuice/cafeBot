@@ -188,4 +188,15 @@ public class Helper {
         return Math.round(amount * 100.0) / 100.0;
     }
 
+    /**
+     * Get a random number.
+     * @param minimum The minimum {@link Integer}.
+     * @param maximum The maximum {@link Integer}.
+     * @return The random {@link Integer}.
+     */
+    @NotNull
+    public static Integer getRandomNumber(@NotNull Integer minimum, @NotNull Integer maximum) {
+        return (int) ((Math.random() * (maximum - minimum)) + minimum);
+    }
+
 }
