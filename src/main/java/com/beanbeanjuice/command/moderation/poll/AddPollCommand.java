@@ -111,10 +111,7 @@ public class AddPollCommand implements ICommand {
         if (!Bot.getPollHandler().addPoll(event.getGuild().getId(), poll)) {
             // If it can't, say why.
             message.delete().queue();
-            event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
-                    "Error Creating Poll",
-                    "There has been an error creating the Poll..."
-            )).queue();
+            event.getHook().editOriginalEmbeds(Helper.sqlServerError()).queue();
             return;
         }
 
@@ -156,9 +153,8 @@ public class AddPollCommand implements ICommand {
     private MessageEmbed pollEmbed(@NotNull String pollTitle, @NotNull String pollDescription,
                                    @NotNull Integer pollTime, @NotNull ArrayList<String> arguments,
                                    @NotNull SlashCommandInteractionEvent event) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(pollTitle);
-        embedBuilder.setColor(Helper.getRandomColor());
+        EmbedBuilder embedBuilder = new EmbedBuilder()
+                .setTitle(pollTitle);
 
         ArrayList<PollEmoji> pollEmojis = new ArrayList<>(Arrays.asList(PollEmoji.values()));
         StringBuilder stringBuilder = new StringBuilder();
@@ -189,9 +185,11 @@ public class AddPollCommand implements ICommand {
         if (event.getOption("thumbnail") != null && event.getOption("thumbnail").getAsAttachment().isImage())
             embedBuilder.setThumbnail(event.getOption("thumbnail").getAsAttachment().getUrl());
 
+        // Image
         if (event.getOption("image") != null && event.getOption("image").getAsAttachment().isImage())
             embedBuilder.setImage(event.getOption("image").getAsAttachment().getUrl());
 
+        // Color
         if (event.getOption("color") != null) {
             try {
                 embedBuilder.setColor(Color.decode(event.getOption("color").getAsString()));
@@ -233,15 +231,16 @@ public class AddPollCommand implements ICommand {
     @Override
     public ArrayList<OptionData> getOptions() {
         ArrayList<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.INTEGER, "time", "The time for the poll to run, in minutes.", true, false));
-        options.add(new OptionData(OptionType.STRING, "title", "Title for the embed.", true, false));
-        options.add(new OptionData(OptionType.STRING, "description", "The message that goes INSIDE the embed.", true, false));
-        options.add(new OptionData(OptionType.STRING, "poll_options", "All of the options, using comma-separated value", true, false));
-        options.add(new OptionData(OptionType.STRING, "author", "The author of the embed.", false, false));
-        options.add(new OptionData(OptionType.STRING, "message", "The message that goes outside of the embed.", false, false));
-        options.add(new OptionData(OptionType.STRING, "footer", "A message to add at the bottom of the embed.", false, false));
-        options.add(new OptionData(OptionType.ATTACHMENT, "thumbnail", "A thumbnail url to add to the embed.", false, false));
-        options.add(new OptionData(OptionType.ATTACHMENT, "image", "An image url to add to the image.", false, false));
+        options.add(new OptionData(OptionType.INTEGER, "time", "The time for the poll to run, in minutes.", true, false)
+                .setMinValue(1));
+        options.add(new OptionData(OptionType.STRING, "title", "Title for the poll.", true, false));
+        options.add(new OptionData(OptionType.STRING, "description", "The message that goes INSIDE the poll.", true, false));
+        options.add(new OptionData(OptionType.STRING, "poll_options", "All of the poll options, using comma-separated value", true, false));
+        options.add(new OptionData(OptionType.STRING, "author", "The author of the poll.", false, false));
+        options.add(new OptionData(OptionType.STRING, "message", "The message that goes outside of the poll.", false, false));
+        options.add(new OptionData(OptionType.STRING, "footer", "A message to add at the bottom of the poll.", false, false));
+        options.add(new OptionData(OptionType.ATTACHMENT, "thumbnail", "A thumbnail url to add to the poll.", false, false));
+        options.add(new OptionData(OptionType.ATTACHMENT, "image", "An image url to add to the poll.", false, false));
         options.add(new OptionData(OptionType.STRING, "color", "Color hex code. Example: #FFC0CB", false, false));
         return options;
     }
