@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.fun;
+package com.beanbeanjuice.command.moderation.poll;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
@@ -249,7 +249,7 @@ public class AddPollCommand implements ICommand {
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.FUN;
+        return CommandCategory.MODERATION;
     }
 
     @NotNull
