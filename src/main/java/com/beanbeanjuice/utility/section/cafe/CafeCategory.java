@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.handler.cafe;
+package com.beanbeanjuice.utility.section.cafe;
 
 import org.jetbrains.annotations.NotNull;
 

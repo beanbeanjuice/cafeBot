@@ -1,4 +1,4 @@
-package com.beanbeanjuice.utility.handler.cafe;
+package com.beanbeanjuice.utility.section.cafe;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.logging.LogLevel;

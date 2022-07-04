@@ -3,7 +3,7 @@ package com.beanbeanjuice.command.cafe;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.handler.cafe.ServeHandler;
+import com.beanbeanjuice.utility.section.cafe.ServeHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeType;
