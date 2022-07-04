@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -96,8 +97,17 @@ public class RaffleHandler {
 
                                         String title = message.getEmbeds().get(0).getTitle();
                                         String description = message.getEmbeds().get(0).getFields().get(0).getValue();
+                                        MessageEmbed.AuthorInfo author = message.getEmbeds().get(0).getAuthor();
+                                        MessageEmbed.Thumbnail thumbnail = message.getEmbeds().get(0).getThumbnail();
+                                        MessageEmbed.ImageInfo image = message.getEmbeds().get(0).getImage();
 
-                                        message.editMessageEmbeds(winnerEmbed(title, description, winners)).queue();
+                                        message.editMessageEmbeds(winnerEmbed(
+                                                title,
+                                                description,
+                                                winners,
+                                                author,
+                                                thumbnail,
+                                                image)).queue();
 
                                         // Remove it
                                         if (removeRaffle(guildID, raffle)) {
@@ -122,18 +132,21 @@ public class RaffleHandler {
         raffleTimer.scheduleAtFixedRate(raffleTimerTask, 0, 30000);
     }
 
-    /**
-     * The winner {@link MessageEmbed} for the {@link RaffleHandler}.
-     * @param title The title of the {@link MessageEmbed}.
-     * @param description The description of the {@link MessageEmbed}.
-     * @param winners The {@link ArrayList<User> winners} of the {@link Raffle}.
-     * @return The completed {@link MessageEmbed}.
-     */
     @NotNull
-    private MessageEmbed winnerEmbed(@NotNull String title, @NotNull String description, @NotNull ArrayList<User> winners) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(title);
-        embedBuilder.addField("Description", description, false);
+    private MessageEmbed winnerEmbed(@NotNull String title, @NotNull String description, @NotNull ArrayList<User> winners,
+                                     @Nullable MessageEmbed.AuthorInfo authorInfo, @Nullable MessageEmbed.Thumbnail thumbnail, @Nullable MessageEmbed.ImageInfo image) {
+        EmbedBuilder embedBuilder = new EmbedBuilder()
+                .setTitle(title)
+                .addField("Description", description, false);
+
+        if (authorInfo != null)
+            embedBuilder.setAuthor(authorInfo.getName());
+
+        if (thumbnail != null)
+            embedBuilder.setThumbnail(thumbnail.getUrl());
+
+        if (image != null)
+            embedBuilder.setImage(image.getUrl());
 
         if (winners.isEmpty()) {
             embedBuilder.addField("Winner", "No one entered the raffle...", false);
@@ -145,9 +158,10 @@ public class RaffleHandler {
             StringBuilder winnerBuilder = new StringBuilder();
             for (int i = 0; i < winners.size(); i++) {
                 winnerBuilder.append(winners.get(i).getAsMention());
-                if (i != winners.size() - 1) {
+
+                if (i != winners.size() - 1)
                     winnerBuilder.append(", ");
-                }
+
             }
             embedBuilder.addField("Winners", winnerBuilder.toString(), false);
         }
@@ -182,9 +196,8 @@ public class RaffleHandler {
         try {
             Bot.getCafeAPI().RAFFLE.createRaffle(guildID, raffle);
 
-            if (!raffles.containsKey(guildID)) {
+            if (!raffles.containsKey(guildID))
                 raffles.put(guildID, new ArrayList<>());
-            }
 
             raffles.get(guildID).add(raffle);
             return true;
@@ -202,9 +215,8 @@ public class RaffleHandler {
             Bot.getCafeAPI().RAFFLE.getAllRaffles().forEach((guildID, raffles) -> {
                 for (io.github.beanbeanjuice.cafeapi.cafebot.raffles.Raffle raffle : raffles) {
 
-                    if (!this.raffles.containsKey(guildID)) {
+                    if (!this.raffles.containsKey(guildID))
                         this.raffles.put(guildID, new ArrayList<>());
-                    }
 
                     this.raffles.get(guildID).add(new Raffle(raffle.getMessageID(), raffle.getEndingTime(), raffle.getWinnerAmount()));
                 }
