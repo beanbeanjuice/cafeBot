@@ -55,6 +55,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("counting-statistics", new CountingStatisticsCommand());
         commands.put("joke", new JokeCommand());
         commands.put("meme", new MemeCommand());
+        commands.put("tea-meme", new TeaMemeCommand());
 
         // Games
 
