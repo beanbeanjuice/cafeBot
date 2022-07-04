@@ -1,8 +1,8 @@
-package com.beanbeanjuice.command.fun;
+package com.beanbeanjuice.command.fun.birthday;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
-import com.beanbeanjuice.utility.command.ICommand;
+import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
 import io.github.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -16,11 +16,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to get someone's birthday.
+ * An {@link ISubCommand} used to get someone's birthday.
  *
  * @author beanbeanjuice
  */
-public class GetBirthdayCommand implements ICommand {
+public class GetBirthdaySubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
@@ -96,4 +96,9 @@ public class GetBirthdayCommand implements ICommand {
         return true;
     }
 
+    @NotNull
+    @Override
+    public String getName() {
+        return "get";
+    }
 }

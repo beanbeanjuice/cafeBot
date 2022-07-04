@@ -190,7 +190,9 @@ public class BirthdayHandler {
     public Birthday getBirthday(@NotNull String userID) {
         try {
             return Bot.getCafeAPI().BIRTHDAY.getUserBirthday(userID);
-        } catch (CafeException e) {
+        }
+        catch (NotFoundException ignored) { return null; }
+        catch (CafeException e) {
             Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Retrieving User Birthday: " + e.getMessage(), e);
             return null;
         }
