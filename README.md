@@ -88,7 +88,7 @@
 <!-- GETTING STARTED -->
 # Getting Started
 
-To add this bot to your server, follow these steps.
+To add this bot to your server, follow these steps:
 
 ## Prerequisites
 
