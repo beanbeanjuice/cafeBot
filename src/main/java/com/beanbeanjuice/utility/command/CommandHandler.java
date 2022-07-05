@@ -4,6 +4,8 @@ import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.command.cafe.*;
 import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.fun.birthday.BirthdayCommand;
+import com.beanbeanjuice.command.games.CoinFlipCommand;
+import com.beanbeanjuice.command.games.DiceRollCommand;
 import com.beanbeanjuice.command.generic.*;
 import com.beanbeanjuice.command.moderation.poll.AddPollCommand;
 import com.beanbeanjuice.command.interaction.*;
@@ -57,6 +59,8 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("tea-meme", new TeaMemeCommand());
 
         // Games
+        commands.put("coin-flip", new CoinFlipCommand());
+        commands.put("dice-roll", new DiceRollCommand());
 
         // Generic
         commands.put("bot-donate", new BotDonateCommand());
