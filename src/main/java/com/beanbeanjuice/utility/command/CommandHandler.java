@@ -62,6 +62,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("bot-donate", new BotDonateCommand());
         commands.put("bot-invite", new BotInviteCommand());
         commands.put("bot-upvote", new BotUpvoteCommand());
+        commands.put("bot-version", new BotVersionCommand());
         commands.put("bug-report", new BugReportCommand());
         commands.put("feature-request", new FeatureRequestCommand());
         commands.put("ping", new PingCommand());
