@@ -4,9 +4,8 @@ import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.command.cafe.*;
 import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.fun.birthday.BirthdayCommand;
+import com.beanbeanjuice.command.generic.*;
 import com.beanbeanjuice.command.moderation.poll.AddPollCommand;
-import com.beanbeanjuice.command.generic.HelpCommand;
-import com.beanbeanjuice.command.generic.PingCommand;
 import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.ClearChatCommand;
 import com.beanbeanjuice.command.moderation.CreateEmbedCommand;
@@ -60,6 +59,9 @@ public class CommandHandler extends ListenerAdapter {
         // Games
 
         // Generic
+        commands.put("bot-donate", new BotDonateCommand());
+        commands.put("bot-invite", new BotInviteCommand());
+        commands.put("bot-upvote", new BotUpvoteCommand());
         commands.put("ping", new PingCommand());
         commands.put("help", new HelpCommand());
 
