@@ -1,7 +1,6 @@
 package com.beanbeanjuice.command.generic;
 
-import com.beanbeanjuice.Bot;
-import com.beanbeanjuice.utility.api.GitHubReleaseHelper;
+import com.beanbeanjuice.utility.api.dictionary.DictionaryHelper;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.helper.Helper;
@@ -14,26 +13,30 @@ import java.util.ArrayList;
 import java.util.concurrent.CompletionException;
 
 /**
- * An {@link ICommand} used to get a specific release version from the bot.
+ * An {@link ICommand} used to define words.
  *
  * @author beanbeanjuice
  */
-public class BotVersionCommand implements ICommand {
+public class DefineCommand implements ICommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
+        String word = event.getOption("word").getAsString();
+        String languageCode;
 
-        String version = Bot.BOT_VERSION;
-        try {
-            version = event.getOption("bot_version").getAsString();
-        } catch (NullPointerException ignored) {}
+        if (event.getOption("language_code") == null) {
+            languageCode = "en_US";
+        } else {
+            languageCode = event.getOption("language_code").getAsString();
+        }
 
         try {
-            event.getChannel().sendMessageEmbeds(new GitHubReleaseHelper().getVersion(version)).queue();
+            event.getHook().sendMessageEmbeds(new DictionaryHelper(word, languageCode).dictionaryEmbed()).queue();
         } catch (CompletionException e) {
-            event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
-                    "Update Not Found",
-                    "There is no update corresponding to that version number..."
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                    "Error Getting Dictionary Word",
+                    "The word may not exist, or there may be some error getting it. Please try again and confirm that the word exists. " +
+                            "If this error persists, please let me know!"
             )).queue();
         }
     }
@@ -41,20 +44,21 @@ public class BotVersionCommand implements ICommand {
     @NotNull
     @Override
     public String getDescription() {
-        return "Show release information for the bot!";
+        return "Codes: `en_US`, `hi`, `es`, `fr`, `ja`, `ru`, `en_GB`, `de`, `it`, `ko`, `pt-BR`, `ar`, `tr`.";
     }
 
     @NotNull
     @Override
     public String exampleUsage() {
-        return "`/bot-version` or `/bot-version v1.1.1`";
+        return "`/define word` or `/define word es`";
     }
 
     @NotNull
     @Override
     public ArrayList<OptionData> getOptions() {
         ArrayList<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.STRING, "bot_version", "Specific version number for the bot.", false));
+        options.add(new OptionData(OptionType.STRING, "word", "Any word.", true));
+        options.add(new OptionData(OptionType.STRING, "language_code", "Language code to translate.", false));
         return options;
     }
 
@@ -73,7 +77,7 @@ public class BotVersionCommand implements ICommand {
     @NotNull
     @Override
     public Boolean isHidden() {
-        return true;
+        return false;
     }
 
 }
