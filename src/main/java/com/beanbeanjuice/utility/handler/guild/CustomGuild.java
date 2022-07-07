@@ -121,7 +121,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setAIState(@NotNull Boolean aiState) {
-        if (Bot.getGuildHandler().setAIState(guildID, aiState)) {
+        if (GuildHandler.setAIState(guildID, aiState)) {
             this.aiState = aiState;
             return true;
         }
@@ -134,7 +134,7 @@ public class CustomGuild {
     @Nullable
     public TextChannel getVentingChannel() {
         try {
-            return Bot.getGuildHandler().getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.VENTING));
+            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.VENTING));
         } catch (NullPointerException e) {
             return null;
         }
@@ -148,7 +148,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setVentingChannelID(@NotNull String ventingChannelID) {
-        if (Bot.getGuildHandler().setVentingChannelID(guildID, ventingChannelID)) {
+        if (GuildHandler.setVentingChannelID(guildID, ventingChannelID)) {
             customChannelIDs.put(CustomChannel.VENTING, ventingChannelID);
             return true;
         }
@@ -161,7 +161,7 @@ public class CustomGuild {
     @Nullable
     public TextChannel getDailyChannel() {
         try {
-            return Bot.getGuildHandler().getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.DAILY));
+            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.DAILY));
         } catch (NullPointerException e) {
             return null;
         }
@@ -175,7 +175,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setDailyChannelID(@NotNull String dailyChannelID) {
-        if (Bot.getGuildHandler().setDailyChannelID(guildID, dailyChannelID)) {
+        if (GuildHandler.setDailyChannelID(guildID, dailyChannelID)) {
             customChannelIDs.put(CustomChannel.DAILY, dailyChannelID);
             return true;
         }
@@ -188,7 +188,7 @@ public class CustomGuild {
     @Nullable
     public TextChannel getLogChannel() {
         try {
-            return Bot.getGuildHandler().getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.LOG));
+            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.LOG));
         } catch (NullPointerException e) {
             return null;
         }
@@ -202,7 +202,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setLogChannelID(@NotNull String logChannelID) {
-        if (Bot.getGuildHandler().setLogChannelID(guildID, logChannelID)) {
+        if (GuildHandler.setLogChannelID(guildID, logChannelID)) {
             customChannelIDs.put(CustomChannel.LOG, logChannelID);
             return true;
         }
@@ -215,7 +215,7 @@ public class CustomGuild {
     @Nullable
     public TextChannel getWelcomeChannel() {
         try {
-            return Bot.getGuildHandler().getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.WELCOME));
+            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.WELCOME));
         } catch (NullPointerException e) {
             return null;
         }
@@ -229,7 +229,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setWelcomeChannelID(@NotNull String welcomeChannelID) {
-        if (Bot.getGuildHandler().setWelcomeChannelID(guildID, welcomeChannelID)) {
+        if (GuildHandler.setWelcomeChannelID(guildID, welcomeChannelID)) {
             customChannelIDs.put(CustomChannel.WELCOME, welcomeChannelID);
             return true;
         }
@@ -250,7 +250,7 @@ public class CustomGuild {
     @Nullable
     public TextChannel getBirthdayChannel() {
         try {
-            return Bot.getGuildHandler().getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.BIRTHDAY));
+            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.BIRTHDAY));
         } catch (NullPointerException e) {
             return null;
         }
@@ -264,7 +264,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setBirthdayChannelID(@NotNull String birthdayChannelID) {
-        if (Bot.getGuildHandler().setBirthdayChannelID(guildID, birthdayChannelID)) {
+        if (GuildHandler.setBirthdayChannelID(guildID, birthdayChannelID)) {
             customChannelIDs.put(CustomChannel.BIRTHDAY, birthdayChannelID);
             return true;
         }
@@ -277,7 +277,7 @@ public class CustomGuild {
     @Nullable
     public TextChannel getRaffleChannel() {
         try {
-            return Bot.getGuildHandler().getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.RAFFLE));
+            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.RAFFLE));
         } catch (NullPointerException e) {
             return null;
         }
@@ -291,7 +291,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setRaffleChannel(@NotNull String raffleChannelID) {
-        if (Bot.getGuildHandler().setRaffleChannelID(guildID, raffleChannelID)) {
+        if (GuildHandler.setRaffleChannelID(guildID, raffleChannelID)) {
             customChannelIDs.put(CustomChannel.RAFFLE, raffleChannelID);
             return true;
         }
@@ -304,7 +304,7 @@ public class CustomGuild {
     @Nullable
     public TextChannel getPollChannel() {
         try {
-            return Bot.getGuildHandler().getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.POLL));
+            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.POLL));
         } catch (NullPointerException e) {
             return null;
         }
@@ -318,7 +318,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setPollChannel(@NotNull String pollChannelID) {
-        if (Bot.getGuildHandler().setPollChannelID(guildID, pollChannelID)) {
+        if (GuildHandler.setPollChannelID(guildID, pollChannelID)) {
             customChannelIDs.put(CustomChannel.POLL, pollChannelID);
             return true;
         }
@@ -331,7 +331,7 @@ public class CustomGuild {
     @Nullable
     public TextChannel getCountingChannel() {
         try {
-            return Bot.getGuildHandler().getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.COUNTING));
+            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.COUNTING));
         } catch (NullPointerException e) {
             return null;
         }
@@ -345,7 +345,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setCountingChannel(@NotNull String countingChannelID) {
-        if (Bot.getGuildHandler().setCountingChannelID(guildID, countingChannelID)) {
+        if (GuildHandler.setCountingChannelID(guildID, countingChannelID)) {
             customChannelIDs.put(CustomChannel.COUNTING, countingChannelID);
             return true;
         }
@@ -358,7 +358,7 @@ public class CustomGuild {
     @Nullable
     public TextChannel getUpdateChannel() {
         try {
-            return Bot.getGuildHandler().getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.UPDATE));
+            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.UPDATE));
         } catch (NullPointerException e) {
             return null;
         }
@@ -372,7 +372,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setUpdateChannel(@NotNull String updateChannelID) {
-        if (Bot.getGuildHandler().setUpdateChannelID(guildID, updateChannelID)) {
+        if (GuildHandler.setUpdateChannelID(guildID, updateChannelID)) {
             customChannelIDs.put(CustomChannel.UPDATE, updateChannelID);
             return true;
         }
@@ -387,7 +387,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setNotifyOnUpdate(@NotNull Boolean answer) {
-        if (Bot.getGuildHandler().setNotifyOnUpdate(guildID, answer)) {
+        if (GuildHandler.setNotifyOnUpdate(guildID, answer)) {
             notifyOnUpdate = answer;
             return true;
         }
@@ -412,7 +412,7 @@ public class CustomGuild {
     public Boolean setLiveNotificationsRoleID(@NotNull String roleID) {
 
         // Only set it if it updates in the database.
-        if (Bot.getGuildHandler().setLiveNotificationsRoleID(guildID, roleID)) {
+        if (GuildHandler.setLiveNotificationsRoleID(guildID, roleID)) {
             liveNotificationsRoleID = roleID;
             return true;
         }
@@ -424,7 +424,7 @@ public class CustomGuild {
      */
     @Nullable
     public Role getLiveNotificationsRole() {
-        return Bot.getGuildHandler().getGuild(guildID).getRoleById(liveNotificationsRoleID);
+        return GuildHandler.getGuild(guildID).getRoleById(liveNotificationsRoleID);
     }
 
     /**
@@ -474,7 +474,7 @@ public class CustomGuild {
     @NotNull
     public Boolean setMutedRoleID(String mutedRoleID) {
 
-        if (Bot.getGuildHandler().setMutedRoleID(guildID, mutedRoleID)) {
+        if (GuildHandler.setMutedRoleID(guildID, mutedRoleID)) {
             this.mutedRoleID = mutedRoleID;
             return true;
         }
@@ -489,7 +489,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setModeratorRoleID(@NotNull String moderatorRoleID) {
-        if (Bot.getGuildHandler().setModeratorRoleID(guildID, moderatorRoleID)) {
+        if (GuildHandler.setModeratorRoleID(guildID, moderatorRoleID)) {
             this.moderatorRoleID = moderatorRoleID;
             return true;
         }
@@ -520,7 +520,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean setPrefix(String newPrefix) {
-        if (Bot.getGuildHandler().setPrefix(guildID, newPrefix)) {
+        if (GuildHandler.setPrefix(guildID, newPrefix)) {
             this.prefix = newPrefix;
             return true;
         }
@@ -533,7 +533,7 @@ public class CustomGuild {
     @Nullable
     public Role getMutedRole() {
         try {
-            return Bot.getGuildHandler().getGuild(guildID).getRoleById(mutedRoleID);
+            return GuildHandler.getGuild(guildID).getRoleById(mutedRoleID);
         } catch (NullPointerException e) {
             return null;
         }
@@ -545,7 +545,7 @@ public class CustomGuild {
     @Nullable
     public Role getModeratorRole() {
         try {
-            return Bot.getGuildHandler().getGuild(guildID).getRoleById(moderatorRoleID);
+            return GuildHandler.getGuild(guildID).getRoleById(moderatorRoleID);
         } catch (NullPointerException e) {
             return null;
         }
@@ -565,7 +565,7 @@ public class CustomGuild {
 //            return false;
 //        }
 //
-//        if (Bot.getGuildHandler().addTwitchChannel(guildID, twitchChannel)) {
+//        if (GuildHandler.addTwitchChannel(guildID, twitchChannel)) {
 //            twitchChannels.add(twitchChannel.toLowerCase());
 //            Bot.getTwitchHandler().addTwitchChannel(twitchChannel);
 //
@@ -588,7 +588,7 @@ public class CustomGuild {
 //            return false;
 //        }
 //
-//        if (Bot.getGuildHandler().removeTwitchChannel(guildID, twitchChannel)) {
+//        if (GuildHandler.removeTwitchChannel(guildID, twitchChannel)) {
 //            twitchChannels.remove(twitchChannel.toLowerCase());
 //
 //            return Bot.getTwitchHandler().removeCache(guildID, twitchChannel);
@@ -605,7 +605,7 @@ public class CustomGuild {
      */
     @NotNull
     public Boolean updateTwitchDiscordChannel(String liveChannelID) {
-        if (Bot.getGuildHandler().setTwitchChannelID(guildID, liveChannelID)) {
+        if (GuildHandler.setTwitchChannelID(guildID, liveChannelID)) {
             customChannelIDs.put(CustomChannel.LIVE, liveChannelID);
             return true;
         }

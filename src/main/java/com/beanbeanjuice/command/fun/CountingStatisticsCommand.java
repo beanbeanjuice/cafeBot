@@ -3,6 +3,7 @@ package com.beanbeanjuice.command.fun;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
+import com.beanbeanjuice.utility.handler.CountingHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import io.github.beanbeanjuice.cafeapi.cafebot.counting.CountingInformation;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -19,7 +20,7 @@ public class CountingStatisticsCommand implements ICommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        CountingInformation countingInformation = Bot.getCountingHelper().getCountingInformation(event.getGuild());
+        CountingInformation countingInformation = CountingHandler.getCountingInformation(event.getGuild());
 
         // Checks if there was an error getting the counting information.
         if (countingInformation == null) {
@@ -30,7 +31,7 @@ public class CountingStatisticsCommand implements ICommand {
             return;
         }
 
-        Integer leaderboardPlace = Bot.getCountingHelper().getCountingLeaderboardPlace(countingInformation.getHighestNumber());
+        Integer leaderboardPlace = CountingHandler.getCountingLeaderboardPlace(countingInformation.getHighestNumber());
         if (leaderboardPlace == null) {
             event.getHook().sendMessageEmbeds(Helper.sqlServerError(
                     "There was an error getting counting statistics. There are eitehr no counting statistics for this server " +

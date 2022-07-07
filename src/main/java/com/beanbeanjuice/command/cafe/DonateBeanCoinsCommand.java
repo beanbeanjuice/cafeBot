@@ -3,6 +3,8 @@ package com.beanbeanjuice.command.cafe;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
+import com.beanbeanjuice.utility.section.cafe.BeanCoinDonationHandler;
 import com.beanbeanjuice.utility.section.cafe.ServeHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
@@ -38,7 +40,7 @@ public class DonateBeanCoinsCommand implements ICommand {
         // First, check if the user can donate.
         User donatorUser = event.getUser();
         User donateeUser = event.getOption("user").getAsUser();
-        long minutesToDonate = Bot.getBeanCoinDonationHandler().timeUntilDonate(donateeUser.getId());
+        long minutesToDonate = BeanCoinDonationHandler.timeUntilDonate(donateeUser.getId());
 
         // If that can't donate
         if (minutesToDonate > -1) {
@@ -113,9 +115,9 @@ public class DonateBeanCoinsCommand implements ICommand {
 
         // Updating the Donatee's Cooldown as well as in the cache
         try {
-            Timestamp endingTime = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + Bot.getBeanCoinDonationHandler().getCooldown()).toString());
+            Timestamp endingTime = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + BeanCoinDonationHandler.getCooldown()).toString());
             Bot.getCafeAPI().DONATION_USER.addDonationUser(donatee.getUserID(), endingTime);
-            Bot.getBeanCoinDonationHandler().addUser(donatee.getUserID(), endingTime);
+            BeanCoinDonationHandler.addUser(donatee.getUserID(), endingTime);
         } catch (CafeException e) {
             Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Cooldown Not Created for User `" + donatee.getUserID() + "`: " + e.getMessage(), e);
             return;

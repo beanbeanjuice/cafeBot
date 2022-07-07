@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.section.moderation.raffle;
 
 import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import io.github.beanbeanjuice.cafeapi.exception.CafeException;
@@ -28,7 +29,7 @@ public class RaffleHandler {
     private static HashMap<String, ArrayList<Raffle>> raffles;
 
     /**
-     * Create a new {@link RaffleHandler} object.
+     * Starts the {@link RaffleHandler}.
      */
     public static void start() {
         raffles = new HashMap<>();
@@ -54,7 +55,7 @@ public class RaffleHandler {
                         if (raffle.isFinished()) {
 
                             // Checking if the PollChannel is Null
-                            TextChannel raffleChannel = Bot.getGuildHandler().getCustomGuild(guildID).getRaffleChannel();
+                            TextChannel raffleChannel = GuildHandler.getCustomGuild(guildID).getRaffleChannel();
 
                             // If the channel does not exist, then remove it.
                             if (raffleChannel == null) {

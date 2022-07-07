@@ -3,6 +3,7 @@ package com.beanbeanjuice.command.moderation.poll;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.section.moderation.poll.Poll;
 import com.beanbeanjuice.utility.section.moderation.poll.PollEmoji;
 import com.beanbeanjuice.utility.helper.Helper;
@@ -38,7 +39,7 @@ public class AddPollCommand implements ICommand {
     public void handle(@NotNull SlashCommandInteractionEvent event) {
 
         // Check if the poll channel exists.
-        if (Bot.getGuildHandler().getCustomGuild(event.getGuild()).getPollChannel() == null) {
+        if (GuildHandler.getCustomGuild(event.getGuild()).getPollChannel() == null) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "No Poll Channel",
                     "It seems you do not have a poll channel set! " +
@@ -64,7 +65,7 @@ public class AddPollCommand implements ICommand {
         ArrayList<String> arguments = convertToList(event.getOption("poll_options").getAsString());
 
         // Making sure the poll channel exists.
-        TextChannel pollChannel = Bot.getGuildHandler().getCustomGuild(event.getGuild()).getPollChannel();
+        TextChannel pollChannel = GuildHandler.getCustomGuild(event.getGuild()).getPollChannel();
 
         // Making sure there are less than 20 arguments.
         if (arguments.size() > 20) {

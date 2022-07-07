@@ -3,6 +3,7 @@ package com.beanbeanjuice.command.moderation.raffle;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.section.moderation.raffle.Raffle;
@@ -55,7 +56,7 @@ public class AddRaffleCommand implements ICommand {
         }
 
         // Checking if the raffle channel still exists.
-        TextChannel raffleChannel = Bot.getGuildHandler().getCustomGuild(event.getGuild()).getRaffleChannel();
+        TextChannel raffleChannel = GuildHandler.getCustomGuild(event.getGuild()).getRaffleChannel();
 
         if (raffleChannel == null) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(

@@ -1,6 +1,7 @@
-package com.beanbeanjuice.utility.helper;
+package com.beanbeanjuice.utility.handler;
 
 import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import io.github.beanbeanjuice.cafeapi.cafebot.counting.CountingInformation;
 import io.github.beanbeanjuice.cafeapi.exception.CafeException;
@@ -27,14 +28,14 @@ import java.util.HashMap;
  *
  * @author beanbeanjuice
  */
-public class CountingHelper {
+public class CountingHandler {
 
-    private HashMap<String, CountingInformation> countingInformationMap;
+    private static HashMap<String, CountingInformation> countingInformationMap;
 
     /**
-     * Creates a new {@link CountingHelper} class.
+     * Start the {@link CountingHandler}.
      */
-    public CountingHelper() {
+    public static void start() {
         countingInformationMap = new HashMap<>();
         cacheCountingInformation();
     }
@@ -42,16 +43,16 @@ public class CountingHelper {
     /**
      * Caches the current counting information from the database.
      */
-    public void cacheCountingInformation() {
-        Bot.getLogger().log(this.getClass(), LogLevel.LOADING, "Caching Counting Information...");
+    public static void cacheCountingInformation() {
+        Bot.getLogger().log(CountingHandler.class, LogLevel.LOADING, "Caching Counting Information...");
 
         // Repeat until the CafeAPI has been connected.
         do {
             try {
                 countingInformationMap = Bot.getCafeAPI().COUNTING_INFORMATION.getAllCountingInformation();
-                Bot.getLogger().log(this.getClass(), LogLevel.OKAY, "Successfully Cached Counting Information.");
+                Bot.getLogger().log(CountingHandler.class, LogLevel.OKAY, "Successfully Cached Counting Information.");
             } catch (CafeException e) {
-                Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Getting Guild Counting Information: " + e.getMessage(), e);
+                Bot.getLogger().log(CountingHandler.class, LogLevel.ERROR, "Error Getting Guild Counting Information: " + e.getMessage(), e);
             } catch (NullPointerException ignored) {}
         } while (Bot.getCafeAPI() == null);
     }
@@ -61,7 +62,7 @@ public class CountingHelper {
      * @param event The {@link MessageReceivedEvent} for the {@link Guild}.
      * @param currentNumber The current number for the {@link Guild}.
      */
-    public void checkNumber(@NotNull MessageReceivedEvent event, @NotNull Integer currentNumber) {
+    public static void checkNumber(@NotNull MessageReceivedEvent event, @NotNull Integer currentNumber) {
         Guild guild = event.getGuild();
 
         CountingInformation countingInformation = getCountingInformation(guild);
@@ -98,7 +99,7 @@ public class CountingHelper {
                         "Error Updating Counting Information",
                         "There was an error updating counting information."
                 )).queue();
-                Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Updating Counting Information: " + e.getMessage(), e);
+                Bot.getLogger().log(CountingHandler.class, LogLevel.ERROR, "Error Updating Counting Information: " + e.getMessage(), e);
                 return;
             }
 
@@ -168,7 +169,7 @@ public class CountingHelper {
      * @return The {@link CountingInformation} for the {@link Guild}. Null, if there was an error.
      */
     @Nullable
-    public CountingInformation getCountingInformation(@NotNull Guild guild) {
+    public static CountingInformation getCountingInformation(@NotNull Guild guild) {
         return getCountingInformation(guild.getId());
     }
 
@@ -178,20 +179,20 @@ public class CountingHelper {
      * @return The {@link CountingInformation} for the {@link String guildID}. Null, if there was an error.
      */
     @Nullable
-    public CountingInformation getCountingInformation(@NotNull String guildID) {
+    public static CountingInformation getCountingInformation(@NotNull String guildID) {
         if (!countingInformationMap.containsKey(guildID)) {
             try {
                 Bot.getCafeAPI().COUNTING_INFORMATION.createGuildCountingInformation(guildID);
                 CountingInformation countingInformation = new CountingInformation(0, 0, "0", "0");
                 countingInformationMap.put(guildID, countingInformation);
-                Bot.getLogger().log(this.getClass(), LogLevel.DEBUG, "Guild ID: " + guildID);
+                Bot.getLogger().log(CountingHandler.class, LogLevel.DEBUG, "Guild ID: " + guildID);
                 return countingInformation;
             } catch (ConflictException e1) {
                 CountingInformation countingInformation = Bot.getCafeAPI().COUNTING_INFORMATION.getGuildCountingInformation(guildID);
                 countingInformationMap.put(guildID, countingInformation);
                 return countingInformation;
             } catch (CafeException e2) {
-                Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Creating Counting Information: " + e2.getMessage(), e2);
+                Bot.getLogger().log(CountingHandler.class, LogLevel.ERROR, "Error Creating Counting Information: " + e2.getMessage(), e2);
                 return null;
             }
         }
@@ -206,7 +207,7 @@ public class CountingHelper {
      * @return True, if updated successfully.
      */
     @NotNull
-    public Boolean setCountingFailureRoleID(@NotNull String guildID, @NotNull String countingFailureRoleID) {
+    public static Boolean setCountingFailureRoleID(@NotNull String guildID, @NotNull String countingFailureRoleID) {
         CountingInformation currentCountingInformation = getCountingInformation(guildID);
         if (currentCountingInformation == null) {
             return false;
@@ -223,7 +224,7 @@ public class CountingHelper {
             countingInformationMap.put(guildID, newCountingInformation);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Updating Counting Failure Role: " + e.getMessage(), e);
+            Bot.getLogger().log(CountingHandler.class, LogLevel.ERROR, "Error Updating Counting Failure Role: " + e.getMessage(), e);
             return false;
         }
     }
@@ -234,7 +235,7 @@ public class CountingHelper {
      * @return The current place of that {@link Integer}.
      */
     @Nullable
-    public Integer getCountingLeaderboardPlace(@NotNull Integer limit) {
+    public static Integer getCountingLeaderboardPlace(@NotNull Integer limit) {
         ArrayList<Integer> places = new ArrayList<>();
 
         countingInformationMap.forEach((guildID, countingInformation) -> {
@@ -259,7 +260,7 @@ public class CountingHelper {
      * @return The {@link MessageEmbed} to send.
      */
     @NotNull
-    private MessageEmbed failedEmbed(@NotNull Member member, @NotNull Integer lastNumber, @NotNull Integer highestNumber) {
+    private static MessageEmbed failedEmbed(@NotNull Member member, @NotNull Integer lastNumber, @NotNull Integer highestNumber) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Counting Failed");
         embedBuilder.setDescription("Counting failed due to " + member.getAsMention() + " at `" + lastNumber + "`. " +

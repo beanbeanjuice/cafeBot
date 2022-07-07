@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.section.game.connectfour;
 
 import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.section.game.WinStreakHandler;
 import io.github.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.MinigameType;
@@ -93,7 +94,7 @@ public class ConnectFourGame {
         startGameTimer();
 
         try {
-            Bot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessageEmbeds(getBoardEmbed()).queue(message -> {
+            GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessageEmbeds(getBoardEmbed()).queue(message -> {
                 currentMessageID = message.getId();
                 editMessage();
             });
@@ -108,7 +109,7 @@ public class ConnectFourGame {
     private void editMessage() {
         try {
 
-            Bot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).editMessageEmbedsById(currentMessageID, getBoardEmbed()).queue(message -> {
+            GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID).editMessageEmbedsById(currentMessageID, getBoardEmbed()).queue(message -> {
                 addReactions(message);
 
                 // Adds this message to the reaction listeners.
@@ -120,7 +121,7 @@ public class ConnectFourGame {
                             if (r.getEmoji().getFormatted().equals("❌")) {
                                 stopGameTimer();
                                 if (checkGameExists()) {
-                                    Bot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
+                                    GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
                                         String title = retrievedMessage.getEmbeds().get(0).getTitle();
                                         String description = retrievedMessage.getEmbeds().get(0).getDescription();
                                         retrievedMessage.editMessageEmbeds(endGameEmbed(title, description, "The game was cancelled.")).queue();
@@ -178,7 +179,7 @@ public class ConnectFourGame {
     private Boolean checkGameExists() {
         TextChannel textChannel;
         try {
-            textChannel = Bot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID);
+            textChannel = GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID);
         } catch (NullPointerException e) {
             return false;
         }
@@ -217,7 +218,7 @@ public class ConnectFourGame {
                 if (count++ >= TIME_UNTIL_END) {
                     stopGameTimer();
                     if (checkGameExists()) {
-                        Bot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
+                        GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
                             String title = retrievedMessage.getEmbeds().get(0).getTitle();
                             String description = retrievedMessage.getEmbeds().get(0).getDescription();
                             retrievedMessage.editMessageEmbeds(endGameEmbed(title, description, "The game ended because you didn't respond in time.")).queue(e -> {
@@ -414,7 +415,7 @@ public class ConnectFourGame {
         stopGameTimer();
 
         if (checkGameExists()) {
-            Bot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID)
+            GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID)
                     .editMessageEmbedsById(currentMessageID, embedBuilder.build()).queue(message -> {
                         message.clearReactions().queue();
                     });
@@ -454,7 +455,7 @@ public class ConnectFourGame {
         stopGameTimer();
 
         if (checkGameExists()) {
-            Bot.getGuildHandler().getGuild(guildID).getTextChannelById(currentTextChannelID)
+            GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID)
                     .editMessageEmbedsById(currentMessageID, embedBuilder.build()).queue(message -> {
                         message.clearReactions().queue();
                     });

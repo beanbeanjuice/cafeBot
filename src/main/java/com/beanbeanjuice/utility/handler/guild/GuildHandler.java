@@ -18,27 +18,27 @@ import java.util.List;
  */
 public class GuildHandler {
 
-    private final HashMap<String, CustomGuild> guildDatabase;
-    private HashMap<String, ArrayList<String>> twitchChannels;
+    private static HashMap<String, CustomGuild> guildDatabase;
+    private static HashMap<String, ArrayList<String>> twitchChannels;
 
     /**
-     * Creates a new {@link GuildHandler} object.
+     * Start the {@link GuildHandler}.
      */
-    public GuildHandler() {
+    public static void start() {
         guildDatabase = new HashMap<>();
         getAllTwitchChannels();
 
         checkGuilds();
     }
 
-    private void getAllTwitchChannels() {
+    private static void getAllTwitchChannels() {
         twitchChannels = Bot.getCafeAPI().TWITCH.getAllTwitches();
     }
 
     /**
      * Updates the current {@link Guild} cache.
      */
-    public void updateGuildCache() {
+    public static void updateGuildCache() {
         guildDatabase.clear();
 
         try {
@@ -47,9 +47,9 @@ public class GuildHandler {
                 String moderationRoleID = guildInformation.getModeratorRoleID();
                 String twitchChannelID = guildInformation.getTwitchChannelID();
 
-                ArrayList<String> twitchChannels = this.twitchChannels.get(guildID);
-                if (twitchChannels == null) {
-                    twitchChannels = new ArrayList<>();
+                ArrayList<String> twitchChannelsInGuild = twitchChannels.get(guildID);
+                if (twitchChannelsInGuild == null) {
+                    twitchChannelsInGuild = new ArrayList<>();
                 }
                 String mutedRoleID = guildInformation.getMutedRoleID();
                 String liveNotificationsRoleID = guildInformation.getLiveNotificationsRoleID();
@@ -67,7 +67,7 @@ public class GuildHandler {
 
                 guildDatabase.put(guildID, new CustomGuild(
                         guildID, prefix, moderationRoleID,
-                        twitchChannelID, twitchChannels, mutedRoleID,
+                        twitchChannelID, twitchChannelsInGuild, mutedRoleID,
                         liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
                         countingChannelID, pollChannelID, raffleChannelID,
                         birthdayChannelID, welcomeChannelID, logChannelID,
@@ -75,7 +75,7 @@ public class GuildHandler {
                 ));
             });
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Updating Custom Guild Cache: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.ERROR, "Error Updating Custom Guild Cache: " + e.getMessage(), e);
         }
     }
 
@@ -86,11 +86,11 @@ public class GuildHandler {
      * @return The {@link ArrayList} of {@link String twitchChannelName} associated with the specified {@link String guildID}.
      */
     @NotNull
-    public ArrayList<String> getTwitchChannels(@NotNull String guildID) {
+    public static  ArrayList<String> getTwitchChannels(@NotNull String guildID) {
         try {
             return Bot.getCafeAPI().TWITCH.getGuildTwitches(guildID);
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Retrieving Guild Twitch: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.ERROR, "Error Retrieving Guild Twitch: " + e.getMessage(), e);
             return new ArrayList<>();
         }
     }
@@ -103,11 +103,11 @@ public class GuildHandler {
      * @return True, if the {@link Boolean aiState} was updated successfully.
      */
     @NotNull
-    protected Boolean setAIState(@NotNull String guildID, @NotNull Boolean aiState) {
+    protected static Boolean setAIState(@NotNull String guildID, @NotNull Boolean aiState) {
         try {
             return Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.AI_RESPONSE, aiState);
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating AI Response Status: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating AI Response Status: " + e.getMessage(), e);
             return false;
         }
     }
@@ -120,12 +120,12 @@ public class GuildHandler {
      * @return True, if the {@link String dailyChannelID} was successfully updated.
      */
     @NotNull
-    protected Boolean setDailyChannelID(@NotNull String guildID, @NotNull String dailyChannelID) {
+    protected static Boolean setDailyChannelID(@NotNull String guildID, @NotNull String dailyChannelID) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.DAILY_CHANNEL_ID, dailyChannelID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Daily Channel ID: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Daily Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
@@ -138,12 +138,12 @@ public class GuildHandler {
      * @return True, if the {@link String birthdayChannelID} was successfully updated.
      */
     @NotNull
-    protected Boolean setBirthdayChannelID(@NotNull String guildID, @NotNull String birthdayChannelID) {
+    protected static Boolean setBirthdayChannelID(@NotNull String guildID, @NotNull String birthdayChannelID) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.BIRTHDAY_CHANNEL_ID, birthdayChannelID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Birthday Channel ID: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Birthday Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
@@ -156,12 +156,12 @@ public class GuildHandler {
      * @return True, if the {@link String raffleChannelID} was successfully updated.
      */
     @NotNull
-    protected Boolean setRaffleChannelID(@NotNull String guildID, @NotNull String raffleChannelID) {
+    protected static Boolean setRaffleChannelID(@NotNull String guildID, @NotNull String raffleChannelID) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.RAFFLE_CHANNEL_ID, raffleChannelID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Raffle Channel ID: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Raffle Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
@@ -174,12 +174,12 @@ public class GuildHandler {
      * @return True, if the {@link String pollChannelID} was successfully updated.
      */
     @NotNull
-    protected Boolean setPollChannelID(@NotNull String guildID, @NotNull String pollChannelID) {
+    protected static Boolean setPollChannelID(@NotNull String guildID, @NotNull String pollChannelID) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.POLL_CHANNEL_ID, pollChannelID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Poll Channel ID: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Poll Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
@@ -192,12 +192,12 @@ public class GuildHandler {
      * @return True, if the {@link String countingChannelID} was successfully updated.
      */
     @NotNull
-    protected Boolean setCountingChannelID(@NotNull String guildID, @NotNull String countingChannelID) {
+    protected static Boolean setCountingChannelID(@NotNull String guildID, @NotNull String countingChannelID) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.COUNTING_CHANNEL_ID, countingChannelID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Counting Channel ID: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Counting Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
@@ -210,12 +210,12 @@ public class GuildHandler {
      * @return True, if the {@link String countingChannelID} was successfully updated.
      */
     @NotNull
-    protected Boolean setUpdateChannelID(@NotNull String guildID, @NotNull String updateChannelID) {
+    protected static Boolean setUpdateChannelID(@NotNull String guildID, @NotNull String updateChannelID) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.UPDATE_CHANNEL_ID, updateChannelID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Counting Channel ID: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Counting Channel ID: " + e.getMessage(), e);
             return true;
         }
     }
@@ -228,12 +228,12 @@ public class GuildHandler {
      * @return True, if the {@link Boolean notifyOnUpdate} state was successfully updated.
      */
     @NotNull
-    protected Boolean setNotifyOnUpdate(@NotNull String guildID, @NotNull Boolean notifyOnUpdate) {
+    protected static Boolean setNotifyOnUpdate(@NotNull String guildID, @NotNull Boolean notifyOnUpdate) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.NOTIFY_ON_UPDATE, notifyOnUpdate);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Notify On Update: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Notify On Update: " + e.getMessage(), e);
             return false;
         }
     }
@@ -246,12 +246,12 @@ public class GuildHandler {
      * @return True, if the {@link String liveNotificationsRoleID} was successfully updated.
      */
     @NotNull
-    protected Boolean setLiveNotificationsRoleID(@NotNull String guildID, @NotNull String liveNotificationsRoleID) {
+    protected static Boolean setLiveNotificationsRoleID(@NotNull String guildID, @NotNull String liveNotificationsRoleID) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.LIVE_NOTIFICATIONS_ROLE_ID, liveNotificationsRoleID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Live Notifications Role ID: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Live Notifications Role ID: " + e.getMessage(), e);
             return true;
         }
     }
@@ -264,12 +264,12 @@ public class GuildHandler {
      * @return True, if the {@link String prefix} was successfully updated.
      */
     @NotNull
-    protected Boolean setPrefix(@NotNull String guildID, @NotNull String prefix) {
+    protected static Boolean setPrefix(@NotNull String guildID, @NotNull String prefix) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.PREFIX, prefix);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Guild Prefix: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Guild Prefix: " + e.getMessage(), e);
             return false;
         }
     }
@@ -277,7 +277,7 @@ public class GuildHandler {
     /**
      * Checks all the current {@link Guild} in the database.
      */
-    public void checkGuilds() {
+    public static void checkGuilds() {
         updateGuildCache();
 
         List<Guild> guildsHasBot = Bot.getBot().getGuilds();
@@ -285,18 +285,16 @@ public class GuildHandler {
 
         // Adds any guild that the bot is in but not in the database.
         for (Guild guild : guildsHasBot) {
-            if (!guildDatabase.containsKey(guild.getId())) {
+            if (!guildDatabase.containsKey(guild.getId()))
                 addGuild(guild);
-            }
 
             guildsIDHasBot.add(guild.getId());
         }
 
         // Checks the database for any guilds that the bot is no longer in.
         guildDatabase.forEach((k, v) -> {
-            if (!guildsIDHasBot.contains(k)) {
+            if (!guildsIDHasBot.contains(k))
                 removeGuild(k);
-            }
         });
 
         updateGuildCache();
@@ -309,7 +307,7 @@ public class GuildHandler {
      * @return True, if the {@link String guildID} was successfully removed.
      */
     @NotNull
-    public Boolean removeGuild(@NotNull String guildID) {
+    public static Boolean removeGuild(@NotNull String guildID) {
         try {
             Bot.getCafeAPI().GUILD.deleteGuildInformation(guildID);
             Bot.getCafeAPI().TWITCH.getGuildTwitches(guildID).forEach((channelName) -> {
@@ -317,7 +315,7 @@ public class GuildHandler {
             });
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Removing Guild: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.ERROR, "Error Removing Guild: " + e.getMessage(), e);
             return false;
         }
     }
@@ -329,7 +327,7 @@ public class GuildHandler {
      * @return True, if the {@link Guild} was removed successfully.
      */
     @NotNull
-    public Boolean removeGuild(@NotNull Guild guild) {
+    public static Boolean removeGuild(@NotNull Guild guild) {
         if (removeGuild(guild.getId())) {
             guildDatabase.remove(guild.getId());
             return true;
@@ -344,7 +342,7 @@ public class GuildHandler {
      * @return True, if the {@link String guildID} was successfully added.
      */
     @NotNull
-    public Boolean addGuild(@NotNull String guildID) {
+    public static Boolean addGuild(@NotNull String guildID) {
         try {
             Bot.getCafeAPI().GUILD.createGuildInformation(guildID);
 
@@ -357,7 +355,7 @@ public class GuildHandler {
 
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Adding Guild: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.ERROR, "Error Adding Guild: " + e.getMessage(), e);
             return false;
         }
     }
@@ -370,12 +368,12 @@ public class GuildHandler {
      * @return True, if the {@link String logChannelID} was successfully updated.
      */
     @NotNull
-    protected Boolean setLogChannelID(@NotNull String guildID, @NotNull String logChannelID) {
+    protected static  Boolean setLogChannelID(@NotNull String guildID, @NotNull String logChannelID) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.LOG_CHANNEL_ID, logChannelID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Log Channel ID: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Log Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
@@ -388,12 +386,12 @@ public class GuildHandler {
      * @return True, if the {@link String welcomeChannelID} was successfully updated.
      */
     @NotNull
-    protected Boolean setWelcomeChannelID(@NotNull String guildID, @NotNull String welcomeChannelID) {
+    protected static Boolean setWelcomeChannelID(@NotNull String guildID, @NotNull String welcomeChannelID) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.WELCOME_CHANNEL_ID, welcomeChannelID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Welcome Channel ID: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Welcome Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
@@ -406,12 +404,12 @@ public class GuildHandler {
      * @return True, if the {@link String ventingChannelID} was successfully updated.
      */
     @NotNull
-    protected Boolean setVentingChannelID(@NotNull String guildID, @NotNull String ventingChannelID) {
+    protected static Boolean setVentingChannelID(@NotNull String guildID, @NotNull String ventingChannelID) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.VENTING_CHANNEL_ID, ventingChannelID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Venting Channel ID: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Venting Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
@@ -424,12 +422,12 @@ public class GuildHandler {
      * @return True, if the {@link String mutedRoleID} was successfully updated.
      */
     @NotNull
-    protected Boolean setMutedRoleID(@NotNull String guildID, @NotNull String mutedRoleID) {
+    protected static Boolean setMutedRoleID(@NotNull String guildID, @NotNull String mutedRoleID) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.MUTED_ROLE_ID, mutedRoleID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Muted Role ID: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Muted Role ID: " + e.getMessage(), e);
             return false;
         }
     }
@@ -442,12 +440,12 @@ public class GuildHandler {
      * @return True, if the {@link String moderatorRoleID} was successfully updated.
      */
     @NotNull
-    protected Boolean setModeratorRoleID(@NotNull String guildID, @NotNull String moderatorRoleID) {
+    protected static Boolean setModeratorRoleID(@NotNull String guildID, @NotNull String moderatorRoleID) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.MODERATOR_ROLE_ID, moderatorRoleID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Moderator Role ID: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Moderator Role ID: " + e.getMessage(), e);
             return false;
         }
     }
@@ -460,12 +458,12 @@ public class GuildHandler {
      * @return True, if the {@link String twitchChannelName} was successfully added.
      */
     @NotNull
-    protected Boolean addTwitchChannel(@NotNull String guildID, @NotNull String twitchChannelName) {
+    protected static Boolean addTwitchChannel(@NotNull String guildID, @NotNull String twitchChannelName) {
         try {
             Bot.getCafeAPI().TWITCH.addGuildTwitch(guildID, twitchChannelName);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Adding Twitch Channel to Guild: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Adding Twitch Channel to Guild: " + e.getMessage(), e);
             return false;
         }
     }
@@ -478,12 +476,12 @@ public class GuildHandler {
      * @return True, if the {@link String twitchChannelName} was successfully removed.
      */
     @NotNull
-    protected Boolean removeTwitchChannel(@NotNull String guildID, @NotNull String twitchChannelName) {
+    protected static Boolean removeTwitchChannel(@NotNull String guildID, @NotNull String twitchChannelName) {
         try {
             Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, twitchChannelName);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Removing Twitch Channel from Guild: " + e.getMessage());
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Removing Twitch Channel from Guild: " + e.getMessage());
             return false;
         }
     }
@@ -496,12 +494,12 @@ public class GuildHandler {
      * @return True, if the {@link String twitchChannelID} was successfully updated.
      */
     @NotNull
-    protected Boolean setTwitchChannelID(@NotNull String guildID, @NotNull String twitchChannelID) {
+    protected static Boolean setTwitchChannelID(@NotNull String guildID, @NotNull String twitchChannelID) {
         try {
             Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.TWITCH_CHANNEL_ID, twitchChannelID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Twitch Channel ID: " + e.getMessage(), e);
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Twitch Channel ID: " + e.getMessage(), e);
             return false;
         }
     }
@@ -510,10 +508,10 @@ public class GuildHandler {
      * Adds a {@link Guild} to the database.
      *
      * @param guild The {@link Guild} to be added.
-     * @return Whether or not the {@link Guild} was added successfully.
+     * @return True, if the {@link Guild} was added successfully.
      */
     @NotNull
-    public Boolean addGuild(@NotNull Guild guild) {
+    public static Boolean addGuild(@NotNull Guild guild) {
         return addGuild(guild.getId());
     }
 
@@ -524,7 +522,7 @@ public class GuildHandler {
      * @return The {@link CustomGuild}.
      */
     @NotNull
-    public CustomGuild getCustomGuild(@NotNull String guildID) {
+    public static CustomGuild getCustomGuild(@NotNull String guildID) {
         return guildDatabase.get(guildID);
     }
 
@@ -535,7 +533,7 @@ public class GuildHandler {
      * @return The {@link CustomGuild}.
      */
     @NotNull
-    public CustomGuild getCustomGuild(@NotNull Guild guild) {
+    public static CustomGuild getCustomGuild(@NotNull Guild guild) {
         return getCustomGuild(guild.getId());
     }
 
@@ -546,7 +544,7 @@ public class GuildHandler {
      * @return The {@link Guild}.
      */
     @NotNull
-    public Guild getGuild(@NotNull String guildID) {
+    public static Guild getGuild(@NotNull String guildID) {
         return Bot.getBot().getGuildById(guildID);
     }
 
@@ -556,7 +554,7 @@ public class GuildHandler {
      * @return The {@link HashMap} containing the database cache.
      */
     @NotNull
-    public HashMap<String, CustomGuild> getGuilds() {
+    public static HashMap<String, CustomGuild> getGuilds() {
         return guildDatabase;
     }
 }

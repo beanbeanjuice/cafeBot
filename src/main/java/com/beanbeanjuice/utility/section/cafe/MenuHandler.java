@@ -16,9 +16,9 @@ public class MenuHandler {
     private static HashMap<CafeCategory, ArrayList<MenuItem>> menu = new HashMap<>();
 
     /**
-     * Creates a new {@link MenuHandler} object.
+     * Starts the {@link MenuHandler}.
      */
-    public MenuHandler() {
+    public static void start() {
         menu = new HashMap<>();
         createMenuItems();
     }

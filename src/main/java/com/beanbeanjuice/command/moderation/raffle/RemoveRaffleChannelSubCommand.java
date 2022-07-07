@@ -3,6 +3,7 @@ package com.beanbeanjuice.command.moderation.raffle;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,7 @@ public class RemoveRaffleChannelSubCommand implements ISubCommand {
     public void handle(@NotNull SlashCommandInteractionEvent event) {
 
         // Attempt to remove the raffle channel from the database.
-        if (Bot.getGuildHandler().getCustomGuild(event.getGuild()).setRaffleChannel("0")) {
+        if (GuildHandler.getCustomGuild(event.getGuild()).setRaffleChannel("0")) {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
                     "Removed Raffle Channel",
                     "The raffle channel has been successfully removed."

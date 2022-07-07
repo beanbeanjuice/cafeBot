@@ -3,6 +3,7 @@ package com.beanbeanjuice.command.moderation.poll;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.section.moderation.poll.Poll;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -19,7 +20,7 @@ public class RemovePollChannelSubCommand implements ISubCommand {
     public void handle(@NotNull SlashCommandInteractionEvent event) {
 
         // Makes sure the poll channel has been removed from the database.
-        if (Bot.getGuildHandler().getCustomGuild(event.getGuild()).setPollChannel("0")) {
+        if (GuildHandler.getCustomGuild(event.getGuild()).setPollChannel("0")) {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
                     "Removed Poll Channel",
                     "The poll channel has been successfully removed."

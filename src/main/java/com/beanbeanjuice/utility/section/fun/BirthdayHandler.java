@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.section.fun;
 
 import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import io.github.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday;
@@ -31,12 +32,12 @@ import java.util.TimerTask;
  */
 public class BirthdayHandler {
 
-    private HashMap<String, Birthday> birthdays;
+    private static HashMap<String, Birthday> birthdays;
 
     /**
-     * Create a new {@link BirthdayHandler}.
+     * Start the {@link BirthdayHandler}.
      */
-    public BirthdayHandler() {
+    public static void start() {
         birthdays = new HashMap<>();
         getAllBirthdays();
         startBirthdayTimer();
@@ -45,7 +46,7 @@ public class BirthdayHandler {
     /**
      * A timer used to check for birthdays.
      */
-    public void startBirthdayTimer() {
+    private static void startBirthdayTimer() {
         Timer birthdayTimer = new Timer();
         TimerTask birthdayTimerTask = new TimerTask() {
 
@@ -67,7 +68,7 @@ public class BirthdayHandler {
                                 if (member != null) {
 
                                     // Making sure the BirthdayChannel is not null.
-                                    TextChannel birthdayChannel = Bot.getGuildHandler().getCustomGuild(guild).getBirthdayChannel();
+                                    TextChannel birthdayChannel = GuildHandler.getCustomGuild(guild).getBirthdayChannel();
 
                                     if (birthdayChannel != null) {
                                         birthdayChannel.sendMessageEmbeds(birthdayEmbed(member)).queue();
@@ -101,7 +102,7 @@ public class BirthdayHandler {
      * @return The completed {@link MessageEmbed}.
      */
     @NotNull
-    private MessageEmbed birthdayEmbed(@NotNull Member member) {
+    private static MessageEmbed birthdayEmbed(@NotNull Member member) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("BIRTHDAY ALERT");
         embedBuilder.setDescription("ATTENTION! It is currently " + member.getAsMention() + "'s birthday! Wish them a happy birthday everyone!");
@@ -114,22 +115,22 @@ public class BirthdayHandler {
      * @param userID The {@link String userID} of the {@link Birthday}.
      * @param isMentioned The new {@link Boolean mentioned} status.
      */
-    private void updateMentionedBirthday(@NotNull String userID, @NotNull Boolean isMentioned) {
+    private static void updateMentionedBirthday(@NotNull String userID, @NotNull Boolean isMentioned) {
         try {
             Bot.getCafeAPI().BIRTHDAY.updateUserBirthdayMention(userID, isMentioned);
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Updating User Birthday Mention: " + e.getMessage(), e);
+            Bot.getLogger().log(BirthdayHandler.class, LogLevel.ERROR, "Error Updating User Birthday Mention: " + e.getMessage(), e);
         }
     }
 
     /**
      * Retrieves all {@link Birthday} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      */
-    private void getAllBirthdays() {
+    private static void getAllBirthdays() {
         try {
             birthdays = Bot.getCafeAPI().BIRTHDAY.getAllBirthdays();
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Retrieving Birthdays: " + e.getMessage(), e);
+            Bot.getLogger().log(BirthdayHandler.class, LogLevel.ERROR, "Error Retrieving Birthdays: " + e.getMessage(), e);
         }
     }
 
@@ -139,13 +140,13 @@ public class BirthdayHandler {
      * @return True, if the {@link Birthday} was removed successfully.
      */
     @NotNull
-    public Boolean removeBirthday(@NotNull String userID) {
+    public static Boolean removeBirthday(@NotNull String userID) {
         try {
             Bot.getCafeAPI().BIRTHDAY.removeUserBirthday(userID);
             birthdays.remove(userID);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Removing Birthday: " + e.getMessage(), e);
+            Bot.getLogger().log(BirthdayHandler.class, LogLevel.ERROR, "Error Removing Birthday: " + e.getMessage(), e);
             return false;
         }
     }
@@ -159,7 +160,7 @@ public class BirthdayHandler {
      * @throws TeaPotException Thrown when the {@link BirthdayMonth month} or {@link Integer day} is invalid.
      */
     @NotNull
-    public Boolean updateBirthday(@NotNull String userID, @NotNull BirthdayMonth month, @NotNull Integer day) throws TeaPotException {
+    public static Boolean updateBirthday(@NotNull String userID, @NotNull BirthdayMonth month, @NotNull Integer day) throws TeaPotException {
         try {
             Bot.getCafeAPI().BIRTHDAY.updateUserBirthday(userID, month, day);
             birthdays.put(userID, new Birthday(month, day, false));
@@ -172,11 +173,11 @@ public class BirthdayHandler {
                 updateMentionedBirthday(userID, false);
                 return true;
             } catch (CafeException e2) {
-                Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Creating Birthday: " + e2.getMessage(), e2);
+                Bot.getLogger().log(BirthdayHandler.class, LogLevel.ERROR, "Error Creating Birthday: " + e2.getMessage(), e2);
                 return false;
             }
         }catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Updating Birthday: " + e.getMessage(), e);
+            Bot.getLogger().log(BirthdayHandler.class, LogLevel.ERROR, "Error Updating Birthday: " + e.getMessage(), e);
             return false;
         }
     }
@@ -187,13 +188,13 @@ public class BirthdayHandler {
      * @return The {@link Birthday} for the {@link String userID}. Null, if the {@link Birthday} does not exist.
      */
     @Nullable
-    public Birthday getBirthday(@NotNull String userID) {
+    public static Birthday getBirthday(@NotNull String userID) {
         try {
             return Bot.getCafeAPI().BIRTHDAY.getUserBirthday(userID);
         }
         catch (NotFoundException ignored) { return null; }
         catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Retrieving User Birthday: " + e.getMessage(), e);
+            Bot.getLogger().log(BirthdayHandler.class, LogLevel.ERROR, "Error Retrieving User Birthday: " + e.getMessage(), e);
             return null;
         }
     }
@@ -203,7 +204,7 @@ public class BirthdayHandler {
      * @return True, if the current {@link Date} is a {@link Birthday}.
      */
     @NotNull
-    private Boolean isBirthday(@NotNull Birthday birthday) {
+    private static Boolean isBirthday(@NotNull Birthday birthday) {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         LocalDate today = formatter.parseLocalDate(new Date(System.currentTimeMillis()).toString());
 
