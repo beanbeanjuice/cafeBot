@@ -29,7 +29,11 @@
     ·
     <a href="https://github.com/beanbeanjuice/cafeBot/issues">Request Feature</a>
   </p>
-  <figure><embed src="https://wakatime.com/share/@beeb4317-977b-4b19-878a-21e9aa8e43ed/31fd7762-6212-4dd2-b4d7-4bfdc2a3b5a3.svg"></embed></figure>
+  <p align="center">
+    <a href="https://top.gg/bot/787162619504492554">
+      <img src="https://top.gg/api/widget/787162619504492554.svg">
+    </a>
+  </p>
 </p>
 
 <!-- TABLE OF CONTENTS -->
@@ -68,8 +72,6 @@
 
 * [Gradle](https://gradle.org/)
 * [Discord JDA](https://github.com/DV8FromTheWorld/JDA)
-* [Lavaplayer](https://github.com/sedmelluq/lavaplayer)
-* [Spotify Web API](https://github.com/thelinmichael/spotify-web-api-java)
 * [Twitch4J](https://github.com/twitch4j/twitch4j)
 
 ### About the Bot
@@ -99,8 +101,7 @@ This is an example of how to list things you need to use the software and how to
 ## Installation
 
 1. Click this [link](https://discord.com/api/oauth2/authorize?client_id=787162619504492554&permissions=8&scope=bot%20applications.commands).
-2. Give the bot administrative access. `I promise it's safe. You can view all the code for yourself.`
-3. Enjoy!
+1. Enjoy!
 
 <!-- USAGE EXAMPLES -->
 # Usage
@@ -112,7 +113,7 @@ This is an example of how to list things you need to use the software and how to
 * `!!get-prefix` - Gets the current prefix for the server if you forget it!
 
 <p align="center">
-  <img src=http://cdn.beanbeanjuice.com/images/cafeBot/readme/help.png>
+  <img src=https://cdn.beanbeanjuice.com/images/cafeBot/readme/help.png>
 </p>
 
 As you can see, this was shown using the command `!!help order`. It shows each parameter you can run. For example, the first `<NUMBER>` is the `CATEGORY NUMBER` for the menu, needs to be a number, and is required. The `help` command also provides an example on how to actually use the command if you are stuck!
@@ -286,8 +287,11 @@ Here is ALL of the data that this bot could *possibly* store on you. This, of co
 # Contact
 
 - beanbeanjuice
-- Twitter [@beanbeanjuice](https://twitter.com/beanbeanjuice)
-- Email - beanbeanjuice@outlook.com
+- Discord: [beanbeanjuice#4595](https://discord.gg/KrUFw3uHST)
+- YouTube: [beanbeanjuice](https://www.youtube.com/beanbeanjuice)
+- TikTok: [@beanbeanjuiceofficial](https://www.tiktok.com/@beanbeanjuiceofficial)
+- Twitter: [@beanbeanjuice](https://twitter.com/beanbeanjuice)
+- Email: beanbeanjuice@outlook.com
 - Project Link: [GitHub](https://github.com/beanbeanjuice/cafeBot)
 
 <!-- ACKNOWLEDGEMENTS -->
@@ -311,6 +315,6 @@ Here is ALL of the data that this bot could *possibly* store on you. This, of co
 [linkedin-url]: https://linkedin.com/in/beanbeanjuice
 [wakatime-shield]: https://wakatime.com/badge/github/beanbeanjuice/cafeBot.svg?style=for-the-badge
 [wakatime-url]: https://wakatime.com/badge/github/beanbeanjuice/cafeBot
-[product-title]: http://cdn.beanbeanjuice.com/images/cafeBot/readme/cafeBot.png
+[product-title]: https://cdn.beanbeanjuice.com/images/cafeBot/readme/cafeBot.png
 [codefactor-shield]: https://www.codefactor.io/repository/github/beanbeanjuice/cafebot/badge?style=for-the-badge
 [codefactor-url]: https://www.codefactor.io/repository/github/beanbeanjuice/cafebot
