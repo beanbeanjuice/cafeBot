@@ -25,12 +25,12 @@ import java.util.TimerTask;
  */
 public class RaffleHandler {
 
-    private final HashMap<String, ArrayList<Raffle>> raffles;
+    private static HashMap<String, ArrayList<Raffle>> raffles;
 
     /**
      * Create a new {@link RaffleHandler} object.
      */
-    public RaffleHandler() {
+    public static void start() {
         raffles = new HashMap<>();
         getAllRaffles();
         startRaffleTimer();
@@ -39,7 +39,7 @@ public class RaffleHandler {
     /**
      * Starts the poll {@link Timer} and {@link TimerTask}.
      */
-    private void startRaffleTimer() {
+    private static void startRaffleTimer() {
         Timer raffleTimer = new Timer();
         TimerTask raffleTimerTask = new TimerTask() {
 
@@ -133,7 +133,7 @@ public class RaffleHandler {
     }
 
     @NotNull
-    private MessageEmbed winnerEmbed(@NotNull String title, @NotNull String description, @NotNull ArrayList<User> winners,
+    private static MessageEmbed winnerEmbed(@NotNull String title, @NotNull String description, @NotNull ArrayList<User> winners,
                                      @Nullable MessageEmbed.AuthorInfo authorInfo, @Nullable MessageEmbed.Thumbnail thumbnail, @Nullable MessageEmbed.ImageInfo image) {
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setTitle(title)
@@ -176,12 +176,12 @@ public class RaffleHandler {
      * @return True, if the {@link Raffle} was successfully removed from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      */
     @NotNull
-    private Boolean removeRaffle(@NotNull String guildID, @NotNull Raffle raffle) {
+    private static Boolean removeRaffle(@NotNull String guildID, @NotNull Raffle raffle) {
         try {
             Bot.getCafeAPI().RAFFLE.deleteRaffle(guildID, raffle);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Removing Raffle: " + e.getMessage(), e);
+            Bot.getLogger().log(RaffleHandler.class, LogLevel.ERROR, "Error Removing Raffle: " + e.getMessage(), e);
             return false;
         }
     }
@@ -193,7 +193,7 @@ public class RaffleHandler {
      * @return True, if the {@link Raffle} was successfully added.
      */
     @NotNull
-    public Boolean addRaffle(@NotNull String guildID, @NotNull Raffle raffle) {
+    public static Boolean addRaffle(@NotNull String guildID, @NotNull Raffle raffle) {
         try {
             Bot.getCafeAPI().RAFFLE.createRaffle(guildID, raffle);
 
@@ -203,7 +203,7 @@ public class RaffleHandler {
             raffles.get(guildID).add(raffle);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Creating Raffle: " + e.getMessage(), e);
+            Bot.getLogger().log(RaffleHandler.class, LogLevel.ERROR, "Error Creating Raffle: " + e.getMessage(), e);
             return false;
         }
     }
@@ -211,21 +211,21 @@ public class RaffleHandler {
     /**
      * Retrieves all {@link Raffle} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      */
-    private void getAllRaffles() {
+    private static void getAllRaffles() {
         try {
-            Bot.getCafeAPI().RAFFLE.getAllRaffles().forEach((guildID, raffles) -> {
-                for (io.github.beanbeanjuice.cafeapi.cafebot.raffles.Raffle raffle : raffles) {
+            Bot.getCafeAPI().RAFFLE.getAllRaffles().forEach((guildID, apiRaffles) -> {
+                for (io.github.beanbeanjuice.cafeapi.cafebot.raffles.Raffle raffle : apiRaffles) {
 
-                    if (!this.raffles.containsKey(guildID))
-                        this.raffles.put(guildID, new ArrayList<>());
+                    if (!raffles.containsKey(guildID))
+                        raffles.put(guildID, new ArrayList<>());
 
-                    this.raffles.get(guildID).add(new Raffle(raffle.getMessageID(), raffle.getEndingTime(), raffle.getWinnerAmount()));
+                    raffles.get(guildID).add(new Raffle(raffle.getMessageID(), raffle.getEndingTime(), raffle.getWinnerAmount()));
                 }
             });
 
-            Bot.getLogger().log(this.getClass(), LogLevel.OKAY, "Successfully Retrieved All Raffles...");
+            Bot.getLogger().log(RaffleHandler.class, LogLevel.OKAY, "Successfully Retrieved All Raffles...");
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Retrieving Raffles from API: " + e.getMessage(), e);
+            Bot.getLogger().log(RaffleHandler.class, LogLevel.ERROR, "Error Retrieving Raffles from API: " + e.getMessage(), e);
         }
     }
 

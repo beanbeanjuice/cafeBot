@@ -6,6 +6,7 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.section.moderation.raffle.Raffle;
+import com.beanbeanjuice.utility.section.moderation.raffle.RaffleHandler;
 import io.github.beanbeanjuice.cafeapi.exception.CafeException;
 import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -95,7 +96,7 @@ public class AddRaffleCommand implements ICommand {
 
         Raffle raffle = new Raffle(message.getId(), endingTime, winnerAmount);
 
-        if (!Bot.getRaffleHandler().addRaffle(event.getGuild().getId(), raffle)) {
+        if (!RaffleHandler.addRaffle(event.getGuild().getId(), raffle)) {
             message.delete().queue();
             event.getHook().editOriginalEmbeds(Helper.sqlServerError()).queue();
             return;
