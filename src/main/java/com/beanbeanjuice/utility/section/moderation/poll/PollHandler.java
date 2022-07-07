@@ -2,6 +2,7 @@ package com.beanbeanjuice.utility.section.moderation.poll;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.logging.LogLevel;
+import com.beanbeanjuice.utility.section.moderation.raffle.RaffleHandler;
 import io.github.beanbeanjuice.cafeapi.exception.CafeException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -24,12 +25,12 @@ import java.util.TimerTask;
  */
 public class PollHandler {
 
-    private final HashMap<String, ArrayList<Poll>> activePolls;
+    private static HashMap<String, ArrayList<Poll>> activePolls;
 
     /**
      * Creates a new {@link PollHandler} object.
      */
-    public PollHandler() {
+    public static void start() {
         activePolls = new HashMap<>();
         getAllPolls();
         startPollTimer();
@@ -38,7 +39,7 @@ public class PollHandler {
     /**
      * Starts the poll {@link Timer} and {@link TimerTask}.
      */
-    private void startPollTimer() {
+    private static void startPollTimer() {
         Timer pollTimer = new Timer();
         TimerTask pollTimerTask = new TimerTask() {
 
@@ -147,7 +148,7 @@ public class PollHandler {
      * @return The created {@link MessageEmbed}.
      */
     @NotNull
-    private MessageEmbed pollEmbed(@NotNull String pollTitle, @NotNull String pollDescription,
+    private static MessageEmbed pollEmbed(@NotNull String pollTitle, @NotNull String pollDescription,
                                    @Nullable MessageEmbed.AuthorInfo author, @NotNull ArrayList<Emoji> winners,
                                    @Nullable MessageEmbed.Thumbnail thumbnail, @Nullable MessageEmbed.ImageInfo image) {
         EmbedBuilder embedBuilder = new EmbedBuilder()
@@ -183,7 +184,7 @@ public class PollHandler {
     /**
      * Gets all {@link Poll} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      */
-    public void getAllPolls() {
+    public static void getAllPolls() {
         try {
             Bot.getCafeAPI().POLL.getAllPolls().forEach((guildID, polls) -> {
                 if (!activePolls.containsKey(guildID)) {
@@ -195,7 +196,7 @@ public class PollHandler {
                 }
             });
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Getting Polls: " + e.getMessage(), e);
+            Bot.getLogger().log(RaffleHandler.class, LogLevel.ERROR, "Error Getting Polls: " + e.getMessage(), e);
         }
     }
 
@@ -206,7 +207,7 @@ public class PollHandler {
      * @return True, if the {@link Poll} was added successfully.
      */
     @NotNull
-    public Boolean addPoll(@NotNull String guildID, @NotNull Poll poll) {
+    public static Boolean addPoll(@NotNull String guildID, @NotNull Poll poll) {
         try {
             Bot.getCafeAPI().POLL.createPoll(guildID, poll);
 
@@ -217,7 +218,7 @@ public class PollHandler {
             activePolls.get(guildID).add(poll);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Creating Poll: " + e.getMessage(), e);
+            Bot.getLogger().log(RaffleHandler.class, LogLevel.ERROR, "Error Creating Poll: " + e.getMessage(), e);
             return false;
         }
     }
@@ -229,12 +230,12 @@ public class PollHandler {
      * @return True, if the {@link Poll} was removed successfully.
      */
     @NotNull
-    private Boolean removePoll(@NotNull String guildID, @NotNull Poll poll) {
+    private static Boolean removePoll(@NotNull String guildID, @NotNull Poll poll) {
         try {
             Bot.getCafeAPI().POLL.deletePoll(guildID, poll);
             return true;
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Removing Poll: " + e.getMessage());
+            Bot.getLogger().log(RaffleHandler.class, LogLevel.ERROR, "Error Removing Poll: " + e.getMessage());
             return false;
         }
     }
