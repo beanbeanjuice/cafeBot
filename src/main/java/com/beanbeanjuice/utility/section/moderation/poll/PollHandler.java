@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.section.moderation.poll;
 
 import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.section.moderation.raffle.RaffleHandler;
 import io.github.beanbeanjuice.cafeapi.exception.CafeException;
@@ -28,7 +29,7 @@ public class PollHandler {
     private static HashMap<String, ArrayList<Poll>> activePolls;
 
     /**
-     * Creates a new {@link PollHandler} object.
+     * Starts the {@link PollHandler}.
      */
     public static void start() {
         activePolls = new HashMap<>();
@@ -57,7 +58,7 @@ public class PollHandler {
                         if (poll.isFinished()) {
 
                             // Check if the poll channel still exists.
-                            TextChannel pollChannel = Bot.getGuildHandler().getCustomGuild(guildID).getPollChannel();
+                            TextChannel pollChannel = GuildHandler.getCustomGuild(guildID).getPollChannel();
 
                             // If the poll channel doesn't exist, then just remove the poll
                             if (pollChannel == null) {

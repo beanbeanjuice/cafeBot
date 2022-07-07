@@ -3,6 +3,7 @@ package com.beanbeanjuice.command.moderation.poll;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.section.moderation.poll.Poll;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -19,7 +20,7 @@ public class SetPollChannelSubCommand implements ISubCommand {
     public void handle(@NotNull SlashCommandInteractionEvent event) {
 
         // Makes sure the poll channel has been added to the database.
-        if (Bot.getGuildHandler().getCustomGuild(event.getGuild()).setPollChannel(event.getChannel().getId())) {
+        if (GuildHandler.getCustomGuild(event.getGuild()).setPollChannel(event.getChannel().getId())) {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
                     "Set Poll Channel",
                     "The current channel has been set to a `poll` channel!"

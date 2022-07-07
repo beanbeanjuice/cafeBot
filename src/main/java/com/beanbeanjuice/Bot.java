@@ -1,10 +1,10 @@
 package com.beanbeanjuice;
 
+import com.beanbeanjuice.utility.handler.CountingHandler;
 import com.beanbeanjuice.utility.section.cafe.BeanCoinDonationHandler;
 import com.beanbeanjuice.utility.section.cafe.MenuHandler;
 import com.beanbeanjuice.utility.section.fun.BirthdayHandler;
 import com.beanbeanjuice.utility.section.moderation.poll.PollHandler;
-import com.beanbeanjuice.utility.helper.CountingHelper;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.command.CommandHandler;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
@@ -55,13 +55,6 @@ public class Bot {
 
     // Handlers
     private static CommandHandler commandHandler;
-    private static GuildHandler guildHandler;
-    private static MenuHandler menuHandler;
-    private static BirthdayHandler birthdayHandler;
-
-    // Helpers
-    private static CountingHelper countingHelper;
-    private static BeanCoinDonationHandler beanCoinDonationHandler;
 
     // Additional Items
     public static int commandsRun = 0;
@@ -91,7 +84,7 @@ public class Bot {
                 .build()
                 .awaitReady();
 
-        guildHandler = new GuildHandler();
+        GuildHandler.start();  // Starting hte guild handler.
         homeGuild = bot.getGuildById(HOME_GUILD_ID);
         homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
 
@@ -107,12 +100,12 @@ public class Bot {
         logger.log(Bot.class, LogLevel.INFO, "Enabled Discord Logging...", true, true);
 
         // Helpers that need to be instantiated.
-        countingHelper = new CountingHelper();
-        beanCoinDonationHandler = new BeanCoinDonationHandler();
-        menuHandler = new MenuHandler();  // TODO: Not sure if this is needed. Static class?
+        CountingHandler.start();
+        BeanCoinDonationHandler.start();
+        MenuHandler.start();
         PollHandler.start();
         RaffleHandler.start();
-        birthdayHandler = new BirthdayHandler();  // TODO: Not sure if this is needed. Static class?
+        BirthdayHandler.start();  // TODO: Not sure if this is needed. Static class?
 
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         updateGuildPresence();
@@ -164,38 +157,6 @@ public class Bot {
      */
     public static void updateGuildPresence() {
         bot.getPresence().setActivity(Activity.playing("cafeBot " + BOT_VERSION + " - Currently in " + bot.getGuilds().size() + " servers!"));
-    }
-
-    /**
-     * @return The current {@link GuildHandler}.
-     */
-    @NotNull
-    public static GuildHandler getGuildHandler() {
-        return guildHandler;
-    }
-
-    /**
-     * @return The current {@link CountingHelper}.
-     */
-    @NotNull
-    public static CountingHelper getCountingHelper() {
-        return countingHelper;
-    }
-
-    /**
-     * @return The current {@link BeanCoinDonationHandler}.
-     */
-    @NotNull
-    public static BeanCoinDonationHandler getBeanCoinDonationHandler() {
-        return beanCoinDonationHandler;
-    }
-
-    /**
-     * @return The current {@link BirthdayHandler}.
-     */
-    @NotNull
-    public static BirthdayHandler getBirthdayHandler() {
-        return birthdayHandler;
     }
 
 }

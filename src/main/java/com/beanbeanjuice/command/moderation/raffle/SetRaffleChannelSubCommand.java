@@ -3,6 +3,7 @@ package com.beanbeanjuice.command.moderation.raffle;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,7 @@ public class SetRaffleChannelSubCommand implements ISubCommand {
     public void handle(@NotNull SlashCommandInteractionEvent event) {
 
         // Attempt to add the raffle channel to the database.
-        if (Bot.getGuildHandler().getCustomGuild(event.getGuild()).setRaffleChannel(event.getChannel().getId())) {
+        if (GuildHandler.getCustomGuild(event.getGuild()).setRaffleChannel(event.getChannel().getId())) {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
                     "Set Raffle Channel",
                     "This channel has been set to an active raffle channel!"

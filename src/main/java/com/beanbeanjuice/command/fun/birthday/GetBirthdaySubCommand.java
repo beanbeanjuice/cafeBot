@@ -4,6 +4,7 @@ import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.section.fun.BirthdayHandler;
 import io.github.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -29,7 +30,7 @@ public class GetBirthdaySubCommand implements ISubCommand {
         if (event.getOption("user") != null)
             user = event.getOption("user").getAsUser();
 
-        Birthday birthday = Bot.getBirthdayHandler().getBirthday(user.getId());
+        Birthday birthday = BirthdayHandler.getBirthday(user.getId());
 
         // Checks if the birthday exists.
         if (birthday == null) {

@@ -3,6 +3,7 @@ package com.beanbeanjuice.command.moderation.counting;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import io.github.beanbeanjuice.cafeapi.exception.AuthorizationException;
 import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
@@ -22,7 +23,7 @@ public class SetCountingChannelSubCommand implements ISubCommand {
     public void handle(@NotNull SlashCommandInteractionEvent event) {
 
         // Attempt to add the counting channel to the database.
-        if (Bot.getGuildHandler().getCustomGuild(event.getGuild()).setCountingChannel(event.getChannel().getId())) {
+        if (GuildHandler.getCustomGuild(event.getGuild()).setCountingChannel(event.getChannel().getId())) {
 
             // Send a success embed if it worked.
             event.getHook().sendMessageEmbeds(Helper.successEmbed(

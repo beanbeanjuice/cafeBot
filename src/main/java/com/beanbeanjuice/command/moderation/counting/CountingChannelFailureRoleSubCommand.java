@@ -3,6 +3,7 @@ package com.beanbeanjuice.command.moderation.counting;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
+import com.beanbeanjuice.utility.handler.CountingHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -27,7 +28,7 @@ public class CountingChannelFailureRoleSubCommand implements ISubCommand {
 
         // If the counting role is not enabled
         if (!event.getOption("enable_failure_role").getAsBoolean()) {
-            if (Bot.getCountingHelper().setCountingFailureRoleID(event.getGuild().getId(), "0")) {
+            if (CountingHandler.setCountingFailureRoleID(event.getGuild().getId(), "0")) {
                 event.getHook().sendMessageEmbeds(Helper.successEmbed(
                         "Removed Counting Failure Role",
                         "Successfully removed the counting failure role."
@@ -53,7 +54,7 @@ public class CountingChannelFailureRoleSubCommand implements ISubCommand {
         }
 
         // If the role is unable to update in the database
-        if (!Bot.getCountingHelper().setCountingFailureRoleID(event.getGuild().getId(), role.getId())) {
+        if (!CountingHandler.setCountingFailureRoleID(event.getGuild().getId(), role.getId())) {
             event.getHook().sendMessageEmbeds(Helper.sqlServerError()).queue();
             return;
         }

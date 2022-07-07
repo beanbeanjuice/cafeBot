@@ -4,6 +4,7 @@ import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.handler.guild.CustomGuild;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -33,7 +34,7 @@ public class ClearChatCommand implements ICommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        if (Bot.getGuildHandler().getCustomGuild(event.getGuild()).containsTextChannelDeletingMessages(event.getTextChannel())) {
+        if (GuildHandler.getCustomGuild(event.getGuild()).containsTextChannelDeletingMessages(event.getTextChannel())) {
             event.getHook().sendMessageEmbeds(alreadyDeletingMessagesEmbed()).queue();
             return;
         }
@@ -74,7 +75,7 @@ public class ClearChatCommand implements ICommand {
 
         TextChannel textChannel = deletionMessage.getTextChannel();
         int messageCount = messages.size();
-        CustomGuild guild = Bot.getGuildHandler().getCustomGuild(deletionMessage.getGuild());
+        CustomGuild guild = GuildHandler.getCustomGuild(deletionMessage.getGuild());
 
         guild.addTextChannelToDeletingMessages(deletionMessage.getTextChannel());
 

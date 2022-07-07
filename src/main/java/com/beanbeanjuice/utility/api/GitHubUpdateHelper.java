@@ -2,6 +2,7 @@ package com.beanbeanjuice.utility.api;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.handler.guild.CustomGuild;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -81,11 +82,11 @@ public class GitHubUpdateHelper {
         }
 
         MessageEmbed updateEmbed = updateEmbed();
-        HashMap<String, CustomGuild> customGuilds = Bot.getGuildHandler().getGuilds();
+        HashMap<String, CustomGuild> customGuilds = GuildHandler.getGuilds();
 
         customGuilds.forEach((guildID, customGuild) -> {
             if (customGuild.getNotifyOnUpdate()) {
-                Guild guild = Bot.getGuildHandler().getGuild(guildID);
+                Guild guild = GuildHandler.getGuild(guildID);
 
                 BaseGuildMessageChannel mainChannel = guild.getDefaultChannel();
 

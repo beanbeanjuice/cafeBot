@@ -3,6 +3,7 @@ package com.beanbeanjuice.command.moderation;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -22,7 +23,7 @@ public class ListCustomChannelsCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Custom Channels");
         StringBuilder descriptionBuilder = new StringBuilder();
-        Bot.getGuildHandler().getCustomGuild(event.getGuild()).getCustomChannelIDs().forEach((customChannel, channelID) -> {
+        GuildHandler.getCustomGuild(event.getGuild()).getCustomChannelIDs().forEach((customChannel, channelID) -> {
             descriptionBuilder.append("**").append(customChannel.getName()).append("**: ");
             try {
                 TextChannel channel = event.getGuild().getTextChannelById(channelID);

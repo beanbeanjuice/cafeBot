@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.listener;
 
 import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.BaseGuildMessageChannel;
@@ -31,7 +32,7 @@ public class ServerListener extends ListenerAdapter {
             } catch (InsufficientPermissionException ignored) {}
         }
 
-        Bot.getGuildHandler().addGuild(event.getGuild());
+        GuildHandler.addGuild(event.getGuild());
         Bot.updateGuildPresence(); // Updates the amount of servers in the status.
         Bot.getLogger().log(this.getClass(), LogLevel.INFO, "`" + event.getGuild().getName() + "` has added me! :blush:", false, true);
     }
@@ -39,7 +40,7 @@ public class ServerListener extends ListenerAdapter {
     @Override
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
         super.onGuildLeave(event);
-        Bot.getGuildHandler().removeGuild(event.getGuild());
+        GuildHandler.removeGuild(event.getGuild());
         Bot.updateGuildPresence(); // Updates the amount of servers in the status.
         Bot.getLogger().log(ServerListener.class, LogLevel.INFO, "`" + event.getGuild().getName() + "` has removed me... :pleading_face:", false, true);
 

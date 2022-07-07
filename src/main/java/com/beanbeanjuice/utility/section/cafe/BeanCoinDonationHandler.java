@@ -20,13 +20,13 @@ import java.util.TimerTask;
  */
 public class BeanCoinDonationHandler {
 
-    private HashMap<String, Timestamp> beanCoinDonationUsersCache;
-    private final int MINUTES = 60;
+    private static HashMap<String, Timestamp> beanCoinDonationUsersCache;
+    private static final int MINUTES = 60;
 
     /**
-     * Creates a new {@link BeanCoinDonationHandler}.
+     * Start the {@link BeanCoinDonationHandler}.
      */
-    public BeanCoinDonationHandler() {
+    public static void start() {
         beanCoinDonationUsersCache = new HashMap<>();
         cacheBeanCoinDonationUsers();
         startTimer();
@@ -35,18 +35,18 @@ public class BeanCoinDonationHandler {
     /**
      * Caches the {@link io.github.beanbeanjuice.cafeapi.cafebot.beancoins.users.DonationUsers}.
      */
-    private void cacheBeanCoinDonationUsers() {
+    private static void cacheBeanCoinDonationUsers() {
         try {
             beanCoinDonationUsersCache = Bot.getCafeAPI().DONATION_USER.getAllUserDonationTimes();
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Getting Donation Users Cooldowns: " + e.getMessage(), e);
+            Bot.getLogger().log(BeanCoinDonationHandler.class, LogLevel.ERROR, "Error Getting Donation Users Cooldowns: " + e.getMessage(), e);
         }
     }
 
     /**
      * Starts the {@link Timer}.
      */
-    private void startTimer() {
+    private static void startTimer() {
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -74,7 +74,7 @@ public class BeanCoinDonationHandler {
      * @return The amount of minutes until the {@link net.dv8tion.jda.api.entities.User} can donate again as a {@link Long}.
      */
     @NotNull
-    public Long timeUntilDonate (@NotNull String userID) {
+    public static Long timeUntilDonate (@NotNull String userID) {
         if (!beanCoinDonationUsersCache.containsKey(userID)) {
             return -1L;
         }
@@ -91,7 +91,7 @@ public class BeanCoinDonationHandler {
      * @return True, if added successfully.
      */
     @NotNull
-    public Boolean addUser(@NotNull String userID, @NotNull Timestamp endingTime) {
+    public static Boolean addUser(@NotNull String userID, @NotNull Timestamp endingTime) {
         beanCoinDonationUsersCache.put(userID, endingTime);
         return true;
     }
@@ -100,7 +100,7 @@ public class BeanCoinDonationHandler {
      * @return The {@link Integer cooldown} in minutes.
      */
     @NotNull
-    public Integer getCooldown() {
+    public static Integer getCooldown() {
         return MINUTES * 60000;
     }
 
