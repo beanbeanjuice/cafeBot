@@ -57,7 +57,6 @@ public class Bot {
     private static CommandHandler commandHandler;
     private static GuildHandler guildHandler;
     private static MenuHandler menuHandler;
-    private static PollHandler pollHandler;
     private static BirthdayHandler birthdayHandler;
 
     // Helpers
@@ -111,7 +110,7 @@ public class Bot {
         countingHelper = new CountingHelper();
         beanCoinDonationHandler = new BeanCoinDonationHandler();
         menuHandler = new MenuHandler();  // TODO: Not sure if this is needed. Static class?
-        pollHandler = new PollHandler();  // TODO: Not sure if this is needed. Static class?
+        PollHandler.start();
         RaffleHandler.start();
         birthdayHandler = new BirthdayHandler();  // TODO: Not sure if this is needed. Static class?
 
@@ -189,14 +188,6 @@ public class Bot {
     @NotNull
     public static BeanCoinDonationHandler getBeanCoinDonationHandler() {
         return beanCoinDonationHandler;
-    }
-
-    /**
-     * @return The current {@link PollHandler}.
-     */
-    @NotNull
-    public static PollHandler getPollHandler() {
-        return pollHandler;
     }
 
     /**

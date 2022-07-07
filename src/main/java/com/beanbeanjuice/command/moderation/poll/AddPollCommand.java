@@ -6,6 +6,7 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.section.moderation.poll.Poll;
 import com.beanbeanjuice.utility.section.moderation.poll.PollEmoji;
 import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.section.moderation.poll.PollHandler;
 import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -108,7 +109,7 @@ public class AddPollCommand implements ICommand {
         Poll poll = new Poll(message.getId(), timestamp);
 
         // Tries to create the poll.
-        if (!Bot.getPollHandler().addPoll(event.getGuild().getId(), poll)) {
+        if (!PollHandler.addPoll(event.getGuild().getId(), poll)) {
             // If it can't, say why.
             message.delete().queue();
             event.getHook().editOriginalEmbeds(Helper.sqlServerError()).queue();
