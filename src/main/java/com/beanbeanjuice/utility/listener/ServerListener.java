@@ -56,7 +56,7 @@ public class ServerListener extends ListenerAdapter {
                 Thank you for inviting me! I hope I'm not too much trouble. Please make sure I have the appropriate permissions!
 
 
-                For a list of command sections, type `!!help`.
+                For a list of command sections, type `/help`.
 
                 For a list of commands in a section, type `/help (command section name)`!
 
