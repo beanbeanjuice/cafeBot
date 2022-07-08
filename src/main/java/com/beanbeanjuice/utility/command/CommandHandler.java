@@ -24,6 +24,7 @@ import com.beanbeanjuice.command.settings.venting.VentingChannelCommand;
 import com.beanbeanjuice.command.settings.welcome.WelcomeChannelCommand;
 import com.beanbeanjuice.command.social.CountMembersCommand;
 import com.beanbeanjuice.command.social.VentCommand;
+import com.beanbeanjuice.command.twitch.TwitchChannelCommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -123,6 +124,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("yell", new YellCommand());
 
         // Twitch
+        commands.put("twitch-channel", new TwitchChannelCommand());
 
         // Moderation
         commands.put("add-poll", new AddPollCommand());

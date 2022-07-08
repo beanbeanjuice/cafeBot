@@ -101,6 +101,13 @@
             <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Twitch Connections -->
+        <dependency>
+            <groupId>com.github.twitch4j</groupId>
+            <artifactId>twitch4j</artifactId>
+            <version>1.10.0</version>
+        </dependency>
     </dependencies>
 
 </project>

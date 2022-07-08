@@ -17,6 +17,7 @@ import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.logging.LogManager;
 import com.beanbeanjuice.utility.section.moderation.raffle.RaffleHandler;
 import com.beanbeanjuice.utility.section.settings.DailyChannelHandler;
+import com.beanbeanjuice.utility.section.twitch.TwitchHandler;
 import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import net.dv8tion.jda.api.JDA;
@@ -44,6 +45,7 @@ public class Bot {
     public static final String BOT_VERSION = System.getenv("CAFEBOT_VERSION");
     private static final String BOT_TOKEN = System.getenv("CAFEBOT_TOKEN");
     public static final String BOT_USER_AGENT = "java:com.beanbeanjuice.cafeBot:" + BOT_VERSION;
+    public static final String TWITCH_ACCESS_TOKEN = System.getenv("CAFEBOT_TWITCH_ACCESS_TOKEN");
     private static JDA bot;
 
     // API
@@ -113,6 +115,7 @@ public class Bot {
         RaffleHandler.start();
         BirthdayHandler.start();  // TODO: Not sure if this is needed. Static class?
         DailyChannelHandler.start();
+        TwitchHandler.start();
 
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         updateGuildPresence();
