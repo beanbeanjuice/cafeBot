@@ -3,6 +3,7 @@ package com.beanbeanjuice.utility.handler.guild;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
+import com.beanbeanjuice.utility.section.twitch.TwitchHandler;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +43,7 @@ public class CustomGuild {
      * @param twitchChannels          The {@link ArrayList<String>} of twitch channels for the {@link Guild}.
      * @param mutedRoleID             The ID of the muted {@link Role} for the {@link Guild}.
      * @param liveNotificationsRoleID The ID of the live notifications {@link Role} for the {@link Guild}.
-     * @param notifyOnUpdate          The {@link Boolean} of whether or not to notify the {@link Guild} on an update to the Bot.
+     * @param notifyOnUpdate          The {@link Boolean} of whether to notify the {@link Guild} on an update to the Bot.
      * @param updateChannelID         The ID of the {@link TextChannel} to send the bot update notifications to.
      * @param pollChannelID           The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.section.moderation.poll.Poll Polls}.
 //     * @param birthdayChannelID       The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler Birthday} notifications.
@@ -551,51 +552,50 @@ public class CustomGuild {
         }
     }
 
-    // TODO: Implement this
-//    /**
-//     * Add a twitch channel to the {@link Guild}.
-//     * @param twitchChannel The name of the twitch channel to add.
-//     * @return True, if the twitch channel was successfully added.
-//     */
-//    @NotNull
-//    public Boolean addTwitchChannel(String twitchChannel) {
-//        twitchChannel = twitchChannel.toLowerCase();
-//
-//        if (twitchChannels.contains(twitchChannel)) {
-//            return false;
-//        }
-//
-//        if (GuildHandler.addTwitchChannel(guildID, twitchChannel)) {
-//            twitchChannels.add(twitchChannel.toLowerCase());
-//            Bot.getTwitchHandler().addTwitchChannel(twitchChannel);
-//
-//            return Bot.getTwitchHandler().addCache(guildID, twitchChannel);
-//        }
-//
-//        return false;
-//    }
+    /**
+     * Add a twitch channel to the {@link Guild}.
+     * @param twitchChannel The name of the twitch channel to add.
+     * @return True, if the twitch channel was successfully added.
+     */
+    @NotNull
+    public Boolean addTwitchChannel(String twitchChannel) {
+        twitchChannel = twitchChannel.toLowerCase();
 
-//    /**
-//     * Removes a twitch channel from the {@link Guild}.
-//     * @param twitchChannel The name of the twitch channel to be removed.
-//     * @return True, if the twitch channel was successfully removed.
-//     */
-//    @NotNull
-//    public Boolean removeTwitchChannel(String twitchChannel) {
-//        twitchChannel = twitchChannel.toLowerCase();
-//
-//        if (!twitchChannels.contains(twitchChannel)) {
-//            return false;
-//        }
-//
-//        if (GuildHandler.removeTwitchChannel(guildID, twitchChannel)) {
-//            twitchChannels.remove(twitchChannel.toLowerCase());
-//
-//            return Bot.getTwitchHandler().removeCache(guildID, twitchChannel);
-//        }
-//
-//        return false;
-//    }
+        if (twitchChannels.contains(twitchChannel)) {
+            return false;
+        }
+
+        if (GuildHandler.addTwitchChannel(guildID, twitchChannel)) {
+            twitchChannels.add(twitchChannel.toLowerCase());
+            TwitchHandler.addTwitchChannel(twitchChannel);
+
+            return TwitchHandler.addCache(guildID, twitchChannel);
+        }
+
+        return false;
+    }
+
+    /**
+     * Removes a twitch channel from the {@link Guild}.
+     * @param twitchChannel The name of the twitch channel to be removed.
+     * @return True, if the twitch channel was successfully removed.
+     */
+    @NotNull
+    public Boolean removeTwitchChannel(String twitchChannel) {
+        twitchChannel = twitchChannel.toLowerCase();
+
+        if (!twitchChannels.contains(twitchChannel)) {
+            return false;
+        }
+
+        if (GuildHandler.removeTwitchChannel(guildID, twitchChannel)) {
+            twitchChannels.remove(twitchChannel.toLowerCase());
+
+            return TwitchHandler.removeCache(guildID, twitchChannel);
+        }
+
+        return false;
+    }
 
     /**
      * Update the twitch channel for the {@link CustomGuild}.
