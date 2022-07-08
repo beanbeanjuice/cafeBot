@@ -19,8 +19,10 @@ import com.beanbeanjuice.command.settings.poll.PollChannelCommand;
 import com.beanbeanjuice.command.moderation.AddRaffleCommand;
 import com.beanbeanjuice.command.settings.raffle.RaffleChannelCommand;
 import com.beanbeanjuice.command.settings.update.BotUpdateCommand;
+import com.beanbeanjuice.command.settings.venting.VentingChannelCommand;
 import com.beanbeanjuice.command.settings.welcome.WelcomeChannelCommand;
 import com.beanbeanjuice.command.social.CountMembersCommand;
+import com.beanbeanjuice.command.social.VentCommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -87,6 +89,7 @@ public class CommandHandler extends ListenerAdapter {
 
         // Social
         commands.put("count-members", new CountMembersCommand());
+        commands.put("vent", new VentCommand());
 
         // Interaction
         commands.put("bite", new BiteCommand());
@@ -133,6 +136,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("poll-channel", new PollChannelCommand());
         commands.put("raffle-channel", new RaffleChannelCommand());
         commands.put("bot-update", new BotUpdateCommand());
+        commands.put("venting-channel", new VentingChannelCommand());
         commands.put("welcome-channel", new WelcomeChannelCommand());
         commands.put("ai", new AiCommand());
         commands.put("list-custom-channels", new ListCustomChannelsCommand());
