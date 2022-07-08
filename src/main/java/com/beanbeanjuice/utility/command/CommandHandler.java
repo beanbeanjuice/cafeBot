@@ -14,6 +14,7 @@ import com.beanbeanjuice.command.settings.AiCommand;
 import com.beanbeanjuice.command.settings.ListCustomChannelsCommand;
 import com.beanbeanjuice.command.settings.counting.CountingChannelCommand;
 import com.beanbeanjuice.command.settings.daily.DailyChannelCommand;
+import com.beanbeanjuice.command.settings.logging.LogChannelCommand;
 import com.beanbeanjuice.command.settings.poll.PollChannelCommand;
 import com.beanbeanjuice.command.moderation.AddRaffleCommand;
 import com.beanbeanjuice.command.settings.raffle.RaffleChannelCommand;
@@ -128,6 +129,7 @@ public class CommandHandler extends ListenerAdapter {
         // Settings
         commands.put("counting-channel", new CountingChannelCommand());
         commands.put("daily-channel", new DailyChannelCommand());
+        commands.put("log-channel", new LogChannelCommand());
         commands.put("poll-channel", new PollChannelCommand());
         commands.put("raffle-channel", new RaffleChannelCommand());
         commands.put("bot-update", new BotUpdateCommand());
