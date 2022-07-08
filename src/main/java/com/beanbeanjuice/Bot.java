@@ -1,6 +1,7 @@
 package com.beanbeanjuice;
 
 import com.beanbeanjuice.utility.handler.CountingHandler;
+import com.beanbeanjuice.utility.listener.WelcomeListener;
 import com.beanbeanjuice.utility.section.cafe.BeanCoinDonationHandler;
 import com.beanbeanjuice.utility.section.cafe.MenuHandler;
 import com.beanbeanjuice.utility.section.fun.BirthdayHandler;
@@ -93,7 +94,8 @@ public class Bot {
         bot.addEventListener(
                 commandHandler,
                 new ServerListener(), // Listening for Guild Joins/Leaves
-                new MessageListener() // Listening for specific messages TODO: Add "AI" support.
+                new MessageListener(), // Listening for specific messages TODO: Add "AI" support.
+                new WelcomeListener()  // Listening for user joins for a guild.
         );
 
         logger.setLogChannel(homeGuildLogChannel);
