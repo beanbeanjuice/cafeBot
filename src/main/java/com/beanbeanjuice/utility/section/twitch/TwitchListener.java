@@ -13,7 +13,7 @@ import com.github.twitch4j.TwitchClientBuilder;
  */
 public class TwitchListener {
 
-    private TwitchClient twitchClient;
+    private final TwitchClient twitchClient;
 
     /**
      * Creates a new {@link TwitchListener} object.
@@ -21,9 +21,8 @@ public class TwitchListener {
     public TwitchListener() {
         twitchClient = TwitchClientBuilder.builder()
                 .withEnableHelix(true)
-                .withEnableChat(true)
                 .withDefaultAuthToken(new OAuth2Credential("twitch", Bot.TWITCH_ACCESS_TOKEN))
-                .withDefaultEventHandler(SimpleEventHandler.class)
+                .withDefaultEventHandler(TwitchMessageEventHandler.class)
                 .build();
     }
 
@@ -52,7 +51,6 @@ public class TwitchListener {
     }
 
     /**
-     *
      * @return The current {@link TwitchClient}.
      */
     public TwitchClient getTwitchClient() {

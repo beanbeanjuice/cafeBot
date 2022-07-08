@@ -17,7 +17,6 @@ public class TwitchHandler {
 
     private static ArrayList<String> alreadyAddedTwitchNames;
     private static TwitchListener twitchListener;
-
     private static HashMap<String, ArrayList<String>> guildTwitches;
 
     /**
@@ -28,7 +27,16 @@ public class TwitchHandler {
         twitchListener = new TwitchListener();
         guildTwitches = new HashMap<>();
         cacheTwitchChannels();
+
+        // Register the event handler.
         twitchListener.addEventHandler(new TwitchMessageEventHandler());
+    }
+
+    /**
+     * @return The current {@link TwitchListener}.
+     */
+    public static TwitchListener getTwitchListener() {
+        return twitchListener;
     }
 
     /**
@@ -69,6 +77,8 @@ public class TwitchHandler {
 
     /**
      * Caches the twitch channels for every {@link net.dv8tion.jda.api.entities.Invite.Guild Guild}.
+     *
+     * This does not register the events.
      */
     private static void cacheTwitchChannels() {
         try {

@@ -90,6 +90,7 @@ public class Bot {
                 .build()
                 .awaitReady();
 
+        TwitchHandler.start();  // Start twitch handler prior to guild handler.
         GuildHandler.start();  // Starting hte guild handler.
         homeGuild = bot.getGuildById(HOME_GUILD_ID);
         homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
@@ -115,7 +116,6 @@ public class Bot {
         RaffleHandler.start();
         BirthdayHandler.start();  // TODO: Not sure if this is needed. Static class?
         DailyChannelHandler.start();
-        TwitchHandler.start();
 
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         updateGuildPresence();
