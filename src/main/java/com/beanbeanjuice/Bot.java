@@ -16,6 +16,7 @@ import com.beanbeanjuice.utility.listener.ServerListener;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.logging.LogManager;
 import com.beanbeanjuice.utility.section.moderation.raffle.RaffleHandler;
+import com.beanbeanjuice.utility.section.settings.DailyChannelHandler;
 import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import net.dv8tion.jda.api.JDA;
@@ -111,6 +112,7 @@ public class Bot {
         PollHandler.start();
         RaffleHandler.start();
         BirthdayHandler.start();  // TODO: Not sure if this is needed. Static class?
+        DailyChannelHandler.start();
 
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         updateGuildPresence();
