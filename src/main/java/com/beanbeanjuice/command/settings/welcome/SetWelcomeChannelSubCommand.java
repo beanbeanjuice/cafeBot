@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation.welcome;
+package com.beanbeanjuice.command.settings.welcome;
 
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
@@ -43,7 +43,7 @@ public class SetWelcomeChannelSubCommand implements ISubCommand {
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.MODERATION;
+        return CommandCategory.SETTINGS;
     }
 
     @NotNull

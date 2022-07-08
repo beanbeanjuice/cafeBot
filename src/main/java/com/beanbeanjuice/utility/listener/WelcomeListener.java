@@ -1,7 +1,7 @@
 package com.beanbeanjuice.utility.listener;
 
 import com.beanbeanjuice.Bot;
-import com.beanbeanjuice.command.moderation.welcome.EditWelcomeMessageSubCommand;
+import com.beanbeanjuice.command.settings.welcome.EditWelcomeMessageSubCommand;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;

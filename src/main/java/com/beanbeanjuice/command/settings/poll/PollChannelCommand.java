@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation.poll;
+package com.beanbeanjuice.command.settings.poll;
 
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -36,7 +36,7 @@ public class PollChannelCommand implements ICommand {
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.MODERATION;
+        return CommandCategory.SETTINGS;
     }
 
     @NotNull

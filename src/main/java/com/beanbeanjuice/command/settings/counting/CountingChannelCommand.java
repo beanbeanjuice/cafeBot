@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation.counting;
+package com.beanbeanjuice.command.settings.counting;
 
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -36,7 +36,7 @@ public class CountingChannelCommand implements ICommand {
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.MODERATION;
+        return CommandCategory.SETTINGS;
     }
 
     @NotNull

@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation.welcome;
+package com.beanbeanjuice.command.settings.raffle;
 
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -11,10 +11,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used for setting/removing the welcome {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}
- * in a {@link net.dv8tion.jda.api.entities.Guild Guild} and/or editing the welcome message.
+ * An {@link ICommand} used to set/remove the {@link com.beanbeanjuice.utility.section.moderation.raffle.Raffle Raffle} {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+ *
+ * @author beanbeanjuice
  */
-public class WelcomeChannelCommand implements ICommand {
+public class RaffleChannelCommand implements ICommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) { }
@@ -22,28 +23,27 @@ public class WelcomeChannelCommand implements ICommand {
     @NotNull
     @Override
     public String getDescription() {
-        return "Set/Remove the welcome channel or edit the welcome message!";
+        return "Set or remove the raffle channel!";
     }
 
     @NotNull
     @Override
     public String exampleUsage() {
-        return "`/welcome-channel set` or `/welcome-channel remove` or `/welcome-channel edit-message`";
+        return "`/raffle-channel set` or `/raffle-channel remove`";
     }
 
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.MODERATION;
+        return CommandCategory.SETTINGS;
     }
 
     @NotNull
     @Override
     public ArrayList<ISubCommand> getSubCommands() {
         ArrayList<ISubCommand> subCommands = new ArrayList<>();
-        subCommands.add(new SetWelcomeChannelSubCommand());
-        subCommands.add(new RemoveWelcomeChannelSubCommand());
-        subCommands.add(new EditWelcomeMessageSubCommand());
+        subCommands.add(new SetRaffleChannelSubCommand());
+        subCommands.add(new RemoveRaffleChannelSubCommand());
         return subCommands;
     }
 

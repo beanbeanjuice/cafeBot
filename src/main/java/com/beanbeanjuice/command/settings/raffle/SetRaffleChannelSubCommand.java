@@ -1,5 +1,6 @@
-package com.beanbeanjuice.command.moderation.welcome;
+package com.beanbeanjuice.command.settings.raffle;
 
+import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
@@ -8,19 +9,20 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Removes the current welcome {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}
- * from the specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
+ * An {@link ISubCommand} used to set the {@link com.beanbeanjuice.utility.section.moderation.raffle.Raffle Raffle} {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
-public class RemoveWelcomeChannelSubCommand implements ISubCommand {
+public class SetRaffleChannelSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        if (GuildHandler.getCustomGuild(event.getGuild()).setWelcomeChannelID("0")) {
+
+        // Attempt to add the raffle channel to the database.
+        if (GuildHandler.getCustomGuild(event.getGuild()).setRaffleChannel(event.getChannel().getId())) {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                    "Removed Welcome Channel",
-                    "The welcome channel has been successfully removed!"
+                    "Set Raffle Channel",
+                    "This channel has been set to an active raffle channel!"
             )).queue();
             return;
         }
@@ -30,19 +32,19 @@ public class RemoveWelcomeChannelSubCommand implements ISubCommand {
     @NotNull
     @Override
     public String getDescription() {
-        return "Remove the current welcome channel!";
+        return "Set the current channel to the raffle channel!";
     }
 
     @NotNull
     @Override
     public String exampleUsage() {
-        return "`/welcome-channel remove`";
+        return "`/raffle-channel set`";
     }
 
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.MODERATION;
+        return CommandCategory.SETTINGS;
     }
 
     @NotNull
@@ -54,7 +56,7 @@ public class RemoveWelcomeChannelSubCommand implements ISubCommand {
     @NotNull
     @Override
     public String getName() {
-        return "remove";
+        return "set";
     }
 
 }

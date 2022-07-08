@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation.counting;
+package com.beanbeanjuice.command.settings.counting;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
@@ -95,7 +95,7 @@ public class CountingChannelFailureRoleSubCommand implements ISubCommand {
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.MODERATION;
+        return CommandCategory.SETTINGS;
     }
 
     @NotNull
