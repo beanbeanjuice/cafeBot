@@ -15,6 +15,7 @@ import com.beanbeanjuice.command.moderation.counting.CountingChannelCommand;
 import com.beanbeanjuice.command.moderation.poll.PollChannelCommand;
 import com.beanbeanjuice.command.moderation.raffle.AddRaffleCommand;
 import com.beanbeanjuice.command.moderation.raffle.RaffleChannelCommand;
+import com.beanbeanjuice.command.moderation.welcome.WelcomeChannelCommand;
 import com.beanbeanjuice.command.social.CountMembersCommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import net.dv8tion.jda.api.JDA;
@@ -121,6 +122,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("poll-channel", new PollChannelCommand());
         commands.put("add-raffle", new AddRaffleCommand());
         commands.put("raffle-channel", new RaffleChannelCommand());
+        commands.put("welcome-channel", new WelcomeChannelCommand());
         commands.put("clear-chat", new ClearChatCommand());
         commands.put("create-embed", new CreateEmbedCommand());
         commands.put("list-custom-channels", new ListCustomChannelsCommand());
