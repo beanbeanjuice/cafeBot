@@ -10,6 +10,7 @@ import com.beanbeanjuice.command.moderation.AddPollCommand;
 import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.ClearChatCommand;
 import com.beanbeanjuice.command.moderation.CreateEmbedCommand;
+import com.beanbeanjuice.command.settings.AiCommand;
 import com.beanbeanjuice.command.settings.ListCustomChannelsCommand;
 import com.beanbeanjuice.command.settings.counting.CountingChannelCommand;
 import com.beanbeanjuice.command.settings.poll.PollChannelCommand;
@@ -129,6 +130,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("raffle-channel", new RaffleChannelCommand());
         commands.put("bot-update", new BotUpdateCommand());
         commands.put("welcome-channel", new WelcomeChannelCommand());
+        commands.put("ai", new AiCommand());
         commands.put("list-custom-channels", new ListCustomChannelsCommand());
 
         // =======================
