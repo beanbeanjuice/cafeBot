@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation.welcome;
+package com.beanbeanjuice.command.settings.welcome;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
@@ -101,7 +101,7 @@ public class EditWelcomeMessageSubCommand implements ISubCommand {
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.MODERATION;
+        return CommandCategory.SETTINGS;
     }
 
     @NotNull

@@ -1,28 +1,29 @@
-package com.beanbeanjuice.command.moderation.counting;
+package com.beanbeanjuice.command.settings.poll;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.section.moderation.poll.Poll;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An {@link ISubCommand} used to remove the counting {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}
- * from a specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
+ * An {@link ISubCommand} used to remove the {@link Poll Poll} {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
-public class RemoveCountingChannelSubCommand implements ISubCommand {
+public class RemovePollChannelSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        // Try to set the counting channel to "null" or "0"
-        if (GuildHandler.getCustomGuild(event.getGuild()).setCountingChannel("0")) {
+
+        // Makes sure the poll channel has been removed from the database.
+        if (GuildHandler.getCustomGuild(event.getGuild()).setPollChannel("0")) {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                    "Removed Counting Channel",
-                    "Successfully removed the counting channel."
+                    "Removed Poll Channel",
+                    "The poll channel has been successfully removed."
             )).queue();
             return;
         }
@@ -32,19 +33,19 @@ public class RemoveCountingChannelSubCommand implements ISubCommand {
     @NotNull
     @Override
     public String getDescription() {
-        return "Remove the counting channel.";
+        return "Remove the poll channel!";
     }
 
     @NotNull
     @Override
     public String exampleUsage() {
-        return "`/counting-channel remove`";
+        return "`/poll-channel remove`";
     }
 
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.MODERATION;
+        return CommandCategory.SETTINGS;
     }
 
     @NotNull

@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation.raffle;
+package com.beanbeanjuice.command.settings.counting;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
@@ -9,20 +9,20 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An {@link ISubCommand} used to remove the {@link com.beanbeanjuice.utility.section.moderation.raffle.Raffle Raffle} {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+ * An {@link ISubCommand} used to remove the counting {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}
+ * from a specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
  *
  * @author beanbeanjuice
  */
-public class RemoveRaffleChannelSubCommand implements ISubCommand {
+public class RemoveCountingChannelSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-
-        // Attempt to remove the raffle channel from the database.
-        if (GuildHandler.getCustomGuild(event.getGuild()).setRaffleChannel("0")) {
+        // Try to set the counting channel to "null" or "0"
+        if (GuildHandler.getCustomGuild(event.getGuild()).setCountingChannel("0")) {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                    "Removed Raffle Channel",
-                    "The raffle channel has been successfully removed."
+                    "Removed Counting Channel",
+                    "Successfully removed the counting channel."
             )).queue();
             return;
         }
@@ -32,19 +32,19 @@ public class RemoveRaffleChannelSubCommand implements ISubCommand {
     @NotNull
     @Override
     public String getDescription() {
-        return "Remove the raffle channel!";
+        return "Remove the counting channel.";
     }
 
     @NotNull
     @Override
     public String exampleUsage() {
-        return "`/raffle-channel remove`";
+        return "`/counting-channel remove`";
     }
 
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.MODERATION;
+        return CommandCategory.SETTINGS;
     }
 
     @NotNull

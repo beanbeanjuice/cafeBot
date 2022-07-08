@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation.raffle;
+package com.beanbeanjuice.command.moderation;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;

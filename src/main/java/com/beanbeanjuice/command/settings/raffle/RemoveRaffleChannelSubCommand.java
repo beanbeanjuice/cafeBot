@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation.raffle;
+package com.beanbeanjuice.command.settings.raffle;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
@@ -9,20 +9,20 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An {@link ISubCommand} used to set the {@link com.beanbeanjuice.utility.section.moderation.raffle.Raffle Raffle} {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+ * An {@link ISubCommand} used to remove the {@link com.beanbeanjuice.utility.section.moderation.raffle.Raffle Raffle} {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
-public class SetRaffleChannelSubCommand implements ISubCommand {
+public class RemoveRaffleChannelSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
 
-        // Attempt to add the raffle channel to the database.
-        if (GuildHandler.getCustomGuild(event.getGuild()).setRaffleChannel(event.getChannel().getId())) {
+        // Attempt to remove the raffle channel from the database.
+        if (GuildHandler.getCustomGuild(event.getGuild()).setRaffleChannel("0")) {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                    "Set Raffle Channel",
-                    "This channel has been set to an active raffle channel!"
+                    "Removed Raffle Channel",
+                    "The raffle channel has been successfully removed."
             )).queue();
             return;
         }
@@ -32,19 +32,19 @@ public class SetRaffleChannelSubCommand implements ISubCommand {
     @NotNull
     @Override
     public String getDescription() {
-        return "Set the current channel to the raffle channel!";
+        return "Remove the raffle channel!";
     }
 
     @NotNull
     @Override
     public String exampleUsage() {
-        return "`/raffle-channel set`";
+        return "`/raffle-channel remove`";
     }
 
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.MODERATION;
+        return CommandCategory.SETTINGS;
     }
 
     @NotNull
@@ -56,7 +56,7 @@ public class SetRaffleChannelSubCommand implements ISubCommand {
     @NotNull
     @Override
     public String getName() {
-        return "set";
+        return "remove";
     }
 
 }

@@ -1,52 +1,48 @@
-package com.beanbeanjuice.command.moderation.poll;
+package com.beanbeanjuice.command.settings.welcome;
 
-import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
-import com.beanbeanjuice.utility.section.moderation.poll.Poll;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An {@link ISubCommand} used to set the {@link Poll Poll} {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+ * Removes the current welcome {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}
+ * from the specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
  *
  * @author beanbeanjuice
  */
-public class SetPollChannelSubCommand implements ISubCommand {
+public class RemoveWelcomeChannelSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-
-        // Makes sure the poll channel has been added to the database.
-        if (GuildHandler.getCustomGuild(event.getGuild()).setPollChannel(event.getChannel().getId())) {
+        if (GuildHandler.getCustomGuild(event.getGuild()).setWelcomeChannelID("0")) {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                    "Set Poll Channel",
-                    "The current channel has been set to a `poll` channel!"
+                    "Removed Welcome Channel",
+                    "The welcome channel has been successfully removed!"
             )).queue();
             return;
         }
-
         event.getHook().sendMessageEmbeds(Helper.sqlServerError()).queue();
     }
 
     @NotNull
     @Override
     public String getDescription() {
-        return "Set the current channel to poll channel!";
+        return "Remove the current welcome channel!";
     }
 
     @NotNull
     @Override
     public String exampleUsage() {
-        return "`/poll-channel set #general` or `/poll-channel set`";
+        return "`/welcome-channel remove`";
     }
 
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.MODERATION;
+        return CommandCategory.SETTINGS;
     }
 
     @NotNull
@@ -58,7 +54,7 @@ public class SetPollChannelSubCommand implements ISubCommand {
     @NotNull
     @Override
     public String getName() {
-        return "set";
+        return "remove";
     }
 
 }

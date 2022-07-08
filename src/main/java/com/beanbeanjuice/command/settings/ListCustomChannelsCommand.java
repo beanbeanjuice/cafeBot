@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.moderation;
+package com.beanbeanjuice.command.settings;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
@@ -52,7 +52,7 @@ public class ListCustomChannelsCommand implements ICommand {
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.MODERATION;
+        return CommandCategory.SETTINGS;
     }
 
     @NotNull
