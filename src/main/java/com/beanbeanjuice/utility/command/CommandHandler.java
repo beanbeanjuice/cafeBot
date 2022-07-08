@@ -63,6 +63,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("dice-roll", new DiceRollCommand());
         commands.put("8-ball", new EightBallCommand());
         commands.put("get-game-data", new GetGameDataCommand());
+        commands.put("tic-tac-toe", new TicTacToeCommand());
 
         // Generic
         commands.put("bot-donate", new BotDonateCommand());
