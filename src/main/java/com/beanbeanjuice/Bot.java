@@ -122,6 +122,7 @@ public class Bot {
         logger.log(Bot.class, LogLevel.OKAY, "The bot is online!");
 
         new GitHubUpdateHelper().start();  // Notify Guilds of Update
+        Helper.startHourlyUpdateTimer();
     }
 
     /**

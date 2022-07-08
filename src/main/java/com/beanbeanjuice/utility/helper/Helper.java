@@ -2,6 +2,7 @@ package com.beanbeanjuice.utility.helper;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.logging.LogLevel;
+import com.sun.management.OperatingSystemMXBean;
 import io.github.beanbeanjuice.cafeapi.CafeAPI;
 import io.github.beanbeanjuice.cafeapi.requests.RequestLocation;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.lang.management.ManagementFactory;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,6 +26,62 @@ import java.util.concurrent.TimeUnit;
  * @author beanbeanjuice
  */
 public class Helper {
+
+    public static void startHourlyUpdateTimer() {
+        Timer updateTimer = new Timer();
+        TimerTask updateTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                User owner = getUser("690927484199370753");
+
+                Bot.getBot().getRestPing().queue((ping) -> {
+                    pmUser(owner, getUpdateEmbed(ping, Bot.getBot().getGatewayPing()));
+                });
+            }
+        };
+        updateTimer.scheduleAtFixedRate(updateTimerTask, 0, 3600000);
+    }
+
+    @NotNull
+    private static MessageEmbed getUpdateEmbed(@NotNull Long botPing, @NotNull Long gatewayPing) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        StringBuilder descriptionBuilder = new StringBuilder();
+        double cpuLoad = (double) Math.round((ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCpuLoad()*100) * 100) / 100;
+        long systemMemoryTotal = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getTotalMemorySize()/1048576;
+        long systemMemoryUsage = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCommittedVirtualMemorySize()/1048576;
+        long dedicatedMemoryTotal = Runtime.getRuntime().maxMemory()/1048576;
+        long dedicatedMemoryUsage = Runtime.getRuntime().totalMemory()/1048576;
+        embedBuilder.setTitle("Hourly CafeBot Update");
+        descriptionBuilder.append("**__System Status__**: Online\n\n");
+        descriptionBuilder.append("**__Rest Ping__** - `").append(botPing).append("`\n")
+                .append("**__Gateway Ping__** - `").append(gatewayPing).append("`\n")
+                .append("**__Current Version__** - `").append(Bot.BOT_VERSION).append("`\n")
+                .append("**__CPU Usage__** - `").append(cpuLoad).append("%`\n")
+                .append("**__OS Memory Usage__** - `").append(systemMemoryUsage).append("` mb / `").append(systemMemoryTotal).append("` mb\n")
+                .append("**__Bot Memory Usage__** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
+                .append("**__Bot Uptime__** - `").append(formatTimeDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
+                .append("**__Commands Run__** - `").append(Bot.commandsRun).append("`\n");
+
+        embedBuilder.setDescription(descriptionBuilder.toString());
+        embedBuilder.setThumbnail(Bot.DISCORD_AVATAR_URL);
+        embedBuilder.setColor(Color.green);
+        return embedBuilder.build();
+    }
+
+    /**
+     * Formats the specified time, including days.
+     * @param timeInMillis The time as a {@link Long} value.
+     * @return The formatted time {@link String}.
+     */
+    @NotNull
+    public static String formatTimeDays(@NotNull Long timeInMillis) {
+        final long days = timeInMillis / TimeUnit.DAYS.toMillis(1);
+        final long hours = timeInMillis % TimeUnit.DAYS.toMillis(1) / TimeUnit.HOURS.toMillis(1);
+        final long minutes = timeInMillis % TimeUnit.DAYS.toMillis(1) % TimeUnit.HOURS.toMillis(1) / TimeUnit.MINUTES.toMillis(1);
+        final long seconds = timeInMillis % TimeUnit.DAYS.toMillis(1) % TimeUnit.HOURS.toMillis(1) % TimeUnit.MINUTES.toMillis(1) / TimeUnit.SECONDS.toMillis(1);
+
+        return String.format("%02d:%02d:%02d:%02d", days, hours, minutes, seconds);
+    }
 
     /**
      * Shorten the message to a certain limit.
