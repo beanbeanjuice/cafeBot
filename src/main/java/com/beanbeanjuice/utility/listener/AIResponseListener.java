@@ -40,6 +40,8 @@ public class AIResponseListener extends ListenerAdapter {
         createSTFUMaps();
         createGenevieveMaps();
         createMikoriMaps();
+        createMeowMaps();
+        createWoofMaps();
     }
 
     private void createHelloMaps() {
@@ -164,13 +166,13 @@ public class AIResponseListener extends ListenerAdapter {
         commandTerms.add("i hate cafebot");
         commandTerms.add("i hate you cafebot");
 
-        responses.add("Who asked? Literally? Who?");
+        responses.add("Who asked? Literally? Who? <:stab_u:886216384864997406>");
         responses.add("I still have more of a purpose than you do.");
         responses.add("Imagine talking back to someone made of code?");
         responses.add("I'm still more intelligent than you.");
         responses.add("Imagine thinking I care?");
         responses.add("Imagine having an argument with a bot? Pepelaugh? Pepelaugh.");
-        responses.add("You need friends don't you? You're literally arguing with code.");
+        responses.add("You need friends don't you? You're literally arguing with code. <:stab_u:886216384864997406>");
 
         messageMap.put(commandTerms, responses);
     }
@@ -228,6 +230,8 @@ public class AIResponseListener extends ListenerAdapter {
         responses.add("Genevieve??!? The gamer gurl? uwu");
         responses.add("If you don't think Genevieve is hot girl sh*t then get out honestly...");
         responses.add("Genevieve! ❤");
+        responses.add("The only matweial gowrl that the world needs!");
+        responses.add("She's stacked at royal high on roblox.");
 
         messageMap.put(commandTerms, responses);
     }
@@ -243,6 +247,34 @@ public class AIResponseListener extends ListenerAdapter {
         responses.add("Mikori? Mikori... hmmm.. I've heard their name before but not good things.");
         responses.add("My creator tells me to stay away from someone named Mikori...");
         responses.add("Mikori? <:madison_when_short:843673314990882836> STAY AWAY");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createMeowMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("meow");
+
+        responses.add("Meow! <a:catpats:950514533875720232>");
+        responses.add("猫🐱?");
+        responses.add("Meow! >3<");
+        responses.add("Meow meows? <:zerotwo_scream:841921420904497163>");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createWoofMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("woof");
+        commandTerms.add("bark");
+
+        responses.add("Woof woof!");
+        responses.add("Woof! <a:wiggle:886217792578269236>");
+        responses.add("Why are you acting like a dog? <:zerotwo_scream:841921420904497163>");
 
         messageMap.put(commandTerms, responses);
     }
