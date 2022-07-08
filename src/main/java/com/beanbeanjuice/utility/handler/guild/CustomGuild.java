@@ -80,7 +80,7 @@ public class CustomGuild {
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
-//        CafeBot.getTwitchHandler().addTwitchChannels(this.twitchChannels); // TODO: Implement this
+        TwitchHandler.addTwitchChannels(this.twitchChannels);
 
         deletingMessagesChannels = new ArrayList<>();
     }
@@ -145,7 +145,7 @@ public class CustomGuild {
      * Sets the venting {@link TextChannel} for the {@link Guild}.
      *
      * @param ventingChannelID The ID of the venting {@link TextChannel}.
-     * @return Whether or not updating the venting {@link TextChannel} was successful.
+     * @return True, if updating the venting {@link TextChannel} was successful.
      */
     @NotNull
     public Boolean setVentingChannelID(@NotNull String ventingChannelID) {
