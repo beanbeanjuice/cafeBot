@@ -18,6 +18,7 @@ import com.beanbeanjuice.command.settings.logging.LogChannelCommand;
 import com.beanbeanjuice.command.settings.poll.PollChannelCommand;
 import com.beanbeanjuice.command.moderation.AddRaffleCommand;
 import com.beanbeanjuice.command.settings.raffle.RaffleChannelCommand;
+import com.beanbeanjuice.command.settings.twitch.TwitchNotificationsCommand;
 import com.beanbeanjuice.command.settings.update.BotUpdateCommand;
 import com.beanbeanjuice.command.settings.venting.VentingChannelCommand;
 import com.beanbeanjuice.command.settings.welcome.WelcomeChannelCommand;
@@ -135,6 +136,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("log-channel", new LogChannelCommand());
         commands.put("poll-channel", new PollChannelCommand());
         commands.put("raffle-channel", new RaffleChannelCommand());
+        commands.put("twitch-notifications", new TwitchNotificationsCommand());
         commands.put("bot-update", new BotUpdateCommand());
         commands.put("venting-channel", new VentingChannelCommand());
         commands.put("welcome-channel", new WelcomeChannelCommand());
