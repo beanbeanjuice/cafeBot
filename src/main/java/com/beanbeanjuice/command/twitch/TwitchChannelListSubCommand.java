@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An {@link ISubCommand} used to list all of the twitch channels
+ * An {@link ISubCommand} used to list all the twitch channels
  * in a specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
  *
  * @author beanbeanjuice
