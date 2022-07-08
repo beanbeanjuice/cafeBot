@@ -36,15 +36,15 @@ public class GitHubUpdateHelper {
 
     /**
      * Compares the current version to the one stored in the database.
-     * @param currentVersion The {@link String} of the current version.
+     *
      * @return True, if the version in the database, is the one that is current.
      */
-    private Boolean compareVersions(@NotNull String currentVersion) {
+    private Boolean compareVersions() {
         try {
             String lastVersion = Bot.getCafeAPI().VERSION.getCurrentCafeBotVersion();
-            return currentVersion.startsWith(lastVersion);
+            return Bot.BOT_VERSION.startsWith(lastVersion);
         } catch (CafeException e) {
-            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Getting Current Bot Version: " + e.getMessage(), e);
+            Bot.getLogger().log(GitHubUpdateHelper.class, LogLevel.WARN, "Error Getting Current Bot Version: " + e.getMessage(), e);
             return true;
         }
     }
@@ -52,11 +52,11 @@ public class GitHubUpdateHelper {
     /**
      * A method used for contacting the guilds who have enabled the bot update notification.
      */
-    public void contactGuilds() {
+    public void start() {
 
         // Comparing the Version to the Database
-        if (compareVersions(Bot.BOT_VERSION)) {
-            Bot.getLogger().log(this.getClass(), LogLevel.INFO, "Not sending messages that there is an update as the versions match.");
+        if (compareVersions()) {
+            Bot.getLogger().log(GitHubUpdateHelper.class, LogLevel.INFO, "Not sending messages that there is an update as the versions match.");
             return;
         }
 

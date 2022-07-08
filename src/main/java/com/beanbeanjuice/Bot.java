@@ -1,5 +1,6 @@
 package com.beanbeanjuice;
 
+import com.beanbeanjuice.utility.api.GitHubUpdateHelper;
 import com.beanbeanjuice.utility.handler.CountingHandler;
 import com.beanbeanjuice.utility.listener.WelcomeListener;
 import com.beanbeanjuice.utility.section.cafe.BeanCoinDonationHandler;
@@ -112,6 +113,8 @@ public class Bot {
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         updateGuildPresence();
         logger.log(Bot.class, LogLevel.OKAY, "The bot is online!");
+
+        new GitHubUpdateHelper().start();  // Notify Guilds of Update
     }
 
     /**
