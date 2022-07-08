@@ -6,7 +6,7 @@
 
     <groupId>com.beanbeanjuice</groupId>
     <artifactId>cafeBot</artifactId>
-    <version>v3.0.0</version>
+    <version>${env.CAFEBOT_VERSION}</version>
 
     <build>
         <pluginManagement>

@@ -15,6 +15,7 @@ import com.beanbeanjuice.command.settings.counting.CountingChannelCommand;
 import com.beanbeanjuice.command.settings.poll.PollChannelCommand;
 import com.beanbeanjuice.command.moderation.AddRaffleCommand;
 import com.beanbeanjuice.command.settings.raffle.RaffleChannelCommand;
+import com.beanbeanjuice.command.settings.update.BotUpdateCommand;
 import com.beanbeanjuice.command.settings.welcome.WelcomeChannelCommand;
 import com.beanbeanjuice.command.social.CountMembersCommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
@@ -117,14 +118,17 @@ public class CommandHandler extends ListenerAdapter {
         // Twitch
 
         // Moderation
-        commands.put("counting-channel", new CountingChannelCommand());
         commands.put("add-poll", new AddPollCommand());
-        commands.put("poll-channel", new PollChannelCommand());
         commands.put("add-raffle", new AddRaffleCommand());
-        commands.put("raffle-channel", new RaffleChannelCommand());
-        commands.put("welcome-channel", new WelcomeChannelCommand());
         commands.put("clear-chat", new ClearChatCommand());
         commands.put("create-embed", new CreateEmbedCommand());
+
+        // Settings
+        commands.put("counting-channel", new CountingChannelCommand());
+        commands.put("poll-channel", new PollChannelCommand());
+        commands.put("raffle-channel", new RaffleChannelCommand());
+        commands.put("bot-update", new BotUpdateCommand());
+        commands.put("welcome-channel", new WelcomeChannelCommand());
         commands.put("list-custom-channels", new ListCustomChannelsCommand());
 
         // =======================
