@@ -2,8 +2,8 @@ package com.beanbeanjuice;
 
 import com.beanbeanjuice.utility.api.GitHubUpdateHelper;
 import com.beanbeanjuice.utility.handler.CountingHandler;
-import com.beanbeanjuice.utility.listener.AIResponseListener;
-import com.beanbeanjuice.utility.listener.WelcomeListener;
+import com.beanbeanjuice.utility.handler.VoiceChatRoleBindHandler;
+import com.beanbeanjuice.utility.listener.*;
 import com.beanbeanjuice.utility.section.cafe.BeanCoinDonationHandler;
 import com.beanbeanjuice.utility.section.cafe.MenuHandler;
 import com.beanbeanjuice.utility.section.fun.BirthdayHandler;
@@ -11,8 +11,6 @@ import com.beanbeanjuice.utility.section.moderation.poll.PollHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.command.CommandHandler;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
-import com.beanbeanjuice.utility.listener.MessageListener;
-import com.beanbeanjuice.utility.listener.ServerListener;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.logging.LogManager;
 import com.beanbeanjuice.utility.section.moderation.raffle.RaffleHandler;
@@ -83,7 +81,8 @@ public class Bot {
                         GatewayIntent.DIRECT_MESSAGES
                 )
                 .enableCache(
-                        CacheFlag.EMOJI
+                        CacheFlag.EMOJI,
+                        CacheFlag.VOICE_STATE
                 )
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .setChunkingFilter(ChunkingFilter.ALL)
@@ -99,10 +98,11 @@ public class Bot {
         commandHandler = new CommandHandler(bot);
         bot.addEventListener(
                 commandHandler,
-                new ServerListener(), // Listening for Guild Joins/Leaves
-                new MessageListener(), // Listening for specific messages
+                new ServerListener(),  // Listening for Guild Joins/Leaves
+                new MessageListener(),  // Listening for specific messages
                 new WelcomeListener(),  // Listening for user joins for a guild.
-                new AIResponseListener()
+                new AIResponseListener(),  // Listening for messages.
+                new VoiceChatRoleBindListener()  // Listening for voice joins/leaves
         );
 
         logger.setLogChannel(homeGuildLogChannel);
@@ -114,8 +114,9 @@ public class Bot {
         MenuHandler.start();
         PollHandler.start();
         RaffleHandler.start();
-        BirthdayHandler.start();  // TODO: Not sure if this is needed. Static class?
+        BirthdayHandler.start();
         DailyChannelHandler.start();
+        VoiceChatRoleBindHandler.start();
 
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
         updateGuildPresence();
