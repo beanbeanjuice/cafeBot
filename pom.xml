@@ -9,10 +9,16 @@
     <version>${env.CAFEBOT_VERSION}</version>
     <packaging>jar</packaging>
 
+    <properties>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <jarName>${artifactId}-${version}</jarName>
+    </properties>
+
     <!-- Command: mvn clean compile assembly:single -->
     <build>
-        <finalName>testttsd</finalName>
-
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -49,6 +55,8 @@
                         <descriptorRefs>
                             <descriptorRef>jar-with-dependencies</descriptorRef>
                         </descriptorRefs>
+                        <finalName>${jarName}</finalName>
+                        <appendAssemblyId>false</appendAssemblyId>
                     </configuration>
                     <executions>
                         <execution>
@@ -63,13 +71,6 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <properties>
-        <maven.compiler.source>16</maven.compiler.source>
-        <maven.compiler.target>16</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>
 
     <repositories>
         <!-- Sonatype Snapshot Repository -->
@@ -94,7 +95,7 @@
         </dependency>
 
 
-        <!-- Cafe API -->
+        <!-- Café API -->
         <dependency>
             <groupId>io.github.beanbeanjuice</groupId>
             <artifactId>cafe-api-wrapper</artifactId>

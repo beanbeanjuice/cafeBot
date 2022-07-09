@@ -10,6 +10,7 @@ import com.beanbeanjuice.command.moderation.AddPollCommand;
 import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.ClearChatCommand;
 import com.beanbeanjuice.command.moderation.CreateEmbedCommand;
+import com.beanbeanjuice.command.moderation.bind.BindCommand;
 import com.beanbeanjuice.command.settings.AiCommand;
 import com.beanbeanjuice.command.settings.ListCustomChannelsCommand;
 import com.beanbeanjuice.command.settings.counting.CountingChannelCommand;
@@ -127,6 +128,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("twitch-channel", new TwitchChannelCommand());
 
         // Moderation
+        commands.put("bind", new BindCommand());
         commands.put("add-poll", new AddPollCommand());
         commands.put("add-raffle", new AddRaffleCommand());
         commands.put("clear-chat", new ClearChatCommand());
