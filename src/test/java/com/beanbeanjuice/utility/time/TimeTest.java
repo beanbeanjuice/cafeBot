@@ -1,9 +1,13 @@
 package com.beanbeanjuice.utility.time;
 
+import io.github.beanbeanjuice.cafeapi.utility.Time;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.text.ParseException;
 import java.time.Instant;
+import java.util.Date;
+import java.util.TimeZone;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,4 +34,38 @@ class TimeTest {
         time.setDefaultFormat("MM-dd-yyyy");
         assertDoesNotThrow(() -> { time.format(); });
     }
+
+    @Test
+    @DisplayName("Convert Date")
+    public void testUTCConversion() throws ParseException, InterruptedException {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        Date date = Time.getFullDate("02-02-2020", TimeZone.getTimeZone("UTC"));
+        assertEquals("Sun Feb 02 00:00:00 UTC 2020", date.toString());
+    }
+
+    @Test
+    @DisplayName("Test Valid Timezone")
+    public void testValidTimezone() {
+        assertFalse(Time.isValidTimeZone("bruh"));
+        assertFalse(Time.isValidTimeZone("est"));
+        assertTrue(Time.isValidTimeZone("EST"));
+    }
+
+    @Test
+    @DisplayName("Test Date Passed")
+    public void testDatePassing() throws ParseException {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        assertTrue(Time.dateHasPassed(Time.getFullDate("02-02-2020", TimeZone.getTimeZone("EST"))));
+        assertTrue(Time.dateHasPassed(new Date()));
+        assertFalse(Time.dateHasPassed(new Date(System.currentTimeMillis() + 86400000)));  // 86400000 milliseconds in a day
+    }
+
+    @Test
+    @DisplayName("Test Current Date")
+    public void testCurrentDate() throws ParseException {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        assertTrue(Time.isDate(new Date()));
+        assertFalse(Time.isDate("02-02-2020", TimeZone.getTimeZone("EST")));
+    }
+
 }
