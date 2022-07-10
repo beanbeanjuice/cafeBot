@@ -14,7 +14,9 @@ name: Lint Code Base
 #############################
 # Start the job on all push #
 #############################
-on: [push, pull_request]
+on:
+  pull_request:
+    branches: [master, integration]
 
 ###############
 # Set the Job #
@@ -47,3 +49,4 @@ jobs:
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
