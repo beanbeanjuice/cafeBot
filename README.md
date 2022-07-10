@@ -7,7 +7,6 @@
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![WakaTime][wakatime-shield]][wakatime-url]
 [![CodeFactor][codefactor-shield]][codefactor-url]
-[![GitHub Super-Linter](https://github.com/beanbeanjuice/cafeBot/workflows/Lint%20Code%20Base/badge.svg?style=for-the-badge)](https://github.com/marketplace/actions/super-linter)
 
 <!-- PROJECT LOGO -->
 <br />
@@ -71,7 +70,7 @@
 
 ### Built With
 
-* [Gradle](https://gradle.org/)
+* [Maven](https://maven.apache.org/)
 * [Discord JDA](https://github.com/DV8FromTheWorld/JDA)
 * [Twitch4J](https://github.com/twitch4j/twitch4j)
 
@@ -83,7 +82,6 @@
 * Interaction Commands
 * Moderation Commands
 * Poll/Raffle Commands
-* Music Player
 * Bind Roles to Voice Channels
 * AI Responses to Certain Words/Phrases
 * And more to come...
@@ -108,16 +106,16 @@ This is an example of how to list things you need to use the software and how to
 # Usage
 
 #### **The Help Command**
-* `!!help` - Shows a list of command section.
-* `!!help (command section name)` - Shows a list of commands in that section.
-* `!!help (command name/alias)` - Shows how to use the command.
-* `!!get-prefix` - Gets the current prefix for the server if you forget it!
+* `/help` - Shows a list of command section.
+* `/help (command section name)` - Shows a list of commands in that section.
+* `/help (command name/alias)` - Shows how to use the command.
+* `/get-prefix` - Gets the current prefix for the server if you forget it!
 
 <p align="center">
   <img src=https://cdn.beanbeanjuice.com/images/cafeBot/readme/help.png>
 </p>
 
-As you can see, this was shown using the command `!!help order`. It shows each parameter you can run. For example, the first `<NUMBER>` is the `CATEGORY NUMBER` for the menu, needs to be a number, and is required. The `help` command also provides an example on how to actually use the command if you are stuck!
+As you can see, this was shown using the command `/help order`. It shows each parameter you can run. For example, the first `<NUMBER>` is the `CATEGORY NUMBER` for the menu, needs to be a number, and is required. The `help` command also provides an example on how to actually use the command if you are stuck!
 
 #### **Command Section**
 *There are many command sections, with more coming soon. To show the commands in a specific section, do `!!help (command section)` or for example, `!!help moderation`!* Doing `!!help (command)` will also show you an example of how to use the command.
