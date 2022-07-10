@@ -149,16 +149,12 @@ public class BirthdayHandler {
     /**
      * Updates/Creates a {@link Birthday} for a specified {@link String userID}.
      * @param userID The {@link String userID} to create the {@link Birthday} for.
-     * @param month The {@link BirthdayMonth month} of the {@link Birthday}.
-     * @param day The {@link Integer day} of the {@link Birthday}.
-     * @param timeZone The {@link TimeZone timeZone} of the {@link Birthday}.
+     * @param birthday The {@link Birthday} itself.
      * @return True, if the {@link Birthday} was successfully created.
      * @throws TeaPotException Thrown when the {@link BirthdayMonth month} or {@link Integer day} is invalid.
      */
     @NotNull
-    public static Boolean updateBirthday(@NotNull String userID, @NotNull BirthdayMonth month, @NotNull Integer day, @NotNull TimeZone timeZone) throws TeaPotException {
-        Birthday birthday = new Birthday(month, day, timeZone.getDisplayName(), false);
-
+    public static Boolean updateBirthday(@NotNull String userID, @NotNull Birthday birthday) throws TeaPotException {
         try {
             Bot.getCafeAPI().BIRTHDAY.updateUserBirthday(userID, birthday);
             birthdays.put(userID, birthday);

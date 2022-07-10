@@ -2,6 +2,8 @@ package com.beanbeanjuice.command.fun.birthday;
 
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
+import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.section.fun.BirthdayHandler;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +16,15 @@ public class RemoveBirthdaySubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        event.getHook().sendMessage("Removed!").queue();
+        if (BirthdayHandler.removeBirthday(event.getUser().getId())) {
+            event.getHook().sendMessageEmbeds(Helper.successEmbed(
+                    "Removed Birthday",
+                    "Successfully removed your birthday!"
+            )).queue();
+            return;
+        }
+
+        event.getHook().sendMessageEmbeds(Helper.sqlServerError()).queue();
     }
 
     @NotNull
