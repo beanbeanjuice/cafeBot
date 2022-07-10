@@ -2,15 +2,15 @@ package com.beanbeanjuice.utility.section.cafe;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.logging.LogLevel;
-import com.beanbeanjuice.utility.time.Time;
-import com.beanbeanjuice.utility.time.TimestampDifference;
 import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
 import io.github.beanbeanjuice.cafeapi.cafebot.words.Word;
-import io.github.beanbeanjuice.cafeapi.exception.AuthorizationException;
-import io.github.beanbeanjuice.cafeapi.exception.CafeException;
-import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
-import io.github.beanbeanjuice.cafeapi.exception.ResponseException;
+import io.github.beanbeanjuice.cafeapi.exception.api.AuthorizationException;
+import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.api.ConflictException;
+import io.github.beanbeanjuice.cafeapi.exception.api.ResponseException;
 import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
+import io.github.beanbeanjuice.cafeapi.utility.Time;
+import io.github.beanbeanjuice.cafeapi.utility.TimestampDifference;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,18 +53,16 @@ public class ServeHandler {
         if (length > LENGTH_UNTIL_MULTIPLIER) {
             for (int i = 0; i < (length - LENGTH_UNTIL_MULTIPLIER); i++) {
                 // Stop after 15.
-                if (i > LETTER_STOP_AMOUNT) {
+                if (i > LETTER_STOP_AMOUNT)
                     break;
-                }
                 addedTip += ((tip + addedTip) * TIP_MULTIPLIER) - (tip + addedTip);
             }
 
             // Get the uses divided by 10 and however many times that is, do the added tip x0.85.
             for (int i = 0; i < uses / USAGE_AMOUNT_DIVIDE; i++) {
                 // Stop after 15.
-                if (i > LETTER_STOP_AMOUNT) {
+                if (i > LETTER_STOP_AMOUNT)
                     break;
-                }
                 addedTip *= TIP_DIVIDER;
             }
         }

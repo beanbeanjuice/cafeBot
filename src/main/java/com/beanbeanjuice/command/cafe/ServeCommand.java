@@ -9,7 +9,7 @@ import com.beanbeanjuice.utility.logging.LogLevel;
 import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeType;
 import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
 import io.github.beanbeanjuice.cafeapi.cafebot.words.Word;
-import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
 import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;

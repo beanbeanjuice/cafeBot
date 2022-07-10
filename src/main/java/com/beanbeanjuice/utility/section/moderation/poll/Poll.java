@@ -1,8 +1,8 @@
 package com.beanbeanjuice.utility.section.moderation.poll;
 
-import com.beanbeanjuice.utility.time.Time;
-import com.beanbeanjuice.utility.time.TimestampDifference;
 import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
+import io.github.beanbeanjuice.cafeapi.utility.Time;
+import io.github.beanbeanjuice.cafeapi.utility.TimestampDifference;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;

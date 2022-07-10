@@ -5,9 +5,9 @@ import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
-import io.github.beanbeanjuice.cafeapi.exception.AuthorizationException;
-import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
-import io.github.beanbeanjuice.cafeapi.exception.ResponseException;
+import io.github.beanbeanjuice.cafeapi.exception.api.AuthorizationException;
+import io.github.beanbeanjuice.cafeapi.exception.api.ConflictException;
+import io.github.beanbeanjuice.cafeapi.exception.api.ResponseException;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 

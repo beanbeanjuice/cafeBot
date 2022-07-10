@@ -20,9 +20,7 @@ public class SetBirthdaySubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        event.getHook().sendMessage("Set!" + event.getOption("month").getAsString() + " " + event.getOption("day").getAsString()).queue();
-
-        // TODO: Complete this.
+        event.getHook().sendMessage(BirthdayMonth.valueOf(event.getOption("month").getAsString()).toString()).queue();
     }
 
     /**
@@ -33,9 +31,8 @@ public class SetBirthdaySubCommand implements ISubCommand {
     @Nullable
     private BirthdayMonth getBirthdayMonth(@NotNull String month) {
         for (BirthdayMonth birthdayMonth : BirthdayMonth.values()) {
-            if (birthdayMonth.toString().equalsIgnoreCase(month)) {
+            if (birthdayMonth.toString().equalsIgnoreCase(month))
                 return birthdayMonth;
-            }
         }
         return null;
     }
@@ -57,18 +54,18 @@ public class SetBirthdaySubCommand implements ISubCommand {
     public ArrayList<OptionData> getOptions() {
         ArrayList<OptionData> options = new ArrayList<>();
         options.add(new OptionData(OptionType.STRING, "month", "The month you were born!", true)
-                .addChoice("1 - January", "January")
-                .addChoice("2 - February", "February")
-                .addChoice("3 - March", "March")
-                .addChoice("4 - April", "April")
-                .addChoice("5 - May", "May")
-                .addChoice("6 - June", "June")
-                .addChoice("7 - July", "July")
-                .addChoice("8 - August", "August")
-                .addChoice("9 - September", "September")
-                .addChoice("10 - October", "October")
-                .addChoice("11 - November", "November")
-                .addChoice("12 - December", "December"));
+                .addChoice("1 - January", "JANUARY")
+                .addChoice("2 - February", "FEBRUARY")
+                .addChoice("3 - March", "MARCH")
+                .addChoice("4 - April", "APRIL")
+                .addChoice("5 - May", "MAY")
+                .addChoice("6 - June", "JUNE")
+                .addChoice("7 - July", "JULY")
+                .addChoice("8 - August", "AUGUST")
+                .addChoice("9 - September", "SEPTEMBER")
+                .addChoice("10 - October", "OCTOBER")
+                .addChoice("11 - November", "NOVEMBER")
+                .addChoice("12 - December", "DECEMBER"));
         options.add(new OptionData(OptionType.INTEGER, "day", "The day you were born in the specified month!", true)
                 .setRequiredRange(1, 31));
         return options;

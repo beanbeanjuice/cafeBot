@@ -3,9 +3,9 @@ package com.beanbeanjuice.utility.section.interaction;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import io.github.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
-import io.github.beanbeanjuice.cafeapi.exception.CafeException;
-import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
-import io.github.beanbeanjuice.cafeapi.exception.NotFoundException;
+import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.api.ConflictException;
+import io.github.beanbeanjuice.cafeapi.exception.api.NotFoundException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,7 +79,7 @@ public class InteractionHandler {
         try {
             Bot.getCafeAPI().INTERACTION.createUserInteractionsReceived(userID);
             return true;
-        } catch (ConflictException ignored) {
+        } catch (ConflictException e) {
             return false;
         }
         catch (CafeException e) {

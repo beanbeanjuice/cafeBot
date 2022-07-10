@@ -8,7 +8,7 @@ import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.section.moderation.raffle.Raffle;
 import com.beanbeanjuice.utility.section.moderation.raffle.RaffleHandler;
-import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
 import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
