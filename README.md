@@ -7,6 +7,7 @@
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![WakaTime][wakatime-shield]][wakatime-url]
 [![CodeFactor][codefactor-shield]][codefactor-url]
+[![GitHub Super-Linter](https://github.com/beanbeanjuice/cafeBot/workflows/Lint%20Code%20Base/badge.svg?style=for-the-badge)](https://github.com/marketplace/actions/super-linter)
 
 <!-- PROJECT LOGO -->
 <br />
