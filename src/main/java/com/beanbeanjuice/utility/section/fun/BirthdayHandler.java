@@ -88,7 +88,7 @@ public class BirthdayHandler {
                 getAllBirthdays();
             }
         };
-        birthdayTimer.scheduleAtFixedRate(birthdayTimerTask, 0, 60000); // Should be 60000 for 30 minutes.
+        birthdayTimer.scheduleAtFixedRate(birthdayTimerTask, 0, 60000*4); // Should be 60000 for 30 minutes.
     }
 
     /**
