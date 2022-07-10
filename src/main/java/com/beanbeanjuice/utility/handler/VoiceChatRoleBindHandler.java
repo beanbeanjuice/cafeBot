@@ -3,8 +3,8 @@ package com.beanbeanjuice.utility.handler;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import io.github.beanbeanjuice.cafeapi.cafebot.voicebinds.VoiceChannelBind;
-import io.github.beanbeanjuice.cafeapi.exception.CafeException;
-import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
+import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.api.ConflictException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

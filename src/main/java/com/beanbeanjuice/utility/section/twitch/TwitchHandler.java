@@ -2,7 +2,7 @@ package com.beanbeanjuice.utility.section.twitch;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.logging.LogLevel;
-import io.github.beanbeanjuice.cafeapi.exception.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
