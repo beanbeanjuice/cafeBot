@@ -54,7 +54,8 @@ public class GetBirthdaySubCommand implements ISubCommand {
         return new EmbedBuilder()
                 .setColor(Helper.getRandomColor())
                 .setTitle(user.getName() + "'s Birthday")
-                .setDescription("Birthday is on `" + birthday.getMonth() + ", " + birthday.getDay() + "`.")
+                .setDescription("Birthday is on `" + birthday.getMonth() + ", " + birthday.getDay() + "`. " +
+                        "Their timezone is `" + birthday.getTimeZone().getID() + "`.")
                 .build();
     }
 
