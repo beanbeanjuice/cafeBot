@@ -1,19 +1,23 @@
 package com.beanbeanjuice.command.moderation;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import com.beanbeanjuice.utility.guild.CustomGuild;
+import com.beanbeanjuice.utility.handler.guild.CustomGuild;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
+import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -22,74 +26,47 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * A command used to clear chat.
+ * An {@link ICommand} used to clear a {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  */
 public class ClearChatCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        // Checking if they are a moderator.
-        if (!CafeBot.getGeneralHelper().checkPermission(event.getMember(), event.getChannel(), Permission.MESSAGE_MANAGE)) {
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        if (GuildHandler.getCustomGuild(event.getGuild()).containsTextChannelDeletingMessages(event.getTextChannel())) {
+            event.getHook().sendMessageEmbeds(alreadyDeletingMessagesEmbed()).queue();
             return;
         }
 
-        int amount = Integer.parseInt(args.get(0));
-
-        // Checking if they are only deleting 1 message.
-        if (amount == 1) {
-            event.getChannel().sendMessage(moreThanOneEmbed()).queue();
-            return;
-        }
-
-        // Sees if the amount is too many.
-        if (amount > 99) {
-            event.getChannel().sendMessage(tooManyMessagesEmbed()).queue();
-            return;
-        }
-
-        if (CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).containsTextChannelDeletingMessages(event.getChannel())) {
-            event.getChannel().sendMessage(alreadyDeletingMessagesEmbed()).queue();
-            return;
-        }
+        int amount = event.getOption("amount").getAsInt();
 
         // Send message that it is deleting, save the message and exclude it from being deleted.
-        event.getChannel().sendMessage(beginDeletionEmbed(Integer.parseInt(args.get(0)))).queue(e -> {
+        event.getHook().sendMessageEmbeds(beginDeletionEmbed(amount)).queue(e -> {
 
             // +1 is needed because it removes the one just sent.
             event.getChannel().getHistory().retrievePast(amount+1).queue(messages -> {
                 messages.remove(e);
-                startMessagesDeletionsEmbed(amount);
                 startMessagesDeletions(new ArrayList<>(messages), e);
             });
         });
+    }
 
+    private MessageEmbed beginDeletionEmbed(@NotNull Integer amount) {
+        return new EmbedBuilder()
+                .setTitle("Starting Deletion")
+                .setColor(Helper.getRandomColor())
+                .setDescription("Deleting `" + amount + "` messages. This might take a while.")
+                .build();
     }
 
     private MessageEmbed alreadyDeletingMessagesEmbed() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Already Deleting Messages");
-        embedBuilder.setDescription("You are already deleting messages in this channel. " +
-                "Please use this command in another channel or wait for this action to stop.");
-        embedBuilder.setColor(Color.red);
-        return embedBuilder.build();
-    }
-
-    private MessageEmbed tooManyMessagesEmbed() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Too Many Messages");
-        embedBuilder.setDescription("You must select a number between `2` and `99`.");
-        embedBuilder.setColor(Color.red);
-        return embedBuilder.build();
-    }
-
-    private MessageEmbed startMessagesDeletionsEmbed(@NotNull Integer messageCount) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Starting Deletion");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setDescription("Starting deletion of `" + messageCount + "` messages. This may take a while...");
-        return embedBuilder.build();
+        return new EmbedBuilder()
+                .setTitle("Already Deleting Messages")
+                .setDescription("You are already deleting messages in this channel. " +
+                        "Please use this command in another channel or wait for this action to stop.")
+                .setColor(Color.red)
+                .build();
     }
 
     private void startMessagesDeletions(@NotNull ArrayList<Message> messages, @NotNull Message deletionMessage) {
@@ -98,7 +75,7 @@ public class ClearChatCommand implements ICommand {
 
         TextChannel textChannel = deletionMessage.getTextChannel();
         int messageCount = messages.size();
-        CustomGuild guild = CafeBot.getGuildHandler().getCustomGuild(deletionMessage.getGuild());
+        CustomGuild guild = GuildHandler.getCustomGuild(deletionMessage.getGuild());
 
         guild.addTextChannelToDeletingMessages(deletionMessage.getTextChannel());
 
@@ -118,8 +95,7 @@ public class ClearChatCommand implements ICommand {
                 // If the messages is empty, cancel it.
                 if (count == messageCount) {
                     timer.cancel(); // Cancel the timer.
-                    deletionMessage.delete().queue(); // Delete the deletion message.
-                    textChannel.sendMessage(completedDeletionEmbed(messageCount)).queue(e -> {
+                    textChannel.sendMessageEmbeds(completedDeletionEmbed(messageCount)).queue(e -> {
                         try {
                             // Makes the thread sleep for 10 seconds.
                             Thread.sleep(10000);
@@ -136,64 +112,60 @@ public class ClearChatCommand implements ICommand {
     }
 
     private MessageEmbed completedDeletionEmbed(@NotNull Integer count) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Completed Deletion");
-        embedBuilder.setDescription("Successfully deleted `" + count + "` messages. " +
-                "There might be a time lag for deleting messages. This message will disappear once " +
-                "all of the messages have been successfully deleted from discord.");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        return embedBuilder.build();
+        return new EmbedBuilder()
+                .setTitle("Completed Deletion")
+                .setDescription("Successfully deleted `" + count + "` messages. " +
+                        "There might be a time lag for deleting messages. This message will disappear once " +
+                        "all of the messages have been successfully deleted from discord.")
+                .setColor(Helper.getRandomColor())
+                .build();
     }
 
-    private MessageEmbed moreThanOneEmbed() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Error Deleting Messages");
-        embedBuilder.setColor(Color.red);
-        embedBuilder.setDescription("You must specify a number greater than 1.");
-        return embedBuilder.build();
-    }
-
-    private MessageEmbed beginDeletionEmbed(@NotNull Integer amount) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Starting Deletion");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setDescription("Deleting `" + amount + "` messages. This might take a while.");
-        return embedBuilder.build();
-    }
-
-    @Override
-    public String getName() {
-        return "clear-chat";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("clearchat");
-        arrayList.add("clear");
-        arrayList.add("cc");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Delete messages in a channel! This can take a while, so be wary.";
+        return "Clear the chat!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "clearchat 20`";
+    public String exampleUsage() {
+        return "`/clearchat 99`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.NUMBER, "Clear Amount", true);
-        return usage;
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.INTEGER, "amount", "The number of messages to clear.", true, false)
+                .setRequiredRange(1, 99));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.MODERATION;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.MODERATION;
     }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return false;
+    }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public ArrayList<Permission> getPermissions() {
+        ArrayList<Permission> permissions = new ArrayList<>();
+        permissions.add(Permission.MESSAGE_MANAGE);
+        return permissions;
+    }
+
 }

@@ -1,13 +1,12 @@
 package com.beanbeanjuice.command.games;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import com.beanbeanjuice.utility.helper.Helper;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -19,60 +18,46 @@ import java.util.ArrayList;
 public class DiceRollCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        int number = event.getOption("number").getAsInt();
 
-        int number = Integer.parseInt(args.get(0));
-
-        if (number < 6) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
-                    "Number Too Low",
-                    "You must choose a number that is greater than 6!"
-            )).queue();
-            return;
-        }
-
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+        event.getHook().sendMessageEmbeds(Helper.successEmbed(
                 "Dice Roll!",
-                "You rolled a `" + CafeBot.getGeneralHelper().getRandomNumber(1, number + 1) + "`."
+                "You rolled a `" + Helper.getRandomNumber(1, number + 1) + "`."
         )).queue();
     }
 
-    @Override
-    public String getName() {
-        return "dice-roll";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("diceroll");
-        arrayList.add("roll-dice");
-        arrayList.add("roll");
-        arrayList.add("dice");
-        arrayList.add("dr");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Roll a dice between 1 and the specified number.";
+        return "Roll a dice!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "roll 200`";
+    public String exampleUsage() {
+        return "`/dice-roll` or `/dice-roll 100`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.NUMBER, "Any Number", true);
-        return usage;
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.INTEGER, "number", "Any number.", true)
+                .setMinValue(6));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.GAMES;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.GAMES;
+    }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return true;
     }
 
 }

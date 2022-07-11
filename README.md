@@ -29,7 +29,11 @@
     ·
     <a href="https://github.com/beanbeanjuice/cafeBot/issues">Request Feature</a>
   </p>
-  <figure><embed src="https://wakatime.com/share/@beeb4317-977b-4b19-878a-21e9aa8e43ed/31fd7762-6212-4dd2-b4d7-4bfdc2a3b5a3.svg"></embed></figure>
+  <p align="center">
+    <a href="https://top.gg/bot/787162619504492554">
+      <img src="https://top.gg/api/widget/787162619504492554.svg">
+    </a>
+  </p>
 </p>
 
 <!-- TABLE OF CONTENTS -->
@@ -66,10 +70,8 @@
 
 ### Built With
 
-* [Gradle](https://gradle.org/)
+* [Maven](https://maven.apache.org/)
 * [Discord JDA](https://github.com/DV8FromTheWorld/JDA)
-* [Lavaplayer](https://github.com/sedmelluq/lavaplayer)
-* [Spotify Web API](https://github.com/thelinmichael/spotify-web-api-java)
 * [Twitch4J](https://github.com/twitch4j/twitch4j)
 
 ### About the Bot
@@ -80,7 +82,6 @@
 * Interaction Commands
 * Moderation Commands
 * Poll/Raffle Commands
-* Music Player
 * Bind Roles to Voice Channels
 * AI Responses to Certain Words/Phrases
 * And more to come...
@@ -88,7 +89,7 @@
 <!-- GETTING STARTED -->
 # Getting Started
 
-To add this bot to your server, follow these steps.
+To add this bot to your server, follow these steps:
 
 ## Prerequisites
 
@@ -98,141 +99,114 @@ This is an example of how to list things you need to use the software and how to
 
 ## Installation
 
-1. Click this [link](https://discord.com/api/oauth2/authorize?client_id=787162619504492554&permissions=305654886&scope=bot).
-2. Give the bot administrative access. `I promise it's safe. You can view all the code for yourself.`
-3. Enjoy!
+1. Click this [link](https://discord.com/api/oauth2/authorize?client_id=787162619504492554&permissions=8&scope=bot%20applications.commands).
+1. Enjoy!
 
 <!-- USAGE EXAMPLES -->
 # Usage
 
 #### **The Help Command**
-* `!!help` - Shows a list of command section.
-* `!!help (command section name)` - Shows a list of commands in that section.
-* `!!help (command name/alias)` - Shows how to use the command.
-* `!!get-prefix` - Gets the current prefix for the server if you forget it!
+* `/help` - Shows a list of command section.
+* `/help (command section name)` - Shows a list of commands in that section.
+* `/help (command name/alias)` - Shows how to use the command.
+* `/get-prefix` - Gets the current prefix for the server if you forget it!
 
 <p align="center">
-  <img src=http://cdn.beanbeanjuice.com/images/cafeBot/readme/help.png>
+  <img src=https://cdn.beanbeanjuice.com/images/cafeBot/readme/help.png>
 </p>
 
-As you can see, this was shown using the command `!!help order`. It shows each parameter you can run. For example, the first `<NUMBER>` is the `CATEGORY NUMBER` for the menu, needs to be a number, and is required. The `help` command also provides an example on how to actually use the command if you are stuck!
+As you can see, this was shown using the command `/help order`. It shows each parameter you can run. For example, the first `<NUMBER>` is the `CATEGORY NUMBER` for the menu, needs to be a number, and is required. The `help` command also provides an example on how to actually use the command if you are stuck!
 
 #### **Command Section**
 *There are many command sections, with more coming soon. To show the commands in a specific section, do `!!help (command section)` or for example, `!!help moderation`!* Doing `!!help (command)` will also show you an example of how to use the command.
 
 ##### 1. **GENERIC**
+* `bot-donate` - Donate for the bot!
+* `bot-invite` - A command to get an invite link for the bot!
+* `bot-upvote` - Upvote the bot!
+* `bot-version` - Gets a specific/the latest release notes for the bot!
+* `bug-report` - Report a bug with the bot.
+* `define` - Define a word!
+* `feature-request` - Request a bot feature.
+* `generate-code` - Generate a random 32-digit long code!
 * `help` - Shows the list of command sections and command list for those sections.
 * `ping` - Show bot information!
-* `feature-request` - Request a bot feature.
-* `bug-report` - Report a bug with the bot.
-* `support` - Get support for the bot!
-* `invite-bot` - A command to get an invite link for the bot!
-* `user-info` - Get user information about someone.
-* `member-count` - Get the member count for your server!
-* `bot-upvote` - Upvote the bot!
-* `bot-donate` - Donate for the bot!
 * `remove-my-data` - Request to remove your data from the bot!
-* `generate-code` - Generate a random 32-digit long code!
-* `get-bot-release-version` - Gets a specific/the latest release notes for the bot!
-* `define` - Define a word!
+* `support` - Get support for the bot!
+* `user-info` - Get user information about someone.
 ##### 2. **CAFE**
-* `menu` - Show the list of Cafe menu items.
-* `serve` - Get beanCoins! Essentially you run this command by doing `!!serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.
-* `order` - Order a menu item for someone!
 * `balance` - Check your balance!
-* `bc-donate` - Donate some of your `beanCoins` to someone! (Only up to 25 every hour though!)
+* `donate-beancoins` - Donate some of your `beanCoins` to someone! (Only up to 25 every hour though!)
+* `menu` - Show the list of Cafe menu items.
+* `order` - Order a menu item for someone!
+* `serve` - Get beanCoins! Essentially you run this command by doing `/serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.
 ##### 3. **FUN**
-* `coffee-meme` - Get a coffee meme!
-* `tea-meme` - Get a tea meme!
-* `meme` - Send a meme in the current channel. (SFW)
-* `joke` - Send a joke in the current channel. (SFW)
-* `add-poll` - Create a poll! Currently, you can only have 3 polls due to server costs. This will go up in the future!
-* `add-raffle` - Create a raffle! Currently, you can only have 3 raffles due to server costs. This will go up in the future!
 * `avatar` - Get yours or someone else's avatar image!
-* `get-birthday` - Get yours or someone else's birthday!
-* `set-birthday` - Set your birthday! `(MM-DD)`
-* `remove-birthday` - Remove your birthday.
+* `birthday` - Add, change, or remove your birthday! Even get someone else's birthday!
+* `coffee-meme` - Get a coffee meme!
 * `counting-statistics` - Get counting information for your server!
+* `joke` - Send a joke in the current channel. (SFW)
+* `meme` - Send a meme in the current channel. (SFW)
+* `tea-meme` - Get a tea meme!
 ##### 4. **GAMES**
 * `8-ball` - Ask a yes or no question!
 * `coin-flip` - Flip a coin!
+* `connect-4` - Play connect four with someone!
 * `dice-roll` - Roll a dice!
-* `tic-tac-toe` - Play tic tac toe with someone!
-* `connect-four` - Play connect four with someone!
 * `get-game-data` - See your win streaks for the mini-games that support it!
+* `tic-tac-toe` - Play tic tac toe with someone!
 ##### 5. **SOCIAL**
+* `member-count` - Get the member count for your server!
 * `vent` - Anonymously vent to the server! ~~If the server has anonymous venting enabled...~~
 ##### 6. **INTERACTION**
-* `hug` - Hug someone!
-* `punch` - Punch someone!
-* `kiss` - Kiss someone!
 * `bite` - Bite someone!
 * `blush` - Blush at someone!
+* `bonk` - Bonk someone! Send them to `h o r n i` jail.
+* `cry` - Cry at someone!
 * `cuddle` - Cuddle someone!
+* `dab` - Dab at someone!
+* `dance` - Dance with someone!
+* `die` - Just straight up die.
+* `headpat` - Give head pats to someone!
+* `hmph` - Hmph at someone!
+* `hug` - Hug someone!
+* `kiss` - Kiss someone!
+* `lick` - Lick... someone... ummm why?
 * `nom` - Nom at someone!
 * `poke` - Poke someone!
-* `slap` - Slap someone!
-* `stab` - Stab someone! :O
-* `hmph` - Hmph at someone!
 * `pout` - Pout at someone!
-* `throw` - Throw someone!
-* `smile` - Smile at someone!
-* `stare` - Stare at someone!
-* `tickle` - Tickle someone!
+* `punch` - Punch someone!
 * `rage` - Rage at someone!
-* `yell` - Yell at someone!
-* `headpat` - Give head pats to someone!
-* `cry` - Cry at someone!
-* `dance` - Dance with someone!
-* `dab` - Dab at someone!
-* `bonk` - Bonk someone! Send them to `h o r n i` jail.
-* `sleep` - Sleep! (Or sleep with someone...)
-* `die` - Just straight up die.
-* `welcome` - Welcome someone... for something!
-* `lick` - Lick... someone... ummm why?
 * `shush` - Shush someone if they're being too loud!
-##### 7. **MUSIC** - Removed because of YouTube
-* `play` - Play a song or playlist!
-* `now-playing` - Show the current song playing.
-* `pause` - Pause the current song.
-* `queue` - Check the current queue.
-* `repeat` - Choose to repeat the song or playlist!
-* `shuffle` - Shuffle the current playlist.
-* `skip` - Skip the current song.
-* `stop` - Stop the queue and make the bot leave the channel.
-* `play-last` - Puts the song that is at the back of the queue in the front of the queue.
-##### 8. **TWITCH**
-* `set-live-channel` - Set the current channel to receive twitch live notifications. You need to add twitch channels for this to work.
-* `add-twitch-channel` - Add a twitch channel to leave bot notifications for.
-* `remove-twitch-channel` - Remove a twitch channel you are currently receiving notifications for.
-* `get-twitch-channels` - Get a list of the twitch channels you are currently receiving notifications for.
-* `set-live-notifications-role` - Set the role to be mentioned when someone goes live.
-##### 9. **MODERATION**
-* `set-log-channel` - Sets the log channel for the guild.
-* `set-update-channel` - Sets the current channel to the update channel. This means if you have `notify-on-update` set to `Enabled`, you will receive bot updates in this channel.
-* `set-counting-channel` - Sets the current channel to the counting channel. This does exactly as it says. Try to count as high as you can without messing up!
-* `set-counting-failure-role` - Sets the role to give a user when they fail counting.
-* `set-poll-channel` - Sets the current channel to an active poll channel. This is needed if you want to run polls on your server!
-* `set-raffle-channel` - Sets the current channel to an active raffle channel. This is needed if you want to run raffles on your server!
-* `set-birthday-channel` - Sets the current channel to an active birthday channel. Be notified when one of the members in your server is having a birthday!
-* `set-moderator-role` - Set the moderator role for the server. This is needed so that users with this role can run commands that require a moderator role.
-* `set-muted-role` - Set the muted role for the server. This is needed so that users with this role can be stopped from talking in channels. This requires you to set it this way in each channel. This will not mute them if the role does not have the right permissions.
-* `change-prefix` - Change the prefix from the bot to your desired prefix.
-* `kick` - Kick a specified user.
-* `ban` - Ban a specified user.
+* `slap` - Slap someone!
+* `sleep` - Sleep! (Or sleep with someone...)
+* `smile` - Smile at someone!
+* `stab` - Stab someone! :O
+* `stare` - Stare at someone!
+* `throw` - Throw someone!
+* `tickle` - Tickle someone!
+* `welcome` - Welcome someone... for something!
+* `yell` - Yell at someone!
+##### 7. **TWITCH**
+* `twitch-channel` - Add or remove a twitch channel to receive notifications for!
+##### 8. **MODERATION**
+* `add-poll` - Create a poll! Currently, you can only have 3 polls due to server costs. This will go up in the future!
+* `add-raffle` - Create a raffle! Currently, you can only have 3 raffles due to server costs. This will go up in the future!
+* `bind` - Bind a role to a voice channel! This gives the user a role when they enter a voice channel, and removes it when they leave.
 * `clear-chat` - Clear the chat. (Only currently works from 2-99 messages).
-* `mute` - Mute a specified user.
-* `un-mute` - Unmute a specified user.
-* `notify-on-update` - `Enable` or `Disable` bot notifications. This is `Enabled` by default.
 * `create-embed` - Send a customised `embedded message` in a specified channel!
-* `voice-role-bind` - Bind specific role(s) to a `voice channel`!
-* `get-voice-role-binds` - See which `voice channels` have `roles` bound to them!
-* `set-venting-channel` - Sets the current channel to an anonymous venting channel!
-* `ai-status` - Sets the `AI Status` for the server. This can `enable` or `disable` the AI module.
-* `set-daily-channel` - Sets the current channel to a daily channel. This channel is deleted and re-made once a day!
-* `get-custom-channels` - Gets ALL of the custom channels currently being used in the server!
-* `set-welcome-channel` - Sets the current channel to welcome users when they join!
-* `edit-welcome-message` - Edits the welcome message that is sent when users join. (Make sure to check the usage for this command doing `help edit-welcome-message` because this one is a little complicated!)
+##### 9. **SETTINGS**
+* `ai` - Sets the `AI Status` for the server. This can `enable` or `disable` the AI module. This is `disable` by default.
+* `bot-update` - `enable` or `disable` bot notifications. This is `enabled` by default.
+* `counting-channel` - Set or remove the counting channel. Users in this channel can count. You can also apply a custom role when a user sucks at counting!
+* `daily-channel` - Set or remove the daily channel. This channel resets daily!
+* `list-custom-channels` - Lists all of the custom channels in the server.
+* `log-channel` - Set or remove the log channel. If enabled, some logs will be sent to this channel.
+* `poll-channel` - Set or remove the poll channel. If enabled, created polls will be sent to this channel.
+* `raffle-channel` - Set or remove the raffle channel. If enabled, created raffles will be sent to this channel.
+* `twitch-notifications` - Set or remove the twitch notifications channel. If enabled, you will receive notifications for specified channels that you have added.
+* `venting-channel` - Set or remove the venting channel. If enabled, this will allow users to anonymously vent.
+* `welcome-channel` - Set or remove the welcome channel. If enabled, it will welcome users with a cute message when they join the server.
 ##### 10. **EXPERIMENTAL**
 * `Nothing here yet!`
 
@@ -257,8 +231,8 @@ Contributions are what make the open source community such an amazing place to b
 
 Distributed under the GPL-3.0 License. See `LICENSE` for more information.
 
-<!-- DATA THIS BOT STORED -->
-# Data
+<!-- DATA THIS BOT STORES -->
+# Privacy Policy
 
 Here is ALL of the data that this bot could *possibly* store on you. This, of course, is subject to change. None of these can be accessed by other servers (that you are not a part of) by the bot.
 
@@ -277,17 +251,22 @@ Here is ALL of the data that this bot could *possibly* store on you. This, of co
 - *__Other Data__*
   - Your birthday.`***`
     - Your birthday can be removed any time. It can only be accessed by people in the same server as you. If they are not in the same server as you, they cannot see this.
+  - Message.
+    - Your messages **ARE NOT** saved **AT ALL**. The only thing the bot does, if enabled, is check if trigger words are sent in a message, then sends a pre-determined response.
 
 ##### * - This is already public information anyway, and is crucial for having the bot work.
 ##### ** - This is something that is needed for the bot to do things like apply a role to someone when they join a specific voice channel, or to duplicate a voice channel when needed.
-##### *** - Your birthday is only stored WHEN specified, and can even be removed at anytime by simply using the `remove-birthday` command.
+##### *** - Your birthday is only stored WHEN specified, and can even be removed at anytime by simply using the `/birthday remove` command.
 
 <!-- CONTACT -->
 # Contact
 
 - beanbeanjuice
-- Twitter [@beanbeanjuice](https://twitter.com/beanbeanjuice)
-- Email - beanbeanjuice@outlook.com
+- Discord: [beanbeanjuice#4595](https://discord.gg/KrUFw3uHST)
+- YouTube: [beanbeanjuice](https://www.youtube.com/beanbeanjuice)
+- TikTok: [@beanbeanjuiceofficial](https://www.tiktok.com/@beanbeanjuiceofficial)
+- Twitter: [@beanbeanjuice](https://twitter.com/beanbeanjuice)
+- Email: beanbeanjuice@outlook.com
 - Project Link: [GitHub](https://github.com/beanbeanjuice/cafeBot)
 
 <!-- ACKNOWLEDGEMENTS -->
@@ -311,6 +290,6 @@ Here is ALL of the data that this bot could *possibly* store on you. This, of co
 [linkedin-url]: https://linkedin.com/in/beanbeanjuice
 [wakatime-shield]: https://wakatime.com/badge/github/beanbeanjuice/cafeBot.svg?style=for-the-badge
 [wakatime-url]: https://wakatime.com/badge/github/beanbeanjuice/cafeBot
-[product-title]: http://cdn.beanbeanjuice.com/images/cafeBot/readme/cafeBot.png
+[product-title]: https://cdn.beanbeanjuice.com/images/cafeBot/readme/cafeBot.png
 [codefactor-shield]: https://www.codefactor.io/repository/github/beanbeanjuice/cafebot/badge?style=for-the-badge
 [codefactor-url]: https://www.codefactor.io/repository/github/beanbeanjuice/cafebot

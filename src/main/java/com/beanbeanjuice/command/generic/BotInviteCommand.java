@@ -1,61 +1,54 @@
 package com.beanbeanjuice.command.generic;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-
-import java.util.ArrayList;
+import com.beanbeanjuice.utility.helper.Helper;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * An {@link ICommand} used to get an invite link for the bot.
+ * An {@link ICommand} used to get an invitation link for the bot.
  *
  * @author beanbeanjuice
  */
 public class BotInviteCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        event.getHook().sendMessageEmbeds(Helper.successEmbed(
                 "Bot Invite Link",
-                "Click [this](https://discord.com/api/oauth2/authorize?client_id=787162619504492554&permissions=8&scope=bot) to invite the bot to your server!"
+                "Click [this](https://discord.com/api/oauth2/authorize?client_id=787162619504492554&permissions=8&scope=bot%20applications.commands) " +
+                        "to invite the bot to your server!"
         )).queue();
     }
 
-    @Override
-    public String getName() {
-        return "invite-bot";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("invitebot");
-        arrayList.add("bot-invite");
-        arrayList.add("botinvite");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Get an invite for the bot to add it to your server!";
+        return "Invite the bot to other servers!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "botinvite`";
+    public String exampleUsage() {
+        return "`/invite-bot`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        return new Usage();
+    public CommandCategory getCategoryType() {
+        return CommandCategory.GENERIC;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.GENERIC;
+    public Boolean allowDM() {
+        return true;
+    }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
     }
 }

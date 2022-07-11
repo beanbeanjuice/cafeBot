@@ -1,31 +1,32 @@
 package com.beanbeanjuice.command.games;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import com.beanbeanjuice.utility.sections.games.connectfour.ConnectFourGame;
+import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.section.game.connectfour.ConnectFourGame;
+import com.beanbeanjuice.utility.section.game.connectfour.ConnectFourHandler;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used for Connect Four games.
+ * An {@link ICommand} used for {@link ConnectFourGame}.
  *
  * @author beanbeanjuice
  */
 public class ConnectFourCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        User player1 = user;
-        User player2 = CafeBot.getGeneralHelper().getUser(args.get(0));
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        User player1 = event.getUser();
+        User player2 = event.getOption("opponent").getAsUser();
 
         if (player1.equals(player2)) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Cannot Play Yourself",
                     "You cannot play a connect four game against yourself!"
             )).queue();
@@ -33,55 +34,57 @@ public class ConnectFourCommand implements ICommand {
         }
 
         if (player2.isBot()) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+            event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
                     "Cannot Play Against Bot",
                     "You cannot play this game against a bot!"
             )).queue();
             return;
         }
 
-        ConnectFourGame game = new ConnectFourGame(player1, player2, event.getChannel());
-        if (!CafeBot.getConnectFourHandler().createGame(event.getGuild().getId(), game)) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+        ConnectFourGame game = new ConnectFourGame(player1, player2, event.getTextChannel());
+        if (!ConnectFourHandler.createGame(event.getGuild().getId(), game)) {
+            event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Creating Connect Four Game",
                     "There is already an active connect four game on this server. Please wait for it to end."
             )).queue();
         }
+
+        event.getHook().sendMessageEmbeds(Helper.successEmbed(
+                "Created Game!",
+                "Your connect-4 game has been created!"
+        )).queue();
     }
 
-    @Override
-    public String getName() {
-        return "connect-four";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("connectfour");
-        arrayList.add("connect-4");
-        arrayList.add("connect4");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Play connect four with someone!";
+        return "Play connect-4 with someone!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "connect4 @beanbeanjuice`";
+    public String exampleUsage() {
+        return "`/connect-4 @beanbeanjuice`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "Discord Mention", true);
-        return usage;
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.USER, "opponent", "Your opponent for this connect-four game!", true));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.GAMES;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.GAMES;
     }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return false;
+    }
+
 }

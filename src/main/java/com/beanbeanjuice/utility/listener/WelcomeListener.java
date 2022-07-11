@@ -1,10 +1,12 @@
 package com.beanbeanjuice.utility.listener;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.command.moderation.welcome.EditWelcomeMessageCommand;
-import com.beanbeanjuice.utility.logger.LogLevel;
+import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.command.settings.welcome.EditWelcomeMessageSubCommand;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
+import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.logging.LogLevel;
 import io.github.beanbeanjuice.cafeapi.cafebot.welcomes.GuildWelcome;
-import io.github.beanbeanjuice.cafeapi.exception.NotFoundException;
+import io.github.beanbeanjuice.cafeapi.exception.api.NotFoundException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -15,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A listener for when someone joins the server.
+ * A {@link ListenerAdapter} for when someone joins the server.
  *
  * @author beanbeanjuice
  */
@@ -23,14 +25,14 @@ public class WelcomeListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        TextChannel welcomeChannel = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getWelcomeChannel();
+        TextChannel welcomeChannel = GuildHandler.getCustomGuild(event.getGuild()).getWelcomeChannel();
         if (welcomeChannel != null) {
             GuildWelcome guildWelcome = getGuildWelcome(event.getGuild().getId());
-            if (guildWelcome.getMessage() != null) {
+
+            if (guildWelcome.getMessage() != null)
                 welcomeChannel.sendMessage(guildWelcome.getMessage()).setEmbeds(getWelcomeEmbed(guildWelcome, event.getMember().getUser())).queue();
-            } else {
+            else
                 welcomeChannel.sendMessageEmbeds(getWelcomeEmbed(guildWelcome, event.getMember().getUser())).queue();
-            }
         }
     }
 
@@ -41,10 +43,9 @@ public class WelcomeListener extends ListenerAdapter {
      * @return The parsed {@link String description}.
      */
     @NotNull
-    private String parseDescription(@Nullable String description, @NotNull User joiner) {
-        if (description == null) {
+    private static String parseDescription(@Nullable String description, @NotNull User joiner) {
+        if (description == null)
             description = "Welcome to the server {user}!";
-        }
 
         description = description.replace("{user}", joiner.getAsMention());
         description = description.replace("\\n", "\n");
@@ -58,7 +59,7 @@ public class WelcomeListener extends ListenerAdapter {
      * @return The completed {@link MessageEmbed}.
      */
     @NotNull
-    public MessageEmbed getWelcomeEmbed(@NotNull GuildWelcome guildWelcome, @NotNull User joiner) {
+    public static MessageEmbed getWelcomeEmbed(@NotNull GuildWelcome guildWelcome, @NotNull User joiner) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
         embedBuilder.setDescription(parseDescription(guildWelcome.getDescription(), joiner));
@@ -67,7 +68,7 @@ public class WelcomeListener extends ListenerAdapter {
         try {
             embedBuilder.setThumbnail(guildWelcome.getThumbnailURL());
         } catch (IllegalArgumentException e) {
-            CafeBot.getGuildHandler().getCustomGuild(guildWelcome.getGuildID()).log(new EditWelcomeMessageCommand(), LogLevel.ERROR,
+            GuildHandler.getCustomGuild(guildWelcome.getGuildID()).log(new EditWelcomeMessageSubCommand(), LogLevel.ERROR,
                     "Invalid Thumbnail URL", "Invalid thumbnail URL for Welcome: " + guildWelcome.getThumbnailURL());
         }
 
@@ -75,10 +76,10 @@ public class WelcomeListener extends ListenerAdapter {
         try {
             embedBuilder.setImage(guildWelcome.getImageURL());
         } catch (IllegalArgumentException e) {
-            CafeBot.getGuildHandler().getCustomGuild(guildWelcome.getGuildID()).log(new EditWelcomeMessageCommand(), LogLevel.ERROR,
+            GuildHandler.getCustomGuild(guildWelcome.getGuildID()).log(new EditWelcomeMessageSubCommand(), LogLevel.ERROR,
                     "Invalid Image URL", "Invalid image URL for Welcome: " + guildWelcome.getImageURL());
         }
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(Helper.getRandomColor());
         embedBuilder.setAuthor(joiner.getAsTag(), joiner.getAvatarUrl(), joiner.getAvatarUrl());
         return embedBuilder.build();
     }
@@ -89,9 +90,9 @@ public class WelcomeListener extends ListenerAdapter {
      * @return The {@link GuildWelcome}.
      */
     @NotNull
-    public GuildWelcome getGuildWelcome(@NotNull String guildID) {
+    public static GuildWelcome getGuildWelcome(@NotNull String guildID) {
         try {
-            GuildWelcome guildWelcome = CafeBot.getCafeAPI().welcomes().getGuildWelcome(guildID);
+            GuildWelcome guildWelcome = Bot.getCafeAPI().WELCOME.getGuildWelcome(guildID);
             return new GuildWelcome(
                     guildWelcome.getGuildID(),
                     guildWelcome.getDescription(),

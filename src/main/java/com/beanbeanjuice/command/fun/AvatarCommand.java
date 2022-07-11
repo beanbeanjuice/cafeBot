@@ -1,77 +1,74 @@
 package com.beanbeanjuice.command.fun;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 /**
- * A command used for Discord avatars.
+ * An {@link ICommand} used to get someone's Discord avatar.
  *
  * @author beanbeanjuice
  */
 public class AvatarCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        User avatarUser;
-        if (args.isEmpty()) {
-            avatarUser = user;
-        } else {
-            avatarUser = CafeBot.getGeneralHelper().getUser(args.get(0));
-        }
-        event.getChannel().sendMessage(avatarEmbed(avatarUser)).queue();
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        User user = event.getUser();
+
+        if (event.getOption("user") != null)
+            user = event.getOption("user").getAsUser();
+
+        event.getHook().sendMessageEmbeds(avatarEmbed(user)).queue();
     }
 
     @NotNull
     private MessageEmbed avatarEmbed(@NotNull User user) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(user.getName() + "'s Avatar", user.getAvatarUrl());
-        embedBuilder.setImage(user.getAvatarUrl() + "?size=512");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        return embedBuilder.build();
+        return new EmbedBuilder()
+                .setTitle(user.getName() + "'s Avatar", user.getAvatarUrl())
+                .setImage(user.getAvatarUrl() + "?size=512")
+                .setColor(Helper.getRandomColor())
+                .build();
     }
 
-    @Override
-    public String getName() {
-        return "avatar";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("av");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Get someone's avatar!";
+        return "Get the avatar of a user!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "avatar` or `" + prefix + "avatar @beanbeanjuice`";
+    public String exampleUsage() {
+        return "`/avatar` or `/avatar @beanbeanjuice`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "Discord Mention", false);
-        return usage;
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.USER, "user", "The user to get the avatar of.", false, false));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.FUN;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.FUN;
     }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return true;
+    }
+
 }

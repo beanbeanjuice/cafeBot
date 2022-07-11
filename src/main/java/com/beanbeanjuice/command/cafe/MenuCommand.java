@@ -1,73 +1,58 @@
 package com.beanbeanjuice.command.cafe;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.sections.cafe.CafeCategory;
-import com.beanbeanjuice.utility.sections.cafe.object.MenuItem;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.section.cafe.CafeCategory;
+import com.beanbeanjuice.utility.section.cafe.MenuHandler;
+import com.beanbeanjuice.utility.section.cafe.MenuItem;
+import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 /**
- * A command used for seeing the menu.
+ * An {@link ICommand} used to check the Cafe menu.
  *
  * @author beanbeanjuice
  */
 public class MenuCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
 
-        // If no arguments, show menu sections
-        if (args.size() == 0) {
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setTitle("Cafe Menu");
-            embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-            embedBuilder.setFooter("If you're stuck, use " + ctx.getPrefix() + "menu (category number)");
-            StringBuilder descriptionBuilder = new StringBuilder();
-            int count = 1;
-
-            for (CafeCategory category : CafeCategory.values()) {
-
-                // Don't show the "Secret Menu"
-                if (!category.getTitle().equals("Secret Menu")) {
-                    descriptionBuilder.append("**").append(count++).append("** `")
-                            .append(category.getTitle()).append("`\n");
-                }
-            }
-            embedBuilder.setDescription(descriptionBuilder.toString());
-            event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
+        // If both options are null.
+        if (event.getOption("category-number") == null && event.getOption("item-number") == null) {
+            event.getHook().sendMessageEmbeds(fullMenu()).queue();
             return;
         }
 
-        // Checking if the Category Index is out of bounds.
-        int categoryIndex = Integer.parseInt(args.get(0));
-
-        if (categoryIndex > CafeCategory.values().length || categoryIndex <= 0) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
-                    "Unknown Category",
-                    "Unknown category for \"" + categoryIndex + "\". Please use an existing category."
+        // Cannot have an item number without a category number.
+        if (event.getOption("category-number") == null && event.getOption("item-number") != null) {
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                    "Item Without Category",
+                    "If you choose an item, you must also choose a category."
             )).queue();
             return;
         }
 
-        // If argument, make sure it is a number in the range
-        if (args.size() == 1) {
+        int categoryIndex;
+        categoryIndex = event.getOption("category-number").getAsInt();
+
+        // If you only have a category number.
+        if (event.getOption("category-number") != null && event.getOption("item-number") == null) {
+
             CafeCategory category = CafeCategory.values()[categoryIndex - 1];
-            ArrayList<MenuItem> itemsInCategory = CafeBot.getMenuHandler().getMenu(category);
+            ArrayList<MenuItem> itemsInCategory = MenuHandler.getMenu(category);
 
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setTitle(category.getTitle());
-            embedBuilder.setFooter("For information on a single item, do " + ctx.getPrefix() + "menu " + categoryIndex + " (item number)");
-            embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+            embedBuilder.setFooter("For information on a single item, do /menu " + categoryIndex + " (item number)");
+            embedBuilder.setColor(Helper.getRandomColor());
             StringBuilder descriptionBuilder = new StringBuilder();
 
             for (int i = 0; i < itemsInCategory.size(); i++) {
@@ -78,69 +63,93 @@ public class MenuCommand implements ICommand {
             }
             embedBuilder.setDescription(descriptionBuilder.toString());
             embedBuilder.setThumbnail(category.getImageURL());
-            event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
+            event.getHook().sendMessageEmbeds(embedBuilder.build()).queue();
             return;
         }
 
-        // If 2, make sure both are numbers in the range
-        if (args.size() == 2) {
-            int itemNumber = Integer.parseInt(args.get(1));
-            CafeCategory category = CafeCategory.values()[categoryIndex - 1];
-            MenuItem item = CafeBot.getMenuHandler().getItem(category, itemNumber - 1);
+        int itemNumber = event.getOption("item-number").getAsInt();
+        CafeCategory category = CafeCategory.values()[categoryIndex - 1];
+        MenuItem item = MenuHandler.getItem(category, itemNumber - 1);
 
-            // Checking if the menu item was NOT found.
-            if (item == null) {
-                event.getChannel().sendMessage(CafeBot.getGeneralHelper().errorEmbed(
-                        "Item Not Found",
-                        "A menu item with that ID was not found."
-                )).queue();
-                return;
+        // Checking if the menu item was NOT found.
+        if (item == null) {
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                    "Item Not Found",
+                    "A menu item with that ID was not found."
+            )).queue();
+            return;
+        }
+
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle(item.getName());
+        embedBuilder.setDescription(item.getDescription());
+        embedBuilder.addField("Price", "`" + item.getPrice() + "bC`", true);
+        embedBuilder.addField("Item ID", "(" + categoryIndex + " " + itemNumber + ")", true);
+        embedBuilder.setImage(item.getImageURL());
+        embedBuilder.setColor(Helper.getRandomColor());
+        embedBuilder.setFooter("To order this item, do /order " + categoryIndex + " " + itemNumber + " (User)");
+        event.getHook().sendMessageEmbeds(embedBuilder.build()).queue();
+    }
+
+    @NotNull
+    private MessageEmbed fullMenu() {
+        EmbedBuilder embedBuilder = new EmbedBuilder()
+                .setTitle("Cafe Menu")
+                .setColor(Helper.getRandomColor())
+                .setFooter("If you're stuck, use /menu (category number)");
+
+        StringBuilder descriptionBuilder = new StringBuilder();
+        int count = 1;
+
+        for (CafeCategory category : CafeCategory.values()) {
+
+            // Don't show the "Secret Menu"
+            if (!category.getTitle().equals("Secret Menu")) {
+                descriptionBuilder.append("**").append(count++).append("** `")
+                        .append(category.getTitle()).append("`\n");
             }
-
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setTitle(item.getName());
-            embedBuilder.setDescription(item.getDescription());
-            embedBuilder.addField("Price", "`" + item.getPrice() + "bC`", true);
-            embedBuilder.addField("Item ID", "(" + categoryIndex + " " + itemNumber + ")", true);
-            embedBuilder.setImage(item.getImageURL());
-            embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-            embedBuilder.setFooter("To order this item, do " + ctx.getPrefix() + "order " + categoryIndex + " " + itemNumber + " (User)");
-            event.getChannel().sendMessageEmbeds(embedBuilder.build()).queue();
-            return;
         }
-
+        embedBuilder.setDescription(descriptionBuilder.toString());
+        return embedBuilder.build();
     }
 
-    @Override
-    public String getName() {
-        return "menu";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        return new ArrayList<>();
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "See the cafe menu!";
+        return "Get the cafe menu!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "menu` or `" + prefix + "menu 2` or `" + prefix + "menu 2 3`";
+    public String exampleUsage() {
+        return "`/menu` or `/menu 1` or `/menu 1 2`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.NUMBER, "Category Number", false);
-        usage.addUsage(CommandType.NUMBER, "Item Number", false);
-        return usage;
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.INTEGER, "category-number", "Category number for the menu item.", false, false)
+                .setRequiredRange(1, CafeCategory.values().length));
+        options.add(new OptionData(OptionType.INTEGER, "item-number", "Item number for the menu item.", false, false));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.CAFE;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.CAFE;
+    }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return true;
+    }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
     }
 }

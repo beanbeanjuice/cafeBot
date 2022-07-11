@@ -1,30 +1,24 @@
 package com.beanbeanjuice.command.fun;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.api.SubRedditAPI;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.helper.api.SubRedditAPI;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import com.beanbeanjuice.utility.helper.Helper;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * A command used for memes.
+ * An {@link ICommand} used to send a meme.
  *
  * @author beanbeanjuice
  */
 public class MemeCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessageEmbeds(new SubRedditAPI(getSubreddits().get(CafeBot.getGeneralHelper().getRandomNumber(0, getSubreddits().size()))).getRedditEmbed()).queue();
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        event.getHook().sendMessageEmbeds(new SubRedditAPI(getSubreddits().get(Helper.getRandomNumber(0, getSubreddits().size()))).getRedditEmbed()).queue();
     }
 
     @NotNull
@@ -39,49 +33,27 @@ public class MemeCommand implements ICommand {
     }
 
     @NotNull
-    private MessageEmbed cannotGetJSONEmbed() {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setDescription("Unable to get JSON.");
-        embedBuilder.setColor(Color.red);
-        return embedBuilder.build();
+    @Override
+    public String getDescription() {
+        return "Send a meme!";
     }
 
     @NotNull
-    private MessageEmbed messageEmbed(@NotNull String title, @NotNull String url, @NotNull String image) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(title, url);
-        embedBuilder.setImage(image);
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        return embedBuilder.build();
+    @Override
+    public String exampleUsage() {
+        return "`/meme`";
     }
 
+    @NotNull
     @Override
-    public String getName() {
-        return "meme";
+    public CommandCategory getCategoryType() {
+        return CommandCategory.FUN;
     }
 
+    @NotNull
     @Override
-    public ArrayList<String> getAliases() {
-        return new ArrayList<>();
+    public Boolean allowDM() {
+        return true;
     }
 
-    @Override
-    public String getDescription() {
-        return "Get a random meme!";
-    }
-
-    @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "meme`";
-    }
-
-    @Override
-    public Usage getUsage() {
-        return new Usage();
-    }
-
-    @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.FUN;
-    }
 }

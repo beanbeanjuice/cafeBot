@@ -1,14 +1,10 @@
 package com.beanbeanjuice.command.games;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-
-import java.util.ArrayList;
+import com.beanbeanjuice.utility.helper.Helper;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An {@link ICommand} used for flipping coins.
@@ -18,11 +14,11 @@ import java.util.ArrayList;
 public class CoinFlipCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        int num = CafeBot.getGeneralHelper().getRandomNumber(1, 3);
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        int num = Helper.getRandomNumber(1, 3);
 
         if (num == 1) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+            event.getHook().sendMessageEmbeds(Helper.successEmbed(
                     "Coin Toss!",
                     "Heads"
             )).queue();
@@ -30,7 +26,7 @@ public class CoinFlipCommand implements ICommand {
         }
 
         if (num == 2) {
-            event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+            event.getHook().sendMessageEmbeds(Helper.successEmbed(
                     "Coin Toss!",
                     "Tails"
             )).queue();
@@ -38,38 +34,28 @@ public class CoinFlipCommand implements ICommand {
         }
     }
 
-    @Override
-    public String getName() {
-        return "coin-flip";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("coinflip");
-        arrayList.add("coin-toss");
-        arrayList.add("cointoss");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
         return "Flip a coin!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "coinflip`";
+    public String exampleUsage() {
+        return "`/coin-flip`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        return new Usage();
+    public CommandCategory getCategoryType() {
+        return CommandCategory.GAMES;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.GAMES;
+    public Boolean allowDM() {
+        return true;
     }
 
 }
