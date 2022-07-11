@@ -1,16 +1,16 @@
 package com.beanbeanjuice.command.games;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.section.game.WinStreakHandler;
 import io.github.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.MinigameType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -23,68 +23,66 @@ import java.util.ArrayList;
 public class GetGameDataCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        if (args.size() == 0) {
-            event.getChannel().sendMessageEmbeds(gameDataEmbed(user)).queue();
-        } else {
-            event.getChannel().sendMessageEmbeds(gameDataEmbed(CafeBot.getGeneralHelper().getUser(args.get(0)))).queue();
-        }
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        User user = event.getUser();
+        if (event.getOption("user") != null)
+            user = event.getOption("user").getAsUser();
+
+        event.getHook().sendMessageEmbeds(gameDataEmbed(user)).queue();
     }
 
     @NotNull
     private MessageEmbed gameDataEmbed(@NotNull User user) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(user.getName() + "'s Game Win Streaks");
+        EmbedBuilder embedBuilder = new EmbedBuilder()
+                .setTitle(user.getName() + "'s Game Win Streaks");
         StringBuilder descriptionBuilder = new StringBuilder();
 
         for (MinigameType miniGame : MinigameType.values()) {
             descriptionBuilder.append("**").append(miniGame.getType()).append("**: ");
-            descriptionBuilder.append("*").append(CafeBot.getWinStreakHandler().getUserWinStreak(user.getId(), miniGame)).append("*\n");
+            descriptionBuilder.append("*").append(WinStreakHandler.getUserWinStreak(user.getId(), miniGame)).append("*\n");
         }
 
-        embedBuilder.setDescription(descriptionBuilder.toString());
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setDescription(descriptionBuilder.toString())
+                .setColor(Helper.getRandomColor());
         return embedBuilder.build();
     }
 
-    @Override
-    public String getName() {
-        return "get-game-data";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("getgamedata");
-        arrayList.add("get-gamedata");
-        arrayList.add("getgame-data");
-        arrayList.add("game-win-streaks");
-        arrayList.add("gamewinstreaks");
-        arrayList.add("win-streaks");
-        arrayList.add("winstreaks");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Get your game data! This shows your win streaks for games that have winstreaks enabled!";
+        return "Get yours or someone else's game data!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "get-game-data` or `" + prefix + "get-game-data @beanbeanjuice`";
+    public String exampleUsage() {
+        return "`/get-game-data` or `/get-game-data @beanbeanjuice`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "Discord Mention", false);
-        return usage;
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.USER, "user", "The user you want to get game data for!", false));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.GAMES;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.GAMES;
+    }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return true;
+    }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
     }
 
 }

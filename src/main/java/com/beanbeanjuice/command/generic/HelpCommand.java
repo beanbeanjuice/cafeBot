@@ -1,83 +1,75 @@
 package com.beanbeanjuice.command.generic;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.command.ISubCommand;
+import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.CommandUsage;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Map;
 
-/**
- * A general help command.
- *
- * @author beanbeanjuice
- */
 public class HelpCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        TextChannel channel = event.getChannel();
-        String prefix = ctx.getPrefix();
-
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
         // Checking if the arguments is empty.
-        if (args.isEmpty()) {
-            channel.sendMessage(categoryEmbed(ctx.getPrefix())).queue(); // Sends the list of categories.
+        if (event.getOption("section-or-command") == null) {
+            event.getHook().sendMessageEmbeds(categoryEmbed()).setEphemeral(true).queue(); // Sends the list of categories.
             return;
         }
 
         // Setting the Search Term
-        String search = args.get(0);
+        String search = event.getOption("section-or-command").getAsString();
         int count = 1;
 
         // Goes through each category. If the first argument is equal to the name, then print commands for that category.
-        for (CategoryType categoryType : CategoryType.values()) {
+        for (CommandCategory categoryType : CommandCategory.values()) {
             if (categoryType.toString().equalsIgnoreCase(search) || String.valueOf(count++).equals(search)) {
-                channel.sendMessage(searchCategoriesEmbed(prefix, categoryType)).queue();
+                event.getHook().sendMessageEmbeds(searchCategoriesEmbed(categoryType)).setEphemeral(true).queue();
                 return;
             }
         }
 
-        ICommand command = CafeBot.getCommandManager().getCommand(search);
+        ICommand command = Bot.getCommandHandler().getCommands().get(search.toLowerCase());
 
         // Checks to see if any commands exist for that command.
         if (command == null) {
-            channel.sendMessage(noCommandFoundEmbed(search, ctx.getPrefix())).queue();
+            event.getHook().sendMessageEmbeds(noCommandFoundEmbed(search)).setEphemeral(true).queue();
             return;
         }
 
         // Logic to show command and optional parameters.
-        channel.sendMessage(commandEmbed(prefix, command)).queue();
+        event.getHook().sendMessageEmbeds(commandEmbed(command, search)).setEphemeral(true).queue();
     }
 
     @NotNull
-    private MessageEmbed commandEmbed(@NotNull String prefix, @NotNull ICommand command) {
+    private MessageEmbed commandEmbed(@NotNull ICommand command, @NotNull String commandName) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append("`").append(prefix).append(command.getName());
+        stringBuilder.append("`/").append(commandName);
         StringBuilder paramBuilder = new StringBuilder();
-        embedBuilder.setTitle(command.getName().toUpperCase() + "");
-        ArrayList<CommandUsage> usages = command.getUsage().getUsages();
+        embedBuilder.setTitle(commandName.toUpperCase() + "");
+        ArrayList<OptionData> options = command.getOptions();
 
-        for (int i = 0; i < usages.size(); i++) {
-            CommandUsage usage = usages.get(i);
-            stringBuilder.append(" <").append(usage.getType()).append(">");
+        // Adding command options, if any.
+        for (int i = 0; i < options.size(); i++) {
+            OptionData option = options.get(i);
+            stringBuilder.append(" <").append(option.getType()).append(">");
 
-            paramBuilder.append("***").append(i + 1).append("***. ").append(usage.getName());
+            paramBuilder.append("***").append(i + 1).append("***. ").append(option.getName());
 
-            if (usage.isRequired()) {
+            if (option.isRequired()) {
                 paramBuilder.append(" - *__REQUIRED__*\n");
-            } else if (!usage.isRequired()) {
+            } else {
                 paramBuilder.append(" - *__OPTIONAL__*\n");
             }
         }
@@ -85,41 +77,55 @@ public class HelpCommand implements ICommand {
 
         embedBuilder.addField("Usage", stringBuilder.toString(), false);
 
-        if (!usages.isEmpty()) {
+        if (!options.isEmpty()) {
             embedBuilder.addField("Arguments", paramBuilder.toString(), false);
         }
 
-        if (!command.getAliases().isEmpty()) {
-            stringBuilder = new StringBuilder();
-            stringBuilder.append("`");
-            for (int i = 0; i < command.getAliases().size(); i++) {
-                stringBuilder.append(command.getAliases().get(i));
-                if (i != command.getAliases().size() - 1) {
-                    stringBuilder.append(", ");
-                }
-            }
-            stringBuilder.append("`");
-            embedBuilder.addField("Aliases", stringBuilder.toString(), false);
+        // Creating Subcommands Text
+        StringBuilder subCommandsBuilder = new StringBuilder();
+        for (int i = 0; i < command.getSubCommands().size(); i++) {
+            subCommandsBuilder.append("***").append(i + 1).append("***. ")
+                    .append(command.getSubCommands().get(i).getName())
+                    .append("\n");
         }
 
-        embedBuilder.addField("Example", command.exampleUsage(prefix), false);
-        embedBuilder.addField("Description", command.getDescription(), false);
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!");
+        // Creating Permissions Text
+        StringBuilder permissionsBuilder = new StringBuilder();
+        if (command.getPermissions() == null) {
+            permissionsBuilder.append("**EVERYONE**");
+        } else {
+            for (int i = 0; i < command.getPermissions().size(); i++) {
+                permissionsBuilder.append("***").append(i + 1).append("***. ")
+                        .append(command.getPermissions().get(i).toString())
+                        .append("\n");
+            }
+        }
+
+        if (command.getSubCommands().size() > 0)
+            embedBuilder.addField("Sub Commands", subCommandsBuilder.toString(), false);
+
+        embedBuilder
+                .addField("Example", command.exampleUsage(), false)
+                .addField("Description", command.getDescription(), false)
+                .setColor(Helper.getRandomColor())
+                .setFooter("If you need more help with commands, visit https://www.github.com/beanbeanjuice/cafeBot!")
+                .addField("Permissions", permissionsBuilder.toString(), false);
+
         return embedBuilder.build();
     }
 
     @NotNull
-    private MessageEmbed searchCategoriesEmbed(@NotNull String prefix, @NotNull CategoryType categoryType) {
+    private MessageEmbed searchCategoriesEmbed(@NotNull CommandCategory category) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(categoryType.getMessage() + "\n\n");
+        stringBuilder.append(category.getMessage() + "\n\n");
         int count = 1;
 
-        for (ICommand command : CafeBot.getCommandManager().getCommands()) {
-            if (command.getCategoryType().equals(categoryType)) {
-                stringBuilder.append("**").append(count++).append("** `").append(prefix).append(command.getName());
-                stringBuilder.append("`\n");
+        for (Map.Entry<String, ICommand> commandSet : Bot.getCommandHandler().getCommands().entrySet()) {
+            if (commandSet.getValue().getCategoryType().equals(category)) {
+                stringBuilder
+                        .append("**").append(count++).append("** `/").append(commandSet.getKey())
+                        .append("`\n");
             }
         }
 
@@ -127,75 +133,81 @@ public class HelpCommand implements ICommand {
             stringBuilder.append("There are no commands here right now :( but if this section is here, that means I'm working on it!");
         }
 
-        embedBuilder.setTitle(categoryType.toString());
-        embedBuilder.setDescription(stringBuilder.toString());
-        embedBuilder.setThumbnail(categoryType.getLink());
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setFooter("For help with a specific command, do " + prefix + "help (command name).");
+        embedBuilder
+                .setTitle(category.toString())
+                .setDescription(stringBuilder.toString())
+                .setThumbnail(category.getLink())
+                .setColor(Helper.getRandomColor())
+                .setFooter("For help with a specific command, do /help (command name).");
         return embedBuilder.build();
     }
 
     @NotNull
-    private MessageEmbed categoryEmbed(@NotNull String prefix) {
+    private MessageEmbed categoryEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         StringBuilder stringBuilder = new StringBuilder();
         int count = 1;
 
-        for (CategoryType categoryType : CategoryType.values()) {
-            stringBuilder.append("**").append(count++).append("** `").append(categoryType.toString());
+        for (CommandCategory category : CommandCategory.values()) {
+            stringBuilder.append("**").append(count++).append("** `").append(category.toString());
 
             stringBuilder.append("`\n");
         }
 
-        embedBuilder.setDescription(stringBuilder.toString());
-        embedBuilder.setTitle("Command Categories");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.setFooter("If you're stuck, use " + prefix + "help (category name/number).");
+        embedBuilder
+                .setDescription(stringBuilder.toString())
+                .setTitle("Command Categories")
+                .setColor(Helper.getRandomColor())
+                .setFooter("If you're stuck, use /help (category name/category number).");
         return embedBuilder.build();
     }
 
     @NotNull
-    private MessageEmbed noCommandFoundEmbed(@NotNull String commandName, @NotNull String prefix) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("No Command Found");
-        embedBuilder.setDescription("No command has been found for `" + commandName + "`.");
-        embedBuilder.setColor(Color.red);
-        embedBuilder.setFooter("Please see " + prefix + "help!");
-        return embedBuilder.build();
+    private MessageEmbed noCommandFoundEmbed(@NotNull String commandName) {
+        return new EmbedBuilder()
+                .setTitle("No Command Found")
+                .setDescription("No command has been found for `" + commandName + "`.")
+                .setColor(Color.red)
+                .setFooter("Please see /help!")
+                .build();
     }
 
-    @Override
-    public String getName() {
-        return "help";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("h");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Shows the list of commands.";
+        return "Command list + how to use the commands.";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "help` or `" + prefix + "help moderation` or `" + prefix + "help bug-report`";
+    public String exampleUsage() {
+        return "`/help` or `/help (section/section number)` or `/help (command name)`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "Command/Section Name", false);
-        return usage;
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.STRING, "section-or-command", "Sub-argument for the help command.", false, false));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.GENERIC;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.GENERIC;
+    }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return true;
+    }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
     }
 
 }

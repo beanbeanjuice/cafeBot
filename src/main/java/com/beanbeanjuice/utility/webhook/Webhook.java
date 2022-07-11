@@ -9,6 +9,11 @@ import java.net.URL;
 import java.util.*;
 import java.util.List;
 
+/**
+ * A class used for sending {@link Webhook Webhooks}.
+ *
+ * @author beanbeanjuice
+ */
 public class Webhook {
 
     private final String url;

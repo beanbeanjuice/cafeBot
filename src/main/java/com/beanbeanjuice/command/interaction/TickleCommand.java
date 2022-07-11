@@ -1,14 +1,13 @@
 package com.beanbeanjuice.command.interaction;
 
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import com.beanbeanjuice.utility.sections.interaction.Interaction;
+import com.beanbeanjuice.utility.section.interaction.Interaction;
 import io.github.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -20,50 +19,46 @@ import java.util.ArrayList;
 public class TickleCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        Interaction interaction = new Interaction(InteractionType.TICKLE,
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        new Interaction(InteractionType.TICKLE,
                 "**{sender}** *tickled* themselves! Ohhh... okay?",
                 "**{sender}** *tickled* **{receiver}**!",
                 "{sender} tickled others {amount_sent} times. {receiver} was tickled {amount_received} times.",
-                user,
-                args,
-                event.getChannel());
-
-        if (interaction.containsCafeBot()) {
-            event.getMessage().reply("S- STOP I am *very* ticklish...").queue();
-        }
+                "S- stop it! You know I'm ticklish! <:zerotwo_scream:841921420904497163>",
+                event);
     }
 
-    @Override
-    public String getName() {
-        return "tickle";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        return new ArrayList<>();
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Tickle someone!";
+        return "Tickle someone.";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "tickle @beanbeanjuice` or `" + prefix + "tickle @beanbeanjuice :O`";
+    public String exampleUsage() {
+        return "`/tickle` or `/tickle @beanbeanjuice`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.SENTENCE, "Users + Extra Message", false);
-        return usage;
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.USER, "receiver", "The person to tickle.", false, false));
+        options.add(new OptionData(OptionType.STRING, "message", "An optional message to add.", false, false));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.INTERACTION;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.INTERACTION;
+    }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return false;
     }
 
 }

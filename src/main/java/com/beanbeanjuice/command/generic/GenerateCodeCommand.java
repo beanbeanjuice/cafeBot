@@ -1,19 +1,16 @@
 package com.beanbeanjuice.command.generic;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.logger.LogLevel;
-import io.github.beanbeanjuice.cafeapi.exception.AuthorizationException;
-import io.github.beanbeanjuice.cafeapi.exception.CafeException;
-import io.github.beanbeanjuice.cafeapi.exception.ConflictException;
-import io.github.beanbeanjuice.cafeapi.exception.ResponseException;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-
-import java.util.ArrayList;
+import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.logging.LogLevel;
+import io.github.beanbeanjuice.cafeapi.exception.api.AuthorizationException;
+import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
+import io.github.beanbeanjuice.cafeapi.exception.api.ConflictException;
+import io.github.beanbeanjuice.cafeapi.exception.api.ResponseException;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An {@link ICommand} used to generate codes.
@@ -23,78 +20,69 @@ import java.util.ArrayList;
 public class GenerateCodeCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-
-        // Deletes the message.
-        event.getMessage().delete().queue();
-
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
         // Generates the code.
-        String generatedCode = CafeBot.getGeneralHelper().getRandomAlphaNumericString(32);
+        String generatedCode = Helper.getRandomAlphaNumericString(32);
 
         // Tries to create the code for the user in the database.
         try {
-            CafeBot.getCafeAPI().generatedCodes().createUserGeneratedCode(user.getId(), generatedCode);
+            Bot.getCafeAPI().GENERATED_CODE.createUserGeneratedCode(event.getUser().getId(), generatedCode);
         } catch (ConflictException e) {
 
             // If the code exists, then update it.
             try {
-                CafeBot.getCafeAPI().generatedCodes().updateUserGeneratedCode(user.getId(), generatedCode);
+                Bot.getCafeAPI().GENERATED_CODE.updateUserGeneratedCode(event.getUser().getId(), generatedCode);
 
-                CafeBot.getGeneralHelper().pmUser(user, CafeBot.getGeneralHelper().successEmbed(
+                event.getHook().sendMessageEmbeds(Helper.successEmbed(
                         "Generated Code",
-                        "Your Generated Code Is: `" + generatedCode + "`."
-                ));
-                return;
+                        "Your generated code is: `" + generatedCode + "`."
+                )).queue();
             } catch (CafeException e2) {
-                CafeBot.getGeneralHelper().pmUser(user, CafeBot.getGeneralHelper().errorEmbed(
+                event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                         "Error Generating Code",
-                        "There has been an error generating the code, please try again. Error Updating."
-                ));
-                CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Generating Code: " + e2.getMessage(), e2);
-                return;
+                        "There has been an error generating the code. Please try again. Error updating."
+                )).queue();
+                Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Generating Code: " + e2.getMessage(), e2);
             }
 
             // Otherwise catch the error.
         } catch (AuthorizationException | ResponseException e) {
-            CafeBot.getGeneralHelper().pmUser(user, CafeBot.getGeneralHelper().errorEmbed(
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Generating Code",
                     "There has been an error generating the code, please try again. Error creating."
-            ));
-            CafeBot.getLogManager().log(this.getClass(), LogLevel.WARN, "Error Generating Code: " + e.getMessage(), e);
-            return;
+            )).queue();
+            Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Generating Code: " + e.getMessage(), e);
         }
-
     }
 
-    @Override
-    public String getName() {
-        return "generate-code";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("generatecode");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Generates a random 32-digit alphanumeric code!";
+        return "Generate a random code!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "generate-code`";
+    public String exampleUsage() {
+        return "`/generate-code`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        return new Usage();
+    public CommandCategory getCategoryType() {
+        return CommandCategory.GENERIC;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.GENERIC;
+    public Boolean allowDM() {
+        return true;
     }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
+    }
+
 }

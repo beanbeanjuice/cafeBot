@@ -1,14 +1,13 @@
 package com.beanbeanjuice.command.interaction;
 
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import com.beanbeanjuice.utility.sections.interaction.Interaction;
+import com.beanbeanjuice.utility.section.interaction.Interaction;
 import io.github.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -20,50 +19,46 @@ import java.util.ArrayList;
 public class DieCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        Interaction interaction = new Interaction(InteractionType.DIE,
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        new Interaction(InteractionType.DIE,
                 "**{sender}** *died*! SOMEONE HELP! <:madison_when_short:843673314990882836>",
                 "**{sender}** *died* because of **{receiver}**! <:madison_when_short:843673314990882836>",
                 "{sender} died {amount_sent} times. {receiver} was someone's cause of death {amount_received} times.",
-                user,
-                args,
-                event.getChannel());
-
-        if (interaction.containsCafeBot()) {
-            event.getMessage().reply("Wh- why'd you die?!? Someone? Get help please!").queue();
-        }
+                "You're not dead... <:madison_moment:843672933176311808>",
+                event);
     }
 
-    @Override
-    public String getName() {
-        return "die";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        return new ArrayList<>();
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Die with someone!";
+        return "Die with someone.";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "die @beanbeanjuice` or `" + prefix + "die @beanbeanjuice :O`";
+    public String exampleUsage() {
+        return "`/die` or `/die @beanbeanjuice`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.SENTENCE, "Users + Extra Message", false);
-        return usage;
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.USER, "receiver", "The person to die toward.", false, false));
+        options.add(new OptionData(OptionType.STRING, "message", "An optional message to add.", false, false));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.INTERACTION;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.INTERACTION;
+    }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return false;
     }
 
 }

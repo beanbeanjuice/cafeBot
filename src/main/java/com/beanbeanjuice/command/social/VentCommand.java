@@ -1,79 +1,98 @@
 package com.beanbeanjuice.command.social;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
+import com.beanbeanjuice.utility.handler.guild.CustomGuild;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
+import com.beanbeanjuice.utility.helper.Helper;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
- * An {@link ICommand} used to vent anonymously.
+ * An {@link ICommand} used to send an anonymous vent!
  *
  * @author beanbeanjuice
  */
 public class VentCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        event.getMessage().delete().queue();
-        TextChannel ventChannel = CafeBot.getGuildHandler().getCustomGuild(event.getGuild()).getVentingChannel();
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        CustomGuild guild = GuildHandler.getCustomGuild(event.getGuild());
+        TextChannel ventChannel = guild.getVentingChannel();
 
-        // Making sure the venting channel exists.
         if (ventChannel == null) {
-            CafeBot.getGeneralHelper().pmUser(user, CafeBot.getGeneralHelper().errorEmbed(
-                    "Venting Not Enabled",
-                    "The server you are trying to anonymously vent on currently does not have anonymous venting setup."
-            ));
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                    "Cannot Send Vent",
+                    "There is no anonymous venting channel enabled on this server. Let them know " +
+                            "they can enable it by doing `/vent-channel set`!"
+            )).queue();
             return;
         }
 
-        if (!CafeBot.getVentHandler().addVent(user.getId(), event.getGuild().getId())) {
-            CafeBot.getGeneralHelper().pmUser(user, CafeBot.getGeneralHelper().errorEmbed(
-                    "Venting Timer Started",
-                    "You already have a venting timer started. To cancel the timer, do `!!cancel`."
-            ));
-            return;
-        }
-
-        CafeBot.getVentHandler().getVent(user.getId()).startVentTimer();
+        ventChannel.sendMessageEmbeds(ventEmbed(event.getOption("vent_message").getAsString())).queue((e) -> {
+            event.getHook().sendMessageEmbeds(Helper.successEmbed(
+                    "Vent Sent",
+                    "Your anonymous vent has been successfully sent!"
+            )).queue();
+        });
     }
 
-    @Override
-    public String getName() {
-        return "vent";
+    @NotNull
+    private MessageEmbed ventEmbed(@NotNull String message) {
+        return new EmbedBuilder()
+                .setTitle("Anonymous Vent")
+                .setDescription(message)
+                .setColor(Helper.getRandomColor())
+                .setTimestamp(new Date().toInstant())
+                .build();
     }
 
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("anonymously-vent");
-        arrayList.add("anonymous-vent");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Anonymously vent! (If the server has that setup...)";
+        return "Send an anonymous vent if the server has it enabled!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "vent`";
+    public String exampleUsage() {
+        return "`/vent i'm sad :(`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        return new Usage();
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.STRING, "vent_message", "The message you want to send anonymously in the vent channel! (If the server has it " +
+                "enabled)", true));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.SOCIAL;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.SOCIAL;
+    }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return false;
+    }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
     }
 
 }
