@@ -24,6 +24,7 @@ public class PokeCommand implements ICommand {
                 "**{sender}** *poked* themselves! Why?",
                 "**{sender}** *poked* **{receiver}**!",
                 "{sender} poked others {amount_sent} times. {receiver} was poked {amount_received} times.",
+                "Hmm? Is there something you need? <:kuromi_question:841921649132568576>",
                 event);
     }
 

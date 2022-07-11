@@ -24,6 +24,7 @@ public class KissCommand implements ICommand {
                 "**{sender}** *kissed themselves*! You kissed your hand right **{sender}**? Right?!?",
                 "**{sender}** *kissed* **{receiver}**!",
                 "{sender} kissed others {amount_sent} times. {receiver} was kissed {amount_received} times.",
+                "Y- you can't! I'm working... <:jett_moan:841916896563429386>",
                 event);
     }
 

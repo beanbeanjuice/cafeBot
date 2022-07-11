@@ -24,6 +24,7 @@ public class YellCommand implements ICommand {
                 "**{sender}** *yelled*! SHUSH... some people are trying to work! <:madison_moment:843672933176311808>",
                 "**{sender}** *yelled* at **{receiver}**!",
                 "{sender} yelled at others {amount_sent} times. {receiver} was yelled at {amount_received} times.",
+                "WHY ARE YOU YELLING AT ME???? <:zerotwo_scream:841921420904497163>",
                 event);
     }
 

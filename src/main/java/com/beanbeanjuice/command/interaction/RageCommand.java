@@ -24,6 +24,7 @@ public class RageCommand implements ICommand {
                 "**{sender}** *is raging*! You- you should calm down... <:madison_moment:843672933176311808>",
                 "**{sender}** *is raging* at **{receiver}**!",
                 "{sender} raged at others {amount_sent} times. {receiver} was raged at {amount_received} times.",
+                "DON'T RAGE AT ME <a:man_scream:841921434732724224>",
                 event);
     }
 

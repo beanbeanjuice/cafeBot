@@ -24,6 +24,7 @@ public class DanceCommand implements ICommand {
                 "**{sender}** *danced*! How cute!~ <a:wiggle:886217792578269236>",
                 "**{sender}** *danced* with **{receiver}**! <a:wiggle:886217792578269236>",
                 "{sender} danced with others {amount_sent} times. {receiver} was danced with {amount_received} times.",
+                "Let's dance together uwu <a:wiggle:886217792578269236>",
                 event);
     }
 

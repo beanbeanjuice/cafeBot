@@ -24,6 +24,7 @@ public class WelcomeCommand implements ICommand {
                 "**{sender}** *welcomed* themselves! Awww.. won't someone besides yourself welcome you, **{sender}**?",
                 "**{sender}** *welcomed* **{receiver}**!",
                 "{sender} welcomed others {amount_sent} times. {receiver} was welcomed {amount_received} times.",
+                "Why are you welcoming me? Regardless thank you! <a:wowowow:886217210010431508>",
                 event);
     }
 

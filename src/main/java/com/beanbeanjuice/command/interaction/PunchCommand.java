@@ -24,6 +24,7 @@ public class PunchCommand implements ICommand {
                 "**{sender}** *punched* themselves! STOP!!! <:madison_when_short:843673314990882836>",
                 "**{sender}** *punched* **{receiver}**!",
                 "{sender} punched others {amount_sent} times. {receiver} was punched {amount_received} times.",
+                "Congratulations... you punched a robot. Your hands are now broken. <:madison_moment:843672933176311808>",
                 event);
     }
 

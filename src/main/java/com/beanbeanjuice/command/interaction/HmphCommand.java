@@ -24,6 +24,7 @@ public class HmphCommand implements ICommand {
                 "**{sender}** *hmphed*! What's wrong **{sender}**?",
                 "**{sender}** *hmphed* at **{receiver}**!",
                 "{sender} hmphed at others {amount_sent} times. {receiver} was hmphed at {amount_received} times.",
+                "DONT HMPH AT ME <a:man_scream:841921434732724224>",
                 event);
     }
 
