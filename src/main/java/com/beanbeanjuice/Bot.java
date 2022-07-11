@@ -66,7 +66,7 @@ public class Bot {
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         logger = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
-        Helper.startCafeAPIRefreshTimer(RequestLocation.BETA);  // TODO: Change in production.
+        Helper.startCafeAPIRefreshTimer(RequestLocation.RELEASE);  // TODO: Change in production.
 
         logger.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
         logger.log(Bot.class, LogLevel.OKAY, "Starting bot!", true, false);
