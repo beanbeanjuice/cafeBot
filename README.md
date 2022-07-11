@@ -231,8 +231,8 @@ Contributions are what make the open source community such an amazing place to b
 
 Distributed under the GPL-3.0 License. See `LICENSE` for more information.
 
-<!-- DATA THIS BOT STORED -->
-# Data
+<!-- DATA THIS BOT STORES -->
+# Privacy Policy
 
 Here is ALL of the data that this bot could *possibly* store on you. This, of course, is subject to change. None of these can be accessed by other servers (that you are not a part of) by the bot.
 
