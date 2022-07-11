@@ -1,109 +1,103 @@
 package com.beanbeanjuice.command.generic;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import com.beanbeanjuice.utility.logger.LogLevel;
 import com.sun.management.OperatingSystemMXBean;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.management.ManagementFactory;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 /**
- * A general ping {@link ICommand} to show bot information.
+ * A basic {@link ICommand} for testing bot functions.
  *
  * @author beanbeanjuice
  */
 public class PingCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        CafeBot.getJDA().getRestPing().queue(
-                (ping) -> event.getChannel()
-                        .sendMessageEmbeds(messageEmbed(ping, CafeBot.getJDA().getGatewayPing())).queue()
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        Bot.getBot().getRestPing().queue(
+                (ping) -> event.getHook().sendMessageEmbeds(messageEmbed(ping, Bot.getBot().getGatewayPing())).queue()
         );
 
-        if (args.size() == 1) {
-            if (args.get(0).equals("testing")) {
-                Exception exception = new SQLException("Fake SQL Exception");
-                CafeBot.getLogManager().log(this.getClass(), LogLevel.DEBUG, "Testing Log: " + exception.getMessage(), exception);
-            }
+        if (event.getOption("any_string") != null) {
+            event.getHook().sendMessage(event.getOption("any_string").getAsString()).queue();
         }
     }
 
     @NotNull
     private MessageEmbed messageEmbed(@NotNull Long botPing, @NotNull Long gatewayPing) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(getName() + "!", "https://www.beanbeanjuice.com/cafeBot.html");
+        embedBuilder.setTitle("ping!", "https://www.beanbeanjuice.com/cafeBot.html");
         StringBuilder descriptionBuilder = new StringBuilder();
         double cpuLoad = (double) Math.round((ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCpuLoad()*100) * 100) / 100;
         long systemMemoryTotal = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getTotalMemorySize()/1048576;
         long systemMemoryUsage = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCommittedVirtualMemorySize()/1048576;
         long dedicatedMemoryTotal = Runtime.getRuntime().maxMemory()/1048576;
         long dedicatedMemoryUsage = Runtime.getRuntime().totalMemory()/1048576;
-        descriptionBuilder.append("**Rest Ping** - `").append(botPing).append("`\n")
+        descriptionBuilder
+                .append("**Rest Ping** - `").append(botPing).append("`\n")
                 .append("**Gateway Ping** - `").append(gatewayPing).append("`\n")
-                .append("**Current Version** - `").append(CafeBot.getBotVersion()).append("`\n")
+                .append("**Current Version** - `").append(Bot.BOT_VERSION).append("`\n")
                 .append("**CPU Usage** - `").append(cpuLoad).append("%`\n")
                 .append("**OS Memory Usage** - `").append(systemMemoryUsage).append("` mb / `").append(systemMemoryTotal).append("` mb\n")
                 .append("**Bot Memory Usage** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
-                .append("**Bot Uptime** - `").append(CafeBot.getGeneralHelper().formatTimeDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
-                .append("**Commands Run** - `").append(CafeBot.getCommandsRun()).append("`\n");
+                .append("**Bot Uptime** - `").append(Helper.millisToDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
+                .append("**Commands Run** - `").append(Bot.commandsRun).append("`\n")
+                .append("Hello there! How are you? Would you like to order some coffee?");
 
-        try {
-            descriptionBuilder.append("**Bot Upvotes** - `").append(CafeBot.getTopGGAPI().getBot(System.getenv("CAFEBOT_TOPGG_ID")).toCompletableFuture().get()
-                    .getPoints()).append("`\n\n");
-        } catch (InterruptedException | ExecutionException e) {
-            descriptionBuilder.append("**Bot Upvotes** - `Unable to Get Vote Count`\n\n");
-        }
-        descriptionBuilder.append("Hello there! How are you? Would you like to order some coffee?");
-        embedBuilder.setDescription(descriptionBuilder.toString());
-        embedBuilder.setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/cafeBot");
-        embedBuilder.setThumbnail(CafeBot.getDiscordAvatarUrl());
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder
+                .setDescription(descriptionBuilder.toString())
+                .setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/cafeBot")
+                .setThumbnail(Bot.DISCORD_AVATAR_URL)
+                .setColor(Helper.getRandomColor());
         return embedBuilder.build();
     }
 
     @Override
-    public String getName() {
-        return "ping";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        return new ArrayList<>();
-    }
-
-    @Override
+    @NotNull
     public String getDescription() {
-        return "Ping the bot!";
+        return "Ping!";
     }
 
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "ping`";
+    @NotNull
+    public String exampleUsage() {
+        return "`/ping` or `/ping hello` or `/ping @beanbeanjuice`";
     }
 
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.TEXT, "Any Text", false);
-        usage.addUsage(CommandType.LINK, "Any Link", false);
-        return usage;
+    @NotNull
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.STRING, "any_string", "Add any string to be repeated back to you.", false, false));
+        options.add(new OptionData(OptionType.USER, "user", "Add any user to be repeated back to you.", false, false));
+        return options;
     }
 
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.GENERIC;
+    @NotNull
+    public CommandCategory getCategoryType() {
+        return CommandCategory.GENERIC;
+    }
+
+    @Override
+    @NotNull
+    public Boolean allowDM() {
+        return true;
+    }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
     }
 }

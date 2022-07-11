@@ -1,13 +1,10 @@
 package com.beanbeanjuice.command.fun;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.api.SubRedditAPI;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.helper.api.SubRedditAPI;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import com.beanbeanjuice.utility.helper.Helper;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -20,8 +17,8 @@ import java.util.ArrayList;
 public class TeaMemeCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(new SubRedditAPI(getSubreddits().get(CafeBot.getGeneralHelper().getRandomNumber(0, getSubreddits().size()))).getRedditEmbed()).queue();
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        event.getHook().sendMessageEmbeds(new SubRedditAPI(getSubreddits().get(Helper.getRandomNumber(0, getSubreddits().size()))).getRedditEmbed()).queue();
     }
 
     @NotNull
@@ -32,36 +29,28 @@ public class TeaMemeCommand implements ICommand {
         return arrayList;
     }
 
-    @Override
-    public String getName() {
-        return "tea-meme";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("teameme");
-        arrayList.add("tea");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Get a tea meme!";
+        return "Send a tea meme!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "tea`";
+    public String exampleUsage() {
+        return "`/tea-meme`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        return new Usage();
+    public CommandCategory getCategoryType() {
+        return CommandCategory.FUN;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.FUN;
+    public Boolean allowDM() {
+        return true;
     }
+
 }

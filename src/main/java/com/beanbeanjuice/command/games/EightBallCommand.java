@@ -1,13 +1,11 @@
 package com.beanbeanjuice.command.games;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import com.beanbeanjuice.utility.helper.Helper;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -20,8 +18,8 @@ import java.util.ArrayList;
 public class EightBallCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        event.getHook().sendMessageEmbeds(Helper.successEmbed(
                 "8 Ball",
                 getAnswer()
         )).queue();
@@ -45,47 +43,42 @@ public class EightBallCommand implements ICommand {
         noAnswers.add("Less than likely.");
         noAnswers.add("ABSOLUTELY NOT.");
 
-        if (CafeBot.getGeneralHelper().getRandomNumber(1, 3) == 1) {
-            return yesAnswers.get(CafeBot.getGeneralHelper().getRandomNumber(0, yesAnswers.size()));
-        } else {
-            return noAnswers.get(CafeBot.getGeneralHelper().getRandomNumber(0, noAnswers.size()));
-        }
+        if (Helper.getRandomNumber(1, 3) == 1)
+            return yesAnswers.get(Helper.getRandomNumber(0, yesAnswers.size()));
+        else
+            return noAnswers.get(Helper.getRandomNumber(0, noAnswers.size()));
     }
 
-    @Override
-    public String getName() {
-        return "8-ball";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("8ball");
-        arrayList.add("eight-ball");
-        arrayList.add("eightball");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Ask a yes or no question!";
+        return "Ask 8-ball a yes or no question!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "8ball Am I going to win a million dollars today?`";
+    public String exampleUsage() {
+        return "`/8-ball Will I ever be real?`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.SENTENCE, "Yes or No Question", true);
-        return usage;
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.STRING, "question", "The question you want to ask the magic 8 ball!", true));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.GAMES;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.GAMES;
+    }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return true;
     }
 
 }

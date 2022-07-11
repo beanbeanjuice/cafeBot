@@ -1,17 +1,16 @@
 package com.beanbeanjuice.command.cafe;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
+import com.beanbeanjuice.utility.section.cafe.ServeHandler;
+import com.beanbeanjuice.utility.helper.Helper;
 import io.github.beanbeanjuice.cafeapi.cafebot.cafe.CafeUser;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -24,37 +23,28 @@ import java.util.ArrayList;
 public class BalanceCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        User user = event.getUser();
+        boolean self = true;
 
-        // Checking if there is no specified user to check for.
-        if (args.size() == 0) {
-            CafeUser cafeUser = CafeBot.getServeHandler().getCafeUser(user);
+        try {
+            user = event.getOption("user").getAsUser();
+            self = false;
+        } catch (NullPointerException ignored) {}
 
-            if (cafeUser == null) {
-                event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
-                        "Error Getting User",
-                        "There has been an error getting the Cafe User from the database. Please try again."
-                )).queue();
-                return;
-            }
+        CafeUser cafeUser = ServeHandler.getCafeUser(user);
 
-            event.getChannel().sendMessageEmbeds(selfBalanceEmbed(cafeUser, event.getGuild())).queue();
-            return;
-        }
-
-        // Getting the specified user.
-        User person = CafeBot.getGeneralHelper().getUser(args.get(0));
-        CafeUser cafeUser = CafeBot.getServeHandler().getCafeUser(person);
-
+        // Checking if there was an error getting the user.
         if (cafeUser == null) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Getting User",
                     "There has been an error getting the Cafe User from the database. Please try again."
             )).queue();
             return;
         }
 
-        event.getChannel().sendMessageEmbeds(otherBalanceEmbed(person, cafeUser, event.getGuild())).queue();
+        if (self) { event.getHook().sendMessageEmbeds(selfBalanceEmbed(cafeUser)).queue(); }
+        else { event.getHook().sendMessageEmbeds(otherBalanceEmbed(user, cafeUser)).queue(); }
     }
 
     /**
@@ -62,15 +52,15 @@ public class BalanceCommand implements ICommand {
      * @param cafeUser The {@link CafeUser} to get the balance of.
      * @return The created {@link MessageEmbed}.
      */
-    public MessageEmbed selfBalanceEmbed(@NotNull CafeUser cafeUser, @NotNull Guild guild) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("beanCoin Balance");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.addField("Orders Bought", cafeUser.getOrdersBought().toString(), true);
-        embedBuilder.addField("Orders Received", cafeUser.getOrdersReceived().toString(), true);
-        embedBuilder.setDescription("Your current balance is `" + CafeBot.getGeneralHelper().roundDouble(cafeUser.getBeanCoins()) + "` bC (beanCoins)!");
-        embedBuilder.setFooter("To learn how to make money do " + CafeBot.getGuildHandler().getCustomGuild(guild).getPrefix() + "help serve");
-        return embedBuilder.build();
+    public MessageEmbed selfBalanceEmbed(@NotNull CafeUser cafeUser) {
+        return new EmbedBuilder()
+                .setTitle("beanCoin Balance")
+                .setColor(Helper.getRandomColor())
+                .addField("Orders Bought", cafeUser.getOrdersBought().toString(), true)
+                .addField("Orders Received", cafeUser.getOrdersReceived().toString(), true)
+                .setDescription("Your current balance is `" + Helper.roundDouble(cafeUser.getBeanCoins()) + "` bC (beanCoins)!")
+                .setFooter("To learn how to make money do /help serve")
+                .build();
     }
 
     /**
@@ -79,52 +69,53 @@ public class BalanceCommand implements ICommand {
      * @param cafeUser The {@link CafeUser} specified.
      * @return The created {@link MessageEmbed}.
      */
-    public MessageEmbed otherBalanceEmbed(@NotNull User user, @NotNull CafeUser cafeUser, @NotNull Guild guild) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("beanCoin Balance");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
-        embedBuilder.addField("Orders Bought", cafeUser.getOrdersBought().toString(), true);
-        embedBuilder.addField("Orders Received", cafeUser.getOrdersReceived().toString(), true);
-        embedBuilder.setDescription(user.getAsMention() + " has a current balance of `$" + CafeBot.getGeneralHelper().roundDouble(cafeUser.getBeanCoins()) + "` beanCoins!");
-        embedBuilder.setFooter("To learn how to make money do " + CafeBot.getGuildHandler().getCustomGuild(guild).getPrefix() + "help serve");
-        return embedBuilder.build();
+    public MessageEmbed otherBalanceEmbed(@NotNull User user, @NotNull CafeUser cafeUser) {
+        return new EmbedBuilder()
+                .setTitle("beanCoin Balance")
+                .setColor(Helper.getRandomColor())
+                .addField("Orders Bought", cafeUser.getOrdersBought().toString(), true)
+                .addField("Orders Received", cafeUser.getOrdersReceived().toString(), true)
+                .setDescription(user.getAsMention() + " has a current balance of `$" + Helper.roundDouble(cafeUser.getBeanCoins()) + "` bC (beanCoins)!")
+                .setFooter("To learn how to make money do /help serve")
+                .build();
     }
 
-    @Override
-    public String getName() {
-        return "balance";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("bal");
-        arrayList.add("check-balance");
-        arrayList.add("checkbalance");
-        arrayList.add("checkbal");
-        arrayList.add("check-bal");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Check your current beanCoin balance!";
+        return "Check yours or someone's balance.";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "bal` or `" + prefix + "bal @beanbeanjuice`";
+    public String exampleUsage() {
+        return "`/balance` or `/balance @beanbeanjuice`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "Discord Mention", false);
-        return usage;
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.USER, "user", "Person to check the balance of.", false, false));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.CAFE;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.CAFE;
     }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return true;
+    }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
+    }
+
 }

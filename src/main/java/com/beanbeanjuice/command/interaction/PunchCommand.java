@@ -1,14 +1,13 @@
 package com.beanbeanjuice.command.interaction;
 
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import com.beanbeanjuice.utility.sections.interaction.Interaction;
+import com.beanbeanjuice.utility.section.interaction.Interaction;
 import io.github.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -20,50 +19,46 @@ import java.util.ArrayList;
 public class PunchCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        Interaction interaction = new Interaction(InteractionType.PUNCH,
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        new Interaction(InteractionType.PUNCH,
                 "**{sender}** *punched* themselves! STOP!!! <:madison_when_short:843673314990882836>",
                 "**{sender}** *punched* **{receiver}**!",
                 "{sender} punched others {amount_sent} times. {receiver} was punched {amount_received} times.",
-                user,
-                args,
-                event.getChannel());
-
-        if (interaction.containsCafeBot()) {
-            event.getMessage().reply("You punched a robot. Your hands are now broken.").queue();
-        }
+                "Congratulations... you punched a robot. Your hands are now broken. <:madison_moment:843672933176311808>",
+                event);
     }
 
-    @Override
-    public String getName() {
-        return "punch";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        return new ArrayList<>();
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Punch someone!";
+        return "Punch someone... HUH";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "punch @beanbeanjuice` or `" + prefix + "punch @beanbeanjuice WHY WOULD YOU DO THIS?`";
+    public String exampleUsage() {
+        return "`/punch` or `/punch @beanbeanjuice`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.SENTENCE, "Users + Extra Message", false);
-        return usage;
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.USER, "receiver", "The person to punch.", false, false));
+        options.add(new OptionData(OptionType.STRING, "message", "An optional message to add.", false, false));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.INTERACTION;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.INTERACTION;
+    }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return false;
     }
 
 }

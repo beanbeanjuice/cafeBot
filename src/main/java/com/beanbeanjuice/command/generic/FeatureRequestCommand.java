@@ -1,19 +1,15 @@
 package com.beanbeanjuice.command.generic;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
+import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-
-import java.util.ArrayList;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * A command used for sending the user a feature request link.
+ * An {@link ICommand} used for sending the user a feature request link.
  *
  * @author beanbeanjuice
  */
@@ -22,49 +18,46 @@ public class FeatureRequestCommand implements ICommand {
     private final String FEATURE_REQUEST_URL = "https://github.com/beanbeanjuice/cafeBot/issues/new/choose";
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(featureRequestEmbed()).queue();
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        event.getHook().sendMessageEmbeds(featureRequestEmbed()).queue();
     }
 
     private MessageEmbed featureRequestEmbed() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("Feature Request", FEATURE_REQUEST_URL);
         embedBuilder.setDescription("You can submit a [feature request](" + FEATURE_REQUEST_URL + ") on github!");
-        embedBuilder.setColor(CafeBot.getGeneralHelper().getRandomColor());
+        embedBuilder.setColor(Helper.getRandomColor());
         return embedBuilder.build();
     }
 
-    @Override
-    public String getName() {
-        return "feature-request";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("featurerequest");
-        arrayList.add("request-feature");
-        arrayList.add("requestfeature");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Request a feature!";
+        return "Submit a feature request for the bot!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "feature-request`";
+    public String exampleUsage() {
+        return "`/feature-report`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        return new Usage();
+    public CommandCategory getCategoryType() {
+        return CommandCategory.GENERIC;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.GENERIC;
+    public Boolean allowDM() {
+        return true;
     }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
+    }
+
 }
