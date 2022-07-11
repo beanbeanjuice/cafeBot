@@ -251,6 +251,8 @@ Here is ALL of the data that this bot could *possibly* store on you. This, of co
 - *__Other Data__*
   - Your birthday.`***`
     - Your birthday can be removed any time. It can only be accessed by people in the same server as you. If they are not in the same server as you, they cannot see this.
+  - Message.
+    - Your messages **ARE NOT** saved **AT ALL**. The only thing the bot does, if enabled, is check if trigger words are sent in a message, then sends a pre-determined response.
 
 ##### * - This is already public information anyway, and is crucial for having the bot work.
 ##### ** - This is something that is needed for the bot to do things like apply a role to someone when they join a specific voice channel, or to duplicate a voice channel when needed.
