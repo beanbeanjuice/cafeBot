@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.section.twitch;
 
 import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.utility.logging.LogLevel;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
@@ -31,7 +32,11 @@ public class TwitchListener {
      * @param channelName The channel name of the stream to listen for.
      */
     public void addStream(String channelName) {
-        twitchClient.getClientHelper().enableStreamEventListener(channelName);
+        try {
+            twitchClient.getClientHelper().enableStreamEventListener(channelName);
+        } catch (Exception e) {
+            Bot.getLogger().log(TwitchListener.class, LogLevel.ERROR, "Error Adding: " + channelName, false, false, e);
+        }
     }
 
     /**

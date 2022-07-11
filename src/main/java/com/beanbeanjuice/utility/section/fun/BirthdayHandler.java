@@ -200,8 +200,12 @@ public class BirthdayHandler {
     @NotNull
     private static Boolean isBirthday(@NotNull Birthday birthday) {
         // TODO: Seems like it is one day off?
+        String month = birthday.getMonth().getMonthNumber().toString();
+        String day = birthday.getDay().toString();
+        String dateString = month + "-" + day + "-2020";
+
         try {
-            return Time.dateHasPassed(birthday.getDay() + "-" + birthday.getDay() + "-2020", birthday.getTimeZone());
+            return Time.dateHasPassed(dateString, birthday.getTimeZone()) && Time.isSameDay(Time.getFullDate(dateString, birthday.getTimeZone()));
         } catch (ParseException e) {
             return false;
         }

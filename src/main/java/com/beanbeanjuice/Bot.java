@@ -75,14 +75,12 @@ public class Bot {
                 .setActivity(Activity.playing("The barista is starting..."))
                 .setStatus(OnlineStatus.IDLE)
                 .enableIntents(
-                        GatewayIntent.GUILD_BANS,
                         GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
                         GatewayIntent.GUILD_MEMBERS,
                         GatewayIntent.DIRECT_MESSAGES
                 )
                 .enableCache(
-                        CacheFlag.EMOJI,
-                        CacheFlag.VOICE_STATE
+                        CacheFlag.EMOJI
                 )
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .setChunkingFilter(ChunkingFilter.ALL)
