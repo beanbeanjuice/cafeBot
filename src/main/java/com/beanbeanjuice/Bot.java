@@ -44,6 +44,7 @@ public class Bot {
     private static final String BOT_TOKEN = System.getenv("CAFEBOT_TOKEN");
     public static final String BOT_USER_AGENT = "java:com.beanbeanjuice.cafeBot:" + BOT_VERSION;
     public static final String TWITCH_ACCESS_TOKEN = System.getenv("CAFEBOT_TWITCH_ACCESS_TOKEN");
+    private static final RequestLocation location = RequestLocation.valueOf(System.getenv("CAFEBOT_REQUEST_LOCATION"));
     private static JDA bot;
 
     // API
@@ -66,7 +67,7 @@ public class Bot {
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         logger = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
-        Helper.startCafeAPIRefreshTimer(RequestLocation.BETA);  // TODO: Change in production.
+        Helper.startCafeAPIRefreshTimer(location);
 
         logger.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
         logger.log(Bot.class, LogLevel.OKAY, "Starting bot!", true, false);
