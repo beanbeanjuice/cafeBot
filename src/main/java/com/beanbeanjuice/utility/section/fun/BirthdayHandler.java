@@ -88,7 +88,7 @@ public class BirthdayHandler {
                 getAllBirthdays();
             }
         };
-        birthdayTimer.scheduleAtFixedRate(birthdayTimerTask, 0, 60000*4); // Should be 60000 for 30 minutes.
+        birthdayTimer.scheduleAtFixedRate(birthdayTimerTask, 0, 60000); // Should be 60000 for 30 minutes.
     }
 
     /**
@@ -201,7 +201,7 @@ public class BirthdayHandler {
     private static Boolean isBirthday(@NotNull Birthday birthday) {
         // TODO: Seems like it is one day off?
         try {
-            return Time.isDate(birthday.getUTCDate());
+            return Time.dateHasPassed(birthday.getDay() + "-" + birthday.getDay() + "-2020", birthday.getTimeZone());
         } catch (ParseException e) {
             return false;
         }
