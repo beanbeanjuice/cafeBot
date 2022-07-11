@@ -24,6 +24,7 @@ public class TickleCommand implements ICommand {
                 "**{sender}** *tickled* themselves! Ohhh... okay?",
                 "**{sender}** *tickled* **{receiver}**!",
                 "{sender} tickled others {amount_sent} times. {receiver} was tickled {amount_received} times.",
+                "S- stop it! You know I'm ticklish! <:zerotwo_scream:841921420904497163>",
                 event);
     }
 

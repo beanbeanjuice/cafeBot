@@ -24,6 +24,7 @@ public class PoutCommand implements ICommand {
                 "**{sender}** *is pouting*! What's wrong **{sender}**?",
                 "**{sender}** *is pouting* at **{receiver}**!",
                 "{sender} pouted at others {amount_sent} times. {receiver} was pouted at {amount_received} times.",
+                "There there... there's no need to pout! <a:catpats:950514533875720232>",
                 event);
     }
 

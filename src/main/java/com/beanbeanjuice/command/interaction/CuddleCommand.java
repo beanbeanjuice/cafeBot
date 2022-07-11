@@ -24,6 +24,7 @@ public class CuddleCommand implements ICommand {
                 "**{sender}** *cuddled* themselves! That's... kind of sad... <:madison_moment:843672933176311808>",
                 "**{sender}** *cuddled* **{receiver}**! That's adorable! <a:wowowow:886217210010431508>",
                 "{sender} cuddled others {amount_sent} times. {receiver} was cuddled {amount_received} times.",
+                "I love cuddles! <a:wowowow:886217210010431508>",
                 event);
     }
 

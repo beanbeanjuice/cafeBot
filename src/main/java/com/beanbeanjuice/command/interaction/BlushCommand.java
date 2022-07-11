@@ -24,6 +24,7 @@ public class BlushCommand implements ICommand {
                 "**{sender}** *blushed*! How cute!~",
                 "**{sender}** *blushed* at **{receiver}**!",
                 "{sender} blushed at others {amount_sent} times. {receiver} was blushed at {amount_received} times.",
+                "Aww you're blushing at me? <:flushed_open:841922879465455646>",
                 event);
     }
 

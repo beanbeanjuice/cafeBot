@@ -24,6 +24,7 @@ public class HugCommand implements ICommand {
                 "**{sender}** *hugged* themselves! Umm... how?",
                 "**{sender}** *hugged* **{receiver}**!",
                 "{sender} hugged others {amount_sent} times. {receiver} was hugged {amount_received} times.",
+                "I- I have to get back to work! <:flushed_nervous:841923862202548224>",
                 event);
     }
 

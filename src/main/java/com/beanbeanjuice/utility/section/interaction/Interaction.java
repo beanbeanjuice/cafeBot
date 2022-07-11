@@ -22,6 +22,7 @@ public class Interaction {
     private final String noUserAction;;
     private final String userAction;
     private String footer;
+    private final String selfMessage;
 
     private final User sender;
     private User receiver;
@@ -35,14 +36,16 @@ public class Interaction {
      * @param noUserAction The {@link String message} to send when no {@link User} is specified.
      * @param userAction The {@link String message} to send when a {@link User} is specified.
      * @param footer The {@link String footer} to attach to the {@link MessageEmbed}.
+     * @param selfMessage The {@link String message} to send to the user, if the receiver is the {@link Bot}.
      * @param event The {@link SlashCommandInteractionEvent event} that triggered the {@link Interaction}.
      */
     public Interaction(@NotNull InteractionType type, @NotNull String noUserAction, @NotNull String userAction,
-                       @NotNull String footer, @NotNull SlashCommandInteractionEvent event) {
+                       @NotNull String footer, @NotNull String selfMessage, @NotNull SlashCommandInteractionEvent event) {
         this.type = type;
         this.noUserAction = noUserAction;
         this.userAction = userAction;
         this.footer = footer;
+        this.selfMessage = selfMessage;
 
         this.sender = event.getUser();
 
@@ -67,9 +70,8 @@ public class Interaction {
         event.getHook().sendMessage(this.message).addEmbeds(actionEmbed(url, this.footer)).queue();
 
         // Sends a message if CafeBot is the one who receives the interaction.
-        if (this.containsCafeBot()) {
-            event.getTextChannel().sendMessage("Ow! Why would you do that to me?!? <:madison_when_short:843673314990882836>").queue();
-        }
+        if (this.containsCafeBot())
+            event.getTextChannel().sendMessage(selfMessage).queue();
     }
 
     /**
@@ -108,13 +110,11 @@ public class Interaction {
     @NotNull
     private MessageEmbed actionEmbed(@Nullable String link, @Nullable String footer) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        if (link != null) {
+        if (link != null)
             embedBuilder.setImage(link);
-        }
 
-        if (description != null) {
+        if (description != null)
             embedBuilder.setDescription("\"" + description + "\"");
-        }
 
         embedBuilder.setColor(Helper.getRandomColor());
         embedBuilder.setFooter(footer);
@@ -127,9 +127,8 @@ public class Interaction {
      */
     @NotNull
     public Boolean containsCafeBot() {
-        if (receiver == null) {
+        if (receiver == null)
             return false;
-        }
 
         return receiver.getId().equals(Bot.getBot().getSelfUser().getId());
     }

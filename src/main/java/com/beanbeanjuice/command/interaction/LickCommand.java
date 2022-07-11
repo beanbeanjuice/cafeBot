@@ -24,6 +24,7 @@ public class LickCommand implements ICommand {
                 "**{sender}** *licked* themselves! You at least washed whatever you licked right?",
                 "**{sender}** *licked* **{receiver}**! :flushed:",
                 "{sender} licked others {amount_sent} times. {receiver} was licked {amount_received} times.",
+                "That's unhygienic... <:stab_u:886216384864997406>",
                 event);
     }
 

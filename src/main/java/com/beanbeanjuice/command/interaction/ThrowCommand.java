@@ -24,6 +24,7 @@ public class ThrowCommand implements ICommand {
                 "**{sender}** *threw* themselves! I-... how? <:bean_moment:841922879166742529>",
                 "**{sender}** *threw* **{receiver}**!",
                 "{sender} threw others {amount_sent} times. {receiver} was thrown {amount_received} times.",
+                "Umm... I'm a robot... made out of heavy metal... you can't throw me <:really_why:842061369381748756>",
                 event);
     }
 

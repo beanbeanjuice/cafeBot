@@ -24,6 +24,7 @@ public class SleepCommand implements ICommand {
                 "**{sender}** *is sleeping*! Anyone wanna join in? <:kuromi_question:841921649132568576>",
                 "**{sender}** *is sleeping* with **{receiver}**!",
                 "{sender} slept with others {amount_sent} times. {receiver} was slept with {amount_received} times.",
+                "ZZzz \uD83D\uDE34",
                 event);
     }
 

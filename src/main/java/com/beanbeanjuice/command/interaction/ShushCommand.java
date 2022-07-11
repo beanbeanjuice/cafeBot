@@ -24,6 +24,7 @@ public class ShushCommand implements ICommand {
                 "**{sender}** *shushed* themselves! :zipper_mouth:",
                 "**{sender}** *shushed* **{receiver}**!",
                 "{sender} shushed others {amount_sent} times. {receiver} was shushed {amount_received} times.",
+                "Ok... \uD83E\uDD10",
                 event);
     }
 

@@ -24,6 +24,7 @@ public class SlapCommand implements ICommand {
                 "**{sender}** *slapped* themselves! DON'T DO THAT! <a:man_scream:841921434732724224>",
                 "**{sender}** *slapped* **{receiver}**!",
                 "{sender} slapped others {amount_sent} times. {receiver} was slapped {amount_received} times.",
+                "Wh- why would you slap me... <:when_AHHH:842062279372701737>",
                 event);
     }
 

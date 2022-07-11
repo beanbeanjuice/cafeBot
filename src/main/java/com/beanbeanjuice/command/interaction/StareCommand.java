@@ -24,6 +24,7 @@ public class StareCommand implements ICommand {
                 "**{sender}** *stared* at themselves! Ummm.. how?",
                 "**{sender}** *stared* at **{receiver}**!",
                 "{sender} stared at others {amount_sent} times. {receiver} was stared at {amount_received} times.",
+                "S- stop staring... I get nervous when you stare... <:flushed_nervous:841923862202548224>",
                 event);
     }
 

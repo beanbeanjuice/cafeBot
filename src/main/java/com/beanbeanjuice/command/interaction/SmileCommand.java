@@ -24,6 +24,7 @@ public class SmileCommand implements ICommand {
                 "**{sender}** *is smiling*!",
                 "**{sender}** *smiled* at **{receiver}**!",
                 "{sender} smiled at others {amount_sent} times. {receiver} was smiled at {amount_received} times.",
+                "Hai!~ <a:wowowow:886217210010431508>",
                 event);
     }
 

@@ -24,6 +24,7 @@ public class CryCommand implements ICommand {
                 "**{sender}** *is crying*! Oh no! Someone come give them a hug <:stab_u:886216384864997406>...",
                 "**{sender}** *is crying* at **{receiver}**! **{receiver}**, why are they crying?",
                 "{sender} cried at others {amount_sent} times. {receiver} caused people to cry {amount_received} times.",
+                "How did I make you cry? <a:catpats:950514533875720232>",
                 event);
     }
 
