@@ -1,9 +1,10 @@
 package com.beanbeanjuice.utility.listener;
 
-import com.beanbeanjuice.CafeBot;
+import com.beanbeanjuice.utility.handler.guild.GuildHandler;
+import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A {@link ListenerAdapter} that listens to {@link GuildMessageReceivedEvent} and gives an
+ * A {@link ListenerAdapter} that listens to {@link MessageReceivedEvent} and gives an
  * appropriate response depending on if it is enabled in the {@link Guild}.
  *
  * @author beanbeanjuice
@@ -32,15 +33,15 @@ public class AIResponseListener extends ListenerAdapter {
         createSproutMaps();
         createCafeBotMaps();
         createKenzieMaps();
-        createMadisonMaps();
         createSorryMaps();
-        createLillyMaps();
-        createBanzaiMaps();
         createAttackMaps();
         createPPMaps();
         createNahMaps();
         createSTFUMaps();
         createGenevieveMaps();
+        createMikoriMaps();
+        createMeowMaps();
+        createWoofMaps();
     }
 
     private void createHelloMaps() {
@@ -114,6 +115,7 @@ public class AIResponseListener extends ListenerAdapter {
         commandTerms.add("who is cafebot");
         commandTerms.add("what is cafe bot");
         commandTerms.add("who is cafe bot");
+        commandTerms.add("hi cafebot");
 
         responses.add("Hi, {user}. I'm cafeBot! A general-purpose bot who can also serve you some coffee!");
         responses.add("Hey, that's me! ^-^");
@@ -136,20 +138,6 @@ public class AIResponseListener extends ListenerAdapter {
         messageMap.put(commandTerms, responses);
     }
 
-    private void createMadisonMaps() {
-        ArrayList<String> commandTerms = new ArrayList<>();
-        ArrayList<String> responses = new ArrayList<>();
-
-        commandTerms.add("madison");
-        commandTerms.add("madie");
-
-        responses.add("Madison? The one who's short?");
-        responses.add("Madison moment...");
-        responses.add("Imagine being 5 feet tall. Oh wait... Madison doesn't have to imagine.");
-
-        messageMap.put(commandTerms, responses);
-    }
-
     private void createSorryMaps() {
         ArrayList<String> commandTerms = new ArrayList<>();
         ArrayList<String> responses = new ArrayList<>();
@@ -166,25 +154,6 @@ public class AIResponseListener extends ListenerAdapter {
         messageMap.put(commandTerms, responses);
     }
 
-    private void createLillyMaps() {
-        ArrayList<String> commandTerms = new ArrayList<>();
-        ArrayList<String> responses = new ArrayList<>();
-
-        commandTerms.add("lilly");
-        commandTerms.add("otter pop");
-        commandTerms.add("who's lilly");
-
-        responses.add("You know who likes otter pops? Lilly. That's who.");
-        responses.add("{user}, do you know Lilly? She's super cute.");
-        responses.add("Lilly is SO CUTE.");
-        responses.add("Who else thinks Lilly is adorable? Everyone, of course.");
-        responses.add("Lilly pop!");
-        responses.add("Lilly baby :pleading_face:!");
-        responses.add("Lilly *LOVES* being wrapped in a blanket burrito.");
-
-        messageMap.put(commandTerms, responses);
-    }
-
     private void createAttackMaps() {
         ArrayList<String> commandTerms = new ArrayList<>();
         ArrayList<String> responses = new ArrayList<>();
@@ -194,26 +163,16 @@ public class AIResponseListener extends ListenerAdapter {
         commandTerms.add("cafebot is bad");
         commandTerms.add("shut up cafebot");
         commandTerms.add("cafebot is a bitch");
+        commandTerms.add("i hate cafebot");
+        commandTerms.add("i hate you cafebot");
 
-        responses.add("Who asked? Literally? Who?");
+        responses.add("Who asked? Literally? Who? <:stab_u:886216384864997406>");
         responses.add("I still have more of a purpose than you do.");
         responses.add("Imagine talking back to someone made of code?");
         responses.add("I'm still more intelligent than you.");
         responses.add("Imagine thinking I care?");
         responses.add("Imagine having an argument with a bot? Pepelaugh? Pepelaugh.");
-        responses.add("You need friends don't you? You're literally arguing with code.");
-
-        messageMap.put(commandTerms, responses);
-    }
-
-    private void createBanzaiMaps() {
-        ArrayList<String> commandTerms = new ArrayList<>();
-        ArrayList<String> responses = new ArrayList<>();
-
-        commandTerms.add("banzai");
-
-        responses.add("More like `bottom fragzai`. Lmao.");
-        responses.add("Who? Asked?");
+        responses.add("You need friends don't you? You're literally arguing with code. <:stab_u:886216384864997406>");
 
         messageMap.put(commandTerms, responses);
     }
@@ -249,6 +208,7 @@ public class AIResponseListener extends ListenerAdapter {
 
         responses.add("You stfu, {user}...");
         responses.add("You shut up, {user}.");
+        responses.add("Maybe say something kinder?");
 
         messageMap.put(commandTerms, responses);
     }
@@ -261,6 +221,7 @@ public class AIResponseListener extends ListenerAdapter {
         commandTerms.add("genevieve");
         commandTerms.add("lolitagiant");
         commandTerms.add("lolita");
+        commandTerms.add("gen gen");
 
         responses.add("Gen? Genevieve? She's so cute!");
         responses.add("Genevieve has such cute outfits!");
@@ -268,29 +229,77 @@ public class AIResponseListener extends ListenerAdapter {
         responses.add("Honestly... I think Genevieve is pretty cute.");
         responses.add("Genevieve??!? The gamer gurl? uwu");
         responses.add("If you don't think Genevieve is hot girl sh*t then get out honestly...");
+        responses.add("Genevieve! ❤");
+        responses.add("The only matweial gowrl that the world needs!");
+        responses.add("She's stacked at royal high on roblox.");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createMikoriMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("miko");
+        commandTerms.add("mikori");
+
+        responses.add("Miko? I heard they're very mean...");
+        responses.add("Mikori? Mikori... hmmm.. I've heard their name before but not good things.");
+        responses.add("My creator tells me to stay away from someone named Mikori...");
+        responses.add("Mikori? <:madison_when_short:843673314990882836> STAY AWAY");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createMeowMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("meow");
+
+        responses.add("Meow! <a:catpats:950514533875720232>");
+        responses.add("猫🐱?");
+        responses.add("Meow! >3<");
+        responses.add("Meow meows? <:zerotwo_scream:841921420904497163>");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createWoofMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("woof");
+        commandTerms.add("bark");
+
+        responses.add("Woof woof!");
+        responses.add("Woof! <a:wiggle:886217792578269236>");
+        responses.add("Why are you acting like a dog? <:zerotwo_scream:841921420904497163>");
 
         messageMap.put(commandTerms, responses);
     }
 
     @Override
-    public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
+    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+
+        if (!event.isFromGuild())
+            return;
+
         try {
             Guild guild = event.getGuild();
 
-            if (event.getAuthor().isBot()) {
+            if (event.getAuthor().isBot())
                 return;
-            }
 
-            if (!CafeBot.getGuildHandler().getCustomGuild(guild).getAIState()) {
+            if (!GuildHandler.getCustomGuild(guild).getAIState())
                 return;
-            }
 
             String message = event.getMessage().getContentRaw().toLowerCase();
 
             messageMap.forEach((commandTerms, commandResponses) -> {
                 if (commandTerms.contains(message.replace(".", "").replace("?", ""))) {
                     event.getMessage().reply(parseMessage(
-                            commandResponses.get(CafeBot.getGeneralHelper().getRandomNumber(0, commandResponses.size())),
+                            commandResponses.get(Helper.getRandomNumber(0, commandResponses.size())),
                             event.getAuthor()
                     )).queue();
                 }
@@ -298,9 +307,9 @@ public class AIResponseListener extends ListenerAdapter {
         } catch (NullPointerException ignored) {}
     }
 
+    @NotNull
     private String parseMessage(@NotNull String message, @NotNull User user) {
-        message = message.replace("{user}", user.getAsMention());
-        return message;
+        return message.replace("{user}", user.getAsMention());
     }
 
 }

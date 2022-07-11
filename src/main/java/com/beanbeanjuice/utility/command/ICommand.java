@@ -1,9 +1,10 @@
 package com.beanbeanjuice.utility.command;
 
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
@@ -16,41 +17,76 @@ public interface ICommand {
 
     /**
      * The main method for running the command.
-     * @param ctx The {@link CommandContext} containing various methods.
-     * @param args The arguments of the {@link ICommand}.
-     * @param user The {@link User} who triggered the {@link GuildMessageReceivedEvent}.
-     * @param event The {@link GuildMessageReceivedEvent}.
+     * @param event The {@link SlashCommandInteractionEvent}.
      */
-    void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event);
-
-    /**
-     * @return The name of the {@link ICommand}.
-     */
-    String getName();
-
-    /**
-     * @return The {@link ArrayList<String> aliases} for the {@link ICommand}.
-     */
-    ArrayList<String> getAliases();
+    void handle(@NotNull SlashCommandInteractionEvent event);
 
     /**
      * @return The description for the {@link ICommand}.
      */
+    @NotNull
     String getDescription();
 
     /**
      * @return An example of how to use the {@link ICommand}.
      */
-    String exampleUsage(String prefix);
+    @NotNull
+    String exampleUsage();
 
     /**
-     * @return The {@link Usage} for the {@link ICommand}.
+     * @return The various options available for the {@link ICommand}.
      */
-    Usage getUsage();
+    @NotNull
+    default ArrayList<OptionData> getOptions() {
+        return new ArrayList<>();
+    }
 
     /**
-     * @return The {@link CategoryType} for the {@link ICommand}.
+     * @return The {@link CommandCategory} for the {@link ICommand}.
      */
-    CategoryType getCategoryType();
+    @NotNull
+    CommandCategory getCategoryType();
 
+    /**
+     * @return The {@link ArrayList<ISubCommand>} for the specified {@link ICommand}.
+     */
+    @NotNull
+    default ArrayList<ISubCommand> getSubCommands() {
+        return new ArrayList<>();
+    }
+
+    /**
+     * Runs the {@link ISubCommand} for the specified {@link ICommand}.
+     * @param subCommandName The {@link String name} of the {@link ISubCommand}.
+     * @param event The {@link SlashCommandInteractionEvent event} that triggered the {@link ICommand}.
+     */
+    default void runSubCommand(@NotNull String subCommandName, @NotNull SlashCommandInteractionEvent event) {
+        for (ISubCommand subCommand : getSubCommands()) {
+            if (subCommand.getName().equals(subCommandName)) {
+                subCommand.handle(event);
+            }
+        }
+    }
+
+    /**
+     * @return True, if this command is allowed to be run in a DM.
+     */
+    @NotNull
+    Boolean allowDM();
+
+    /**
+     * @return True, if this command should be hidden from others.
+     */
+    @NotNull
+    default Boolean isHidden() {
+        return false;
+    }
+
+    /**
+     * @return The permissions members need to use this.
+     */
+    @Nullable
+    default ArrayList<Permission> getPermissions() {
+        return null;
+    }
 }

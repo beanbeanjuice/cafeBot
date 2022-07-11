@@ -1,14 +1,15 @@
 package com.beanbeanjuice.command.games;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.command.usage.types.CommandType;
-import com.beanbeanjuice.utility.sections.games.tictactoe.TicTacToeGame;
+import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.section.game.tictactoe.TicTacToeGame;
+import com.beanbeanjuice.utility.section.game.tictactoe.TicTacToeHandler;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -20,12 +21,12 @@ import java.util.ArrayList;
 public class TicTacToeCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        User player1 = user;
-        User player2 = CafeBot.getGeneralHelper().getUser(args.get(0));
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        User player1 = event.getUser();
+        User player2 = event.getOption("opponent").getAsUser();
 
         if (player1.equals(player2)) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Cannot Play Yourself",
                     "You cannot play yourself!"
             )).queue();
@@ -33,55 +34,57 @@ public class TicTacToeCommand implements ICommand {
         }
 
         if (player2.isBot()) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Cannot Play Bot",
                     "You cannot play against a bot!"
             )).queue();
             return;
         }
 
-        TicTacToeGame game = new TicTacToeGame(player1, player2, event.getChannel());
-        if (!CafeBot.getTicTacToeHandler().createGame(event.getGuild().getId(), game)) {
-            event.getChannel().sendMessageEmbeds(CafeBot.getGeneralHelper().errorEmbed(
+        TicTacToeGame game = new TicTacToeGame(player1, player2, event.getTextChannel());
+        if (!TicTacToeHandler.createGame(event.getGuild().getId(), game)) {
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Creating Tic-Tac-Toe Game",
                     "There is already an active tic tac toe game on this server. Please wait for it to end."
             )).queue();
         }
+
+        event.getHook().sendMessageEmbeds(Helper.successEmbed(
+                "Created Game!",
+                "Your tic-tac-toe game has been created!"
+        )).queue();
     }
 
-    @Override
-    public String getName() {
-        return "tic-tac-toe";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("tictactoe");
-        arrayList.add("ttt");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Play a tic tac toe game!";
+        return "Play tic-tac-toe with someone!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "ttt @beanbeanjuice`";
+    public String exampleUsage() {
+        return "`/tic-tac-toe @beanbeanjuice`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        Usage usage = new Usage();
-        usage.addUsage(CommandType.USER, "Discord Mention", true);
-        return usage;
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.USER, "opponent", "The opponent for this tic-tac-toe game!", true));
+        return options;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.GAMES;
+    public CommandCategory getCategoryType() {
+        return CommandCategory.GAMES;
+    }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return false;
     }
 
 }

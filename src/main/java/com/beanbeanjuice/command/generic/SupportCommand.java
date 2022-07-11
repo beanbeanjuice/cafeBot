@@ -1,14 +1,9 @@
 package com.beanbeanjuice.command.generic;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-
-import java.util.ArrayList;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An {@link ICommand} used for support.
@@ -18,42 +13,38 @@ import java.util.ArrayList;
 public class SupportCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        CafeBot.getGeneralHelper().pmUser(user, "Join this server for support! https://discord.gg/KrUFw3uHST");
-
-        event.getChannel().sendMessage(CafeBot.getGeneralHelper().successEmbed(
-                "Support Discord Sent",
-                "Please check your direct messages for the discord link."
-        )).queue();
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        event.getHook().sendMessage("Join this server for support! https://discord.gg/KrUFw3uHST").queue();
     }
 
-    @Override
-    public String getName() {
-        return "support";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        return new ArrayList<>();
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
-        return "Use this command and join the discord if you need support!";
+        return "Get support with the bot!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "support`";
+    public String exampleUsage() {
+        return "`/support`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        return new Usage();
+    public CommandCategory getCategoryType() {
+        return CommandCategory.GENERIC;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.GENERIC;
+    public Boolean allowDM() {
+        return true;
     }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
+    }
+
 }

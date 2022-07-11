@@ -1,27 +1,24 @@
 package com.beanbeanjuice.command.fun;
 
-import com.beanbeanjuice.CafeBot;
-import com.beanbeanjuice.utility.command.CommandContext;
+import com.beanbeanjuice.utility.api.SubRedditAPI;
+import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
-import com.beanbeanjuice.utility.command.usage.Usage;
-import com.beanbeanjuice.utility.command.usage.categories.CategoryType;
-import com.beanbeanjuice.utility.helper.api.SubRedditAPI;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import com.beanbeanjuice.utility.helper.Helper;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to get coffee memes from the {@link SubRedditAPI RedditAPI}.
+ * An {@link ICommand} used to get a coffee meme.
  *
  * @author beanbeanjuice
  */
 public class CoffeeMemeCommand implements ICommand {
 
     @Override
-    public void handle(CommandContext ctx, ArrayList<String> args, User user, GuildMessageReceivedEvent event) {
-        event.getChannel().sendMessage(new SubRedditAPI(getSubreddits().get(CafeBot.getGeneralHelper().getRandomNumber(0, getSubreddits().size()))).getRedditEmbed()).queue();
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        event.getHook().sendMessageEmbeds(new SubRedditAPI(getSubreddits().get(Helper.getRandomNumber(0, getSubreddits().size()))).getRedditEmbed()).queue();
     }
 
     @NotNull
@@ -33,40 +30,28 @@ public class CoffeeMemeCommand implements ICommand {
         return arrayList;
     }
 
-    @Override
-    public String getName() {
-        return "coffee-meme";
-    }
-
-    @Override
-    public ArrayList<String> getAliases() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("coffeememe");
-        arrayList.add("coffee");
-        arrayList.add("coffee-memes");
-        arrayList.add("coffeememes");
-        arrayList.add("cafe-meme");
-        arrayList.add("cafememe");
-        return arrayList;
-    }
-
+    @NotNull
     @Override
     public String getDescription() {
         return "Get a coffee meme!";
     }
 
+    @NotNull
     @Override
-    public String exampleUsage(String prefix) {
-        return "`" + prefix + "coffee-meme`";
+    public String exampleUsage() {
+        return "`/coffee-meme`";
     }
 
+    @NotNull
     @Override
-    public Usage getUsage() {
-        return new Usage();
+    public CommandCategory getCategoryType() {
+        return CommandCategory.FUN;
     }
 
+    @NotNull
     @Override
-    public CategoryType getCategoryType() {
-        return CategoryType.FUN;
+    public Boolean allowDM() {
+        return true;
     }
+
 }
