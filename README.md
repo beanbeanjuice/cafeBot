@@ -112,7 +112,7 @@ This is an example of how to list things you need to use the software and how to
 * `/get-prefix` - Gets the current prefix for the server if you forget it!
 
 <p align="center">
-  <img src=https://cdn.beanbeanjuice.com/images/cafeBot/readme/help.png>
+  <img src=https://cdn.beanbeanjuice.com/images/cafeBot/readme/help.gif>
 </p>
 
 As you can see, this was shown using the command `/help order`. It shows each parameter you can run. For example, the first `<NUMBER>` is the `CATEGORY NUMBER` for the menu, needs to be a number, and is required. The `help` command also provides an example on how to actually use the command if you are stuck!
@@ -254,9 +254,9 @@ Here is ALL of the data that this bot could *possibly* store on you. This, of co
   - Message.
     - Your messages **ARE NOT** saved **AT ALL**. The only thing the bot does, if enabled, is check if trigger words are sent in a message, then sends a pre-determined response.
 
-##### * - This is already public information anyway, and is crucial for having the bot work.
-##### ** - This is something that is needed for the bot to do things like apply a role to someone when they join a specific voice channel, or to duplicate a voice channel when needed.
-##### *** - Your birthday is only stored WHEN specified, and can even be removed at anytime by simply using the `/birthday remove` command.
+##### `*` - This is already public information anyway, and is crucial for having the bot work.
+##### `**` - This is something that is needed for the bot to do things like apply a role to someone when they join a specific voice channel, or to duplicate a voice channel when needed.
+##### `***` - Your birthday is only stored WHEN specified, and can even be removed at anytime by simply using the `/birthday remove` command.
 
 <!-- CONTACT -->
 # Contact
