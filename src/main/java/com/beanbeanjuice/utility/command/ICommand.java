@@ -6,7 +6,9 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * An interface used for {@link ICommand commands}.
@@ -89,4 +91,13 @@ public interface ICommand {
     default ArrayList<Permission> getPermissions() {
         return null;
     }
+
+    /**
+     * @return The {@link HashMap<String, ArrayList<String>>}.
+     */
+    @Nullable
+    default HashMap<String, ArrayList<String>> getAutoComplete() {
+        return null;
+    }
+
 }

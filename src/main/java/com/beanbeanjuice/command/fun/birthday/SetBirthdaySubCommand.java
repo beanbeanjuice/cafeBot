@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 /**
  * An {@link ISubCommand} to set your {@link io.github.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday Birthday}.
@@ -114,7 +115,10 @@ public class SetBirthdaySubCommand implements ISubCommand {
                 .addChoice("12 - December", "DECEMBER"));
         options.add(new OptionData(OptionType.INTEGER, "day", "The day you were born in the specified month!", true)
                 .setRequiredRange(1, 31));
-        options.add(new OptionData(OptionType.STRING, "timezone", "The timezone you are in!", true));
+
+        OptionData timeZoneOptions = new OptionData(OptionType.STRING, "timezone", "The timezone you are in!", true, true);
+
+        options.add(timeZoneOptions);
         return options;
     }
 
