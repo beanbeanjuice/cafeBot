@@ -34,6 +34,12 @@ public class ExampleClass extends AnotherClass {
     this.exampleBoolean = exampleBoolean;
   }
 
+  // Overridden public methods do not need javadoc.
+  @Override
+  public void handle(@NotNull SomeOverriddenThing thing) {
+    /* Do Stuff */
+  }
+
   /**
    * An example method used for something.
    * @param exampleOtherNotNull A {@link String} used as another example.
