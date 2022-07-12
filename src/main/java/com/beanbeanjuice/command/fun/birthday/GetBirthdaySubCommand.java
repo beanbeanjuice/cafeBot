@@ -21,11 +21,7 @@ import java.util.ArrayList;
  * @author beanbeanjuice
  */
 public class GetBirthdaySubCommand implements ISubCommand {
-
-    /**
-     * 
-     * @param event The {@link SlashCommandInteractionEvent}.
-     */
+    
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
         User user = event.getUser();
