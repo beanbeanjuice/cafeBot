@@ -1,6 +1,5 @@
 package com.beanbeanjuice.command.fun.birthday;
 
-import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
@@ -50,8 +49,7 @@ public class SetBirthdaySubCommand implements ISubCommand {
             )).queue();
             return;
         }
-
-
+        
         try {
             BirthdayHandler.updateBirthday(event.getUser().getId(), birthday);
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
