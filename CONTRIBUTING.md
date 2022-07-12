@@ -6,7 +6,71 @@ email, or any other method with the owners of this repository before making a ch
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
 ## Code Formatting
-[![Contribution Screenshot][contribution-screenshot]](https://www.beanbeanjuice.com/cafeBot.html)
+
+```JAVA
+/**
+ * An {@link AnotherClass} used for using stuff.
+ * 
+ * @author beanbeanjuice
+ * @since v3.0.0
+ */
+public class ExampleClass extends AnotherClass {
+
+  private final String exampleNotNull;
+  private final String exampleNullable;
+  private Integer exampleOther;
+  private Boolean exampleBoolean;
+
+  /**
+   * Creates a new {@link ExampleClass}.
+   * @param exampleNotNull A {@link String} that is not null.
+   * @param exampleNullable A {@link String} that is nullable.
+   */
+  public ExampleClass(@NotNull String exampleNotNull, @Nullable String exampleNullable, @NotNull Integer exampleOther,
+                      @NotNull Boolean exampleBoolean) {
+    this.exampleNotNull = exampleNotNull;
+    this.exampleNullable = exampleNullable;
+    this.exampleOther = exampleOther;
+    this.exampleBoolean = exampleBoolean;
+  }
+
+  /**
+   * An example method used for something.
+   * @param exampleOtherNotNull A {@link String} used as another example.
+   * @return A {@link Boolean} for something.
+   */
+  @NotNull
+  public Boolean exampleMethod(@NotNull String exampleOtherNotNull) {
+    return /* Something */;
+  }
+
+  // At least for now, private methods do not need javadocs.
+  @NotNull
+  private Boolean setExampleNotNullPrivate(@NotNull String newNotNull) {
+
+    if (/* Condition */) {
+      // One line...
+      // Two lines...
+    } else {
+      // One line...
+    }
+
+    if (/* Condition */)
+      return true;
+    return false;
+  }
+
+  /**
+   * @return The exampleNullable {@link String} for this object.
+   */
+  @Nullable
+  public String getExampleNullable() {
+    return exampleNullable;
+  }
+
+}
+// New line at end of file.
+```
 
 ## Pull Request Process
 
@@ -93,4 +157,3 @@ available at [http://contributor-covenant.org/version/1/4][version]
 
 [homepage]: http://contributor-covenant.org
 [version]: http://contributor-covenant.org/version/1/4/
-[contribution-screenshot]: https://cdn.beanbeanjuice.com/images/cafeBot/contributing/example.png
