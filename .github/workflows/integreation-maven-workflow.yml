@@ -1,6 +1,11 @@
 name: Maven CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+      - integration
+  pull_request:
 
 jobs:
   build:

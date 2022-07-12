@@ -11,6 +11,7 @@ Fixes # (issue)
 - [ ] Feature (Something New Added to the Code)
 - [ ] Improvement (Improving An Existing Section of Code)
 - [ ] Documentation Update
+- [ ] Security Vulnerability
 
 ## Changes
 
@@ -27,7 +28,7 @@ Fixes # (issue)
 
 # Checklist:
 
-- [ ] This pull request has been linked to the appropriate issue on GitHub? (Use the development section on the right.)
+- [ ] This pull request has been linked to the appropriate issue on GitHub. (Use the development section on the right.)
 - [ ] The code follows the style [guidlines](https://github.com/beanbeanjuice/cafeBot/blob/master/CONTRIBUTING.md).
 - [ ] A self-review of the code was performed in GitHub.
 - [ ] Appropriate comments were added in the code.
