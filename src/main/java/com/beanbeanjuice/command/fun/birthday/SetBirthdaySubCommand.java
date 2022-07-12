@@ -1,6 +1,5 @@
 package com.beanbeanjuice.command.fun.birthday;
 
-import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
@@ -114,7 +113,10 @@ public class SetBirthdaySubCommand implements ISubCommand {
                 .addChoice("12 - December", "DECEMBER"));
         options.add(new OptionData(OptionType.INTEGER, "day", "The day you were born in the specified month!", true)
                 .setRequiredRange(1, 31));
-        options.add(new OptionData(OptionType.STRING, "timezone", "The timezone you are in!", true));
+
+        OptionData timeZoneOptions = new OptionData(OptionType.STRING, "timezone", "The timezone you are in! Start typing to see available options!", true, true);
+
+        options.add(timeZoneOptions);
         return options;
     }
 
