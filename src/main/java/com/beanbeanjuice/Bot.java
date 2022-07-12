@@ -1,6 +1,7 @@
 package com.beanbeanjuice;
 
 import com.beanbeanjuice.utility.api.GitHubUpdateHelper;
+import com.beanbeanjuice.utility.command.CommandAutoCompleteHandler;
 import com.beanbeanjuice.utility.handler.CountingHandler;
 import com.beanbeanjuice.utility.handler.VoiceChatRoleBindHandler;
 import com.beanbeanjuice.utility.listener.*;
@@ -100,7 +101,8 @@ public class Bot {
                 new MessageListener(),  // Listening for specific messages
                 new WelcomeListener(),  // Listening for user joins for a guild.
                 new AIResponseListener(),  // Listening for messages.
-                new VoiceChatRoleBindListener()  // Listening for voice joins/leaves
+                new VoiceChatRoleBindListener(),  // Listening for voice joins/leaves
+                new CommandAutoCompleteHandler()  // Listens for auto complete interactions
         );
 
         logger.setLogChannel(homeGuildLogChannel);
