@@ -102,21 +102,6 @@
         </repository>
     </repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>central</id>
-            <url>http://gotoNexus</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-            </releases>
-        </pluginRepository>
-    </pluginRepositories>
-
     <dependencies>
         <!-- Maven Dependency Plugin -->
         <dependency>
@@ -124,7 +109,6 @@
             <artifactId>maven-dependency-plugin</artifactId>
             <version>3.3.0</version>
         </dependency>
-
 
         <!-- Café API -->
         <dependency>
