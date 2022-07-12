@@ -9,7 +9,8 @@ Fixes # (issue)
 - [ ] Bug Fix (Small Non-Code Breaking Issue)
 - [ ] Bug Fix (Critical Code Breaking Issue)
 - [ ] Feature (Something New Added to the Code)
-- [ ] Improvement (Improving An Existing Section of Code)
+- [ ] Improvement (Improving an Existing Section of Code)
+- [ ] Security Vulnerability (Fixing a Security Vulnerability)
 - [ ] Documentation Update
 
 ## Changes

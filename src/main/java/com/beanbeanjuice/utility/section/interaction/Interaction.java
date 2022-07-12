@@ -22,7 +22,6 @@ public class Interaction {
     private final String noUserAction;;
     private final String userAction;
     private String footer;
-    private final String selfMessage;
 
     private final User sender;
     private User receiver;
@@ -45,7 +44,6 @@ public class Interaction {
         this.noUserAction = noUserAction;
         this.userAction = userAction;
         this.footer = footer;
-        this.selfMessage = selfMessage;
 
         this.sender = event.getUser();
 

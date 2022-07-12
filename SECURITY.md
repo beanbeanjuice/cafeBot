@@ -2,20 +2,15 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+Currently, only the latest version will **ever** be supported as any outdated version most likely means an update to the API.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| Version  | Supported          |
+| -------  | ------------------ |
+| v 3.x.x  | :white_check_mark: |
+| < v3.0.0 | :x:                |
+| < v2.0.0 | :x:                |
+| < v1.0.0 | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
-
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+For any security vulnerability, please create a new security issue on the issues tab.

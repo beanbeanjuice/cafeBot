@@ -230,7 +230,6 @@ public class LogManager {
 
         Path filePath = Paths.get(logDirectory + fileName);
         Path gZipCompressedPath = Paths.get(gZipCompressedFileName);
-        Path zipCompressedPath = Paths.get(zipCompressedFileName);
 
         // Creating a GZIP.
         try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(

@@ -49,7 +49,7 @@ public class SetBirthdaySubCommand implements ISubCommand {
             )).queue();
             return;
         }
-        
+
         try {
             BirthdayHandler.updateBirthday(event.getUser().getId(), birthday);
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
