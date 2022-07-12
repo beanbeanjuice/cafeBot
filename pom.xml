@@ -77,12 +77,28 @@
         <repository>
             <id>sonatype-snapshots</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </releases>
         </repository>
 
         <!-- Sonatype Release Repository -->
         <repository>
             <id>sonatype-releases</id>
             <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </releases>
         </repository>
     </repositories>
 
@@ -93,7 +109,6 @@
             <artifactId>maven-dependency-plugin</artifactId>
             <version>3.3.0</version>
         </dependency>
-
 
         <!-- Café API -->
         <dependency>

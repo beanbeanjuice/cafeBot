@@ -1,6 +1,5 @@
 package com.beanbeanjuice.command.moderation;
 
-import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.handler.guild.CustomGuild;
