@@ -116,7 +116,7 @@ public class SetBirthdaySubCommand implements ISubCommand {
         options.add(new OptionData(OptionType.INTEGER, "day", "The day you were born in the specified month!", true)
                 .setRequiredRange(1, 31));
 
-        OptionData timeZoneOptions = new OptionData(OptionType.STRING, "timezone", "The timezone you are in!", true, true);
+        OptionData timeZoneOptions = new OptionData(OptionType.STRING, "timezone", "The timezone you are in! Start typing to see available options!", true, true);
 
         options.add(timeZoneOptions);
         return options;

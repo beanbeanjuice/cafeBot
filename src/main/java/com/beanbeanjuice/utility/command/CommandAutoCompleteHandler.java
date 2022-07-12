@@ -1,16 +1,12 @@
 package com.beanbeanjuice.utility.command;
 
 import com.beanbeanjuice.Bot;
-import com.beanbeanjuice.command.fun.birthday.BirthdayCommand;
-import com.beanbeanjuice.command.fun.birthday.SetBirthdaySubCommand;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.Command;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,14 +22,10 @@ public class CommandAutoCompleteHandler extends ListenerAdapter {
         String option = event.getFocusedOption().getName();
         String name = event.getName();
 
-        System.out.println("One - " + name + " - " + option);
-
         if (Bot.getCommandHandler().getCommands().containsKey(name)) {
-            System.out.println("two");
             ICommand command = Bot.getCommandHandler().getCommands().get(name);
 
             if (command.getAutoComplete() != null && command.getAutoComplete().get(option) != null) {
-                System.out.println("three");
                 ArrayList<String> autoCompleteList = command.getAutoComplete().get(option);
                 String[] list = new String[autoCompleteList.size()];
                 list = autoCompleteList.toArray(list);
@@ -44,7 +36,7 @@ public class CommandAutoCompleteHandler extends ListenerAdapter {
                         .collect(Collectors.toList());
                 try {
                     event.replyChoices(options).queue();
-                } catch (IllegalArgumentException ignored) {
+                } catch (IllegalArgumentException ignored) {  // If more than 25 options are present.
                     ArrayList<Command.Choice> options25 = new ArrayList<>();
 
                     for (int i = 0; i < 25; i++)
