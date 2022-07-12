@@ -1,6 +1,5 @@
 package com.beanbeanjuice.utility.listener;
 
-import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.handler.CountingHandler;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;

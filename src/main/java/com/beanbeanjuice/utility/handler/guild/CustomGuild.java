@@ -1,6 +1,5 @@
 package com.beanbeanjuice.utility.handler.guild;
 
-import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.section.twitch.TwitchHandler;

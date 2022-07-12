@@ -1,7 +1,6 @@
 package com.beanbeanjuice.command.generic;
 
 import com.beanbeanjuice.Bot;
-import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
