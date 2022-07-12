@@ -25,9 +25,12 @@ public class GetBirthdaySubCommand implements ISubCommand {
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
         User user = event.getUser();
+        boolean self = true;
 
-        if (event.getOption("user") != null)
+        if (event.getOption("user") != null) {
             user = event.getOption("user").getAsUser();
+            self = false;
+        }
 
         Birthday birthday = BirthdayHandler.getBirthday(user.getId());
 
@@ -40,22 +43,30 @@ public class GetBirthdaySubCommand implements ISubCommand {
             return;
         }
 
+        if (self) {
+            event.getHook().sendMessageEmbeds(selfBirthdayEmbed(birthday)).queue();
+            return;
+        }
         event.getHook().sendMessageEmbeds(birthdayEmbed(user, birthday)).queue();
     }
 
-    /**
-     * Creates a {@link MessageEmbed} for the {@link Birthday} for a {@link User}.
-     * @param user The specified {@link User}.
-     * @param birthday The {@link Birthday} for the {@link User}.
-     * @return The created {@link MessageEmbed} for the {@link Birthday}.
-     */
+    @NotNull
+    private MessageEmbed selfBirthdayEmbed(@NotNull Birthday birthday) {
+        return new EmbedBuilder()
+                .setColor(Helper.getRandomColor())
+                .setTitle("Your Birthday")
+                .setDescription("Your birthday is on `" + birthday.getMonth() + ", " + birthday.getDay() + "`. " +
+                        "The timezone specified is `" + birthday.getTimeZone().getID() + "`.")
+                .build();
+    }
+
     @NotNull
     private MessageEmbed birthdayEmbed(@NotNull User user, @NotNull Birthday birthday) {
         return new EmbedBuilder()
                 .setColor(Helper.getRandomColor())
                 .setTitle(user.getName() + "'s Birthday")
-                .setDescription("Birthday is on `" + birthday.getMonth() + ", " + birthday.getDay() + "`. " +
-                        "Their timezone is `" + birthday.getTimeZone().getID() + "`.")
+                .setDescription("Their birthday is on `" + birthday.getMonth() + ", " + birthday.getDay() + "`. " +
+                        "The timezone specified is `" + birthday.getTimeZone().getID() + "`.")
                 .build();
     }
 
