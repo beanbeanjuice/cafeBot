@@ -3,6 +3,8 @@ package com.beanbeanjuice.command.games;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.helper.Helper;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -19,10 +21,18 @@ public class EightBallCommand implements ICommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                "8 Ball",
-                getAnswer()
-        )).queue();
+        event.getHook().sendMessageEmbeds(
+                getAnswerEmbed(event.getOption("question").getAsString(), getAnswer())
+        ).queue();
+    }
+
+    @NotNull
+    private MessageEmbed getAnswerEmbed(@NotNull String question, @NotNull String answer) {
+        return new EmbedBuilder()
+                .setDescription("\"" + question + "\"")
+                .addField("My Mystical Answer", "\"" + answer + "\"", false)
+                .setColor(Helper.getRandomColor())
+                .build();
     }
 
     @NotNull
