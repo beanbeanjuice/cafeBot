@@ -13,6 +13,7 @@ import com.beanbeanjuice.command.moderation.CreateEmbedCommand;
 import com.beanbeanjuice.command.moderation.bind.BindCommand;
 import com.beanbeanjuice.command.settings.AiCommand;
 import com.beanbeanjuice.command.settings.ListCustomChannelsCommand;
+import com.beanbeanjuice.command.settings.birthday.BirthdayChannelCommand;
 import com.beanbeanjuice.command.settings.counting.CountingChannelCommand;
 import com.beanbeanjuice.command.settings.daily.DailyChannelCommand;
 import com.beanbeanjuice.command.settings.logging.LogChannelCommand;
@@ -90,10 +91,6 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("support", new SupportCommand());
         commands.put("who-is", new WhoIsCommand());
 
-        // Social
-        commands.put("count-members", new CountMembersCommand());
-        commands.put("vent", new VentCommand());
-
         // Interaction
         commands.put("bite", new BiteCommand());
         commands.put("blush", new BlushCommand());
@@ -124,9 +121,6 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("welcome", new WelcomeCommand());
         commands.put("yell", new YellCommand());
 
-        // Twitch
-        commands.put("twitch-channel", new TwitchChannelCommand());
-
         // Moderation
         commands.put("bind", new BindCommand());
         commands.put("add-poll", new AddPollCommand());
@@ -135,6 +129,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("create-embed", new CreateEmbedCommand());
 
         // Settings
+        commands.put("birthday-channel", new BirthdayChannelCommand());
         commands.put("counting-channel", new CountingChannelCommand());
         commands.put("daily-channel", new DailyChannelCommand());
         commands.put("log-channel", new LogChannelCommand());
@@ -146,6 +141,13 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("welcome-channel", new WelcomeChannelCommand());
         commands.put("ai", new AiCommand());
         commands.put("list-custom-channels", new ListCustomChannelsCommand());
+
+        // Social
+        commands.put("count-members", new CountMembersCommand());
+        commands.put("vent", new VentCommand());
+
+        // Twitch
+        commands.put("twitch-channel", new TwitchChannelCommand());
 
         // =======================
         //     END OF COMMANDS
