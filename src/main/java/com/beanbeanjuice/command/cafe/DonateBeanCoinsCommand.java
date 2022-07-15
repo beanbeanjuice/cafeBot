@@ -175,10 +175,4 @@ public class DonateBeanCoinsCommand implements ICommand {
         return CommandCategory.CAFE;
     }
 
-    @NotNull
-    @Override
-    public Boolean allowDM() {
-        return false;
-    }
-
 }

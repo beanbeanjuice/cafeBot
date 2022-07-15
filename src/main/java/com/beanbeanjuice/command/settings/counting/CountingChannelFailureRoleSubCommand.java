@@ -99,12 +99,6 @@ public class CountingChannelFailureRoleSubCommand implements ISubCommand {
 
     @NotNull
     @Override
-    public Boolean allowDM() {
-        return false;
-    }
-
-    @NotNull
-    @Override
     public Boolean isHidden() {
         return true;
     }

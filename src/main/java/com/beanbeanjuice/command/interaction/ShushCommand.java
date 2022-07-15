@@ -58,7 +58,7 @@ public class ShushCommand implements ICommand {
     @NotNull
     @Override
     public Boolean allowDM() {
-        return false;
+        return true;
     }
 
 }

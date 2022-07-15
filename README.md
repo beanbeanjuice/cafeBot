@@ -7,6 +7,7 @@
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![WakaTime][wakatime-shield]][wakatime-url]
 [![CodeFactor][codefactor-shield]][codefactor-url]
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/beanbeanjuice/cafebot?style=for-the-badge)
 
 <!-- PROJECT LOGO -->
 <br />
