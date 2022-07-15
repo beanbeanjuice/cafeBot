@@ -197,6 +197,7 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `clear-chat` - Clear the chat. (Only currently works from 2-99 messages).
 * `create-embed` - Send a customised `embedded message` in a specified channel!
 ##### 9. **SETTINGS**
+* `birthday-channel` - Set or remove the birthday channel for the server!
 * `ai` - Sets the `AI Status` for the server. This can `enable` or `disable` the AI module. This is `disable` by default.
 * `bot-update` - `enable` or `disable` bot notifications. This is `enabled` by default.
 * `counting-channel` - Set or remove the counting channel. Users in this channel can count. You can also apply a custom role when a user sucks at counting!
