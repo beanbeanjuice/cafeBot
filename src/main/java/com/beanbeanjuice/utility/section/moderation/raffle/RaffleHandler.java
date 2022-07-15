@@ -4,7 +4,7 @@ import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
-import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
+import com.beanbeanjuice.cafeapi.exception.api.CafeException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -171,10 +171,10 @@ public class RaffleHandler {
     }
 
     /**
-     * Removes a {@link Raffle} for a {@link Guild} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Removes a {@link Raffle} for a {@link Guild} from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      * @param guildID The {@link String guildID} of the {@link Raffle}.
      * @param raffle The {@link Raffle} to add.
-     * @return True, if the {@link Raffle} was successfully removed from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * @return True, if the {@link Raffle} was successfully removed from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      */
     @NotNull
     private static Boolean removeRaffle(@NotNull String guildID, @NotNull Raffle raffle) {
@@ -188,7 +188,7 @@ public class RaffleHandler {
     }
 
     /**
-     * Adds a {@link Raffle} to the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI} for a specified {@link Guild}.
+     * Adds a {@link Raffle} to the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI} for a specified {@link Guild}.
      * @param guildID The specified {@link String guildID}.
      * @param raffle The {@link Raffle} to add.
      * @return True, if the {@link Raffle} was successfully added.
@@ -210,12 +210,12 @@ public class RaffleHandler {
     }
 
     /**
-     * Retrieves all {@link Raffle} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Retrieves all {@link Raffle} from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      */
     private static void getAllRaffles() {
         try {
             Bot.getCafeAPI().RAFFLE.getAllRaffles().forEach((guildID, apiRaffles) -> {
-                for (io.github.beanbeanjuice.cafeapi.cafebot.raffles.Raffle raffle : apiRaffles) {
+                for (com.beanbeanjuice.cafeapi.cafebot.raffles.Raffle raffle : apiRaffles) {
 
                     if (!raffles.containsKey(guildID))
                         raffles.put(guildID, new ArrayList<>());

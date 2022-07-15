@@ -82,16 +82,16 @@
 
         <!-- Café API -->
         <dependency>
-            <groupId>io.github.beanbeanjuice</groupId>
+            <groupId>com.beanbeanjuice</groupId>
             <artifactId>cafe-api-wrapper</artifactId>
-            <version>v1.2.3-SNAPSHOT</version>
+            <version>1.2.6</version>
         </dependency>
 
         <!-- Kawaii API Wrapper -->
         <dependency>
-            <groupId>io.github.beanbeanjuice</groupId>
+            <groupId>com.beanbeanjuice</groupId>
             <artifactId>kawaii-api-wrapper</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.7</version>
         </dependency>
 
         <!-- Discord JDA -->
@@ -130,40 +130,5 @@
             <version>1.10.0</version>
         </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/beanbeanjuice/Java-Kawaii-API-Wrapper</url>
-        </repository>
-
-        <!-- Sonatype Snapshot Repository -->
-        <repository>
-            <id>sonatype-snapshots</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-            </releases>
-        </repository>
-
-        <!-- Sonatype Release Repository -->
-        <repository>
-            <id>sonatype-releases</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-            </releases>
-        </repository>
-    </repositories>
 
 </project>

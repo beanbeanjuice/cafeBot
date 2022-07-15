@@ -6,9 +6,9 @@ import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.listener.WelcomeListener;
 import com.beanbeanjuice.utility.logging.LogLevel;
-import io.github.beanbeanjuice.cafeapi.cafebot.welcomes.GuildWelcome;
-import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
-import io.github.beanbeanjuice.cafeapi.exception.api.ConflictException;
+import com.beanbeanjuice.cafeapi.cafebot.welcomes.GuildWelcome;
+import com.beanbeanjuice.cafeapi.exception.api.CafeException;
+import com.beanbeanjuice.cafeapi.exception.api.ConflictException;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -57,7 +57,7 @@ public class EditWelcomeMessageSubCommand implements ISubCommand {
     }
 
     /**
-     * Sets the {@link GuildWelcome} in the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Sets the {@link GuildWelcome} in the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      * @param guildWelcome The {@link GuildWelcome} to set.
      * @return True, if the {@link GuildWelcome} was set successfully.
      */

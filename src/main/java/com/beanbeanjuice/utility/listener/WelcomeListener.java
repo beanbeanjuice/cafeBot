@@ -5,8 +5,8 @@ import com.beanbeanjuice.command.settings.welcome.EditWelcomeMessageSubCommand;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
-import io.github.beanbeanjuice.cafeapi.cafebot.welcomes.GuildWelcome;
-import io.github.beanbeanjuice.cafeapi.exception.api.NotFoundException;
+import com.beanbeanjuice.cafeapi.cafebot.welcomes.GuildWelcome;
+import com.beanbeanjuice.cafeapi.exception.api.NotFoundException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -85,7 +85,7 @@ public class WelcomeListener extends ListenerAdapter {
     }
 
     /**
-     * Retrieves the {@link GuildWelcome} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Retrieves the {@link GuildWelcome} from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      * @param guildID The {@link String guildID} for the {@link GuildWelcome}.
      * @return The {@link GuildWelcome}.
      */

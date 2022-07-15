@@ -2,11 +2,11 @@ package com.beanbeanjuice.utility.section.game;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.logging.LogLevel;
-import io.github.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.MinigameType;
-import io.github.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.WinStreak;
-import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
-import io.github.beanbeanjuice.cafeapi.exception.api.ConflictException;
-import io.github.beanbeanjuice.cafeapi.exception.api.NotFoundException;
+import com.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.MinigameType;
+import com.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.WinStreak;
+import com.beanbeanjuice.cafeapi.exception.api.CafeException;
+import com.beanbeanjuice.cafeapi.exception.api.ConflictException;
+import com.beanbeanjuice.cafeapi.exception.api.NotFoundException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

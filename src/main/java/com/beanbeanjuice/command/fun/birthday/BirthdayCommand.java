@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.TimeZone;
 
 /**
- * An {@link ICommand} used to get someone's {@link io.github.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday Birthday}.
+ * An {@link ICommand} used to get someone's {@link com.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday Birthday}.
  *
  * @author beanbeanjuice
  */

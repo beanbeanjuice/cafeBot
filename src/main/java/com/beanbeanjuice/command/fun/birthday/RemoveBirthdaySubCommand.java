@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An {@link ISubCommand} used to remove a {@link io.github.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday Birthday}.
+ * An {@link ISubCommand} used to remove a {@link com.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday Birthday}.
  *
  * @author beanbeanjuice
  */

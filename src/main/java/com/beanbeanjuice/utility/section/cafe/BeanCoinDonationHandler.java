@@ -2,10 +2,10 @@ package com.beanbeanjuice.utility.section.cafe;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.logging.LogLevel;
-import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
-import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
-import io.github.beanbeanjuice.cafeapi.utility.Time;
-import io.github.beanbeanjuice.cafeapi.utility.TimestampDifference;
+import com.beanbeanjuice.cafeapi.exception.api.CafeException;
+import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
+import com.beanbeanjuice.cafeapi.utility.Time;
+import com.beanbeanjuice.cafeapi.utility.TimestampDifference;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;
@@ -33,7 +33,7 @@ public class BeanCoinDonationHandler {
     }
 
     /**
-     * Caches the {@link io.github.beanbeanjuice.cafeapi.cafebot.beancoins.users.DonationUsers}.
+     * Caches the {@link com.beanbeanjuice.cafeapi.cafebot.beancoins.users.DonationUsers}.
      */
     private static void cacheBeanCoinDonationUsers() {
         try {

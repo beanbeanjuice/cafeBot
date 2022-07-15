@@ -3,7 +3,7 @@ package com.beanbeanjuice.utility.logging;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.exception.WebhookException;
 import com.beanbeanjuice.utility.webhook.Webhook;
-import io.github.beanbeanjuice.cafeapi.utility.Time;
+import com.beanbeanjuice.cafeapi.utility.Time;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;

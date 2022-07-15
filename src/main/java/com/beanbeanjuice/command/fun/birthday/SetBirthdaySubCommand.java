@@ -4,11 +4,11 @@ import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.section.fun.BirthdayHandler;
-import io.github.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday;
-import io.github.beanbeanjuice.cafeapi.cafebot.birthdays.BirthdayMonth;
-import io.github.beanbeanjuice.cafeapi.exception.api.TeaPotException;
-import io.github.beanbeanjuice.cafeapi.exception.program.BirthdayOverfillException;
-import io.github.beanbeanjuice.cafeapi.utility.Time;
+import com.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday;
+import com.beanbeanjuice.cafeapi.cafebot.birthdays.BirthdayMonth;
+import com.beanbeanjuice.cafeapi.exception.api.TeaPotException;
+import com.beanbeanjuice.cafeapi.exception.program.BirthdayOverfillException;
+import com.beanbeanjuice.cafeapi.utility.Time;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 
 /**
- * An {@link ISubCommand} to set your {@link io.github.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday Birthday}.
+ * An {@link ISubCommand} to set your {@link com.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday Birthday}.
  *
  * @author beanbeanjuice
  */
