@@ -50,12 +50,6 @@ public class SetPollChannelSubCommand implements ISubCommand {
 
     @NotNull
     @Override
-    public Boolean allowDM() {
-        return false;
-    }
-
-    @NotNull
-    @Override
     public String getName() {
         return "set";
     }

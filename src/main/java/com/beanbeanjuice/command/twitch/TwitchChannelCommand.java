@@ -52,12 +52,6 @@ public class TwitchChannelCommand implements ICommand {
 
     @NotNull
     @Override
-    public Boolean allowDM() {
-        return false;
-    }
-
-    @NotNull
-    @Override
     public Boolean isHidden() {
         return true;
     }

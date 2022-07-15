@@ -81,10 +81,4 @@ public class TicTacToeCommand implements ICommand {
         return CommandCategory.GAMES;
     }
 
-    @NotNull
-    @Override
-    public Boolean allowDM() {
-        return false;
-    }
-
 }
