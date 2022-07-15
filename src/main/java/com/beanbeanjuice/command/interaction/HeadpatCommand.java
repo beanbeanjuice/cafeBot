@@ -58,7 +58,7 @@ public class HeadpatCommand implements ICommand {
     @NotNull
     @Override
     public Boolean allowDM() {
-        return false;
+        return true;
     }
 
 }

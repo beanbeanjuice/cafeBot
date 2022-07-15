@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.settings.daily;
+package com.beanbeanjuice.command.settings.birthday;
 
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -11,12 +11,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to set the daily {@link net.dv8tion.jda.api.entities.TextChannel TextChannel} for
- * the {@link net.dv8tion.jda.api.entities.Guild Guild}.
+ * An {@link ICommand} used to set or remove the birthday {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
  *
  * @author beanbeanjuice
+ * @since v3.0.1
  */
-public class DailyChannelCommand implements ICommand {
+public class BirthdayChannelCommand implements ICommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) { }
@@ -24,13 +24,13 @@ public class DailyChannelCommand implements ICommand {
     @NotNull
     @Override
     public String getDescription() {
-        return "Set or remove the daily channel! This channel resets daily.";
+        return "Set or remove the birthday channel!";
     }
 
     @NotNull
     @Override
     public String exampleUsage() {
-        return "`/daily-channel set` or `/daily-channel remove`";
+        return "`/birthday-channel set` or `/birthday-channel remove`";
     }
 
     @NotNull
@@ -43,8 +43,8 @@ public class DailyChannelCommand implements ICommand {
     @Override
     public ArrayList<ISubCommand> getSubCommands() {
         ArrayList<ISubCommand> subCommands = new ArrayList<>();
-        subCommands.add(new SetDailyChannelSubCommand());
-        subCommands.add(new RemoveDailyChannelSubCommand());
+        subCommands.add(new SetBirthdayChannelSubCommand());
+        subCommands.add(new RemoveBirthdayChannelSubCommand());
         return subCommands;
     }
 

@@ -48,12 +48,6 @@ public class RemoveRaffleChannelSubCommand implements ISubCommand {
 
     @NotNull
     @Override
-    public Boolean allowDM() {
-        return false;
-    }
-
-    @NotNull
-    @Override
     public String getName() {
         return "remove";
     }

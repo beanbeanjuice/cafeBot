@@ -106,12 +106,6 @@ public class EditWelcomeMessageSubCommand implements ISubCommand {
 
     @NotNull
     @Override
-    public Boolean allowDM() {
-        return false;
-    }
-
-    @NotNull
-    @Override
     public String getName() {
         return "edit-message";
     }
