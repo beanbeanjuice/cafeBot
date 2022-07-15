@@ -5,10 +5,10 @@ import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
-import io.github.beanbeanjuice.cafeapi.exception.api.AuthorizationException;
-import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
-import io.github.beanbeanjuice.cafeapi.exception.api.ConflictException;
-import io.github.beanbeanjuice.cafeapi.exception.api.ResponseException;
+import com.beanbeanjuice.cafeapi.exception.api.AuthorizationException;
+import com.beanbeanjuice.cafeapi.exception.api.CafeException;
+import com.beanbeanjuice.cafeapi.exception.api.ConflictException;
+import com.beanbeanjuice.cafeapi.exception.api.ResponseException;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 

@@ -8,7 +8,7 @@ import com.beanbeanjuice.utility.section.moderation.poll.Poll;
 import com.beanbeanjuice.utility.section.moderation.poll.PollEmoji;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.section.moderation.poll.PollHandler;
-import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
+import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * An {@link ICommand} used to create a {@link io.github.beanbeanjuice.cafeapi.cafebot.polls.Poll Poll}.
+ * An {@link ICommand} used to create a {@link com.beanbeanjuice.cafeapi.cafebot.polls.Poll Poll}.
  *
  * @author beanbeanjuice
  */

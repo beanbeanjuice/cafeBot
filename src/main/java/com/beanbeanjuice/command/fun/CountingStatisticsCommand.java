@@ -5,7 +5,7 @@ import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.handler.CountingHandler;
 import com.beanbeanjuice.utility.helper.Helper;
-import io.github.beanbeanjuice.cafeapi.cafebot.counting.CountingInformation;
+import com.beanbeanjuice.cafeapi.cafebot.counting.CountingInformation;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

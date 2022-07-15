@@ -4,12 +4,12 @@ import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.logging.LogLevel;
-import io.github.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday;
-import io.github.beanbeanjuice.cafeapi.cafebot.birthdays.BirthdayMonth;
-import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
-import io.github.beanbeanjuice.cafeapi.exception.api.NotFoundException;
-import io.github.beanbeanjuice.cafeapi.exception.api.TeaPotException;
-import io.github.beanbeanjuice.cafeapi.utility.Time;
+import com.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday;
+import com.beanbeanjuice.cafeapi.cafebot.birthdays.BirthdayMonth;
+import com.beanbeanjuice.cafeapi.exception.api.CafeException;
+import com.beanbeanjuice.cafeapi.exception.api.NotFoundException;
+import com.beanbeanjuice.cafeapi.exception.api.TeaPotException;
+import com.beanbeanjuice.cafeapi.utility.Time;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -119,7 +119,7 @@ public class BirthdayHandler {
     }
 
     /**
-     * Retrieves all {@link Birthday} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Retrieves all {@link Birthday} from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      */
     private static void getAllBirthdays() {
         try {
@@ -130,7 +130,7 @@ public class BirthdayHandler {
     }
 
     /**
-     * Removes a {@link Birthday} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Removes a {@link Birthday} from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      * @param userID The {@link String userID} of the {@link Birthday} to remove.
      * @return True, if the {@link Birthday} was removed successfully.
      */

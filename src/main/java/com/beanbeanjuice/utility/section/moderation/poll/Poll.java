@@ -1,8 +1,8 @@
 package com.beanbeanjuice.utility.section.moderation.poll;
 
-import io.github.beanbeanjuice.cafeapi.generic.CafeGeneric;
-import io.github.beanbeanjuice.cafeapi.utility.Time;
-import io.github.beanbeanjuice.cafeapi.utility.TimestampDifference;
+import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
+import com.beanbeanjuice.cafeapi.utility.Time;
+import com.beanbeanjuice.cafeapi.utility.TimestampDifference;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;
@@ -12,7 +12,7 @@ import java.sql.Timestamp;
  *
  * @author beanbeanjuice
  */
-public class Poll extends io.github.beanbeanjuice.cafeapi.cafebot.polls.Poll {
+public class Poll extends com.beanbeanjuice.cafeapi.cafebot.polls.Poll {
 
     /**
      * Creates a new {@link Poll}.
