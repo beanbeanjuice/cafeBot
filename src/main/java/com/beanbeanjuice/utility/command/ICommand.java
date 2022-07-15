@@ -73,7 +73,9 @@ public interface ICommand {
      * @return True, if this command is allowed to be run in a DM.
      */
     @NotNull
-    Boolean allowDM();
+    default Boolean allowDM() {
+        return false;
+    }
 
     /**
      * @return True, if this command should be hidden from others.

@@ -58,7 +58,8 @@ public class SetBirthdaySubCommand implements ISubCommand {
                     "Successfully updated your birthday to `" + birthday.getMonth() + ", " + birthday.getDay() + "` (Month, Day) on `" +
                             birthday.getTimeZone().getID() + "`.\n\n*By setting your birthday, " +
                             "you are agreeing to be notified in EVERY server that this bot is in and that you are in, granted that they have enabled " +
-                            "birthday notifications. To opt out, do `/birthday remove`.*"
+                            "birthday notifications. To opt out, do `/birthday remove`. Remember, the server has to have a valid birthday channel set by doing " +
+                            "`/birthday-channel set`!*"
             )).queue();
         } catch (TeaPotException e) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(

@@ -58,7 +58,7 @@ public class SleepCommand implements ICommand {
     @NotNull
     @Override
     public Boolean allowDM() {
-        return false;
+        return true;
     }
 
 }

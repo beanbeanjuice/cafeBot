@@ -58,6 +58,7 @@ public class BiteCommand implements ICommand {
     @NotNull
     @Override
     public Boolean allowDM() {
-        return false;
+        return true;
     }
+
 }

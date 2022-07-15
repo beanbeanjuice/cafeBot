@@ -250,12 +250,6 @@ public class AddPollCommand implements ICommand {
 
     @NotNull
     @Override
-    public Boolean allowDM() {
-        return false;
-    }
-
-    @NotNull
-    @Override
     public Boolean isHidden() {
         return true;
     }
@@ -267,4 +261,5 @@ public class AddPollCommand implements ICommand {
         permissions.add(Permission.MANAGE_SERVER);
         return permissions;
     }
+
 }

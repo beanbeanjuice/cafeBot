@@ -74,10 +74,4 @@ public class DefineCommand implements ICommand {
         return true;
     }
 
-    @NotNull
-    @Override
-    public Boolean isHidden() {
-        return false;
-    }
-
 }
