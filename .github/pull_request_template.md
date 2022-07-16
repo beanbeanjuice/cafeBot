@@ -30,8 +30,8 @@ Fixes # (issue)
 
 - [ ] This pull request has been linked to the appropriate issue on GitHub. (Use the development section on the right.)
 - [ ] The code follows the style [guidlines](https://github.com/beanbeanjuice/cafeBot/blob/master/CONTRIBUTING.md).
-- [ ] A self-review of the code was performed in GitHub.
-- [ ] Appropriate comments were added in the code.
+- [ ] A self-review of the code was performed on GitHub.
+- [ ] Appropriate comments and javadocs were added in your code.
 - [ ] Appropriate changes have been made to the documentation.
 - [ ] Appropriate changes have been made to the `README.md` file.
 - [ ] No warnings are produced when the code is run.
