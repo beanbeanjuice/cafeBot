@@ -55,7 +55,7 @@ jobs:
         java-version: '16'
         distribution: 'adopt'
         cache: maven
-    - name: Build with Maven
+    - name: Build and Test with Maven
       env:
         CAFEBOT_VERSION: ${{ secrets.CAFEBOT_VERSION }}
         CAFEBOT_TOKEN: ${{ secrets.CAFEBOT_TOKEN }}
@@ -66,7 +66,7 @@ jobs:
         CAFEBOT_TWITCH_ACCESS_TOKEN: ${{ secrets.CAFEBOT_TWITCH_ACCESS_TOKEN }}
 
         API_PASSWORD: ${{ secrets.API_PASSWORD }}
-        RELEASE_API_PASSWORD: ${{ secrets.RELEASE_API_PASSWORD }}
+        CAFEBOT_REQUEST_LOCATION: ${{ secrets.CAFEBOT_REQUEST_LOCATION }}
       run: mvn test
 
     - name: Perform CodeQL Analysis
