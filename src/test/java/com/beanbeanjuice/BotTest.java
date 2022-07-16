@@ -1,11 +1,8 @@
 package com.beanbeanjuice;
 
-import com.beanbeanjuice.utility.logging.LogLevel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests the startup of the {@link Bot}.
