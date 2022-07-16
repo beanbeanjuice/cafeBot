@@ -1,17 +1,18 @@
-package com.beanbeanjuice.utility.logging;
+package com.beanbeanjuice;
 
+import com.beanbeanjuice.utility.logging.LogLevel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Tests the {@link LogManager}.
+ * Tests the startup of the {@link Bot}.
  *
  * @author beanbeanjuice
- * @since v3.0.0
+ * @since v3.0.1
  */
-class LogLevelTest {
+public class BotTest {
 
     @Test
     @DisplayName("Log Level Test")
