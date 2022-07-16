@@ -1,13 +1,11 @@
-name: "CodeQL"
+name: "CodeQL and Maven CI"
 
 on:
   push:
-    branches: [ master, integration ]
+    branches:
+      - master
+      - integration
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ master, integration ]
-  schedule:
-    - cron: '26 12 * * 2'
 
 jobs:
   analyze:
