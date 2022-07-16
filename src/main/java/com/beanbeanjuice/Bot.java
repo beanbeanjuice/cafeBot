@@ -66,7 +66,7 @@ public class Bot {
     public static int commandsRun = 0;
     public static final String DISCORD_AVATAR_URL = "https://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif";
 
-    public static void main(String[] args) throws LoginException, InterruptedException {
+    public Bot() throws LoginException, InterruptedException {
         logger = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
         Helper.startCafeAPIRefreshTimer(location);
 
@@ -125,6 +125,10 @@ public class Bot {
 
         new GitHubUpdateHelper().start();  // Notify Guilds of Update
         Helper.startHourlyUpdateTimer();
+    }
+
+    public static void main(String[] args) throws LoginException, InterruptedException {
+        new Bot();
     }
 
     /**
