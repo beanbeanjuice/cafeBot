@@ -132,6 +132,7 @@ public class Helper {
     public static void startCafeAPIRefreshTimer(@NotNull RequestLocation requestLocation) {
         // TODO: There must be a way to do this. Somehow wait until cafeAPI is not null anymore.
         Bot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), requestLocation));
+        Bot.getCafeAPI().setKawaiiAPI(System.getenv("KAWAII_API_TOKEN"));
         Bot.getLogger().log(Helper.class, LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
 
         Timer cafeAPITimer = new Timer();
@@ -140,6 +141,7 @@ public class Helper {
             @Override
             public void run() {
                 Bot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), requestLocation));
+                Bot.getCafeAPI().setKawaiiAPI(System.getenv("KAWAII_API_TOKEN"));
                 Bot.getLogger().log(Helper.class, LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
             }
         };
