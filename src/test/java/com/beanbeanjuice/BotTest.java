@@ -1,6 +1,7 @@
 package com.beanbeanjuice;
 
 import com.beanbeanjuice.utility.logging.LogLevel;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,9 @@ public class BotTest {
     @Test
     @DisplayName("Log Level Test")
     public void logLevelTest() {
-        assertEquals(LogLevel.INFO.formatCode(), "INFO......", "Test the formatting method.");
+        Assertions.assertDoesNotThrow(() -> {
+            new Bot();
+        });
     }
 
 }

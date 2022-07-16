@@ -1,4 +1,4 @@
-name: "CodeQL and Gradle CI"
+name: "CodeQL"
 
 on:
   push:
@@ -59,26 +59,14 @@ jobs:
         cache: maven
     - name: Build with Maven
       env:
-        CAFEBOT_MYSQL_URL: ${{ secrets.CAFEBOT_MYSQL_URL }}
-        CAFEBOT_MYSQL_PORT: ${{ secrets.CAFEBOT_MYSQL_PORT }}
-        CAFEBOT_MYSQL_USERNAME: ${{ secrets.CAFEBOT_MYSQL_USERNAME }}
-        CAFEBOT_MYSQL_PASSWORD: ${{ secrets.CAFEBOT_MYSQL_PASSWORD }}
-        CAFEBOT_MYSQL_ENCRYPT: ${{ secrets.CAFEBOT_MYSQL_ENCRYPT }}
-
         CAFEBOT_VERSION: ${{ secrets.CAFEBOT_VERSION }}
         CAFEBOT_TOKEN: ${{ secrets.CAFEBOT_TOKEN }}
         CAFEBOT_GUILD_ID: ${{ secrets.CAFEBOT_GUILD_ID }}
         CAFEBOT_GUILD_LOG_CHANNEL_ID: ${{ secrets.CAFEBOT_GUILD_LOG_CHANNEL_ID }}
         CAFEBOT_GUILD_WEBHOOK_URL: ${{ secrets.CAFEBOT_GUILD_WEBHOOK_URL }}
-
-        CAFEBOT_SPOTIFY_ID: ${{ secrets.CAFEBOT_SPOTIFY_ID }}
-        CAFEBOT_SPOTIFY_SECRET: ${{ secrets.CAFEBOT_SPOTIFY_SECRET }}
         
         CAFEBOT_TWITCH_ACCESS_TOKEN: ${{ secrets.CAFEBOT_TWITCH_ACCESS_TOKEN }}
 
-        CAFEBOT_TOPGG_ID: ${{ secrets.CAFEBOT_TOPGG_ID }}
-        CAFEBOT_TOPGG_TOKEN: ${{ secrets.CAFEBOT_TOPGG_TOKEN }}
-        CAFEBOT_SPRING_BOOT_PORT: ${{ secrets.CAFEBOT_SPRING_BOOT_PORT }}
         API_PASSWORD: ${{ secrets.API_PASSWORD }}
         RELEASE_API_PASSWORD: ${{ secrets.RELEASE_API_PASSWORD }}
       run: mvn test
