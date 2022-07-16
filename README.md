@@ -74,6 +74,8 @@
 * [Maven](https://maven.apache.org/)
 * [Discord JDA](https://github.com/DV8FromTheWorld/JDA)
 * [Twitch4J](https://github.com/twitch4j/twitch4j)
+* [CafeAPI](https://github.com/beanbeanjuice/Java-Cafe-API-Wrapper)
+* [KawaiiAPI](https://github.com/beanbeanjuice/Java-Kawaii-API-Wrapper)
 
 ### About the Bot
 `cafeBot`, formerly `beanBot` is a general purpose bot that has many features. Many features work across Discord servers. Some features include;
