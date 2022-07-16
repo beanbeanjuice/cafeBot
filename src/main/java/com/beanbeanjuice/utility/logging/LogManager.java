@@ -24,6 +24,7 @@ import java.util.zip.ZipOutputStream;
  * A class used for logging.
  *
  * @author beanbeanjuice
+ * @since v3.0.1
  */
 public class LogManager {
 
@@ -65,9 +66,8 @@ public class LogManager {
         logFileTime = time.format("MM-dd-yyyy");
 
         File file = new File(filePath);
-        if (!file.exists()) {
+        if (!file.exists())
             file.mkdir();
-        }
 
         compressOldLogs();
 
@@ -241,9 +241,8 @@ public class LogManager {
 
             byte[] buffer = new byte[1024];
             int len;
-            while ((len = fileInputStream.read(buffer)) > 0) {
+            while ((len = fileInputStream.read(buffer)) > 0)
                 gzipOutputStream.write(buffer, 0, len);
-            }
         }
 
         // Creating a ZIP.
@@ -259,9 +258,8 @@ public class LogManager {
         byte[] buffer = new byte[1024];
         int len;
 
-        while ((len = fileInputStream.read(buffer)) > 0) {
+        while ((len = fileInputStream.read(buffer)) > 0)
             zipOutputStream.write(buffer, 0, len);
-        }
 
         zipOutputStream.flush();
         zipOutputStream.close();
@@ -320,45 +318,30 @@ public class LogManager {
                     @NotNull Boolean logToWebhook, @NotNull Boolean logToLogChannel, @Nullable Throwable exception) {
 
         if (!time.format("MM-dd-yyyy").equals(logFileTime)) {
+            log(this.getClass(), LogLevel.INFO, "New day... creating new log file.", true, true);
             checkFiles();
-            log(this.getClass(), LogLevel.INFO, "New day... creating new log file.", true, false);
         }
 
         Logger logger = LoggerFactory.getLogger(c);
 
         switch (logLevel) {
-            case INFO, LOADING, OKAY -> {
-                logger.info(message);
-            }
-
-            case WARN -> {
-                logger.warn(message);
-            }
-
-            case DEBUG -> {
-                logger.debug(message);
-            }
-
-            case ERROR -> {
-                logger.error(message);
-            }
-
+            case INFO, LOADING, OKAY -> logger.info(message);
+            case WARN -> logger.warn(message);
+            case DEBUG -> logger.debug(message);
+            case ERROR -> logger.error(message);
         }
 
         logToFile(c, logLevel, message, time);
 
         // Printing the Stack Trace if the Exception Exists
-        if (exception != null) {
+        if (exception != null)
             logStackTrace(exception);
-        }
 
-        if (logToWebhook) {
+        if (logToWebhook)
             logToWebhook(c, logLevel, message, time);
-        }
 
-        if (logToLogChannel) {
+        if (logToLogChannel)
             logToLogChannel(c, logLevel, message, time);
-        }
 
     }
 
