@@ -21,3 +21,13 @@ jobs:
           cache: maven
       - name: Test with Maven
         run: mvn test
+        env:
+          CAFEBOT_VERSION: ${{ secrets.CAFEBOT_VERSION }}
+          CAFEBOT_TOKEN: ${{ secrets.CAFEBOT_TOKEN }}
+          CAFEBOT_GUILD_ID: ${{ secrets.CAFEBOT_GUILD_ID }}
+          CAFEBOT_GUILD_LOG_CHANNEL_ID: ${{ secrets.CAFEBOT_GUILD_LOG_CHANNEL_ID }}
+          CAFEBOT_GUILD_WEBHOOK_URL: ${{ secrets.CAFEBOT_GUILD_WEBHOOK_URL }}
+          
+          CAFEBOT_TWITCH_ACCESS_TOKEN: ${{ secrets.CAFEBOT_TWITCH_ACCESS_TOKEN }}
+
+          API_PASSWORD: ${{ secrets.API_PASSWORD }}
