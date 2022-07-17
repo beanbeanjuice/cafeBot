@@ -175,7 +175,7 @@ public class Bot {
      * Updates the presence for the {@link JDA}.
      */
     public static void updateGuildPresence() {
-        bot.getPresence().setActivity(Activity.playing("cafeBot " + BOT_VERSION + " - Currently in " + bot.getGuilds().size() + " servers!"));
+        bot.getPresence().setActivity(Activity.playing("/help | cafeBot " + BOT_VERSION + " - Currently in " + bot.getGuilds().size() + " servers!"));
     }
 
 }
