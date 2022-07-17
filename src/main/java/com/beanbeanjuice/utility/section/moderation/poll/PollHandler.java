@@ -4,7 +4,7 @@ import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.section.moderation.raffle.RaffleHandler;
-import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
+import com.beanbeanjuice.cafeapi.exception.api.CafeException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageReaction;
@@ -183,7 +183,7 @@ public class PollHandler {
     }
 
     /**
-     * Gets all {@link Poll} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Gets all {@link Poll} from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      */
     public static void getAllPolls() {
         try {
@@ -192,7 +192,7 @@ public class PollHandler {
                     activePolls.put(guildID, new ArrayList<>());
                 }
 
-                for (io.github.beanbeanjuice.cafeapi.cafebot.polls.Poll poll : polls) {
+                for (com.beanbeanjuice.cafeapi.cafebot.polls.Poll poll : polls) {
                     activePolls.get(guildID).add(new Poll(poll.getMessageID(), poll.getEndingTime()));
                 }
             });
@@ -202,7 +202,7 @@ public class PollHandler {
     }
 
     /**
-     * Adds a {@link Poll} to the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Adds a {@link Poll} to the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      * @param guildID The {@link String guildID} of the {@link Poll}.
      * @param poll The {@link Poll} to add.
      * @return True, if the {@link Poll} was added successfully.
@@ -225,7 +225,7 @@ public class PollHandler {
     }
 
     /**
-     * Removes a {@link Poll} from the {@link io.github.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
+     * Removes a {@link Poll} from the {@link com.beanbeanjuice.cafeapi.CafeAPI CafeAPI}.
      * @param guildID The {@link String guildID} of the {@link Poll}.
      * @param poll The {@link Poll poll} to remove.
      * @return True, if the {@link Poll} was removed successfully.

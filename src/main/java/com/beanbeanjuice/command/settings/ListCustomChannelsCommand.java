@@ -1,6 +1,5 @@
 package com.beanbeanjuice.command.settings;
 
-import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
@@ -53,12 +52,6 @@ public class ListCustomChannelsCommand implements ICommand {
     @Override
     public CommandCategory getCategoryType() {
         return CommandCategory.SETTINGS;
-    }
-
-    @NotNull
-    @Override
-    public Boolean allowDM() {
-        return false;
     }
 
     @NotNull

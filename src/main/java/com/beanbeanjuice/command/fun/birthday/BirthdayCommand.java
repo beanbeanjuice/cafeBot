@@ -5,11 +5,14 @@ import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TimeZone;
 
 /**
- * An {@link ICommand} used to get someone's {@link io.github.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday Birthday}.
+ * An {@link ICommand} used to get someone's {@link com.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday Birthday}.
  *
  * @author beanbeanjuice
  */
@@ -56,5 +59,17 @@ public class BirthdayCommand implements ICommand {
     @Override
     public Boolean isHidden() {
         return true;
+    }
+
+    @Nullable
+    @Override
+    public HashMap<String, ArrayList<String>> getAutoComplete() {
+        HashMap<String, ArrayList<String>> autoCompleteMap = new HashMap<>();
+        autoCompleteMap.put("timezone", new ArrayList<>());
+
+        for (String timezone : TimeZone.getAvailableIDs())
+            autoCompleteMap.get("timezone").add(timezone);
+
+        return autoCompleteMap;
     }
 }
