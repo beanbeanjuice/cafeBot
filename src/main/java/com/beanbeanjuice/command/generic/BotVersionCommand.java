@@ -29,9 +29,9 @@ public class BotVersionCommand implements ICommand {
         } catch (NullPointerException ignored) {}
 
         try {
-            event.getChannel().sendMessageEmbeds(new GitHubReleaseHelper().getVersion(version)).queue();
+            event.getHook().sendMessageEmbeds(new GitHubReleaseHelper().getVersion(version)).queue();
         } catch (CompletionException e) {
-            event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Update Not Found",
                     "There is no update corresponding to that version number..."
             )).queue();

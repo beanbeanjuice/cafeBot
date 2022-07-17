@@ -8,7 +8,6 @@ import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -81,12 +80,6 @@ public class VentCommand implements ICommand {
     @Override
     public CommandCategory getCategoryType() {
         return CommandCategory.SOCIAL;
-    }
-
-    @NotNull
-    @Override
-    public Boolean allowDM() {
-        return false;
     }
 
     @NotNull

@@ -1,6 +1,5 @@
 package com.beanbeanjuice.command.settings.counting;
 
-import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.handler.CountingHandler;
@@ -96,12 +95,6 @@ public class CountingChannelFailureRoleSubCommand implements ISubCommand {
     @Override
     public CommandCategory getCategoryType() {
         return CommandCategory.SETTINGS;
-    }
-
-    @NotNull
-    @Override
-    public Boolean allowDM() {
-        return false;
     }
 
     @NotNull

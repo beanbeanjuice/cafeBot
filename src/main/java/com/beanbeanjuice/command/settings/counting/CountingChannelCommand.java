@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 
 /**
- * A {@link ICommand} used for dealing with the {@link io.github.beanbeanjuice.cafeapi.cafebot.counting.CountingInformation CountingInformation}
+ * A {@link ICommand} used for dealing with the {@link com.beanbeanjuice.cafeapi.cafebot.counting.CountingInformation CountingInformation}
  * for the {@link net.dv8tion.jda.api.entities.Guild Guild}.
  *
  * @author beanbeanjuice
@@ -47,12 +47,6 @@ public class CountingChannelCommand implements ICommand {
         subCommands.add(new RemoveCountingChannelSubCommand());
         subCommands.add(new CountingChannelFailureRoleSubCommand());
         return subCommands;
-    }
-
-    @NotNull
-    @Override
-    public Boolean allowDM() {
-        return false;
     }
 
     @NotNull

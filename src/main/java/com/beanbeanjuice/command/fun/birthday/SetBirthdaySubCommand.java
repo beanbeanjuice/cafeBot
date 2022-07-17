@@ -1,15 +1,14 @@
 package com.beanbeanjuice.command.fun.birthday;
 
-import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.section.fun.BirthdayHandler;
-import io.github.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday;
-import io.github.beanbeanjuice.cafeapi.cafebot.birthdays.BirthdayMonth;
-import io.github.beanbeanjuice.cafeapi.exception.api.TeaPotException;
-import io.github.beanbeanjuice.cafeapi.exception.program.BirthdayOverfillException;
-import io.github.beanbeanjuice.cafeapi.utility.Time;
+import com.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday;
+import com.beanbeanjuice.cafeapi.cafebot.birthdays.BirthdayMonth;
+import com.beanbeanjuice.cafeapi.exception.api.TeaPotException;
+import com.beanbeanjuice.cafeapi.exception.program.BirthdayOverfillException;
+import com.beanbeanjuice.cafeapi.utility.Time;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -19,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 
 /**
- * An {@link ISubCommand} to set your {@link io.github.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday Birthday}.
+ * An {@link ISubCommand} to set your {@link com.beanbeanjuice.cafeapi.cafebot.birthdays.Birthday Birthday}.
  *
  * @author beanbeanjuice
  */
@@ -59,7 +58,8 @@ public class SetBirthdaySubCommand implements ISubCommand {
                     "Successfully updated your birthday to `" + birthday.getMonth() + ", " + birthday.getDay() + "` (Month, Day) on `" +
                             birthday.getTimeZone().getID() + "`.\n\n*By setting your birthday, " +
                             "you are agreeing to be notified in EVERY server that this bot is in and that you are in, granted that they have enabled " +
-                            "birthday notifications. To opt out, do `/birthday remove`.*"
+                            "birthday notifications. To opt out, do `/birthday remove`. Remember, the server has to have a valid birthday channel set by doing " +
+                            "`/birthday-channel set`!*"
             )).queue();
         } catch (TeaPotException e) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
@@ -114,7 +114,10 @@ public class SetBirthdaySubCommand implements ISubCommand {
                 .addChoice("12 - December", "DECEMBER"));
         options.add(new OptionData(OptionType.INTEGER, "day", "The day you were born in the specified month!", true)
                 .setRequiredRange(1, 31));
-        options.add(new OptionData(OptionType.STRING, "timezone", "The timezone you are in!", true));
+
+        OptionData timeZoneOptions = new OptionData(OptionType.STRING, "timezone", "The timezone you are in! Start typing to see available options!", true, true);
+
+        options.add(timeZoneOptions);
         return options;
     }
 

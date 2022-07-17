@@ -72,20 +72,6 @@
         </pluginManagement>
     </build>
 
-    <repositories>
-        <!-- Sonatype Snapshot Repository -->
-        <repository>
-            <id>sonatype-snapshots</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
-
-        <!-- Sonatype Release Repository -->
-        <repository>
-            <id>sonatype-releases</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <!-- Maven Dependency Plugin -->
         <dependency>
@@ -94,12 +80,11 @@
             <version>3.3.0</version>
         </dependency>
 
-
         <!-- Café API -->
         <dependency>
-            <groupId>io.github.beanbeanjuice</groupId>
+            <groupId>com.beanbeanjuice</groupId>
             <artifactId>cafe-api-wrapper</artifactId>
-            <version>v1.2.3-SNAPSHOT</version>
+            <version>1.3.1</version>
         </dependency>
 
         <!-- Discord JDA -->

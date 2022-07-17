@@ -8,7 +8,7 @@ import com.beanbeanjuice.utility.logging.LogLevel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.beanbeanjuice.cafeapi.exception.api.CafeException;
+import com.beanbeanjuice.cafeapi.exception.api.CafeException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
@@ -116,7 +116,7 @@ public class GitHubUpdateHelper {
         embedBuilder.addField("Extra Information", "The bot has been updated to " + github_tag + "! " +
                 "To request a feature or report bugs, please click this [link](https://github.com/beanbeanjuice/cafeBot/issues).", true);
         embedBuilder.addField("How to Disable Update Notifications", "To disable these update notifications, " +
-                "the default command would be `!!notify-on-update disable`.", false);
+                "the default command would be `/bot-update notify False`.", false);
         embedBuilder.setColor(Helper.getRandomColor());
         return embedBuilder.build();
     }

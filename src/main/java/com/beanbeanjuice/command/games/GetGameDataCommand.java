@@ -4,7 +4,7 @@ import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.section.game.WinStreakHandler;
-import io.github.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.MinigameType;
+import com.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.MinigameType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 /**
- * An {@link ICommand} used to get {@link io.github.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.WinStreak WinStreak} for a {@link User}.
+ * An {@link ICommand} used to get {@link com.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.WinStreak WinStreak} for a {@link User}.
  *
  * @author beanbeanjuice
  */

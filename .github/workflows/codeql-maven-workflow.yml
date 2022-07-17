@@ -1,13 +1,11 @@
-name: "CodeQL and Gradle CI"
+name: "CodeQL and Maven CI"
 
 on:
   push:
-    branches: [ master, integration ]
+    branches:
+      - master
+      - integration
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ master, integration ]
-  schedule:
-    - cron: '26 12 * * 2'
 
 jobs:
   analyze:
@@ -57,30 +55,20 @@ jobs:
         java-version: '16'
         distribution: 'adopt'
         cache: maven
-    - name: Build with Maven
+    - name: Build and Test with Maven
       env:
-        CAFEBOT_MYSQL_URL: ${{ secrets.CAFEBOT_MYSQL_URL }}
-        CAFEBOT_MYSQL_PORT: ${{ secrets.CAFEBOT_MYSQL_PORT }}
-        CAFEBOT_MYSQL_USERNAME: ${{ secrets.CAFEBOT_MYSQL_USERNAME }}
-        CAFEBOT_MYSQL_PASSWORD: ${{ secrets.CAFEBOT_MYSQL_PASSWORD }}
-        CAFEBOT_MYSQL_ENCRYPT: ${{ secrets.CAFEBOT_MYSQL_ENCRYPT }}
-
         CAFEBOT_VERSION: ${{ secrets.CAFEBOT_VERSION }}
         CAFEBOT_TOKEN: ${{ secrets.CAFEBOT_TOKEN }}
         CAFEBOT_GUILD_ID: ${{ secrets.CAFEBOT_GUILD_ID }}
         CAFEBOT_GUILD_LOG_CHANNEL_ID: ${{ secrets.CAFEBOT_GUILD_LOG_CHANNEL_ID }}
         CAFEBOT_GUILD_WEBHOOK_URL: ${{ secrets.CAFEBOT_GUILD_WEBHOOK_URL }}
-
-        CAFEBOT_SPOTIFY_ID: ${{ secrets.CAFEBOT_SPOTIFY_ID }}
-        CAFEBOT_SPOTIFY_SECRET: ${{ secrets.CAFEBOT_SPOTIFY_SECRET }}
         
         CAFEBOT_TWITCH_ACCESS_TOKEN: ${{ secrets.CAFEBOT_TWITCH_ACCESS_TOKEN }}
 
-        CAFEBOT_TOPGG_ID: ${{ secrets.CAFEBOT_TOPGG_ID }}
-        CAFEBOT_TOPGG_TOKEN: ${{ secrets.CAFEBOT_TOPGG_TOKEN }}
-        CAFEBOT_SPRING_BOOT_PORT: ${{ secrets.CAFEBOT_SPRING_BOOT_PORT }}
+        KAWAII_API_TOKEN: ${{ secrets.KAWAII_API_TOKEN }}
+
         API_PASSWORD: ${{ secrets.API_PASSWORD }}
-        RELEASE_API_PASSWORD: ${{ secrets.RELEASE_API_PASSWORD }}
+        CAFEBOT_REQUEST_LOCATION: ${{ secrets.CAFEBOT_REQUEST_LOCATION }}
       run: mvn test
 
     - name: Perform CodeQL Analysis

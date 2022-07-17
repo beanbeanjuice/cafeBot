@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * An interface used for {@link ICommand commands}.
@@ -72,7 +73,9 @@ public interface ICommand {
      * @return True, if this command is allowed to be run in a DM.
      */
     @NotNull
-    Boolean allowDM();
+    default Boolean allowDM() {
+        return false;
+    }
 
     /**
      * @return True, if this command should be hidden from others.
@@ -89,4 +92,13 @@ public interface ICommand {
     default ArrayList<Permission> getPermissions() {
         return null;
     }
+
+    /**
+     * @return The {@link HashMap<String, ArrayList<String>>}.
+     */
+    @Nullable
+    default HashMap<String, ArrayList<String>> getAutoComplete() {
+        return null;
+    }
+
 }

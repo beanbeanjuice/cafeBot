@@ -7,6 +7,7 @@
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![WakaTime][wakatime-shield]][wakatime-url]
 [![CodeFactor][codefactor-shield]][codefactor-url]
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/beanbeanjuice/cafebot?style=for-the-badge)
 
 <!-- PROJECT LOGO -->
 <br />
@@ -73,6 +74,8 @@
 * [Maven](https://maven.apache.org/)
 * [Discord JDA](https://github.com/DV8FromTheWorld/JDA)
 * [Twitch4J](https://github.com/twitch4j/twitch4j)
+* [CafeAPI](https://github.com/beanbeanjuice/Java-Cafe-API-Wrapper)
+* [KawaiiAPI](https://github.com/beanbeanjuice/Java-Kawaii-API-Wrapper)
 
 ### About the Bot
 `cafeBot`, formerly `beanBot` is a general purpose bot that has many features. Many features work across Discord servers. Some features include;
@@ -112,7 +115,7 @@ This is an example of how to list things you need to use the software and how to
 * `/get-prefix` - Gets the current prefix for the server if you forget it!
 
 <p align="center">
-  <img src=https://cdn.beanbeanjuice.com/images/cafeBot/readme/help.png>
+  <img src=https://cdn.beanbeanjuice.com/images/cafeBot/readme/help.gif>
 </p>
 
 As you can see, this was shown using the command `/help order`. It shows each parameter you can run. For example, the first `<NUMBER>` is the `CATEGORY NUMBER` for the menu, needs to be a number, and is required. The `help` command also provides an example on how to actually use the command if you are stuck!
@@ -196,6 +199,7 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `clear-chat` - Clear the chat. (Only currently works from 2-99 messages).
 * `create-embed` - Send a customised `embedded message` in a specified channel!
 ##### 9. **SETTINGS**
+* `birthday-channel` - Set or remove the birthday channel for the server!
 * `ai` - Sets the `AI Status` for the server. This can `enable` or `disable` the AI module. This is `disable` by default.
 * `bot-update` - `enable` or `disable` bot notifications. This is `enabled` by default.
 * `counting-channel` - Set or remove the counting channel. Users in this channel can count. You can also apply a custom role when a user sucks at counting!
@@ -254,9 +258,9 @@ Here is ALL of the data that this bot could *possibly* store on you. This, of co
   - Message.
     - Your messages **ARE NOT** saved **AT ALL**. The only thing the bot does, if enabled, is check if trigger words are sent in a message, then sends a pre-determined response.
 
-##### * - This is already public information anyway, and is crucial for having the bot work.
-##### ** - This is something that is needed for the bot to do things like apply a role to someone when they join a specific voice channel, or to duplicate a voice channel when needed.
-##### *** - Your birthday is only stored WHEN specified, and can even be removed at anytime by simply using the `/birthday remove` command.
+##### `*` - This is already public information anyway, and is crucial for having the bot work.
+##### `**` - This is something that is needed for the bot to do things like apply a role to someone when they join a specific voice channel, or to duplicate a voice channel when needed.
+##### `***` - Your birthday is only stored WHEN specified, and can even be removed at anytime by simply using the `/birthday remove` command.
 
 <!-- CONTACT -->
 # Contact
