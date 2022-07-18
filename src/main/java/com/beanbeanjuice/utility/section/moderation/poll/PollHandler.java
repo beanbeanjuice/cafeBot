@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageReaction;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -64,67 +65,67 @@ public class PollHandler {
                             if (pollChannel == null) {
 
                                 // If it was IN the polls in the first place, then remove it.
-                                if (removePoll(guildID, poll)) {
+                                if (removePoll(guildID, poll))
                                     polls.remove(poll);
-                                }
 
                             } else {
                                 // Poll Channel IS NOT Null
                                 // Check if the message is null
-                                pollChannel.retrieveMessageById(poll.getMessageID()).queue((message) -> {
-                                    // Edit Message If Not Null
-                                    // Get the reactions
-                                    ArrayList<MessageReaction> messageReactions = new ArrayList<>(message.getReactions());
 
-                                    // Compare the amount of reactions
-                                    int highestReaction = 0;
+                                try {
 
-                                    // Find the highest reaction first.
-                                    for (MessageReaction messageReaction : messageReactions) {
-                                        if (messageReaction.getCount() > highestReaction) {
-                                            highestReaction = messageReaction.getCount();
+                                    pollChannel.retrieveMessageById(poll.getMessageID()).queue((message) -> {
+                                        // Edit Message If Not Null
+                                        // Get the reactions
+                                        ArrayList<MessageReaction> messageReactions = new ArrayList<>(message.getReactions());
+
+                                        // Compare the amount of reactions
+                                        int highestReaction = 0;
+
+                                        // Find the highest reaction first.
+                                        for (MessageReaction messageReaction : messageReactions) {
+                                            if (messageReaction.getCount() > highestReaction)
+                                                highestReaction = messageReaction.getCount();
                                         }
-                                    }
 
-                                    // TODO: There has to be a better way to do this. Right now it goes through the list twice.
-                                    // Now we have the highest reaction number.
-                                    ArrayList<Emoji> highestReactions = new ArrayList<>();
+                                        // TODO: There has to be a better way to do this. Right now it goes through the list twice.
+                                        // Now we have the highest reaction number.
+                                        ArrayList<Emoji> highestReactions = new ArrayList<>();
 
-                                    // Gets the amount of reactions for that message.
-                                    for (MessageReaction messageReaction : messageReactions) {
-                                        if (messageReaction.getCount() == highestReaction && messageReaction.getCount() != 1) {
-                                            highestReactions.add(messageReaction.getEmoji());
+                                        // Gets the amount of reactions for that message.
+                                        for (MessageReaction messageReaction : messageReactions) {
+                                            if (messageReaction.getCount() == highestReaction && messageReaction.getCount() != 1)
+                                                highestReactions.add(messageReaction.getEmoji());
                                         }
-                                    }
 
-                                    // Getting the poll information
-                                    String title = message.getEmbeds().get(0).getTitle();
-                                    String pollDescription = message.getEmbeds().get(0).getDescription();
-                                    MessageEmbed.AuthorInfo author = message.getEmbeds().get(0).getAuthor();
-                                    MessageEmbed.Thumbnail thumbnail = message.getEmbeds().get(0).getThumbnail();
-                                    MessageEmbed.ImageInfo image = message.getEmbeds().get(0).getImage();
+                                        // Getting the poll information
+                                        String title = message.getEmbeds().get(0).getTitle();
+                                        String pollDescription = message.getEmbeds().get(0).getDescription();
+                                        MessageEmbed.AuthorInfo author = message.getEmbeds().get(0).getAuthor();
+                                        MessageEmbed.Thumbnail thumbnail = message.getEmbeds().get(0).getThumbnail();
+                                        MessageEmbed.ImageInfo image = message.getEmbeds().get(0).getImage();
 
-                                    // Update the poll, to finish it.
-                                    message.editMessageEmbeds(pollEmbed(
-                                            title,
-                                            pollDescription,
-                                            author,
-                                            highestReactions,
-                                            thumbnail,
-                                            image)).queue();
+                                        // Update the poll, to finish it.
+                                        message.editMessageEmbeds(pollEmbed(
+                                                title,
+                                                pollDescription,
+                                                author,
+                                                highestReactions,
+                                                thumbnail,
+                                                image)).queue();
 
-                                    // Remove it
-                                    if (removePoll(guildID, poll)) {
-                                        polls.remove(poll);
-                                    }
+                                        // Remove it
+                                        if (removePoll(guildID, poll))
+                                            polls.remove(poll);
 
-                                }, (failure) -> {
+                                    }, (failure) -> {
 
-                                    // This means the message does not exist.
-                                    if (removePoll(guildID, poll)) {
-                                        polls.remove(poll);
-                                    }
-                                });
+                                        // This means the message does not exist.
+                                        if (removePoll(guildID, poll))
+                                            polls.remove(poll);
+                                    });
+
+                                } catch (InsufficientPermissionException ignored) { }
 
                             }
 
