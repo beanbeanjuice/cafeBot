@@ -160,9 +160,8 @@ public class CommandHandler extends ListenerAdapter {
             slashCommandData.addOptions(command.getOptions());
 
             // Setting the permissions for commands.
-            if (command.getPermissions() != null) {
+            if (command.getPermissions() != null)
                 slashCommandData.setDefaultPermissions(DefaultMemberPermissions.enabledFor(command.getPermissions()));
-            }
 
             List<SubcommandData> subCommands = new ArrayList<>();
 
