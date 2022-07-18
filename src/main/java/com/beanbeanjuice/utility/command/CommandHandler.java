@@ -32,6 +32,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
@@ -188,6 +189,8 @@ public class CommandHandler extends ListenerAdapter {
         // Checking if the commands is something that should be run.
         if (commands.containsKey(event.getName())) {
 
+            logCommand(event);
+
             // Checks if the reply should be hidden or not.
             if (commands.get(event.getName()).isHidden())
                 event.deferReply(true).queue();
@@ -203,6 +206,23 @@ public class CommandHandler extends ListenerAdapter {
             // Increment commands run for this bot.
             Bot.commandsRun++;
         }
+    }
+
+    private void logCommand(@NotNull SlashCommandInteractionEvent event) {
+        StringBuilder commandString = new StringBuilder(event.getName());
+
+        for (int i = 0; i < event.getOptions().size(); i++) {
+            OptionMapping optionMapping = event.getOptions().get(i);
+
+            // Check if the mapping is null
+            if (optionMapping != null) {
+                String type = optionMapping.getType().toString();
+                String value = optionMapping.getAsString();
+                commandString.append(" <").append(type).append(":").append(value).append(">");
+            }
+        }
+
+        Bot.getLogger().log(commands.get(event.getName()).getClass(), LogLevel.DEBUG, commandString.toString(), false, false);
     }
 
     @NotNull
