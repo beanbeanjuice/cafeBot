@@ -209,7 +209,11 @@ public class CommandHandler extends ListenerAdapter {
     }
 
     private void logCommand(@NotNull SlashCommandInteractionEvent event) {
-        StringBuilder commandString = new StringBuilder(event.getName());
+        String commandName = event.getName();
+        StringBuilder commandString = new StringBuilder(commandName);
+
+        if (event.getSubcommandName() != null)
+            commandString.append(" ").append(event.getSubcommandName());
 
         for (int i = 0; i < event.getOptions().size(); i++) {
             OptionMapping optionMapping = event.getOptions().get(i);
