@@ -4,15 +4,20 @@ import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.section.twitch.TwitchHandler;
+import com.netflix.hystrix.Hystrix;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An {@link ISubCommand} to add a twitch channel to the listener.
@@ -23,12 +28,31 @@ public class TwitchChannelAddSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        if (!GuildHandler.getCustomGuild(event.getGuild()).addTwitchChannel(event.getOption("twitch_channel").getAsString())) {
+        String channelName = event.getOption("twitch_channel").getAsString();
+
+        try {
+            if (TwitchHandler.getTwitchListener().getTwitchClient().getHelix()
+                    .getUsers(null, null, List.of(channelName)).execute().getUsers().isEmpty()) {
+                doesNotExist(event, channelName);
+            }
+        } catch (ContextedRuntimeException | HystrixRuntimeException | UnsupportedOperationException e) {
+            doesNotExist(event, channelName);
+            return;
+        }
+
+        if (!GuildHandler.getCustomGuild(event.getGuild()).addTwitchChannel(channelName)) {
             event.getHook().sendMessageEmbeds(alreadyAddedEmbed()).queue();
             return;
         }
 
         event.getHook().sendMessageEmbeds(successfulAddEmbed(event.getOption("twitch_channel").getAsString())).queue();
+    }
+
+    private void doesNotExist(@NotNull SlashCommandInteractionEvent event, @NotNull String channelName) {
+        event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                "Channel Does Not Exist",
+                "The twitch channel `" + channelName + "` does not exist."
+        )).queue();
     }
 
     @NotNull
