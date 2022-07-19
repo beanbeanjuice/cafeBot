@@ -188,6 +188,7 @@ public class CommandHandler extends ListenerAdapter {
         // Checking if the commands is something that should be run.
         if (commands.containsKey(event.getName())) {
 
+            // Log the command.
             logCommand(event);
 
             // Checks if the reply should be hidden or not.

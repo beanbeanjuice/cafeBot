@@ -1,10 +1,13 @@
 package com.beanbeanjuice.utility.handler.guild;
 
+import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.utility.section.twitch.TwitchHandler;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,7 +48,7 @@ public class CustomGuild {
      * @param notifyOnUpdate          The {@link Boolean} of whether to notify the {@link Guild} on an update to the Bot.
      * @param updateChannelID         The ID of the {@link TextChannel} to send the bot update notifications to.
      * @param pollChannelID           The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.section.moderation.poll.Poll Polls}.
-//     * @param birthdayChannelID       The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.sections.fun.birthday.BirthdayHandler Birthday} notifications.
+     * @param birthdayChannelID       The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.section.fun.BirthdayHandler Birthday} notifications.
      * @param welcomeChannelID        The ID of the {@link TextChannel} being used for the Welcome notifications.
      * @param ventingChannelID        The ID of the {@link TextChannel} being used for anonymous venting.
      * @param aiState                 True, if the AI portion should be enabled for this {@link CustomGuild}.
@@ -79,7 +82,7 @@ public class CustomGuild {
 
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
-        TwitchHandler.addTwitchChannels(this.twitchChannels);
+        TwitchHandler.addTwitchChannels(guildID, this.twitchChannels);
 
         deletingMessagesChannels = new ArrayList<>();
     }
@@ -560,15 +563,28 @@ public class CustomGuild {
     public Boolean addTwitchChannel(String twitchChannel) {
         twitchChannel = twitchChannel.toLowerCase();
 
+        // Check if the channel exists.
+        if (!TwitchHandler.getTwitchListener().channelExists(twitchChannel)) {
+            Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, twitchChannel);
+            return false;
+        }
+
         if (twitchChannels.contains(twitchChannel)) {
             return false;
         }
 
         if (GuildHandler.addTwitchChannel(guildID, twitchChannel)) {
             twitchChannels.add(twitchChannel.toLowerCase());
-            TwitchHandler.addTwitchChannel(twitchChannel);
 
-            return TwitchHandler.addCache(guildID, twitchChannel);
+            try {
+                TwitchHandler.addTwitchChannel(twitchChannel);
+                return TwitchHandler.addCache(guildID, twitchChannel);
+            } catch (HystrixRuntimeException | ContextedRuntimeException e) {
+
+                // If this is reached, it means the twitch channel does not exist.
+                Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, twitchChannel);
+                return false;
+            }
         }
 
         return false;
