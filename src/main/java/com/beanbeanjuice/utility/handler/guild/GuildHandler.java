@@ -557,4 +557,15 @@ public class GuildHandler {
     public static HashMap<String, CustomGuild> getGuilds() {
         return guildDatabase;
     }
+
+    /**
+     * Check if the bot is in a specified guild.
+     * @param guildID The {@link String guildID}.
+     * @return True, if the bot is in the guild.
+     */
+    @NotNull
+    public static Boolean guildContainsBot(@NotNull String guildID) {
+        return guildDatabase.containsKey(guildID);
+    }
+
 }
