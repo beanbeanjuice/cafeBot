@@ -565,7 +565,7 @@ public class GuildHandler {
      */
     @NotNull
     public static Boolean guildContainsBot(@NotNull String guildID) {
-        return guildDatabase.containsKey(guildID);
+        return guildDatabase.containsKey(guildID) && Bot.getBot().getGuildById(guildID) != null;
     }
 
 }
