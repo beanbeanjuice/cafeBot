@@ -24,7 +24,7 @@ Fixes # (issue)
     - CPU: 
     - GPU: 
     - RAM: 
-* SDK: Java Oracle 16
+* JDK: Java Oracle OpenJDK 16
 
 # Checklist:
 

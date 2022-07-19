@@ -142,10 +142,10 @@ public class Helper {
             public void run() {
                 Bot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), requestLocation));
                 Bot.getCafeAPI().setKawaiiAPI(System.getenv("KAWAII_API_TOKEN"));
-                Bot.getLogger().log(Helper.class, LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
+                Bot.getLogger().log(Helper.class, LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, true);
             }
         };
-        cafeAPITimer.scheduleAtFixedRate(cafeAPITimerTask, 3400000, 3400000);
+        cafeAPITimer.scheduleAtFixedRate(cafeAPITimerTask, 3000000, 3000000);
     }
 
     /**

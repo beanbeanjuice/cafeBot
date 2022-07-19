@@ -1,11 +1,15 @@
 package com.beanbeanjuice.utility.section.twitch;
 
 import com.beanbeanjuice.Bot;
-import com.beanbeanjuice.utility.logging.LogLevel;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /**
  * A class for handling Twitch events.
@@ -31,12 +35,8 @@ public class TwitchListener {
      * Adds a stream to listen for.
      * @param channelName The channel name of the stream to listen for.
      */
-    public void addStream(String channelName) {
-        try {
-            twitchClient.getClientHelper().enableStreamEventListener(channelName);
-        } catch (Exception e) {
-            Bot.getLogger().log(TwitchListener.class, LogLevel.ERROR, "Error Adding: " + channelName, false, false, e);
-        }
+    public void addStream(String channelName) throws HystrixRuntimeException, ContextedRuntimeException {
+        twitchClient.getClientHelper().enableStreamEventListener(channelName);
     }
 
     /**
@@ -60,6 +60,20 @@ public class TwitchListener {
      */
     public TwitchClient getTwitchClient() {
         return twitchClient;
+    }
+
+    /**
+     * Check if a {@link String twitchChannel} exists.
+     * @param channelName The {@link String channelName} of the twitch channel.
+     * @return True, if the channel exists.
+     */
+    @NotNull
+    public Boolean channelExists(@NotNull String channelName) {
+        try {
+            return !twitchClient.getHelix().getUsers(null, null, List.of(channelName)).execute().getUsers().isEmpty();
+        } catch (HystrixRuntimeException | ContextedRuntimeException | UnsupportedOperationException e) {
+            return false;
+        }
     }
 
 }
