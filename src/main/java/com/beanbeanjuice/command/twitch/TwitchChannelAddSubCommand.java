@@ -4,6 +4,7 @@ import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.section.twitch.TwitchHandler;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -23,7 +24,17 @@ public class TwitchChannelAddSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        if (!GuildHandler.getCustomGuild(event.getGuild()).addTwitchChannel(event.getOption("twitch_channel").getAsString())) {
+        String channelName = event.getOption("twitch_channel").getAsString();
+
+        if (!channelName.matches("[a-zA-Z0-9]*") || !TwitchHandler.getTwitchListener().channelExists(channelName) || channelName.length() > 25) {
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                    "Channel Does Not Exist",
+                    "The twitch channel `" + channelName + "` does not exist."
+            )).queue();
+            return;
+        }
+
+        if (!GuildHandler.getCustomGuild(event.getGuild()).addTwitchChannel(channelName)) {
             event.getHook().sendMessageEmbeds(alreadyAddedEmbed()).queue();
             return;
         }
