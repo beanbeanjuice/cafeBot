@@ -3,6 +3,8 @@ package com.beanbeanjuice.utility.section.twitch;
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.cafeapi.exception.api.CafeException;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -43,9 +45,13 @@ public class TwitchHandler {
      * Add a twitch channel name.
      * @param twitchUsername The twitch channel name specified.
      */
-    public static void addTwitchChannel(@NotNull String twitchUsername) {
+    public static void addTwitchChannel(@NotNull String twitchUsername) throws HystrixRuntimeException, ContextedRuntimeException {
         twitchUsername = twitchUsername.toLowerCase();
+
+        // If a listener does not already exist, add it.
         if (!alreadyAddedTwitchNames.contains(twitchUsername)) {
+
+            // Check if the channel exists.
             twitchListener.addStream(twitchUsername);
             alreadyAddedTwitchNames.add(twitchUsername);
         }
@@ -53,11 +59,20 @@ public class TwitchHandler {
 
     /**
      * Add an {@link ArrayList<String>} of twitch channel names.
+     * @param guildID The {@link String guildID} of the twitch channels.
      * @param twitchUsernames The {@link ArrayList<String>} specified.
      */
-    public static void addTwitchChannels(@NotNull ArrayList<String> twitchUsernames) {
-        for (String string : twitchUsernames)
-            addTwitchChannel(string);
+    public static void addTwitchChannels(@NotNull String guildID, @NotNull ArrayList<String> twitchUsernames) {
+        for (String string : twitchUsernames) {
+            try {
+                if (!twitchListener.channelExists(string))
+                    Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, string);
+                else
+                    addTwitchChannel(string);
+            } catch (HystrixRuntimeException | ContextedRuntimeException | UnsupportedOperationException e) {
+                Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, string);
+            }
+        }
     }
 
     /**
@@ -102,8 +117,15 @@ public class TwitchHandler {
      * @return True, if the link was successfully created.
      */
     @NotNull
-    public static Boolean addCache(@NotNull String guildID, @NotNull String twitchChannel) {
+    public static Boolean addCache(@NotNull String guildID, @NotNull String twitchChannel) throws HystrixRuntimeException, ContextedRuntimeException {
         twitchChannel = twitchChannel.toLowerCase();
+
+        // Remove if the channel does not exist.
+        if (!twitchListener.channelExists(twitchChannel)) {
+            Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, twitchChannel);
+            return false;
+        }
+
         addTwitchChannel(twitchChannel);
         if (!guildTwitches.containsKey(twitchChannel))
             guildTwitches.put(twitchChannel, new ArrayList<>());
