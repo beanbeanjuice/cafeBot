@@ -50,6 +50,14 @@ public class RaffleHandler {
 
                 // Goes through ever raffle.
                 raffles.forEach((guildID, raffles) -> {
+
+                    // Check if the guild still contains the bot.
+                    if (!GuildHandler.guildContainsBot(guildID)) {
+                        raffles.removeIf(raffle -> removeRaffle(guildID, raffle));
+                        return;
+                    }
+
+                    // Otherwise check all raffles.
                     for (Raffle raffle : raffles) {
 
                         // Checking if it SHOULD be checked.
@@ -215,12 +223,22 @@ public class RaffleHandler {
     private static void getAllRaffles() {
         try {
             Bot.getCafeAPI().RAFFLE.getAllRaffles().forEach((guildID, apiRaffles) -> {
+
+                // If the guild does not contain the bot, remove it.
+                if (!GuildHandler.guildContainsBot(guildID)) {
+                    for (com.beanbeanjuice.cafeapi.cafebot.raffles.Raffle raffle : apiRaffles)
+                        removeRaffle(guildID, new Raffle(raffle.getMessageID(), raffle.getEndingTime(), raffle.getWinnerAmount()));
+                    return;
+                }
+
+                // Add the raffles if the guild is still in the bot.
                 for (com.beanbeanjuice.cafeapi.cafebot.raffles.Raffle raffle : apiRaffles) {
+                    Raffle newRaffle = new Raffle(raffle.getMessageID(), raffle.getEndingTime(), raffle.getWinnerAmount());
 
                     if (!raffles.containsKey(guildID))
                         raffles.put(guildID, new ArrayList<>());
 
-                    raffles.get(guildID).add(new Raffle(raffle.getMessageID(), raffle.getEndingTime(), raffle.getWinnerAmount()));
+                    raffles.get(guildID).add(newRaffle);
                 }
             });
 
