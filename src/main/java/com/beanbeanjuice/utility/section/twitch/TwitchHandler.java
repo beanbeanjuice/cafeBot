@@ -1,8 +1,6 @@
 package com.beanbeanjuice.utility.section.twitch;
 
 import com.beanbeanjuice.Bot;
-import com.beanbeanjuice.utility.handler.guild.CustomGuild;
-import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import com.beanbeanjuice.cafeapi.exception.api.CafeException;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
@@ -11,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * A class used for handling Twitch instances.

@@ -1,7 +1,6 @@
 package com.beanbeanjuice.utility.section.twitch;
 
 import com.beanbeanjuice.Bot;
-import com.beanbeanjuice.utility.logging.LogLevel;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
