@@ -51,6 +51,12 @@ public class PollHandler {
                 // Runs through each of the active polls.
                 activePolls.forEach((guildID, polls) -> {
 
+                    // Check if the bot is no longer in the guild and remove it.
+                    if (!GuildHandler.guildContainsBot(guildID)) {
+                        polls.removeIf(poll -> removePoll(guildID, poll));
+                        return;
+                    }
+
                     // Go through each poll
                     for (Poll poll : polls) {
 
@@ -189,13 +195,21 @@ public class PollHandler {
     public static void getAllPolls() {
         try {
             Bot.getCafeAPI().POLL.getAllPolls().forEach((guildID, polls) -> {
-                if (!activePolls.containsKey(guildID)) {
-                    activePolls.put(guildID, new ArrayList<>());
+
+                // Remove the polls if no longer in the guild.
+                if (!GuildHandler.guildContainsBot(guildID)) {
+                    for (com.beanbeanjuice.cafeapi.cafebot.polls.Poll poll : polls)
+                        removePoll(guildID, new Poll(poll.getMessageID(), poll.getEndingTime()));
+                    return;
                 }
 
-                for (com.beanbeanjuice.cafeapi.cafebot.polls.Poll poll : polls) {
+                // Check if active polls has already added the guild. Must instantiate if not.
+                if (!activePolls.containsKey(guildID))
+                    activePolls.put(guildID, new ArrayList<>());
+
+                // Add all active polls.
+                for (com.beanbeanjuice.cafeapi.cafebot.polls.Poll poll : polls)
                     activePolls.get(guildID).add(new Poll(poll.getMessageID(), poll.getEndingTime()));
-                }
             });
         } catch (CafeException e) {
             Bot.getLogger().log(RaffleHandler.class, LogLevel.ERROR, "Error Getting Polls: " + e.getMessage(), e);
