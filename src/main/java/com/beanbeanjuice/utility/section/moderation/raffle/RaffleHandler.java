@@ -47,98 +47,102 @@ public class RaffleHandler {
 
             @Override
             public void run() {
-
-                // Goes through ever raffle.
-                raffles.forEach((guildID, raffles) -> {
-
-                    // Check if the guild still contains the bot.
-                    if (!GuildHandler.guildContainsBot(guildID)) {
-                        raffles.removeIf(raffle -> removeRaffle(guildID, raffle));
-                        return;
-                    }
-
-                    // Otherwise check all raffles.
-                    for (Raffle raffle : raffles) {
-
-                        // Checking if it SHOULD be checked.
-                        if (raffle.isFinished()) {
-
-                            // Checking if the PollChannel is Null
-                            TextChannel raffleChannel = GuildHandler.getCustomGuild(guildID).getRaffleChannel();
-
-                            // If the channel does not exist, then remove it.
-                            if (raffleChannel == null) {
-                                if (removeRaffle(guildID, raffle))
-                                    raffles.remove(raffle);
-                            } else {
-
-                                try {
-                                    // If it is not null, check if the message is null.
-                                    raffleChannel.retrieveMessageById(raffle.getMessageID()).queue((message) -> {
-                                        // Edit Message If Not Null
-                                        // Get the reactions
-                                        ArrayList<User> potentialUsers = new ArrayList<>();
-
-                                        // Go through each user.
-                                        message.getReactions().get(0).retrieveUsers().queue(users -> {
-                                            for (User user : users) {
-                                                if (!user.isBot() && !potentialUsers.contains(user))
-                                                    potentialUsers.add(user);
-                                            }
-
-                                            ArrayList<User> winners = new ArrayList<>();
-
-                                            if (potentialUsers.size() > raffle.getWinnerAmount()) {
-                                                for (int i = 0; i < raffle.getWinnerAmount(); i++) {
-                                                    User user = potentialUsers.get(Helper.getRandomNumber(0, (potentialUsers.size() - 1)));
-                                                    if (winners.contains(user)) {
-                                                        User newUser = potentialUsers.get(Helper.getRandomNumber(0, (potentialUsers.size() - 1)));
-                                                        while (newUser == user)
-                                                            newUser = potentialUsers.get(Helper.getRandomNumber(0, (potentialUsers.size() - 1)));
-                                                        user = newUser;
-                                                    }
-                                                    winners.add(user);
-                                                }
-                                            } else {
-                                                winners = potentialUsers;
-                                            }
-
-                                            String title = message.getEmbeds().get(0).getTitle();
-                                            String description = message.getEmbeds().get(0).getFields().get(0).getValue();
-                                            MessageEmbed.AuthorInfo author = message.getEmbeds().get(0).getAuthor();
-                                            MessageEmbed.Thumbnail thumbnail = message.getEmbeds().get(0).getThumbnail();
-                                            MessageEmbed.ImageInfo image = message.getEmbeds().get(0).getImage();
-
-                                            message.editMessageEmbeds(winnerEmbed(
-                                                    title,
-                                                    description,
-                                                    winners,
-                                                    author,
-                                                    thumbnail,
-                                                    image)).queue();
-
-                                            // Remove it
-                                            if (removeRaffle(guildID, raffle))
-                                                raffles.remove(raffle);
-                                        });
-                                    }, (failure) -> {
-
-                                        // This means the message does not exist.
-                                        if (removeRaffle(guildID, raffle))
-                                            raffles.remove(raffle);
-                                    });
-
-                                } catch (InsufficientPermissionException ignored) { }
-
-                            }
-                        }
-                    }
-                });
+                checkRaffles();
             }
         };
 
         // Run every 30 seconds.
         raffleTimer.scheduleAtFixedRate(raffleTimerTask, 0, 30000);
+    }
+
+    private static void checkRaffles() {
+        // Goes through ever raffle.
+        raffles.forEach((guildID, raffles) -> {
+
+            // Check if the guild still contains the bot.
+            if (!GuildHandler.guildContainsBot(guildID)) {
+                raffles.removeIf(raffle -> removeRaffle(guildID, raffle));
+                return;
+            }
+
+            // Otherwise check all raffles.
+            for (Raffle raffle : raffles) {
+                // Checking if it SHOULD be checked.
+                if (raffle.isFinished())
+                    checkIndividualRaffle(raffle, guildID);
+            }
+        });
+    }
+
+    private static void checkIndividualRaffle(@NotNull Raffle raffle, @NotNull String guildID) {
+        // Checking if the PollChannel is Null
+        TextChannel raffleChannel = GuildHandler.getCustomGuild(guildID).getRaffleChannel();
+
+        // If the channel does not exist, then remove it.
+        if (raffleChannel == null) {
+            if (removeRaffle(guildID, raffle))
+                raffles.remove(raffle);
+        } else {
+
+            try {
+                // If it is not null, check if the message is null.
+                raffleChannel.retrieveMessageById(raffle.getMessageID()).queue((message) -> {
+                    // Edit Message If Not Null
+                    // Get the reactions
+                    ArrayList<User> potentialUsers = new ArrayList<>();
+
+                    // Go through each user.
+                    message.getReactions().get(0).retrieveUsers().queue(users -> {
+                        for (User user : users) {
+                            if (!user.isBot() && !potentialUsers.contains(user))
+                                potentialUsers.add(user);
+                        }
+
+                        ArrayList<User> winners = new ArrayList<>();
+
+                        if (potentialUsers.size() > raffle.getWinnerAmount()) {
+                            for (int i = 0; i < raffle.getWinnerAmount(); i++) {
+                                User user = potentialUsers.get(Helper.getRandomNumber(0, (potentialUsers.size() - 1)));
+                                if (winners.contains(user)) {
+                                    User newUser = potentialUsers.get(Helper.getRandomNumber(0, (potentialUsers.size() - 1)));
+                                    while (newUser == user)
+                                        newUser = potentialUsers.get(Helper.getRandomNumber(0, (potentialUsers.size() - 1)));
+                                    user = newUser;
+                                }
+                                winners.add(user);
+                            }
+                        } else {
+                            winners = potentialUsers;
+                        }
+
+                        String title = message.getEmbeds().get(0).getTitle();
+                        String description = message.getEmbeds().get(0).getFields().get(0).getValue();
+                        MessageEmbed.AuthorInfo author = message.getEmbeds().get(0).getAuthor();
+                        MessageEmbed.Thumbnail thumbnail = message.getEmbeds().get(0).getThumbnail();
+                        MessageEmbed.ImageInfo image = message.getEmbeds().get(0).getImage();
+
+                        message.editMessageEmbeds(winnerEmbed(
+                                title,
+                                description,
+                                winners,
+                                author,
+                                thumbnail,
+                                image)).queue();
+
+                        // Remove it
+                        if (removeRaffle(guildID, raffle))
+                            raffles.remove(raffle);
+                    });
+                }, (failure) -> {
+
+                    // This means the message does not exist.
+                    if (removeRaffle(guildID, raffle))
+                        raffles.remove(raffle);
+                });
+
+            } catch (InsufficientPermissionException ignored) { }
+
+        }
     }
 
     @NotNull
