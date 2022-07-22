@@ -33,7 +33,7 @@ public class AvatarCommand implements ICommand {
     @NotNull
     private MessageEmbed avatarEmbed(@NotNull User user) {
         return new EmbedBuilder()
-                .setTitle(user.getName() + "'s Avatar", user.getAvatarUrl())
+                .setTitle(user.getName() + "'s Avatar")
                 .setImage(user.getAvatarUrl() + "?size=512")
                 .setColor(Helper.getRandomColor())
                 .build();
