@@ -45,7 +45,7 @@ public class BannerCommand implements ICommand {
                         File file = new File(filename);
                         event.getHook().sendMessageEmbeds(bannerEmbed(username, avatarURL, profile))
                                 .addFile(file, filename).queue((message) -> {
-                                    file.delete();  // Finally delete the file.
+                                    file.delete();  // Finally delete the file once the message is sent.
                                 });
                     }
         },
