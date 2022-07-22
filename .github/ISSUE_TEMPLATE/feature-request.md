@@ -19,4 +19,4 @@ Add any other context or screenshots about the feature request here.
 # Checklist:
 
 - [ ] I have checked for similar issues.
-- [ ] This is a feature request, not improvement request, bug report, or security vulnerability report.
+- [ ] This is a feature request, not an improvement request, bug report, or security vulnerability report.
