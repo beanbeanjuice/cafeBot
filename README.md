@@ -21,7 +21,7 @@
   <p align="center">
     A cafe bot for your discord server!
     <br />
-    <a href="https://github.com/beanbeanjuice/cafeBot"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/beanbeanjuice/cafeBot"><strong>Explore the Docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/beanbeanjuice/cafeBot">View Demo</a>
@@ -33,6 +33,9 @@
   <p align="center">
     <a href="https://top.gg/bot/787162619504492554">
       <img src="https://top.gg/api/widget/787162619504492554.svg">
+    </a>
+    <a href="https://discordbotlist.com/bots/787162619504492554">
+      <img src="https://discordbotlist.com/api/v1/bots/787162619504492554/widget">
     </a>
   </p>
 </p>
