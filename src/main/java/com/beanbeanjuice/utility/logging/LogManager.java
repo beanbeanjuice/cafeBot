@@ -64,19 +64,22 @@ public class LogManager {
 
         // Setting the current log file time.
         logFileTime = time.format("MM-dd-yyyy");
+        boolean newDirectoryCreated = false;
 
         File file = new File(filePath);
         if (!file.exists())
-            file.mkdir();
+            newDirectoryCreated = file.mkdir();
 
         compressOldLogs();
 
         // If the log file already exists, it doesn't need to make a new one.
-        if (!createLogFile(filePath)) {
-            log(this.getClass(), LogLevel.INFO, "Log for today has already been created.");
-        } else {
-            log(this.getClass(), LogLevel.OKAY, "Created Log File!");
-        }
+        if (!createLogFile(filePath))
+            log(LogManager.class, LogLevel.INFO, "Log for today has already been created.");
+        else
+            log(LogManager.class, LogLevel.OKAY, "Created Log File!");
+
+        if (!newDirectoryCreated)
+            log(LogManager.class, LogLevel.WARN, "No new directory has been created...");
     }
 
     private void logStackTrace(@NotNull Throwable exception) {
@@ -317,10 +320,8 @@ public class LogManager {
     public void log(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message,
                     @NotNull Boolean logToWebhook, @NotNull Boolean logToLogChannel, @Nullable Throwable exception) {
 
-        if (!time.format("MM-dd-yyyy").equals(logFileTime)) {
-            log(this.getClass(), LogLevel.INFO, "New day... creating new log file.", true, true);
+        if (!time.format("MM-dd-yyyy").equals(logFileTime))
             checkFiles();
-        }
 
         Logger logger = LoggerFactory.getLogger(c);
 
