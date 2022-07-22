@@ -23,11 +23,17 @@ public class SetBirthdayChannelSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        TextChannel textChannel = event.getTextChannel();
+        TextChannel channel = event.getTextChannel();
         if (event.getOption("birthday_channel") != null)
-            textChannel = event.getOption("birthday_channel").getAsTextChannel();
+            channel = event.getOption("birthday_channel").getAsTextChannel();
 
-        if (GuildHandler.getCustomGuild(event.getGuild()).setBirthdayChannelID(textChannel.getId())) {
+        // If the channel is already set, notify them that this cannot be done.
+        if (GuildHandler.getCustomGuild(event.getGuild()).isDailyChannel(channel.getId())) {
+            event.getHook().sendMessageEmbeds(Helper.alreadyDailyChannel()).queue();
+            return;
+        }
+
+        if (GuildHandler.getCustomGuild(event.getGuild()).setBirthdayChannelID(channel.getId())) {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
                     "Updated Birthday Channel",
                     "This channel has been set to an active birthday channel! Any user who has a birthday " +
