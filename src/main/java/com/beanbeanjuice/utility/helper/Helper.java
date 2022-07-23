@@ -198,26 +198,44 @@ public class Helper {
      */
     @NotNull
     public static MessageEmbed errorEmbed(@NotNull String title, @NotNull String description) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(title);
-        embedBuilder.setDescription(description);
-        embedBuilder.setColor(Color.red);
-        return embedBuilder.build();
+        return new EmbedBuilder()
+                .setTitle(title)
+                .setDescription(description)
+                .setColor(Color.red)
+                .build();
     }
 
     /**
      * Creates a success {@link MessageEmbed}.
      * @param title The title for the {@link MessageEmbed}.
      * @param description The description for the {@link MessageEmbed}.
-     * @return The creates {@link MessageEmbed}.
+     * @return The created {@link MessageEmbed}.
      */
     @NotNull
     public static MessageEmbed successEmbed(@NotNull String title, @NotNull String description) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(title);
-        embedBuilder.setDescription(description);
-        embedBuilder.setColor(getRandomColor());
-        return embedBuilder.build();
+        return new EmbedBuilder()
+                .setTitle(title)
+                .setDescription(description)
+                .setColor(getRandomColor())
+                .build();
+    }
+
+    /**
+     * Creates a small {@link MessageEmbed}.
+     * @param author The {@link String author} or {@link String title} for the {@link MessageEmbed}.
+     * @param url The {@link String url} for the {@link MessageEmbed}.
+     * @param authorImageURL The {@link String url} for the icon to show up next to the author.
+     * @param description The {@link String description} of the {@link MessageEmbed}.
+     * @return The created {@link MessageEmbed}.
+     */
+    @NotNull
+    public static MessageEmbed smallAuthorEmbed(@NotNull String author, @Nullable String url, @NotNull String authorImageURL,
+                                                @NotNull String description) {
+        return new EmbedBuilder()
+                .setAuthor(author, url, authorImageURL)
+                .setDescription(description)
+                .setColor(getRandomColor())
+                .build();
     }
 
     /**
