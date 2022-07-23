@@ -100,6 +100,7 @@ public class Bot {
                 commandHandler,
                 new ServerListener(),  // Listening for Guild Joins/Leaves
                 new MessageListener(),  // Listening for specific messages
+                new MessageDeleteListener(),  // Listening for message deletions
                 new WelcomeListener(),  // Listening for user joins for a guild.
                 new AIResponseListener(),  // Listening for messages.
                 new VoiceChatRoleBindListener(),  // Listening for voice joins/leaves
