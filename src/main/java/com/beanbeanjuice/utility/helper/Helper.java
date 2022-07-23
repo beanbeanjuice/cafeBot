@@ -328,4 +328,17 @@ public class Helper {
         return sb.toString();
     }
 
+    /**
+     * @return A {@link MessageEmbed} specifying that the selected channel is already a Daily channel.
+     */
+    @NotNull
+    public static MessageEmbed alreadyDailyChannel() {
+        return Helper.errorEmbed(
+                "Specified Channel is Daily Channel",
+                "The channel you have specified is already set to the daily channel. " +
+                        "This means that it cannot be set to this channel. You can choose another channel " +
+                        "or remove the specified channel from being a daily-reset channel."
+        );
+    }
+
 }

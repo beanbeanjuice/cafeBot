@@ -82,7 +82,7 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
                 .setThumbnail(userProfileImage)
                 .addField("Game", event.getStream().getGameName(), true)
                 .addField("Viewers", String.valueOf(event.getStream().getViewerCount()), true)
-                .setFooter("Live information brought to you buy cafeBot!")
+                .setFooter("Live information brought to you by cafeBot!")
                 .build();
     }
 

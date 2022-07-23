@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A {@link CustomGuild} that contains {@link net.dv8tion.jda.api.entities.Guild Guild} information.
@@ -633,5 +634,29 @@ public class CustomGuild {
     @NotNull
     public HashMap<CustomChannel, String> getCustomChannelIDs() {
         return customChannelIDs;
+    }
+
+    /**
+     * Check is a specified {@link String channelID} is already a {@link CustomChannel}.
+     * @param channelID The {@link String channelID} to search for.
+     * @return True, if the {@link String channelID} is a {@link CustomChannel}.
+     */
+    @NotNull
+    public Boolean isCustomChannel(@NotNull String channelID) {
+        for (Map.Entry<CustomChannel, String> pair : customChannelIDs.entrySet()) {
+            if (pair.getValue().equalsIgnoreCase(channelID))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if a specified {@link String channelID} is a {@link CustomChannel}.
+     * @param channelID The {@link String channelID} to search for.
+     * @return True, if the {@link String channelID} is a {@link CustomChannel}.
+     */
+    @NotNull
+    public Boolean isDailyChannel(@NotNull String channelID) {
+        return customChannelIDs.get(CustomChannel.DAILY).equalsIgnoreCase(channelID);
     }
 }
