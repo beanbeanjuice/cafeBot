@@ -94,6 +94,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("info", new InfoCommand());
         commands.put("ping", new PingCommand());
         commands.put("remove-my-data", new RemoveMyDataCommand());
+        commands.put("stats", new StatsCommand());
         commands.put("support", new SupportCommand());
         commands.put("who-is", new WhoIsCommand());
 
