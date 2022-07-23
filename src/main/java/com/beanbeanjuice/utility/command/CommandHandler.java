@@ -4,6 +4,7 @@ import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.command.cafe.*;
 import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.fun.birthday.BirthdayCommand;
+import com.beanbeanjuice.command.fun.rate.RateCommand;
 import com.beanbeanjuice.command.games.*;
 import com.beanbeanjuice.command.generic.*;
 import com.beanbeanjuice.command.moderation.AddPollCommand;
@@ -61,6 +62,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("serve", new ServeCommand());
 
         // Fun
+        commands.put("rate", new RateCommand());
         commands.put("birthday", new BirthdayCommand());
         commands.put("avatar", new AvatarCommand());
         commands.put("banner", new BannerCommand());
