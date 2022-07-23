@@ -121,7 +121,7 @@ public class Bot {
         VoiceChatRoleBindHandler.start();
 
         bot.getPresence().setStatus(OnlineStatus.ONLINE);
-        updateGuildPresence();
+        Helper.startBioUpdateTimer();
         logger.log(Bot.class, LogLevel.OKAY, "The bot is online!");
 
         new GitHubUpdateHelper().start();  // Notify Guilds of Update
@@ -170,13 +170,6 @@ public class Bot {
     @NotNull
     public static CommandHandler getCommandHandler() {
         return commandHandler;
-    }
-
-    /**
-     * Updates the presence for the {@link JDA}.
-     */
-    public static void updateGuildPresence() {
-        bot.getPresence().setActivity(Activity.playing("/help | cafeBot " + BOT_VERSION + " - Currently in " + bot.getGuilds().size() + " servers!"));
     }
 
 }
