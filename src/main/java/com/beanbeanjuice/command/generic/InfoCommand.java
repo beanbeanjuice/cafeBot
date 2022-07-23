@@ -29,10 +29,13 @@ public class InfoCommand implements ICommand {
                 .setAuthor("Bot Information", null, Bot.getBot().getSelfUser().getAvatarUrl())
                 .addField("⚙ Commands Run", String.valueOf(Bot.commandsRun), true)
                 .addField("<a:wowowow:886217210010431508> Creator", "My creator is `beanbeanjuice#4595`!", true)
+                .addField("<:html:1000241652444692530> Frameworks", "Built With: [Discord JDA](https://github.com/DV8FromTheWorld/JDA), " +
+                        "[Twitch4J](https://github.com/twitch4j/twitch4j), [KawaiiAPI](https://kawaii.red/), " +
+                        "and [Maven](https://maven.apache.org/)!", true)
                 .addField("<a:cafeBot:841945919926173707> About Me", "Hello! I'm cafeBot, a general/" +
                         "multipurpose bot that is used to do a multitude of things! You can do `/help` to see the " +
                         "list of my commands. I hope you enjoy me!", false)
-                .setFooter("If you want to upvote me, please do with /bot-upvote!")
+                .setFooter("If you want to upvote me, please do so with /bot-upvote!")
                 .build();
     }
 
