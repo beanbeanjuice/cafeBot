@@ -13,7 +13,6 @@ import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.validation.constraints.Null;
 import java.awt.*;
 import java.lang.management.ManagementFactory;
 import java.util.Random;
