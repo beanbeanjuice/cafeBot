@@ -27,7 +27,7 @@ public class RatePoorSubCommand implements ISubCommand {
 
         event.getHook().sendMessageEmbeds(Helper.smallAuthorEmbed(
                 "Poor Rating", null, user.getAvatarUrl(),
-                "The poor rating is `" + Helper.getRandomNumber(0, 100) + "`%! <:HUH:996901946344607764>"
+                "The poor rating is `" + Helper.getRandomNumber(0, 101) + "`%! <:HUH:996901946344607764>"
         )).queue();
     }
 

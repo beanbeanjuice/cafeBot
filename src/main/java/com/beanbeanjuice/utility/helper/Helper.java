@@ -6,10 +6,7 @@ import com.sun.management.OperatingSystemMXBean;
 import com.beanbeanjuice.cafeapi.CafeAPI;
 import com.beanbeanjuice.cafeapi.requests.RequestLocation;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,6 +24,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class Helper {
 
+    /**
+     * Start an update {@link Timer} that restarts the {@link CafeAPI}.
+     */
     public static void startHourlyUpdateTimer() {
         Timer updateTimer = new Timer();
         TimerTask updateTimerTask = new TimerTask() {
@@ -40,6 +40,31 @@ public class Helper {
             }
         };
         updateTimer.scheduleAtFixedRate(updateTimerTask, 0, 3600000);
+    }
+
+    /**
+     * Start a timer that updates the bio every so often.
+     */
+    public static void startBioUpdateTimer() {
+        String initialString = "/help | " + Bot.BOT_VERSION + " - ";
+
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                int num = getRandomNumber(1, 4);
+                String finalString = "";
+
+                switch (num) {
+                    case 1 -> finalString = "Currently in " + getTotalServers() + " restaurants!";
+                    case 2 -> finalString = "Waiting " + getTotalChannels() + " tables!";
+                    case 3 -> finalString = "Serving " + getTotalUsers() + " customers!";
+                }
+
+                Bot.getBot().getPresence().setActivity(Activity.playing(initialString + finalString));
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, TimeUnit.MINUTES.toMillis(1));
     }
 
     @NotNull
@@ -183,9 +208,9 @@ public class Helper {
 
         String description = "The bot is unable to connect to the SQL database. Please try again later.";
 
-        if (optionalMessage != null) {
+        if (optionalMessage != null)
             description += " - " + optionalMessage;
-        }
+
         embedBuilder.setDescription(description);
         return embedBuilder.build();
     }
@@ -269,8 +294,8 @@ public class Helper {
 
     /**
      * Get a random number.
-     * @param minimum The minimum {@link Integer}.
-     * @param maximum The maximum {@link Integer}.
+     * @param minimum The minimum {@link Integer}. Inclusive.
+     * @param maximum The maximum {@link Integer}. Exclusive.
      * @return The random {@link Integer}.
      */
     @NotNull
@@ -357,6 +382,30 @@ public class Helper {
                         "This means that it cannot be set to this channel. You can choose another channel " +
                         "or remove the specified channel from being a daily-reset channel."
         );
+    }
+
+    /**
+     * @return Get the {@link Integer total} channels the bot is responsible for.
+     */
+    @NotNull
+    public static Integer getTotalChannels() {
+        return Bot.getBot().getTextChannels().size();
+    }
+
+    /**
+     * @return Get the {@link Integer total} servers the bot is responsible for.
+     */
+    @NotNull
+    public static Integer getTotalServers() {
+        return Bot.getBot().getGuilds().size();
+    }
+
+    /**
+     * @return Get the {@link Integer total} users the bot is responsible for.
+     */
+    @NotNull
+    public static Integer getTotalUsers() {
+        return Bot.getBot().getUsers().size();
     }
 
 }
