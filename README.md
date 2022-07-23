@@ -148,6 +148,7 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `serve` - Get beanCoins! Essentially you run this command by doing `/serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.
 ##### 3. **FUN**
 * `avatar` - Get yours or someone else's avatar image!
+* `banner` - Get yours or someone else's profile banner!
 * `birthday` - Add, change, or remove your birthday! Even get someone else's birthday!
 * `coffee-meme` - Get a coffee meme!
 * `counting-statistics` - Get counting information for your server!
