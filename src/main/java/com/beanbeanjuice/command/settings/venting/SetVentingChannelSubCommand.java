@@ -4,8 +4,14 @@ import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 /**
  * An {@link ISubCommand} used to set the venting {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}
@@ -17,7 +23,17 @@ public class SetVentingChannelSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        if (GuildHandler.getCustomGuild(event.getGuild()).setVentingChannelID(event.getChannel().getId())) {
+        TextChannel channel = event.getTextChannel();
+        if (event.getOption("venting_channel") != null)
+            channel = event.getOption("venting_channel").getAsTextChannel();
+
+        // If the channel is already set, notify them that this cannot be done.
+        if (GuildHandler.getCustomGuild(event.getGuild()).isDailyChannel(channel.getId())) {
+            event.getHook().sendMessageEmbeds(Helper.alreadyDailyChannel()).queue();
+            return;
+        }
+
+        if (GuildHandler.getCustomGuild(event.getGuild()).setVentingChannelID(channel.getId())) {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
                     "Set Venting Channel",
                     "This channel will now receive anonymous vents! This can cause many moderation issues within your server as " +
@@ -30,8 +46,17 @@ public class SetVentingChannelSubCommand implements ISubCommand {
 
     @NotNull
     @Override
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.CHANNEL, "venting_channel", "The text channel to send anonymous vent information to.", false)
+                .setChannelTypes(ChannelType.TEXT));
+        return options;
+    }
+
+    @NotNull
+    @Override
     public String getDescription() {
-        return "Set the current channel to the venting channel!";
+        return "Set a channel to the venting channel!";
     }
 
     @NotNull

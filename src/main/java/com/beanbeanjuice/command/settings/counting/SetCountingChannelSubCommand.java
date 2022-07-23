@@ -8,8 +8,14 @@ import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.cafeapi.exception.api.AuthorizationException;
 import com.beanbeanjuice.cafeapi.exception.api.ConflictException;
 import com.beanbeanjuice.cafeapi.exception.api.ResponseException;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 /**
  * An {@link ISubCommand} used to set the counting {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}
@@ -21,9 +27,18 @@ public class SetCountingChannelSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
+        TextChannel channel = event.getTextChannel();
+        if (event.getOption("counting_channel") != null)
+            channel = event.getOption("counting_channel").getAsTextChannel();
+
+        // If the channel is already set, notify them that this cannot be done.
+        if (GuildHandler.getCustomGuild(event.getGuild()).isDailyChannel(channel.getId())) {
+            event.getHook().sendMessageEmbeds(Helper.alreadyDailyChannel()).queue();
+            return;
+        }
 
         // Attempt to add the counting channel to the database.
-        if (GuildHandler.getCustomGuild(event.getGuild()).setCountingChannel(event.getChannel().getId())) {
+        if (GuildHandler.getCustomGuild(event.getGuild()).setCountingChannel(channel.getId())) {
 
             // Send a success embed if it worked.
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
@@ -48,6 +63,15 @@ public class SetCountingChannelSubCommand implements ISubCommand {
 
         // Send if there was an error.
         event.getHook().sendMessageEmbeds(Helper.sqlServerError()).queue();
+    }
+
+    @NotNull
+    @Override
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.CHANNEL, "counting_channel", "The text channel set as a counting channel.", false)
+                .setChannelTypes(ChannelType.TEXT));
+        return options;
     }
 
     @NotNull

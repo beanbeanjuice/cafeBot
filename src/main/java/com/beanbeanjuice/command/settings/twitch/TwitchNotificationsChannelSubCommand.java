@@ -4,6 +4,7 @@ import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -24,7 +25,16 @@ public class TwitchNotificationsChannelSubCommand implements ISubCommand {
         String command = event.getOption("option").getAsString();
 
         if (command.equalsIgnoreCase("set")) {  // Setting the twitch notifications channel
-            if (GuildHandler.getCustomGuild(event.getGuild()).updateTwitchDiscordChannel(event.getChannel().getId())) {
+
+            TextChannel textChannel = event.getTextChannel();
+
+            // If the channel is already set, notify them that this cannot be done.
+            if (GuildHandler.getCustomGuild(event.getGuild()).isDailyChannel(textChannel.getId())) {
+                event.getHook().sendMessageEmbeds(Helper.alreadyDailyChannel()).queue();
+                return;
+            }
+
+            if (GuildHandler.getCustomGuild(event.getGuild()).updateTwitchDiscordChannel(textChannel.getId())) {
                 event.getHook().sendMessageEmbeds(Helper.successEmbed(
                         "Set Live Channel",
                         "Successfully set the live channel to this channel!"
