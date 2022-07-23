@@ -136,7 +136,8 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `feature-request` - Request a bot feature.
 * `generate-code` - Generate a random 32-digit long code!
 * `help` - Shows the list of command sections and command list for those sections.
-* `ping` - Show bot information!
+* `info` - Show information about the bot!
+* `ping` - Show technical information about the bot!
 * `remove-my-data` - Request to remove your data from the bot!
 * `support` - Get support for the bot!
 * `user-info` - Get user information about someone.

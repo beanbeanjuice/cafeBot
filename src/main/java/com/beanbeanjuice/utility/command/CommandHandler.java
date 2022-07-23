@@ -89,6 +89,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("feature-request", new FeatureRequestCommand());
         commands.put("generate-code", new GenerateCodeCommand());
         commands.put("help", new HelpCommand());
+        commands.put("info", new InfoCommand());
         commands.put("ping", new PingCommand());
         commands.put("remove-my-data", new RemoveMyDataCommand());
         commands.put("support", new SupportCommand());
