@@ -26,10 +26,10 @@ public class StatsCommand implements ICommand {
         return new EmbedBuilder()
                 .setColor(Helper.getRandomColor())
                 .setAuthor("Bot Statistics", null, Bot.getBot().getSelfUser().getAvatarUrl())
-                .addField("Total Text Channels", "```" + Helper.getTotalChannels() + "```", true)
-                .addField("Total Servers", "```" + Helper.getTotalServers() + "```", true)
-                .addField("Total Commands Run", "```" + Bot.commandsRun + "```", true)
-                .addField("Total Users", "```" + Helper.getTotalUsers() + "```", true)
+                .addField("<a:cafeBot:841945919926173707> Total Text Channels", "```" + Helper.getTotalChannels() + "```", true)
+                .addField("<:smartPeepo:1000248538376196280> Total Servers", "```" + Helper.getTotalServers() + "```", true)
+                .addField("⚙ Total Commands Run", "```" + Bot.commandsRun + "```", true)
+                .addField("<a:catpats:950514533875720232> Total Users", "```" + Helper.getTotalUsers() + "```", true)
                 .setFooter("If you are enjoying this bot, please consider using /bot-upvote!")
                 .build();
     }

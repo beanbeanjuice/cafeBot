@@ -139,6 +139,7 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `info` - Show information about the bot!
 * `ping` - Show technical information about the bot!
 * `remove-my-data` - Request to remove your data from the bot!
+* `stats` - Show statistics such as commands run, current servers, and users!
 * `support` - Get support for the bot!
 * `user-info` - Get user information about someone.
 ##### 2. **CAFE**
