@@ -27,7 +27,7 @@ public class RateSmartSubCommand implements ISubCommand {
 
         event.getHook().sendMessageEmbeds(Helper.smallAuthorEmbed(
                 "Smart Rating", null, user.getAvatarUrl(),
-                "The smart rating is `" + Helper.getRandomNumber(0, 100) + "`%! <:smartPeepo:1000248538376196280>"
+                "The smart rating is `" + Helper.getRandomNumber(0, 101) + "`%! <:smartPeepo:1000248538376196280>"
         )).queue();
     }
 

@@ -33,7 +33,6 @@ public class ServerListener extends ListenerAdapter {
         }
 
         GuildHandler.addGuild(event.getGuild());
-        Bot.updateGuildPresence(); // Updates the amount of servers in the status.
         Bot.getLogger().log(this.getClass(), LogLevel.INFO, "`" + event.getGuild().getName() + "` has added me! :blush:", false, true);
     }
 
@@ -41,9 +40,7 @@ public class ServerListener extends ListenerAdapter {
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
         super.onGuildLeave(event);
         GuildHandler.removeGuild(event.getGuild());
-        Bot.updateGuildPresence(); // Updates the amount of servers in the status.
         Bot.getLogger().log(ServerListener.class, LogLevel.INFO, "`" + event.getGuild().getName() + "` has removed me... :pleading_face:", false, true);
-
     }
 
     @NotNull

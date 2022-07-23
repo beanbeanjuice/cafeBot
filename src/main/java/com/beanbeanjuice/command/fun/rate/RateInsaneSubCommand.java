@@ -27,7 +27,7 @@ public class RateInsaneSubCommand implements ISubCommand {
 
         event.getHook().sendMessageEmbeds(Helper.smallAuthorEmbed(
                 "Insane Rating", null, user.getAvatarUrl(),
-                "The insane rating is `" + Helper.getRandomNumber(0, 100) + "`%! <a:man_scream:841921434732724224>"
+                "The insane rating is `" + Helper.getRandomNumber(0, 101) + "`%! <a:man_scream:841921434732724224>"
         )).queue();
     }
 

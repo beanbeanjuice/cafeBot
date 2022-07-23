@@ -27,7 +27,7 @@ public class RateSimpSubCommand implements ISubCommand {
 
         event.getHook().sendMessageEmbeds(Helper.smallAuthorEmbed(
                 "Simp Rating", null, user.getAvatarUrl(),
-                "The simp rating is `" + Helper.getRandomNumber(0, 100) + "`%!"
+                "The simp rating is `" + Helper.getRandomNumber(0, 101) + "`%!"
         )).queue();
     }
 
