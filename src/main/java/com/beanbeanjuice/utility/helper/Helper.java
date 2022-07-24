@@ -6,10 +6,7 @@ import com.sun.management.OperatingSystemMXBean;
 import com.beanbeanjuice.cafeapi.CafeAPI;
 import com.beanbeanjuice.cafeapi.requests.RequestLocation;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,6 +24,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class Helper {
 
+    /**
+     * Start an update {@link Timer} that restarts the {@link CafeAPI}.
+     */
     public static void startHourlyUpdateTimer() {
         Timer updateTimer = new Timer();
         TimerTask updateTimerTask = new TimerTask() {
@@ -40,6 +40,31 @@ public class Helper {
             }
         };
         updateTimer.scheduleAtFixedRate(updateTimerTask, 0, 3600000);
+    }
+
+    /**
+     * Start a timer that updates the bio every so often.
+     */
+    public static void startBioUpdateTimer() {
+        String initialString = "/help | " + Bot.BOT_VERSION + " - ";
+
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                int num = getRandomNumber(1, 4);
+                String finalString = "";
+
+                switch (num) {
+                    case 1 -> finalString = "Currently in " + getTotalServers() + " restaurants!";
+                    case 2 -> finalString = "Waiting " + getTotalChannels() + " tables!";
+                    case 3 -> finalString = "Serving " + getTotalUsers() + " customers!";
+                }
+
+                Bot.getBot().getPresence().setActivity(Activity.playing(initialString + finalString));
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, TimeUnit.MINUTES.toMillis(1));
     }
 
     @NotNull
@@ -183,9 +208,9 @@ public class Helper {
 
         String description = "The bot is unable to connect to the SQL database. Please try again later.";
 
-        if (optionalMessage != null) {
+        if (optionalMessage != null)
             description += " - " + optionalMessage;
-        }
+
         embedBuilder.setDescription(description);
         return embedBuilder.build();
     }
@@ -198,26 +223,44 @@ public class Helper {
      */
     @NotNull
     public static MessageEmbed errorEmbed(@NotNull String title, @NotNull String description) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(title);
-        embedBuilder.setDescription(description);
-        embedBuilder.setColor(Color.red);
-        return embedBuilder.build();
+        return new EmbedBuilder()
+                .setTitle(title)
+                .setDescription(description)
+                .setColor(Color.red)
+                .build();
     }
 
     /**
      * Creates a success {@link MessageEmbed}.
      * @param title The title for the {@link MessageEmbed}.
      * @param description The description for the {@link MessageEmbed}.
-     * @return The creates {@link MessageEmbed}.
+     * @return The created {@link MessageEmbed}.
      */
     @NotNull
     public static MessageEmbed successEmbed(@NotNull String title, @NotNull String description) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(title);
-        embedBuilder.setDescription(description);
-        embedBuilder.setColor(getRandomColor());
-        return embedBuilder.build();
+        return new EmbedBuilder()
+                .setTitle(title)
+                .setDescription(description)
+                .setColor(getRandomColor())
+                .build();
+    }
+
+    /**
+     * Creates a small {@link MessageEmbed}.
+     * @param author The {@link String author} or {@link String title} for the {@link MessageEmbed}.
+     * @param url The {@link String url} for the {@link MessageEmbed}.
+     * @param authorImageURL The {@link String url} for the icon to show up next to the author.
+     * @param description The {@link String description} of the {@link MessageEmbed}.
+     * @return The created {@link MessageEmbed}.
+     */
+    @NotNull
+    public static MessageEmbed smallAuthorEmbed(@NotNull String author, @Nullable String url, @NotNull String authorImageURL,
+                                                @NotNull String description) {
+        return new EmbedBuilder()
+                .setAuthor(author, url, authorImageURL)
+                .setDescription(description)
+                .setColor(getRandomColor())
+                .build();
     }
 
     /**
@@ -251,8 +294,8 @@ public class Helper {
 
     /**
      * Get a random number.
-     * @param minimum The minimum {@link Integer}.
-     * @param maximum The maximum {@link Integer}.
+     * @param minimum The minimum {@link Integer}. Inclusive.
+     * @param maximum The maximum {@link Integer}. Exclusive.
      * @return The random {@link Integer}.
      */
     @NotNull
@@ -326,6 +369,43 @@ public class Helper {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * @return A {@link MessageEmbed} specifying that the selected channel is already a Daily channel.
+     */
+    @NotNull
+    public static MessageEmbed alreadyDailyChannel() {
+        return Helper.errorEmbed(
+                "Specified Channel is Daily Channel",
+                "The channel you have specified is already set to the daily channel. " +
+                        "This means that it cannot be set to this channel. You can choose another channel " +
+                        "or remove the specified channel from being a daily-reset channel."
+        );
+    }
+
+    /**
+     * @return Get the {@link Integer total} channels the bot is responsible for.
+     */
+    @NotNull
+    public static Integer getTotalChannels() {
+        return Bot.getBot().getTextChannels().size();
+    }
+
+    /**
+     * @return Get the {@link Integer total} servers the bot is responsible for.
+     */
+    @NotNull
+    public static Integer getTotalServers() {
+        return Bot.getBot().getGuilds().size();
+    }
+
+    /**
+     * @return Get the {@link Integer total} users the bot is responsible for.
+     */
+    @NotNull
+    public static Integer getTotalUsers() {
+        return Bot.getBot().getUsers().size();
     }
 
 }
