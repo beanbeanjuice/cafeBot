@@ -27,7 +27,7 @@ public class RateGaySubCommand implements ISubCommand {
 
         event.getHook().sendMessageEmbeds(Helper.smallAuthorEmbed(
                 "Gay Rating", null, user.getAvatarUrl(),
-                "The gay rating is `" + Helper.getRandomNumber(0, 101) + "`%! \uD83C\uDFF3️\u200D\uD83C\uDF08"
+                "The gay rating is `" + Helper.getRandomNumber(0, 101) + "`%! 🏳️‍🌈"  // Gay Pride Flag
         )).queue();
     }
 
