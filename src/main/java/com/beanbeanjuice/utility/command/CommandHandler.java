@@ -4,6 +4,7 @@ import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.command.cafe.*;
 import com.beanbeanjuice.command.fun.*;
 import com.beanbeanjuice.command.fun.birthday.BirthdayCommand;
+import com.beanbeanjuice.command.fun.rate.RateCommand;
 import com.beanbeanjuice.command.games.*;
 import com.beanbeanjuice.command.generic.*;
 import com.beanbeanjuice.command.moderation.AddPollCommand;
@@ -61,12 +62,15 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("serve", new ServeCommand());
 
         // Fun
+        commands.put("rate", new RateCommand());
         commands.put("birthday", new BirthdayCommand());
         commands.put("avatar", new AvatarCommand());
+        commands.put("banner", new BannerCommand());
         commands.put("coffee-meme", new CoffeeMemeCommand());
         commands.put("counting-statistics", new CountingStatisticsCommand());
         commands.put("joke", new JokeCommand());
         commands.put("meme", new MemeCommand());
+        commands.put("snipe", new SnipeCommand());
         commands.put("tea-meme", new TeaMemeCommand());
 
         // Games
@@ -87,8 +91,10 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("feature-request", new FeatureRequestCommand());
         commands.put("generate-code", new GenerateCodeCommand());
         commands.put("help", new HelpCommand());
+        commands.put("info", new InfoCommand());
         commands.put("ping", new PingCommand());
         commands.put("remove-my-data", new RemoveMyDataCommand());
+        commands.put("stats", new StatsCommand());
         commands.put("support", new SupportCommand());
         commands.put("who-is", new WhoIsCommand());
 

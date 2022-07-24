@@ -21,7 +21,7 @@
   <p align="center">
     A cafe bot for your discord server!
     <br />
-    <a href="https://github.com/beanbeanjuice/cafeBot"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/beanbeanjuice/cafeBot"><strong>Explore the Docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/beanbeanjuice/cafeBot">View Demo</a>
@@ -133,8 +133,10 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `feature-request` - Request a bot feature.
 * `generate-code` - Generate a random 32-digit long code!
 * `help` - Shows the list of command sections and command list for those sections.
-* `ping` - Show bot information!
+* `info` - Show information about the bot!
+* `ping` - Show technical information about the bot!
 * `remove-my-data` - Request to remove your data from the bot!
+* `stats` - Show statistics such as commands run, current servers, and users!
 * `support` - Get support for the bot!
 * `user-info` - Get user information about someone.
 ##### 2. **CAFE**
@@ -145,11 +147,14 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `serve` - Get beanCoins! Essentially you run this command by doing `/serve (dictionary word)`! This must be an english word. The longer the word, the more money you get. However, the more popular the word is, the less money you will get for it.
 ##### 3. **FUN**
 * `avatar` - Get yours or someone else's avatar image!
+* `banner` - Get yours or someone else's profile banner!
 * `birthday` - Add, change, or remove your birthday! Even get someone else's birthday!
 * `coffee-meme` - Get a coffee meme!
 * `counting-statistics` - Get counting information for your server!
 * `joke` - Send a joke in the current channel. (SFW)
 * `meme` - Send a meme in the current channel. (SFW)
+* `rate` - Rate the percentages of someone! (*somewhat* NSFW)
+* `snipe` - Snipe a recently deleted message! (30 Seconds)
 * `tea-meme` - Get a tea meme!
 ##### 4. **GAMES**
 * `8-ball` - Ask a yes or no question!
