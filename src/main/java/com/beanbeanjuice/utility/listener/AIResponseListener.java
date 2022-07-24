@@ -40,6 +40,7 @@ public class AIResponseListener extends ListenerAdapter {
         createSTFUMaps();
         createGenevieveMaps();
         createMikoriMaps();
+        createHPMaps();
         createMeowMaps();
         createWoofMaps();
     }
@@ -51,6 +52,7 @@ public class AIResponseListener extends ListenerAdapter {
         commandTerms.add("hello");
         commandTerms.add("hi");
         commandTerms.add("hey");
+        commandTerms.add("hai");
 
         responses.add("Hi, {user}!");
         responses.add("Hey hey, {user}! ^-^");
@@ -247,6 +249,23 @@ public class AIResponseListener extends ListenerAdapter {
         responses.add("Mikori? Mikori... hmmm.. I've heard their name before but not good things.");
         responses.add("My creator tells me to stay away from someone named Mikori...");
         responses.add("Mikori? <:madison_when_short:843673314990882836> STAY AWAY");
+        responses.add("Mikori seems like a TERRIBLE person...");
+
+        messageMap.put(commandTerms, responses);
+    }
+
+    private void createHPMaps() {
+        ArrayList<String> commandTerms = new ArrayList<>();
+        ArrayList<String> responses = new ArrayList<>();
+
+        commandTerms.add("hp");
+        commandTerms.add("horsepower");
+        commandTerms.add("horse power");
+
+        responses.add("HP? Horsepower? I heard they're friends with Miko... so I'm not sure how smart they are.");
+        responses.add("I heard HP is delusional.");
+        responses.add("Hmm... who's HP? Because I heard they're not kind at all.");
+        responses.add("I heard her and Miko attacked someone...");
 
         messageMap.put(commandTerms, responses);
     }
