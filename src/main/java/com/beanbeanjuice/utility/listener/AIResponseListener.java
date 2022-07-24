@@ -16,11 +16,15 @@ import java.util.HashMap;
  * appropriate response depending on if it is enabled in the {@link Guild}.
  *
  * @author beanbeanjuice
+ * @since v3.0.0
  */
 public class AIResponseListener extends ListenerAdapter {
 
     private final HashMap<ArrayList<String>, ArrayList<String>> messageMap;
 
+    /**
+     * Create a new {@link AIResponseListener} object.
+     */
     public AIResponseListener() {
         messageMap = new HashMap<>();
 
