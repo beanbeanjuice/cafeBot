@@ -34,9 +34,6 @@
     <a href="https://top.gg/bot/787162619504492554">
       <img src="https://top.gg/api/widget/787162619504492554.svg">
     </a>
-    <a href="https://discordbotlist.com/bots/787162619504492554">
-      <img src="https://discordbotlist.com/api/v1/bots/787162619504492554/widget">
-    </a>
   </p>
 </p>
 
