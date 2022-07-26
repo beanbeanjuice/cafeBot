@@ -13,7 +13,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/beanbeanjuice/cafeBot">
-    <img src="https://cdn.beanbeanjuice.com/images/cafeBot/readme/logo.gif" alt="Logo" width="260" height="186">
+    <img src="https://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif" alt="Logo" width="260" height="186">
   </a>
 
   <h1 align="center">cafeBot</h1>
