@@ -32,8 +32,6 @@ public class CustomGuild {
     private Boolean notifyOnUpdate;
     private Boolean aiState;
 
-    private final ArrayList<TextChannel> deletingMessagesChannels;
-
     private final HashMap<CustomChannel, String> customChannelIDs;
 
     /**
@@ -84,8 +82,6 @@ public class CustomGuild {
         // Checks if a Listener has already been created for that guild.
         // This is so that if the cache is reloaded, it does not need to recreate the Listeners.
         TwitchHandler.addTwitchChannels(guildID, this.twitchChannels);
-
-        deletingMessagesChannels = new ArrayList<>();
     }
 
     /**
@@ -429,36 +425,6 @@ public class CustomGuild {
     @Nullable
     public Role getLiveNotificationsRole() {
         return GuildHandler.getGuild(guildID).getRoleById(liveNotificationsRoleID);
-    }
-
-    /**
-     * Remove a {@link TextChannel} from the list of currently deleting {@link Message}s.
-     *
-     * @param channel The {@link TextChannel} to remove.
-     */
-    public void removeTextChannelFromDeletingMessages(@NotNull TextChannel channel) {
-        deletingMessagesChannels.remove(channel);
-    }
-
-    /**
-     * Add a {@link TextChannel} to the list of currently deleting {@link Message}s.
-     *
-     * @param channel The {@link TextChannel} to add.
-     */
-    public void addTextChannelToDeletingMessages(@NotNull TextChannel channel) {
-        deletingMessagesChannels.add(channel);
-    }
-
-    /**
-     * Checks to make sure that a {@link TextChannel} does not already have {@link Message}s being
-     * currently deleted.
-     *
-     * @param channel The {@link TextChannel} to check.
-     * @return True, if it already has {@link Message}s being deleted in it.
-     */
-    @NotNull
-    public Boolean containsTextChannelDeletingMessages(@NotNull TextChannel channel) {
-        return deletingMessagesChannels.contains(channel);
     }
 
     /**
