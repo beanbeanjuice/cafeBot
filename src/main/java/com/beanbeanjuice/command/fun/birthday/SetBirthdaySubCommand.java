@@ -13,7 +13,6 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
@@ -69,20 +68,6 @@ public class SetBirthdaySubCommand implements ISubCommand {
         }
     }
 
-    /**
-     * Gets the {@link BirthdayMonth} from a {@link String}.
-     * @param month The {@link String} to parse.
-     * @return The parsed {@link BirthdayMonth}. Null, if there is an error.
-     */
-    @Nullable
-    private BirthdayMonth getBirthdayMonth(@NotNull String month) {
-        for (BirthdayMonth birthdayMonth : BirthdayMonth.values()) {
-            if (birthdayMonth.toString().equalsIgnoreCase(month))
-                return birthdayMonth;
-        }
-        return null;
-    }
-
     @NotNull
     @Override
     public String getDescription() {
@@ -115,7 +100,7 @@ public class SetBirthdaySubCommand implements ISubCommand {
         options.add(new OptionData(OptionType.INTEGER, "day", "The day you were born in the specified month!", true)
                 .setRequiredRange(1, 31));
 
-        OptionData timeZoneOptions = new OptionData(OptionType.STRING, "timezone", "The timezone you are in! Start typing to see available options!", true, true);
+        OptionData timeZoneOptions = new OptionData(OptionType.STRING, "timezone", "Start typing to see available options!", true, true);
 
         options.add(timeZoneOptions);
         return options;
