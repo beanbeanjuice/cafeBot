@@ -2,10 +2,6 @@
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-[![WakaTime][wakatime-shield]][wakatime-url]
 [![CodeFactor][codefactor-shield]][codefactor-url]
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/beanbeanjuice/cafebot?style=for-the-badge)
 
@@ -13,7 +9,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/beanbeanjuice/cafeBot">
-    <img src="https://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif" alt="Logo" width="260" height="186">
+    <img src="https://cdn.beanbeanjuice.com/images/cafeBot/readme/logo.gif" alt="Logo" width="260" height="186">
   </a>
 
   <h1 align="center">cafeBot</h1>
@@ -33,11 +29,6 @@
   <p align="center">
     <a href="https://top.gg/bot/787162619504492554">
       <img src="https://top.gg/api/widget/787162619504492554.svg">
-    </a>
-  </p>
-  <p align="center">
-    <a href="https://www.buymeacoffee.com/beanbeanjuice">
-      <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=beanbeanjuice&button_colour=BD5FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"/>
     </a>
   </p>
 </p>
@@ -74,14 +65,6 @@
 
 [![Product Name Screen Shot][product-title]](https://www.beanbeanjuice.com/cafeBot.html)
 
-### Built With
-
-* [Maven](https://maven.apache.org/)
-* [Discord JDA](https://github.com/DV8FromTheWorld/JDA)
-* [Twitch4J](https://github.com/twitch4j/twitch4j)
-* [CafeAPI](https://github.com/beanbeanjuice/Java-Cafe-API-Wrapper)
-* [KawaiiAPI](https://github.com/beanbeanjuice/Java-Kawaii-API-Wrapper)
-
 ### About the Bot
 `cafeBot`, formerly `beanBot` is a general purpose bot that has many features. Many features work across Discord servers. Some features include;
 * Global Birthday Checker
@@ -93,22 +76,6 @@
 * Bind Roles to Voice Channels
 * AI Responses to Certain Words/Phrases
 * And more to come...
-
-<!-- GETTING STARTED -->
-# Getting Started
-
-To add this bot to your server, follow these steps:
-
-## Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* A Discord Server
-* Administrative Access
-
-## Installation
-
-1. Click this [link](https://discord.com/api/oauth2/authorize?client_id=787162619504492554&permissions=8&scope=bot%20applications.commands).
-1. Enjoy!
 
 <!-- USAGE EXAMPLES -->
 # Usage
@@ -224,70 +191,6 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 ##### 10. **EXPERIMENTAL**
 * `Nothing here yet!`
 
-<!-- ROADMAP -->
-# Roadmap
-
-See the [open issues](https://github.com/beanbeanjuice/cafeBot/issues) for a list of proposed features (and known issues).
-
-<!-- CONTRIBUTING -->
-# Contributing
-
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<!-- LICENSE -->
-# License
-
-Distributed under the GPL-3.0 License. See `LICENSE` for more information.
-
-<!-- DATA THIS BOT STORES -->
-# Privacy Policy
-
-Here is ALL of the data that this bot could *possibly* store on you. This, of course, is subject to change. None of these can be accessed by other servers (that you are not a part of) by the bot.
-
-- *__Discord Data__*
-  - Your Discord ID.`*`
-    - This data is needed in order to keep track of the amount of money `(beanCoins)` with the bot. Additionally, it is used for the counting module to enforce the rule that the same Discord user cannot play the counting game twice in a row.
-  - Your Discord Server ID.`*`
-    - This data is needed in order to remember specific settings you have for the server, such as the prefix you use for the bot, the twitch channels you have added, the moderation role ID, the log channel ID, etc.
-  - Your Discord Server Role IDs.`**`
-    - Needed in conjunction with your `Discord Server ID` in order to keep track of specific roles to add to users when they join a VC or a moderation role ID.
-  - Your Discord Server Text Channel IDs.`**`
-    - Needed in order to keep track of which channels are which. For example, to know if the text channel you are talking in is the `counting` channel.
-  - Your Discord Server Voice Channel IDs.`**`
-    - Needed in order to know what role to add to what voice channel when joining.
-
-- *__Other Data__*
-  - Your birthday.`***`
-    - Your birthday can be removed any time. It can only be accessed by people in the same server as you. If they are not in the same server as you, they cannot see this.
-  - Message.
-    - Your messages **ARE NOT** saved **AT ALL**. The only thing the bot does, if enabled, is check if trigger words are sent in a message, then sends a pre-determined response.
-
-##### `*` - This is already public information anyway, and is crucial for having the bot work.
-##### `**` - This is something that is needed for the bot to do things like apply a role to someone when they join a specific voice channel, or to duplicate a voice channel when needed.
-##### `***` - Your birthday is only stored WHEN specified, and can even be removed at anytime by simply using the `/birthday remove` command.
-
-<!-- CONTACT -->
-# Contact
-
-- beanbeanjuice
-- Discord: [beanbeanjuice#4595](https://discord.gg/KrUFw3uHST)
-- YouTube: [beanbeanjuice](https://www.youtube.com/beanbeanjuice)
-- TikTok: [@beanbeanjuiceofficial](https://www.tiktok.com/@beanbeanjuiceofficial)
-- Twitter: [@beanbeanjuice](https://twitter.com/beanbeanjuice)
-- Email: beanbeanjuice@outlook.com
-- Project Link: [GitHub](https://github.com/beanbeanjuice/cafeBot)
-
-<!-- ACKNOWLEDGEMENTS -->
-# Acknowledgements
-
-* *There's nothing here yet... maybe in the future?*
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/beanbeanjuice/cafeBot.svg?style=for-the-badge
@@ -296,14 +199,6 @@ Here is ALL of the data that this bot could *possibly* store on you. This, of co
 [forks-url]: https://github.com/beanbeanjuice/cafeBot/network/members
 [stars-shield]: https://img.shields.io/github/stars/beanbeanjuice/cafeBot.svg?style=for-the-badge
 [stars-url]: https://github.com/beanbeanjuice/cafeBot/stargazers
-[issues-shield]: https://img.shields.io/github/issues/beanbeanjuice/cafeBot.svg?style=for-the-badge
-[issues-url]: https://github.com/beanbeanjuice/cafeBot/issues
-[license-shield]: https://img.shields.io/github/license/beanbeanjuice/cafeBot.svg?style=for-the-badge
-[license-url]: https://github.com/beanbeanjuice/cafeBot/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/beanbeanjuice
-[wakatime-shield]: https://wakatime.com/badge/github/beanbeanjuice/cafeBot.svg?style=for-the-badge
-[wakatime-url]: https://wakatime.com/badge/github/beanbeanjuice/cafeBot
 [product-title]: https://cdn.beanbeanjuice.com/images/cafeBot/readme/cafeBot.png
 [codefactor-shield]: https://www.codefactor.io/repository/github/beanbeanjuice/cafebot/badge?style=for-the-badge
 [codefactor-url]: https://www.codefactor.io/repository/github/beanbeanjuice/cafebot
