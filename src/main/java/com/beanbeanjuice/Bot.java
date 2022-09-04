@@ -125,7 +125,7 @@ public class Bot {
         logger.log(Bot.class, LogLevel.OKAY, "The bot is online!");
 
         new GitHubUpdateHelper().start();  // Notify Guilds of Update
-        Helper.startHourlyUpdateTimer();
+        Helper.startUpdateTimer();
     }
 
     public static void main(String[] args) throws LoginException, InterruptedException {
