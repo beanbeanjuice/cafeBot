@@ -19,7 +19,7 @@ public class TwitchHandler {
 
     private static ArrayList<String> alreadyAddedTwitchNames;
     private static TwitchListener twitchListener;
-    private static HashMap<String, ArrayList<String>> guildTwitches;
+    private static HashMap<String, ArrayList<String>> guildTwitches;  // Twitch Name, Guild IDs
 
     /**
      * Starts the {@link TwitchHandler}.
@@ -54,6 +54,7 @@ public class TwitchHandler {
             // Check if the channel exists.
             twitchListener.addStream(twitchUsername);
             alreadyAddedTwitchNames.add(twitchUsername);
+            Bot.getLogger().log(TwitchHandler.class, LogLevel.DEBUG, "Adding " + twitchUsername);
         }
     }
 
@@ -65,6 +66,7 @@ public class TwitchHandler {
     public static void addTwitchChannels(@NotNull String guildID, @NotNull ArrayList<String> twitchUsernames) {
         for (String string : twitchUsernames) {
             try {
+                // If the channel does not exist, remove the twitch discord CHANNEL from the database
                 if (!twitchListener.channelExists(string))
                     Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, string);
                 else
@@ -99,10 +101,14 @@ public class TwitchHandler {
         try {
             Bot.getCafeAPI().TWITCH.getAllTwitches().forEach((guild, twitchChannels) -> {
                 twitchChannels.forEach((twitchChannel) -> {
-                    if (!guildTwitches.containsKey(twitchChannel))
-                        guildTwitches.put(twitchChannel, new ArrayList<>());
 
-                    guildTwitches.get(twitchChannel).add(guild);
+                    if (Bot.getBot().getGuildById(guild) != null) {
+                        if (!guildTwitches.containsKey(twitchChannel))
+                            guildTwitches.put(twitchChannel, new ArrayList<>());
+
+                        guildTwitches.get(twitchChannel).add(guild);
+                    }
+
                 });
             });
         } catch (CafeException e) {
