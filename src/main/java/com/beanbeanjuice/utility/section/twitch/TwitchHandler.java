@@ -54,7 +54,7 @@ public class TwitchHandler {
             // Check if the channel exists.
             twitchListener.addStream(twitchUsername);
             alreadyAddedTwitchNames.add(twitchUsername);
-            Bot.getLogger().log(TwitchHandler.class, LogLevel.DEBUG, "Adding " + twitchUsername);  // TODO: Remove
+            Bot.getLogger().log(TwitchHandler.class, LogLevel.DEBUG, "Adding " + twitchUsername);
         }
     }
 
