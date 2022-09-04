@@ -1,7 +1,9 @@
 package com.beanbeanjuice.utility.section.twitch;
 
+import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.handler.guild.CustomGuild;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
+import com.beanbeanjuice.utility.logging.LogLevel;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.philippheuer.events4j.simple.domain.EventSubscriber;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
@@ -28,8 +30,11 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
     @EventSubscriber
     public void onChannelGoLive(@NotNull ChannelGoLiveEvent event) {
 
+
         // Converts the Twitch Name to lower case.
         String twitchName = event.getChannel().getName().toLowerCase();
+
+        Bot.getLogger().log(TwitchMessageEventHandler.class, LogLevel.DEBUG, "Starting Live Notification: " + twitchName);
 
         // Gets the Guilds that are listening for that twitch name.
         ArrayList<String> guilds = TwitchHandler.getGuildsForChannel(twitchName);
@@ -41,7 +46,13 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
         // Go through each guild.
         for (String guildID : guilds) {
             CustomGuild customGuild = GuildHandler.getCustomGuild(guildID);
+
+            Bot.getLogger().log(TwitchMessageEventHandler.class, LogLevel.DEBUG, "Guild Contains Twitch Name: " + twitchName);
+
             if (customGuild.getTwitchChannels().contains(twitchName)) {
+
+                Bot.getLogger().log(TwitchMessageEventHandler.class, LogLevel.DEBUG, "Attempting to Send Live Notification: " + twitchName);
+
                 String liveChannelID = GuildHandler.getCustomGuild(guildID).getLiveChannelID();
                 TextChannel liveChannel = GuildHandler.getGuild(guildID).getTextChannelById(liveChannelID);
 
@@ -50,7 +61,7 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
                 try {
                     message.append(GuildHandler.getCustomGuild(guildID).getLiveNotificationsRole().getAsMention())
                             .append(", ");
-                } catch (NumberFormatException | NullPointerException ignored) {}
+                } catch (NumberFormatException | NullPointerException ignored) { }
 
                 message.append(event.getChannel().getName())
                         .append(", is now live on ")
@@ -59,6 +70,8 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
 
                 try {
                     liveChannel.sendMessage(message.toString()).setEmbeds(liveEmbed(event)).queue();
+
+                    Bot.getLogger().log(TwitchMessageEventHandler.class, LogLevel.DEBUG, "Live Notification Sent: " + twitchName);
                 } catch (NullPointerException ignored) {
                 } // If the live channel no longer exists, then just don't print the message.
             }
