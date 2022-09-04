@@ -33,6 +33,15 @@ public class ServeCommand implements ICommand {
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
         String word = event.getOption("word").getAsString();
+
+        if (word.contains(" ")) {
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                    "Multiple Words Detected",
+                    "Please only use singular words when running this command!"
+            )).queue();
+            return;
+        }
+
         Word serveWord;
         try {
             // Checking if the word entered is a word.
