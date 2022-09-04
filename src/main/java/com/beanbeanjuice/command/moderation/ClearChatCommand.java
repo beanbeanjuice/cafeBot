@@ -36,7 +36,8 @@ public class ClearChatCommand implements ICommand {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Deleting Messages",
                     "There was an error deleting your messages. The " +
-                            "bot may have insufficient permissions. `" + e.getMessage() + "`"
+                            "bot may have insufficient permissions. `" + e.getMessage() + "` " +
+                            "Please click on my avatar and re-invite me to the server!"
             )).queue();
         }
     }
