@@ -25,9 +25,9 @@ import java.util.concurrent.TimeUnit;
 public class Helper {
 
     /**
-     * Start an update {@link Timer} that restarts the {@link CafeAPI}.
+     * Start an update {@link Timer} that sends the owner updates.
      */
-    public static void startHourlyUpdateTimer() {
+    public static void startUpdateTimer() {
         Timer updateTimer = new Timer();
         TimerTask updateTimerTask = new TimerTask() {
             @Override
@@ -39,7 +39,7 @@ public class Helper {
                 });
             }
         };
-        updateTimer.scheduleAtFixedRate(updateTimerTask, 0, 3600000);
+        updateTimer.scheduleAtFixedRate(updateTimerTask, 0, TimeUnit.HOURS.toMillis(12));
     }
 
     /**
@@ -167,10 +167,10 @@ public class Helper {
             public void run() {
                 Bot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), requestLocation));
                 Bot.getCafeAPI().setKawaiiAPI(System.getenv("KAWAII_API_TOKEN"));
-                Bot.getLogger().log(Helper.class, LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, true);
+                Bot.getLogger().log(Helper.class, LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
             }
         };
-        cafeAPITimer.scheduleAtFixedRate(cafeAPITimerTask, 3000000, 3000000);
+        cafeAPITimer.scheduleAtFixedRate(cafeAPITimerTask, TimeUnit.MINUTES.toMillis(55), TimeUnit.MINUTES.toMillis(55));
     }
 
     /**
