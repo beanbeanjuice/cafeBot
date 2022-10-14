@@ -48,20 +48,6 @@ public class MessageListener extends ListenerAdapter {
                 return;
             }
         }
-
-        if (event.getMessage().getContentRaw().startsWith(guildInformation.getPrefix())) {
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setAuthor("ATTENTION!", "https://youtu.be/4XxcpBxSCiU")
-                    .setDescription("Everything has been transitioned to slash commands! Everything has remained " +
-                    "the same except for slash commands. Use the commands as you normally would, but put a slash in " +
-                    "front of it instead! If you haven't already, click the link below to add slash commands for **CafeBot**.")
-                    .setColor(Helper.getRandomColor())
-                    .setFooter("Sorry for the inconvenience!");
-            event.getChannel().sendMessageEmbeds(embedBuilder.build()).setActionRow(
-                    Button.link("https://discord.com/api/oauth2/authorize?client_id=787162619504492554&permissions=8&scope=bot%20applications.commands",
-                            "Add Slash Commands").withEmoji(Emoji.fromFormatted("<a:wowowow:886217210010431508>"))
-            ).queue();
-        }
     }
 
 }
