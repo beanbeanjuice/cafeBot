@@ -62,7 +62,7 @@ public class Bot {
     public static int commandsRun = 0;
     public static final String DISCORD_AVATAR_URL = "https://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif";
 
-    public Bot() throws LoginException, InterruptedException {
+    public Bot() throws LoginException {
         logger = new LogManager("cafeBot Logging System", HOME_GUILD_ID, HOME_GUILD_LOG_CHANNEL_ID, "logs/");
         Helper.startCafeAPIRefreshTimer(location);
 
@@ -82,8 +82,8 @@ public class Bot {
                 )
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .setChunkingFilter(ChunkingFilter.ALL)
-                .build()
-                .awaitReady();
+                .build();
+//                .awaitReady();  // TODO: Remove if working.
 
         logger.enableDiscordLogging();
 
@@ -123,7 +123,7 @@ public class Bot {
         Helper.startUpdateTimer();
     }
 
-    public static void main(String[] args) throws LoginException, InterruptedException {
+    public static void main(String[] args) throws LoginException {
         new Bot();
     }
 
