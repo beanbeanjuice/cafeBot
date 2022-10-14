@@ -1,11 +1,11 @@
 package com.beanbeanjuice.utility.logging;
 
+import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.exception.WebhookException;
 import com.beanbeanjuice.utility.webhook.Webhook;
 import com.beanbeanjuice.cafeapi.utility.Time;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,22 +31,27 @@ public class LogManager {
     private final Time time;
 
     private final String name;
-    private TextChannel logChannel;
+    private final String guildID;
+    private final String logChannelID;
     private final ArrayList<String> webhookURLs;
     private String currentLogFileName;
     private final String filePath;
     private String logFileTime;
+    private boolean discordLogging = false;
 
     /**
      * Create a {@link LogManager LogManager} instance.
      * @param name The name for the {@link LogManager LogManager}.
-     * @param logChannel The {@link TextChannel TextChannel} to be used for logging.
+     * @param guildID The {@link String guildID} to log to.
+     * @param logChannelID The {@link String logChannelID} to log to.
      */
-    public LogManager(@NotNull String name, @Nullable TextChannel logChannel, @NotNull String filePath) {
+    public LogManager(@NotNull String name, @NotNull String guildID, @NotNull String logChannelID,
+                      @NotNull String filePath) {
         time = new Time();
 
         this.name = name;
-        this.logChannel = logChannel;
+        this.guildID = guildID;
+        this.logChannelID = logChannelID;
         this.filePath = filePath;
 
         webhookURLs = new ArrayList<>(); // Creates the ArrayList
@@ -270,14 +275,6 @@ public class LogManager {
     }
 
     /**
-     * Sets the log channel for the {@link LogManager}.
-     * @param logChannel The {@link TextChannel logChannel} for the {@link Guild}.
-     */
-    public void setLogChannel(@NotNull TextChannel logChannel) {
-        this.logChannel = logChannel;
-    }
-
-    /**
      * Log to discord, webhook, and file.
      * @param c The class that called the log.
      * @param logLevel The current {@link LogLevel} of the log to be created.
@@ -342,7 +339,7 @@ public class LogManager {
             logToWebhook(c, logLevel, message, time);
 
         if (logToLogChannel)
-            logToLogChannel(c, logLevel, message, time);
+            logToLogChannel(c, logLevel, message);
 
     }
 
@@ -377,7 +374,10 @@ public class LogManager {
      * @param logLevel The current {@link LogLevel} of the log to be created.
      * @param message The message contents for the log.
      */
-    private void logToLogChannel(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message, @NotNull Time time) {
+    private void logToLogChannel(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message) {
+        if (!discordLogging)
+            return;
+
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(logLevel.toString());
         embedBuilder.setThumbnail(logLevel.getImageURL());
@@ -387,7 +387,7 @@ public class LogManager {
         embedBuilder.setTimestamp(new Date().toInstant());
 
         try {
-            logChannel.sendMessageEmbeds(embedBuilder.build()).complete();
+            Bot.getBot().getGuildById(guildID).getTextChannelById(logChannelID).sendMessageEmbeds(embedBuilder.build()).complete();
         } catch (NullPointerException ignored) {}
     }
 
@@ -397,6 +397,13 @@ public class LogManager {
      */
     public void addWebhookURL(@NotNull String url) {
         webhookURLs.add(url);
+    }
+
+    /**
+     * Enables logging to the Discord {@link TextChannel log channel}.
+     */
+    public void enableDiscordLogging() {
+        discordLogging = true;
     }
 
 }
