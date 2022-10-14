@@ -23,8 +23,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
@@ -53,8 +51,6 @@ public class Bot {
 
     // Internal Items
     private static LogManager logger;
-    private static Guild homeGuild;
-    private static TextChannel homeGuildLogChannel;
     private static final String HOME_GUILD_ID = System.getenv("CAFEBOT_GUILD_ID");
     private static final String HOME_GUILD_LOG_CHANNEL_ID = System.getenv("CAFEBOT_GUILD_LOG_CHANNEL_ID");
     private static final String HOME_GUILD_WEBHOOK_URL = System.getenv("CAFEBOT_GUILD_WEBHOOK_URL");
@@ -67,7 +63,7 @@ public class Bot {
     public static final String DISCORD_AVATAR_URL = "https://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif";
 
     public Bot() throws LoginException, InterruptedException {
-        logger = new LogManager("cafeBot Logging System", homeGuildLogChannel, "logs/");
+        logger = new LogManager("cafeBot Logging System", HOME_GUILD_ID, HOME_GUILD_LOG_CHANNEL_ID, "logs/");
         Helper.startCafeAPIRefreshTimer(location);
 
         logger.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
@@ -89,10 +85,10 @@ public class Bot {
                 .build()
                 .awaitReady();
 
+        logger.enableDiscordLogging();
+
         TwitchHandler.start();  // Start twitch handler prior to guild handler.
         GuildHandler.start();  // Starting hte guild handler.
-        homeGuild = bot.getGuildById(HOME_GUILD_ID);
-        homeGuildLogChannel = homeGuild.getTextChannelById(HOME_GUILD_LOG_CHANNEL_ID);
 
         logger.log(Bot.class, LogLevel.LOADING, "Adding commands...", false, false);
         commandHandler = new CommandHandler(bot);
@@ -107,7 +103,6 @@ public class Bot {
                 new CommandAutoCompleteHandler()  // Listens for auto complete interactions
         );
 
-        logger.setLogChannel(homeGuildLogChannel);
         logger.log(Bot.class, LogLevel.INFO, "Enabled Discord Logging...", true, true);
 
         // Helpers that need to be instantiated.
