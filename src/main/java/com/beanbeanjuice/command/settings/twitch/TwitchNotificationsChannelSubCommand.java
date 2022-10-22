@@ -22,6 +22,13 @@ public class TwitchNotificationsChannelSubCommand implements ISubCommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
+
+        // Checking if a text channel.
+        if (!Helper.isTextChannel(event.getChannel())) {
+            event.getHook().sendMessageEmbeds(Helper.notATextChannelEmbed(event.getChannelType())).queue();
+            return;
+        }
+
         String command = event.getOption("option").getAsString();
 
         if (command.equalsIgnoreCase("set")) {  // Setting the twitch notifications channel

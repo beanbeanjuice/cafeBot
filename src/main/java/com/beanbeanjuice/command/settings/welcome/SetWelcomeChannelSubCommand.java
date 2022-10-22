@@ -24,6 +24,12 @@ public class SetWelcomeChannelSubCommand implements ISubCommand {
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
 
+        // Checking if a text channel.
+        if (!Helper.isTextChannel(event.getChannel())) {
+            event.getHook().sendMessageEmbeds(Helper.notATextChannelEmbed(event.getChannelType())).queue();
+            return;
+        }
+
         TextChannel channel = event.getTextChannel();
         if (event.getOption("welcome_channel") != null)
             channel = event.getOption("welcome_channel").getAsTextChannel();
