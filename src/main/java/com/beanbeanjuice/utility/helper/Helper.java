@@ -408,4 +408,25 @@ public class Helper {
         return Bot.getBot().getUsers().size();
     }
 
+    /**
+     * Check if a {@link Channel} is a {@link TextChannel}.
+     * @param channel The {@link Channel channel} specified.
+     * @return True, if the {@link Channel} is a {@link TextChannel}.
+     */
+    @NotNull
+    public static Boolean isTextChannel(@NotNull Channel channel) {
+        return channel.getType() == ChannelType.TEXT;
+    }
+
+    /**
+     * Return a {@link MessageEmbed} stating that this is not of type {@link TextChannel}.
+     * @param type The {@link ChannelType type}.
+     * @return The completed {@link MessageEmbed}.
+     */
+    @NotNull
+    public static MessageEmbed notATextChannelEmbed(@NotNull ChannelType type) {
+        return errorEmbed("Not A Text Channel", "The channel type you are trying to execute " +
+                "this command for is: `" + type.name() + "`.");
+    }
+
 }
