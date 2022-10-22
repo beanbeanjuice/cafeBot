@@ -71,7 +71,7 @@ public class Interaction {
 
         // Sends a message if CafeBot is the one who receives the interaction.
         if (this.containsCafeBot())
-            event.getTextChannel().sendMessage(selfMessage).queue();
+            event.getChannel().sendMessage(selfMessage).queue();
     }
 
     /**

@@ -7,6 +7,8 @@ import com.beanbeanjuice.cafeapi.CafeAPI;
 import com.beanbeanjuice.cafeapi.requests.RequestLocation;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -409,13 +411,18 @@ public class Helper {
     }
 
     /**
-     * Check if a {@link Channel} is a {@link TextChannel}.
-     * @param channel The {@link Channel channel} specified.
-     * @return True, if the {@link Channel} is a {@link TextChannel}.
+     * Check if a {@link MessageChannelUnion} is a {@link net.dv8tion.jda.api.entities.channel.concrete.TextChannel}.
+     * @param channel The {@link MessageChannelUnion channel} specified.
+     * @return True, if the {@link MessageChannelUnion} is a {@link net.dv8tion.jda.api.entities.channel.concrete.TextChannel}.
      */
     @NotNull
-    public static Boolean isTextChannel(@NotNull Channel channel) {
-        return channel.getType() == ChannelType.TEXT;
+    public static Boolean isTextChannel(@NotNull MessageChannelUnion channel) {
+        try {
+            channel.asTextChannel();
+            return true;
+        } catch (IllegalStateException e) {
+            return false;
+        }
     }
 
     /**

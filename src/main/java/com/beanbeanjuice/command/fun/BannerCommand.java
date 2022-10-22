@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.utils.FileUpload;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
@@ -43,8 +44,9 @@ public class BannerCommand implements ICommand {
                         event.getHook().sendMessageEmbeds(bannerEmbed(username, avatarURL, profile)).queue();
                     } else {
                         File file = new File(filename);
+                        FileUpload fileUpload = FileUpload.fromData(file, filename);
                         event.getHook().sendMessageEmbeds(bannerEmbed(username, avatarURL, profile))
-                                .addFile(file, filename).queue((message) -> {
+                                .addFiles(fileUpload).queue((message) -> {
                                     file.delete();  // Finally delete the file once the message is sent.
                                 });
                     }

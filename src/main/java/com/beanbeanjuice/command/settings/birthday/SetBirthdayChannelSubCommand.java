@@ -4,8 +4,8 @@ import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 /**
- * An {@link ISubCommand} used to set the birthday {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
+ * An {@link ISubCommand} used to set the birthday {@link TextChannel TextChannel}.
  *
  * @author beanbeanjuice
  * @since v3.0.1
@@ -30,9 +30,9 @@ public class SetBirthdayChannelSubCommand implements ISubCommand {
             return;
         }
 
-        TextChannel channel = event.getTextChannel();
+        TextChannel channel = event.getChannel().asTextChannel();
         if (event.getOption("birthday_channel") != null)
-            channel = event.getOption("birthday_channel").getAsTextChannel();
+            channel = event.getOption("birthday_channel").getAsChannel().asTextChannel();
 
         // If the channel is already set, notify them that this cannot be done.
         if (GuildHandler.getCustomGuild(event.getGuild()).isDailyChannel(channel.getId())) {

@@ -22,6 +22,13 @@ public class TicTacToeCommand implements ICommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
+
+        // Checking if a text channel.
+        if (!Helper.isTextChannel(event.getChannel())) {
+            event.getHook().sendMessageEmbeds(Helper.notATextChannelEmbed(event.getChannelType())).queue();
+            return;
+        }
+
         User player1 = event.getUser();
         User player2 = event.getOption("opponent").getAsUser();
 
@@ -41,7 +48,7 @@ public class TicTacToeCommand implements ICommand {
             return;
         }
 
-        TicTacToeGame game = new TicTacToeGame(player1, player2, event.getTextChannel());
+        TicTacToeGame game = new TicTacToeGame(player1, player2, event.getChannel().asTextChannel());
         if (!TicTacToeHandler.createGame(event.getGuild().getId(), game)) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Creating Tic-Tac-Toe Game",

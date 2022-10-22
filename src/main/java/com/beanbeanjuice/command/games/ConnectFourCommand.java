@@ -22,6 +22,13 @@ public class ConnectFourCommand implements ICommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
+
+        // Checking if a text channel.
+        if (!Helper.isTextChannel(event.getChannel())) {
+            event.getHook().sendMessageEmbeds(Helper.notATextChannelEmbed(event.getChannelType())).queue();
+            return;
+        }
+
         User player1 = event.getUser();
         User player2 = event.getOption("opponent").getAsUser();
 
@@ -41,7 +48,7 @@ public class ConnectFourCommand implements ICommand {
             return;
         }
 
-        ConnectFourGame game = new ConnectFourGame(player1, player2, event.getTextChannel());
+        ConnectFourGame game = new ConnectFourGame(player1, player2, event.getChannel().asTextChannel());
         if (!ConnectFourHandler.createGame(event.getGuild().getId(), game)) {
             event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Creating Connect Four Game",
