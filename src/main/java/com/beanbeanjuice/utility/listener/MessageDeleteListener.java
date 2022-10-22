@@ -16,8 +16,8 @@ public class MessageDeleteListener extends ListenerAdapter {
 
     @Override
     public void onMessageDelete(@NotNull MessageDeleteEvent event) {
-        if (event.isFromGuild() && event.getChannelType() == ChannelType.TEXT)
-            SnipeHandler.moveSnipe(event.getChannel().asTextChannel().getId(), event.getMessageId());
+        if (event.isFromGuild())
+            SnipeHandler.moveSnipe(event.getChannel().getId(), event.getMessageId());
     }
 
 }

@@ -75,7 +75,8 @@ public class Bot {
                 .enableIntents(
                         GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
                         GatewayIntent.GUILD_MEMBERS,
-                        GatewayIntent.DIRECT_MESSAGES
+                        GatewayIntent.DIRECT_MESSAGES,
+                        GatewayIntent.MESSAGE_CONTENT
                 )
                 .enableCache(
                         CacheFlag.EMOJI

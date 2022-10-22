@@ -22,10 +22,10 @@ public class MessageListener extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         super.onMessageReceived(event);
 
-        if (!event.isFromGuild()) { return; }
+        if (!event.isFromGuild() || event.getAuthor().isBot() || event.getAuthor().isSystem()) { return; }
 
-        if (event.getChannelType() == ChannelType.TEXT)
-            SnipeHandler.addPreSnipe(event);
+        // For sniping messages
+        SnipeHandler.addPreSnipe(event);
 
         CustomGuild guildInformation = GuildHandler.getCustomGuild(event.getGuild());
 

@@ -18,14 +18,7 @@ public class SnipeCommand implements ICommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-
-        // Checking if a text channel.
-        if (!Helper.isTextChannel(event.getChannel())) {
-            event.getHook().sendMessageEmbeds(Helper.notATextChannelEmbed(event.getChannelType())).queue();
-            return;
-        }
-
-        MessageEmbed embed = SnipeHandler.getLatestSnipe(event.getChannel().asTextChannel().getId());
+        MessageEmbed embed = SnipeHandler.getLatestSnipe(event.getChannel().getId());
 
         if (embed == null) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
