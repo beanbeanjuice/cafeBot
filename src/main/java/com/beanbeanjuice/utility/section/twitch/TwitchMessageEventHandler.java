@@ -10,7 +10,7 @@ import com.github.twitch4j.events.ChannelGoLiveEvent;
 import com.github.twitch4j.helix.domain.UserList;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -47,11 +47,7 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
         for (String guildID : guilds) {
             CustomGuild customGuild = GuildHandler.getCustomGuild(guildID);
 
-            Bot.getLogger().log(TwitchMessageEventHandler.class, LogLevel.DEBUG, "Guild Contains Twitch Name: " + twitchName);
-
             if (customGuild.getTwitchChannels().contains(twitchName)) {
-
-                Bot.getLogger().log(TwitchMessageEventHandler.class, LogLevel.DEBUG, "Attempting to Send Live Notification: " + twitchName);
 
                 String liveChannelID = GuildHandler.getCustomGuild(guildID).getLiveChannelID();
                 TextChannel liveChannel = GuildHandler.getGuild(guildID).getTextChannelById(liveChannelID);
@@ -70,10 +66,7 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
 
                 try {
                     liveChannel.sendMessage(message.toString()).setEmbeds(liveEmbed(event)).queue();
-
-                    Bot.getLogger().log(TwitchMessageEventHandler.class, LogLevel.DEBUG, "Live Notification Sent: " + twitchName);
-                } catch (NullPointerException ignored) {
-                } // If the live channel no longer exists, then just don't print the message.
+                } catch (NullPointerException ignored) { } // If the live channel no longer exists, then just don't print the message.
             }
         }
     }

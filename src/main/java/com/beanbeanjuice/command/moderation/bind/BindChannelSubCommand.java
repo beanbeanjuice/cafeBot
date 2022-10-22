@@ -4,10 +4,10 @@ import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.handler.VoiceChatRoleBindHandler;
 import com.beanbeanjuice.utility.helper.Helper;
-import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 /**
  * An {@link ISubCommand} used to bind a {@link net.dv8tion.jda.api.entities.Role Role} to
- * a {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel}.
+ * a {@link VoiceChannel VoiceChannel}.
  *
  * @author beanbeanjuice
  */
@@ -31,7 +31,7 @@ public class BindChannelSubCommand implements ISubCommand {
         String option = event.getOption("option").getAsString();
         boolean set = option.equalsIgnoreCase("set");
 
-        VoiceChannel voiceChannel = event.getOption("voice_channel").getAsVoiceChannel();
+        VoiceChannel voiceChannel = event.getOption("voice_channel").getAsChannel().asVoiceChannel();
         String voiceChannelID = voiceChannel.getId();
 
         Role role = event.getOption("role").getAsRole();

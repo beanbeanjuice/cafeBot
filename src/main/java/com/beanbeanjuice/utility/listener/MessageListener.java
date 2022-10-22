@@ -5,13 +5,10 @@ import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.handler.snipe.SnipeHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.handler.guild.CustomGuild;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -25,10 +22,10 @@ public class MessageListener extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         super.onMessageReceived(event);
 
-        if (!event.isFromGuild()) { return; }
+        if (!event.isFromGuild() || event.getAuthor().isBot() || event.getAuthor().isSystem()) { return; }
 
-        if (event.getChannelType() == ChannelType.TEXT)
-            SnipeHandler.addPreSnipe(event);
+        // For sniping messages
+        SnipeHandler.addPreSnipe(event);
 
         CustomGuild guildInformation = GuildHandler.getCustomGuild(event.getGuild());
 

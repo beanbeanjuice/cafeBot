@@ -1,6 +1,8 @@
 package com.beanbeanjuice.utility.handler.snipe;
 
+import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.helper.Helper;
+import com.beanbeanjuice.utility.logging.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
@@ -103,7 +105,7 @@ public class SnipeHandler {
     }
 
     public static void moveSnipe(@NotNull String channelID, @NotNull String messageID) {
-        // Checking if the message is in presnipes.
+        // Checking if the message is in pre-snipes.
         if (preSnipes.containsKey(channelID) && preSnipes.get(channelID).containsKey(messageID)) {
             PreSnipeMessage preSnipeMessage = preSnipes.get(channelID).get(messageID);
             SnipeMessage snipeMessage = new SnipeMessage(preSnipeMessage);
