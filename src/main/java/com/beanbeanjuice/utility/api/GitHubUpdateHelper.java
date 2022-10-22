@@ -103,7 +103,7 @@ public class GitHubUpdateHelper {
                         mainChannel.sendMessage(owner.getAsMention() + " I've been updated!").setEmbeds(updateEmbed).queue();
                     } catch (NullPointerException | InsufficientPermissionException | UnsupportedOperationException |
                              IllegalStateException ignored) {}
-                } catch (NullPointerException ignored) {}
+                } catch (NullPointerException | IllegalStateException ignored) {}
             }
         });
     }
