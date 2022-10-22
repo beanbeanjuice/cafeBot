@@ -8,6 +8,7 @@ import com.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.MinigameType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
@@ -35,7 +36,7 @@ public class TicTacToeGame {
     private final User player2;
 
     private String currentMessageID = null;
-    private final String currentTextChannelID;
+    private final GuildMessageChannel channel;
     private final String guildID;
 
     private Timer gameTimer;
@@ -52,14 +53,14 @@ public class TicTacToeGame {
      * Creates a new {@link TicTacToeGame} object.
      * @param player1 The first {@link User}.
      * @param player2 The second {@link User}.
-     * @param textChannel The {@link TextChannel} the game is in.
+     * @param channel The {@link GuildMessageChannel} that the {@link TicTacToeGame} is in.
      */
-    public TicTacToeGame(@NotNull User player1, @NotNull User player2, @NotNull TextChannel textChannel) {
+    public TicTacToeGame(@NotNull User player1, @NotNull User player2, @NotNull GuildMessageChannel channel) {
         this.player1 = player1;
         this.player2 = player2;
         this.currentUser = player1;
-        this.guildID = textChannel.getGuild().getId();
-        this.currentTextChannelID = textChannel.getId();
+        this.channel = channel;
+        this.guildID = channel.getGuild().getId();
 
         board = new String[3][3];
         takenSpots = new boolean[3][3];
@@ -88,7 +89,7 @@ public class TicTacToeGame {
         startGameTimer();
 
         try {
-            GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessageEmbeds(getBoardEmbed()).queue(message -> {
+            channel.sendMessageEmbeds(getBoardEmbed()).queue(message -> {
                 currentMessageID = message.getId();
                 editMessage();
             });
@@ -102,7 +103,7 @@ public class TicTacToeGame {
      */
     private void editMessage() {
         try {
-            GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(message -> {
+            channel.retrieveMessageById(currentMessageID).queue(message -> {
                 message.editMessageEmbeds(getBoardEmbed()).queue(editedMessage -> {
                     addReactions(message);
 
@@ -115,7 +116,7 @@ public class TicTacToeGame {
                                 if (r.getEmoji().equals(Emoji.fromFormatted("❌"))) {
                                     stopGameTimer();
                                     if (checkGameExists()) {
-                                        GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
+                                        channel.retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
                                             String title = retrievedMessage.getEmbeds().get(0).getTitle();
                                             String description = retrievedMessage.getEmbeds().get(0).getDescription();
                                             retrievedMessage.editMessageEmbeds(endGameEmbed(title, description, "The game was cancelled.")).queue();
@@ -229,15 +230,15 @@ public class TicTacToeGame {
      */
     @NotNull
     private Boolean checkGameExists() {
-        TextChannel textChannel;
+        GuildMessageChannel guildMessageChannel;
         try {
-            textChannel = GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID);
+            guildMessageChannel = GuildHandler.getGuild(guildID).getChannelById(GuildMessageChannel.class, channel.getId());
         } catch (NullPointerException e) {
             return false;
         }
 
         try {
-            textChannel.retrieveMessageById(currentMessageID).queue();
+            channel.retrieveMessageById(currentMessageID).queue();
         } catch (NullPointerException e) {
             return false;
         }
@@ -255,7 +256,7 @@ public class TicTacToeGame {
                 if (count++ >= TIME_UNTIL_END) {
                     stopGameTimer();
                     if (checkGameExists()) {
-                        GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
+                        channel.retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
                             String title = retrievedMessage.getEmbeds().get(0).getTitle();
                             String description = retrievedMessage.getEmbeds().get(0).getDescription();
                             retrievedMessage.editMessageEmbeds(endGameEmbed(title, description, "The game ended because you didn't respond in time.")).queue(e -> {
@@ -430,8 +431,7 @@ public class TicTacToeGame {
         stopGameTimer();
 
         if (checkGameExists()) {
-            GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID)
-                    .editMessageEmbedsById(currentMessageID, embedBuilder.build()).queue(message -> {
+            channel.editMessageEmbedsById(currentMessageID, embedBuilder.build()).queue(message -> {
                         message.clearReactions().queue();
                     });
         }
@@ -487,8 +487,7 @@ public class TicTacToeGame {
         stopGameTimer();
 
         if (checkGameExists()) {
-            GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID)
-                    .editMessageEmbedsById(currentMessageID, embedBuilder.build()).queue(message -> {
+            channel.editMessageEmbedsById(currentMessageID, embedBuilder.build()).queue(message -> {
                         message.clearReactions().queue();
                     });
         }
