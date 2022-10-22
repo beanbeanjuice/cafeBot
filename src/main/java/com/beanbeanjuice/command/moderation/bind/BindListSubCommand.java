@@ -4,9 +4,9 @@ import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ISubCommand;
 import com.beanbeanjuice.utility.handler.VoiceChatRoleBindHandler;
 import com.beanbeanjuice.utility.helper.Helper;
-import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 /**
  * An {@link ISubCommand} used to list binds between {@link net.dv8tion.jda.api.entities.Role Roles}
- * and {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannels}.
+ * and {@link VoiceChannel VoiceChannels}.
  *
  * @author beanbeanjuice
  */
@@ -79,7 +79,7 @@ public class BindListSubCommand implements ISubCommand {
 
         // All Binds
         ArrayList<Role> roles = new ArrayList<>();
-        VoiceChannel voiceChannel = event.getOption("voice_channel").getAsVoiceChannel();
+        VoiceChannel voiceChannel = event.getOption("voice_channel").getAsChannel().asVoiceChannel();
 
         for (String roleID : new ArrayList<>(VoiceChatRoleBindHandler.getBoundRolesForChannel(event.getGuild().getId(), voiceChannel.getId()))) {
             Role role = Helper.getRole(event.getGuild(), roleID);

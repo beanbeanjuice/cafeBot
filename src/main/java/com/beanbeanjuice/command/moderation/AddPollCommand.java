@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -126,7 +126,7 @@ public class AddPollCommand implements ICommand {
 
         event.getHook().editOriginalEmbeds(Helper.successEmbed(
                 "Poll Created",
-                "A poll has been successfully created! Check the " + message.getTextChannel().getAsMention() + " channel."
+                "A poll has been successfully created! Check the " + message.getChannel().asTextChannel().getAsMention() + " channel."
         )).queue();
     }
 
