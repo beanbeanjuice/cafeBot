@@ -34,7 +34,7 @@ public class ConnectFourCommand implements ICommand {
         }
 
         if (player2.isBot()) {
-            event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Cannot Play Against Bot",
                     "You cannot play this game against a bot!"
             )).queue();
@@ -43,7 +43,7 @@ public class ConnectFourCommand implements ICommand {
 
         ConnectFourGame game = new ConnectFourGame(player1, player2, event.getChannel().asGuildMessageChannel());
         if (!ConnectFourHandler.createGame(event.getGuild().getId(), game)) {
-            event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Creating Connect Four Game",
                     "There is already an active connect four game on this server. Please wait for it to end."
             )).queue();
@@ -65,6 +65,12 @@ public class ConnectFourCommand implements ICommand {
     @Override
     public String exampleUsage() {
         return "`/connect-4 @beanbeanjuice`";
+    }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
     }
 
     @NotNull
