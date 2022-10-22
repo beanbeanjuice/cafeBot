@@ -7,6 +7,7 @@ import com.beanbeanjuice.utility.section.twitch.TwitchHandler;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

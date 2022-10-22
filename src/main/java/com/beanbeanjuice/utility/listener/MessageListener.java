@@ -5,13 +5,10 @@ import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.handler.snipe.SnipeHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.handler.guild.CustomGuild;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
 /**

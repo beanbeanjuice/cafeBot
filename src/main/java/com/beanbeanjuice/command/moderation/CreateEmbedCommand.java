@@ -6,7 +6,7 @@ import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -29,7 +29,7 @@ public class CreateEmbedCommand implements ICommand {
         // Checking if the provided channel is a text channel.
         TextChannel textChannel;
         try {
-            textChannel = event.getOption("channel").getAsTextChannel();
+            textChannel = event.getOption("channel").getAsChannel().asTextChannel();
         } catch (NullPointerException e) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Not A Text Channel",
