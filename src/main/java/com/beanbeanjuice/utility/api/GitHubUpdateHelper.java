@@ -12,6 +12,7 @@ import com.beanbeanjuice.cafeapi.exception.api.CafeException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -87,20 +88,22 @@ public class GitHubUpdateHelper {
 
         customGuilds.forEach((guildID, customGuild) -> {
             if (customGuild.getNotifyOnUpdate()) {
-                Guild guild = GuildHandler.getGuild(guildID);
-
-                TextChannel mainChannel = customGuild.getUpdateChannel();
-
-                // If the update channel does not exist, send to default channel.
-                if (customGuild.getUpdateChannel() == null)
-                    mainChannel = guild.getDefaultChannel().asTextChannel();
-
-                Member owner = guild.getOwner();
-
                 try {
-                    mainChannel.sendMessage(owner.getAsMention() + " I've been updated!").setEmbeds(updateEmbed).queue();
-                } catch (NullPointerException | InsufficientPermissionException | UnsupportedOperationException |
-                        IllegalStateException ignored) {}
+                    Guild guild = GuildHandler.getGuild(guildID);
+
+                    GuildMessageChannel mainChannel = customGuild.getUpdateChannel();
+
+                    // If the update channel does not exist, send to default channel.
+                    if (customGuild.getUpdateChannel() == null)
+                        mainChannel = guild.getDefaultChannel().asTextChannel();
+
+                    Member owner = guild.getOwner();
+
+                    try {
+                        mainChannel.sendMessage(owner.getAsMention() + " I've been updated!").setEmbeds(updateEmbed).queue();
+                    } catch (NullPointerException | InsufficientPermissionException | UnsupportedOperationException |
+                             IllegalStateException ignored) {}
+                } catch (NullPointerException ignored) {}
             }
         });
     }
