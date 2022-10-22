@@ -41,7 +41,7 @@ public class TicTacToeCommand implements ICommand {
             return;
         }
 
-        TicTacToeGame game = new TicTacToeGame(player1, player2, event.getTextChannel());
+        TicTacToeGame game = new TicTacToeGame(player1, player2, event.getChannel().asGuildMessageChannel());
         if (!TicTacToeHandler.createGame(event.getGuild().getId(), game)) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Creating Tic-Tac-Toe Game",
@@ -65,6 +65,12 @@ public class TicTacToeCommand implements ICommand {
     @Override
     public String exampleUsage() {
         return "`/tic-tac-toe @beanbeanjuice`";
+    }
+
+    @NotNull
+    @Override
+    public Boolean isHidden() {
+        return true;
     }
 
     @NotNull

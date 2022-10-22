@@ -7,6 +7,8 @@ import com.beanbeanjuice.cafeapi.CafeAPI;
 import com.beanbeanjuice.cafeapi.requests.RequestLocation;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -406,6 +408,32 @@ public class Helper {
     @NotNull
     public static Integer getTotalUsers() {
         return Bot.getBot().getUsers().size();
+    }
+
+    /**
+     * Check if a {@link MessageChannelUnion} is a {@link net.dv8tion.jda.api.entities.channel.concrete.TextChannel}.
+     * @param channel The {@link MessageChannelUnion channel} specified.
+     * @return True, if the {@link MessageChannelUnion} is a {@link net.dv8tion.jda.api.entities.channel.concrete.TextChannel}.
+     */
+    @NotNull
+    public static Boolean isTextChannel(@NotNull MessageChannelUnion channel) {
+        try {
+            channel.asTextChannel();
+            return true;
+        } catch (IllegalStateException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Return a {@link MessageEmbed} stating that this is not of type {@link TextChannel}.
+     * @param type The {@link ChannelType type}.
+     * @return The completed {@link MessageEmbed}.
+     */
+    @NotNull
+    public static MessageEmbed notATextChannelEmbed(@NotNull ChannelType type) {
+        return errorEmbed("Not A Text Channel", "The channel type you are trying to execute " +
+                "this command for is: `" + type.name() + "`.");
     }
 
 }

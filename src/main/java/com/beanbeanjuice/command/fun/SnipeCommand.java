@@ -18,7 +18,7 @@ public class SnipeCommand implements ICommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-        MessageEmbed embed = SnipeHandler.getLatestSnipe(event.getTextChannel().getId());
+        MessageEmbed embed = SnipeHandler.getLatestSnipe(event.getChannel().getId());
 
         if (embed == null) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(

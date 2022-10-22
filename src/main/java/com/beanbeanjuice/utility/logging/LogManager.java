@@ -6,7 +6,7 @@ import com.beanbeanjuice.utility.exception.WebhookException;
 import com.beanbeanjuice.utility.webhook.Webhook;
 import com.beanbeanjuice.cafeapi.utility.Time;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;

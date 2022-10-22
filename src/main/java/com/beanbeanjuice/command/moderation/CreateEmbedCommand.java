@@ -6,7 +6,7 @@ import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -25,18 +25,8 @@ public class CreateEmbedCommand implements ICommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
-
         // Checking if the provided channel is a text channel.
-        TextChannel textChannel;
-        try {
-            textChannel = event.getOption("channel").getAsTextChannel();
-        } catch (NullPointerException e) {
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Not A Text Channel",
-                    "The channel you provided is not a valid text channel."
-            )).queue();
-            return;
-        }
+        GuildMessageChannel channel = event.getOption("channel").getAsChannel().asGuildMessageChannel();
 
         // Checking if the provided attachments are images.
         if ((event.getOption("thumbnail") != null && !event.getOption("thumbnail").getAsAttachment().isImage()) ||
@@ -50,14 +40,14 @@ public class CreateEmbedCommand implements ICommand {
 
         try {
             if (event.getOption("message") != null) {
-                textChannel.sendMessage(event.getOption("message").getAsString()).setEmbeds(createEmbed(event)).queue();
+                channel.sendMessage(event.getOption("message").getAsString()).setEmbeds(createEmbed(event)).queue();
             } else {
-                textChannel.sendMessageEmbeds(createEmbed(event)).queue();
+                channel.sendMessageEmbeds(createEmbed(event)).queue();
             }
 
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
                     "Created the Custom Message Embed",
-                    "Successfully created the custom embed in " + textChannel.getAsMention() + "!"
+                    "Successfully created the custom embed in " + channel.getAsMention() + "!"
             )).queue();
         } catch (IllegalStateException e) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(

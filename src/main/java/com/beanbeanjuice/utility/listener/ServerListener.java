@@ -4,8 +4,9 @@ import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.BaseGuildMessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.unions.DefaultGuildChannelUnion;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
@@ -24,11 +25,17 @@ public class ServerListener extends ListenerAdapter {
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
         super.onGuildJoin(event);
-        BaseGuildMessageChannel channel = event.getGuild().getDefaultChannel();
+        DefaultGuildChannelUnion channel = event.getGuild().getDefaultChannel();
 
         if (channel != null) {
             try {
-                channel.sendMessageEmbeds(guildJoinEmbed()).queue();
+
+                if (channel.getType() == ChannelType.TEXT)
+                    channel.asTextChannel().sendMessageEmbeds(guildJoinEmbed()).queue();
+
+                else if (channel.getType() == ChannelType.NEWS)
+                    channel.asNewsChannel().sendMessageEmbeds(guildJoinEmbed()).queue();
+
             } catch (InsufficientPermissionException ignored) {}
         }
 

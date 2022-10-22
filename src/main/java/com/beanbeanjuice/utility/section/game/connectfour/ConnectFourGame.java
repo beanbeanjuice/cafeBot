@@ -7,6 +7,8 @@ import com.beanbeanjuice.utility.section.game.WinStreakHandler;
 import com.beanbeanjuice.cafeapi.cafebot.minigames.winstreaks.MinigameType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
@@ -34,7 +36,7 @@ public class ConnectFourGame {
     private final User player2;
 
     private String currentMessageID = null;
-    private final String currentTextChannelID;
+    private final GuildMessageChannel channel;
     private final String guildID;
 
     private Timer gameTimer;
@@ -51,14 +53,14 @@ public class ConnectFourGame {
      * Creates a new {@link ConnectFourGame} object.
      * @param player1 The first {@link User}.
      * @param player2 The second {@link User}.
-     * @param textChannel The {@link TextChannel} the game is in.
+     * @param channel The {@link GuildMessageChannel} that the {@link ConnectFourGame} is in.
      */
-    public ConnectFourGame(@NotNull User player1, @NotNull User player2, @NotNull TextChannel textChannel) {
+    public ConnectFourGame(@NotNull User player1, @NotNull User player2, @NotNull GuildMessageChannel channel) {
         this.player1 = player1;
         this.currentUser = player1;
         this.player2 = player2;
-        this.currentTextChannelID = textChannel.getId();
-        this.guildID = textChannel.getGuild().getId();
+        this.channel = channel;
+        this.guildID = channel.getGuild().getId();
 
         board = new String[7][6];
         takenSpots = new boolean[7][6];
@@ -94,7 +96,7 @@ public class ConnectFourGame {
         startGameTimer();
 
         try {
-            GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID).sendMessageEmbeds(getBoardEmbed()).queue(message -> {
+            channel.sendMessageEmbeds(getBoardEmbed()).queue(message -> {
                 currentMessageID = message.getId();
                 editMessage();
             });
@@ -109,7 +111,7 @@ public class ConnectFourGame {
     private void editMessage() {
         try {
 
-            GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID).editMessageEmbedsById(currentMessageID, getBoardEmbed()).queue(message -> {
+            channel.editMessageEmbedsById(currentMessageID, getBoardEmbed()).queue(message -> {
                 addReactions(message);
 
                 // Adds this message to the reaction listeners.
@@ -121,7 +123,7 @@ public class ConnectFourGame {
                             if (r.getEmoji().getFormatted().equals("❌")) {
                                 stopGameTimer();
                                 if (checkGameExists()) {
-                                    GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
+                                    channel.retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
                                         String title = retrievedMessage.getEmbeds().get(0).getTitle();
                                         String description = retrievedMessage.getEmbeds().get(0).getDescription();
                                         retrievedMessage.editMessageEmbeds(endGameEmbed(title, description, "The game was cancelled.")).queue();
@@ -177,15 +179,15 @@ public class ConnectFourGame {
      */
     @NotNull
     private Boolean checkGameExists() {
-        TextChannel textChannel;
+        GuildMessageChannel messageChannel;
         try {
-            textChannel = GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID);
+            messageChannel = GuildHandler.getGuild(guildID).getChannelById(GuildMessageChannel.class, channel.getId());
         } catch (NullPointerException e) {
             return false;
         }
 
         try {
-            textChannel.retrieveMessageById(currentMessageID).queue();
+            messageChannel.retrieveMessageById(currentMessageID).queue();
         } catch (NullPointerException e) {
             return false;
         }
@@ -218,7 +220,7 @@ public class ConnectFourGame {
                 if (count++ >= TIME_UNTIL_END) {
                     stopGameTimer();
                     if (checkGameExists()) {
-                        GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID).retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
+                        channel.retrieveMessageById(currentMessageID).queue(retrievedMessage -> {
                             String title = retrievedMessage.getEmbeds().get(0).getTitle();
                             String description = retrievedMessage.getEmbeds().get(0).getDescription();
                             retrievedMessage.editMessageEmbeds(endGameEmbed(title, description, "The game ended because you didn't respond in time.")).queue(e -> {
@@ -415,8 +417,7 @@ public class ConnectFourGame {
         stopGameTimer();
 
         if (checkGameExists()) {
-            GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID)
-                    .editMessageEmbedsById(currentMessageID, embedBuilder.build()).queue(message -> {
+            channel.editMessageEmbedsById(currentMessageID, embedBuilder.build()).queue(message -> {
                         message.clearReactions().queue();
                     });
         }
@@ -455,8 +456,7 @@ public class ConnectFourGame {
         stopGameTimer();
 
         if (checkGameExists()) {
-            GuildHandler.getGuild(guildID).getTextChannelById(currentTextChannelID)
-                    .editMessageEmbedsById(currentMessageID, embedBuilder.build()).queue(message -> {
+            channel.editMessageEmbedsById(currentMessageID, embedBuilder.build()).queue(message -> {
                         message.clearReactions().queue();
                     });
         }
