@@ -64,6 +64,7 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#privacy-policy">What data does this bot store?</a></li>
+    <li><a href="#terms-and-conditions">Terms and Conditions</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
