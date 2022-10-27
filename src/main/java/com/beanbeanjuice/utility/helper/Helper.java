@@ -58,7 +58,7 @@ public class Helper {
                 String finalString = "";
 
                 switch (num) {
-                    case 1 -> finalString = "Currently in " + getTotalServers() + " restaurants!";
+                    case 1 -> finalString = "Currently in " + getTotalServers() + " cafés!";
                     case 2 -> finalString = "Waiting " + getTotalChannels() + " tables!";
                     case 3 -> finalString = "Serving " + getTotalUsers() + " customers!";
                 }
