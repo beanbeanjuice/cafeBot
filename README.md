@@ -63,7 +63,7 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#data">What data does this bot store?</a></li>
+    <li><a href="#privacy-policy">What data does this bot store?</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
@@ -248,7 +248,7 @@ Distributed under the GPL-3.0 License. See `LICENSE` for more information.
 <!-- DATA THIS BOT STORES -->
 # Privacy Policy
 
-Here is ALL of the data that this bot could *possibly* store on you. This, of course, is subject to change. None of these can be accessed by other servers (that you are not a part of) by the bot.
+Here is ALL of the data that this bot could *possibly* store on you. This, of course, is subject to change. None of these can be accessed by other servers (that you are not a part of) by the bot. The full policy can be viewed [here](https://www.beanbeanjuice.com/cafeBot/privacy_policy.html).
 
 - *__Discord Data__*
   - Your Discord ID.`*`
@@ -271,6 +271,11 @@ Here is ALL of the data that this bot could *possibly* store on you. This, of co
 ##### `*` - This is already public information anyway, and is crucial for having the bot work.
 ##### `**` - This is something that is needed for the bot to do things like apply a role to someone when they join a specific voice channel, or to duplicate a voice channel when needed.
 ##### `***` - Your birthday is only stored WHEN specified, and can even be removed at anytime by simply using the `/birthday remove` command.
+
+<!-- Terms and Conditions -->
+# Terms and Conditions
+
+By using [cafeBot](https://www.github.com/beanbeanjuice/cafeBot), you are agreeing to the privacy policy and terms and conditions as stated [here](https://www.beanbeanjuice.com/cafeBot/terms_and_conditions.html). Again, other than the things you provide through commands, nothing is saved and no personal information is saved.
 
 <!-- CONTACT -->
 # Contact
