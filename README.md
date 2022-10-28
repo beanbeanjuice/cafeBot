@@ -126,7 +126,7 @@ This is an example of how to list things you need to use the software and how to
 As you can see, this was shown using the command `/help order`. It shows each parameter you can run. For example, the first `<NUMBER>` is the `CATEGORY NUMBER` for the menu, needs to be a number, and is required. The `help` command also provides an example on how to actually use the command if you are stuck!
 
 #### **Command Section**
-*There are many command sections, with more coming soon. To show the commands in a specific section, do `!!help (command section)` or for example, `!!help moderation`!* Doing `!!help (command)` will also show you an example of how to use the command.
+*There are many command sections, with more coming soon. To show the commands in a specific section, do `/help (command section)` or for example, `/help moderation`!* Doing `/help (command)` will also show you an example of how to use the command.
 
 ##### 1. **GENERIC**
 * `bot-donate` - Donate for the bot!
