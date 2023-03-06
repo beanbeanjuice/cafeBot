@@ -66,6 +66,7 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
 
                 try {
                     liveChannel.sendMessage(message.toString()).setEmbeds(liveEmbed(event)).queue();
+                    Bot.commandsRun++;
                 } catch (NullPointerException ignored) { } // If the live channel no longer exists, then just don't print the message.
             }
         }
