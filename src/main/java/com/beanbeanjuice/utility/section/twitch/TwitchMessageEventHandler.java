@@ -34,8 +34,6 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
         // Converts the Twitch Name to lower case.
         String twitchName = event.getChannel().getName().toLowerCase();
 
-        Bot.getLogger().log(TwitchMessageEventHandler.class, LogLevel.DEBUG, "Starting Live Notification: " + twitchName);
-
         // Gets the Guilds that are listening for that twitch name.
         ArrayList<String> guilds = TwitchHandler.getGuildsForChannel(twitchName);
 
