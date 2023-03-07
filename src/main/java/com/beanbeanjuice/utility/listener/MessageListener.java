@@ -1,5 +1,6 @@
 package com.beanbeanjuice.utility.listener;
 
+import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.handler.CountingHandler;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.handler.snipe.SnipeHandler;
@@ -42,6 +43,7 @@ public class MessageListener extends ListenerAdapter {
             String number = event.getMessage().getContentRaw().split(" ")[0];
             if (Helper.isNumber(number)) {
                 CountingHandler.checkNumber(event, Integer.parseInt(number));
+                Bot.commandsRun++;
                 return;
             }
         }

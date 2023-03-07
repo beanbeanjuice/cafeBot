@@ -1,5 +1,6 @@
 package com.beanbeanjuice.utility.listener;
 
+import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.entities.Guild;
@@ -325,6 +326,7 @@ public class AIResponseListener extends ListenerAdapter {
                             commandResponses.get(Helper.getRandomNumber(0, commandResponses.size())),
                             event.getAuthor()
                     )).queue();
+                    Bot.commandsRun++;
                 }
             });
         } catch (NullPointerException ignored) {}
