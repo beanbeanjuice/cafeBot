@@ -41,7 +41,7 @@ public class Helper {
                 });
             }
         };
-        updateTimer.scheduleAtFixedRate(updateTimerTask, 0, TimeUnit.HOURS.toMillis(12));
+        updateTimer.scheduleAtFixedRate(updateTimerTask, 0, TimeUnit.DAYS.toMillis(1));
     }
 
     /**
@@ -78,7 +78,7 @@ public class Helper {
         long systemMemoryUsage = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCommittedVirtualMemorySize()/1048576;
         long dedicatedMemoryTotal = Runtime.getRuntime().maxMemory()/1048576;
         long dedicatedMemoryUsage = Runtime.getRuntime().totalMemory()/1048576;
-        embedBuilder.setTitle("Hourly CafeBot Update");
+        embedBuilder.setTitle("Daily CafeBot Update");
         descriptionBuilder.append("**__System Status__**: Online\n\n");
         descriptionBuilder.append("**__Rest Ping__** - `").append(botPing).append("`\n")
                 .append("**__Gateway Ping__** - `").append(gatewayPing).append("`\n")
@@ -426,7 +426,7 @@ public class Helper {
     }
 
     /**
-     * Return a {@link MessageEmbed} stating that this is not of type {@link TextChannel}.
+     * Return a {@link MessageEmbed} stating that this is not of type {@link net.dv8tion.jda.api.entities.channel.concrete.TextChannel TextChannel}.
      * @param type The {@link ChannelType type}.
      * @return The completed {@link MessageEmbed}.
      */
