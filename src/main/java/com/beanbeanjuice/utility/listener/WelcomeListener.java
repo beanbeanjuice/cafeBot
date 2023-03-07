@@ -33,6 +33,8 @@ public class WelcomeListener extends ListenerAdapter {
                 welcomeChannel.sendMessage(guildWelcome.getMessage()).setEmbeds(getWelcomeEmbed(guildWelcome, event.getMember().getUser())).queue();
             else
                 welcomeChannel.sendMessageEmbeds(getWelcomeEmbed(guildWelcome, event.getMember().getUser())).queue();
+
+            Bot.commandsRun++;
         }
     }
 
