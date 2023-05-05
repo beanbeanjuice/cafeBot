@@ -96,7 +96,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("remove-my-data", new RemoveMyDataCommand());
         commands.put("stats", new StatsCommand());
         commands.put("support", new SupportCommand());
-        commands.put("who-is", new WhoIsCommand());
+        commands.put("whois", new WhoIsCommand());
 
         // Interaction
         commands.put("bite", new BiteCommand());
