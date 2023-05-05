@@ -7,26 +7,36 @@ assignees: beanbeanjuice
 
 ---
 
-**__Describe the Bug__**
+## Bug Description
 A clear and concise description of what the bug is.
 
-**__Steps To Reproduce__**
-Steps to reproduce the behavior:
+___
+
+## Steps to Reproduce the Bug
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
 
-**__Expected Behavior__**
+___
+
+## Expected Behaviour
 A clear and concise description of what you expected to happen.
 
-**__Screenshots/Videos__**
+___
+
+## Screenshots/Videos
 If applicable, add screenshots or videos to help explain your problem. Links are preferred.
 
-**__Additional Context__**
+___
+
+## Additional Context
+
 Add any other context about the problem here.
 
-# Checklist:
+___
+
+## Checklist:
 
 - [ ] I have checked for similar issues.
 - [ ] This is a bug report, not a feature request, improvement request, or security vulnerability report.
