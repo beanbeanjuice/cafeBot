@@ -6,7 +6,6 @@ import com.beanbeanjuice.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -32,19 +31,33 @@ public class WhoIsCommand implements ICommand {
         if (event.getOption("user") != null)
             member = event.getOption("user").getAsMember();
 
-        event.getHook().sendMessageEmbeds(userInfoEmbed(member)).queue();
+        if (event.isFromGuild())
+            event.getHook().sendMessageEmbeds(memberInfoEmbed(member).build()).queue();
+        else
+            event.getHook().sendMessageEmbeds(userInfoEmbed(event.getUser()).build()).queue();
     }
 
     @NotNull
-    private MessageEmbed userInfoEmbed(@NotNull Member member) {
+    private EmbedBuilder userInfoEmbed(@NotNull User user) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy @ h:mma");
-        EmbedBuilder embedBuilder = new EmbedBuilder()
-                .setThumbnail(member.getUser().getAvatarUrl())
-                .setTitle(member.getUser().getName())
-                .addField("Joined", member.getTimeJoined().format(formatter), true)
-                .addField("Registered", member.getTimeCreated().format(formatter), true)
-                .setFooter("ID: " + member.getId())
+
+        return new EmbedBuilder()
+                .setThumbnail(user.getAvatarUrl())
+                .setTitle(user.getName())
+                .addField("Registered", user.getTimeCreated().format(formatter), true)
+                .setFooter("ID: " + user.getId())
                 .setColor(Helper.getRandomColor())
+                .setAuthor(user.getName(), null, user.getAvatarUrl())
+                .setDescription(user.getAsMention())
+                .setTimestamp(new Date().toInstant());
+    }
+
+    @NotNull
+    private EmbedBuilder memberInfoEmbed(@NotNull Member member) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy @ h:mma");
+        EmbedBuilder embedBuilder = userInfoEmbed(member.getUser());
+        embedBuilder
+                .addField("Joined", member.getTimeJoined().format(formatter), true)
                 .setAuthor(member.getEffectiveName(), null, member.getUser().getAvatarUrl());
 
         ArrayList<Role> roles = new ArrayList<>(member.getRoles());
@@ -65,11 +78,10 @@ public class WhoIsCommand implements ICommand {
                 permissionBuilder.append(", ");
         }
 
-        embedBuilder.setDescription(member.getAsMention())
-                .setTimestamp(new Date().toInstant())
+        embedBuilder
                 .addField("Roles [" + roles.size() + "]", roleBuilder.toString(), false)
                 .addField("Permissions", permissionBuilder.toString(), false);
-        return embedBuilder.build();
+        return embedBuilder;
     }
 
     @NotNull
