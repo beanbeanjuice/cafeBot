@@ -34,12 +34,28 @@ public class AvatarCommand implements ICommand {
                 user = event.getOption("user").getAsUser();
             name = user.getName();
             url = user.getAvatarUrl();
+
+            if (url == null) {
+                event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                        "No User Avatar",
+                        "The specified user does not have a Discord avatar."
+                )).queue();
+                return;
+            }
         } else {
             Member member = event.getMember();
             if (event.getOption("user") != null)
                 member = event.getOption("user").getAsMember();
             name = member.getUser().getName();
             url = member.getAvatarUrl();
+
+            if (url == null) {
+                event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                        "No User Server Avatar",
+                        "The specified user does not have a custom avatar for this server."
+                )).queue();
+                return;
+            }
         }
 
         event.getHook().sendMessageEmbeds(avatarEmbed(name, url)).queue();
