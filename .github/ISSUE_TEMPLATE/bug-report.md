@@ -36,7 +36,7 @@ Add any other context about the problem here.
 
 ___
 
-## Checklist:
+## Checklist
 
 - [ ] I have checked for similar issues.
 - [ ] This is a bug report, not a feature request, improvement request, or security vulnerability report.

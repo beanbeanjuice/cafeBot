@@ -22,7 +22,7 @@ Add any other context or screenshots about the feature request here.
 
 ___
 
-## Checklist:
+## Checklist
 
 - [ ] I have checked for similar issues.
 - [ ] This is a feature request, not an improvement request, bug report, or security vulnerability report.
