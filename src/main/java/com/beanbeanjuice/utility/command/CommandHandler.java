@@ -72,12 +72,12 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("meme", new MemeCommand());
         commands.put("snipe", new SnipeCommand());
         commands.put("tea-meme", new TeaMemeCommand());
+        commands.put("8ball", new EightBallCommand());
 
         // Games
         commands.put("coin-flip", new CoinFlipCommand());
         commands.put("connect-4", new ConnectFourCommand());
         commands.put("dice-roll", new DiceRollCommand());
-        commands.put("8-ball", new EightBallCommand());
         commands.put("get-game-data", new GetGameDataCommand());
         commands.put("tic-tac-toe", new TicTacToeCommand());
 
