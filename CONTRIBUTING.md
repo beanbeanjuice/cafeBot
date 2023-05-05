@@ -5,6 +5,23 @@ email, or any other method with the owners of this repository before making a ch
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
+## Branching
+
+Now, make sure you are forking off of/branching off of the `integration` branch located [here](https://github.com/beanbeanjuice/cafeBot/tree/integration). This allows new and upcoming changes to be pushed to a "working" directory rather than straight to the main, production directory. For example, this is how you may contribute.
+
+Create a fork of the repository, and run the following commands in git CLI.
+
+```
+git switch integration
+git checkout -b (issue-number)-(issue-name)
+```
+
+The above code switches to the `integration` branch, and creates a new branch based on the current `integration` branch. Then, you can create a pull request on GitHub with your forked repository, pushing the new branch onto the integration branch. So an example would be below;
+
+```
+git checkout -b 525-slash-commands-notification-spam
+```
+
 ## Code Formatting
 
 ```JAVA
