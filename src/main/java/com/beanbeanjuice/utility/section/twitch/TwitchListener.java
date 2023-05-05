@@ -29,6 +29,8 @@ public class TwitchListener {
                 .withDefaultAuthToken(new OAuth2Credential("twitch", Bot.TWITCH_ACCESS_TOKEN))
                 .withDefaultEventHandler(TwitchMessageEventHandler.class)
                 .build();
+
+        twitchClient.getEventManager().registerEventHandler(new SimpleEventHandler());  // TODO: CONFIRM THIS WORKS
     }
 
     /**
