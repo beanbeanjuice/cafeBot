@@ -7,16 +7,22 @@ assignees: beanbeanjuice
 
 ---
 
-**__Describe the Feature__**
+## Feature Description
 A clear and concise description of what you want to happen.
 
-**__Describe Alternatives__**
+___
+
+## Feature Alternatives
 A clear and concise description of any alternative solutions or features you've considered.
 
-**__Additional Context__**
+___
+
+## Additional Context
 Add any other context or screenshots about the feature request here.
 
-# Checklist:
+___
+
+## Checklist:
 
 - [ ] I have checked for similar issues.
 - [ ] This is a feature request, not an improvement request, bug report, or security vulnerability report.
