@@ -52,9 +52,8 @@ public class WhoIsCommand implements ICommand {
         for (int i = 0; i < roles.size(); i++) {
             roleBuilder.append(roles.get(i).getAsMention());
 
-            if (i != roles.size() - 1) {
+            if (i != roles.size() - 1)
                 roleBuilder.append(" ");
-            }
         }
 
         EnumSet<Permission> permissions = member.getPermissions();
@@ -62,9 +61,8 @@ public class WhoIsCommand implements ICommand {
         int count = 0;
         for (Permission permission : permissions) {
             permissionBuilder.append(permission.getName());
-            if (count++ != permissions.size() - 1) {
+            if (count++ != permissions.size() - 1)
                 permissionBuilder.append(", ");
-            }
         }
 
         embedBuilder.setDescription(member.getAsMention())
@@ -83,7 +81,7 @@ public class WhoIsCommand implements ICommand {
     @NotNull
     @Override
     public String exampleUsage() {
-        return "`/who-is`";
+        return "`/whois`";
     }
 
     @NotNull
