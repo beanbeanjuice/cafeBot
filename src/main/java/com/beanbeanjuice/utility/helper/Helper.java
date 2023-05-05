@@ -87,7 +87,7 @@ public class Helper {
                 .append("**__OS Memory Usage__** - `").append(systemMemoryUsage).append("` mb / `").append(systemMemoryTotal).append("` mb\n")
                 .append("**__Bot Memory Usage__** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
                 .append("**__Bot Uptime__** - `").append(formatTimeDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
-                .append("**__Commands Run__** - `").append(Bot.commandsRun).append("`\n");
+                .append("**__Commands Run (After Restart)__** - `").append(Bot.commandsRun).append("`\n");
 
         embedBuilder.setDescription(descriptionBuilder.toString());
         embedBuilder.setThumbnail(Bot.DISCORD_AVATAR_URL);
