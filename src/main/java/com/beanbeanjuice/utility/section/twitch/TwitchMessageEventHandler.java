@@ -34,8 +34,6 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
         // Converts the Twitch Name to lower case.
         String twitchName = event.getChannel().getName().toLowerCase();
 
-        Bot.getLogger().log(TwitchMessageEventHandler.class, LogLevel.DEBUG, "Starting Live Notification: " + twitchName);
-
         // Gets the Guilds that are listening for that twitch name.
         ArrayList<String> guilds = TwitchHandler.getGuildsForChannel(twitchName);
 
@@ -66,6 +64,7 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
 
                 try {
                     liveChannel.sendMessage(message.toString()).setEmbeds(liveEmbed(event)).queue();
+                    Bot.commandsRun++;
                 } catch (NullPointerException ignored) { } // If the live channel no longer exists, then just don't print the message.
             }
         }

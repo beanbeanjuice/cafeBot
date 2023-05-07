@@ -110,7 +110,7 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `remove-my-data` - Request to remove your data from the bot!
 * `stats` - Show statistics such as commands run, current servers, and users!
 * `support` - Get support for the bot!
-* `user-info` - Get user information about someone.
+* `whois` - Get user information about someone.
 ##### 2. **CAFE**
 * `balance` - Check your balance!
 * `donate-beancoins` - Donate some of your `beanCoins` to someone! (Only up to 25 every hour though!)
@@ -128,8 +128,8 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `rate` - Rate the percentages of someone! (*somewhat* NSFW)
 * `snipe` - Snipe a recently deleted message! (30 Seconds)
 * `tea-meme` - Get a tea meme!
+* `8ball` - Ask a yes or no question!
 ##### 4. **GAMES**
-* `8-ball` - Ask a yes or no question!
 * `coin-flip` - Flip a coin!
 * `connect-4` - Play connect four with someone!
 * `dice-roll` - Roll a dice!

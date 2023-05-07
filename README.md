@@ -63,7 +63,8 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#data">What data does this bot store?</a></li>
+    <li><a href="#privacy-policy">What data does this bot store?</a></li>
+    <li><a href="#terms-and-conditions">Terms and Conditions</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
@@ -126,7 +127,7 @@ This is an example of how to list things you need to use the software and how to
 As you can see, this was shown using the command `/help order`. It shows each parameter you can run. For example, the first `<NUMBER>` is the `CATEGORY NUMBER` for the menu, needs to be a number, and is required. The `help` command also provides an example on how to actually use the command if you are stuck!
 
 #### **Command Section**
-*There are many command sections, with more coming soon. To show the commands in a specific section, do `!!help (command section)` or for example, `!!help moderation`!* Doing `!!help (command)` will also show you an example of how to use the command.
+*There are many command sections, with more coming soon. To show the commands in a specific section, do `/help (command section)` or for example, `/help moderation`!* Doing `/help (command)` will also show you an example of how to use the command.
 
 ##### 1. **GENERIC**
 * `bot-donate` - Donate for the bot!
@@ -143,7 +144,7 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `remove-my-data` - Request to remove your data from the bot!
 * `stats` - Show statistics such as commands run, current servers, and users!
 * `support` - Get support for the bot!
-* `user-info` - Get user information about someone.
+* `whois` - Get user information about someone.
 ##### 2. **CAFE**
 * `balance` - Check your balance!
 * `donate-beancoins` - Donate some of your `beanCoins` to someone! (Only up to 25 every hour though!)
@@ -161,8 +162,8 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `rate` - Rate the percentages of someone! (*somewhat* NSFW)
 * `snipe` - Snipe a recently deleted message! (30 Seconds)
 * `tea-meme` - Get a tea meme!
+* `8ball` - Ask a yes or no question!
 ##### 4. **GAMES**
-* `8-ball` - Ask a yes or no question!
 * `coin-flip` - Flip a coin!
 * `connect-4` - Play connect four with someone!
 * `dice-roll` - Roll a dice!
@@ -248,7 +249,7 @@ Distributed under the GPL-3.0 License. See `LICENSE` for more information.
 <!-- DATA THIS BOT STORES -->
 # Privacy Policy
 
-Here is ALL of the data that this bot could *possibly* store on you. This, of course, is subject to change. None of these can be accessed by other servers (that you are not a part of) by the bot.
+Here is ALL of the data that this bot could *possibly* store on you. This, of course, is subject to change. None of these can be accessed by other servers (that you are not a part of) by the bot. The full policy can be viewed [here](https://www.beanbeanjuice.com/cafeBot/privacy_policy.html).
 
 - *__Discord Data__*
   - Your Discord ID.`*`
@@ -271,6 +272,11 @@ Here is ALL of the data that this bot could *possibly* store on you. This, of co
 ##### `*` - This is already public information anyway, and is crucial for having the bot work.
 ##### `**` - This is something that is needed for the bot to do things like apply a role to someone when they join a specific voice channel, or to duplicate a voice channel when needed.
 ##### `***` - Your birthday is only stored WHEN specified, and can even be removed at anytime by simply using the `/birthday remove` command.
+
+<!-- Terms and Conditions -->
+# Terms and Conditions
+
+By using [cafeBot](https://www.github.com/beanbeanjuice/cafeBot), you are agreeing to the privacy policy and terms and conditions as stated [here](https://www.beanbeanjuice.com/cafeBot/terms_and_conditions.html). Again, other than the things you provide through commands, nothing is saved and no personal information is saved.
 
 <!-- CONTACT -->
 # Contact
