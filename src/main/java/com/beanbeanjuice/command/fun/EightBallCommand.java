@@ -1,4 +1,4 @@
-package com.beanbeanjuice.command.games;
+package com.beanbeanjuice.command.fun;
 
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
@@ -44,6 +44,7 @@ public class EightBallCommand implements ICommand {
         yesAnswers.add("Of course.");
         yesAnswers.add("More than likely.");
         yesAnswers.add("YES ABSOLUTELY.");
+        yesAnswers.add("Hmmm... I think so.");
 
         ArrayList<String> noAnswers = new ArrayList<>();
         noAnswers.add("Of course not.");
@@ -52,8 +53,9 @@ public class EightBallCommand implements ICommand {
         noAnswers.add("There is some doubt...");
         noAnswers.add("Less than likely.");
         noAnswers.add("ABSOLUTELY NOT.");
+        noAnswers.add("Are you kidding? No!");
 
-        if (Helper.getRandomNumber(1, 3) == 1)
+        if (Helper.getRandomNumber(0, 2) == 1)
             return yesAnswers.get(Helper.getRandomNumber(0, yesAnswers.size()));
         else
             return noAnswers.get(Helper.getRandomNumber(0, noAnswers.size()));
@@ -62,13 +64,13 @@ public class EightBallCommand implements ICommand {
     @NotNull
     @Override
     public String getDescription() {
-        return "Ask 8-ball a yes or no question!";
+        return "Ask the 8 ball a yes or no question!";
     }
 
     @NotNull
     @Override
     public String exampleUsage() {
-        return "`/8-ball Will I ever be real?`";
+        return "`/8ball Will I ever be real?`";
     }
 
     @NotNull
@@ -82,7 +84,7 @@ public class EightBallCommand implements ICommand {
     @NotNull
     @Override
     public CommandCategory getCategoryType() {
-        return CommandCategory.GAMES;
+        return CommandCategory.FUN;
     }
 
     @NotNull

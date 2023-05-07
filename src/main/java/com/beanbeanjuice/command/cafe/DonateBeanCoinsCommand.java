@@ -56,7 +56,7 @@ public class DonateBeanCoinsCommand implements ICommand {
 
         // Checking if the donatee was unable to be retrieved from the CafeAPI.
         if (donatee == null) {
-            event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Getting User Information",
                     "There has been an error retrieving the specified user's information in the database."
             )).queue();
@@ -65,7 +65,7 @@ public class DonateBeanCoinsCommand implements ICommand {
 
         // Checking if the donator IS the donatee
         if (donatee.getUserID().equals(donatorUser.getId())) {
-            event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Cannot Donate to Self",
                     "You cannot donate to yourself!"
             )).queue();
@@ -74,7 +74,7 @@ public class DonateBeanCoinsCommand implements ICommand {
 
         // Checking if the donator was unable to be retrieved from the CafeAPI.
         if (donator == null) {
-            event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Getting User Information",
                     "There has been an error retrieving your user information in the database."
             )).queue();
@@ -83,7 +83,7 @@ public class DonateBeanCoinsCommand implements ICommand {
 
         // Making sure they can only donate the amount that is in their balance.
         if (donator.getBeanCoins() < amountToDonate) {
-            event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Missing Balance",
                     "You don't have enough balance to donate that amount. You only have `" + donator.getBeanCoins() + "bC`."
             )).queue();
@@ -94,7 +94,7 @@ public class DonateBeanCoinsCommand implements ICommand {
         try {
             Bot.getCafeAPI().CAFE_USER.updateCafeUser(donator.getUserID(), CafeType.BEAN_COINS, donator.getBeanCoins() - amountToDonate);
         } catch (CafeException e) {
-            event.getChannel().sendMessageEmbeds(Helper.sqlServerError(
+            event.getHook().sendMessageEmbeds(Helper.sqlServerError(
                     "Error updating donation sender. There has been an error contacting the Cafe API."
             )).queue();
             Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Updating Donation Sender: " + e.getMessage(), e);
@@ -105,7 +105,7 @@ public class DonateBeanCoinsCommand implements ICommand {
         try {
             Bot.getCafeAPI().CAFE_USER.updateCafeUser(donatee.getUserID(), CafeType.BEAN_COINS, donatee.getBeanCoins() + amountToDonate);
         } catch (CafeException e) {
-            event.getChannel().sendMessageEmbeds(Helper.sqlServerError(
+            event.getHook().sendMessageEmbeds(Helper.sqlServerError(
                     "Error updating donation receiver. There has been an error contacting the Cafe API."
             )).queue();
             Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Updating Donation Receiver: " + e.getMessage(), e);
@@ -122,7 +122,7 @@ public class DonateBeanCoinsCommand implements ICommand {
             return;
         }
 
-        event.getChannel().sendMessageEmbeds(moneyEmbed(donatorUser, donateeUser, donator, donatee, amountToDonate)).queue();
+        event.getHook().sendMessageEmbeds(moneyEmbed(donatorUser, donateeUser, donator, donatee, amountToDonate)).queue();
     }
 
     /**

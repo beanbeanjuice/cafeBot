@@ -51,7 +51,7 @@ public class PingCommand implements ICommand {
                 .append("**OS Memory Usage** - `").append(systemMemoryUsage).append("` mb / `").append(systemMemoryTotal).append("` mb\n")
                 .append("**Bot Memory Usage** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
                 .append("**Bot Uptime** - `").append(Helper.millisToDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
-                .append("**Commands Run** - `").append(Bot.commandsRun).append("`\n")
+                .append("**Commands Run (After Restart)** - `").append(Bot.commandsRun).append("`\n")
                 .append("Hello there! How are you? Would you like to order some coffee?");
 
         embedBuilder

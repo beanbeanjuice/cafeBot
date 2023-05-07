@@ -41,7 +41,7 @@ public class Helper {
                 });
             }
         };
-        updateTimer.scheduleAtFixedRate(updateTimerTask, 0, TimeUnit.HOURS.toMillis(12));
+        updateTimer.scheduleAtFixedRate(updateTimerTask, 0, TimeUnit.DAYS.toMillis(1));
     }
 
     /**
@@ -58,7 +58,7 @@ public class Helper {
                 String finalString = "";
 
                 switch (num) {
-                    case 1 -> finalString = "Currently in " + getTotalServers() + " restaurants!";
+                    case 1 -> finalString = "Currently in " + getTotalServers() + " cafés!";
                     case 2 -> finalString = "Waiting " + getTotalChannels() + " tables!";
                     case 3 -> finalString = "Serving " + getTotalUsers() + " customers!";
                 }
@@ -78,7 +78,7 @@ public class Helper {
         long systemMemoryUsage = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCommittedVirtualMemorySize()/1048576;
         long dedicatedMemoryTotal = Runtime.getRuntime().maxMemory()/1048576;
         long dedicatedMemoryUsage = Runtime.getRuntime().totalMemory()/1048576;
-        embedBuilder.setTitle("Hourly CafeBot Update");
+        embedBuilder.setTitle("Daily CafeBot Update");
         descriptionBuilder.append("**__System Status__**: Online\n\n");
         descriptionBuilder.append("**__Rest Ping__** - `").append(botPing).append("`\n")
                 .append("**__Gateway Ping__** - `").append(gatewayPing).append("`\n")
@@ -87,7 +87,7 @@ public class Helper {
                 .append("**__OS Memory Usage__** - `").append(systemMemoryUsage).append("` mb / `").append(systemMemoryTotal).append("` mb\n")
                 .append("**__Bot Memory Usage__** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
                 .append("**__Bot Uptime__** - `").append(formatTimeDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
-                .append("**__Commands Run__** - `").append(Bot.commandsRun).append("`\n");
+                .append("**__Commands Run (After Restart)__** - `").append(Bot.commandsRun).append("`\n");
 
         embedBuilder.setDescription(descriptionBuilder.toString());
         embedBuilder.setThumbnail(Bot.DISCORD_AVATAR_URL);
@@ -426,7 +426,7 @@ public class Helper {
     }
 
     /**
-     * Return a {@link MessageEmbed} stating that this is not of type {@link TextChannel}.
+     * Return a {@link MessageEmbed} stating that this is not of type {@link net.dv8tion.jda.api.entities.channel.concrete.TextChannel TextChannel}.
      * @param type The {@link ChannelType type}.
      * @return The completed {@link MessageEmbed}.
      */

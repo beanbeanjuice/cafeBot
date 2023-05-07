@@ -32,7 +32,7 @@ public class VentCommand implements ICommand {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Cannot Send Vent",
                     "There is no anonymous venting channel enabled on this server. Let them know " +
-                            "they can enable it by doing `/vent-channel set`!"
+                            "they can enable it by doing `/venting-channel set`!"
             )).queue();
             return;
         }
