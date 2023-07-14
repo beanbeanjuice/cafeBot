@@ -222,6 +222,7 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `twitch-notifications` - Set or remove the twitch notifications channel. If enabled, you will receive notifications for specified channels that you have added.
 * `venting-channel` - Set or remove the venting channel. If enabled, this will allow users to anonymously vent.
 * `welcome-channel` - Set or remove the welcome channel. If enabled, it will welcome users with a cute message when they join the server.
+* `goodbye-channel` - Set or remove the goodbye channel. If enabled, it will say goodbye to users with a cute message when they leave the server.
 ##### 10. **EXPERIMENTAL**
 * `Nothing here yet!`
 
