@@ -397,6 +397,24 @@ public class GuildHandler {
     }
 
     /**
+     * Sets the {@link String goodbyeChannelID} for the specified {@link String guildID}.
+     *
+     * @param guildID The specified {@link String guildID}.
+     * @param goodbyeChannelID The new {@link String goodbyeChannelID}.
+     * @return True, if the {@link String goodbyeChannelID} was successfully updated.
+     */
+    @NotNull
+    protected static Boolean setGoodbyeChannelID(@NotNull String guildID, @NotNull String goodbyeChannelID) {
+        try {
+            Bot.getCafeAPI().GUILD.updateGuildInformation(guildID, GuildInformationType.GOODBYE_CHANNEL_ID, goodbyeChannelID);
+            return true;
+        } catch (CafeException e) {
+            Bot.getLogger().log(GuildHandler.class, LogLevel.WARN, "Error Updating Goodbye Channel ID: " + e.getMessage(), e);
+            return false;
+        }
+    }
+
+    /**
      * Sets the {@link String ventingChannelID} for the specified {@link String guildID}.
      *
      * @param guildID          The specified {@link String guildID}.
