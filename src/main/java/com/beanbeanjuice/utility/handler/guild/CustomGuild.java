@@ -223,6 +223,18 @@ public class CustomGuild {
     }
 
     /**
+     * @return The goodbye {@link TextChannel} for the {@link Guild}.
+     */
+    @Nullable
+    public TextChannel getGoodbyeChannel() {
+        try {
+            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.GOODBYE));
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    /**
      * Update the welcome {@link TextChannel} for the {@link Guild}.
      *
      * @param welcomeChannelID The ID of the new welcome {@link TextChannel}.
@@ -232,6 +244,21 @@ public class CustomGuild {
     public Boolean setWelcomeChannelID(@NotNull String welcomeChannelID) {
         if (GuildHandler.setWelcomeChannelID(guildID, welcomeChannelID)) {
             customChannelIDs.put(CustomChannel.WELCOME, welcomeChannelID);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Update the goodbye {@link TextChannel} for the {@link Guild}.
+     *
+     * @param goodbyeChannelID The ID of the new goodbye {@link TextChannel}.
+     * @return True, if it was successfully updated.
+     */
+    @NotNull
+    public Boolean setGoodbyeChannelID(@NotNull String goodbyeChannelID) {
+        if (GuildHandler.setGoodbyeChannelID(guildID, goodbyeChannelID)) {
+            customChannelIDs.put(CustomChannel.GOODBYE, goodbyeChannelID);
             return true;
         }
         return false;
