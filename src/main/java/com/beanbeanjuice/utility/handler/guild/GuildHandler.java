@@ -60,6 +60,7 @@ public class GuildHandler {
                 String raffleChannelID = guildInformation.getRaffleChannelID();
                 String birthdayChannelID = guildInformation.getBirthdayChannelID();
                 String welcomeChannelID = guildInformation.getWelcomeChannelID();
+                String goodbyeChannelID = guildInformation.getGoodbyeChannelID();
                 String logChannelID = guildInformation.getLogChannelID();
                 String ventingChannelID = guildInformation.getVentingChannelID();
                 Boolean aiState = guildInformation.getAiResponseStatus();
@@ -70,8 +71,9 @@ public class GuildHandler {
                         twitchChannelID, twitchChannelsInGuild, mutedRoleID,
                         liveNotificationsRoleID, notifyOnUpdate, updateChannelID,
                         countingChannelID, pollChannelID, raffleChannelID,
-                        birthdayChannelID, welcomeChannelID, logChannelID,
-                        ventingChannelID, aiState, dailyChannelID
+                        birthdayChannelID, welcomeChannelID, goodbyeChannelID,
+                        logChannelID, ventingChannelID, aiState,
+                        dailyChannelID
                 ));
             });
         } catch (CafeException e) {
@@ -346,12 +348,14 @@ public class GuildHandler {
         try {
             Bot.getCafeAPI().GUILD.createGuildInformation(guildID);
 
+            // Create default guild.
             guildDatabase.put(guildID, new CustomGuild(guildID, "!!", "0",
                     "0", new ArrayList<>(), "0",
                     "0", true, "0",
                     "0", "0", "0",
                     "0", "0", "0",
-                    "0", false, "0"));
+                    "0", "0", false,
+                    "0"));
 
             return true;
         } catch (CafeException e) {
