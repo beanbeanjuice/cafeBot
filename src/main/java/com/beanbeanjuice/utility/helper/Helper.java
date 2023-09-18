@@ -2,6 +2,8 @@ package com.beanbeanjuice.utility.helper;
 
 import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.logging.LogLevel;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.management.OperatingSystemMXBean;
 import com.beanbeanjuice.cafeapi.CafeAPI;
 import com.beanbeanjuice.cafeapi.requests.RequestLocation;
@@ -13,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.Random;
 import java.util.Timer;
@@ -434,6 +438,18 @@ public class Helper {
     public static MessageEmbed notATextChannelEmbed(@NotNull ChannelType type) {
         return errorEmbed("Not A Text Channel", "The channel type you are trying to execute " +
                 "this command for is: `" + type.name() + "`.");
+    }
+
+    /**
+     * Return a {@link JsonNode} from a given json {@link String filePath}.
+     * @param filePath The {@link String filePath} of the JSON file.
+     * @return The specified file as a {@link JsonNode}.
+     * @throws IOException Thrown if the given {@link String filePath} is unreachable.
+     */
+    @NotNull
+    public static JsonNode parseJson(String filePath) throws IOException {
+        File file = new File(filePath);
+        return new ObjectMapper().readTree(file);
     }
 
 }
