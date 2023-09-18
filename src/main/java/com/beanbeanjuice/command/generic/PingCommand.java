@@ -29,7 +29,21 @@ public class PingCommand implements ICommand {
         );
 
         if (event.getOption("any_string") != null) {
-            event.getHook().sendMessage(event.getOption("any_string").getAsString()).queue();
+
+            if (!event.getUser().getName().equalsIgnoreCase("beanbeanjuice"))
+                event.getHook().sendMessage(event.getOption("any_string").getAsString()).queue();
+
+            String string = event.getOption("any_string").getAsString();
+
+            switch (string) {
+                case "ai" -> {
+                    Bot.getAIResponseListener().refreshMaps();
+                    event.getHook().sendMessageEmbeds(Helper.successEmbed(
+                            "AI Responses Refreshed",
+                            "The AI responses have been successfully refreshed!"
+                    )).queue();
+                }
+            }
         }
     }
 
