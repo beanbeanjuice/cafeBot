@@ -16,6 +16,7 @@ public enum CustomChannel {
     RAFFLE("Raffle Channel"),
     BIRTHDAY("Birthday Channel"),
     WELCOME("Welcome Channel"),
+    GOODBYE("Goodbye Channel"),
     LOG("Log Channel"),
     VENTING("Venting Channel"),
     DAILY("Daily Channel");

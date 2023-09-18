@@ -50,6 +50,7 @@ public class CustomGuild {
      * @param pollChannelID           The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.section.moderation.poll.Poll Polls}.
      * @param birthdayChannelID       The ID of the {@link TextChannel} being used for {@link com.beanbeanjuice.utility.section.fun.BirthdayHandler Birthday} notifications.
      * @param welcomeChannelID        The ID of the {@link TextChannel} being used for the Welcome notifications.
+     * @param goodbyeChannelID        The ID of the {@link TextChannel} being used for the Goodbye notifications.
      * @param ventingChannelID        The ID of the {@link TextChannel} being used for anonymous venting.
      * @param aiState                 True, if the AI portion should be enabled for this {@link CustomGuild}.
      */
@@ -57,8 +58,9 @@ public class CustomGuild {
                        @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
                        @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID,
                        @NotNull String countingChannelID, @NotNull String pollChannelID, @NotNull String raffleChannelID,
-                       @NotNull String birthdayChannelID, @NotNull String welcomeChannelID, @NotNull String logChannelID,
-                       @NotNull String ventingChannelID, @NotNull Boolean aiState, @NotNull String dailyChannelID) {
+                       @NotNull String birthdayChannelID, @NotNull String welcomeChannelID, @NotNull String goodbyeChannelID,
+                       @NotNull String logChannelID, @NotNull String ventingChannelID, @NotNull Boolean aiState,
+                       @NotNull String dailyChannelID) {
         customChannelIDs = new HashMap<>();
 
         this.guildID = guildID;
@@ -75,6 +77,7 @@ public class CustomGuild {
         customChannelIDs.put(CustomChannel.RAFFLE, raffleChannelID);
         customChannelIDs.put(CustomChannel.BIRTHDAY, birthdayChannelID);
         customChannelIDs.put(CustomChannel.WELCOME, welcomeChannelID);
+        customChannelIDs.put(CustomChannel.GOODBYE, goodbyeChannelID);
         customChannelIDs.put(CustomChannel.LOG, logChannelID);
         customChannelIDs.put(CustomChannel.VENTING, ventingChannelID);
         this.aiState = aiState;
@@ -223,6 +226,18 @@ public class CustomGuild {
     }
 
     /**
+     * @return The goodbye {@link TextChannel} for the {@link Guild}.
+     */
+    @Nullable
+    public TextChannel getGoodbyeChannel() {
+        try {
+            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.GOODBYE));
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    /**
      * Update the welcome {@link TextChannel} for the {@link Guild}.
      *
      * @param welcomeChannelID The ID of the new welcome {@link TextChannel}.
@@ -232,6 +247,21 @@ public class CustomGuild {
     public Boolean setWelcomeChannelID(@NotNull String welcomeChannelID) {
         if (GuildHandler.setWelcomeChannelID(guildID, welcomeChannelID)) {
             customChannelIDs.put(CustomChannel.WELCOME, welcomeChannelID);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Update the goodbye {@link TextChannel} for the {@link Guild}.
+     *
+     * @param goodbyeChannelID The ID of the new goodbye {@link TextChannel}.
+     * @return True, if it was successfully updated.
+     */
+    @NotNull
+    public Boolean setGoodbyeChannelID(@NotNull String goodbyeChannelID) {
+        if (GuildHandler.setGoodbyeChannelID(guildID, goodbyeChannelID)) {
+            customChannelIDs.put(CustomChannel.GOODBYE, goodbyeChannelID);
             return true;
         }
         return false;

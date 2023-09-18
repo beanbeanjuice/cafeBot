@@ -72,6 +72,7 @@ public class BirthdayHandler {
                                 }
                             }
 
+                            // TODO: For some reason this is trying to PM someone.
                             // PM them a happy birthday.
                             Helper.pmUser(Helper.getUser(userID), "Hey... we don't know if anyone wished you " +
                                     "a happy birthday, but happy birthday <3!");
