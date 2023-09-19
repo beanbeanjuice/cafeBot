@@ -27,6 +27,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Initialize Sample AI JSON File
+      run: echo "{"test":{"triggers":["test"],"responses":["What are you testing, {user}?","Everything is good, boss!","Everything is working on my end, {user}!"]}}" | cat > ai.json
+
+    - name: Initialize Sample Menu JSON File
+      run: echo "{"breakfast":[{"name":"Normal Pancakes","price":7.25,"description":"Normal pancakes with a side of 2 eggs and 2 pieces of bacon!","image_url":"https://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/breakfasts/pancakes.jpg"}],"drink":[{"name":"Tea","price":3,"description":"A warm cup of tea for your cozy day!","image_url":"https://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/drinks/tea.webp"}],"sandwich":[{"name":"Ham Sandwich","price":4.25,"description":"A ham sandwich with cheese!","image_url":"https://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sandwiches/ham_sandwich.jpg"}],"soup":[{"name":"Chicken Noodle Soup","price":3.25,"description":"Chicken noodle soup to get you over a cold!","image_url":"https://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/soups/chicken_noodle_soup.jpg"}],"side":[{"name":"Fries","price":0.5,"description":"Some fries to go along with your order!","image_url":"https://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sides/fries.jpg"}],"fruit":[{"name":"Banana","price":0.25,"description":"A small banana for your potassium!","image_url":"https://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/fruits/banana.jpg"}],"sweet":[{"name":"Scone","price":2,"description":"A soft scone. Possible pair with a coffee!","image_url":"https://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/sweets/scone.jpg"}],"alcohol":[{"name":"Not Rum and Coke","price":7,"description":"Something not too light but not too heavy!","image_url":"https://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/alcohol/rum_and_coke.jpg"}],"secret":[{"name":"The \"One Tap\"","price":10,"description":"A 69oz cup of Swedish fish GFUEL.","image_url":"https://cdn.beanbeanjuice.com/images/cafeBot/cafe_menu/secrets/the_one_tap.webp"}]}" | cat > menu.json
+
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
