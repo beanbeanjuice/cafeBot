@@ -173,9 +173,12 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `member-count` - Get the member count for your server!
 * `vent` - Anonymously vent to the server! ~~If the server has anonymous venting enabled...~~
 ##### 6. **INTERACTION**
+* `amaze` - Be amazed at someone!
+* `ask` - Ask someone a question!
 * `bite` - Bite someone!
 * `blush` - Blush at someone!
 * `bonk` - Bonk someone! Send them to `h o r n i` jail.
+* `boop` - Boop someone!
 * `cry` - Cry at someone!
 * `cuddle` - Cuddle someone!
 * `dab` - Dab at someone!
@@ -186,11 +189,15 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `hug` - Hug someone!
 * `kiss` - Kiss someone!
 * `lick` - Lick... someone... ummm why?
+* `love` - Show someone your love for them!
 * `nom` - Nom at someone!
+* `nosebleed` - Have a nosebleed... why would you do that?
+* `ok` - Show someone your dissatisfaction.
 * `poke` - Poke someone!
 * `pout` - Pout at someone!
 * `punch` - Punch someone!
 * `rage` - Rage at someone!
+* `shoot` - Shoot someone (in-game)!
 * `shush` - Shush someone if they're being too loud!
 * `slap` - Slap someone!
 * `sleep` - Sleep! (Or sleep with someone...)
@@ -199,7 +206,10 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `stare` - Stare at someone!
 * `throw` - Throw someone!
 * `tickle` - Tickle someone!
+* `uwu` - UwU at someone!
+* `wave` - Wave at someone!
 * `welcome` - Welcome someone... for something!
+* `wink` - Wink at someone!
 * `yell` - Yell at someone!
 ##### 7. **TWITCH**
 * `twitch-channel` - Add or remove a twitch channel to receive notifications for!
