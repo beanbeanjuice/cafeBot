@@ -293,7 +293,7 @@ By using [cafeBot](https://www.github.com/beanbeanjuice/cafeBot), you are agreei
 # Contact
 
 - beanbeanjuice
-- Discord: [beanbeanjuice#4595](https://discord.gg/KrUFw3uHST)
+- Discord: [@beanbeanjuice](https://discord.gg/KrUFw3uHST)
 - YouTube: [beanbeanjuice](https://www.youtube.com/beanbeanjuice)
 - TikTok: [@beanbeanjuiceofficial](https://www.tiktok.com/@beanbeanjuiceofficial)
 - Twitter: [@beanbeanjuice](https://twitter.com/beanbeanjuice)
