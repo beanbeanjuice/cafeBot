@@ -92,11 +92,10 @@
         </dependency>
 
         <!-- Café API -->
-        <!-- TODO: Change to Release -->
         <dependency>
             <groupId>com.beanbeanjuice</groupId>
             <artifactId>cafe-api-wrapper</artifactId>
-            <version>1.4.0-SNAPSHOT</version>
+            <version>1.4.0</version>
         </dependency>
 
         <!-- Discord JDA -->
