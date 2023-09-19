@@ -17,6 +17,7 @@ import com.beanbeanjuice.command.settings.ListCustomChannelsCommand;
 import com.beanbeanjuice.command.settings.birthday.BirthdayChannelCommand;
 import com.beanbeanjuice.command.settings.counting.CountingChannelCommand;
 import com.beanbeanjuice.command.settings.daily.DailyChannelCommand;
+import com.beanbeanjuice.command.settings.goodbye.GoodbyeChannelCommand;
 import com.beanbeanjuice.command.settings.logging.LogChannelCommand;
 import com.beanbeanjuice.command.settings.poll.PollChannelCommand;
 import com.beanbeanjuice.command.moderation.AddRaffleCommand;
@@ -99,9 +100,12 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("whois", new WhoIsCommand());
 
         // Interaction
+        commands.put("amaze", new AmazedCommand());
+        commands.put("ask", new AskCommand());
         commands.put("bite", new BiteCommand());
         commands.put("blush", new BlushCommand());
         commands.put("bonk", new BonkCommand());
+        commands.put("boop", new BoopCommand());
         commands.put("cry", new CryCommand());
         commands.put("cuddle", new CuddleCommand());
         commands.put("dab", new DabCommand());
@@ -112,11 +116,15 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("hug", new HugCommand());
         commands.put("kiss", new KissCommand());
         commands.put("lick", new LickCommand());
+        commands.put("love", new LoveCommand());
         commands.put("nom", new NomCommand());
+        commands.put("nosebleed", new NosebleedCommand());
+        commands.put("ok", new OkCommand());
         commands.put("poke", new PokeCommand());
         commands.put("pout", new PoutCommand());
         commands.put("punch", new PunchCommand());
         commands.put("rage", new RageCommand());
+        commands.put("shoot", new ShootCommand());
         commands.put("shush", new ShushCommand());
         commands.put("slap", new SlapCommand());
         commands.put("sleep", new SleepCommand());
@@ -125,7 +133,10 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("stare", new StareCommand());
         commands.put("throw", new ThrowCommand());
         commands.put("tickle", new TickleCommand());
+        commands.put("uwu", new UwUCommand());
+        commands.put("wave", new WaveCommand());
         commands.put("welcome", new WelcomeCommand());
+        commands.put("wink", new WinkCommand());
         commands.put("yell", new YellCommand());
 
         // Moderation
@@ -146,6 +157,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("bot-update", new BotUpdateCommand());
         commands.put("venting-channel", new VentingChannelCommand());
         commands.put("welcome-channel", new WelcomeChannelCommand());
+        commands.put("goodbye-channel", new GoodbyeChannelCommand());
         commands.put("ai", new AiCommand());
         commands.put("list-custom-channels", new ListCustomChannelsCommand());
 
