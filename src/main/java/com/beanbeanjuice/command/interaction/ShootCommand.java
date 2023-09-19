@@ -11,6 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * An {@link ICommand} used to shoot people (in-game)!
+ *
+ * @author beanbeanjuice
+ */
 public class ShootCommand implements ICommand {
 
     @Override

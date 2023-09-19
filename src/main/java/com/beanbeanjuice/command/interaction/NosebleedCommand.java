@@ -11,6 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * An {@link ICommand} used to cause a nosebleed!
+ *
+ * @author beanbeanjuice
+ */
 public class NosebleedCommand implements ICommand {
 
     @Override

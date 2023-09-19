@@ -11,6 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * An {@link ICommand} used to boop people!
+ *
+ * @author beanbeanjuice
+ */
 public class BoopCommand implements ICommand {
 
     @Override

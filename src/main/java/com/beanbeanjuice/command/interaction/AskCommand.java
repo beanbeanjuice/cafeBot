@@ -11,6 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * An {@link ICommand} used to ask questions!
+ *
+ * @author beanbeanjuice
+ */
 public class AskCommand implements ICommand {
 
     @Override

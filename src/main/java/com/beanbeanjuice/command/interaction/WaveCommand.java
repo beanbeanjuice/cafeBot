@@ -11,6 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * An {@link ICommand} used to wave at someone!
+ *
+ * @author beanbeanjuice
+ */
 public class WaveCommand implements ICommand {
 
     @Override
