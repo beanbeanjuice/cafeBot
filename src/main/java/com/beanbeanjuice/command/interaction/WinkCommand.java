@@ -1,0 +1,59 @@
+package com.beanbeanjuice.command.interaction;
+
+import com.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
+import com.beanbeanjuice.utility.command.CommandCategory;
+import com.beanbeanjuice.utility.command.ICommand;
+import com.beanbeanjuice.utility.section.interaction.Interaction;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+
+public class WinkCommand implements ICommand {
+
+    @Override
+    public void handle(@NotNull SlashCommandInteractionEvent event) {
+        new Interaction(InteractionType.WINK,
+                "**{sender}** *winked* at themselves! Okay... weird...",
+                "**{sender}** *winked* at **{receiver}**! 🫢",
+                "{sender} winked at others {amount_sent} times. {receiver} was winked at {amount_received} times.",
+                "https://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif",
+                event);
+    }
+
+    @NotNull
+    @Override
+    public String getDescription() {
+        return "Wink at someone!";
+    }
+
+    @NotNull
+    @Override
+    public String exampleUsage() {
+        return "`/wink` or `/wink @beanbeanjuice` or `/wink @beanbeanjuice hi`";
+    }
+
+    @NotNull
+    @Override
+    public ArrayList<OptionData> getOptions() {
+        ArrayList<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.USER, "receiver", "The person to wink at.", false, false));
+        options.add(new OptionData(OptionType.STRING, "message", "An optional message to add.", false, false));
+        return options;
+    }
+
+    @NotNull
+    @Override
+    public CommandCategory getCategoryType() {
+        return CommandCategory.INTERACTION;
+    }
+
+    @NotNull
+    @Override
+    public Boolean allowDM() {
+        return true;
+    }
+
+}
