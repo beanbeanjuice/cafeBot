@@ -11,6 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * An {@link ICommand} used to wink at someone!
+ *
+ * @author beanbeanjuice
+ */
 public class WinkCommand implements ICommand {
 
     @Override

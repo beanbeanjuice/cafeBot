@@ -11,6 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * An {@link ICommand} used to show you're okay.
+ *
+ * @author beanbeanjuice
+ */
 public class OkCommand implements ICommand {
 
     @Override

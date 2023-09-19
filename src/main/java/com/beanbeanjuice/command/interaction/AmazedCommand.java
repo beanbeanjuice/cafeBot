@@ -11,6 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * An {@link ICommand} used to be amazed at people!
+ *
+ * @author beanbeanjuice
+ */
 public class AmazedCommand implements ICommand {
 
     @Override

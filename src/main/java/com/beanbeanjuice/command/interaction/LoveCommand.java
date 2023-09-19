@@ -11,6 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * An {@link ICommand} used to show love for people!
+ *
+ * @author beanbeanjuice
+ */
 public class LoveCommand implements ICommand {
 
     @Override
