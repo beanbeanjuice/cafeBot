@@ -31,14 +31,12 @@ public class AIResponseListener extends ListenerAdapter {
      */
     public AIResponseListener() {
         messageMap = new HashMap<>();
-
-        try {
-            createMaps();
-        } catch (IOException e) {
-            Bot.getLogger().log(AIResponseListener.class, LogLevel.ERROR, "There was an error establishing AI responses.", false, true, e);
-        }
+        refreshMaps();
     }
 
+    /**
+     * Refreshes the AI maps if the file has changed.
+     */
     public void refreshMaps() {
         messageMap.clear();
 
