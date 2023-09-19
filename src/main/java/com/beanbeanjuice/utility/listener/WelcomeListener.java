@@ -82,7 +82,7 @@ public class WelcomeListener extends ListenerAdapter {
                     "Invalid Image URL", "Invalid image URL for Welcome: " + guildWelcome.getImageURL());
         }
         embedBuilder.setColor(Helper.getRandomColor());
-        embedBuilder.setAuthor(joiner.getAsTag(), joiner.getAvatarUrl(), joiner.getAvatarUrl());
+        embedBuilder.setAuthor(joiner.getName(), joiner.getAvatarUrl(), joiner.getAvatarUrl());
         return embedBuilder.build();
     }
 

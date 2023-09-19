@@ -57,6 +57,7 @@ public class Bot {
 
     // Handlers
     private static CommandHandler commandHandler;
+    private static AIResponseListener aiResponseListener;
 
     // Additional Items
     public static int commandsRun = 0;
@@ -92,14 +93,18 @@ public class Bot {
         GuildHandler.start();  // Starting hte guild handler.
 
         logger.log(Bot.class, LogLevel.LOADING, "Adding commands...", false, false);
+
         commandHandler = new CommandHandler(bot);
+        aiResponseListener = new AIResponseListener();
+
         bot.addEventListener(
                 commandHandler,
                 new ServerListener(),  // Listening for Guild Joins/Leaves
                 new MessageListener(),  // Listening for specific messages
                 new MessageDeleteListener(),  // Listening for message deletions
                 new WelcomeListener(),  // Listening for user joins for a guild.
-                new AIResponseListener(),  // Listening for messages.
+                new GoodbyeListener(),  // Listening for user leaves for a guild.
+                aiResponseListener,  // Listening for messages.
                 new VoiceChatRoleBindListener(),  // Listening for voice joins/leaves
                 new CommandAutoCompleteHandler()  // Listens for auto complete interactions
         );
@@ -166,6 +171,14 @@ public class Bot {
     @NotNull
     public static CommandHandler getCommandHandler() {
         return commandHandler;
+    }
+
+    /**
+     * @return The current {@link AIResponseListener}.
+     */
+    @NotNull
+    public static AIResponseListener getAIResponseListener() {
+        return aiResponseListener;
     }
 
 }

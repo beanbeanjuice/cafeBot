@@ -4,6 +4,7 @@ import com.beanbeanjuice.Bot;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.command.CommandCategory;
 import com.beanbeanjuice.utility.command.ICommand;
+import com.beanbeanjuice.utility.section.cafe.MenuHandler;
 import com.sun.management.OperatingSystemMXBean;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -29,7 +30,29 @@ public class PingCommand implements ICommand {
         );
 
         if (event.getOption("any_string") != null) {
-            event.getHook().sendMessage(event.getOption("any_string").getAsString()).queue();
+
+            if (!event.getUser().getName().equalsIgnoreCase("beanbeanjuice"))
+                event.getHook().sendMessage(event.getOption("any_string").getAsString()).queue();
+
+            String string = event.getOption("any_string").getAsString();
+
+            switch (string) {
+                case "ai" -> {
+                    Bot.getAIResponseListener().refreshMaps();
+                    event.getHook().sendMessageEmbeds(Helper.successEmbed(
+                            "AI Responses Refreshed",
+                            "The AI responses have been successfully refreshed!"
+                    )).queue();
+                }
+
+                case "menu" -> {
+                    MenuHandler.refreshMenu();
+                    event.getHook().sendMessageEmbeds(Helper.successEmbed(
+                            "Menu Refreshed",
+                            "The menu has been successfully updated!"
+                    )).queue();
+                }
+            }
         }
     }
 
