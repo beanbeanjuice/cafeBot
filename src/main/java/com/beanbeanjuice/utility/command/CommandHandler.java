@@ -12,7 +12,7 @@ import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.ClearChatCommand;
 import com.beanbeanjuice.command.moderation.CreateEmbedCommand;
 import com.beanbeanjuice.command.moderation.bind.BindCommand;
-import com.beanbeanjuice.command.settings.AiCommand;
+import com.beanbeanjuice.command.settings.AICommand;
 import com.beanbeanjuice.command.settings.ListCustomChannelsCommand;
 import com.beanbeanjuice.command.settings.birthday.BirthdayChannelCommand;
 import com.beanbeanjuice.command.settings.counting.CountingChannelCommand;
@@ -158,7 +158,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("venting-channel", new VentingChannelCommand());
         commands.put("welcome-channel", new WelcomeChannelCommand());
         commands.put("goodbye-channel", new GoodbyeChannelCommand());
-        commands.put("ai", new AiCommand());
+        commands.put("ai", new AICommand());
         commands.put("list-custom-channels", new ListCustomChannelsCommand());
 
         // Social
