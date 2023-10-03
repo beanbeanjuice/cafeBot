@@ -154,6 +154,7 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 ##### 3. **FUN**
 * `avatar` - Get yours or someone else's avatar image!
 * `banner` - Get yours or someone else's profile banner!
+* `choose-random` - Choose a random variable.
 * `birthday` - Add, change, or remove your birthday! Even get someone else's birthday!
 * `coffee-meme` - Get a coffee meme!
 * `counting-statistics` - Get counting information for your server!
