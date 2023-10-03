@@ -452,4 +452,14 @@ public class Helper {
         return new ObjectMapper().readTree(file);
     }
 
+    /**
+     * Return a {@link String[]} from a given {@link String input}.
+     * The input wil be a comma separated {@link String}.
+     * @param input The comma-separated {@link String}.
+     * @return The {@link String[]} of values, now separated.
+     */
+    public static String[] removeCommaSpace(String input) {
+        return input.split(",\\s*");
+    }
+
 }
