@@ -228,7 +228,10 @@ public class CommandHandler extends ListenerAdapter {
 
     private void logCommand(@NotNull SlashCommandInteractionEvent event) {
         String commandName = event.getName();
-        StringBuilder commandString = new StringBuilder(commandName);
+        StringBuilder commandString = new StringBuilder();
+
+        commandString.append("<").append(event.getUser().getId()).append("> /")
+                        .append(commandName);
 
         if (event.getSubcommandName() != null)
             commandString.append(" ").append(event.getSubcommandName());
