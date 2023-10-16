@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.command;
 
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +23,10 @@ public interface ICommand {
      */
     void handle(@NotNull SlashCommandInteractionEvent event);
 
+    default void handleModal(@NotNull ModalInteractionEvent event) {
+        return;
+    };
+
     /**
      * @return The description for the {@link ICommand}.
      */
@@ -33,6 +38,11 @@ public interface ICommand {
      */
     @NotNull
     String exampleUsage();
+
+    @NotNull
+    default CommandType getType() {
+        return CommandType.NORMAL;
+    }
 
     /**
      * @return The various options available for the {@link ICommand}.
