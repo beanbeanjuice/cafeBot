@@ -147,7 +147,7 @@ public class RaffleCommand implements ICommand {
             embedBuilder.setFooter("This raffle will end in " + minutes + " minute from when the message was posted.");
         else
             embedBuilder.setFooter("This raffle will end in " + minutes + " minutes from when the message was posted.");
-        
+
         return embedBuilder.build();
     }
 
