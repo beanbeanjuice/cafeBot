@@ -162,6 +162,7 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 * `rate` - Rate the percentages of someone! (*somewhat* NSFW)
 * `snipe` - Snipe a recently deleted message! (30 Seconds)
 * `tea-meme` - Get a tea meme!
+* `team` - Choose and split up teams fairly.
 * `8ball` - Ask a yes or no question!
 ##### 4. **GAMES**
 * `coin-flip` - Flip a coin!
