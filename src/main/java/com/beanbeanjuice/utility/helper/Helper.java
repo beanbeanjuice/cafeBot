@@ -194,6 +194,18 @@ public class Helper {
         }
     }
 
+    @NotNull
+    public static Integer stringToPositiveInteger(@NotNull String timeString) {
+        try {
+            int num = Integer.parseInt(timeString);
+
+            if (num < 1) return -1;
+            return num;
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
     /**
      * @return The SQL Server Error {@link MessageEmbed}.
      */
