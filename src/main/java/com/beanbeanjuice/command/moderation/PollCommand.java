@@ -44,32 +44,26 @@ public class PollCommand implements ICommand {
 
         // Check if the poll channel exists.
         if (GuildHandler.getCustomGuild(event.getGuild()).getPollChannel() == null) {
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+            event.replyEmbeds(Helper.errorEmbed(
                     "No Poll Channel",
-                    "It seems you do not have a poll channel set! " +
+                    "It seems you do not have a poll channel set! You must have a dedicated poll channel. " +
                             "Do /poll-channel set to set the poll channel."
-            )).queue();
+            )).setEphemeral(true).queue();
             return;
         }
 
         // Makes sure that guilds only have 3 polls.
         if (Bot.getCafeAPI().POLL.getGuildPolls(event.getGuild().getId()).size() >= MAX_POLLS) {
-            event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
+            event.replyEmbeds(Helper.errorEmbed(
                     "Too Many Polls",
                     "You can currently only have a total of " +
                             "3 polls per Discord Server. This is due to server costs."
-            )).queue();
+            )).setEphemeral(true).queue();
             return;
         }
 
-//        Modal modal = Modal.create("poll-modal", "Create a Poll")
-//                .addComponents(ActionRow.of(getModalOptions()))
-//                .build();
-
         Modal.Builder modalBuilder = Modal.create("poll-modal", "Create a Poll");
-
         getModalOptions().forEach((option) -> modalBuilder.addComponents(ActionRow.of(option)));
-
         event.replyModal(modalBuilder.build()).queue();
     }
 
@@ -78,10 +72,10 @@ public class PollCommand implements ICommand {
         // Required items
         String title = event.getValue("poll-title").getAsString();
         ArrayList<String> arguments = convertToList(event.getValue("poll-options").getAsString());
-        int seconds = parseTimeString(event.getValue("poll-time").getAsString());
+        int minutes = Helper.stringToPositiveInteger(event.getValue("poll-time").getAsString());
 
         // Checking if at least 60 seconds.
-        if (seconds < 60) {
+        if (minutes < 1) {
             event.getHook().sendMessageEmbeds(
                     Helper.errorEmbed(
                             "Too Little Time",
@@ -103,7 +97,7 @@ public class PollCommand implements ICommand {
             return;
         }
 
-        Timestamp timestamp = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + (seconds*60000)).toString());
+        Timestamp timestamp = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + (minutes*60000)).toString());
 
         event.getHook().sendMessageEmbeds(Helper.successEmbed(
                 "Creating Poll",
@@ -113,23 +107,12 @@ public class PollCommand implements ICommand {
         // Sending a message in the poll channel.
         if (event.getValue("message") != null) {
             pollChannel.sendMessage(event.getValue("poll-message").getAsString()).setEmbeds(startingPollEmbed()).queue(message -> {
-                editMessage(message, event, timestamp, title, seconds*60, arguments);
+                editMessage(message, event, timestamp, title, minutes, arguments);
             });
         } else {
             pollChannel.sendMessageEmbeds(startingPollEmbed()).queue(message -> {
-                editMessage(message, event, timestamp, title, seconds*60, arguments);
+                editMessage(message, event, timestamp, title, minutes, arguments);
             });
-        }
-    }
-
-    private int parseTimeString(@NotNull String timeString) {
-        try {
-            int num = Integer.parseInt(timeString);
-
-            if (num <= 1) return -1;
-            return num;
-        } catch (NumberFormatException e) {
-            return -1;
         }
     }
 
@@ -251,7 +234,7 @@ public class PollCommand implements ICommand {
     @NotNull
     @Override
     public String exampleUsage() {
-        return "Just do `/add-poll` :sob: it shows you how to use it.";
+        return "Just do `/poll` :sob: it shows you how to use it.";
     }
 
     private ArrayList<TextInput> getModalOptions() {
@@ -269,8 +252,8 @@ public class PollCommand implements ICommand {
         );
 
         options.add(
-                TextInput.create("poll-time", "Time (Minimum 60 Seconds)", TextInputStyle.SHORT)
-                        .setPlaceholder("The amount of time the poll should last. (In Seconds)")
+                TextInput.create("poll-time", "Time (Minimum 1 Minute)", TextInputStyle.SHORT)
+                        .setPlaceholder("The amount of time the poll should last. (In Minutes)")
                         .build()
         );
 

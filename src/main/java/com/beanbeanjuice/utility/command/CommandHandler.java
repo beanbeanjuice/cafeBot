@@ -20,7 +20,7 @@ import com.beanbeanjuice.command.settings.daily.DailyChannelCommand;
 import com.beanbeanjuice.command.settings.goodbye.GoodbyeChannelCommand;
 import com.beanbeanjuice.command.settings.logging.LogChannelCommand;
 import com.beanbeanjuice.command.settings.poll.PollChannelCommand;
-import com.beanbeanjuice.command.moderation.AddRaffleCommand;
+import com.beanbeanjuice.command.moderation.RaffleCommand;
 import com.beanbeanjuice.command.settings.raffle.RaffleChannelCommand;
 import com.beanbeanjuice.command.settings.twitch.TwitchNotificationsCommand;
 import com.beanbeanjuice.command.settings.update.BotUpdateCommand;
@@ -143,7 +143,7 @@ public class CommandHandler extends ListenerAdapter {
         // Moderation
         commands.put("bind", new BindCommand());
         commands.put("poll", new PollCommand());
-        commands.put("add-raffle", new AddRaffleCommand());
+        commands.put("raffle", new RaffleCommand());
         commands.put("clear-chat", new ClearChatCommand());
         commands.put("create-embed", new CreateEmbedCommand());
 
