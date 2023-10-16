@@ -10,7 +10,7 @@ import com.beanbeanjuice.command.generic.*;
 import com.beanbeanjuice.command.moderation.PollCommand;
 import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.ClearChatCommand;
-import com.beanbeanjuice.command.moderation.CreateEmbedCommand;
+import com.beanbeanjuice.command.moderation.EmbedCommand;
 import com.beanbeanjuice.command.moderation.bind.BindCommand;
 import com.beanbeanjuice.command.settings.AiCommand;
 import com.beanbeanjuice.command.settings.ListCustomChannelsCommand;
@@ -145,7 +145,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("poll", new PollCommand());
         commands.put("raffle", new RaffleCommand());
         commands.put("clear-chat", new ClearChatCommand());
-        commands.put("create-embed", new CreateEmbedCommand());
+        commands.put("embed", new EmbedCommand());
 
         // Settings
         commands.put("birthday-channel", new BirthdayChannelCommand());
