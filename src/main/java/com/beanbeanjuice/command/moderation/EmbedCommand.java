@@ -34,7 +34,8 @@ public class EmbedCommand implements ICommand {
 
     @Override
     public void handleModal(@NotNull ModalInteractionEvent event) {
-        event.getChannel().sendMessageEmbeds(createEmbed(event)).queue();
+        if (event.getValue("embed-message") == null) event.getChannel().sendMessageEmbeds(createEmbed(event)).queue();
+        else event.getChannel().sendMessage(event.getValue("embed-message").getAsString()).addEmbeds(createEmbed(event)).queue();
 
         event.getHook().sendMessageEmbeds(Helper.successEmbed(
                 "Created the Custom Message Embed",
@@ -56,10 +57,9 @@ public class EmbedCommand implements ICommand {
         try {
             if (event.getValue("embed-image") != null)
                 embedBuilder.setImage(event.getValue("embed-image").getAsString());
-
-            if (event.getValue("embed-thumbnail") != null)
-                embedBuilder.setThumbnail(event.getValue("embed-thumbnail").getAsString());
         } catch (IllegalArgumentException ignored) { }
+
+        embedBuilder.setColor(Helper.getRandomColor());
 
         return embedBuilder.build();
     }
@@ -99,7 +99,14 @@ public class EmbedCommand implements ICommand {
 
         options.add(
                 TextInput.create("embed-footer", "Footer", TextInputStyle.SHORT)
-                        .setPlaceholder("Footer of the embed.")
+                        .setPlaceholder("Footer for the embed.")
+                        .setRequired(false)
+                        .build()
+        );
+
+        options.add(
+                TextInput.create("embed-message", "Optional Message", TextInputStyle.SHORT)
+                        .setPlaceholder("@everyone please check out this embed!")
                         .setRequired(false)
                         .build()
         );
@@ -107,13 +114,6 @@ public class EmbedCommand implements ICommand {
         options.add(
                 TextInput.create("embed-image", "Large Image", TextInputStyle.SHORT)
                         .setPlaceholder("A link to a large image to place in the embed.")
-                        .setRequired(false)
-                        .build()
-        );
-
-        options.add(
-                TextInput.create("embed-thumbnail", "Small Image", TextInputStyle.SHORT)
-                        .setPlaceholder("A link to a small image to place in the embed.")
                         .setRequired(false)
                         .build()
         );
