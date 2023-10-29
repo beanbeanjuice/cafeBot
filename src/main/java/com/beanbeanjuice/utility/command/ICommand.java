@@ -23,9 +23,7 @@ public interface ICommand {
      */
     void handle(@NotNull SlashCommandInteractionEvent event);
 
-    default void handleModal(@NotNull ModalInteractionEvent event) {
-        return;
-    };
+    default void handleModal(@NotNull ModalInteractionEvent event) { }
 
     /**
      * @return The description for the {@link ICommand}.
@@ -72,11 +70,10 @@ public interface ICommand {
      * @param event The {@link SlashCommandInteractionEvent event} that triggered the {@link ICommand}.
      */
     default void runSubCommand(@NotNull String subCommandName, @NotNull SlashCommandInteractionEvent event) {
-        for (ISubCommand subCommand : getSubCommands()) {
-            if (subCommand.getName().equals(subCommandName)) {
+        getSubCommands().forEach((subCommand) -> {
+            if (subCommand.getName().equals(subCommandName))
                 subCommand.handle(event);
-            }
-        }
+        });
     }
 
     /**

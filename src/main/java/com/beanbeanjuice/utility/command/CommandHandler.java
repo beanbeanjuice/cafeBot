@@ -186,6 +186,7 @@ public class CommandHandler extends ListenerAdapter {
                     List<SubcommandData> subCommands = new ArrayList<>();
 
                     for (ISubCommand subCommand : command.getSubCommands()) {
+                        // TODO: Check if subcommand is a modal.
                         SubcommandData subCommandData = new SubcommandData(subCommand.getName(), subCommand.getDescription());
                         subCommandData.addOptions(subCommand.getOptions());
                         subCommands.add(subCommandData);
@@ -195,7 +196,7 @@ public class CommandHandler extends ListenerAdapter {
                 }
 
                 case MODAL -> {
-                    // Do nothing.
+                    // Do nothing. TODO: Remove this?
                 }
             }
 
