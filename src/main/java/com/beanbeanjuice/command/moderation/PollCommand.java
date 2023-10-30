@@ -1,23 +1,27 @@
 package com.beanbeanjuice.command.moderation;
 
 import com.beanbeanjuice.Bot;
+import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import com.beanbeanjuice.utility.command.CommandCategory;
+import com.beanbeanjuice.utility.command.CommandType;
 import com.beanbeanjuice.utility.command.ICommand;
 import com.beanbeanjuice.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.utility.section.moderation.poll.Poll;
 import com.beanbeanjuice.utility.section.moderation.poll.PollEmoji;
 import com.beanbeanjuice.utility.helper.Helper;
 import com.beanbeanjuice.utility.section.moderation.poll.PollHandler;
-import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.text.TextInput;
+import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
+import net.dv8tion.jda.api.interactions.modals.Modal;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +35,7 @@ import java.util.Arrays;
  *
  * @author beanbeanjuice
  */
-public class AddPollCommand implements ICommand {
+public class PollCommand implements ICommand {
 
     private final int MAX_POLLS = 3;
 
@@ -40,29 +44,46 @@ public class AddPollCommand implements ICommand {
 
         // Check if the poll channel exists.
         if (GuildHandler.getCustomGuild(event.getGuild()).getPollChannel() == null) {
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+            event.replyEmbeds(Helper.errorEmbed(
                     "No Poll Channel",
-                    "It seems you do not have a poll channel set! " +
+                    "It seems you do not have a poll channel set! You must have a dedicated poll channel. " +
                             "Do /poll-channel set to set the poll channel."
-            )).queue();
+            )).setEphemeral(true).queue();
             return;
         }
 
         // Makes sure that guilds only have 3 polls.
         if (Bot.getCafeAPI().POLL.getGuildPolls(event.getGuild().getId()).size() >= MAX_POLLS) {
-            event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
+            event.replyEmbeds(Helper.errorEmbed(
                     "Too Many Polls",
                     "You can currently only have a total of " +
                             "3 polls per Discord Server. This is due to server costs."
-            )).queue();
+            )).setEphemeral(true).queue();
             return;
         }
 
+        Modal.Builder modalBuilder = Modal.create("poll-modal", "Create a Poll");
+        getModalOptions().forEach((option) -> modalBuilder.addComponents(ActionRow.of(option)));
+        event.replyModal(modalBuilder.build()).queue();
+    }
+
+    @Override
+    public void handleModal(@NotNull ModalInteractionEvent event) {
         // Required items
-        int minutes = event.getOption("time").getAsInt();
-        String title = event.getOption("title").getAsString();
-        String description = event.getOption("description").getAsString();
-        ArrayList<String> arguments = convertToList(event.getOption("poll_options").getAsString());
+        String title = event.getValue("poll-title").getAsString();
+        ArrayList<String> arguments = convertToList(event.getValue("poll-options").getAsString());
+        int minutes = Helper.stringToPositiveInteger(event.getValue("poll-time").getAsString());
+
+        // Checking if at least 60 seconds.
+        if (minutes < 1) {
+            event.getHook().sendMessageEmbeds(
+                    Helper.errorEmbed(
+                            "Too Little Time",
+                            "Polls must be at least 60 seconds long."
+                    )
+            ).queue();
+            return;
+        }
 
         // Making sure the poll channel exists.
         TextChannel pollChannel = GuildHandler.getCustomGuild(event.getGuild()).getPollChannel();
@@ -84,15 +105,21 @@ public class AddPollCommand implements ICommand {
         )).queue();
 
         // Sending a message in the poll channel.
-        if (event.getOption("message") != null) {
-            pollChannel.sendMessage(event.getOption("message").getAsString()).setEmbeds(startingPollEmbed()).queue(message -> {
-                editMessage(message, event, timestamp, title, description, minutes, arguments);
+        if (event.getValue("message") != null) {
+            pollChannel.sendMessage(event.getValue("poll-message").getAsString()).setEmbeds(startingPollEmbed()).queue(message -> {
+                editMessage(message, event, timestamp, title, minutes, arguments);
             });
         } else {
             pollChannel.sendMessageEmbeds(startingPollEmbed()).queue(message -> {
-                editMessage(message, event, timestamp, title, description, minutes, arguments);
+                editMessage(message, event, timestamp, title, minutes, arguments);
             });
         }
+    }
+
+    @NotNull
+    @Override
+    public CommandType getType() {
+        return CommandType.MODAL;
     }
 
     /**
@@ -101,12 +128,11 @@ public class AddPollCommand implements ICommand {
      * @param event The {@link SlashCommandInteractionEvent event} that triggered the {@link Message}.
      * @param timestamp The {@link Timestamp} to end the {@link }.
      * @param title The {@link String title} of the {@link Poll}.
-     * @param description The {@link String description} of the {@link Poll}.
      * @param minutes The length in {@link Integer minutes} of the {@link Poll}.
      * @param arguments The {@link ArrayList} of {@link String argument}.
      */
-    private void editMessage(Message message, SlashCommandInteractionEvent event, Timestamp timestamp,
-                             String title, String description, Integer minutes, ArrayList<String> arguments) {
+    private void editMessage(Message message, ModalInteractionEvent event, Timestamp timestamp,
+                             String title, Integer minutes, ArrayList<String> arguments) {
         Poll poll = new Poll(message.getId(), timestamp);
 
         // Tries to create the poll.
@@ -117,7 +143,7 @@ public class AddPollCommand implements ICommand {
             return;
         }
 
-        message.editMessageEmbeds(pollEmbed(title, description, minutes, arguments, event)).queue();
+        message.editMessageEmbeds(pollEmbed(title, minutes, arguments, event)).queue();
 
         ArrayList<PollEmoji> pollEmojis = new ArrayList<>(Arrays.asList(PollEmoji.values()));
         for (int i = 0; i < arguments.size(); i++) {
@@ -145,16 +171,14 @@ public class AddPollCommand implements ICommand {
     /**
      * The {@link MessageEmbed} to change to when the {@link Poll} has been created.
      * @param pollTitle The {@link String title} of the {@link Poll}.
-     * @param pollDescription The {@link String description} of the {@link Poll}.
      * @param pollTime The {@link Integer length} of the {@link Poll} in minutes.
      * @param arguments The {@link ArrayList} of {@link String argument} for the {@link Poll}.
      * @param event The {@link SlashCommandInteractionEvent event} that ran the command.
      * @return The created {@link MessageEmbed} for the {@link Poll}.
      */
     @NotNull
-    private MessageEmbed pollEmbed(@NotNull String pollTitle, @NotNull String pollDescription,
-                                   @NotNull Integer pollTime, @NotNull ArrayList<String> arguments,
-                                   @NotNull SlashCommandInteractionEvent event) {
+    private MessageEmbed pollEmbed(@NotNull String pollTitle, @NotNull Integer pollTime,
+                                   @NotNull ArrayList<String> arguments, @NotNull ModalInteractionEvent event) {
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setTitle(pollTitle);
 
@@ -166,7 +190,7 @@ public class AddPollCommand implements ICommand {
                     .append(arguments.get(i)).append("\n");
         }
 
-        stringBuilder.append("\n").append(pollDescription);
+        stringBuilder.append("\n");  // TODO: Check if this is needed.
         embedBuilder.setDescription(stringBuilder.toString());
 
         if (pollTime == 1) {
@@ -175,22 +199,10 @@ public class AddPollCommand implements ICommand {
             embedBuilder.setFooter("This poll will end in " + pollTime + " minutes from when it was created.");
         }
 
-        // Author
-        if (event.getOption("author") != null)
-            embedBuilder.setAuthor(event.getOption("author").getAsString());
-
-        // Thumbnail
-        if (event.getOption("thumbnail") != null && event.getOption("thumbnail").getAsAttachment().isImage())
-            embedBuilder.setThumbnail(event.getOption("thumbnail").getAsAttachment().getUrl());
-
-        // Image
-        if (event.getOption("image") != null && event.getOption("image").getAsAttachment().isImage())
-            embedBuilder.setImage(event.getOption("image").getAsAttachment().getUrl());
-
         // Color
-        if (event.getOption("color") != null) {
+        if (event.getValue("poll-color") != null) {
             try {
-                embedBuilder.setColor(Color.decode(event.getOption("color").getAsString()));
+                embedBuilder.setColor(Color.decode(event.getValue("poll-color").getAsString()));
             } catch (NumberFormatException ignored) {}
         }
 
@@ -222,23 +234,43 @@ public class AddPollCommand implements ICommand {
     @NotNull
     @Override
     public String exampleUsage() {
-        return "Just do `/add-poll` :sob: it shows you how to use it.";
+        return "Just do `/poll` :sob: it shows you how to use it.";
     }
 
-    @NotNull
-    @Override
-    public ArrayList<OptionData> getOptions() {
-        ArrayList<OptionData> options = new ArrayList<>();
-        options.add(new OptionData(OptionType.INTEGER, "time", "The time for the poll to run, in minutes.", true, false)
-                .setMinValue(1));
-        options.add(new OptionData(OptionType.STRING, "title", "Title for the poll.", true, false));
-        options.add(new OptionData(OptionType.STRING, "description", "The message that goes INSIDE the poll.", true, false));
-        options.add(new OptionData(OptionType.STRING, "poll_options", "All of the poll options, using comma-separated value", true, false));
-        options.add(new OptionData(OptionType.STRING, "author", "The author of the poll.", false, false));
-        options.add(new OptionData(OptionType.STRING, "message", "The message that goes outside of the poll.", false, false));
-        options.add(new OptionData(OptionType.ATTACHMENT, "thumbnail", "A thumbnail url to add to the poll.", false, false));
-        options.add(new OptionData(OptionType.ATTACHMENT, "image", "An image url to add to the poll.", false, false));
-        options.add(new OptionData(OptionType.STRING, "color", "Color hex code. Example: #FFC0CB", false, false));
+    private ArrayList<TextInput> getModalOptions() {
+        ArrayList<TextInput> options = new ArrayList<>();
+        options.add(
+                TextInput.create("poll-title", "Question", TextInputStyle.SHORT)
+                        .setPlaceholder("The question you want to ask.")
+                        .build()
+        );
+
+        options.add(
+                TextInput.create("poll-options", "Options", TextInputStyle.PARAGRAPH)
+                        .setPlaceholder("The options of the poll. E.g. (red, blue, green)")
+                        .build()
+        );
+
+        options.add(
+                TextInput.create("poll-time", "Time (Minimum 1 Minute)", TextInputStyle.SHORT)
+                        .setPlaceholder("The amount of time the poll should last. (In Minutes)")
+                        .build()
+        );
+
+        options.add(
+                TextInput.create("poll-message", "Message", TextInputStyle.PARAGRAPH)
+                        .setPlaceholder("A message you want to send alongside the poll.")
+                        .setRequired(false)
+                        .build()
+        );
+
+        options.add(
+                TextInput.create("poll-color", "Color", TextInputStyle.SHORT)
+                        .setPlaceholder("A color you want the poll to be. E.g. (#FFC0CB)")
+                        .setRequired(false)
+                        .build()
+        );
+
         return options;
     }
 

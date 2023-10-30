@@ -7,10 +7,10 @@ import com.beanbeanjuice.command.fun.birthday.BirthdayCommand;
 import com.beanbeanjuice.command.fun.rate.RateCommand;
 import com.beanbeanjuice.command.games.*;
 import com.beanbeanjuice.command.generic.*;
-import com.beanbeanjuice.command.moderation.AddPollCommand;
+import com.beanbeanjuice.command.moderation.PollCommand;
 import com.beanbeanjuice.command.interaction.*;
 import com.beanbeanjuice.command.moderation.ClearChatCommand;
-import com.beanbeanjuice.command.moderation.CreateEmbedCommand;
+import com.beanbeanjuice.command.moderation.EmbedCommand;
 import com.beanbeanjuice.command.moderation.bind.BindCommand;
 import com.beanbeanjuice.command.settings.AICommand;
 import com.beanbeanjuice.command.settings.ListCustomChannelsCommand;
@@ -20,7 +20,7 @@ import com.beanbeanjuice.command.settings.daily.DailyChannelCommand;
 import com.beanbeanjuice.command.settings.goodbye.GoodbyeChannelCommand;
 import com.beanbeanjuice.command.settings.logging.LogChannelCommand;
 import com.beanbeanjuice.command.settings.poll.PollChannelCommand;
-import com.beanbeanjuice.command.moderation.AddRaffleCommand;
+import com.beanbeanjuice.command.moderation.RaffleCommand;
 import com.beanbeanjuice.command.settings.raffle.RaffleChannelCommand;
 import com.beanbeanjuice.command.settings.twitch.TwitchNotificationsCommand;
 import com.beanbeanjuice.command.settings.update.BotUpdateCommand;
@@ -31,6 +31,7 @@ import com.beanbeanjuice.command.social.VentCommand;
 import com.beanbeanjuice.command.twitch.TwitchChannelCommand;
 import com.beanbeanjuice.utility.logging.LogLevel;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
@@ -142,10 +143,10 @@ public class CommandHandler extends ListenerAdapter {
 
         // Moderation
         commands.put("bind", new BindCommand());
-        commands.put("add-poll", new AddPollCommand());
-        commands.put("add-raffle", new AddRaffleCommand());
+        commands.put("poll", new PollCommand());
+        commands.put("raffle", new RaffleCommand());
         commands.put("clear-chat", new ClearChatCommand());
-        commands.put("create-embed", new CreateEmbedCommand());
+        commands.put("embed", new EmbedCommand());
 
         // Settings
         commands.put("birthday-channel", new BirthdayChannelCommand());
@@ -176,22 +177,34 @@ public class CommandHandler extends ListenerAdapter {
         commands.forEach((commandName, command) -> {
             SlashCommandData slashCommandData = Commands.slash(commandName, command.getDescription());
             slashCommandData.setGuildOnly(!command.allowDM());
-            slashCommandData.addOptions(command.getOptions());
+
+            switch (command.getType()) {
+                case NORMAL -> {
+                    // Adding the command options.
+                    slashCommandData.addOptions(command.getOptions());
+
+                    // Adding any sub commands that may exist.
+                    List<SubcommandData> subCommands = new ArrayList<>();
+
+                    for (ISubCommand subCommand : command.getSubCommands()) {
+                        // TODO: Check if subcommand is a modal.
+                        SubcommandData subCommandData = new SubcommandData(subCommand.getName(), subCommand.getDescription());
+                        subCommandData.addOptions(subCommand.getOptions());
+                        subCommands.add(subCommandData);
+                    }
+
+                    slashCommandData.addSubcommands(subCommands);
+                }
+
+                case MODAL -> {
+                    // Do nothing. TODO: Remove this?
+                }
+            }
 
             // Setting the permissions for commands.
             if (command.getPermissions() != null)
                 slashCommandData.setDefaultPermissions(DefaultMemberPermissions.enabledFor(command.getPermissions()));
 
-            List<SubcommandData> subCommands = new ArrayList<>();
-
-            for (ISubCommand subCommand : command.getSubCommands()) {
-                SubcommandData subCommandData = new SubcommandData(subCommand.getName(), subCommand.getDescription());
-                subCommandData.addOptions(subCommand.getOptions());
-                subCommands.add(subCommandData);
-            }
-
-            // Adding sub commands if applicable.
-            slashCommandData.addSubcommands(subCommands);
             slashCommands.add(slashCommandData);
         });
 
@@ -206,24 +219,48 @@ public class CommandHandler extends ListenerAdapter {
 
         // Checking if the commands is something that should be run.
         if (commands.containsKey(event.getName())) {
+            ICommand command = commands.get(event.getName());
 
             // Log the command.
             logCommand(event);
 
             // Checks if the reply should be hidden or not.
-            if (commands.get(event.getName()).isHidden())
+
+            if (command.getType() == CommandType.NORMAL) {
+                if (command.isHidden())
+                    event.deferReply(true).queue();
+                else
+                    event.deferReply().queue();
+            }
+
+            // Checks if it IS a sub command.
+            if (event.getSubcommandName() != null)
+                command.runSubCommand(event.getSubcommandName(), event);
+            else
+                command.handle(event);
+
+            // Increment commands run for this bot.
+            Bot.commandsRun++;
+        }
+    }
+
+    @Override
+    public void onModalInteraction(@NotNull ModalInteractionEvent event) {
+        super.onModalInteraction(event);
+
+        Bot.getLogger().log(CommandHandler.class, LogLevel.DEBUG, event.getModalId());
+
+        if (commands.containsKey(event.getModalId().replace("-modal", ""))) {
+
+            ICommand command = commands.get(event.getModalId().replace("-modal", ""));
+
+            // Checks if the reply should be hidden.
+            if (command.isHidden())
                 event.deferReply(true).queue();
             else
                 event.deferReply().queue();
 
-            // Checks if it IS a sub command.
-            if (event.getSubcommandName() != null)
-                commands.get(event.getName()).runSubCommand(event.getSubcommandName(), event);
-            else
-                commands.get(event.getName()).handle(event);
-
-            // Increment commands run for this bot.
-            Bot.commandsRun++;
+            command.handleModal(event);
         }
     }
 
