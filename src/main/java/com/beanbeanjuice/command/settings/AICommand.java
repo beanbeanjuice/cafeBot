@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  * @author beanbeanjuice
  */
-public class AiCommand implements ICommand {
+public class AICommand implements ICommand {
 
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
