@@ -36,7 +36,7 @@ Fixes # (issue)
 
 ---
 
-## Checklist:
+## Checklist
 
 - [ ] This pull request has been linked to the appropriate issue on GitHub. (Use the development section on the right.)
 - [ ] The code follows the style [guidelines](https://github.com/beanbeanjuice/cafeBot/blob/master/CONTRIBUTING.md).
