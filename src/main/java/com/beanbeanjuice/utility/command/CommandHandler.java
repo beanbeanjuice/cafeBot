@@ -67,6 +67,7 @@ public class CommandHandler extends ListenerAdapter {
         commands.put("birthday", new BirthdayCommand());
         commands.put("avatar", new AvatarCommand());
         commands.put("banner", new BannerCommand());
+        commands.put("choose-random", new ChooseRandom());
         commands.put("coffee-meme", new CoffeeMemeCommand());
         commands.put("counting-statistics", new CountingStatisticsCommand());
         commands.put("joke", new JokeCommand());
