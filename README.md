@@ -215,11 +215,11 @@ As you can see, this was shown using the command `/help order`. It shows each pa
 ##### 7. **TWITCH**
 * `twitch-channel` - Add or remove a twitch channel to receive notifications for!
 ##### 8. **MODERATION**
-* `add-poll` - Create a poll! Currently, you can only have 3 polls due to server costs. This will go up in the future!
-* `add-raffle` - Create a raffle! Currently, you can only have 3 raffles due to server costs. This will go up in the future!
+* `poll` - Create a poll! Currently, you can only have 3 polls due to server costs. This will go up in the future!
+* `raffle` - Create a raffle! Currently, you can only have 3 raffles due to server costs. This will go up in the future!
 * `bind` - Bind a role to a voice channel! This gives the user a role when they enter a voice channel, and removes it when they leave.
 * `clear-chat` - Clear the chat. (Only currently works from 2-99 messages).
-* `create-embed` - Send a customised `embedded message` in a specified channel!
+* `embed` - Send a customised `embedded message` in a specified channel!
 ##### 9. **SETTINGS**
 * `birthday-channel` - Set or remove the birthday channel for the server!
 * `ai` - Sets the `AI Status` for the server. This can `enable` or `disable` the AI module. This is `disable` by default.
