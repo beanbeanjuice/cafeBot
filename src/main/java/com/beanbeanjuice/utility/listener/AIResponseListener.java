@@ -52,8 +52,13 @@ public class AIResponseListener extends ListenerAdapter {
             ArrayList<String> triggers = new ArrayList<>();
             ArrayList<String> responses = new ArrayList<>();
 
+            /*
+                Adds the trigger.
+                Deletes all whitespaces.
+                Deletes all characters that are not letters or numbers.
+             */
             for (JsonNode trigger : type.get("triggers"))
-                triggers.add(trigger.asText());
+                triggers.add(trigger.asText().replaceAll("[^a-zA-Z0-9]", ""));
 
             for (JsonNode response : type.get("responses"))
                 responses.add(response.asText());
@@ -80,7 +85,11 @@ public class AIResponseListener extends ListenerAdapter {
             String message = event.getMessage().getContentRaw().toLowerCase();
 
             messageMap.forEach((commandTerms, commandResponses) -> {
-                if (commandTerms.contains(message.replaceAll("[^\\sa-zA-Z0-9]", ""))) {
+                /*
+                    Replaces all the messages such that it only contains letters and numbers.
+                    This includes removing whitespaces.
+                 */
+                if (commandTerms.contains(message.replaceAll("[^a-zA-Z0-9]", ""))) {
                     event.getMessage().reply(parseMessage(
                             commandResponses.get(Helper.getRandomNumber(0, commandResponses.size())),
                             event.getAuthor()
