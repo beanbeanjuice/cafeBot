@@ -1,5 +1,6 @@
 package com.beanbeanjuice.cafeapi.utility;
 
+import com.beanbeanjuice.cafeapi.wrapper.utility.Time;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

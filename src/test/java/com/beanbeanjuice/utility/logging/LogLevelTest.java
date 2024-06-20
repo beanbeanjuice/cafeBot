@@ -1,5 +1,7 @@
 package com.beanbeanjuice.utility.logging;
 
+import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
+import com.beanbeanjuice.cafebot.utility.logging.LogManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
