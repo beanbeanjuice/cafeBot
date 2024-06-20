@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.Bot;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
+import lombok.Getter;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +19,7 @@ import java.util.HashMap;
 public class TwitchHandler {
 
     private static ArrayList<String> alreadyAddedTwitchNames;
-    private static TwitchListener twitchListener;
+    @Getter private static TwitchListener twitchListener;
     private static HashMap<String, ArrayList<String>> guildTwitches;  // Twitch Name, Guild IDs
 
     /**
@@ -35,26 +36,18 @@ public class TwitchHandler {
     }
 
     /**
-     * @return The current {@link TwitchListener}.
-     */
-    public static TwitchListener getTwitchListener() {
-        return twitchListener;
-    }
-
-    /**
      * Add a twitch channel name.
      * @param twitchUsername The twitch channel name specified.
      */
-    public static void addTwitchChannel(@NotNull String twitchUsername) throws HystrixRuntimeException, ContextedRuntimeException {
+    public static void addTwitchChannel(String twitchUsername) throws HystrixRuntimeException, ContextedRuntimeException {
         twitchUsername = twitchUsername.toLowerCase();
 
         // If a listener does not already exist, add it.
-        if (!alreadyAddedTwitchNames.contains(twitchUsername)) {
+        if (alreadyAddedTwitchNames.contains(twitchUsername)) return;
 
-            // Check if the channel exists.
-            twitchListener.addStream(twitchUsername);
-            alreadyAddedTwitchNames.add(twitchUsername);
-        }
+        // Check if the channel exists.
+        twitchListener.addStream(twitchUsername);
+        alreadyAddedTwitchNames.add(twitchUsername);
     }
 
     /**
@@ -62,18 +55,20 @@ public class TwitchHandler {
      * @param guildID The {@link String guildID} of the twitch channels.
      * @param twitchUsernames The {@link ArrayList<String>} specified.
      */
-    public static void addTwitchChannels(@NotNull String guildID, @NotNull ArrayList<String> twitchUsernames) {
-        for (String string : twitchUsernames) {
-            try {
-                // If the channel does not exist, remove the twitch discord CHANNEL from the database
-                if (!twitchListener.channelExists(string))
-                    Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, string);
-                else
-                    addTwitchChannel(string);
-            } catch (HystrixRuntimeException | ContextedRuntimeException | UnsupportedOperationException e) {
-                Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, string);
-            }
-        }
+    public static void addTwitchChannels(final String guildID, ArrayList<String> twitchUsernames) {
+        twitchUsernames.forEach(
+                (username) -> {
+                    try {
+                        // If the channel does not exist, remove the twitch discord CHANNEL from the database
+                        if (!twitchListener.channelExists(username))
+                            Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, username);
+                        else
+                            addTwitchChannel(username);
+                    } catch (HystrixRuntimeException | ContextedRuntimeException | UnsupportedOperationException e) {
+                        Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, username);
+                    }
+                }
+        );
     }
 
     /**
@@ -81,8 +76,7 @@ public class TwitchHandler {
      * @param channelName The specified {@link String channelName}.
      * @return The {@link ArrayList} of {@link String guildID}.
      */
-    @NotNull
-    public static ArrayList<String> getGuildsForChannel(@NotNull String channelName) {
+    public static ArrayList<String> getGuildsForChannel(String channelName) {
         channelName = channelName.toLowerCase();
 
         if (guildTwitches.containsKey(channelName))
@@ -93,23 +87,19 @@ public class TwitchHandler {
 
     /**
      * Caches the twitch channels for every {@link net.dv8tion.jda.api.entities.Invite.Guild Guild}.
-     *
+     * <p>
      * This does not register the events.
      */
     private static void cacheTwitchChannels() {
         try {
-            Bot.getCafeAPI().TWITCH.getAllTwitches().forEach((guild, twitchChannels) -> {
-                twitchChannels.forEach((twitchChannel) -> {
+            Bot.getCafeAPI().TWITCH.getAllTwitches().forEach((guild, twitchChannels) -> twitchChannels.forEach((twitchChannel) -> {
+                if (Bot.getBot().getGuildById(guild) == null) return;
 
-                    if (Bot.getBot().getGuildById(guild) != null) {
-                        if (!guildTwitches.containsKey(twitchChannel))
-                            guildTwitches.put(twitchChannel, new ArrayList<>());
+                if (!guildTwitches.containsKey(twitchChannel))
+                    guildTwitches.put(twitchChannel, new ArrayList<>());
 
-                        guildTwitches.get(twitchChannel).add(guild);
-                    }
-
-                });
-            });
+                guildTwitches.get(twitchChannel).add(guild);
+            }));
         } catch (CafeException e) {
             Bot.getLogger().log(TwitchHandler.class, LogLevel.ERROR, "Error Getting Twitch Channels: " + e.getMessage(), e);
         }
@@ -121,8 +111,7 @@ public class TwitchHandler {
      * @param twitchChannel The linked {@link String twitchChannel}.
      * @return True, if the link was successfully created.
      */
-    @NotNull
-    public static Boolean addCache(@NotNull String guildID, @NotNull String twitchChannel) throws HystrixRuntimeException, ContextedRuntimeException {
+    public static boolean addCache(final String guildID, String twitchChannel) throws HystrixRuntimeException, ContextedRuntimeException {
         twitchChannel = twitchChannel.toLowerCase();
 
         // Remove if the channel does not exist.
@@ -148,8 +137,7 @@ public class TwitchHandler {
      * @param twitchChannel The linked {@link String twitchChannel}.
      * @return True, if the link was successfully removed.
      */
-    @NotNull
-    public static Boolean removeCache(@NotNull String guildID, @NotNull String twitchChannel) {
+    public static boolean removeCache(final String guildID, String twitchChannel) {
         twitchChannel = twitchChannel.toLowerCase();
 
         if (!guildTwitches.containsKey(twitchChannel))
