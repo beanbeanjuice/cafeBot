@@ -97,7 +97,7 @@ public class PollCommand implements ICommand {
             return;
         }
 
-        Timestamp timestamp = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + (minutes*60000)).toString());
+        Timestamp timestamp = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + (minutes*60000)).toString()).orElseThrow();
 
         event.getHook().sendMessageEmbeds(Helper.successEmbed(
                 "Creating Poll",

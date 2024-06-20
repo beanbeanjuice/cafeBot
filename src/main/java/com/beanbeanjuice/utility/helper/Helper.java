@@ -18,6 +18,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,7 +39,7 @@ public class Helper {
         TimerTask updateTimerTask = new TimerTask() {
             @Override
             public void run() {
-                User owner = getUser("690927484199370753");
+                User owner = getUser("690927484199370753").orElseThrow();
 
                 Bot.getBot().getRestPing().queue((ping) -> {
                     pmUser(owner, getUpdateEmbed(ping, Bot.getBot().getGatewayPing()));
@@ -344,16 +345,15 @@ public class Helper {
      * @param userID The ID of the {@link User}.
      * @return The {@link User}.
      */
-    @Nullable
-    public static User getUser(@NotNull String userID) {
+    public static Optional<User> getUser(String userID) {
         userID = userID.replace("<@!", "");
         userID = userID.replace("<@", ""); // Edge Case for Mobile
         userID = userID.replace(">", "");
 
         try {
-            return Bot.getBot().getUserById(userID);
+            return Optional.ofNullable(Bot.getBot().getUserById(userID));
         } catch (NullPointerException | NumberFormatException e) {
-            return null;
+            return Optional.empty();
         }
     }
 

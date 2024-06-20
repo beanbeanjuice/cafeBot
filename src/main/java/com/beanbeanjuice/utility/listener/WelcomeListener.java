@@ -29,10 +29,10 @@ public class WelcomeListener extends ListenerAdapter {
         if (welcomeChannel != null) {
             GuildWelcome guildWelcome = getGuildWelcome(event.getGuild().getId());
 
-            if (guildWelcome.getMessage() != null)
-                welcomeChannel.sendMessage(guildWelcome.getMessage()).setEmbeds(getWelcomeEmbed(guildWelcome, event.getMember().getUser())).queue();
-            else
-                welcomeChannel.sendMessageEmbeds(getWelcomeEmbed(guildWelcome, event.getMember().getUser())).queue();
+            guildWelcome.getMessage().ifPresentOrElse(
+                    (guildWelcomeMessage) -> welcomeChannel.sendMessage(guildWelcomeMessage).setEmbeds(getWelcomeEmbed(guildWelcome, event.getMember().getUser())).queue(),
+                    () -> welcomeChannel.sendMessageEmbeds(getWelcomeEmbed(guildWelcome, event.getMember().getUser())).queue()
+            );
 
             Bot.commandsRun++;
         }
@@ -64,23 +64,28 @@ public class WelcomeListener extends ListenerAdapter {
     public static MessageEmbed getWelcomeEmbed(@NotNull GuildWelcome guildWelcome, @NotNull User joiner) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
-        embedBuilder.setDescription(parseDescription(guildWelcome.getDescription(), joiner));
+        guildWelcome.getDescription().ifPresent((description) -> embedBuilder.setDescription(parseDescription(description, joiner)));
 
         // Attempts to set the thumbnail URL.
-        try {
-            embedBuilder.setThumbnail(guildWelcome.getThumbnailURL());
-        } catch (IllegalArgumentException e) {
-            GuildHandler.getCustomGuild(guildWelcome.getGuildID()).log(new EditWelcomeMessageSubCommand(), LogLevel.ERROR,
-                    "Invalid Thumbnail URL", "Invalid thumbnail URL for Welcome: " + guildWelcome.getThumbnailURL());
-        }
+        guildWelcome.getThumbnailURL().ifPresent((thumbnailURL) -> {
+            try {
+                embedBuilder.setThumbnail(thumbnailURL);
+            } catch (IllegalArgumentException e) {
+                GuildHandler.getCustomGuild(guildWelcome.getGuildID()).log(new EditWelcomeMessageSubCommand(), LogLevel.ERROR,
+                        "Invalid Thumbnail URL", "Invalid thumbnail URL for Welcome: " + guildWelcome.getThumbnailURL());
+            }
+        });
 
         // Attempts to set the image URL.
-        try {
-            embedBuilder.setImage(guildWelcome.getImageURL());
-        } catch (IllegalArgumentException e) {
-            GuildHandler.getCustomGuild(guildWelcome.getGuildID()).log(new EditWelcomeMessageSubCommand(), LogLevel.ERROR,
-                    "Invalid Image URL", "Invalid image URL for Welcome: " + guildWelcome.getImageURL());
-        }
+        guildWelcome.getImageURL().ifPresent((imageURL) -> {
+            try {
+                embedBuilder.setImage(imageURL);
+            } catch (IllegalArgumentException e) {
+                GuildHandler.getCustomGuild(guildWelcome.getGuildID()).log(new EditWelcomeMessageSubCommand(), LogLevel.ERROR,
+                        "Invalid Image URL", "Invalid image URL for Welcome: " + guildWelcome.getImageURL());
+            }
+        });
+
         embedBuilder.setColor(Helper.getRandomColor());
         embedBuilder.setAuthor(joiner.getName(), joiner.getAvatarUrl(), joiner.getAvatarUrl());
         return embedBuilder.build();
@@ -97,10 +102,11 @@ public class WelcomeListener extends ListenerAdapter {
             GuildWelcome guildWelcome = Bot.getCafeAPI().WELCOME.getGuildWelcome(guildID);
             return new GuildWelcome(
                     guildWelcome.getGuildID(),
-                    guildWelcome.getDescription(),
-                    guildWelcome.getThumbnailURL(),
-                    guildWelcome.getImageURL(),
-                    guildWelcome.getMessage());
+                    guildWelcome.getDescription().orElse(null),
+                    guildWelcome.getThumbnailURL().orElse(null),
+                    guildWelcome.getImageURL().orElse(null),
+                    guildWelcome.getMessage().orElse(null)
+            );
         } catch (NotFoundException e) {
             return new GuildWelcome(guildID, null, null, null, null);
         }

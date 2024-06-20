@@ -115,7 +115,7 @@ public class RaffleCommand implements ICommand {
                              String title, String description, Integer minutes, Integer winnerAmount) {
 
         // Converts the ending time to UTC time.
-        Timestamp endingTime = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + (minutes*60000)).toString());
+        Timestamp endingTime = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + (minutes*60000)).toString()).orElseThrow();
 
         Raffle raffle = new Raffle(message.getId(), endingTime, winnerAmount);
 

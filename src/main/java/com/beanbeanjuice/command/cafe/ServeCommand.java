@@ -66,7 +66,7 @@ public class ServeCommand implements ICommand {
         }
 
         // Converting Timestamp to UTC time.
-        Timestamp currentTimestamp = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis()).toString());
+        Timestamp currentTimestamp = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis()).toString()).orElseThrow();
 
         // Checking if the user CAN serve someone.
         if (!ServeHandler.canServe(cafeUser)) {

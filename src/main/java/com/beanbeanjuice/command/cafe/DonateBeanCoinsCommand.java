@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * A command used to donate beanCoins.
@@ -114,9 +115,11 @@ public class DonateBeanCoinsCommand implements ICommand {
 
         // Updating the Donatee's Cooldown as well as in the cache
         try {
-            Timestamp endingTime = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + BeanCoinDonationHandler.getCooldown()).toString());
-            Bot.getCafeAPI().DONATION_USER.addDonationUser(donatee.getUserID(), endingTime);
-            BeanCoinDonationHandler.addUser(donatee.getUserID(), endingTime);
+            CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + BeanCoinDonationHandler.getCooldown()).toString())
+                    .ifPresent((endingTime) -> {
+                        Bot.getCafeAPI().DONATION_USER.addDonationUser(donatee.getUserID(), endingTime);
+                        BeanCoinDonationHandler.addUser(donatee.getUserID(), endingTime);
+                    });
         } catch (CafeException e) {
             Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Cooldown Not Created for User `" + donatee.getUserID() + "`: " + e.getMessage(), e);
             return;

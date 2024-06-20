@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 /**
  * An {@link ISubCommand} used to edit the welcome message for the welcome
- * {@link net.dv8tion.jda.api.entities.TextChannel TextChannel} for a specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
+ * {@link net.dv8tion.jda.api.entities.channel.concrete.TextChannel TextChannel} for a specified {@link net.dv8tion.jda.api.entities.Guild Guild}.
  *
  * @author beanbeanjuice
  */
@@ -46,10 +46,10 @@ public class EditWelcomeMessageSubCommand implements ISubCommand {
 
         // Sets it in the API
         if (setGuildWelcome(guildWelcome)) {
-            if (guildWelcome.getMessage() != null)
-                event.getHook().sendMessage(guildWelcome.getMessage()).addEmbeds(WelcomeListener.getWelcomeEmbed(guildWelcome, user)).queue();
-            else
-                event.getHook().sendMessageEmbeds(WelcomeListener.getWelcomeEmbed(guildWelcome, user)).queue();
+            guildWelcome.getMessage().ifPresentOrElse(
+                    (guildWelcomeMessage) -> event.getHook().sendMessage(guildWelcomeMessage).addEmbeds(WelcomeListener.getWelcomeEmbed(guildWelcome, user)).queue(),
+                    () -> event.getHook().sendMessageEmbeds(WelcomeListener.getWelcomeEmbed(guildWelcome, user)).queue()
+            );
             return;
         }
 
