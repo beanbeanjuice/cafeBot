@@ -11,6 +11,7 @@ import java.sql.Timestamp;
  * A custom {@link Raffle} class.
  *
  * @author beanbeanjuice
+ * TODO: Refactor
  */
 public class Raffle extends com.beanbeanjuice.cafeapi.wrapper.cafebot.raffles.Raffle {
 

@@ -7,8 +7,8 @@ import com.beanbeanjuice.cafeapi.wrapper.cafebot.interactions.InteractionType;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ConflictException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.NotFoundException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 /**
  * A class used for handling {@link Interaction} between users.
@@ -19,71 +19,66 @@ public class InteractionHandler {
 
     /**
      * Retrieves a random image {@link String URL} from the {@link CafeAPI CafeAPI}.
+     *
      * @param type The {@link Interaction type} of image.
      * @return The {@link String URL} of the image.
      */
-    @Nullable
-    public static String getImage(@NotNull InteractionType type) {
+    public static Optional<String> getImage(final InteractionType type) {
         try {
-            return Bot.getCafeAPI().INTERACTION_PICTURE.getRandomInteractionPicture(type);
+            return Optional.of(Bot.getCafeAPI().INTERACTION_PICTURE.getRandomInteractionPicture(type));
         } catch (CafeException e) {
             Bot.getLogger().log(InteractionHandler.class, LogLevel.WARN, "Error Getting Random Interaction Image: " + e.getMessage(), e);
-            return null;
+            return Optional.empty();
         }
     }
 
     /**
      * Retrieve the {@link Integer amount} of {@link Interaction} sent by the specified {@link String userID} for the specified {@link InteractionType type}.
+     *
      * @param userID The specified {@link String userID}.
-     * @param type The {@link InteractionType type} of {@link Interaction}.
-     * @return The {@link Integer amount} of {@link Interaction} sent for that {@link InteractionType type}. Null, if there was an error.
+     * @param type   The {@link InteractionType type} of {@link Interaction}.
+     * @return The {@link Optional<Integer> amount} of {@link Interaction} sent for that {@link InteractionType type}.
      */
-    @Nullable
-    public static Integer getUserInteractionsSent(@NotNull String userID, @NotNull InteractionType type) {
-        if (!createInteractionSender(userID)) {
-            try {
-                return Bot.getCafeAPI().INTERACTION.getSpecificUserInteractionSentAmount(userID, type);
-            } catch (CafeException e) {
-                return null;
-            }
-        }
+    public static Optional<Integer> getUserInteractionsSent(final String userID, final InteractionType type) {
+        if (createInteractionSender(userID)) return Optional.of(0);
 
-        return 0;
+        try {
+            return Optional.of(Bot.getCafeAPI().INTERACTION.getSpecificUserInteractionSentAmount(userID, type));
+        } catch (CafeException e) {
+            return Optional.empty();
+        }
     }
 
     /**
      * Retrieve the {@link Integer amount} of {@link Interaction} received by the specified {@link String userID} for the specified {@link InteractionType type}.
+     *
      * @param userID The specified {@link String userID}.
-     * @param type The {@link InteractionType type} of {@link Interaction}.
+     * @param type   The {@link InteractionType type} of {@link Interaction}.
      * @return The {@link Integer amount} of {@link Interaction} received for that {@link InteractionType type}. Null, if there was an error.
      */
-    @Nullable
-    public static Integer getUserInteractionsReceived(@NotNull String userID, @NotNull InteractionType type) {
-        if (!createInteractionReceiver(userID)) {
-            try {
-                return Bot.getCafeAPI().INTERACTION.getSpecificUserInteractionReceivedAmount(userID, type);
-            } catch (CafeException e) {
-                return null;
-            }
-        }
+    public static Optional<Integer> getUserInteractionsReceived(final String userID, final InteractionType type) {
+        if (createInteractionReceiver(userID)) return Optional.of(0);
 
-        return 0;
+        try {
+            return Optional.of(Bot.getCafeAPI().INTERACTION.getSpecificUserInteractionReceivedAmount(userID, type));
+        } catch (CafeException e) {
+            return Optional.empty();
+        }
     }
 
     /**
      * Creates an {@link Interaction} receiver user.
+     *
      * @param userID The specified {@link String userID}.
      * @return True, if the {@link Interaction} receiver was created successfully.
      */
-    @NotNull
-    private static Boolean createInteractionReceiver(@NotNull String userID) {
+    private static boolean createInteractionReceiver(final String userID) {
         try {
             Bot.getCafeAPI().INTERACTION.createUserInteractionsReceived(userID);
             return true;
         } catch (ConflictException e) {
             return false;
-        }
-        catch (CafeException e) {
+        } catch (CafeException e) {
             Bot.getLogger().log(InteractionHandler.class, LogLevel.WARN, "Error Creating Interaction Receiver: " + e.getMessage(), e);
             return false;
         }
@@ -91,18 +86,17 @@ public class InteractionHandler {
 
     /**
      * Creates an {@link Interaction} sender user.
+     *
      * @param userID The specified {@link String userID}.
      * @return True, if the {@link Interaction} sender was created successfully.
      */
-    @NotNull
-    private static Boolean createInteractionSender(@NotNull String userID) {
+    private static boolean createInteractionSender(final String userID) {
         try {
             Bot.getCafeAPI().INTERACTION.createUserInteractionsSent(userID);
             return true;
         } catch (ConflictException ignored) {
             return false;
-        }
-        catch (CafeException e) {
+        } catch (CafeException e) {
             Bot.getLogger().log(InteractionHandler.class, LogLevel.WARN, "Error Creating Interaction Sender: " + e.getMessage(), e);
             return false;
         }
@@ -110,22 +104,19 @@ public class InteractionHandler {
 
     /**
      * Updates the {@link Interaction} sender's {@link Integer amount} of {@link Interaction}.
+     *
      * @param userID The {@link String userID} of the {@link net.dv8tion.jda.api.entities.User sender}.
-     * @param type The {@link InteractionType type} of {@link Interaction}.
+     * @param type   The {@link InteractionType type} of {@link Interaction}.
      * @param amount The {@link Integer amount} of {@link Interaction}.
      * @return True, if the {@link Interaction} sender was updated successfully.
      */
-    @NotNull
-    public static Boolean updateSender(@NotNull String userID, @NotNull InteractionType type, @NotNull Integer amount) {
+    public static boolean updateSender(final String userID, final InteractionType type, final int amount) {
         try {
             Bot.getCafeAPI().INTERACTION.updateSpecificUserInteractionSentAmount(userID, type, amount);
             return true;
         } catch (NotFoundException e) {
-            if (createInteractionSender(userID)) {
-                return updateSender(userID, type, amount);
-            } else {
-                return false;
-            }
+            if (createInteractionSender(userID)) return updateSender(userID, type, amount);
+            else return false;
         } catch (CafeException e) {
             Bot.getLogger().log(InteractionHandler.class, LogLevel.WARN, "Error Updating Interaction Sender: " + e.getMessage(), e);
             return false;
@@ -134,25 +125,19 @@ public class InteractionHandler {
 
     /**
      * Updates the {@link Interaction} receiver's {@link Integer amount} of {@link Interaction}.
+     *
      * @param userID The {@link String userID} of the {@link net.dv8tion.jda.api.entities.User receiver}.
-     * @param type The {@link InteractionType type} of {@link Interaction}.
+     * @param type   The {@link InteractionType type} of {@link Interaction}.
      * @param amount The {@link Integer amount} of {@link Interaction}.
      * @return True, if the {@link Interaction} receiver was updated successfully.
      */
-    @NotNull
-    public static Boolean updateReceiver(@NotNull String userID, @NotNull InteractionType type, @NotNull Integer amount) {
-
+    public static boolean updateReceiver(final String userID, final InteractionType type, final int amount) {
         try {
             Bot.getCafeAPI().INTERACTION.updateSpecificUserInteractionReceivedAmount(userID, type, amount);
             return true;
         } catch (NotFoundException e) {
-
-            if (createInteractionReceiver(userID)) {
-                return updateReceiver(userID, type, amount);
-            } else {
-                return false;
-            }
-
+            if (createInteractionReceiver(userID)) return updateReceiver(userID, type, amount);
+            else return false;
         } catch (CafeException e) {
             Bot.getLogger().log(InteractionHandler.class, LogLevel.WARN, "Error Updating Interaction Receiver: " + e.getMessage(), e);
             return false;

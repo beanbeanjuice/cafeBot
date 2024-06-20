@@ -8,7 +8,6 @@ import com.github.twitch4j.TwitchClientBuilder;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import lombok.Getter;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
