@@ -40,10 +40,10 @@ public class EditGoodbyeMessageSubCommand implements ISubCommand {
 
         // Sets it in the API
         if (setGuildGoodbye(guildGoodbye)) {
-            if (guildGoodbye.getMessage() != null)
-                event.getHook().sendMessage(guildGoodbye.getMessage()).addEmbeds(GoodbyeListener.getGoodbyeEmbed(guildGoodbye, user)).queue();
-            else
-                event.getHook().sendMessageEmbeds(GoodbyeListener.getGoodbyeEmbed(guildGoodbye, user)).queue();
+            guildGoodbye.getMessage().ifPresentOrElse(
+                    (guildGoodbyeMessage) -> event.getHook().sendMessage(guildGoodbyeMessage).addEmbeds(GoodbyeListener.getGoodbyeEmbed(guildGoodbye, user)).queue(),
+                    () -> event.getHook().sendMessageEmbeds(GoodbyeListener.getGoodbyeEmbed(guildGoodbye, user)).queue()
+            );
             return;
         }
 

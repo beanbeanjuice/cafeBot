@@ -56,8 +56,8 @@ public class BalanceCommand implements ICommand {
         return new EmbedBuilder()
                 .setTitle("beanCoin Balance")
                 .setColor(Helper.getRandomColor())
-                .addField("Orders Bought", cafeUser.getOrdersBought().toString(), true)
-                .addField("Orders Received", cafeUser.getOrdersReceived().toString(), true)
+                .addField("Orders Bought", String.valueOf(cafeUser.getOrdersBought()), true)
+                .addField("Orders Received", String.valueOf(cafeUser.getOrdersReceived()), true)
                 .setDescription("Your current balance is `" + Helper.roundDouble(cafeUser.getBeanCoins()) + "` bC (beanCoins)!")
                 .setFooter("To learn how to make money do /help serve")
                 .build();
@@ -73,8 +73,8 @@ public class BalanceCommand implements ICommand {
         return new EmbedBuilder()
                 .setTitle("beanCoin Balance")
                 .setColor(Helper.getRandomColor())
-                .addField("Orders Bought", cafeUser.getOrdersBought().toString(), true)
-                .addField("Orders Received", cafeUser.getOrdersReceived().toString(), true)
+                .addField("Orders Bought", String.valueOf(cafeUser.getOrdersBought()), true)
+                .addField("Orders Received", String.valueOf(cafeUser.getOrdersReceived()), true)
                 .setDescription(user.getAsMention() + " has a current balance of `$" + Helper.roundDouble(cafeUser.getBeanCoins()) + "` bC (beanCoins)!")
                 .setFooter("To learn how to make money do /help serve")
                 .build();

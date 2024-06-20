@@ -29,7 +29,7 @@ public class Raffle extends com.beanbeanjuice.cafeapi.cafebot.raffles.Raffle {
      */
     @NotNull
     public Boolean isFinished() {
-        Timestamp currentTime = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis()).toString());
+        Timestamp currentTime = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis()).toString()).orElseThrow();
 
         return Time.compareTwoTimeStamps(
                 getEndingTime(),

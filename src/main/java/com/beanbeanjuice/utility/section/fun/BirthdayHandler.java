@@ -72,12 +72,13 @@ public class BirthdayHandler {
                                 }
                             }
 
-                            // TODO: For some reason this is trying to PM someone.
                             // PM them a happy birthday.
-                            Helper.pmUser(Helper.getUser(userID), "Hey... we don't know if anyone wished you " +
-                                    "a happy birthday, but happy birthday <3!");
+                            Helper.getUser(userID).ifPresent((birthdayUser) -> {
+                                Helper.pmUser(birthdayUser, "Hey... we don't know if anyone wished you " +
+                                        "a happy birthday, but happy birthday <3!");
 
-                            updateMentionedBirthday(userID, true);
+                                updateMentionedBirthday(userID, true);
+                            });
                         }
 
                     } else {
@@ -201,8 +202,8 @@ public class BirthdayHandler {
     @NotNull
     private static Boolean isBirthday(@NotNull Birthday birthday) {
         // TODO: Seems like it is one day off?
-        String month = birthday.getMonth().getMonthNumber().toString();
-        String day = birthday.getDay().toString();
+        String month = String.valueOf(birthday.getMonth().getMonthNumber());
+        String day = String.valueOf(birthday.getDay());
         String dateString = month + "-" + day + "-2020";
 
         try {

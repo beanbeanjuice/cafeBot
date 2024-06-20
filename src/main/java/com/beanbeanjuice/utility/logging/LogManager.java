@@ -7,10 +7,9 @@ import com.beanbeanjuice.utility.webhook.Webhook;
 import com.beanbeanjuice.cafeapi.utility.Time;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -320,7 +319,7 @@ public class LogManager {
         if (!time.format("MM-dd-yyyy").equals(logFileTime))
             checkFiles();
 
-        Logger logger = LoggerFactory.getLogger(c);
+        Logger logger = org.apache.logging.log4j.LogManager.getLogger(c);
 
         switch (logLevel) {
             case INFO, LOADING, OKAY -> logger.info(message);

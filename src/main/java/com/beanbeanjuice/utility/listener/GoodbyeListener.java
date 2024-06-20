@@ -24,10 +24,10 @@ public class GoodbyeListener extends ListenerAdapter {
         if (goodbyeChannel != null) {
             GuildGoodbye guildGoodbye = getGuildGoodbye(event.getGuild().getId());
 
-            if (guildGoodbye.getMessage() != null)
-                goodbyeChannel.sendMessage(guildGoodbye.getMessage()).setEmbeds(getGoodbyeEmbed(guildGoodbye, event.getMember().getUser())).queue();
-            else
-                goodbyeChannel.sendMessageEmbeds(getGoodbyeEmbed(guildGoodbye, event.getMember().getUser())).queue();
+            guildGoodbye.getMessage().ifPresentOrElse(
+                    (guildGoodbyeMessage) -> goodbyeChannel.sendMessage(guildGoodbyeMessage).setEmbeds(getGoodbyeEmbed(guildGoodbye, event.getMember().getUser())).queue(),
+                    () -> goodbyeChannel.sendMessageEmbeds(getGoodbyeEmbed(guildGoodbye, event.getMember().getUser())).queue()
+            );
 
             Bot.commandsRun++;
         }
@@ -59,23 +59,29 @@ public class GoodbyeListener extends ListenerAdapter {
     public static MessageEmbed getGoodbyeEmbed(@NotNull GuildGoodbye guildGoodbye, @NotNull User joiner) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
-        embedBuilder.setDescription(parseDescription(guildGoodbye.getDescription(), joiner));
+        guildGoodbye.getDescription()
+                .ifPresent((description) -> embedBuilder.setDescription(parseDescription(description, joiner)));
 
         // Attempts to set the thumbnail URL.
-        try {
-            embedBuilder.setThumbnail(guildGoodbye.getThumbnailURL());
-        } catch (IllegalArgumentException e) {
-            GuildHandler.getCustomGuild(guildGoodbye.getGuildID()).log(new EditGoodbyeMessageSubCommand(), LogLevel.ERROR,
-                    "Invalid Thumbnail URL", "Invalid thumbnail URL for Goodbye: " + guildGoodbye.getThumbnailURL());
-        }
+        guildGoodbye.getThumbnailURL().ifPresent((thumbnailURL) -> {
+            try {
+                embedBuilder.setThumbnail(thumbnailURL);
+            } catch (IllegalArgumentException e) {
+                GuildHandler.getCustomGuild(guildGoodbye.getGuildID()).log(new EditGoodbyeMessageSubCommand(), LogLevel.ERROR,
+                        "Invalid Thumbnail URL", "Invalid thumbnail URL for Goodbye: " + guildGoodbye.getThumbnailURL());
+            }
+        });
 
         // Attempts to set the image URL.
-        try {
-            embedBuilder.setImage(guildGoodbye.getImageURL());
-        } catch (IllegalArgumentException e) {
-            GuildHandler.getCustomGuild(guildGoodbye.getGuildID()).log(new EditGoodbyeMessageSubCommand(), LogLevel.ERROR,
-                    "Invalid Image URL", "Invalid image URL for Goodbye: " + guildGoodbye.getImageURL());
-        }
+        guildGoodbye.getImageURL().ifPresent((imageURL) -> {
+            try {
+                embedBuilder.setImage(imageURL);
+            } catch (IllegalArgumentException e) {
+                GuildHandler.getCustomGuild(guildGoodbye.getGuildID()).log(new EditGoodbyeMessageSubCommand(), LogLevel.ERROR,
+                        "Invalid Image URL", "Invalid image URL for Goodbye: " + guildGoodbye.getImageURL());
+            }
+        });
+
         embedBuilder.setColor(Helper.getRandomColor());
         embedBuilder.setAuthor(joiner.getName(), joiner.getAvatarUrl(), joiner.getAvatarUrl());
         return embedBuilder.build();
@@ -92,10 +98,11 @@ public class GoodbyeListener extends ListenerAdapter {
             GuildGoodbye guildGoodbye = Bot.getCafeAPI().GOODBYE.getGuildGoodbye(guildID);
             return new GuildGoodbye(
                     guildGoodbye.getGuildID(),
-                    guildGoodbye.getDescription(),
-                    guildGoodbye.getThumbnailURL(),
-                    guildGoodbye.getImageURL(),
-                    guildGoodbye.getMessage());
+                    guildGoodbye.getDescription().orElse(null),
+                    guildGoodbye.getThumbnailURL().orElse(null),
+                    guildGoodbye.getImageURL().orElse(null),
+                    guildGoodbye.getMessage().orElse(null)
+            );
         } catch (NotFoundException e) {
             return new GuildGoodbye(guildID, null, null, null, null);
         }

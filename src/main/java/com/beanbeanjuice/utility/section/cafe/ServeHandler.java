@@ -117,10 +117,10 @@ public class ServeHandler {
             return MINUTES_UNTIL_CAN_SERVE + 10;
         }
 
-        Timestamp currentTimestamp = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis()).toString());
+        Timestamp currentTimestamp = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis()).toString()).orElseThrow();
 
         try {
-            return Math.round(Time.compareTwoTimeStamps(cafeUser.getLastServingTime(), currentTimestamp, TimestampDifference.MINUTES));
+            return Math.round(Time.compareTwoTimeStamps(cafeUser.getLastServingTime().orElseThrow(), currentTimestamp, TimestampDifference.MINUTES));
         } catch (UnsupportedTemporalTypeException e) {
             return MINUTES_UNTIL_CAN_SERVE + 10;
         }

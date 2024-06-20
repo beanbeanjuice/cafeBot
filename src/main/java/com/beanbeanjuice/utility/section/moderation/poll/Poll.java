@@ -28,7 +28,7 @@ public class Poll extends com.beanbeanjuice.cafeapi.cafebot.polls.Poll {
      */
     @NotNull
     public Boolean isFinished() {
-        Timestamp currentTime = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis()).toString());
+        Timestamp currentTime = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis()).toString()).orElseThrow();
 
         return Time.compareTwoTimeStamps(
                 getEndingTime(),
