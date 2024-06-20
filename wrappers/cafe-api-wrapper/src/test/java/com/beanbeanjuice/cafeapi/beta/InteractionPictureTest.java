@@ -1,15 +1,17 @@
 package com.beanbeanjuice.cafeapi.beta;
 
-import com.beanbeanjuice.cafeapi.CafeAPI;
-import com.beanbeanjuice.cafeapi.cafebot.interactions.InteractionType;
-import com.beanbeanjuice.cafeapi.requests.RequestLocation;
+import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.cafebot.interactions.InteractionType;
+import com.beanbeanjuice.cafeapi.wrapper.requests.RequestLocation;
+import com.beanbeanjuice.cafeapi.wrapper.cafebot.interactions.pictures.InteractionPictures;
+import com.beanbeanjuice.kawaiiapi.wrapper.KawaiiAPI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests the {@link com.beanbeanjuice.cafeapi.cafebot.interactions.pictures.InteractionPictures InteractionPictures}.
- * This confirms that the {@link CafeAPI} and {@link com.beanbeanjuice.KawaiiAPI KawaiiAPI} are both working.
+ * Tests the {@link InteractionPictures InteractionPictures}.
+ * This confirms that the {@link CafeAPI} and {@link KawaiiAPI KawaiiAPI} are both working.
  *
  * @author beanbeanjuice
  * @since 1.3.1

@@ -1,9 +1,9 @@
 package com.beanbeanjuice.cafeapi.beta;
 
-import com.beanbeanjuice.cafeapi.CafeAPI;
-import com.beanbeanjuice.cafeapi.user.Users;
-import com.beanbeanjuice.cafeapi.exception.api.AuthorizationException;
-import com.beanbeanjuice.cafeapi.requests.RequestLocation;
+import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.user.Users;
+import com.beanbeanjuice.cafeapi.wrapper.exception.api.AuthorizationException;
+import com.beanbeanjuice.cafeapi.wrapper.requests.RequestLocation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

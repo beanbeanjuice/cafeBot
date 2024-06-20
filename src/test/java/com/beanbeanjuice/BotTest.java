@@ -1,5 +1,6 @@
 package com.beanbeanjuice;
 
+import com.beanbeanjuice.cafebot.Bot;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

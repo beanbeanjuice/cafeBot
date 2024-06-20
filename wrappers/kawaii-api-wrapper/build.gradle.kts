@@ -14,6 +14,6 @@ dependencies {
 }
 
 tasks.withType<ShadowJar> {
-    relocate("com.fasterxml.jackson.core", "com.beanbeanjuice.simpleproxychat.libs.com.fasterxml.jackson.core")
-    relocate("org.apache.httpcomponents", "com.beanbeanjuice.simpleproxychat.libs.org.apache.httpcomponents")
+    relocate("com.fasterxml.jackson.core", "com.beanbeanjuice.kawaiiapi.wrapper.libs.com.fasterxml.jackson.core")
+    relocate("org.apache.httpcomponents", "com.beanbeanjuice.kawaiiapi.wrapper.libs.org.apache.httpcomponents")
 }

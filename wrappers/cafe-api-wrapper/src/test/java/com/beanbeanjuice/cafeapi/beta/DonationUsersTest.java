@@ -1,10 +1,10 @@
 package com.beanbeanjuice.cafeapi.beta;
 
-import com.beanbeanjuice.cafeapi.CafeAPI;
-import com.beanbeanjuice.cafeapi.exception.api.ConflictException;
-import com.beanbeanjuice.cafeapi.exception.api.NotFoundException;
-import com.beanbeanjuice.cafeapi.generic.CafeGeneric;
-import com.beanbeanjuice.cafeapi.requests.RequestLocation;
+import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.exception.api.ConflictException;
+import com.beanbeanjuice.cafeapi.wrapper.exception.api.NotFoundException;
+import com.beanbeanjuice.cafeapi.wrapper.generic.CafeGeneric;
+import com.beanbeanjuice.cafeapi.wrapper.requests.RequestLocation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

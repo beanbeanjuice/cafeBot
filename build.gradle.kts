@@ -83,9 +83,7 @@ dependencies {
 
     implementation("org.apache.logging.log4j", "log4j-api", "2.23.1")
     implementation("org.apache.logging.log4j", "log4j-core", "2.23.1")
-//    implementation("org.slfj", "slf4j-reload4j", "2.0.13")
     implementation("org.slf4j", "slf4j-reload4j", "2.0.13")
-
 
     implementation("com.github.twitch4j", "twitch4j", "1.15.0")
 
@@ -94,4 +92,11 @@ dependencies {
 
     testImplementation("junit", "junit", "4.13.2")
     testImplementation("org.junit.jupiter", "junit-jupiter", "5.8.1")
+}
+
+tasks.withType<ShadowJar> {
+    relocate("net.dv8tion", "com.beanbeanjuice.cafebot.libs.net.dv8tion")
+    relocate("org.apache.logging.log4j", "com.beanbeanjuice.cafebot.libs.org.apache.logging.log4j")
+    relocate("org.slf4j", "com.beanbeanjuice.cafebot.libs.org.slf4j")
+    relocate("com.github.twitch4j", "com.beanbeanjuice.cafebot.libs.com.github.twitch4j")
 }

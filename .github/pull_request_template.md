@@ -29,9 +29,9 @@ Fixes # (issue)
 
 ## Test Configuration
 * Hardware:
-    - CPU: 
-    - GPU: 
-    - RAM: 
+    - CPU: AMD Ryzen 7 5800x3D
+    - GPU: Nvidia RTX 3080
+    - RAM: 32 GB DDR4 @ 3600 Mhz
 * JDK: Java OpenJDK 21
 
 ---
