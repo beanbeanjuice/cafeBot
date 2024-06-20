@@ -15,10 +15,7 @@ import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A {@link CustomGuild} that contains {@link net.dv8tion.jda.api.entities.Guild Guild} information.
@@ -162,15 +159,11 @@ public class CustomGuild {
         return false;
     }
 
-    /**
-     * @return The daily {@link TextChannel} for the {@link Guild}. Null if does not exist.
-     */
-    @Nullable
-    public TextChannel getDailyChannel() {
+    public Optional<TextChannel> getDailyChannel() {
         try {
-            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.DAILY));
+            return Optional.ofNullable(GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.DAILY)));
         } catch (NullPointerException e) {
-            return null;
+            return Optional.empty();
         }
     }
 

@@ -26,34 +26,29 @@ public class DailyChannelHandler {
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                GuildHandler.getGuilds().forEach((guildID, customGuild) -> {
-                    TextChannel dailyChannel = customGuild.getDailyChannel();
-
-                    // If the channel does exist.
-                    if (dailyChannel != null) {
-
-                        try {
-
-                            // Creates a copy of the channel.
-                            dailyChannel.createCopy().queue(channel -> {
-
-                                // If the channel was successfully changed, then delete it. Else, delete the copied channel.
-                                if (GuildHandler.getCustomGuild(guildID).setDailyChannelID(channel.getId())) {
-                                    dailyChannel.delete().queue();
-                                } else {
-                                    channel.delete().queue();
-                                }
-                            });
-                        } catch (PermissionException e) {
-                            dailyChannel.sendMessageEmbeds(Helper.errorEmbed(
-                                    "Missing Permission",
-                                    e.getMessage()
-                            )).queue();
-                        }
-                    }
-                });
+                GuildHandler.getGuilds().forEach(
+                        (guildID, customGuild) ->
+                        customGuild.getDailyChannel().ifPresent((dailyChannel) ->
+                        resetChannel(guildID, dailyChannel)));
             }
         }, today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+    }
+
+    private static void resetChannel(final String guildID, final TextChannel dailyChannel) {
+        try {
+            // Creates a copy of the channel.
+            dailyChannel.createCopy().queue(channel -> {
+
+                // If the channel was successfully changed, then delete it. Else, delete the copied channel.
+                if (GuildHandler.getCustomGuild(guildID).setDailyChannelID(channel.getId())) dailyChannel.delete().queue();
+                else channel.delete().queue();
+            });
+        } catch (PermissionException e) {
+            dailyChannel.sendMessageEmbeds(Helper.errorEmbed(
+                    "Missing Permission",
+                    e.getMessage()
+            )).queue();
+        }
     }
 
 }
