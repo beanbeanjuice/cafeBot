@@ -11,6 +11,7 @@ import java.sql.Timestamp;
  * A class used for {@link Poll} objects.
  *
  * @author beanbeanjuice
+ * TODO: Refactor
  */
 public class Poll extends com.beanbeanjuice.cafeapi.wrapper.cafebot.polls.Poll {
 
