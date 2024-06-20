@@ -6,6 +6,7 @@ import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
+import lombok.Getter;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public class TwitchListener {
 
-    private final TwitchClient twitchClient;
+    @Getter private final TwitchClient twitchClient;
 
     /**
      * Creates a new {@link TwitchListener} object.
@@ -37,7 +38,7 @@ public class TwitchListener {
      * Adds a stream to listen for.
      * @param channelName The channel name of the stream to listen for.
      */
-    public void addStream(String channelName) throws HystrixRuntimeException, ContextedRuntimeException {
+    public void addStream(final String channelName) throws HystrixRuntimeException, ContextedRuntimeException {
         twitchClient.getClientHelper().enableStreamEventListener(channelName);
     }
 
@@ -45,7 +46,7 @@ public class TwitchListener {
      * Removes a stream to listen for.
      * @param channelName The channel name of the stream to stop listening for.
      */
-    public void removeStream(String channelName) {
+    public void removeStream(final String channelName) {
         twitchClient.getClientHelper().disableStreamEventListener(channelName);
     }
 
@@ -53,15 +54,8 @@ public class TwitchListener {
      * Adds an event handler for listening for channels.
      * @param eventListener The event handler to add.
      */
-    public void addEventHandler(SimpleEventHandler eventListener) {
+    public void addEventHandler(final SimpleEventHandler eventListener) {
         twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class).registerListener(eventListener);
-    }
-
-    /**
-     * @return The current {@link TwitchClient}.
-     */
-    public TwitchClient getTwitchClient() {
-        return twitchClient;
     }
 
     /**
@@ -69,8 +63,7 @@ public class TwitchListener {
      * @param channelName The {@link String channelName} of the twitch channel.
      * @return True, if the channel exists.
      */
-    @NotNull
-    public Boolean channelExists(@NotNull String channelName) {
+    public boolean channelExists(final String channelName) {
         try {
             return !twitchClient.getHelix().getUsers(null, null, List.of(channelName)).execute().getUsers().isEmpty();
         } catch (HystrixRuntimeException | ContextedRuntimeException | UnsupportedOperationException e) {

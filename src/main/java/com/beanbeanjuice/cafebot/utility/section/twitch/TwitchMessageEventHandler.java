@@ -27,8 +27,7 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
      * @param event The {@link ChannelGoLiveEvent}.
      */
     @EventSubscriber
-    public void onChannelGoLive(@NotNull ChannelGoLiveEvent event) {
-
+    public void onChannelGoLive(final ChannelGoLiveEvent event) {
 
         // Converts the Twitch Name to lower case.
         String twitchName = event.getChannel().getName().toLowerCase();
@@ -37,36 +36,34 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
         ArrayList<String> guilds = TwitchHandler.getGuildsForChannel(twitchName);
 
         // If there are no guilds/sql error, do nothing.
-        if (guilds.size() == 0)
-            return;
+        if (guilds.isEmpty()) return;
 
         // Go through each guild.
-        for (String guildID : guilds) {
+        guilds.forEach((guildID) -> {
             CustomGuild customGuild = GuildHandler.getCustomGuild(guildID);
 
-            if (customGuild.getTwitchChannels().contains(twitchName)) {
+            if (!customGuild.getTwitchChannels().contains(twitchName)) return;
 
-                String liveChannelID = GuildHandler.getCustomGuild(guildID).getLiveChannelID();
-                TextChannel liveChannel = GuildHandler.getGuild(guildID).getTextChannelById(liveChannelID);
+            String liveChannelID = GuildHandler.getCustomGuild(guildID).getLiveChannelID();
+            TextChannel liveChannel = GuildHandler.getGuild(guildID).getTextChannelById(liveChannelID);
 
-                StringBuilder message = new StringBuilder();
+            StringBuilder message = new StringBuilder();
 
-                try {
-                    message.append(GuildHandler.getCustomGuild(guildID).getLiveNotificationsRole().getAsMention())
-                            .append(", ");
-                } catch (NumberFormatException | NullPointerException ignored) { }
+            try {
+                message.append(GuildHandler.getCustomGuild(guildID).getLiveNotificationsRole().getAsMention())
+                        .append(", ");
+            } catch (NumberFormatException | NullPointerException ignored) { }
 
-                message.append(event.getChannel().getName())
-                        .append(", is now live on ")
-                        .append("https://www.twitch.tv/")
-                        .append(event.getChannel().getName());
+            message.append(event.getChannel().getName())
+                    .append(", is now live on ")
+                    .append("https://www.twitch.tv/")
+                    .append(event.getChannel().getName());
 
-                try {
-                    liveChannel.sendMessage(message.toString()).setEmbeds(liveEmbed(event)).queue();
-                    Bot.commandsRun++;
-                } catch (NullPointerException ignored) { } // If the live channel no longer exists, then just don't print the message.
-            }
-        }
+            try {
+                liveChannel.sendMessage(message.toString()).setEmbeds(liveEmbed(event)).queue();
+                Bot.commandsRun++;
+            } catch (NullPointerException ignored) { } // If the live channel no longer exists, then just don't print the message.
+        });
     }
 
     /**
@@ -74,8 +71,7 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
      * @param event The {@link ChannelGoLiveEvent}.
      * @return The {@link MessageEmbed} to be sent.
      */
-    @NotNull
-    public MessageEmbed liveEmbed(@NotNull ChannelGoLiveEvent event) {
+    public MessageEmbed liveEmbed(final ChannelGoLiveEvent event) {
         String channelName = event.getChannel().getName();
         String userProfileImage = getUserProfileImage(channelName);
         return new EmbedBuilder()
@@ -90,12 +86,11 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
                 .build();
     }
 
-    @NotNull
-    private String getUserProfileImage(@NotNull String user) {
+    private String getUserProfileImage(final String user) {
         UserList userList = TwitchHandler.getTwitchListener().getTwitchClient().getHelix()
                 .getUsers(null, null, List.of(user)).execute();
 
-        return userList.getUsers().get(0).getProfileImageUrl();
+        return userList.getUsers().getFirst().getProfileImageUrl();
     }
 
 }
