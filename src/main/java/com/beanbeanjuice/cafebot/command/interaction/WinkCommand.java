@@ -1,6 +1,6 @@
 package com.beanbeanjuice.cafebot.command.interaction;
 
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.interactions.InteractionType;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.InteractionType;
 import com.beanbeanjuice.cafebot.utility.command.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.command.ICommand;
 import com.beanbeanjuice.cafebot.utility.section.interaction.Interaction;

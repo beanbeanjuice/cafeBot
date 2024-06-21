@@ -1,6 +1,6 @@
 package com.beanbeanjuice.cafebot.command.fun.birthday;
 
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.birthdays.Birthday;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.birthdays.Birthday;
 import com.beanbeanjuice.cafebot.utility.command.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.command.ICommand;
 import com.beanbeanjuice.cafebot.utility.command.ISubCommand;

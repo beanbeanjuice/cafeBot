@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  * @author beanbeanjuice
  * TODO: Refactor
  */
-public class Raffle extends com.beanbeanjuice.cafeapi.wrapper.cafebot.raffles.Raffle {
+public class Raffle extends com.beanbeanjuice.cafeapi.wrapper.endpoints.raffles.Raffle {
 
     /**
      * Creates a new {@link Raffle}.

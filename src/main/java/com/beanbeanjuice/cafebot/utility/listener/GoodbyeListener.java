@@ -2,7 +2,7 @@ package com.beanbeanjuice.cafebot.utility.listener;
 
 import com.beanbeanjuice.cafebot.Bot;
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.goodbyes.GuildGoodbye;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.goodbyes.GuildGoodbye;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.NotFoundException;
 import com.beanbeanjuice.cafebot.command.settings.goodbye.EditGoodbyeMessageSubCommand;
 import com.beanbeanjuice.cafebot.utility.handler.guild.GuildHandler;

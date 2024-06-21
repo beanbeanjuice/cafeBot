@@ -13,7 +13,7 @@ public class ConflictException extends CafeException {
      * Creates a new {@link ConflictException}.
      * @param request The {@link Request} that threw the {@link CafeException}.
      */
-    public ConflictException(Request request) {
+    public ConflictException(final Request request) {
         super(request);
     }
 

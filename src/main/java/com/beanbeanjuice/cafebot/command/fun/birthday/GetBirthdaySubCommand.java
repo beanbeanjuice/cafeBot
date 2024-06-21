@@ -4,7 +4,7 @@ import com.beanbeanjuice.cafebot.utility.command.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.command.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.section.fun.BirthdayHandler;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.birthdays.Birthday;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.birthdays.Birthday;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;

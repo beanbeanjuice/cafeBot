@@ -1,7 +1,6 @@
 package com.beanbeanjuice.cafeapi.wrapper.user;
 
-import com.beanbeanjuice.cafeapi.wrapper.api.CafeAPI;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.AuthorizationException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ResponseException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
  *
  * @author beanbeanjuice
  */
-public class Users implements CafeAPI {
+public class Users implements ICafeAPI {
 
     private String apiKey;
 
@@ -25,7 +24,7 @@ public class Users implements CafeAPI {
      * Creates a new {@link Users}.
      * @param apiKey The {@link String API key} used for making a {@link Request}.
      */
-    public Users(String apiKey) {
+    public Users(final String apiKey) {
         this.apiKey = apiKey;
     }
 
@@ -41,12 +40,13 @@ public class Users implements CafeAPI {
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
 
-        for (JsonNode user : request.getData().get("users")) {
+        request.getData().get("users").forEach(user -> {
             int id = user.get("user_id").intValue();
             String username = user.get("username").textValue();
             UserType userType = UserType.valueOf(user.get("user_type").textValue());
             users.add(new User(id, username, userType));
-        }
+        });
+
         return users;
     }
 
@@ -56,7 +56,7 @@ public class Users implements CafeAPI {
      * @param password The {@link String password} of the {@link User}.
      * @return True, if successfully signed up.
      */
-    public boolean signUp(String username, String password) {
+    public boolean signUp(final String username, final String password) {
         Request request = new RequestBuilder(RequestRoute.CAFE, RequestType.POST)
                 .setRoute("/user/signup")
                 .addParameter("username", username)
@@ -73,7 +73,7 @@ public class Users implements CafeAPI {
      * @throws AuthorizationException Thrown when the {@link String apiKey} is invalid.
      * @throws ResponseException Thrown when there is a generic server-side {@link CafeException CafeException}.
      */
-    public User getUser(String username) throws AuthorizationException, ResponseException {
+    public User getUser(final String username) throws AuthorizationException, ResponseException {
         Request request = new RequestBuilder(RequestRoute.CAFE, RequestType.GET)
                 .setRoute("/user/" + username)
                 .setAuthorization(apiKey)
@@ -89,7 +89,7 @@ public class Users implements CafeAPI {
      * @param username The {@link String username} of the {@link User}.
      * @return True, if the {@link User} was successfully deleted.
      */
-    public boolean deleteUser(String username) {
+    public boolean deleteUser(final String username) {
         Request request = new RequestBuilder(RequestRoute.CAFE, RequestType.DELETE)
                 .setRoute("/user/" + username)
                 .setAuthorization(apiKey).build().orElseThrow();
@@ -101,7 +101,7 @@ public class Users implements CafeAPI {
      * @param apiKey The new {@link String apiKey}.
      */
     @Override
-    public void updateAPIKey(String apiKey) {
+    public void updateAPIKey(final String apiKey) {
         this.apiKey = apiKey;
     }
 

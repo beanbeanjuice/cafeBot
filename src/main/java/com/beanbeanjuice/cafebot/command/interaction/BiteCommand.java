@@ -3,7 +3,7 @@ package com.beanbeanjuice.cafebot.command.interaction;
 import com.beanbeanjuice.cafebot.utility.section.interaction.Interaction;
 import com.beanbeanjuice.cafebot.utility.command.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.command.ICommand;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.interactions.InteractionType;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.InteractionType;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;

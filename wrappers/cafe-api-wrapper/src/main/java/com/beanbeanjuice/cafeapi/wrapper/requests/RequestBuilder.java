@@ -46,7 +46,7 @@ public class RequestBuilder {
      * @param requestType The {@link RequestType type} of {@link Request}.
      * @param requestRoute The {@link RequestRoute} of the {@link Request}.
      */
-    public RequestBuilder(RequestRoute requestRoute, RequestType requestType) {
+    public RequestBuilder(final RequestRoute requestRoute, final RequestType requestType) {
         this.requestType = requestType;
         parameters = new HashMap<>();
 
@@ -58,7 +58,7 @@ public class RequestBuilder {
      * @param route The {@link String route} for the {@link RequestBuilder}.
      * @return The new {@link RequestBuilder}.
      */
-    public RequestBuilder setRoute(String route) {
+    public RequestBuilder setRoute(final String route) {
         this.route = route;
         return this;
     }
@@ -69,7 +69,7 @@ public class RequestBuilder {
      * @param value The {@link String value} for the {@link String key} in the {@link RequestBuilder}.
      * @return The new {@link RequestBuilder}.
      */
-    public RequestBuilder addParameter(String key, @Nullable String value) {
+    public RequestBuilder addParameter(final String key, @Nullable final String value) {
         parameters.put(key, value);
         return this;
     }
@@ -79,7 +79,7 @@ public class RequestBuilder {
      * @param apiKey The {@link String api key} for the {@link RequestBuilder}.
      * @return The new {@link RequestBuilder}.
      */
-    public RequestBuilder setAuthorization(String apiKey) {
+    public RequestBuilder setAuthorization(final String apiKey) {
         this.apiKey = apiKey;
         return this;
     }

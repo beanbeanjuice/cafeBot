@@ -18,7 +18,7 @@ public enum RequestRoute {
      * Creates a new {@link RequestRoute} static object.
      * @param route The {@link String route} of the {@link Request}.
      */
-    RequestRoute(String route) {
+    RequestRoute(final String route) {
         this.route = route;
     }
 

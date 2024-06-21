@@ -1,8 +1,8 @@
 package com.beanbeanjuice.cafeapi.beta;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.birthdays.Birthday;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.birthdays.BirthdayMonth;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.birthdays.Birthday;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.birthdays.BirthdayMonth;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ConflictException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.NotFoundException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.TeaPotException;
@@ -55,13 +55,13 @@ public class BirthdayTest {
         Assertions.assertEquals(29, cafeAPI.BIRTHDAY.getUserBirthday("178272524533104642").getDay());
 
         // Makes sure that alreadyMentioned is false by default.
-        Assertions.assertFalse(cafeAPI.BIRTHDAY.getUserBirthday("178272524533104642").alreadyMentioned());
+        Assertions.assertFalse(cafeAPI.BIRTHDAY.getUserBirthday("178272524533104642").isAlreadyMentioned());
 
         // Makes sure alreadyMentioned can be updated.
         Assertions.assertTrue(cafeAPI.BIRTHDAY.updateUserBirthdayMention("178272524533104642", true));
 
         // Makes sure alreadyMentioned HAS updated.
-        Assertions.assertTrue(cafeAPI.BIRTHDAY.getUserBirthday("178272524533104642").alreadyMentioned());
+        Assertions.assertTrue(cafeAPI.BIRTHDAY.getUserBirthday("178272524533104642").isAlreadyMentioned());
 
         // Makes sure the user's birthday can be removed.
         Assertions.assertTrue(cafeAPI.BIRTHDAY.removeUserBirthday("178272524533104642"));

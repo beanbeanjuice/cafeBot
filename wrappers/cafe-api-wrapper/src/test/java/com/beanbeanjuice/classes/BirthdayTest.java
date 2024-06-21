@@ -1,7 +1,7 @@
 package com.beanbeanjuice.classes;
 
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.birthdays.Birthday;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.birthdays.BirthdayMonth;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.birthdays.Birthday;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.birthdays.BirthdayMonth;
 import com.beanbeanjuice.cafeapi.wrapper.exception.program.BirthdayOverfillException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.program.InvalidTimeZoneException;
 import org.junit.jupiter.api.Assertions;

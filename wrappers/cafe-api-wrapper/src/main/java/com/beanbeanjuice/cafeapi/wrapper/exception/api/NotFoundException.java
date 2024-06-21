@@ -13,7 +13,7 @@ public class NotFoundException extends CafeException {
      * Creates a new {@link NotFoundException}.
      * @param request The {@link Request} that threw the {@link CafeException}.
      */
-    public NotFoundException(Request request) {
+    public NotFoundException(final Request request) {
         super(request);
     }
 

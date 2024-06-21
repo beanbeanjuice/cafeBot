@@ -231,13 +231,13 @@ public class RaffleHandler {
 
                 // If the guild does not contain the bot, remove it.
                 if (!GuildHandler.guildContainsBot(guildID)) {
-                    for (com.beanbeanjuice.cafeapi.wrapper.cafebot.raffles.Raffle raffle : apiRaffles)
+                    for (com.beanbeanjuice.cafeapi.wrapper.endpoints.raffles.Raffle raffle : apiRaffles)
                         removeRaffle(guildID, new Raffle(raffle.getMessageID(), raffle.getEndingTime(), raffle.getWinnerAmount()));
                     return;
                 }
 
                 // Add the raffles if the guild is still in the bot.
-                for (com.beanbeanjuice.cafeapi.wrapper.cafebot.raffles.Raffle raffle : apiRaffles) {
+                for (com.beanbeanjuice.cafeapi.wrapper.endpoints.raffles.Raffle raffle : apiRaffles) {
                     Raffle newRaffle = new Raffle(raffle.getMessageID(), raffle.getEndingTime(), raffle.getWinnerAmount());
 
                     if (!raffles.containsKey(guildID))

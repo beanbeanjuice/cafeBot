@@ -21,7 +21,7 @@ public class CafeException extends RuntimeException {
      * Creates a new {@link CafeException}.
      * @param request The {@link Request} that threw the {@link Exception}.
      */
-    public CafeException(Request request) {
+    public CafeException(final Request request) {
         super("Error " + request.getStatusCode() + ": " + request.getData().get("message").asText());
 
         this.statusCode = request.getStatusCode();
@@ -34,7 +34,7 @@ public class CafeException extends RuntimeException {
      * @param statusCode The {@link Integer statusCode} for the {@link Exception}.
      * @param message The {@link String message} for the {@link Exception}.
      */
-    public CafeException(int statusCode, String message) {
+    public CafeException(final int statusCode, final String message) {
         super("Error " + statusCode + ": " + message);
 
         this.statusCode = statusCode;

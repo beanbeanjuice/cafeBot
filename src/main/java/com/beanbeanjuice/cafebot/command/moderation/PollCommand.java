@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * An {@link ICommand} used to create a {@link com.beanbeanjuice.cafeapi.wrapper.cafebot.polls.Poll Poll}.
+ * An {@link ICommand} used to create a {@link com.beanbeanjuice.cafeapi.wrapper.endpoints.polls.Poll Poll}.
  *
  * @author beanbeanjuice
  */

@@ -2,7 +2,7 @@ package com.beanbeanjuice.cafebot.command.settings.goodbye;
 
 import com.beanbeanjuice.cafebot.Bot;
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.goodbyes.GuildGoodbye;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.goodbyes.GuildGoodbye;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ConflictException;
 import com.beanbeanjuice.cafebot.utility.command.CommandCategory;
