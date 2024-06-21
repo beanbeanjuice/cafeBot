@@ -38,7 +38,7 @@ public class PingCommand implements ICommand {
 
             switch (string) {
                 case "ai" -> {
-                    Bot.getAIResponseListener().refreshMaps();
+                    Bot.getAiResponseListener().refreshMaps();
                     event.getHook().sendMessageEmbeds(Helper.successEmbed(
                             "AI Responses Refreshed",
                             "The AI responses have been successfully refreshed!"
