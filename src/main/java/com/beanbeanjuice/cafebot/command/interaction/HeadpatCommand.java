@@ -22,7 +22,7 @@ public class HeadpatCommand implements ICommand {
     public void handle(@NotNull SlashCommandInteractionEvent event) {
         new Interaction(InteractionType.HEADPAT,
                 "**{sender}** *headpat* themselves! Ummm... what?",
-                "**{sender}** *headpat* **{receiver}**! <:madison_when_short:843673314990882836>",
+                "**{sender}** *headpat* **{receiver}**! <:zerotwo_scream:841921420904497163>",
                 "{sender} headpat others {amount_sent} times. {receiver} was headpat {amount_received} times.",
                 "Thank you... \uD83E\uDD7A",
                 event);

@@ -21,10 +21,10 @@ public class DabCommand implements ICommand {
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
         new Interaction(InteractionType.DAB,
-                "**{sender}** *dabbed*! Umm... this isn't 2016. <:madison_moment:843672933176311808>",
-                "**{sender}** *dabbed* at **{receiver}**! <:madison_moment:843672933176311808>",
+                "**{sender}** *dabbed*! Umm... this isn't 2016. <:cafeBot_angry:1171726164092518441>",
+                "**{sender}** *dabbed* at **{receiver}**! <:cafeBot_angry:1171726164092518441>",
                 "{sender} dabbed at others {amount_sent} times. {receiver} was dabbed at {amount_received} times.",
-                "STOP DABBING <:madison_when_short:843673314990882836>",
+                "STOP DABBING <:zerotwo_scream:841921420904497163>",
                 event);
     }
 

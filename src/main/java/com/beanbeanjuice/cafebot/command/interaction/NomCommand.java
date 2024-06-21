@@ -24,7 +24,7 @@ public class NomCommand implements ICommand {
                 "**{sender}** *nommed* themselves! DOESN'T THAT HURT? <:zerotwo_scream:841921420904497163>",
                 "**{sender}** *nommed* **{receiver}**!",
                 "{sender} nommed others {amount_sent} times. {receiver} was nommed {amount_received} times.",
-                "THAT HURTS <:madison_when_short:843673314990882836>",
+                "THAT HURTS <:zerotwo_scream:841921420904497163>",
                 event);
     }
 
