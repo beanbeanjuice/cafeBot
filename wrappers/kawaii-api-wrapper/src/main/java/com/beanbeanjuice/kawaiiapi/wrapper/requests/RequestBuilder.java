@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A {@link RequestBuilder} used to build {@link Request} objects.
@@ -70,7 +72,7 @@ public class RequestBuilder {
                 return Optional.of(new Request(statusCode, new ObjectMapper().readTree(inputStream)));
             }
         } catch (URISyntaxException | IOException e) {
-            e.printStackTrace();  // TODO: Better logging.
+            Logger.getLogger(RequestBuilder.class.getName()).log(Level.WARNING, "Error building request: " + e.getMessage());
             return Optional.empty();
         }
     }
