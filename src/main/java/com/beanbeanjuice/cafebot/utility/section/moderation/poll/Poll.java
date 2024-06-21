@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  * @author beanbeanjuice
  * TODO: Refactor
  */
-public class Poll extends com.beanbeanjuice.cafeapi.wrapper.cafebot.polls.Poll {
+public class Poll extends com.beanbeanjuice.cafeapi.wrapper.endpoints.polls.Poll {
 
     /**
      * Creates a new {@link Poll}.

@@ -3,7 +3,7 @@ package com.beanbeanjuice.cafebot.utility.section.interaction;
 import com.beanbeanjuice.cafebot.Bot;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.interactions.InteractionType;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.InteractionType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;

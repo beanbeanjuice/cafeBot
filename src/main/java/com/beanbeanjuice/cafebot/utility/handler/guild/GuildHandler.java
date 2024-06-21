@@ -2,7 +2,7 @@ package com.beanbeanjuice.cafebot.utility.handler.guild;
 
 import com.beanbeanjuice.cafebot.Bot;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.guilds.GuildInformationType;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.guilds.GuildInformationType;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
@@ -43,28 +43,28 @@ public class GuildHandler {
 
         try {
             Bot.getCafeAPI().GUILD.getAllGuildInformation().forEach((guildID, guildInformation) -> {
-                String prefix = guildInformation.getPrefix();
-                String moderationRoleID = guildInformation.getModeratorRoleID();
-                String twitchChannelID = guildInformation.getTwitchChannelID();
+                String prefix = guildInformation.getSetting(GuildInformationType.PREFIX);
+                String moderationRoleID = guildInformation.getSetting(GuildInformationType.MODERATOR_ROLE_ID);
+                String twitchChannelID = guildInformation.getSetting(GuildInformationType.TWITCH_CHANNEL_ID);
 
                 ArrayList<String> twitchChannelsInGuild = twitchChannels.get(guildID);
                 if (twitchChannelsInGuild == null) {
                     twitchChannelsInGuild = new ArrayList<>();
                 }
-                String mutedRoleID = guildInformation.getMutedRoleID();
-                String liveNotificationsRoleID = guildInformation.getLiveNotificationsRoleID();
-                Boolean notifyOnUpdate = guildInformation.getNotifyOnUpdate();
-                String updateChannelID = guildInformation.getUpdateChannelID();
-                String countingChannelID = guildInformation.getCountingChannelID();
-                String pollChannelID = guildInformation.getPollChannelID();
-                String raffleChannelID = guildInformation.getRaffleChannelID();
-                String birthdayChannelID = guildInformation.getBirthdayChannelID();
-                String welcomeChannelID = guildInformation.getWelcomeChannelID();
-                String goodbyeChannelID = guildInformation.getGoodbyeChannelID();
-                String logChannelID = guildInformation.getLogChannelID();
-                String ventingChannelID = guildInformation.getVentingChannelID();
-                Boolean aiState = guildInformation.getAiResponseStatus();
-                String dailyChannelID = guildInformation.getDailyChannelID();
+                String mutedRoleID = guildInformation.getSetting(GuildInformationType.MUTED_ROLE_ID);
+                String liveNotificationsRoleID = guildInformation.getSetting(GuildInformationType.LIVE_NOTIFICATIONS_ROLE_ID);
+                boolean notifyOnUpdate = Boolean.parseBoolean(guildInformation.getSetting(GuildInformationType.NOTIFY_ON_UPDATE));
+                String updateChannelID = guildInformation.getSetting(GuildInformationType.UPDATE_CHANNEL_ID);
+                String countingChannelID = guildInformation.getSetting(GuildInformationType.COUNTING_CHANNEL_ID);
+                String pollChannelID = guildInformation.getSetting(GuildInformationType.POLL_CHANNEL_ID);
+                String raffleChannelID = guildInformation.getSetting(GuildInformationType.RAFFLE_CHANNEL_ID);
+                String birthdayChannelID = guildInformation.getSetting(GuildInformationType.BIRTHDAY_CHANNEL_ID);
+                String welcomeChannelID = guildInformation.getSetting(GuildInformationType.WELCOME_CHANNEL_ID);
+                String goodbyeChannelID = guildInformation.getSetting(GuildInformationType.GOODBYE_CHANNEL_ID);
+                String logChannelID = guildInformation.getSetting(GuildInformationType.LOG_CHANNEL_ID);
+                String ventingChannelID = guildInformation.getSetting(GuildInformationType.VENTING_CHANNEL_ID);
+                boolean aiState = Boolean.parseBoolean(guildInformation.getSetting(GuildInformationType.AI_RESPONSE));
+                String dailyChannelID = guildInformation.getSetting(GuildInformationType.DAILY_CHANNEL_ID);
 
                 guildDatabase.put(guildID, new CustomGuild(
                         guildID, prefix, moderationRoleID,

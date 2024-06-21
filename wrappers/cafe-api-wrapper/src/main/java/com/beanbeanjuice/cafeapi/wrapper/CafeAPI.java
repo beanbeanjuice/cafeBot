@@ -1,28 +1,30 @@
 package com.beanbeanjuice.cafeapi.wrapper;
 
 import com.beanbeanjuice.kawaiiapi.wrapper.KawaiiAPI;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.goodbyes.Goodbyes;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.goodbyes.Goodbyes;
 import com.beanbeanjuice.cafeapi.wrapper.requests.*;
 import com.beanbeanjuice.cafeapi.wrapper.user.Users;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.beancoins.users.DonationUsers;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.birthdays.Birthdays;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.cafe.CafeUsers;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.codes.GeneratedCodes;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.counting.GlobalCountingInformation;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.guilds.GlobalGuildInformation;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.interactions.Interactions;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.interactions.pictures.InteractionPictures;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.minigames.winstreaks.WinStreaks;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.polls.Polls;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.raffles.Raffles;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.twitches.GuildTwitches;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.version.Versions;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.voicebinds.VoiceChannelBinds;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.welcomes.Welcomes;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.words.Words;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.beancoins.users.DonationUsers;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.birthdays.Birthdays;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.cafe.CafeUsers;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.codes.GeneratedCodes;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.counting.GlobalCountingInformation;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.guilds.GlobalGuildInformation;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.Interactions;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.pictures.InteractionPictures;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.minigames.winstreaks.WinStreaks;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.polls.Polls;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.raffles.Raffles;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.twitches.GuildTwitches;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.version.Versions;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.voicebinds.VoiceChannelBinds;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.welcomes.Welcomes;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.words.Words;
 import lombok.Getter;
 
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CafeAPI {
 
@@ -65,7 +67,7 @@ public class CafeAPI {
         try {
             apiKey = getToken(username, password);
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(CafeAPI.class.getName()).log(Level.SEVERE, "Unable to login. Could the username or password be incorrect?");
         }
 
         USER = new Users(apiKey);

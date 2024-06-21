@@ -5,8 +5,8 @@ import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
 import com.beanbeanjuice.cafebot.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.birthdays.Birthday;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.birthdays.BirthdayMonth;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.birthdays.Birthday;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.birthdays.BirthdayMonth;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.NotFoundException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.TeaPotException;
@@ -56,7 +56,7 @@ public class BirthdayHandler {
                     if (isBirthday(birthday)) {
 
                         // Check if they have already been mentioned today.
-                        if (!birthday.alreadyMentioned()) {
+                        if (!birthday.isAlreadyMentioned()) {
 
                             // Update it for all guilds where there is a birthday channel.
                             for (Guild guild : Bot.getBot().getGuilds()) {
@@ -83,7 +83,7 @@ public class BirthdayHandler {
                         }
 
                     } else {
-                        if (birthday.alreadyMentioned() && !isBirthday(birthday))
+                        if (birthday.isAlreadyMentioned() && !isBirthday(birthday))
                             updateMentionedBirthday(userID, false);
                     }
                 });

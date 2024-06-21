@@ -1,5 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.utility;
 
+import lombok.Setter;
+
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +18,7 @@ import java.util.*;
 public class Time {
 
     private final TimeZone TIME_ZONE;
-    private String defaultFormat;
+    @Setter private String defaultFormat;
 
     /**
      * Creates a new {@link Time} object with a specified
@@ -44,14 +46,6 @@ public class Time {
      */
     public Time() {
         TIME_ZONE = TimeZone.getTimeZone("UTC");
-    }
-
-    /**
-     * Sets the default {@link String format} for the specified {@link Time} object.
-     * @param format The {@link String format} to be set.
-     */
-    public void setDefaultFormat(String format) {
-        defaultFormat = format;
     }
 
     /**

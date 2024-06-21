@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafebot.utility.section.cafe;
 
 import com.beanbeanjuice.cafebot.Bot;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.beancoins.users.DonationUsers;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.beancoins.users.DonationUsers;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 import com.beanbeanjuice.cafeapi.wrapper.generic.CafeGeneric;

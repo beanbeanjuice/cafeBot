@@ -13,7 +13,7 @@ public class AuthorizationException extends CafeException {
      * Creates a new {@link AuthorizationException}.
      * @param request The {@link Request} that threw the {@link CafeException}.
      */
-    public AuthorizationException(Request request) {
+    public AuthorizationException(final Request request) {
         super(request);
     }
 

@@ -2,8 +2,8 @@ package com.beanbeanjuice.cafebot.utility.section.game;
 
 import com.beanbeanjuice.cafebot.Bot;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.minigames.winstreaks.MinigameType;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.minigames.winstreaks.WinStreak;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.minigames.winstreaks.MinigameType;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.minigames.winstreaks.WinStreak;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ConflictException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.NotFoundException;

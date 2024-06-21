@@ -18,7 +18,7 @@ public class Request {
      * @param statusCode The resulting {@link Integer status code}.
      * @param data The {@link JsonNode data} retrieved from the {@link Request}.
      */
-    public Request(int statusCode, JsonNode data) {
+    public Request(final int statusCode, final JsonNode data) {
         this.statusCode = statusCode;
         this.data = data;
     }

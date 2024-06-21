@@ -4,7 +4,7 @@ import com.beanbeanjuice.cafebot.utility.command.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.command.ICommand;
 import com.beanbeanjuice.cafebot.utility.section.cafe.ServeHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.cafe.CafeUser;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.cafe.CafeUser;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;

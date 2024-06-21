@@ -6,7 +6,7 @@ import com.beanbeanjuice.cafebot.command.settings.welcome.EditWelcomeMessageSubC
 import com.beanbeanjuice.cafebot.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.welcomes.GuildWelcome;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.welcomes.GuildWelcome;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.NotFoundException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;

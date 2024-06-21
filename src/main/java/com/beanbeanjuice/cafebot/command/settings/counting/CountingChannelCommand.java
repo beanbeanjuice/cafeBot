@@ -1,6 +1,6 @@
 package com.beanbeanjuice.cafebot.command.settings.counting;
 
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.counting.CountingInformation;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.counting.CountingInformation;
 import com.beanbeanjuice.cafebot.utility.command.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.command.ICommand;
 import com.beanbeanjuice.cafebot.utility.command.ISubCommand;

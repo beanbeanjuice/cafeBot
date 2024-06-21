@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
 import java.util.TimeZone;
+import java.util.logging.Logger;
 
 /**
  * A generic class used for general parsing and other various methods.
@@ -72,7 +73,7 @@ public class CafeGeneric {
      * @param bool The {@link Boolean} to parse.
      * @return "1", if true. If there was an error, it will be "0" by default.
      */
-    public static String parseBoolean(boolean bool) {
+    public static String parseBoolean(final boolean bool) {
         return (bool) ? "1" : "0";
     }
 

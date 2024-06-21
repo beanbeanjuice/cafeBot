@@ -15,7 +15,7 @@ public class TeaPotException extends CafeException {
      * Creates a new {@link TeaPotException}.
      * @param request The {@link Request} that threw the {@link CafeException}.
      */
-    public TeaPotException(Request request) {
+    public TeaPotException(final Request request) {
         super(request);
     }
 
@@ -23,7 +23,7 @@ public class TeaPotException extends CafeException {
      * Creates a new {@link TeaPotException}.
      * @param message The {@link String} message to send.
      */
-    public TeaPotException(String message) {
+    public TeaPotException(final String message) {
         super(413, message);
     }
 

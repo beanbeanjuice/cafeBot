@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.beta;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.words.Words;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.words.Words;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.NotFoundException;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestLocation;
 import org.junit.jupiter.api.Assertions;

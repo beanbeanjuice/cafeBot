@@ -3,7 +3,7 @@ package com.beanbeanjuice.cafebot.utility.handler;
 import com.beanbeanjuice.cafebot.Bot;
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.voicebinds.VoiceChannelBind;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.voicebinds.VoiceChannelBind;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ConflictException;
 import org.jetbrains.annotations.NotNull;

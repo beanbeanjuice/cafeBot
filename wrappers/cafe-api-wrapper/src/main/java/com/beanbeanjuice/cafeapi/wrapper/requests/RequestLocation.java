@@ -14,7 +14,7 @@ public enum RequestLocation {
      * Creates a new static {@link RequestLocation}.
      * @param url The {@link String url} for the {@link RequestLocation}.
      */
-    RequestLocation(String url) {
+    RequestLocation(final String url) {
         this.URL = url;
     }
 

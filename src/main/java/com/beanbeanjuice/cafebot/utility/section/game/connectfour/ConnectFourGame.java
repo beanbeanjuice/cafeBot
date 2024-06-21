@@ -4,7 +4,7 @@ import com.beanbeanjuice.cafebot.Bot;
 import com.beanbeanjuice.cafebot.utility.handler.guild.GuildHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.section.game.WinStreakHandler;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.minigames.winstreaks.MinigameType;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.minigames.winstreaks.MinigameType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;

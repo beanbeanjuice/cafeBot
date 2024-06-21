@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.beta;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.polls.Poll;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.polls.Poll;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ConflictException;
 import com.beanbeanjuice.cafeapi.wrapper.generic.CafeGeneric;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestLocation;

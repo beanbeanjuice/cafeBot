@@ -13,7 +13,7 @@ public class UndefinedVariableException extends CafeException {
      * Creates a new {@link UndefinedVariableException}.
      * @param request The {@link Request} that threw the {@link CafeException}.
      */
-    public UndefinedVariableException(Request request) {
+    public UndefinedVariableException(final Request request) {
         super(request);
     }
 

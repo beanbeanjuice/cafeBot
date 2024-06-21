@@ -19,7 +19,7 @@ public class User {
      * @param username The {@link String username} of the {@link User}.
      * @param userType The {@link UserType user type} of the {@link User}.
      */
-    public User(int id, String username, UserType userType) {
+    public User(final int id, final String username, final UserType userType) {
         this.ID = id;
         this.username = username;
         this.userType = userType;

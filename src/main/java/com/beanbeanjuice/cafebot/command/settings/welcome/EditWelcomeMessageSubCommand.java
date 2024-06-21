@@ -7,7 +7,7 @@ import com.beanbeanjuice.cafebot.utility.command.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.listener.WelcomeListener;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.welcomes.GuildWelcome;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.welcomes.GuildWelcome;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ConflictException;
 import net.dv8tion.jda.api.entities.User;

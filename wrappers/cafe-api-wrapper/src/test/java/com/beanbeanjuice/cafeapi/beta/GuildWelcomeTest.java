@@ -1,8 +1,8 @@
 package com.beanbeanjuice.cafeapi.beta;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.welcomes.Welcomes;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.welcomes.GuildWelcome;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.welcomes.Welcomes;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.welcomes.GuildWelcome;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ConflictException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.NotFoundException;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestLocation;

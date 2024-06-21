@@ -2,8 +2,8 @@ package com.beanbeanjuice.cafebot.utility.section.cafe;
 
 import com.beanbeanjuice.cafebot.Bot;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.cafe.CafeUser;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.words.Word;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.cafe.CafeUser;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.words.Word;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.AuthorizationException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ConflictException;

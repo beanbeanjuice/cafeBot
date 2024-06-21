@@ -1,9 +1,9 @@
 package com.beanbeanjuice.cafeapi.beta;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.interactions.InteractionType;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.InteractionType;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestLocation;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.interactions.pictures.InteractionPictures;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.pictures.InteractionPictures;
 import com.beanbeanjuice.kawaiiapi.wrapper.KawaiiAPI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

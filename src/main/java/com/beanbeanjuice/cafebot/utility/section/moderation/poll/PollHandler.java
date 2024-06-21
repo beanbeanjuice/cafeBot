@@ -199,7 +199,7 @@ public class PollHandler {
 
                 // Remove the polls if no longer in the guild.
                 if (!GuildHandler.guildContainsBot(guildID)) {
-                    for (com.beanbeanjuice.cafeapi.wrapper.cafebot.polls.Poll poll : polls)
+                    for (com.beanbeanjuice.cafeapi.wrapper.endpoints.polls.Poll poll : polls)
                         removePoll(guildID, new Poll(poll.getMessageID(), poll.getEndingTime()));
                     return;
                 }
@@ -209,7 +209,7 @@ public class PollHandler {
                     activePolls.put(guildID, new ArrayList<>());
 
                 // Add all active polls.
-                for (com.beanbeanjuice.cafeapi.wrapper.cafebot.polls.Poll poll : polls)
+                for (com.beanbeanjuice.cafeapi.wrapper.endpoints.polls.Poll poll : polls)
                     activePolls.get(guildID).add(new Poll(poll.getMessageID(), poll.getEndingTime()));
             });
         } catch (CafeException e) {

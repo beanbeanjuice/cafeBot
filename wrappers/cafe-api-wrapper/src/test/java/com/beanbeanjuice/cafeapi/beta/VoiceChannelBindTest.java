@@ -1,8 +1,8 @@
 package com.beanbeanjuice.cafeapi.beta;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.voicebinds.VoiceChannelBinds;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.voicebinds.VoiceChannelBind;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.voicebinds.VoiceChannelBinds;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.voicebinds.VoiceChannelBind;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ConflictException;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestLocation;
 import org.junit.jupiter.api.Assertions;

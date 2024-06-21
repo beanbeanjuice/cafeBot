@@ -11,7 +11,7 @@ public class InvalidTimeZoneException extends RuntimeException {
      * Creates a new {@link InvalidTimeZoneException}.
      * @param message The message to send to the {@link RuntimeException}.
      */
-    public InvalidTimeZoneException(String message) {
+    public InvalidTimeZoneException(final String message) {
         super(message);
     }
 

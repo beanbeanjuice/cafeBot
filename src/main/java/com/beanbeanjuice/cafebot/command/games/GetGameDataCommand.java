@@ -1,11 +1,11 @@
 package com.beanbeanjuice.cafebot.command.games;
 
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.minigames.winstreaks.WinStreak;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.minigames.winstreaks.WinStreak;
 import com.beanbeanjuice.cafebot.utility.command.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.command.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.section.game.WinStreakHandler;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.minigames.winstreaks.MinigameType;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.minigames.winstreaks.MinigameType;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;

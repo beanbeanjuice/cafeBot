@@ -3,7 +3,7 @@ package com.beanbeanjuice.cafebot.utility.handler;
 import com.beanbeanjuice.cafebot.Bot;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
-import com.beanbeanjuice.cafeapi.wrapper.cafebot.counting.CountingInformation;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.counting.CountingInformation;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ConflictException;
 import net.dv8tion.jda.api.EmbedBuilder;

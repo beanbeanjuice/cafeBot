@@ -13,7 +13,7 @@ public class ResponseException extends CafeException {
      * Creates a new {@link ResponseException}.
      * @param request The {@link Request} that threw the {@link CafeException}.
      */
-    public ResponseException(Request request) {
+    public ResponseException(final Request request) {
         super(request);
     }
 
