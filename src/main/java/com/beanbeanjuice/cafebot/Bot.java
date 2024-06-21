@@ -19,6 +19,8 @@ import com.beanbeanjuice.cafebot.utility.section.settings.DailyChannelHandler;
 import com.beanbeanjuice.cafebot.utility.section.twitch.TwitchHandler;
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestLocation;
+import lombok.Getter;
+import lombok.Setter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -44,20 +46,20 @@ public class Bot {
     public static final String BOT_USER_AGENT = "java:com.beanbeanjuice.cafeBot:" + BOT_VERSION;
     public static final String TWITCH_ACCESS_TOKEN = System.getenv("CAFEBOT_TWITCH_ACCESS_TOKEN");
     private static final RequestLocation location = RequestLocation.valueOf(System.getenv("CAFEBOT_REQUEST_LOCATION"));
-    private static JDA bot;
+    @Getter private static JDA bot;
 
     // API
-    private static CafeAPI cafeAPI;
+    @Getter @Setter private static CafeAPI cafeAPI;
 
     // Internal Items
-    private static LogManager logger;
+    @Getter private static LogManager logger;
     private static final String HOME_GUILD_ID = System.getenv("CAFEBOT_GUILD_ID");
     private static final String HOME_GUILD_LOG_CHANNEL_ID = System.getenv("CAFEBOT_GUILD_LOG_CHANNEL_ID");
     private static final String HOME_GUILD_WEBHOOK_URL = System.getenv("CAFEBOT_GUILD_WEBHOOK_URL");
 
     // Handlers
-    private static CommandHandler commandHandler;
-    private static AIResponseListener aiResponseListener;
+    @Getter private static CommandHandler commandHandler;
+    @Getter private static AIResponseListener aiResponseListener;
 
     // Additional Items
     public static int commandsRun = 0;
@@ -131,54 +133,6 @@ public class Bot {
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         new Bot();
-    }
-
-    /**
-     * @return The current {@link JDA bot}.
-     */
-    @NotNull
-    public static JDA getBot() {
-        return bot;
-    }
-
-    /**
-     * @return The current {@link LogManager}.
-     */
-    @NotNull
-    public static LogManager getLogger() {
-        return logger;
-    }
-
-    /**
-     * @return The current {@link CafeAPI}.
-     */
-    @NotNull
-    public static CafeAPI getCafeAPI() {
-        return cafeAPI;
-    }
-
-    /**
-     * Sets the current {@link CafeAPI}.
-     * @param newCafeAPI The new {@link CafeAPI}.
-     */
-    public static void setCafeAPI(@NotNull CafeAPI newCafeAPI) {
-        cafeAPI = newCafeAPI;
-    }
-
-    /**
-     * @return The current {@link CommandHandler}.
-     */
-    @NotNull
-    public static CommandHandler getCommandHandler() {
-        return commandHandler;
-    }
-
-    /**
-     * @return The current {@link AIResponseListener}.
-     */
-    @NotNull
-    public static AIResponseListener getAIResponseListener() {
-        return aiResponseListener;
     }
 
 }
