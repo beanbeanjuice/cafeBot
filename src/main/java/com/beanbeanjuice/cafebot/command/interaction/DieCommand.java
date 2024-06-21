@@ -21,10 +21,10 @@ public class DieCommand implements ICommand {
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
         new Interaction(InteractionType.DIE,
-                "**{sender}** *died*! SOMEONE HELP! <:madison_when_short:843673314990882836>",
-                "**{sender}** *died* because of **{receiver}**! <:madison_when_short:843673314990882836>",
+                "**{sender}** *died*! SOMEONE HELP! <:zerotwo_scream:841921420904497163>",
+                "**{sender}** *died* because of **{receiver}**! <:zerotwo_scream:841921420904497163>",
                 "{sender} died {amount_sent} times. {receiver} was someone's cause of death {amount_received} times.",
-                "You're not dead... <:madison_moment:843672933176311808>",
+                "You're not dead... <:cafeBot_angry:1171726164092518441>",
                 event);
     }
 

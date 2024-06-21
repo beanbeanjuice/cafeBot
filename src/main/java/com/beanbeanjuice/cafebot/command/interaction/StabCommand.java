@@ -21,7 +21,7 @@ public class StabCommand implements ICommand {
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
         new Interaction(InteractionType.STAB,
-                "**{sender}** *stabbed* themselves! STOP??? DON'T DO THAT IN THE CAFE?!? <:madison_pissed:842061821774004304>",
+                "**{sender}** *stabbed* themselves! STOP??? DON'T DO THAT IN THE CAFE?!? <a:man_scream:841921434732724224>",
                 "**{sender}** *stabbed* **{receiver}**!",
                 "{sender} stabbed others {amount_sent} times. {receiver} was stabbed at {amount_received} times.",
                 "I'm a robot. Stabbing me does nothing. But, you're not a robot. <:stab_u:886216384864997406>",

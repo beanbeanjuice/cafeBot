@@ -21,10 +21,10 @@ public class PunchCommand implements ICommand {
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
         new Interaction(InteractionType.PUNCH,
-                "**{sender}** *punched* themselves! STOP!!! <:madison_when_short:843673314990882836>",
+                "**{sender}** *punched* themselves! STOP!!! <:zerotwo_scream:841921420904497163>",
                 "**{sender}** *punched* **{receiver}**!",
                 "{sender} punched others {amount_sent} times. {receiver} was punched {amount_received} times.",
-                "Congratulations... you punched a robot. Your hands are now broken. <:madison_moment:843672933176311808>",
+                "Congratulations... you punched a robot. Your hands are now broken. <:cafeBot_angry:1171726164092518441>",
                 event);
     }
 

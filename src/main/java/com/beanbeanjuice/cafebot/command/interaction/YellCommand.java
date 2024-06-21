@@ -21,7 +21,7 @@ public class YellCommand implements ICommand {
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
         new Interaction(InteractionType.YELL,
-                "**{sender}** *yelled*! SHUSH... some people are trying to work! <:madison_moment:843672933176311808>",
+                "**{sender}** *yelled*! SHUSH... some people are trying to work! <:cafeBot_angry:1171726164092518441>",
                 "**{sender}** *yelled* at **{receiver}**!",
                 "{sender} yelled at others {amount_sent} times. {receiver} was yelled at {amount_received} times.",
                 "WHY ARE YOU YELLING AT ME???? <:zerotwo_scream:841921420904497163>",

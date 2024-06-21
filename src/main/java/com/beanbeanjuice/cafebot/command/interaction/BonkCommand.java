@@ -24,7 +24,7 @@ public class BonkCommand implements ICommand {
                 "**{sender}** *bonked* themselves! ~~**H O R N I B L O C K**~~",
                 "**{sender}** *bonked* **{receiver}**! They sent them to ~~**H O R N I**~~ jail!",
                 "{sender} bonked others {amount_sent} times. {receiver} was bonked {amount_received} times.",
-                "WHAT DID I DO?!?!? <:madison_pissed:842061821774004304>",
+                "WHAT DID I DO?!?!? <a:man_scream:841921434732724224>",
                 event);
     }
 

@@ -24,7 +24,7 @@ public class BiteCommand implements ICommand {
                 "**{sender}** *bit* themselves! Ow!",
                 "**{sender}** *bit* **{receiver}**! What did they do?!?!?!?",
                 "{sender} bit others {amount_sent} times. {receiver} was bitten {amount_received} times.",
-                "Ow! Why would you do that to me?!? <:madison_when_short:843673314990882836>",
+                "Ow! Why would you do that to me?!? <:zerotwo_scream:841921420904497163>",
                 event);
     }
 
