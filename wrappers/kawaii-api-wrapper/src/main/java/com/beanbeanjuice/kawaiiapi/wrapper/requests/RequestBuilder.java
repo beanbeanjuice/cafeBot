@@ -29,7 +29,7 @@ public class RequestBuilder {
      * Creates a new {@link RequestBuilder}.
      * @param requestRoute The {@link RequestRoute} of the {@link Request}.
      */
-    public RequestBuilder(RequestRoute requestRoute) {
+    public RequestBuilder(final RequestRoute requestRoute) {
         apiURL = requestRoute.getLink();
     }
 
