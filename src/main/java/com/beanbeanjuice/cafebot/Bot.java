@@ -31,6 +31,9 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import javax.security.auth.login.LoginException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * The main {@link JDA bot} class.
@@ -40,7 +43,7 @@ import javax.security.auth.login.LoginException;
 public class Bot {
 
     // Bot Items
-    public static final String BOT_VERSION = System.getenv("CAFEBOT_VERSION");
+    public static final String BOT_VERSION = getVersion();
     private static final String BOT_TOKEN = System.getenv("CAFEBOT_TOKEN");
     public static final String BOT_USER_AGENT = "java:com.beanbeanjuice.cafeBot:" + BOT_VERSION;
     public static final String TWITCH_ACCESS_TOKEN = System.getenv("CAFEBOT_TWITCH_ACCESS_TOKEN");
@@ -132,6 +135,16 @@ public class Bot {
 
     public static void main(String[] args) throws LoginException, InterruptedException {
         new Bot();
+    }
+
+    private static String getVersion() {
+        String resourceName = "cafebot.properties"; // could also be a constant
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        Properties props = new Properties();
+        try (InputStream resourceStream = loader.getResourceAsStream(resourceName)) { props.load(resourceStream); }
+        catch (IOException e) { throw new RuntimeException(e); }
+
+        return props.get("version").toString();
     }
 
 }

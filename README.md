@@ -4,7 +4,6 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 [![WakaTime][wakatime-shield]][wakatime-url]
 [![CodeFactor][codefactor-shield]][codefactor-url]
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/beanbeanjuice/cafebot?style=for-the-badge)
@@ -318,8 +317,6 @@ By using [cafeBot](https://www.github.com/beanbeanjuice/cafeBot), you are agreei
 [issues-url]: https://github.com/beanbeanjuice/cafeBot/issues
 [license-shield]: https://img.shields.io/github/license/beanbeanjuice/cafeBot.svg?style=for-the-badge
 [license-url]: https://github.com/beanbeanjuice/cafeBot/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/beanbeanjuice
 [wakatime-shield]: https://wakatime.com/badge/github/beanbeanjuice/cafeBot.svg?style=for-the-badge
 [wakatime-url]: https://wakatime.com/badge/github/beanbeanjuice/cafeBot
 [product-title]: https://cdn.beanbeanjuice.com/images/cafeBot/readme/cafeBot.png
