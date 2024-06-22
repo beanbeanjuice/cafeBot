@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.beanbeanjuice"
-version = System.getenv("CAFEBOT_VERSION") ?: "0"
+version = "v4.0.0"
 
 allprojects {
     group = "com.beanbeanjuice"
@@ -99,4 +99,14 @@ tasks.withType<ShadowJar> {
     relocate("org.apache.logging.log4j", "com.beanbeanjuice.cafebot.libs.org.apache.logging.log4j")
     relocate("org.slf4j", "com.beanbeanjuice.cafebot.libs.org.slf4j")
     relocate("com.github.twitch4j", "com.beanbeanjuice.cafebot.libs.com.github.twitch4j")
+}
+
+configure<ProcessResources>("processResources") {
+    filesMatching("cafebot.properties") {
+        expand(project.properties)
+    }
+}
+
+inline fun <reified C> Project.configure(name: String, configuration: C.() -> Unit) {
+    (this.tasks.getByName(name) as C).configuration()
 }
