@@ -59,10 +59,8 @@ public class TwitchHandler {
                 (username) -> {
                     try {
                         // If the channel does not exist, remove the twitch discord CHANNEL from the database
-                        if (!twitchListener.channelExists(username))
-                            Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, username);
-                        else
-                            addTwitchChannel(username);
+                        if (!twitchListener.channelExists(username)) Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, username);
+                        else addTwitchChannel(username);
                     } catch (HystrixRuntimeException | ContextedRuntimeException | UnsupportedOperationException e) {
                         Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, username);
                     }
@@ -78,8 +76,7 @@ public class TwitchHandler {
     public static ArrayList<String> getGuildsForChannel(String channelName) {
         channelName = channelName.toLowerCase();
 
-        if (guildTwitches.containsKey(channelName))
-            return guildTwitches.get(channelName);
+        if (guildTwitches.containsKey(channelName)) return guildTwitches.get(channelName);
 
         return new ArrayList<>();
     }
@@ -93,10 +90,7 @@ public class TwitchHandler {
         try {
             Bot.getCafeAPI().TWITCH.getAllTwitches().forEach((guild, twitchChannels) -> twitchChannels.forEach((twitchChannel) -> {
                 if (Bot.getBot().getGuildById(guild) == null) return;
-
-                if (!guildTwitches.containsKey(twitchChannel))
-                    guildTwitches.put(twitchChannel, new ArrayList<>());
-
+                if (!guildTwitches.containsKey(twitchChannel)) guildTwitches.put(twitchChannel, new ArrayList<>());
                 guildTwitches.get(twitchChannel).add(guild);
             }));
         } catch (CafeException e) {
@@ -120,11 +114,8 @@ public class TwitchHandler {
         }
 
         addTwitchChannel(twitchChannel);
-        if (!guildTwitches.containsKey(twitchChannel))
-            guildTwitches.put(twitchChannel, new ArrayList<>());
-
-        if (guildTwitches.get(twitchChannel).contains(guildID))
-            return false;
+        if (!guildTwitches.containsKey(twitchChannel)) guildTwitches.put(twitchChannel, new ArrayList<>());
+        if (guildTwitches.get(twitchChannel).contains(guildID)) return false;
 
         guildTwitches.get(twitchChannel).add(guildID);
         return true;
@@ -139,8 +130,7 @@ public class TwitchHandler {
     public static boolean removeCache(final String guildID, String twitchChannel) {
         twitchChannel = twitchChannel.toLowerCase();
 
-        if (!guildTwitches.containsKey(twitchChannel))
-            return true;
+        if (!guildTwitches.containsKey(twitchChannel)) return true;
 
         guildTwitches.get(twitchChannel).remove(guildID);
         return true;

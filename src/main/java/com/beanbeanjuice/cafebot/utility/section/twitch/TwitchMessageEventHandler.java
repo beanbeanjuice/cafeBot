@@ -27,11 +27,7 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
      */
     @EventSubscriber
     public void onChannelGoLive(final ChannelGoLiveEvent event) {
-
-        // Converts the Twitch Name to lower case.
         String twitchName = event.getChannel().getName().toLowerCase();
-
-        // Gets the Guilds that are listening for that twitch name.
         ArrayList<String> guilds = TwitchHandler.getGuildsForChannel(twitchName);
 
         // If there are no guilds/sql error, do nothing.
@@ -45,7 +41,6 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
 
             String liveChannelID = GuildHandler.getCustomGuild(guildID).getLiveChannelID();
             TextChannel liveChannel = GuildHandler.getGuild(guildID).getTextChannelById(liveChannelID);
-
             StringBuilder message = new StringBuilder();
 
             try {
