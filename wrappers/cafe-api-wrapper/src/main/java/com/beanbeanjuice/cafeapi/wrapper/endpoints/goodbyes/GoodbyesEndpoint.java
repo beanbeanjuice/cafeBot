@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.goodbyes;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestRoute;
@@ -12,19 +12,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.util.ArrayList;
 
 /**
- * A class used for the {@link Goodbyes} API.
+ * A class used for the {@link GoodbyesEndpoint} API.
  */
-public class Goodbyes implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new class used for {@link Goodbyes} API requests.
-     * @param apiKey The API key used for authorization.
-     */
-    public Goodbyes(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class GoodbyesEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves an {@link ArrayList} of {@link GuildGoodbye} containing all Guild Goodbyes in the {@link CafeAPI CafeAPI}.
@@ -154,8 +144,4 @@ public class Goodbyes implements ICafeAPI {
         );
     }
 
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
-    }
 }

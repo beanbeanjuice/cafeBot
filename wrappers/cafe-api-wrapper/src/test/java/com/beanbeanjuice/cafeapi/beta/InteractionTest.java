@@ -12,59 +12,59 @@ import org.junit.jupiter.api.Test;
 public class InteractionTest {
 
     @Test
-    @DisplayName("Test Interactions API (SENDERS)")
-    public void interactionSendersAPITest() {
+    @DisplayName("Interactions (SENDERS) Endpoint Test")
+    public void testInteractionSendersEndpoint() {
         CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
         // Makes sure to delete the user before-hand.
-        Assertions.assertTrue(cafeAPI.INTERACTION.deleteUserInteractionsSent("879761226761109544"));
+        Assertions.assertTrue(cafeAPI.getInteractionsEndpoint().deleteUserInteractionsSent("879761226761109544"));
 
         // Makes sure that a NotFoundException is thrown when trying to get the user.
-        Assertions.assertThrows(NotFoundException.class, () -> cafeAPI.INTERACTION.getUserInteractionsSent("879761226761109544"));
+        Assertions.assertThrows(NotFoundException.class, () -> cafeAPI.getInteractionsEndpoint().getUserInteractionsSent("879761226761109544"));
 
         // Makes sure it is able to create the user.
-        Assertions.assertTrue(cafeAPI.INTERACTION.createUserInteractionsSent("879761226761109544"));
+        Assertions.assertTrue(cafeAPI.getInteractionsEndpoint().createUserInteractionsSent("879761226761109544"));
 
         // Makes sure a ConflictException is thrown when the same user is tried to be made again.
-        Assertions.assertThrows(ConflictException.class, () -> cafeAPI.INTERACTION.createUserInteractionsSent("879761226761109544"));
+        Assertions.assertThrows(ConflictException.class, () -> cafeAPI.getInteractionsEndpoint().createUserInteractionsSent("879761226761109544"));
 
         int interactionValue = 10;
         for (InteractionType type : InteractionType.values()) {
-            Assertions.assertTrue(cafeAPI.INTERACTION.updateSpecificUserInteractionSentAmount("879761226761109544", type, interactionValue));
-            Assertions.assertEquals(interactionValue, cafeAPI.INTERACTION.getAllInteractionSenders().get("879761226761109544").getInteractionAmount(type));
+            Assertions.assertTrue(cafeAPI.getInteractionsEndpoint().updateSpecificUserInteractionSentAmount("879761226761109544", type, interactionValue));
+            Assertions.assertEquals(interactionValue, cafeAPI.getInteractionsEndpoint().getAllInteractionSenders().get("879761226761109544").getInteractionAmount(type));
             interactionValue++;
         }
 
         // Deletes the user from the database.
-        Assertions.assertTrue(cafeAPI.INTERACTION.deleteUserInteractionsSent("879761226761109544"));
+        Assertions.assertTrue(cafeAPI.getInteractionsEndpoint().deleteUserInteractionsSent("879761226761109544"));
     }
 
     @Test
-    @DisplayName("Test Interactions API (RECEIVERS)")
-    public void interactionReceiversAPITest() {
+    @DisplayName("Interactions (RECEIVERS) Endpoint Test")
+    public void testInteractionsReceiversEndpoint() {
         CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
         // Makes sure to delete the user before-hand.
-        Assertions.assertTrue(cafeAPI.INTERACTION.deleteUserInteractionsReceived("879761226761109544"));
+        Assertions.assertTrue(cafeAPI.getInteractionsEndpoint().deleteUserInteractionsReceived("879761226761109544"));
 
         // Makes sure a NotFoundException is thrown when trying to search for the user.
-        Assertions.assertThrows(NotFoundException.class, () -> cafeAPI.INTERACTION.getUserInteractionsReceived("879761226761109544"));
+        Assertions.assertThrows(NotFoundException.class, () -> cafeAPI.getInteractionsEndpoint().getUserInteractionsReceived("879761226761109544"));
 
         // Makes sure the user can be created.
-        Assertions.assertTrue(cafeAPI.INTERACTION.createUserInteractionsReceived("879761226761109544"));
+        Assertions.assertTrue(cafeAPI.getInteractionsEndpoint().createUserInteractionsReceived("879761226761109544"));
 
         // Makes sure a ConflictException is thrown when trying to make the user again.
-        Assertions.assertThrows(ConflictException.class, () -> cafeAPI.INTERACTION.createUserInteractionsReceived("879761226761109544"));
+        Assertions.assertThrows(ConflictException.class, () -> cafeAPI.getInteractionsEndpoint().createUserInteractionsReceived("879761226761109544"));
 
         int interactionValue = 10;
         for (InteractionType type : InteractionType.values()) {
-            Assertions.assertTrue(cafeAPI.INTERACTION.updateSpecificUserInteractionReceivedAmount("879761226761109544", type, interactionValue));
-            Assertions.assertEquals(interactionValue, cafeAPI.INTERACTION.getAllInteractionReceivers().get("879761226761109544").getInteractionAmount(type));
+            Assertions.assertTrue(cafeAPI.getInteractionsEndpoint().updateSpecificUserInteractionReceivedAmount("879761226761109544", type, interactionValue));
+            Assertions.assertEquals(interactionValue, cafeAPI.getInteractionsEndpoint().getAllInteractionReceivers().get("879761226761109544").getInteractionAmount(type));
             interactionValue++;
         }
 
         // Deletes the user from the database.
-        Assertions.assertTrue(cafeAPI.INTERACTION.deleteUserInteractionsReceived("879761226761109544"));
+        Assertions.assertTrue(cafeAPI.getInteractionsEndpoint().deleteUserInteractionsReceived("879761226761109544"));
     }
 
 }

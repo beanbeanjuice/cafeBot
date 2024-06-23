@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.beancoins.users;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.generic.CafeGeneric;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
@@ -15,21 +15,11 @@ import java.util.HashMap;
 import java.util.Optional;
 
 /**
- * A class used to make {@link DonationUsers} requests to the {@link CafeAPI CafeAPI}.
+ * A class used to make {@link DonationUsersEndpoint} requests to the {@link CafeAPI CafeAPI}.
  *
  * @author beanbeanjuice
  */
-public class DonationUsers implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link DonationUsers} object.
-     * @param apiKey The {@link String apiKey} used for authorization.
-     */
-    public DonationUsers(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class DonationUsersEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves all {@link Timestamp} from the {@link CafeAPI CafeAPI} containing when a specified {@link String userID} can be donated to again.
@@ -110,15 +100,6 @@ public class DonationUsers implements ICafeAPI {
                 .build().orElseThrow();
 
         return request.getStatusCode() == 200;
-    }
-
-    /**
-     * Updates the {@link String apiKey}.
-     * @param apiKey The new {@link String apiKey}.
-     */
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

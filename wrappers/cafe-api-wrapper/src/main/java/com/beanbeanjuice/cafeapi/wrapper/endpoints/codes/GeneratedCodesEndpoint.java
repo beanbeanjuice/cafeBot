@@ -1,32 +1,21 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.codes;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestRoute;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestType;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.*;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.HashMap;
 
 /**
- * A class used for handling {@link GeneratedCodes} {@link Request Requests} for the {@link CafeAPI CafeAPI}.
+ * A class used for handling {@link GeneratedCodesEndpoint} {@link Request Requests} for the {@link CafeAPI CafeAPI}.
  *
  * @author beanbeanjuice
  */
-public class GeneratedCodes implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link GeneratedCodes} object.
-     * @param apiKey The {@link String apiKey} used for authorization.
-     */
-    public GeneratedCodes(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class GeneratedCodesEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves all {@link String generatedCode} from the {@link CafeAPI CafeAPI}.
@@ -123,15 +112,6 @@ public class GeneratedCodes implements ICafeAPI {
                 .build().orElseThrow();
 
         return request.getStatusCode() == 200;
-    }
-
-    /**
-     * Updates the {@link String apiKey}.
-     * @param apiKey The new {@link String apiKey}.
-     */
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

@@ -1,6 +1,5 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.guilds;
 
-import java.io.InvalidClassException;
 import java.util.HashMap;
 
 /**

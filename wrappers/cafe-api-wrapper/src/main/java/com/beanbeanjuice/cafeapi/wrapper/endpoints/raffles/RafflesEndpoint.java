@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.raffles;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.generic.CafeGeneric;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
@@ -18,21 +18,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A class used for requests about {@link Raffles} in the {@link CafeAPI}.
+ * A class used for requests about {@link RafflesEndpoint} in the {@link CafeAPI}.
  *
  * @author beanbeanjuice
  */
-public class Raffles implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates the {@link Raffles} module for the {@link CafeAPI}.
-     * @param apiKey The authorization {@link String apiKey}.
-     */
-    public Raffles(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class RafflesEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves all {@link Raffle Raffles} in the {@link CafeAPI CafeAPI}.
@@ -145,15 +135,6 @@ public class Raffles implements ICafeAPI {
                 .build().orElseThrow();
 
         return request.getStatusCode() == 200;
-    }
-
-    /**
-     * Updates the {@link String apiKey}.
-     * @param apiKey The {@link String apiKey} to update the current one to.
-     */
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

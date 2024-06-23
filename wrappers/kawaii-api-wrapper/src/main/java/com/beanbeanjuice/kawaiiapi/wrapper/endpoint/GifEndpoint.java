@@ -11,7 +11,7 @@ import java.util.Optional;
  * A class used for the GIF endpoint.
  *
  * @author beanbeanjuice
- * @since v1.0.0
+ * @since 1.0.0
  */
 public class GifEndpoint extends API {
 

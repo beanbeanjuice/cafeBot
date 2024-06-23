@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.sql.Timestamp;
 
 /**
- * A class used to hold {@link Raffles} retrieved from the {@link CafeAPI CafeAPI}.
+ * A class used to hold {@link RafflesEndpoint} retrieved from the {@link CafeAPI CafeAPI}.
  *
  * @author beanbeanjuice
  */

@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.counting;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestRoute;
@@ -16,17 +16,7 @@ import java.util.HashMap;
  *
  * @author beanbeanjuice
  */
-public class GlobalCountingInformation implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link GlobalCountingInformation object}.
-     * @param apiKey The {@link String apiKey} used for authorization.
-     */
-    public GlobalCountingInformation(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class CountingEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves all {@link CountingInformation} in the {@link CafeAPI CafeAPI}.
@@ -170,15 +160,6 @@ public class GlobalCountingInformation implements ICafeAPI {
                 lastUserID,
                 failureRoleID
         );
-    }
-
-    /**
-     * Updates the {@link String apiKey}.
-     * @param apiKey The new {@link String apiKey}.
-     */
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

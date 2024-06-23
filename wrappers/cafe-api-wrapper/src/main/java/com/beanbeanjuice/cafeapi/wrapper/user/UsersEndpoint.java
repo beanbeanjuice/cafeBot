@@ -1,6 +1,6 @@
 package com.beanbeanjuice.cafeapi.wrapper.user;
 
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.AuthorizationException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ResponseException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
@@ -12,21 +12,11 @@ import com.beanbeanjuice.cafeapi.wrapper.requests.RequestType;
 import java.util.ArrayList;
 
 /**
- * A class used for everything to do with {@link Users} in the API.
+ * A class used for everything to do with {@link UsersEndpoint} in the API.
  *
  * @author beanbeanjuice
  */
-public class Users implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link Users}.
-     * @param apiKey The {@link String API key} used for making a {@link Request}.
-     */
-    public Users(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class UsersEndpoint extends CafeEndpoint {
 
     /**
      * @return The {@link ArrayList} of {@link User users} in the API database.
@@ -94,15 +84,6 @@ public class Users implements ICafeAPI {
                 .setRoute("/user/" + username)
                 .setAuthorization(apiKey).build().orElseThrow();
         return request.getStatusCode() == 200;
-    }
-
-    /**
-     * Updates the {@link String apiKey}.
-     * @param apiKey The new {@link String apiKey}.
-     */
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

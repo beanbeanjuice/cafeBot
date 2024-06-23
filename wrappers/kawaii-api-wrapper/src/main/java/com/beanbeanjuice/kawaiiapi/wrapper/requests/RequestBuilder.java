@@ -1,17 +1,17 @@
 package com.beanbeanjuice.kawaiiapi.wrapper.requests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
+import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
+import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
+import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
+import org.apache.hc.core5.http.HttpResponse;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,13 +19,11 @@ import java.util.logging.Logger;
  * A {@link RequestBuilder} used to build {@link Request} objects.
  *
  * @author beanbeanjuice
+ * @since 2.0.0
  */
 public class RequestBuilder {
 
     private String apiURL;
-
-    private HttpClient httpClient;
-    private URIBuilder uriBuilder;
 
     /**
      * Creates a new {@link RequestBuilder}.
@@ -61,24 +59,26 @@ public class RequestBuilder {
      */
     public Optional<Request> build() {
         try {
-            httpClient = HttpClients.createDefault();
-            uriBuilder = new URIBuilder(apiURL);
+            SimpleHttpRequest request = SimpleRequestBuilder.get(apiURL).build();
+            SimpleHttpResponse response = (SimpleHttpResponse) get(request);
 
-            HttpResponse httpResponse = get();
-
-            Integer statusCode = httpResponse.getStatusLine().getStatusCode();
-            HttpEntity httpEntity = httpResponse.getEntity();
-            try (InputStream inputStream = httpEntity.getContent()) {
-                return Optional.of(new Request(statusCode, new ObjectMapper().readTree(inputStream)));
-            }
-        } catch (URISyntaxException | IOException e) {
-            Logger.getLogger(RequestBuilder.class.getName()).log(Level.WARNING, "Error building request: " + e.getMessage());
+            byte[] content = response.getBody().getBodyBytes();
+            return Optional.of(new Request(response.getCode(), new ObjectMapper().readTree(content)));
+        } catch (Exception e) {
+            Logger.getLogger(RequestBuilder.class.getName()).log(Level.WARNING, "Error queuing request: " + e.getMessage());
             return Optional.empty();
         }
     }
 
-    private HttpResponse get() throws URISyntaxException, IOException {
-        return httpClient.execute(new HttpGet(uriBuilder.build()));
+    private HttpResponse get(final SimpleHttpRequest request) throws IOException, ExecutionException, InterruptedException {
+        CloseableHttpAsyncClient client = HttpAsyncClients.custom().build();
+        client.start();
+
+        Future<SimpleHttpResponse> future = client.execute(request, null);
+        HttpResponse response = future.get();
+
+        client.close();
+        return response;
     }
 
 }

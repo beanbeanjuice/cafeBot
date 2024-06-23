@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.twitches;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestRoute;
@@ -24,17 +24,7 @@ import java.util.logging.Logger;
  *
  * @author beanbeanjuice
  */
-public class GuildTwitches implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link GuildTwitches} object.
-     * @param apiKey The {@link String apiKey} used for authorization.
-     */
-    public GuildTwitches(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class TwitchEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves all Twitch channels from the {@link CafeAPI}.
@@ -84,7 +74,7 @@ public class GuildTwitches implements ICafeAPI {
                     mapper.getTypeFactory().constructCollectionType(ArrayList.class, String.class)
             );
         } catch (JsonProcessingException e) {
-            Logger.getLogger(GuildTwitches.class.getName()).log(Level.SEVERE, "There was an error processing the json node: " + e.getMessage());
+            Logger.getLogger(TwitchEndpoint.class.getName()).log(Level.SEVERE, "There was an error processing the json node: " + e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -128,15 +118,6 @@ public class GuildTwitches implements ICafeAPI {
                 .build().orElseThrow();
 
         return request.getStatusCode() == 200;
-    }
-
-    /**
-     * Updates the {@link String apikey}.
-     * @param apiKey The new {@link String apiKey}.
-     */
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

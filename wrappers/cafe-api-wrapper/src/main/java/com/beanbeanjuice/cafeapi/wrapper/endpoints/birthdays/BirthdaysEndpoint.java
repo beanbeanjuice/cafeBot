@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.birthdays;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestRoute;
@@ -21,17 +21,7 @@ import java.util.TimeZone;
  *
  * @author beanbeanjuice
  */
-public class Birthdays implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link Birthdays} object.
-     * @param apiKey The {@link String apiKey} used for authorization.
-     */
-    public Birthdays(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class BirthdaysEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves all {@link Birthday} from the {@link CafeAPI CafeAPI}.
@@ -233,15 +223,6 @@ public class Birthdays implements ICafeAPI {
      */
     private String getBirthdayString(final BirthdayMonth month, final int day) {
         return parseNumber(month.getMonthNumber()) + "-" + parseNumber(day);
-    }
-
-    /**
-     * Updates the {@link String apiKey}.
-     * @param apiKey The new {@link String apiKey}.
-     */
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }
