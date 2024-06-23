@@ -40,7 +40,7 @@ public class RaffleCommand implements ICommand {
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
         // Check if the amount of raffles the server has is more than 3
-        if (Bot.getCafeAPI().RAFFLE.getGuildRaffles(event.getGuild().getId()).size() >= MAX_RAFFLES) {
+        if (Bot.getCafeAPI().getRafflesEndpoint().getGuildRaffles(event.getGuild().getId()).size() >= MAX_RAFFLES) {
             event.replyEmbeds(Helper.errorEmbed(
                     "Too Many Raffles",
                     "Your guild currently has 3 raffles. This is a limitation due to server costs."
@@ -49,7 +49,7 @@ public class RaffleCommand implements ICommand {
         }
 
         // Checking if the raffle channel still exists.
-        if (GuildHandler.getCustomGuild(event.getGuild()).getRaffleChannel() == null) {
+        if (GuildHandler.getCustomGuild(event.getGuild()).getRaffleChannel().isEmpty()) {
             event.replyEmbeds(Helper.errorEmbed(
                     "Raffle Channel Not Set",
                     "You currently do not have a raffle channel set. You must have a dedicated raffle channel. " +
@@ -65,46 +65,46 @@ public class RaffleCommand implements ICommand {
 
     @Override
     public void handleModal(@NotNull ModalInteractionEvent event) {
-        TextChannel raffleChannel = GuildHandler.getCustomGuild(event.getGuild()).getRaffleChannel();
+        GuildHandler.getCustomGuild(event.getGuild()).getRaffleChannel().ifPresent((raffleChannel) -> {
+            // Required items.
+            String title = event.getValue("raffle-title").getAsString();
+            String description = event.getValue("raffle-description").getAsString();
+            int winnerAmount = Helper.stringToPositiveInteger(event.getValue("raffle-winners").getAsString());
+            int minutes = Helper.stringToPositiveInteger(event.getValue("raffle-time").getAsString());
 
-        // Required items.
-        String title = event.getValue("raffle-title").getAsString();
-        String description = event.getValue("raffle-description").getAsString();
-        int winnerAmount = Helper.stringToPositiveInteger(event.getValue("raffle-winners").getAsString());
-        int minutes = Helper.stringToPositiveInteger(event.getValue("raffle-time").getAsString());
+            // Checking integer values.
+            if (winnerAmount < 1) {
+                event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                        "Must Have At Least 1 Winner",
+                        "Raffles must have at least one winner."
+                )).queue();
+                return;
+            }
 
-        // Checking integer values.
-        if (winnerAmount < 1) {
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Must Have At Least 1 Winner",
-                    "Raffles must have at least one winner."
+            if (minutes < 1) {
+                event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                        "Must Be At Least 1 Minute",
+                        "Raffles must last at least 1 minute."
+                )).queue();
+                return;
+            }
+
+            event.getHook().sendMessageEmbeds(Helper.successEmbed(
+                    "Creating Raffle",
+                    "Currently creating the raffle..."
             )).queue();
-            return;
-        }
 
-        if (minutes < 1) {
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Must Be At Least 1 Minute",
-                    "Raffles must last at least 1 minute."
-            )).queue();
-            return;
-        }
-
-        event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                "Creating Raffle",
-                "Currently creating the raffle..."
-        )).queue();
-
-        // Finally send the message.
-        if (event.getValue("raffle-message") != null) {
-            raffleChannel.sendMessage(event.getValue("raffle-message").getAsString()).setEmbeds(creatingRaffle()).queue(message -> {
-                editMessage(message, event, title, description, minutes, winnerAmount);
-            });
-        } else {
-            raffleChannel.sendMessageEmbeds(creatingRaffle()).queue(message -> {
-                editMessage(message, event, title, description, minutes, winnerAmount);
-            });
-        }
+            // Finally send the message.
+            if (event.getValue("raffle-message") != null) {
+                raffleChannel.sendMessage(event.getValue("raffle-message").getAsString()).setEmbeds(creatingRaffle()).queue(message -> {
+                    editMessage(message, event, title, description, minutes, winnerAmount);
+                });
+            } else {
+                raffleChannel.sendMessageEmbeds(creatingRaffle()).queue(message -> {
+                    editMessage(message, event, title, description, minutes, winnerAmount);
+                });
+            }
+        });
     }
 
     private void editMessage(Message message, ModalInteractionEvent event,

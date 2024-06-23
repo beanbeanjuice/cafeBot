@@ -35,7 +35,8 @@ public class CafeAPI {
     private String apiKey;
     private String userAgent;
     @Getter private static RequestLocation requestLocation;
-    public KawaiiAPI KAWAII_API;
+
+    @Getter private KawaiiAPI kawaiiAPI;
 
     @Getter private final UsersEndpoint usersEndpoint;
 
@@ -92,7 +93,7 @@ public class CafeAPI {
         donationUsersEndpoint = new DonationUsersEndpoint();
         interactionPicturesEndpoint = new InteractionPicturesEndpoint(this);
 
-        KAWAII_API = new KawaiiAPI("anonymous");
+        kawaiiAPI = new KawaiiAPI("anonymous");
     }
 
     private void setAPIKey(final String username, final String password) {
@@ -105,10 +106,12 @@ public class CafeAPI {
     }
 
     private void startRefreshTimer(String username, String password) {
+        Logger.getLogger(CafeAPI.class.getName()).log(Level.INFO, "Starting the API key refresh timer.");
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 setAPIKey(username, password);
+                Logger.getLogger(CafeAPI.class.getName()).log(Level.INFO, "Renewed the API key.");
             }
         };
 
@@ -121,7 +124,7 @@ public class CafeAPI {
      * @param token The {@link String} token for the {@link KawaiiAPI}.
      */
     public void setKawaiiAPI(String token) {
-        KAWAII_API = new KawaiiAPI(token);
+        kawaiiAPI = new KawaiiAPI(token);
     }
 
     private String getToken(String username, String password) {

@@ -59,9 +59,9 @@ public class EditGoodbyeMessageSubCommand implements ISubCommand {
     @NotNull
     public Boolean setGuildGoodbye(@NotNull GuildGoodbye guildGoodbye) {
         try {
-            return Bot.getCafeAPI().GOODBYE.createGuildGoodbye(guildGoodbye);
+            return Bot.getCafeAPI().getGoodbyesEndpoint().createGuildGoodbye(guildGoodbye);
         } catch (ConflictException e) {
-            return Bot.getCafeAPI().GOODBYE.updateGuildGoodbye(guildGoodbye);
+            return Bot.getCafeAPI().getGoodbyesEndpoint().updateGuildGoodbye(guildGoodbye);
         } catch (CafeException e) {
             Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Setting Guild Goodbye: " + e.getMessage(), e);
             return false;

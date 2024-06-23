@@ -26,8 +26,7 @@ public class WelcomeListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        TextChannel welcomeChannel = GuildHandler.getCustomGuild(event.getGuild()).getWelcomeChannel();
-        if (welcomeChannel != null) {
+        GuildHandler.getCustomGuild(event.getGuild()).getWelcomeChannel().ifPresent((welcomeChannel) -> {
             GuildWelcome guildWelcome = getGuildWelcome(event.getGuild().getId());
 
             guildWelcome.getMessage().ifPresentOrElse(
@@ -36,7 +35,7 @@ public class WelcomeListener extends ListenerAdapter {
             );
 
             Bot.commandsRun++;
-        }
+        });
     }
 
     /**
@@ -100,7 +99,7 @@ public class WelcomeListener extends ListenerAdapter {
     @NotNull
     public static GuildWelcome getGuildWelcome(@NotNull String guildID) {
         try {
-            GuildWelcome guildWelcome = Bot.getCafeAPI().WELCOME.getGuildWelcome(guildID);
+            GuildWelcome guildWelcome = Bot.getCafeAPI().getWelcomesEndpoint().getGuildWelcome(guildID);
             return new GuildWelcome(
                     guildWelcome.getGuildID(),
                     guildWelcome.getDescription().orElse(null),

@@ -65,9 +65,9 @@ public class EditWelcomeMessageSubCommand implements ISubCommand {
     @NotNull
     public Boolean setGuildWelcome(@NotNull GuildWelcome guildWelcome) {
         try {
-            return Bot.getCafeAPI().WELCOME.createGuildWelcome(guildWelcome);
+            return Bot.getCafeAPI().getWelcomesEndpoint().createGuildWelcome(guildWelcome);
         } catch (ConflictException e) {
-            return Bot.getCafeAPI().WELCOME.updateGuildWelcome(guildWelcome);
+            return Bot.getCafeAPI().getWelcomesEndpoint().updateGuildWelcome(guildWelcome);
         } catch (CafeException e) {
             Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Setting Guild Welcome: " + e.getMessage(), e);
             return false;

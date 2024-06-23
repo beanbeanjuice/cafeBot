@@ -1,6 +1,7 @@
 package com.beanbeanjuice.kawaiiapi.wrapper;
 
 import com.beanbeanjuice.kawaiiapi.wrapper.endpoint.GifEndpoint;
+import lombok.Getter;
 
 /**
  * A class used for the {@link KawaiiAPI}.
@@ -10,7 +11,7 @@ import com.beanbeanjuice.kawaiiapi.wrapper.endpoint.GifEndpoint;
  */
 public class KawaiiAPI {
 
-    public GifEndpoint GIF;
+    @Getter private GifEndpoint gifEndpoint;
 
     /**
      * Create a new {@link KawaiiAPI} object.
@@ -32,7 +33,7 @@ public class KawaiiAPI {
     }
 
     private void initialiseEndPoints(final String token) {
-        GIF = new GifEndpoint(token);
+        gifEndpoint = new GifEndpoint(token);
     }
 
 }

@@ -59,10 +59,10 @@ public class TwitchHandler {
                 (username) -> {
                     try {
                         // If the channel does not exist, remove the twitch discord CHANNEL from the database
-                        if (!twitchListener.channelExists(username)) Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, username);
+                        if (!twitchListener.channelExists(username)) Bot.getCafeAPI().getTwitchEndpoint().removeGuildTwitch(guildID, username);
                         else addTwitchChannel(username);
                     } catch (HystrixRuntimeException | ContextedRuntimeException | UnsupportedOperationException e) {
-                        Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, username);
+                        Bot.getCafeAPI().getTwitchEndpoint().removeGuildTwitch(guildID, username);
                     }
                 }
         );
@@ -88,7 +88,7 @@ public class TwitchHandler {
      */
     private static void cacheTwitchChannels() {
         try {
-            Bot.getCafeAPI().TWITCH.getAllTwitches().forEach((guild, twitchChannels) -> twitchChannels.forEach((twitchChannel) -> {
+            Bot.getCafeAPI().getTwitchEndpoint().getAllTwitches().forEach((guild, twitchChannels) -> twitchChannels.forEach((twitchChannel) -> {
                 if (Bot.getBot().getGuildById(guild) == null) return;
                 if (!guildTwitches.containsKey(twitchChannel)) guildTwitches.put(twitchChannel, new ArrayList<>());
                 guildTwitches.get(twitchChannel).add(guild);
@@ -109,7 +109,7 @@ public class TwitchHandler {
 
         // Remove if the channel does not exist.
         if (!twitchListener.channelExists(twitchChannel)) {
-            Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, twitchChannel);
+            Bot.getCafeAPI().getTwitchEndpoint().removeGuildTwitch(guildID, twitchChannel);
             return false;
         }
 

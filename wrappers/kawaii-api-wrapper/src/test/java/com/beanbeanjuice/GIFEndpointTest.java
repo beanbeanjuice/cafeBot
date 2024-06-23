@@ -12,10 +12,10 @@ public class GIFEndpointTest {
     public void testGifEndpoint() {
         KawaiiAPI kawaiiAPI = new KawaiiAPI("anonymous");
 
-        Assertions.assertTrue(kawaiiAPI.GIF.getGIF("hug").isPresent());
+        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("hug").isPresent());
 
-        Assertions.assertTrue(kawaiiAPI.GIF.getGIF("hug").get().startsWith("https://api.kawaii.red/gif/hug/"));
-        Assertions.assertTrue(kawaiiAPI.GIF.getGIF("bruh").isEmpty());
+        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("hug").get().startsWith("https://api.kawaii.red/gif/hug/"));
+        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("bruh").isEmpty());
     }
 
 }

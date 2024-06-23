@@ -26,23 +26,24 @@ public class VentCommand implements ICommand {
     @Override
     public void handle(@NotNull SlashCommandInteractionEvent event) {
         CustomGuild guild = GuildHandler.getCustomGuild(event.getGuild());
-        TextChannel ventChannel = guild.getVentingChannel();
 
-        if (ventChannel == null) {
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Cannot Send Vent",
-                    "There is no anonymous venting channel enabled on this server. Let them know " +
-                            "they can enable it by doing `/venting-channel set`!"
-            )).queue();
-            return;
-        }
-
-        ventChannel.sendMessageEmbeds(ventEmbed(event.getOption("vent_message").getAsString())).queue((e) -> {
-            event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                    "Vent Sent",
-                    "Your anonymous vent has been successfully sent!"
-            )).queue();
-        });
+        guild.getVentingChannel().ifPresentOrElse(
+                (ventingChannel) -> {
+                    ventingChannel.sendMessageEmbeds(ventEmbed(event.getOption("vent_message").getAsString())).queue((e) -> {
+                        event.getHook().sendMessageEmbeds(Helper.successEmbed(
+                                "Vent Sent",
+                                "Your anonymous vent has been successfully sent!"
+                        )).queue();
+                    });
+                },
+                () -> {
+                    event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                            "Cannot Send Vent",
+                            "There is no anonymous venting channel enabled on this server. Let them know " +
+                                    "they can enable it by doing `/venting-channel set`!"
+                    )).queue();
+                }
+        );
     }
 
     @NotNull

@@ -69,7 +69,8 @@ public class Bot {
 
     public Bot() throws LoginException, InterruptedException {
         logger = new LogManager("cafeBot Logging System", HOME_GUILD_ID, HOME_GUILD_LOG_CHANNEL_ID, "logs/");
-        Helper.startCafeAPIRefreshTimer(location);
+        cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), location);
+        cafeAPI.setKawaiiAPI(System.getenv("KAWAII_API_TOKEN"));
 
         logger.addWebhookURL(HOME_GUILD_WEBHOOK_URL);
         logger.log(Bot.class, LogLevel.OKAY, "Starting bot!", true, false);

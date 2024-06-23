@@ -47,13 +47,14 @@ public class CountingHandler {
         Bot.getLogger().log(CountingHandler.class, LogLevel.LOADING, "Caching Counting Information...");
 
         // Repeat until the CafeAPI has been connected.
+        // TODO: Why is this required?
         do {
             try {
-                countingInformationMap = Bot.getCafeAPI().COUNTING_INFORMATION.getAllCountingInformation();
+                countingInformationMap = Bot.getCafeAPI().getCountingEndpoint().getAllCountingInformation();
                 Bot.getLogger().log(CountingHandler.class, LogLevel.OKAY, "Successfully Cached Counting Information.");
             } catch (CafeException e) {
                 Bot.getLogger().log(CountingHandler.class, LogLevel.ERROR, "Error Getting Guild Counting Information: " + e.getMessage(), e);
-            } catch (NullPointerException ignored) {}
+            } catch (NullPointerException ignored) { }
         } while (Bot.getCafeAPI() == null);
     }
 
@@ -92,7 +93,7 @@ public class CountingHandler {
             );
 
             try {
-                Bot.getCafeAPI().COUNTING_INFORMATION.updateGuildCountingInformation(guild.getId(), newCountingInformation);
+                Bot.getCafeAPI().getCountingEndpoint().updateGuildCountingInformation(guild.getId(), newCountingInformation);
                 countingInformationMap.put(guild.getId(), newCountingInformation);
             } catch (CafeException e) {
                 event.getChannel().sendMessageEmbeds(Helper.errorEmbed(
@@ -127,7 +128,7 @@ public class CountingHandler {
                         "0",
                         countingInformation.getFailureRoleID()
                 );
-                Bot.getCafeAPI().COUNTING_INFORMATION.updateGuildCountingInformation(guild.getId(), newCountingInformation);
+                Bot.getCafeAPI().getCountingEndpoint().updateGuildCountingInformation(guild.getId(), newCountingInformation);
                 countingInformationMap.put(guild.getId(), newCountingInformation);
 
             } catch (CafeException e) {
@@ -182,13 +183,13 @@ public class CountingHandler {
     public static CountingInformation getCountingInformation(@NotNull String guildID) {
         if (!countingInformationMap.containsKey(guildID)) {
             try {
-                Bot.getCafeAPI().COUNTING_INFORMATION.createGuildCountingInformation(guildID);
+                Bot.getCafeAPI().getCountingEndpoint().createGuildCountingInformation(guildID);
                 CountingInformation countingInformation = new CountingInformation(0, 0, "0", "0");
                 countingInformationMap.put(guildID, countingInformation);
                 Bot.getLogger().log(CountingHandler.class, LogLevel.DEBUG, "Guild ID: " + guildID);
                 return countingInformation;
             } catch (ConflictException e1) {
-                CountingInformation countingInformation = Bot.getCafeAPI().COUNTING_INFORMATION.getGuildCountingInformation(guildID);
+                CountingInformation countingInformation = Bot.getCafeAPI().getCountingEndpoint().getGuildCountingInformation(guildID);
                 countingInformationMap.put(guildID, countingInformation);
                 return countingInformation;
             } catch (CafeException e2) {
@@ -219,7 +220,7 @@ public class CountingHandler {
                     currentCountingInformation.getLastNumber(),
                     currentCountingInformation.getLastUserID(),
                     countingFailureRoleID);
-            Bot.getCafeAPI().COUNTING_INFORMATION.updateGuildCountingInformation(guildID, newCountingInformation);
+            Bot.getCafeAPI().getCountingEndpoint().updateGuildCountingInformation(guildID, newCountingInformation);
 
             countingInformationMap.put(guildID, newCountingInformation);
             return true;

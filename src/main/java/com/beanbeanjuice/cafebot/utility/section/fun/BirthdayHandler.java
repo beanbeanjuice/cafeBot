@@ -50,28 +50,21 @@ public class BirthdayHandler {
             @Override
             public void run() {
 
-                birthdays.forEach((userID, birthday) -> {
+                birthdays.entrySet().stream()
+                        .filter((entry) -> {
+                            if (isBirthday(entry.getValue())) return true;
 
-                    // Check if it IS someone's birthday.
-                    if (isBirthday(birthday)) {
+                            if (entry.getValue().isAlreadyMentioned())
+                                updateMentionedBirthday(entry.getKey(), false);
 
-                        // Check if they have already been mentioned today.
-                        if (!birthday.isAlreadyMentioned()) {
+                            return false;
+                        })
+                        .filter((entry) -> !entry.getValue().isAlreadyMentioned())
+                        .forEach((entry) -> {
+                            String userID = entry.getKey();
 
                             // Update it for all guilds where there is a birthday channel.
-                            for (Guild guild : Bot.getBot().getGuilds()) {
-
-                                Member member = guild.getMemberById(userID);
-                                if (member != null) {
-
-                                    // Making sure the BirthdayChannel is not null.
-                                    TextChannel birthdayChannel = GuildHandler.getCustomGuild(guild).getBirthdayChannel();
-
-                                    if (birthdayChannel != null) {
-                                        birthdayChannel.sendMessageEmbeds(birthdayEmbed(member)).queue();
-                                    }
-                                }
-                            }
+                            sendBirthdayMessageToEachServer(userID);
 
                             // PM them a happy birthday.
                             Helper.getUser(userID).ifPresent((birthdayUser) -> {
@@ -80,18 +73,63 @@ public class BirthdayHandler {
 
                                 updateMentionedBirthday(userID, true);
                             });
-                        }
+                        });
 
-                    } else {
-                        if (birthday.isAlreadyMentioned() && !isBirthday(birthday))
-                            updateMentionedBirthday(userID, false);
-                    }
-                });
+//                birthdays.forEach((userID, birthday) -> {
+//
+//                    // Check if it IS someone's birthday.
+//                    if (isBirthday(birthday)) {
+//
+//                        // Check if they have already been mentioned today.
+//                        if (!birthday.isAlreadyMentioned()) {
+//
+//                            // Update it for all guilds where there is a birthday channel.
+//                            for (Guild guild : Bot.getBot().getGuilds()) {
+//
+//                                Member member = guild.getMemberById(userID);
+//                                if (member != null) {
+//
+//                                    // Making sure the BirthdayChannel is not null.
+//                                    TextChannel birthdayChannel = GuildHandler.getCustomGuild(guild).getBirthdayChannel();
+//
+//                                    if (birthdayChannel != null) {
+//                                        birthdayChannel.sendMessageEmbeds(birthdayEmbed(member)).queue();
+//                                    }
+//                                }
+//                            }
+//
+//                            // PM them a happy birthday.
+//                            Helper.getUser(userID).ifPresent((birthdayUser) -> {
+//                                Helper.pmUser(birthdayUser, "Hey... we don't know if anyone wished you " +
+//                                        "a happy birthday, but happy birthday <3!");
+//
+//                                updateMentionedBirthday(userID, true);
+//                            });
+//                        }
+//
+//                    } else {
+//                        if (birthday.isAlreadyMentioned() && !isBirthday(birthday))
+//                            updateMentionedBirthday(userID, false);
+//                    }
+//                });
 
                 getAllBirthdays();
             }
         };
         birthdayTimer.scheduleAtFixedRate(birthdayTimerTask, 0, 60000); // Should be 60000 for 30 minutes.
+    }
+
+    private static void sendBirthdayMessageToEachServer(String userID) {
+        Bot.getBot().getGuilds().forEach((guild) -> {
+            Member birthdayMember = guild.getMemberById(userID);
+
+            if (birthdayMember == null) return;
+
+            // Making sure the BirthdayChannel is not null.
+            GuildHandler.getCustomGuild(guild).getBirthdayChannel().ifPresent((birthdayChannel) -> {
+                birthdayChannel.sendMessageEmbeds(birthdayEmbed(birthdayMember)).queue();
+            });
+        });
     }
 
     /**
@@ -115,7 +153,7 @@ public class BirthdayHandler {
      */
     private static void updateMentionedBirthday(@NotNull String userID, @NotNull Boolean isMentioned) {
         try {
-            Bot.getCafeAPI().BIRTHDAY.updateUserBirthdayMention(userID, isMentioned);
+            Bot.getCafeAPI().getBirthdaysEndpoint().updateUserBirthdayMention(userID, isMentioned);
         } catch (CafeException e) {
             Bot.getLogger().log(BirthdayHandler.class, LogLevel.ERROR, "Error Updating User Birthday Mention: " + e.getMessage(), e);
         }
@@ -126,7 +164,7 @@ public class BirthdayHandler {
      */
     private static void getAllBirthdays() {
         try {
-            birthdays = Bot.getCafeAPI().BIRTHDAY.getAllBirthdays();
+            birthdays = Bot.getCafeAPI().getBirthdaysEndpoint().getAllBirthdays();
         } catch (CafeException | ParseException e) {
             Bot.getLogger().log(BirthdayHandler.class, LogLevel.ERROR, "Error Retrieving Birthdays: " + e.getMessage(), e);
         }
@@ -140,7 +178,7 @@ public class BirthdayHandler {
     @NotNull
     public static Boolean removeBirthday(@NotNull String userID) {
         try {
-            Bot.getCafeAPI().BIRTHDAY.removeUserBirthday(userID);
+            Bot.getCafeAPI().getBirthdaysEndpoint().removeUserBirthday(userID);
             birthdays.remove(userID);
             return true;
         } catch (CafeException e) {
@@ -159,13 +197,13 @@ public class BirthdayHandler {
     @NotNull
     public static Boolean updateBirthday(@NotNull String userID, @NotNull Birthday birthday) throws TeaPotException {
         try {
-            Bot.getCafeAPI().BIRTHDAY.updateUserBirthday(userID, birthday);
+            Bot.getCafeAPI().getBirthdaysEndpoint().updateUserBirthday(userID, birthday);
             birthdays.put(userID, birthday);
             updateMentionedBirthday(userID, false);
             return true;
         } catch (NotFoundException e) {
             try {
-                Bot.getCafeAPI().BIRTHDAY.createUserBirthday(userID, birthday);
+                Bot.getCafeAPI().getBirthdaysEndpoint().createUserBirthday(userID, birthday);
                 birthdays.put(userID, birthday);
                 updateMentionedBirthday(userID, false);
                 return true;
@@ -187,7 +225,7 @@ public class BirthdayHandler {
     @Nullable
     public static Birthday getBirthday(@NotNull String userID) {
         try {
-            return Bot.getCafeAPI().BIRTHDAY.getUserBirthday(userID);
+            return Bot.getCafeAPI().getBirthdaysEndpoint().getUserBirthday(userID);
         }
         catch (NotFoundException | ParseException ignored) { return null; }
         catch (CafeException e) {
