@@ -29,7 +29,7 @@ public class GuildsEndpoint extends CafeEndpoint {
             throws AuthorizationException, ResponseException {
         HashMap<String, GuildInformation> guilds = new HashMap<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/guilds")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -52,7 +52,7 @@ public class GuildsEndpoint extends CafeEndpoint {
      */
     public GuildInformation getGuildInformation(String guildID)
             throws AuthorizationException, ResponseException, NotFoundException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/guilds/" + guildID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -70,7 +70,7 @@ public class GuildsEndpoint extends CafeEndpoint {
      */
     public boolean createGuildInformation(String guildID)
             throws AuthorizationException, ResponseException, ConflictException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/guilds/" + guildID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -118,7 +118,7 @@ public class GuildsEndpoint extends CafeEndpoint {
 
         }
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.PATCH)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/guilds/" + guildID)
                 .addParameter("type", type.getType())
                 .addParameter("value", value.toString())
@@ -137,7 +137,7 @@ public class GuildsEndpoint extends CafeEndpoint {
      */
     public boolean deleteGuildInformation(String guildID)
             throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/guilds/" + guildID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();

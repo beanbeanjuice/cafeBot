@@ -28,7 +28,7 @@ public class CountingEndpoint extends CafeEndpoint {
             throws AuthorizationException, ResponseException {
         HashMap<String, CountingInformation> guilds = new HashMap<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/counting/guilds")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -52,7 +52,7 @@ public class CountingEndpoint extends CafeEndpoint {
      */
     public CountingInformation getGuildCountingInformation(final String guildID)
             throws AuthorizationException, ResponseException, NotFoundException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/counting/guilds/" + guildID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -75,7 +75,7 @@ public class CountingEndpoint extends CafeEndpoint {
     public Boolean updateGuildCountingInformation(final String guildID, final int highestNumber, final int lastNumber,
                                                   final String lastUserID, final String failureRoleID)
             throws AuthorizationException, ResponseException, NotFoundException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.PATCH)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/counting/guilds/" + guildID)
                 .addParameter("highest_number", String.valueOf(highestNumber))
                 .addParameter("last_number", String.valueOf(lastNumber))
@@ -118,7 +118,7 @@ public class CountingEndpoint extends CafeEndpoint {
      */
     public boolean createGuildCountingInformation(final String guildID)
             throws AuthorizationException, ResponseException, ConflictException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/counting/guilds/" + guildID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -135,7 +135,7 @@ public class CountingEndpoint extends CafeEndpoint {
      */
     public boolean deleteGuildCountingInformation(final String guildID)
             throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/counting/guilds/" + guildID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();

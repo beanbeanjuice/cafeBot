@@ -25,7 +25,7 @@ public class UsersEndpoint extends CafeEndpoint {
     public ArrayList<User> getUsers() throws AuthorizationException, ResponseException {
         ArrayList<User> users = new ArrayList<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFE, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFE, RequestType.GET)
                 .setRoute("/users")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -47,7 +47,7 @@ public class UsersEndpoint extends CafeEndpoint {
      * @return True, if successfully signed up.
      */
     public boolean signUp(final String username, final String password) {
-        Request request = new RequestBuilder(RequestRoute.CAFE, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFE, RequestType.POST)
                 .setRoute("/user/signup")
                 .addParameter("username", username)
                 .addParameter("password", password)
@@ -64,7 +64,7 @@ public class UsersEndpoint extends CafeEndpoint {
      * @throws ResponseException Thrown when there is a generic server-side {@link CafeException CafeException}.
      */
     public User getUser(final String username) throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFE, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFE, RequestType.GET)
                 .setRoute("/user/" + username)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -80,7 +80,7 @@ public class UsersEndpoint extends CafeEndpoint {
      * @return True, if the {@link User} was successfully deleted.
      */
     public boolean deleteUser(final String username) {
-        Request request = new RequestBuilder(RequestRoute.CAFE, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFE, RequestType.DELETE)
                 .setRoute("/user/" + username)
                 .setAuthorization(apiKey).build().orElseThrow();
         return request.getStatusCode() == 200;

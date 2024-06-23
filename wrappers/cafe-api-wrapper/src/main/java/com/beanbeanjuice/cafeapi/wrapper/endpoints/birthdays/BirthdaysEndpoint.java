@@ -11,10 +11,8 @@ import com.beanbeanjuice.cafeapi.wrapper.utility.Time;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.TimeZone;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * A class used for {@link Birthday} requests to the {@link CafeAPI CafeAPI}.
@@ -23,28 +21,46 @@ import java.util.TimeZone;
  */
 public class BirthdaysEndpoint extends CafeEndpoint {
 
+    private HashMap<String, Birthday> requestToBirthdayMap(Request request) {
+        HashMap<String, Birthday> birthdays = new HashMap<>();
+
+        request.getData().get("birthdays").forEach((birthdayNode) -> {
+            String userID = birthdayNode.get("user_id").asText();
+            parseBirthday(birthdayNode).ifPresent((birthday -> birthdays.put(userID, birthday)));
+        });
+
+        return birthdays;
+    }
+
     /**
      * Retrieves all {@link Birthday} from the {@link CafeAPI CafeAPI}.
      * @return A {@link HashMap} with keys of {@link String userID} and values of {@link Birthday}.
      * @throws AuthorizationException Thrown when the {@link String apiKey} is invalid.
      * @throws ResponseException Thrown when there is a generic server-side {@link CafeException}.
-     * @throws ParseException Thrown when there is an error parsing the {@link Birthday}.
      */
-    public HashMap<String, Birthday> getAllBirthdays()
-            throws AuthorizationException, ResponseException, ParseException {
-        HashMap<String, Birthday> birthdays = new HashMap<>();
-
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+    public HashMap<String, Birthday> getAllBirthdays() throws AuthorizationException, ResponseException {
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/birthdays")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
 
-        for (JsonNode birthday : request.getData().get("birthdays")) {
-            String userID = birthday.get("user_id").asText();
-            birthdays.put(userID, parseBirthday(birthday));
-        }
+        return requestToBirthdayMap(request);
+    }
 
-        return birthdays;
+    public void getAllBirthdaysAsync(Consumer<HashMap<String, Birthday>> successFunction, Consumer<Exception> errorFunction) {
+        RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
+                .setRoute("/birthdays")
+                .setAuthorization(apiKey)
+                .onSuccess((request) -> successFunction.accept(requestToBirthdayMap(request)))
+                .onError(errorFunction)
+                .buildAsync();
+    }
+
+    public void getAllBirthdaysAsync(Consumer<HashMap<String, Birthday>> successFunction) {
+        RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
+                .setRoute("/birthdays")
+                .setAuthorization(apiKey)
+                .buildAsync((request) -> successFunction.accept(requestToBirthdayMap(request)));
     }
 
     /**
@@ -56,14 +72,33 @@ public class BirthdaysEndpoint extends CafeEndpoint {
      * @throws NotFoundException Thrown when the {@link Birthday} for the specified {@link String userID} does not exist.
      * @throws ParseException Thrown when there was an error parsing the {@link Birthday}.
      */
-    public Birthday getUserBirthday(final String userID)
-            throws AuthorizationException, ResponseException, NotFoundException, ParseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+    public Optional<Birthday> getUserBirthday(final String userID)
+            throws AuthorizationException, ResponseException, NotFoundException {
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/birthdays/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
 
         return parseBirthday(request.getData().get("birthday"));
+    }
+
+    public void getUserBirthdayAsync(final String userID, final Consumer<Birthday> successFunction, final Consumer<Exception> errorFunction) {
+        RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
+                .setRoute("/birthdays/" + userID)
+                .setAuthorization(apiKey)
+                .onSuccess((request) -> parseBirthday(request.getData().get("birthday")).ifPresentOrElse(
+                        successFunction,
+                        () -> errorFunction.accept(new ParseException("There was an error parsing the birthday.", 0))
+                ))
+                .onError(errorFunction)
+                .buildAsync();
+    }
+
+    public void getUserBirthdayAsync(final String userID, final Consumer<Birthday> successFunction) {
+        RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
+                .setRoute("/birthdays/" + userID)
+                .setAuthorization(apiKey)
+                .buildAsync((request) -> parseBirthday(request.getData().get("birthday")).ifPresent(successFunction));
     }
 
     /**
@@ -77,20 +112,21 @@ public class BirthdaysEndpoint extends CafeEndpoint {
      * @throws UndefinedVariableException Thrown when a variable is undefined.
      * @throws TeaPotException Thrown when the {@link BirthdayMonth month} or {@link Integer day} is invalid.
      */
-    public Boolean updateUserBirthday(final String userID, final Birthday birthday)
-    throws AuthorizationException, ResponseException, NotFoundException, UndefinedVariableException, TeaPotException {
+    public boolean updateUserBirthday(final String userID, final Birthday birthday)
+    throws AuthorizationException, ResponseException, NotFoundException, UndefinedVariableException {
         BirthdayMonth month = birthday.getMonth();
         int day = birthday.getDay();
 
-        // Checking for days in a month.
-        if (month.getDaysInMonth() < day)
-            throw new TeaPotException("There are only " + month.getDaysInMonth() + " days in " + month + ", not " + day + ".");
+        // TODO: Check for invalid days/month.
+//        // Checking for days in a month.
+//        if (month.getDaysInMonth() < day)
+//            throw new TeaPotException("There are only " + month.getDaysInMonth() + " days in " + month + ", not " + day + ".");
+//
+//        // Checking if the month is valid.
+//        if (month == BirthdayMonth.ERROR)
+//            throw new TeaPotException(month + " is an invalid month.");
 
-        // Checking if the month is valid.
-        if (month == BirthdayMonth.ERROR)
-            throw new TeaPotException(month + " is an invalid month.");
-
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.PATCH)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/birthdays/" + userID)
                 .addParameter("birthday", getBirthdayString(month, day))
                 .addParameter("time_zone", birthday.getTimeZone().getID())
@@ -98,6 +134,32 @@ public class BirthdaysEndpoint extends CafeEndpoint {
                 .build().orElseThrow();
 
         return request.getStatusCode() == 200;
+    }
+
+    public void updateUserBirthdayAsync(final String userID, final Birthday birthday, final Runnable successFunction, final Consumer<Exception> errorFunction) {
+        BirthdayMonth month = birthday.getMonth();
+        int day = birthday.getDay();
+
+        RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
+                .setRoute("/birthdays/" + userID)
+                .addParameter("birthday", getBirthdayString(month, day))
+                .addParameter("time_zone", birthday.getTimeZone().getID())
+                .setAuthorization(apiKey)
+                .onSuccess((request) -> successFunction.run())
+                .onError(errorFunction)
+                .buildAsync();
+    }
+
+    public void updateUserBirthdayAsync(final String userID, final Birthday birthday, final Runnable successFunction) {
+        BirthdayMonth month = birthday.getMonth();
+        int day = birthday.getDay();
+
+        RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
+                .setRoute("/birthdays/" + userID)
+                .addParameter("birthday", getBirthdayString(month, day))
+                .addParameter("time_zone", birthday.getTimeZone().getID())
+                .setAuthorization(apiKey)
+                .buildAsync((request) -> successFunction.run());
     }
 
     /**
@@ -110,15 +172,33 @@ public class BirthdaysEndpoint extends CafeEndpoint {
      * @throws NotFoundException Thrown when the {@link Birthday} does not exist for the specified {@link String userID}.
      * @throws UndefinedVariableException Thrown when a variable is undefined.
      */
-    public Boolean updateUserBirthdayMention(final String userID, final boolean alreadyMentioned)
+    public boolean updateUserBirthdayMention(final String userID, final boolean alreadyMentioned)
     throws AuthorizationException, ResponseException, NotFoundException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.PATCH)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/birthdays/" + userID + "/mention")
                 .addParameter("already_mentioned", String.valueOf(alreadyMentioned))
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
 
         return request.getStatusCode() == 200;
+    }
+
+    public void updateUserBirthdayMentionAsync(final String userID, final boolean alreadyMentioned, Runnable successFunction, Consumer<Exception> errorFunction) {
+        RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
+                .setRoute("/birthdays/" + userID + "/mention")
+                .addParameter("already_mentioned", String.valueOf(alreadyMentioned))
+                .setAuthorization(apiKey)
+                .onSuccess((request) -> successFunction.run())
+                .onError(errorFunction)
+                .buildAsync();
+    }
+
+    public void updateUserBirthdayMentionAsync(final String userID, final boolean alreadyMentioned, Runnable successFunction) {
+        RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
+                .setRoute("/birthdays/" + userID + "/mention")
+                .addParameter("already_mentioned", String.valueOf(alreadyMentioned))
+                .setAuthorization(apiKey)
+                .buildAsync((request) -> successFunction.run());
     }
 
     /**
@@ -132,20 +212,21 @@ public class BirthdaysEndpoint extends CafeEndpoint {
      * @throws UndefinedVariableException Thrown when a variable is undefined.
      * @throws TeaPotException Thrown when the {@link BirthdayMonth month} or {@link Integer day} is invalid.
      */
-    public Boolean createUserBirthday(final String userID, final Birthday birthday)
+    public boolean createUserBirthday(final String userID, final Birthday birthday)
     throws AuthorizationException, ResponseException, ConflictException, UndefinedVariableException, TeaPotException {
         BirthdayMonth month = birthday.getMonth();
         int day = birthday.getDay();
 
-        // Checking for days in a month.
-        if (month.getDaysInMonth() < day)
-            throw new TeaPotException("There are only " + month.getDaysInMonth() + " days in " + month + ", not " + day + ".");
+        // TODO: Check if this error checking is required.
+//        // Checking for days in a month.
+//        if (month.getDaysInMonth() < day)
+//            throw new TeaPotException("There are only " + month.getDaysInMonth() + " days in " + month + ", not " + day + ".");
+//
+//        // Checking if the month is valid.
+//        if (month == BirthdayMonth.ERROR)
+//            throw new TeaPotException(month + " is an invalid month.");
 
-        // Checking if the month is valid.
-        if (month == BirthdayMonth.ERROR)
-            throw new TeaPotException(month + " is an invalid month.");
-
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/birthdays/" + userID)
                 .addParameter("birthday", getBirthdayString(month, day))
                 .addParameter("time_zone", birthday.getTimeZone().getID())
@@ -155,6 +236,32 @@ public class BirthdaysEndpoint extends CafeEndpoint {
         return request.getStatusCode() == 201;
     }
 
+    public void createUserBirthdayAsync(final String userID, final Birthday birthday, final Runnable successFunction, final Consumer<Exception> errorFunction) {
+        BirthdayMonth month = birthday.getMonth();
+        int day = birthday.getDay();
+
+        RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
+                .setRoute("/birthdays/" + userID)
+                .addParameter("birthday", getBirthdayString(month, day))
+                .addParameter("time_zone", birthday.getTimeZone().getID())
+                .setAuthorization(apiKey)
+                .onSuccess((request) -> successFunction.run())
+                .onError(errorFunction)
+                .buildAsync();
+    }
+
+    public void createUserBirthdayAsync(final String userID, final Birthday birthday, final Runnable successFunction) {
+        BirthdayMonth month = birthday.getMonth();
+        int day = birthday.getDay();
+
+        RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
+                .setRoute("/birthdays/" + userID)
+                .addParameter("birthday", getBirthdayString(month, day))
+                .addParameter("time_zone", birthday.getTimeZone().getID())
+                .setAuthorization(apiKey)
+                .buildAsync((request) -> successFunction.run());
+    }
+
     /**
      * Removes a {@link Birthday} for a specified {@link String userID}.
      * @param userID The specified {@link String userID}.
@@ -162,9 +269,9 @@ public class BirthdaysEndpoint extends CafeEndpoint {
      * @throws AuthorizationException Thrown when the {@link String apiKey} is invalid.
      * @throws ResponseException Thrown when there is a generic server-side {@link CafeException}.
      */
-    public Boolean removeUserBirthday(final String userID)
+    public boolean removeUserBirthday(final String userID)
     throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/birthdays/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -172,23 +279,43 @@ public class BirthdaysEndpoint extends CafeEndpoint {
         return request.getStatusCode() == 200;
     }
 
+    public void removeUserBirthdayAsync(final String userID, final Runnable successFunction, final Consumer<Exception> errorFunction) {
+        RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
+                .setRoute("/birthdays/" + userID)
+                .setAuthorization(apiKey)
+                .onSuccess((request) -> successFunction.run())
+                .onError(errorFunction)
+                .buildAsync();
+    }
+
+    public void removeUserBirthdayAsync(final String userID, final Runnable successFunction) {
+        RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
+                .setRoute("/birthdays/" + userID)
+                .setAuthorization(apiKey)
+                .buildAsync((request) -> successFunction.run());
+    }
+
     /**
      * Parses a {@link Birthday} from a {@link JsonNode}.
      * @param birthday The {@link JsonNode} to parse.
      * @return The parsed {@link Birthday}.
      */
-    private Birthday parseBirthday(final JsonNode birthday) throws ParseException {
+    private Optional<Birthday> parseBirthday(final JsonNode birthday) {
         String unformattedDate = birthday.get("birth_date").asText();
         String timeZoneString = birthday.get("time_zone").asText();
         boolean alreadyMentioned = birthday.get("already_mentioned").asBoolean();
 
-        Date date = Time.getFullDate(unformattedDate + "-2020", TimeZone.getTimeZone(timeZoneString));
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        try {
+            Date date = Time.getFullDate(unformattedDate + "-2020", TimeZone.getTimeZone(timeZoneString));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            int month = calendar.get(Calendar.MONTH) + 1;
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        return new Birthday(getBirthdayMonth(month), day, timeZoneString, alreadyMentioned);
+            return Optional.of(new Birthday(getBirthdayMonth(month), day, timeZoneString, alreadyMentioned));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     /**

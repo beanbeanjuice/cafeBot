@@ -27,7 +27,7 @@ public class WinStreaksEndpoint extends CafeEndpoint {
     throws AuthorizationException, ResponseException {
         HashMap<String, WinStreak> winStreaks = new HashMap<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/minigames/win_streaks")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -52,7 +52,7 @@ public class WinStreaksEndpoint extends CafeEndpoint {
      */
     public WinStreak getUserWinStreak(final String userID)
     throws AuthorizationException, ResponseException, NotFoundException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/minigames/win_streaks/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -77,7 +77,7 @@ public class WinStreaksEndpoint extends CafeEndpoint {
      */
     public boolean updateUserWinStreak(final String userID, final MinigameType type, final int winstreak)
     throws AuthorizationException, ResponseException, NotFoundException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.PATCH)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/minigames/win_streaks/" + userID)
                 .addParameter("type", type.getType())
                 .addParameter("value", String.valueOf(winstreak))
@@ -98,7 +98,7 @@ public class WinStreaksEndpoint extends CafeEndpoint {
      */
     public boolean createUserWinStreak(final String userID)
     throws AuthorizationException, ResponseException, ConflictException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/minigames/win_streaks/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -115,7 +115,7 @@ public class WinStreaksEndpoint extends CafeEndpoint {
      */
     public boolean deleteUserWinStreak(final String userID)
     throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/minigames/win_streaks/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();

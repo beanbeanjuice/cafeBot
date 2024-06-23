@@ -128,7 +128,7 @@ public class CafeAPI {
     }
 
     private String getToken(String username, String password) {
-        Request request = new RequestBuilder(RequestRoute.CAFE, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFE, RequestType.POST)
                 .setRoute("/user/login")
                 .addParameter("username", username)
                 .addParameter("password", password)

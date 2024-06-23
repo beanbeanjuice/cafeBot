@@ -30,7 +30,7 @@ public class VoiceChannelBindsEndpoint extends CafeEndpoint {
      */
     public HashMap<String, ArrayList<VoiceChannelBind>> getAllVoiceChannelBinds()
     throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/voice_binds")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -59,7 +59,7 @@ public class VoiceChannelBindsEndpoint extends CafeEndpoint {
      */
     public ArrayList<VoiceChannelBind> getGuildVoiceChannelBinds(final String guildID)
     throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/voice_binds/" + guildID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -88,7 +88,7 @@ public class VoiceChannelBindsEndpoint extends CafeEndpoint {
      */
     public boolean addVoiceChannelBind(final String guildID, final VoiceChannelBind voiceChannelBind)
     throws AuthorizationException, ResponseException, ConflictException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/voice_binds/" + guildID)
                 .addParameter("voice_channel_id", voiceChannelBind.getVoiceChannelID())
                 .addParameter("role_id", voiceChannelBind.getRoleID())
@@ -109,7 +109,7 @@ public class VoiceChannelBindsEndpoint extends CafeEndpoint {
      */
     public boolean deleteVoiceChannelBind(final String guildID, final VoiceChannelBind voiceChannelBind)
     throws AuthorizationException, ResponseException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/voice_binds/" + guildID)
                 .addParameter("voice_channel_id", voiceChannelBind.getVoiceChannelID())
                 .addParameter("role_id", voiceChannelBind.getRoleID())

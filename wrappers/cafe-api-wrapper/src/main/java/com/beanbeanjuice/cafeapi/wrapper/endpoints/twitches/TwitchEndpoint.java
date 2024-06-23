@@ -36,7 +36,7 @@ public class TwitchEndpoint extends CafeEndpoint {
     throws AuthorizationException, ResponseException {
         HashMap<String, ArrayList<String>> twitches = new HashMap<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/guilds/twitch")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -62,7 +62,7 @@ public class TwitchEndpoint extends CafeEndpoint {
      */
     public ArrayList<String> getGuildTwitches(final String guildID)
     throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/guilds/twitch/" + guildID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -91,7 +91,7 @@ public class TwitchEndpoint extends CafeEndpoint {
      */
     public boolean addGuildTwitch(final String guildID, final String twitchChannelName)
     throws AuthorizationException, ResponseException, ConflictException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/guilds/twitch/" + guildID)
                 .addParameter("twitch_channel", twitchChannelName)
                 .setAuthorization(apiKey)
@@ -111,7 +111,7 @@ public class TwitchEndpoint extends CafeEndpoint {
      */
     public boolean removeGuildTwitch(final String guildID, final String twitchChannelName)
     throws AuthorizationException, ResponseException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/guilds/twitch/" + guildID)
                 .addParameter("twitch_channel", twitchChannelName)
                 .setAuthorization(apiKey)
