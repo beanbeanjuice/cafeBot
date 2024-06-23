@@ -5,20 +5,22 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 public class GIFEndpointTest {
 
     @Test
     @DisplayName("Test GIF Endpoint")
-    public void testGIFEndpoint() {
+    public void testGIFEndpoint() throws ExecutionException, InterruptedException {
         KawaiiAPI kawaiiAPI = new KawaiiAPI("anonymous");
 
-        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("hug").isPresent());
+        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("hug").get().isPresent());
 
-        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("hug").get().startsWith("https://api.kawaii.red/gif/hug/"));
-        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("bruh").isEmpty());
+        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("hug").get().get().startsWith("https://api.kawaii.red/gif/hug/"));
+        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("bruh").get().isEmpty());
     }
 
     @Test
@@ -26,35 +28,32 @@ public class GIFEndpointTest {
     public void testGIFEndpointAsync() throws InterruptedException {
         KawaiiAPI kawaiiAPI = new KawaiiAPI("anonymous");
 
-        Consumer<Optional<String>> print = (stringOptional) -> stringOptional.ifPresent(System.out::println);
-        Consumer<Exception> printError = (exception) -> System.out.println(exception.getMessage());
+        ArrayList<String> links = new ArrayList<>();
+        Consumer<Optional<String>> addToLinks = (stringOptional) -> stringOptional.ifPresent(links::add);
 
-        System.out.println("Running.");
-        kawaiiAPI.getGifEndpoint().getGIFAsync("hug", print, printError);
-        kawaiiAPI.getGifEndpoint().getGIFAsync("hug", print, printError);
-        kawaiiAPI.getGifEndpoint().getGIFAsync("hug", print, printError);
-        kawaiiAPI.getGifEndpoint().getGIFAsync("hug", print, printError);
-        kawaiiAPI.getGifEndpoint().getGIFAsync("hug", print, printError);
-        kawaiiAPI.getGifEndpoint().getGIFAsync("hug", print, printError);
-        System.out.println("Finished running.");
+        kawaiiAPI.getGifEndpoint().getGIF("hug").thenAcceptAsync(addToLinks);
+        kawaiiAPI.getGifEndpoint().getGIF("hug").thenAcceptAsync(addToLinks);
+        kawaiiAPI.getGifEndpoint().getGIF("hug").thenAcceptAsync(addToLinks);
+        kawaiiAPI.getGifEndpoint().getGIF("hug").thenAcceptAsync(addToLinks);
+        kawaiiAPI.getGifEndpoint().getGIF("hug").thenAcceptAsync(addToLinks);
+        kawaiiAPI.getGifEndpoint().getGIF("hug").thenAcceptAsync(addToLinks);
 
         Thread.sleep(3000);
+
+        Assertions.assertEquals(6, links.size());
     }
 
     @Test
     @DisplayName("GIF Endpoint Synchronously Test")
-    public void testGIFEndpointSync() {
+    public void testGIFEndpointSync() throws InterruptedException, ExecutionException {
         KawaiiAPI kawaiiAPI = new KawaiiAPI("anonymous");
 
-        System.out.println("Running.");
-        kawaiiAPI.getGifEndpoint().getGIF("hug").ifPresent(System.out::println);
-        kawaiiAPI.getGifEndpoint().getGIF("hug").ifPresent(System.out::println);
-        kawaiiAPI.getGifEndpoint().getGIF("hug").ifPresent(System.out::println);
-        kawaiiAPI.getGifEndpoint().getGIF("hug").ifPresent(System.out::println);
-        kawaiiAPI.getGifEndpoint().getGIF("hug").ifPresent(System.out::println);
-        kawaiiAPI.getGifEndpoint().getGIF("hug").ifPresent(System.out::println);
-        System.out.println("Finished running.");
-
+        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("hug").get().isPresent());
+        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("hug").get().isPresent());
+        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("hug").get().isPresent());
+        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("hug").get().isPresent());
+        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("hug").get().isPresent());
+        Assertions.assertTrue(kawaiiAPI.getGifEndpoint().getGIF("hug").get().isPresent());
     }
 
 }
