@@ -12,39 +12,39 @@ import org.junit.jupiter.api.Test;
 public class WinStreakTest {
 
     @Test
-    @DisplayName("Test WinStreaks API")
-    public void winStreaksAPITest() {
+    @DisplayName("Win Streaks Endpoint Test")
+    public void testWinStreakEndpoint() {
         CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
-        Assertions.assertTrue(cafeAPI.WIN_STREAK.deleteUserWinStreak("879310496002637824"));
+        Assertions.assertTrue(cafeAPI.getWinStreaksEndpoint().deleteUserWinStreak("879310496002637824"));
 
         Assertions.assertThrows(NotFoundException.class, () -> {
-            cafeAPI.WIN_STREAK.updateUserWinStreak("879310496002637824", MinigameType.TIC_TAC_TOE, 100);
+            cafeAPI.getWinStreaksEndpoint().updateUserWinStreak("879310496002637824", MinigameType.TIC_TAC_TOE, 100);
         });
 
         Assertions.assertThrows(NotFoundException.class, () -> {
-            cafeAPI.WIN_STREAK.getUserWinStreak("879310496002637824");
+            cafeAPI.getWinStreaksEndpoint().getUserWinStreak("879310496002637824");
         });
 
-        Assertions.assertTrue(cafeAPI.WIN_STREAK.createUserWinStreak("879310496002637824"));
+        Assertions.assertTrue(cafeAPI.getWinStreaksEndpoint().createUserWinStreak("879310496002637824"));
 
         Assertions.assertThrows(ConflictException.class, () -> {
-            cafeAPI.WIN_STREAK.createUserWinStreak("879310496002637824");
+            cafeAPI.getWinStreaksEndpoint().createUserWinStreak("879310496002637824");
         });
 
-        Assertions.assertEquals(0, cafeAPI.WIN_STREAK.getUserWinStreak("879310496002637824").getTicTacToeWins());
-        Assertions.assertEquals(0, cafeAPI.WIN_STREAK.getUserWinStreak("879310496002637824").getConnectFourWins());
+        Assertions.assertEquals(0, cafeAPI.getWinStreaksEndpoint().getUserWinStreak("879310496002637824").getTicTacToeWins());
+        Assertions.assertEquals(0, cafeAPI.getWinStreaksEndpoint().getUserWinStreak("879310496002637824").getConnectFourWins());
 
-        Assertions.assertTrue(cafeAPI.WIN_STREAK.updateUserWinStreak("879310496002637824", MinigameType.CONNECT_FOUR, 20));
-        Assertions.assertEquals(20, cafeAPI.WIN_STREAK.getAllWinStreaks().get("879310496002637824").getConnectFourWins());
+        Assertions.assertTrue(cafeAPI.getWinStreaksEndpoint().updateUserWinStreak("879310496002637824", MinigameType.CONNECT_FOUR, 20));
+        Assertions.assertEquals(20, cafeAPI.getWinStreaksEndpoint().getAllWinStreaks().get("879310496002637824").getConnectFourWins());
 
-        Assertions.assertTrue(cafeAPI.WIN_STREAK.updateUserWinStreak("879310496002637824", MinigameType.TIC_TAC_TOE, 25));
-        Assertions.assertEquals(25, cafeAPI.WIN_STREAK.getUserWinStreak("879310496002637824").getTicTacToeWins());
+        Assertions.assertTrue(cafeAPI.getWinStreaksEndpoint().updateUserWinStreak("879310496002637824", MinigameType.TIC_TAC_TOE, 25));
+        Assertions.assertEquals(25, cafeAPI.getWinStreaksEndpoint().getUserWinStreak("879310496002637824").getTicTacToeWins());
 
-        Assertions.assertTrue(cafeAPI.WIN_STREAK.deleteUserWinStreak("879310496002637824"));
+        Assertions.assertTrue(cafeAPI.getWinStreaksEndpoint().deleteUserWinStreak("879310496002637824"));
 
         Assertions.assertThrows(NotFoundException.class, () -> {
-            cafeAPI.WIN_STREAK.getUserWinStreak("879310496002637824");
+            cafeAPI.getWinStreaksEndpoint().getUserWinStreak("879310496002637824");
         });
     }
 

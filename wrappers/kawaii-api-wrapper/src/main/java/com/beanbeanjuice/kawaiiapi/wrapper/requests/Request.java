@@ -7,7 +7,7 @@ import lombok.Getter;
  * A class containing the request's {@link Integer status code} and resulting {@link JsonNode data}.
  *
  * @author beanbeanjuice
- * @since v1.0.0
+ * @since 1.0.0
  */
 public class Request {
 

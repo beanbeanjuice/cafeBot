@@ -4,7 +4,7 @@ package com.beanbeanjuice.kawaiiapi.wrapper.requests;
  * A static class for the endpoints of the Kawaii API.
  *
  * @author beanbeanjuice
- * @since v1.0.0
+ * @since 1.0.0
  * @see <a href="https://docs.kawaii.red/request-structure">Kawaii API Endpoints</a>
  */
 public enum RequestRoute {

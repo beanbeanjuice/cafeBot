@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.version;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestRoute;
@@ -13,21 +13,11 @@ import com.beanbeanjuice.cafeapi.wrapper.exception.api.UndefinedVariableExceptio
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 
 /**
- * A class used for handling CafeBot {@link Versions} in the {@link CafeAPI CafeAPI}.
+ * A class used for handling CafeBot {@link VersionsEndpoint} in the {@link CafeAPI CafeAPI}.
  *
  * @author beanbeanjuice
  */
-public class Versions implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link Versions} object.
-     * @param apiKey The {@link String apiKey} used for authorization.
-     */
-    public Versions(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class VersionsEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves the current {@link String botVersion}.
@@ -65,15 +55,6 @@ public class Versions implements ICafeAPI {
                 .build().orElseThrow();
 
         return request.getStatusCode() == 200;
-    }
-
-    /**
-     * Updates the {@link String apiKey}.
-     * @param apiKey The new {@link String apiKey}.
-     */
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

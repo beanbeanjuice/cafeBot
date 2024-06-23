@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.users.Interaction;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
@@ -10,28 +10,15 @@ import com.beanbeanjuice.cafeapi.wrapper.requests.RequestType;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.*;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.io.InvalidClassException;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * A class used for {@link Interactions} requests in the {@link CafeAPI CafeAPI}.
+ * A class used for {@link InteractionsEndpoint} requests in the {@link CafeAPI CafeAPI}.
  *
  * @author beanbeanjuice
  */
-public class Interactions implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link Interactions} API module.
-     * @param apiKey The {@link String apiKey} used for authorization.
-     */
-    public Interactions(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class InteractionsEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves all {@link Interaction} senders found in the {@link CafeAPI CafeAPI}.
@@ -288,15 +275,6 @@ public class Interactions implements ICafeAPI {
         Arrays.stream(InteractionType.values()).forEach((type) -> interactions.put(type, jsonNode.get(type.getType()).asInt()));
 
         return new Interaction(interactions);
-    }
-
-    /**
-     * Updates the {@link String apiKey}.
-     * @param apiKey The new {@link String apiKey}.
-     */
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.cafe;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.generic.CafeGeneric;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
@@ -19,17 +19,7 @@ import java.util.ArrayList;
  *
  * @author beanbeanjuice
  */
-public class CafeUsers implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link CafeUsers} object.
-     * @param apiKey The {@link String apiKey} used for authorization.
-     */
-    public CafeUsers(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class CafeUsersEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves all {@link CafeUser} from the {@link CafeAPI CafeAPI}.
@@ -164,15 +154,6 @@ public class CafeUsers implements ICafeAPI {
         Integer ordersReceived = node.get("orders_received").asInt();
 
         return new CafeUser(userID, beanCoins, timestamp, ordersBought, ordersReceived);
-    }
-
-    /**
-     * Updates the {@link String apiKey}.
-     * @param apiKey The new {@link String apiKey}.
-     */
-    @Override
-    public void updateAPIKey(String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

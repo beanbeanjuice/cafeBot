@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.pictures;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.users.Interaction;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
@@ -21,17 +21,15 @@ import java.util.Optional;
  * @author beanbeanjuice
  * @since 1.3.1
  */
-public class InteractionPictures implements ICafeAPI {
+public class InteractionPicturesEndpoint extends CafeEndpoint {
 
-    private String apiKey;
     private final CafeAPI cafeAPI;
 
     /**
-     * Creates a new {@link InteractionPictures} object.
-     * @param apiKey The {@link String apiKey} used for authorization.
+     * Creates a new {@link InteractionPicturesEndpoint} object.
+     * @param cafeAPI The baseline API.
      */
-    public InteractionPictures(final String apiKey, final CafeAPI cafeAPI) {
-        this.apiKey = apiKey;
+    public InteractionPicturesEndpoint(final CafeAPI cafeAPI) {
         this.cafeAPI = cafeAPI;
     }
 
@@ -55,15 +53,6 @@ public class InteractionPictures implements ICafeAPI {
                 .build().orElseThrow();
 
         return request.getData().get("url").asText();
-    }
-
-    /**
-     * Updates the {@link String apiKey}.
-     * @param apiKey The new {@link String apiKey}.
-     */
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

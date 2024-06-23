@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.voicebinds;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.AuthorizationException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ConflictException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ResponseException;
@@ -16,21 +16,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A class used for {@link VoiceChannelBinds} requests in the {@link CafeAPI CafeAPI}.
+ * A class used for {@link VoiceChannelBindsEndpoint} requests in the {@link CafeAPI CafeAPI}.
  *
  * @author beanbeanjuice
  */
-public class VoiceChannelBinds implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link VoiceChannelBinds} object.
-     * @param apiKey The {@link String apiKey} used for authorization.
-     */
-    public VoiceChannelBinds(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class VoiceChannelBindsEndpoint extends CafeEndpoint {
 
     /**
      * Gets all {@link VoiceChannelBind} in the {@link CafeAPI CafeAPI}.
@@ -127,11 +117,6 @@ public class VoiceChannelBinds implements ICafeAPI {
                 .build().orElseThrow();
 
         return request.getStatusCode() == 200;
-    }
-
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

@@ -1,6 +1,6 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.minigames.winstreaks;
 
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestRoute;
@@ -11,21 +11,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.util.HashMap;
 
 /**
- * A class used for {@link WinStreaks} API requests.
+ * A class used for {@link WinStreaksEndpoint} API requests.
  *
  * @author beanbeanjuice
  */
-public class WinStreaks implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link WinStreaks} object.
-     * @param apiKey The {@link String apiKey} used for authorization.
-     */
-    public WinStreaks(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class WinStreaksEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves all {@link WinStreak} in the {@link com.beanbeanjuice.cafeapi.wrapper.CafeAPI CafeAPI}.
@@ -131,15 +121,6 @@ public class WinStreaks implements ICafeAPI {
                 .build().orElseThrow();
 
         return request.getStatusCode() == 200;
-    }
-
-    /**
-     * Updates the {@link String apiKey}.
-     * @param apiKey The new {@link String apikey}.
-     */
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

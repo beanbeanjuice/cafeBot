@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.polls;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.generic.CafeGeneric;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
@@ -18,21 +18,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A class used for {@link Polls} requests in the {@link CafeAPI}.
+ * A class used for {@link PollsEndpoint} requests in the {@link CafeAPI}.
  *
  * @author beanbeanjuice
  */
-public class Polls implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link Polls} object.
-     * @param apiKey The {@link String apiKey} used for authorization.
-     */
-    public Polls(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class PollsEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves all {@link Poll} from the {@link CafeAPI CafeAPI}.
@@ -138,15 +128,6 @@ public class Polls implements ICafeAPI {
                 .build().orElseThrow();
 
         return request.getStatusCode() == 200;
-    }
-
-    /**
-     * Updates the {@link String apiKey}.
-     * @param apiKey The new {@link String apiKey}.
-     */
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

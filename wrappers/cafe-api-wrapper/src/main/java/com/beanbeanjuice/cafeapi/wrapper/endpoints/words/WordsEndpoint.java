@@ -1,6 +1,6 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.words;
 
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.AuthorizationException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.NotFoundException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.ResponseException;
@@ -13,21 +13,11 @@ import com.beanbeanjuice.cafeapi.wrapper.requests.RequestType;
 import java.util.ArrayList;
 
 /**
- * A class used to retrieve {@link Words} from the database.
+ * A class used to retrieve {@link WordsEndpoint} from the database.
  *
  * @author beanbeanjuice
  */
-public class Words implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link Words} API.
-     * @param apiKey The API key to use for connection and verification to the {@link com.beanbeanjuice.cafeapi.wrapper.CafeAPI CafeAPI}.
-     */
-    public Words(final String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class WordsEndpoint extends CafeEndpoint {
 
     /**
      * Gets an {@link ArrayList} of {@link Word} from the {@link com.beanbeanjuice.cafeapi.wrapper.CafeAPI CafeAPI}.
@@ -83,11 +73,6 @@ public class Words implements ICafeAPI {
                 .build().orElseThrow();
 
         return request.getStatusCode() == 200;
-    }
-
-    @Override
-    public void updateAPIKey(final String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

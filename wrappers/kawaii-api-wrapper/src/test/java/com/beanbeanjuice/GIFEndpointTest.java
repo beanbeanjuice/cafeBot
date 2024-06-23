@@ -1,9 +1,9 @@
 package com.beanbeanjuice;
 
 import com.beanbeanjuice.kawaiiapi.wrapper.KawaiiAPI;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class GIFEndpointTest {
 

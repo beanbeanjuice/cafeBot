@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.guilds;
 
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.api.ICafeAPI;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestRoute;
@@ -9,28 +9,15 @@ import com.beanbeanjuice.cafeapi.wrapper.requests.RequestType;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.*;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.io.InvalidClassException;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * A class used for {@link GlobalGuildInformation} requests to the {@link CafeAPI CafeAPI}.
+ * A class used for {@link GuildsEndpoint} requests to the {@link CafeAPI CafeAPI}.
  *
  * @author beanbeanjuice
  */
-public class GlobalGuildInformation implements ICafeAPI {
-
-    private String apiKey;
-
-    /**
-     * Creates a new {@link GlobalGuildInformation} object.
-     * @param apiKey The {@link String apiKey} used for authorization.
-     */
-    public GlobalGuildInformation(String apiKey) {
-        this.apiKey = apiKey;
-    }
+public class GuildsEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves all {@link GuildInformation} from the {@link CafeAPI CafeAPI}.
@@ -76,7 +63,7 @@ public class GlobalGuildInformation implements ICafeAPI {
     /**
      * Creates a new {@link GuildInformation} in the {@link CafeAPI CafeAPI}.
      * @param guildID The {@link String guildID} to create.
-     * @return True, if the {@link GlobalGuildInformation} was successfully created for the specified {@link String guildID}.
+     * @return True, if the {@link GuildsEndpoint} was successfully created for the specified {@link String guildID}.
      * @throws AuthorizationException Thrown when the {@link String apiKey} is invalid.
      * @throws ResponseException Thrown when there is a generic server-side {@link CafeException}.
      * @throws ConflictException Thrown when the specified {@link String guildID} already exists in the {@link CafeAPI CafeAPI}.
@@ -186,15 +173,6 @@ public class GlobalGuildInformation implements ICafeAPI {
     private String convertToBooleanString(String string) {
         if (string.equalsIgnoreCase("true") || string.equalsIgnoreCase("1")) return "true";
         else return "false";
-    }
-
-    /**
-     * Updates the {@link String apiKey}.
-     * @param apiKey The new {@link String apiKey}.
-     */
-    @Override
-    public void updateAPIKey(String apiKey) {
-        this.apiKey = apiKey;
     }
 
 }

@@ -14,7 +14,7 @@ import java.util.TimeZone;
 public class BirthdayTest {
 
     @Test
-    @DisplayName("Test Birthday Class")
+    @DisplayName("Birthday Class Test")
     public void testBirthdayException() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         Assertions.assertThrows(InvalidTimeZoneException.class, () -> {

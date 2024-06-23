@@ -4,7 +4,7 @@ import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
 import lombok.Getter;
 
 /**
- * A static {@link CafeType} used for the {@link CafeUsers} API.
+ * A static {@link CafeType} used for the {@link CafeUsersEndpoint} API.
  *
  * @author beanbeanjuice
  */
