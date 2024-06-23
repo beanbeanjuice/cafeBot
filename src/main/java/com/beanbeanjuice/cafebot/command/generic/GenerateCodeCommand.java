@@ -26,12 +26,12 @@ public class GenerateCodeCommand implements ICommand {
 
         // Tries to create the code for the user in the database.
         try {
-            Bot.getCafeAPI().GENERATED_CODE.createUserGeneratedCode(event.getUser().getId(), generatedCode);
+            Bot.getCafeAPI().getGeneratedCodesEndpoint().createUserGeneratedCode(event.getUser().getId(), generatedCode);
         } catch (ConflictException e) {
 
             // If the code exists, then update it.
             try {
-                Bot.getCafeAPI().GENERATED_CODE.updateUserGeneratedCode(event.getUser().getId(), generatedCode);
+                Bot.getCafeAPI().getGeneratedCodesEndpoint().updateUserGeneratedCode(event.getUser().getId(), generatedCode);
 
                 event.getHook().sendMessageEmbeds(Helper.successEmbed(
                         "Generated Code",

@@ -45,7 +45,7 @@ public class ServeCommand implements ICommand {
         Word serveWord;
         try {
             // Checking if the word entered is a word.
-            serveWord = Bot.getCafeAPI().WORD.getWord(word);
+            serveWord = Bot.getCafeAPI().getWordsEndpoint().getWord(word);
         } catch (CafeException e) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Not A Word",
@@ -79,8 +79,8 @@ public class ServeCommand implements ICommand {
 
         // Updates the Balance and Last Serving Time for the user.
         try {
-            Bot.getCafeAPI().CAFE_USER.updateCafeUser(cafeUser.getUserID(), CafeType.LAST_SERVING_TIME, currentTimestamp);
-            Bot.getCafeAPI().CAFE_USER.updateCafeUser(cafeUser.getUserID(), CafeType.BEAN_COINS, cafeUser.getBeanCoins() + calculatedTip);
+            Bot.getCafeAPI().getCafeUsersEndpoint().updateCafeUser(cafeUser.getUserID(), CafeType.LAST_SERVING_TIME, currentTimestamp);
+            Bot.getCafeAPI().getCafeUsersEndpoint().updateCafeUser(cafeUser.getUserID(), CafeType.BEAN_COINS, cafeUser.getBeanCoins() + calculatedTip);
         } catch (CafeException e) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Updating Cafe User",
@@ -92,7 +92,7 @@ public class ServeCommand implements ICommand {
 
         // Attempts to update the word
         try {
-            Bot.getCafeAPI().WORD.updateWord(serveWord.getWord(), serveWord.getUses() + 1);
+            Bot.getCafeAPI().getWordsEndpoint().updateWord(serveWord.getWord(), serveWord.getUses() + 1);
         } catch (CafeException e) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Updating Word",

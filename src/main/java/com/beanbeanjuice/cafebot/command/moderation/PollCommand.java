@@ -43,7 +43,7 @@ public class PollCommand implements ICommand {
     public void handle(@NotNull SlashCommandInteractionEvent event) {
 
         // Check if the poll channel exists.
-        if (GuildHandler.getCustomGuild(event.getGuild()).getPollChannel() == null) {
+        if (GuildHandler.getCustomGuild(event.getGuild()).getPollChannel().isEmpty()) {
             event.replyEmbeds(Helper.errorEmbed(
                     "No Poll Channel",
                     "It seems you do not have a poll channel set! You must have a dedicated poll channel. " +
@@ -53,7 +53,7 @@ public class PollCommand implements ICommand {
         }
 
         // Makes sure that guilds only have 3 polls.
-        if (Bot.getCafeAPI().POLL.getGuildPolls(event.getGuild().getId()).size() >= MAX_POLLS) {
+        if (Bot.getCafeAPI().getPollsEndpoint().getGuildPolls(event.getGuild().getId()).size() >= MAX_POLLS) {
             event.replyEmbeds(Helper.errorEmbed(
                     "Too Many Polls",
                     "You can currently only have a total of " +
@@ -86,34 +86,34 @@ public class PollCommand implements ICommand {
         }
 
         // Making sure the poll channel exists.
-        TextChannel pollChannel = GuildHandler.getCustomGuild(event.getGuild()).getPollChannel();
+        GuildHandler.getCustomGuild(event.getGuild()).getPollChannel().ifPresent((pollChannel) -> {
+            // Making sure there are less than 20 arguments.
+            if (arguments.size() > 20) {
+                event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                        "Too Many Items",
+                        "You can only have 20 items. Please try again. Discord only supports 20 message reactions."
+                )).queue();
+                return;
+            }
 
-        // Making sure there are less than 20 arguments.
-        if (arguments.size() > 20) {
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Too Many Items",
-                    "You can only have 20 items. Please try again. Discord only supports 20 message reactions."
+            Timestamp timestamp = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + (minutes*60000)).toString()).orElseThrow();
+
+            event.getHook().sendMessageEmbeds(Helper.successEmbed(
+                    "Creating Poll",
+                    "I'm creating your poll right now!"
             )).queue();
-            return;
-        }
 
-        Timestamp timestamp = CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + (minutes*60000)).toString()).orElseThrow();
-
-        event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                "Creating Poll",
-                "I'm creating your poll right now!"
-        )).queue();
-
-        // Sending a message in the poll channel.
-        if (event.getValue("message") != null) {
-            pollChannel.sendMessage(event.getValue("poll-message").getAsString()).setEmbeds(startingPollEmbed()).queue(message -> {
-                editMessage(message, event, timestamp, title, minutes, arguments);
-            });
-        } else {
-            pollChannel.sendMessageEmbeds(startingPollEmbed()).queue(message -> {
-                editMessage(message, event, timestamp, title, minutes, arguments);
-            });
-        }
+            // Sending a message in the poll channel.
+            if (event.getValue("message") != null) {
+                pollChannel.sendMessage(event.getValue("poll-message").getAsString()).setEmbeds(startingPollEmbed()).queue(message -> {
+                    editMessage(message, event, timestamp, title, minutes, arguments);
+                });
+            } else {
+                pollChannel.sendMessageEmbeds(startingPollEmbed()).queue(message -> {
+                    editMessage(message, event, timestamp, title, minutes, arguments);
+                });
+            }
+        });
     }
 
     @NotNull

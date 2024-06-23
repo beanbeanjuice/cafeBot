@@ -81,8 +81,8 @@ public class OrderCommand implements ICommand {
 
         // Trying to update the orderer.
         try {
-            Bot.getCafeAPI().CAFE_USER.updateCafeUser(orderer.getUserID(), CafeType.BEAN_COINS, orderer.getBeanCoins() - totalPrice);
-            Bot.getCafeAPI().CAFE_USER.updateCafeUser(orderer.getUserID(), CafeType.ORDERS_BOUGHT, orderer.getOrdersBought() + 1);
+            Bot.getCafeAPI().getCafeUsersEndpoint().updateCafeUser(orderer.getUserID(), CafeType.BEAN_COINS, orderer.getBeanCoins() - totalPrice);
+            Bot.getCafeAPI().getCafeUsersEndpoint().updateCafeUser(orderer.getUserID(), CafeType.ORDERS_BOUGHT, orderer.getOrdersBought() + 1);
         } catch (CafeException e) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Updating User",
@@ -94,7 +94,7 @@ public class OrderCommand implements ICommand {
 
         // Trying to update the receiver.
         try {
-            Bot.getCafeAPI().CAFE_USER.updateCafeUser(receiver.getUserID(), CafeType.ORDERS_RECEIVED, receiver.getOrdersReceived() + 1);
+            Bot.getCafeAPI().getCafeUsersEndpoint().updateCafeUser(receiver.getUserID(), CafeType.ORDERS_RECEIVED, receiver.getOrdersReceived() + 1);
         } catch (CafeException e) {
             Bot.getLogger().log(this.getClass(), LogLevel.ERROR, "Error Updating Receiver: " + e.getMessage(), e);
             return;

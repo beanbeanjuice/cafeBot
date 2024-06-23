@@ -21,8 +21,7 @@ public class GoodbyeListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberRemove(@NotNull GuildMemberRemoveEvent event) {
-        TextChannel goodbyeChannel = GuildHandler.getCustomGuild(event.getGuild()).getGoodbyeChannel();
-        if (goodbyeChannel != null) {
+        GuildHandler.getCustomGuild(event.getGuild()).getGoodbyeChannel().ifPresent((goodbyeChannel) -> {
             GuildGoodbye guildGoodbye = getGuildGoodbye(event.getGuild().getId());
 
             guildGoodbye.getMessage().ifPresentOrElse(
@@ -31,7 +30,7 @@ public class GoodbyeListener extends ListenerAdapter {
             );
 
             Bot.commandsRun++;
-        }
+        });
     }
 
     /**
@@ -96,7 +95,7 @@ public class GoodbyeListener extends ListenerAdapter {
     @NotNull
     public static GuildGoodbye getGuildGoodbye(@NotNull String guildID) {
         try {
-            GuildGoodbye guildGoodbye = Bot.getCafeAPI().GOODBYE.getGuildGoodbye(guildID);
+            GuildGoodbye guildGoodbye = Bot.getCafeAPI().getGoodbyesEndpoint().getGuildGoodbye(guildID);
             return new GuildGoodbye(
                     guildGoodbye.getGuildID(),
                     guildGoodbye.getDescription().orElse(null),

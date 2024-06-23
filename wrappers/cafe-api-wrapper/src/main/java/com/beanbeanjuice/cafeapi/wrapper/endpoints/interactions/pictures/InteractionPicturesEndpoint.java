@@ -45,7 +45,7 @@ public class InteractionPicturesEndpoint extends CafeEndpoint {
     throws AuthorizationException, ResponseException, TeaPotException {
         Optional<String> potentialString = type.getKawaiiAPIString();
 
-        if (potentialString.isPresent()) return cafeAPI.KAWAII_API.GIF.getGIF(potentialString.get()).orElseThrow();
+        if (potentialString.isPresent()) return cafeAPI.getKawaiiAPI().getGifEndpoint().getGIF(potentialString.get()).orElseThrow();
 
         Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/interaction_pictures/" + type)

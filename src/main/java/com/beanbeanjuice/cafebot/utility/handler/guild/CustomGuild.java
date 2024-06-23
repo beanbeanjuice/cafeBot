@@ -8,6 +8,7 @@ import com.beanbeanjuice.cafebot.utility.section.moderation.poll.Poll;
 import com.beanbeanjuice.cafebot.utility.section.moderation.raffle.Raffle;
 import com.beanbeanjuice.cafebot.utility.section.twitch.TwitchHandler;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
+import lombok.Getter;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -24,16 +25,16 @@ import java.util.*;
  */
 public class CustomGuild {
 
-    private final String guildID;
-    private String prefix;
+    @Getter private final String guildID;
+    @Getter private String prefix;
     private String moderatorRoleID;
     private final ArrayList<String> twitchChannels;
     private String mutedRoleID;
     private String liveNotificationsRoleID;
-    private Boolean notifyOnUpdate;
-    private Boolean aiState;
+    private boolean notifyOnUpdate;
+    private boolean aiState;
 
-    private final HashMap<CustomChannel, String> customChannelIDs;
+    @Getter private final HashMap<CustomChannel, String> customChannelIDs;
 
     /**
      * Creates a new {@link CustomGuild} object.
@@ -54,13 +55,13 @@ public class CustomGuild {
      * @param ventingChannelID        The ID of the {@link TextChannel} being used for anonymous venting.
      * @param aiState                 True, if the AI portion should be enabled for this {@link CustomGuild}.
      */
-    public CustomGuild(@NotNull String guildID, @NotNull String prefix, @NotNull String moderatorRoleID,
-                       @NotNull String liveChannelID, @NotNull ArrayList<String> twitchChannels, @NotNull String mutedRoleID,
-                       @NotNull String liveNotificationsRoleID, @NotNull Boolean notifyOnUpdate, @NotNull String updateChannelID,
-                       @NotNull String countingChannelID, @NotNull String pollChannelID, @NotNull String raffleChannelID,
-                       @NotNull String birthdayChannelID, @NotNull String welcomeChannelID, @NotNull String goodbyeChannelID,
-                       @NotNull String logChannelID, @NotNull String ventingChannelID, @NotNull Boolean aiState,
-                       @NotNull String dailyChannelID) {
+    public CustomGuild(String guildID, String prefix, String moderatorRoleID,
+                       String liveChannelID, ArrayList<String> twitchChannels, String mutedRoleID,
+                       String liveNotificationsRoleID, boolean notifyOnUpdate, String updateChannelID,
+                       String countingChannelID, String pollChannelID, String raffleChannelID,
+                       String birthdayChannelID, String welcomeChannelID, String goodbyeChannelID,
+                       String logChannelID, String ventingChannelID, boolean aiState,
+                       String dailyChannelID) {
         customChannelIDs = new HashMap<>();
 
         this.guildID = guildID;
@@ -96,8 +97,8 @@ public class CustomGuild {
      * @param title       The title of the log.
      * @param description The description of the log.
      */
-    public void log(@NotNull ICommand command, @NotNull LogLevel level, @NotNull String title, @NotNull String description) {
-        if (getLogChannel() != null) {
+    public void log(ICommand command, LogLevel level, String title, String description) {
+        this.getLogChannel().ifPresent(channel -> {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setTitle(title + " - " + level.getCode());
             embedBuilder.setDescription(description);
@@ -105,15 +106,14 @@ public class CustomGuild {
             embedBuilder.setColor(level.getColor());
             embedBuilder.setFooter(command + " command");
             embedBuilder.setTimestamp(new Date().toInstant());
-            getLogChannel().sendMessageEmbeds(embedBuilder.build()).queue();
-        }
+            channel.sendMessageEmbeds(embedBuilder.build()).queue();
+        });
     }
 
     /**
      * @return The current {@link Boolean} for the AI state.
      */
-    @NotNull
-    public Boolean getAIState() {
+    public boolean getAIState() {
         return aiState;
     }
 
@@ -123,8 +123,7 @@ public class CustomGuild {
      * @param aiState The new {@link Boolean} status to set it to.
      * @return True, if it was successfully updated.
      */
-    @NotNull
-    public Boolean setAIState(@NotNull Boolean aiState) {
+    public boolean setAIState(boolean aiState) {
         if (GuildHandler.setAIState(guildID, aiState)) {
             this.aiState = aiState;
             return true;
@@ -135,13 +134,8 @@ public class CustomGuild {
     /**
      * @return The venting {@link TextChannel} for the {@link Guild}.
      */
-    @Nullable
-    public TextChannel getVentingChannel() {
-        try {
-            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.VENTING));
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public Optional<TextChannel> getVentingChannel() {
+        return Optional.ofNullable(GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.VENTING)));
     }
 
     /**
@@ -150,8 +144,7 @@ public class CustomGuild {
      * @param ventingChannelID The ID of the venting {@link TextChannel}.
      * @return True, if updating the venting {@link TextChannel} was successful.
      */
-    @NotNull
-    public Boolean setVentingChannelID(@NotNull String ventingChannelID) {
+    public boolean setVentingChannelID(final String ventingChannelID) {
         if (GuildHandler.setVentingChannelID(guildID, ventingChannelID)) {
             customChannelIDs.put(CustomChannel.VENTING, ventingChannelID);
             return true;
@@ -173,8 +166,7 @@ public class CustomGuild {
      * @param dailyChannelID The ID of the daily {@link TextChannel}.
      * @return True, if the daily {@link TextChannel} was updated successfully.
      */
-    @NotNull
-    public Boolean setDailyChannelID(@NotNull String dailyChannelID) {
+    public boolean setDailyChannelID(final String dailyChannelID) {
         if (GuildHandler.setDailyChannelID(guildID, dailyChannelID)) {
             customChannelIDs.put(CustomChannel.DAILY, dailyChannelID);
             return true;
@@ -185,13 +177,8 @@ public class CustomGuild {
     /**
      * @return The log {@link TextChannel} for the {@link Guild}.
      */
-    @Nullable
-    public TextChannel getLogChannel() {
-        try {
-            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.LOG));
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public Optional<TextChannel> getLogChannel() {
+        return Optional.ofNullable(GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.LOG)));
     }
 
     /**
@@ -200,8 +187,7 @@ public class CustomGuild {
      * @param logChannelID The ID of the log {@link TextChannel}.
      * @return True, if updating the log {@link TextChannel} was successful.
      */
-    @NotNull
-    public Boolean setLogChannelID(@NotNull String logChannelID) {
+    public boolean setLogChannelID(final String logChannelID) {
         if (GuildHandler.setLogChannelID(guildID, logChannelID)) {
             customChannelIDs.put(CustomChannel.LOG, logChannelID);
             return true;
@@ -212,25 +198,15 @@ public class CustomGuild {
     /**
      * @return The welcome {@link TextChannel} for the {@link Guild}.
      */
-    @Nullable
-    public TextChannel getWelcomeChannel() {
-        try {
-            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.WELCOME));
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public Optional<TextChannel> getWelcomeChannel() {
+        return Optional.ofNullable(GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.WELCOME)));
     }
 
     /**
      * @return The goodbye {@link TextChannel} for the {@link Guild}.
      */
-    @Nullable
-    public TextChannel getGoodbyeChannel() {
-        try {
-            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.GOODBYE));
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public Optional<TextChannel> getGoodbyeChannel() {
+        return Optional.ofNullable(GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.GOODBYE)));
     }
 
     /**
@@ -239,8 +215,7 @@ public class CustomGuild {
      * @param welcomeChannelID The ID of the new welcome {@link TextChannel}.
      * @return True, if it was successfully updated.
      */
-    @NotNull
-    public Boolean setWelcomeChannelID(@NotNull String welcomeChannelID) {
+    public boolean setWelcomeChannelID(final String welcomeChannelID) {
         if (GuildHandler.setWelcomeChannelID(guildID, welcomeChannelID)) {
             customChannelIDs.put(CustomChannel.WELCOME, welcomeChannelID);
             return true;
@@ -254,8 +229,7 @@ public class CustomGuild {
      * @param goodbyeChannelID The ID of the new goodbye {@link TextChannel}.
      * @return True, if it was successfully updated.
      */
-    @NotNull
-    public Boolean setGoodbyeChannelID(@NotNull String goodbyeChannelID) {
+    public boolean setGoodbyeChannelID(final String goodbyeChannelID) {
         if (GuildHandler.setGoodbyeChannelID(guildID, goodbyeChannelID)) {
             customChannelIDs.put(CustomChannel.GOODBYE, goodbyeChannelID);
             return true;
@@ -266,7 +240,6 @@ public class CustomGuild {
     /**
      * @return The twitch channels for the {@link Guild}.
      */
-    @NotNull
     public ArrayList<String> getTwitchChannels() {
         return twitchChannels;
     }
@@ -274,13 +247,8 @@ public class CustomGuild {
     /**
      * @return The birthday {@link TextChannel}.
      */
-    @Nullable
-    public TextChannel getBirthdayChannel() {
-        try {
-            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.BIRTHDAY));
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public Optional<TextChannel> getBirthdayChannel() {
+        return Optional.ofNullable(GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.BIRTHDAY)));
     }
 
     /**
@@ -289,8 +257,7 @@ public class CustomGuild {
      * @param birthdayChannelID The ID of the specified {@link TextChannel}.
      * @return True, if setting the birthday {@link TextChannel} was successful.
      */
-    @NotNull
-    public Boolean setBirthdayChannelID(@NotNull String birthdayChannelID) {
+    public boolean setBirthdayChannelID(final String birthdayChannelID) {
         if (GuildHandler.setBirthdayChannelID(guildID, birthdayChannelID)) {
             customChannelIDs.put(CustomChannel.BIRTHDAY, birthdayChannelID);
             return true;
@@ -301,13 +268,8 @@ public class CustomGuild {
     /**
      * @return The {@link Raffle Raffle} {@link TextChannel} for the {@link Guild}.
      */
-    @Nullable
-    public TextChannel getRaffleChannel() {
-        try {
-            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.RAFFLE));
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public Optional<TextChannel> getRaffleChannel() {
+        return Optional.ofNullable(GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.RAFFLE)));
     }
 
     /**
@@ -316,8 +278,7 @@ public class CustomGuild {
      * @param raffleChannelID The ID of the {@link TextChannel}.
      * @return True, if setting it was successful.
      */
-    @NotNull
-    public Boolean setRaffleChannel(@NotNull String raffleChannelID) {
+    public boolean setRaffleChannel(final String raffleChannelID) {
         if (GuildHandler.setRaffleChannelID(guildID, raffleChannelID)) {
             customChannelIDs.put(CustomChannel.RAFFLE, raffleChannelID);
             return true;
@@ -328,13 +289,8 @@ public class CustomGuild {
     /**
      * @return The poll {@link TextChannel} for the {@link Guild}.
      */
-    @Nullable
-    public TextChannel getPollChannel() {
-        try {
-            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.POLL));
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public Optional<TextChannel> getPollChannel() {
+        return Optional.ofNullable(GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.POLL)));
     }
 
     /**
@@ -343,8 +299,7 @@ public class CustomGuild {
      * @param pollChannelID The ID of the {@link TextChannel}.
      * @return True, if setting the poll {@link TextChannel} was successful.
      */
-    @NotNull
-    public Boolean setPollChannel(@NotNull String pollChannelID) {
+    public boolean setPollChannel(final String pollChannelID) {
         if (GuildHandler.setPollChannelID(guildID, pollChannelID)) {
             customChannelIDs.put(CustomChannel.POLL, pollChannelID);
             return true;
@@ -355,13 +310,8 @@ public class CustomGuild {
     /**
      * @return The counting {@link TextChannel} for the {@link Guild}.
      */
-    @Nullable
-    public TextChannel getCountingChannel() {
-        try {
-            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.COUNTING));
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public Optional<TextChannel> getCountingChannel() {
+        return Optional.ofNullable(GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.COUNTING)));
     }
 
     /**
@@ -370,8 +320,7 @@ public class CustomGuild {
      * @param countingChannelID The ID of the {@link TextChannel} used for counting.
      * @return True, if setting the counting {@link TextChannel} was successful.
      */
-    @NotNull
-    public Boolean setCountingChannel(@NotNull String countingChannelID) {
+    public boolean setCountingChannel(final String countingChannelID) {
         if (GuildHandler.setCountingChannelID(guildID, countingChannelID)) {
             customChannelIDs.put(CustomChannel.COUNTING, countingChannelID);
             return true;
@@ -382,13 +331,8 @@ public class CustomGuild {
     /**
      * @return The update {@link TextChannel} for the {@link Guild}.
      */
-    @Nullable
-    public TextChannel getUpdateChannel() {
-        try {
-            return GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.UPDATE));
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public Optional<TextChannel> getUpdateChannel() {
+        return Optional.ofNullable(GuildHandler.getGuild(guildID).getTextChannelById(customChannelIDs.get(CustomChannel.UPDATE)));
     }
 
     /**
@@ -397,8 +341,7 @@ public class CustomGuild {
      * @param updateChannelID The ID of the {@link TextChannel} used for sending bot updates.
      * @return True, if setting the update {@link TextChannel} was successful.
      */
-    @NotNull
-    public Boolean setUpdateChannel(@NotNull String updateChannelID) {
+    public boolean setUpdateChannel(final String updateChannelID) {
         if (GuildHandler.setUpdateChannelID(guildID, updateChannelID)) {
             customChannelIDs.put(CustomChannel.UPDATE, updateChannelID);
             return true;
@@ -412,8 +355,7 @@ public class CustomGuild {
      * @param answer The {@link Boolean} answer.
      * @return True, if updating it was successful.
      */
-    @NotNull
-    public Boolean setNotifyOnUpdate(@NotNull Boolean answer) {
+    public boolean setNotifyOnUpdate(final boolean answer) {
         if (GuildHandler.setNotifyOnUpdate(guildID, answer)) {
             notifyOnUpdate = answer;
             return true;
@@ -424,8 +366,7 @@ public class CustomGuild {
     /**
      * @return The current state of if the {@link Guild} should be notified on an update.
      */
-    @NotNull
-    public Boolean getNotifyOnUpdate() {
+    public boolean getNotifyOnUpdate() {
         return notifyOnUpdate;
     }
 
@@ -435,9 +376,7 @@ public class CustomGuild {
      * @param roleID The ID for the Live Notifications {@link Role}.
      * @return True, if it was successful.
      */
-    @NotNull
-    public Boolean setLiveNotificationsRoleID(@NotNull String roleID) {
-
+    public boolean setLiveNotificationsRoleID(final String roleID) {
         // Only set it if it updates in the database.
         if (GuildHandler.setLiveNotificationsRoleID(guildID, roleID)) {
             liveNotificationsRoleID = roleID;
@@ -449,15 +388,13 @@ public class CustomGuild {
     /**
      * @return The live notifications {@link Role}.
      */
-    @Nullable
-    public Role getLiveNotificationsRole() {
-        return GuildHandler.getGuild(guildID).getRoleById(liveNotificationsRoleID);
+    public Optional<Role> getLiveNotificationsRole() {
+        return Optional.ofNullable(GuildHandler.getGuild(guildID).getRoleById(liveNotificationsRoleID));
     }
 
     /**
      * @return The {@link String} ID of the live channel to send messages.
      */
-    @NotNull
     public String getLiveChannelID() {
         return customChannelIDs.get(CustomChannel.LIVE);
     }
@@ -468,9 +405,7 @@ public class CustomGuild {
      * @param mutedRoleID The ID of the muted {@link Role}.
      * @return True, if the {@link Role} was successfully updated in the database.
      */
-    @NotNull
-    public Boolean setMutedRoleID(String mutedRoleID) {
-
+    public boolean setMutedRoleID(final String mutedRoleID) {
         if (GuildHandler.setMutedRoleID(guildID, mutedRoleID)) {
             this.mutedRoleID = mutedRoleID;
             return true;
@@ -484,8 +419,7 @@ public class CustomGuild {
      * @param moderatorRoleID The ID of the moderator {@link Role}.
      * @return True, if the {@link Role} was successfully updated in the database.
      */
-    @NotNull
-    public Boolean setModeratorRoleID(@NotNull String moderatorRoleID) {
+    public boolean setModeratorRoleID(final String moderatorRoleID) {
         if (GuildHandler.setModeratorRoleID(guildID, moderatorRoleID)) {
             this.moderatorRoleID = moderatorRoleID;
             return true;
@@ -494,29 +428,12 @@ public class CustomGuild {
     }
 
     /**
-     * @return The ID for the {@link CustomGuild}.
-     */
-    @NotNull
-    public String getGuildID() {
-        return guildID;
-    }
-
-    /**
-     * @return The prefix for the {@link CustomGuild}.
-     */
-    @NotNull
-    public String getPrefix() {
-        return prefix;
-    }
-
-    /**
      * Sets the prefix for the {@link CustomGuild}.
      *
      * @param newPrefix The new prefix.
      * @return True, if setting the prefix was successful.
      */
-    @NotNull
-    public Boolean setPrefix(String newPrefix) {
+    public boolean setPrefix(final String newPrefix) {
         if (GuildHandler.setPrefix(guildID, newPrefix)) {
             this.prefix = newPrefix;
             return true;
@@ -527,25 +444,15 @@ public class CustomGuild {
     /**
      * @return The muted {@link Role} for the current {@link Guild}.
      */
-    @Nullable
-    public Role getMutedRole() {
-        try {
-            return GuildHandler.getGuild(guildID).getRoleById(mutedRoleID);
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public Optional<Role> getMutedRole() {
+        return Optional.ofNullable(GuildHandler.getGuild(guildID).getRoleById(mutedRoleID));
     }
 
     /**
      * @return The moderator {@link Role} for the current {@link Guild}.
      */
-    @Nullable
-    public Role getModeratorRole() {
-        try {
-            return GuildHandler.getGuild(guildID).getRoleById(moderatorRoleID);
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public Optional<Role> getModeratorRole() {
+        return Optional.ofNullable(GuildHandler.getGuild(guildID).getRoleById(moderatorRoleID));
     }
 
     /**
@@ -553,19 +460,16 @@ public class CustomGuild {
      * @param twitchChannel The name of the twitch channel to add.
      * @return True, if the twitch channel was successfully added.
      */
-    @NotNull
-    public Boolean addTwitchChannel(String twitchChannel) {
+    public boolean addTwitchChannel(String twitchChannel) {
         twitchChannel = twitchChannel.toLowerCase();
 
         // Check if the channel exists.
         if (!TwitchHandler.getTwitchListener().channelExists(twitchChannel)) {
-            Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, twitchChannel);
+            Bot.getCafeAPI().getTwitchEndpoint().removeGuildTwitch(guildID, twitchChannel);
             return false;
         }
 
-        if (twitchChannels.contains(twitchChannel)) {
-            return false;
-        }
+        if (twitchChannels.contains(twitchChannel)) return false;
 
         if (GuildHandler.addTwitchChannel(guildID, twitchChannel)) {
             twitchChannels.add(twitchChannel.toLowerCase());
@@ -576,7 +480,7 @@ public class CustomGuild {
             } catch (HystrixRuntimeException | ContextedRuntimeException e) {
 
                 // If this is reached, it means the twitch channel does not exist.
-                Bot.getCafeAPI().TWITCH.removeGuildTwitch(guildID, twitchChannel);
+                Bot.getCafeAPI().getTwitchEndpoint().removeGuildTwitch(guildID, twitchChannel);
                 return false;
             }
         }
@@ -589,17 +493,13 @@ public class CustomGuild {
      * @param twitchChannel The name of the twitch channel to be removed.
      * @return True, if the twitch channel was successfully removed.
      */
-    @NotNull
-    public Boolean removeTwitchChannel(String twitchChannel) {
+    public boolean removeTwitchChannel(String twitchChannel) {
         twitchChannel = twitchChannel.toLowerCase();
 
-        if (!twitchChannels.contains(twitchChannel)) {
-            return false;
-        }
+        if (!twitchChannels.contains(twitchChannel)) return false;
 
         if (GuildHandler.removeTwitchChannel(guildID, twitchChannel)) {
             twitchChannels.remove(twitchChannel.toLowerCase());
-
             return TwitchHandler.removeCache(guildID, twitchChannel);
         }
 
@@ -612,8 +512,7 @@ public class CustomGuild {
      * @param liveChannelID The new channel ID for the channel.
      * @return True, if the channel was successfully updated.
      */
-    @NotNull
-    public Boolean updateTwitchDiscordChannel(String liveChannelID) {
+    public boolean updateTwitchDiscordChannel(final String liveChannelID) {
         if (GuildHandler.setTwitchChannelID(guildID, liveChannelID)) {
             customChannelIDs.put(CustomChannel.LIVE, liveChannelID);
             return true;
@@ -622,25 +521,12 @@ public class CustomGuild {
     }
 
     /**
-     * @return All Custom Channel Names and IDs for the {@link Guild}.
-     */
-    @NotNull
-    public HashMap<CustomChannel, String> getCustomChannelIDs() {
-        return customChannelIDs;
-    }
-
-    /**
      * Check is a specified {@link String channelID} is already a {@link CustomChannel}.
      * @param channelID The {@link String channelID} to search for.
      * @return True, if the {@link String channelID} is a {@link CustomChannel}.
      */
-    @NotNull
-    public Boolean isCustomChannel(@NotNull String channelID) {
-        for (Map.Entry<CustomChannel, String> pair : customChannelIDs.entrySet()) {
-            if (pair.getValue().equalsIgnoreCase(channelID))
-                return true;
-        }
-        return false;
+    public boolean isCustomChannel(final String channelID) {
+        return customChannelIDs.entrySet().stream().anyMatch((entry) -> entry.getValue().equals(channelID));
     }
 
     /**
@@ -648,8 +534,8 @@ public class CustomGuild {
      * @param channelID The {@link String channelID} to search for.
      * @return True, if the {@link String channelID} is a {@link CustomChannel}.
      */
-    @NotNull
-    public Boolean isDailyChannel(@NotNull String channelID) {
+    public boolean isDailyChannel(final String channelID) {
         return customChannelIDs.get(CustomChannel.DAILY).equalsIgnoreCase(channelID);
     }
+
 }

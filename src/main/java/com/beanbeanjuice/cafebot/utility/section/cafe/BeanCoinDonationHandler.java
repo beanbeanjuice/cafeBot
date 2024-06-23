@@ -1,7 +1,7 @@
 package com.beanbeanjuice.cafebot.utility.section.cafe;
 
 import com.beanbeanjuice.cafebot.Bot;
-import com.beanbeanjuice.cafeapi.wrapper.endpoints.beancoins.users.DonationUsers;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.beancoins.users.DonationUsersEndpoint;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 import com.beanbeanjuice.cafeapi.wrapper.generic.CafeGeneric;
@@ -34,11 +34,11 @@ public class BeanCoinDonationHandler {
     }
 
     /**
-     * Caches the {@link DonationUsers}.
+     * Caches the {@link DonationUsersEndpoint}.
      */
     private static void cacheBeanCoinDonationUsers() {
         try {
-            beanCoinDonationUsersCache = Bot.getCafeAPI().DONATION_USER.getAllUserDonationTimes();
+            beanCoinDonationUsersCache = Bot.getCafeAPI().getDonationUsersEndpoint().getAllUserDonationTimes();
         } catch (CafeException e) {
             Bot.getLogger().log(BeanCoinDonationHandler.class, LogLevel.ERROR, "Error Getting Donation Users Cooldowns: " + e.getMessage(), e);
         }
@@ -57,7 +57,7 @@ public class BeanCoinDonationHandler {
                 new HashMap<>(beanCoinDonationUsersCache).forEach((userID, timeStamp) -> {
                     if (timeUntilDonate(userID) <= -1) {
                         try {
-                            Bot.getCafeAPI().DONATION_USER.deleteDonationUser(userID);
+                            Bot.getCafeAPI().getDonationUsersEndpoint().deleteDonationUser(userID);
                         } catch (CafeException e) {
                             Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Unable to Remove User from Donation Cooldowns: " + e.getMessage(), e);
                             beanCoinDonationUsersCache.remove(userID);

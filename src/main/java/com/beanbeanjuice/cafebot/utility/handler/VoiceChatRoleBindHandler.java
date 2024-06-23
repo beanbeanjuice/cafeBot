@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A handler for {@link net.dv8tion.jda.api.entities.VoiceChannel VoiceChannel} and their corresponding {@link net.dv8tion.jda.api.entities.Role Roles}.
+ * A handler for {@link net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel VoiceChannel} and their corresponding {@link net.dv8tion.jda.api.entities.Role Roles}.
  *
  * @author beanbeanjuice
  */
@@ -88,7 +88,7 @@ public class VoiceChatRoleBindHandler {
      */
     private static void updateVoiceBindCache() {
         try {
-            guildVoiceBinds = Bot.getCafeAPI().VOICE_CHANNEL_BIND.getAllVoiceChannelBinds();
+            guildVoiceBinds = Bot.getCafeAPI().getVoiceChannelBindsEndpoint().getAllVoiceChannelBinds();
         } catch (CafeException e) {
             Bot.getLogger().log(VoiceChatRoleBindHandler.class, LogLevel.ERROR, "Error Caching Voice Binds: " + e.getMessage(), e);
         }
@@ -106,7 +106,7 @@ public class VoiceChatRoleBindHandler {
         try {
             VoiceChannelBind voiceChannelBind = new VoiceChannelBind(voiceChannelID, roleID);
 
-            Bot.getCafeAPI().VOICE_CHANNEL_BIND.addVoiceChannelBind(guildID, voiceChannelBind);
+            Bot.getCafeAPI().getVoiceChannelBindsEndpoint().addVoiceChannelBind(guildID, voiceChannelBind);
 
             if (!guildVoiceBinds.containsKey(guildID))
                 guildVoiceBinds.put(guildID, new ArrayList<>());
@@ -132,7 +132,7 @@ public class VoiceChatRoleBindHandler {
     public static Boolean unBindRoleFromVoiceChannel(@NotNull String guildID, @NotNull String voiceChannelID, @NotNull String roleID) {
 
         try {
-            Bot.getCafeAPI().VOICE_CHANNEL_BIND.deleteVoiceChannelBind(guildID, new VoiceChannelBind(voiceChannelID, roleID));
+            Bot.getCafeAPI().getVoiceChannelBindsEndpoint().deleteVoiceChannelBind(guildID, new VoiceChannelBind(voiceChannelID, roleID));
 
             if (guildVoiceBinds.containsKey(guildID)) {
                 ArrayList<VoiceChannelBind> tempBindList = new ArrayList<>(guildVoiceBinds.get(guildID));

@@ -43,10 +43,8 @@ public class TwitchMessageEventHandler extends SimpleEventHandler {
             TextChannel liveChannel = GuildHandler.getGuild(guildID).getTextChannelById(liveChannelID);
             StringBuilder message = new StringBuilder();
 
-            try {
-                message.append(GuildHandler.getCustomGuild(guildID).getLiveNotificationsRole().getAsMention())
-                        .append(", ");
-            } catch (NumberFormatException | NullPointerException ignored) { }
+            GuildHandler.getCustomGuild(guildID).getLiveNotificationsRole()
+                    .ifPresent((liveNotificationsRole) -> message.append(liveNotificationsRole).append(", "));
 
             message.append(event.getChannel().getName())
                     .append(", is now live on ")

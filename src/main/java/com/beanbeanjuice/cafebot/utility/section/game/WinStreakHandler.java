@@ -25,7 +25,7 @@ public class WinStreakHandler {
     @Nullable
     public static WinStreak getUserWinStreak(@NotNull String userID) {
         try {
-            return Bot.getCafeAPI().WIN_STREAK.getUserWinStreak(userID);
+            return Bot.getCafeAPI().getWinStreaksEndpoint().getUserWinStreak(userID);
         } catch (NotFoundException e) {
 
             if (!createUserWinStreak(userID))
@@ -68,7 +68,7 @@ public class WinStreakHandler {
     @NotNull
     public static Boolean createUserWinStreak(@NotNull String userID) {
         try {
-            Bot.getCafeAPI().WIN_STREAK.createUserWinStreak(userID);
+            Bot.getCafeAPI().getWinStreaksEndpoint().createUserWinStreak(userID);
             return true;
         } catch (ConflictException e) {
             return false;
@@ -88,7 +88,7 @@ public class WinStreakHandler {
     @NotNull
     public static Boolean updateUserWinStreak(@NotNull String userID, @NotNull MinigameType gameType, @NotNull Integer winStreak) {
         try {
-            return Bot.getCafeAPI().WIN_STREAK.updateUserWinStreak(userID, gameType, winStreak);
+            return Bot.getCafeAPI().getWinStreaksEndpoint().updateUserWinStreak(userID, gameType, winStreak);
         } catch (CafeException e) {
             Bot.getLogger().log(WinStreakHandler.class, LogLevel.ERROR, "Error Setting Win Streak: " + e.getMessage(), e);
             return false;

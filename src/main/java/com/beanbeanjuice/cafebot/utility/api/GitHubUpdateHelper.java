@@ -42,7 +42,7 @@ public class GitHubUpdateHelper {
      */
     private Boolean compareVersions() {
         try {
-            String lastVersion = Bot.getCafeAPI().VERSION.getCurrentCafeBotVersion();
+            String lastVersion = Bot.getCafeAPI().getVersionsEndpoint().getCurrentCafeBotVersion();
             return Bot.BOT_VERSION.startsWith(lastVersion);
         } catch (CafeException e) {
             Bot.getLogger().log(GitHubUpdateHelper.class, LogLevel.WARN, "Error Getting Current Bot Version: " + e.getMessage(), e);
@@ -76,7 +76,7 @@ public class GitHubUpdateHelper {
 
         // Updating the Version in the Database
         try {
-            Bot.getCafeAPI().VERSION.updateCurrentCafeBotVersion(Bot.BOT_VERSION);
+            Bot.getCafeAPI().getVersionsEndpoint().updateCurrentCafeBotVersion(Bot.BOT_VERSION);
         } catch (CafeException e) {
             Bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating Version in Database: " + e.getMessage(), e);
             return;
@@ -89,20 +89,11 @@ public class GitHubUpdateHelper {
             if (customGuild.getNotifyOnUpdate()) {
                 try {
                     Guild guild = GuildHandler.getGuild(guildID);
-
-                    GuildMessageChannel mainChannel = customGuild.getUpdateChannel();
-
-                    // If the update channel does not exist, send to default channel.
-                    if (customGuild.getUpdateChannel() == null)
-                        mainChannel = guild.getDefaultChannel().asTextChannel();
-
+                    GuildMessageChannel mainChannel = customGuild.getUpdateChannel().orElse(guild.getDefaultChannel().asTextChannel());
                     Member owner = guild.getOwner();
-
-                    try {
-                        mainChannel.sendMessage(owner.getAsMention() + " I've been updated!").setEmbeds(updateEmbed).queue();
-                    } catch (NullPointerException | InsufficientPermissionException | UnsupportedOperationException |
-                             IllegalStateException ignored) {}
-                } catch (NullPointerException | IllegalStateException ignored) {}
+                    mainChannel.sendMessage(owner.getAsMention() + " I've been updated!").setEmbeds(updateEmbed).queue();
+                } catch (NullPointerException | InsufficientPermissionException | UnsupportedOperationException |
+                         IllegalStateException ignored) { }
             }
         });
     }

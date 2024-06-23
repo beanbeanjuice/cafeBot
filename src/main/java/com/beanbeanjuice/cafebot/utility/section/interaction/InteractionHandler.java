@@ -25,7 +25,7 @@ public class InteractionHandler {
      */
     public static Optional<String> getImage(final InteractionType type) {
         try {
-            return Optional.of(Bot.getCafeAPI().INTERACTION_PICTURE.getRandomInteractionPicture(type));
+            return Optional.of(Bot.getCafeAPI().getInteractionPicturesEndpoint().getRandomInteractionPicture(type));
         } catch (CafeException e) {
             Bot.getLogger().log(InteractionHandler.class, LogLevel.WARN, "Error Getting Random Interaction Image: " + e.getMessage(), e);
             return Optional.empty();
@@ -43,7 +43,7 @@ public class InteractionHandler {
         if (createInteractionSender(userID)) return Optional.of(0);
 
         try {
-            return Optional.of(Bot.getCafeAPI().INTERACTION.getSpecificUserInteractionSentAmount(userID, type));
+            return Optional.of(Bot.getCafeAPI().getInteractionsEndpoint().getSpecificUserInteractionSentAmount(userID, type));
         } catch (CafeException e) {
             return Optional.empty();
         }
@@ -60,7 +60,7 @@ public class InteractionHandler {
         if (createInteractionReceiver(userID)) return Optional.of(0);
 
         try {
-            return Optional.of(Bot.getCafeAPI().INTERACTION.getSpecificUserInteractionReceivedAmount(userID, type));
+            return Optional.of(Bot.getCafeAPI().getInteractionsEndpoint().getSpecificUserInteractionReceivedAmount(userID, type));
         } catch (CafeException e) {
             return Optional.empty();
         }
@@ -74,7 +74,7 @@ public class InteractionHandler {
      */
     private static boolean createInteractionReceiver(final String userID) {
         try {
-            Bot.getCafeAPI().INTERACTION.createUserInteractionsReceived(userID);
+            Bot.getCafeAPI().getInteractionsEndpoint().createUserInteractionsReceived(userID);
             return true;
         } catch (ConflictException e) {
             return false;
@@ -92,7 +92,7 @@ public class InteractionHandler {
      */
     private static boolean createInteractionSender(final String userID) {
         try {
-            Bot.getCafeAPI().INTERACTION.createUserInteractionsSent(userID);
+            Bot.getCafeAPI().getInteractionsEndpoint().createUserInteractionsSent(userID);
             return true;
         } catch (ConflictException ignored) {
             return false;
@@ -112,7 +112,7 @@ public class InteractionHandler {
      */
     public static boolean updateSender(final String userID, final InteractionType type, final int amount) {
         try {
-            Bot.getCafeAPI().INTERACTION.updateSpecificUserInteractionSentAmount(userID, type, amount);
+            Bot.getCafeAPI().getInteractionsEndpoint().updateSpecificUserInteractionSentAmount(userID, type, amount);
             return true;
         } catch (NotFoundException e) {
             if (createInteractionSender(userID)) return updateSender(userID, type, amount);
@@ -133,7 +133,7 @@ public class InteractionHandler {
      */
     public static boolean updateReceiver(final String userID, final InteractionType type, final int amount) {
         try {
-            Bot.getCafeAPI().INTERACTION.updateSpecificUserInteractionReceivedAmount(userID, type, amount);
+            Bot.getCafeAPI().getInteractionsEndpoint().updateSpecificUserInteractionReceivedAmount(userID, type, amount);
             return true;
         } catch (NotFoundException e) {
             if (createInteractionReceiver(userID)) return updateReceiver(userID, type, amount);

@@ -92,7 +92,7 @@ public class DonateBeanCoinsCommand implements ICommand {
 
         // Updating the Donator
         try {
-            Bot.getCafeAPI().CAFE_USER.updateCafeUser(donator.getUserID(), CafeType.BEAN_COINS, donator.getBeanCoins() - amountToDonate);
+            Bot.getCafeAPI().getCafeUsersEndpoint().updateCafeUser(donator.getUserID(), CafeType.BEAN_COINS, donator.getBeanCoins() - amountToDonate);
         } catch (CafeException e) {
             event.getHook().sendMessageEmbeds(Helper.sqlServerError(
                     "Error updating donation sender. There has been an error contacting the Cafe API."
@@ -103,7 +103,7 @@ public class DonateBeanCoinsCommand implements ICommand {
 
         // Updating the Donatee
         try {
-            Bot.getCafeAPI().CAFE_USER.updateCafeUser(donatee.getUserID(), CafeType.BEAN_COINS, donatee.getBeanCoins() + amountToDonate);
+            Bot.getCafeAPI().getCafeUsersEndpoint().updateCafeUser(donatee.getUserID(), CafeType.BEAN_COINS, donatee.getBeanCoins() + amountToDonate);
         } catch (CafeException e) {
             event.getHook().sendMessageEmbeds(Helper.sqlServerError(
                     "Error updating donation receiver. There has been an error contacting the Cafe API."
@@ -116,7 +116,7 @@ public class DonateBeanCoinsCommand implements ICommand {
         try {
             CafeGeneric.parseTimestamp(new Timestamp(System.currentTimeMillis() + BeanCoinDonationHandler.getCooldown()).toString())
                     .ifPresent((endingTime) -> {
-                        Bot.getCafeAPI().DONATION_USER.addDonationUser(donatee.getUserID(), endingTime);
+                        Bot.getCafeAPI().getDonationUsersEndpoint().addDonationUser(donatee.getUserID(), endingTime);
                         BeanCoinDonationHandler.addUser(donatee.getUserID(), endingTime);
                     });
         } catch (CafeException e) {

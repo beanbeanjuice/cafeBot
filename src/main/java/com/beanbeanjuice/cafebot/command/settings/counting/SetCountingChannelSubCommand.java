@@ -56,7 +56,7 @@ public class SetCountingChannelSubCommand implements ISubCommand {
 
             // Now, try to create "Counting Information" in the database.
             try {
-                Bot.getCafeAPI().COUNTING_INFORMATION.createGuildCountingInformation(event.getGuild().getId());
+                Bot.getCafeAPI().getCountingEndpoint().createGuildCountingInformation(event.getGuild().getId());
             }
             catch (ConflictException ignored) {}  // Ignore this.
             catch (AuthorizationException | ResponseException e) {

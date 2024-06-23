@@ -90,7 +90,7 @@ public class ServeHandler {
         // Tries to create the user first. If there is an error, it catches the error that says
         // a user already exists.
         try {
-            Bot.getCafeAPI().CAFE_USER.createCafeUser(userID);
+            Bot.getCafeAPI().getCafeUsersEndpoint().createCafeUser(userID);
         } catch (ConflictException ignored) {}
         catch (AuthorizationException | ResponseException e) {
             Bot.getLogger().log(ServeHandler.class, LogLevel.ERROR, "Error Creating User: " + e.getMessage(), e);
@@ -98,7 +98,7 @@ public class ServeHandler {
 
         // Now tries to retrieve the user.
         try {
-            return Bot.getCafeAPI().CAFE_USER.getCafeUser(userID);
+            return Bot.getCafeAPI().getCafeUsersEndpoint().getCafeUser(userID);
         } catch (CafeException e) {
             Bot.getLogger().log(ServeHandler.class, LogLevel.ERROR, "Error Getting User: " + e.getMessage());
         }

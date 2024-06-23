@@ -30,22 +30,17 @@ public class MessageListener extends ListenerAdapter {
         CustomGuild guildInformation = GuildHandler.getCustomGuild(event.getGuild());
 
         // Checking if the event is a counting channel
-        TextChannel countingChannel;
+        guildInformation.getCountingChannel().ifPresent((countingChannel) -> {
+            if (event.getChannel().equals(countingChannel)) {
+                String number = event.getMessage().getContentRaw().split(" ")[0];
 
-        try {
-            countingChannel = guildInformation.getCountingChannel();
-        } catch (NullPointerException e) {
-            countingChannel = null;
-        }
+                if (!Helper.isNumber(number)) return;
 
-        if (event.getChannel().equals(countingChannel)) {
-            String number = event.getMessage().getContentRaw().split(" ")[0];
-            if (Helper.isNumber(number)) {
                 CountingHandler.checkNumber(event, Integer.parseInt(number));
                 Bot.commandsRun++;
-                return;
             }
-        }
+        });
+
     }
 
 }
