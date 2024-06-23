@@ -34,7 +34,7 @@ public class RafflesEndpoint extends CafeEndpoint {
     throws AuthorizationException, ResponseException {
         HashMap<String, ArrayList<Raffle>> raffles = new HashMap<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/raffles")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -64,7 +64,7 @@ public class RafflesEndpoint extends CafeEndpoint {
     throws AuthorizationException, ResponseException {
         ArrayList<Raffle> raffles = new ArrayList<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/raffles/" + guildID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -92,7 +92,7 @@ public class RafflesEndpoint extends CafeEndpoint {
      */
     public boolean createRaffle(final String guildID, final Raffle raffle)
     throws AuthorizationException, ResponseException, UndefinedVariableException, ConflictException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/raffles/" + guildID)
                 .addParameter("message_id", raffle.getMessageID())
                 .addParameter("ending_time", raffle.getEndingTime().toString())
@@ -128,7 +128,7 @@ public class RafflesEndpoint extends CafeEndpoint {
      */
     public boolean deleteRaffle(final String guildID, final String messageID)
     throws AuthorizationException, ResponseException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/raffles/" + guildID)
                 .addParameter("message_id", messageID)
                 .setAuthorization(apiKey)

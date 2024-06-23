@@ -34,7 +34,7 @@ public class PollsEndpoint extends CafeEndpoint {
     throws AuthorizationException, ResponseException {
         HashMap<String, ArrayList<Poll>> polls = new HashMap<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/polls")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -63,7 +63,7 @@ public class PollsEndpoint extends CafeEndpoint {
     throws AuthorizationException, ResponseException {
         ArrayList<Poll> polls = new ArrayList<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/polls/" + guildID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -90,7 +90,7 @@ public class PollsEndpoint extends CafeEndpoint {
      */
     public boolean createPoll(final String guildID, final Poll poll)
     throws AuthorizationException, ResponseException, ConflictException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/polls/" + guildID)
                 .addParameter("message_id", poll.getMessageID())
                 .addParameter("ending_time", poll.getEndingTime().toString())
@@ -121,7 +121,7 @@ public class PollsEndpoint extends CafeEndpoint {
      */
     public boolean deletePoll(final String guildID, final String messageID)
     throws AuthorizationException, ResponseException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/polls/" + guildID)
                 .addParameter("message_id", messageID)
                 .setAuthorization(apiKey)

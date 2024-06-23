@@ -25,7 +25,7 @@ public class WelcomesEndpoint extends CafeEndpoint {
     public ArrayList<GuildWelcome> getAllGuildWelcomes() throws AuthorizationException, ResponseException {
         ArrayList<GuildWelcome> guildWelcomes = new ArrayList<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/welcomes")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -47,7 +47,7 @@ public class WelcomesEndpoint extends CafeEndpoint {
      */
     public GuildWelcome getGuildWelcome(final String guildID)
     throws AuthorizationException, ResponseException, NotFoundException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/welcomes/" + guildID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -67,7 +67,7 @@ public class WelcomesEndpoint extends CafeEndpoint {
      */
     public boolean updateGuildWelcome(final GuildWelcome guildWelcome)
     throws AuthorizationException, NotFoundException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.PATCH)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/welcomes/" + guildWelcome.getGuildID())
                 .addParameter("description", guildWelcome.getDescription().orElse(null))
                 .addParameter("thumbnail_url", guildWelcome.getThumbnailURL().orElse(null))
@@ -90,7 +90,7 @@ public class WelcomesEndpoint extends CafeEndpoint {
      */
     public boolean createGuildWelcome(final GuildWelcome guildWelcome)
     throws AuthorizationException, ConflictException, ResponseException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/welcomes/" + guildWelcome.getGuildID())
                 .addParameter("description", guildWelcome.getDescription().orElse(null))
                 .addParameter("thumbnail_url", guildWelcome.getThumbnailURL().orElse(null))
@@ -111,7 +111,7 @@ public class WelcomesEndpoint extends CafeEndpoint {
      */
     public boolean deleteGuildWelcome(final String guildID)
     throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/welcomes/" + guildID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();

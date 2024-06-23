@@ -32,6 +32,9 @@ public class Birthday {
         this.month = month;
         this.day = day;
 
+        if (month == BirthdayMonth.ERROR)
+            throw new BirthdayOverfillException("The month you specified is invalid.");
+
         if (month.getDaysInMonth() < day)
             throw new BirthdayOverfillException("You specified more days than there are in this month!");
 

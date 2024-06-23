@@ -25,7 +25,7 @@ public class WordsEndpoint extends CafeEndpoint {
      * @throws ResponseException Thrown when there is a generic server-side exception.
      */
     public ArrayList<Word> getAllWords() throws ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/words")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -46,7 +46,7 @@ public class WordsEndpoint extends CafeEndpoint {
      * @throws ResponseException Thrown when there is a generic server-side exception.
      */
     public Word getWord(final String word) throws NotFoundException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/words/" + word)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -66,7 +66,7 @@ public class WordsEndpoint extends CafeEndpoint {
      */
     public boolean updateWord(final String word, final int uses)
     throws NotFoundException, ResponseException, AuthorizationException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.PATCH)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/words/" + word)
                 .addParameter("uses", String.valueOf(uses))
                 .setAuthorization(apiKey)

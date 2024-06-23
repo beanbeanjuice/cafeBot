@@ -31,7 +31,7 @@ public class DonationUsersEndpoint extends CafeEndpoint {
     throws AuthorizationException, ResponseException {
         HashMap<String, Timestamp> donationUsers = new HashMap<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/beanCoin/donation_users")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -56,7 +56,7 @@ public class DonationUsersEndpoint extends CafeEndpoint {
      */
     public Optional<Timestamp> getUserDonationTime(final String userID)
     throws AuthorizationException, ResponseException, NotFoundException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/beanCoin/donation_users/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -76,7 +76,7 @@ public class DonationUsersEndpoint extends CafeEndpoint {
      */
     public Boolean addDonationUser(final String userID, final Timestamp timeUntilNextDonation)
     throws AuthorizationException, ResponseException, ConflictException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/beanCoin/donation_users/" + userID)
                 .addParameter("time_stamp", timeUntilNextDonation.toString())
                 .setAuthorization(apiKey)
@@ -94,7 +94,7 @@ public class DonationUsersEndpoint extends CafeEndpoint {
      */
     public Boolean deleteDonationUser(final String userID)
     throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/beanCoin/donation_users/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();

@@ -27,7 +27,7 @@ public class VersionsEndpoint extends CafeEndpoint {
      */
     public String getCurrentCafeBotVersion()
     throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/cafeBot")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -48,7 +48,7 @@ public class VersionsEndpoint extends CafeEndpoint {
     throws AuthorizationException, ResponseException, UndefinedVariableException, TeaPotException {
         if (!versionNumber.startsWith("v")) throw new TeaPotException("Version Number Must Start with 'v'.");
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.PATCH)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/cafeBot")
                 .addParameter("version", versionNumber)
                 .setAuthorization(apiKey)

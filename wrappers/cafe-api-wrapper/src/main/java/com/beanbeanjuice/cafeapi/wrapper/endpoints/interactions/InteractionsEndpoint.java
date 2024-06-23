@@ -30,7 +30,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
     throws AuthorizationException, ResponseException {
         HashMap<String, Interaction> senders = new HashMap<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/interactions/senders")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -53,7 +53,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
      */
     public Interaction getUserInteractionsSent(final String userID)
     throws AuthorizationException, ResponseException, NotFoundException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/interactions/senders/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -73,7 +73,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
      */
     public Integer getSpecificUserInteractionSentAmount(final String userID, final InteractionType type)
     throws AuthorizationException, ResponseException, NotFoundException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/interactions/senders/" + userID)
                 .addParameter("type", type.toString().toLowerCase())
                 .setAuthorization(apiKey)
@@ -95,7 +95,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
      */
     public Boolean updateSpecificUserInteractionSentAmount(final String userID, final InteractionType type, final int amount)
     throws AuthorizationException, ResponseException, NotFoundException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.PATCH)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/interactions/senders/" + userID)
                 .addParameter("type", type.toString().toLowerCase())
                 .addParameter("value", String.valueOf(amount))
@@ -115,7 +115,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
      */
     public boolean createUserInteractionsSent(final String userID)
     throws AuthorizationException, ResponseException, ConflictException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/interactions/senders/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -132,7 +132,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
      */
     public boolean deleteUserInteractionsSent(final String userID)
     throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/interactions/senders/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -154,7 +154,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
     throws AuthorizationException, ResponseException {
         HashMap<String, Interaction> receivers = new HashMap<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/interactions/receivers")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -177,7 +177,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
      */
     public Interaction getUserInteractionsReceived(final String userID)
     throws AuthorizationException, ResponseException, NotFoundException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/interactions/receivers/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -197,7 +197,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
      */
     public Integer getSpecificUserInteractionReceivedAmount(final String userID, final InteractionType type)
     throws AuthorizationException, ResponseException, NotFoundException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/interactions/receivers/" + userID)
                 .addParameter("type", type.toString().toLowerCase())
                 .setAuthorization(apiKey)
@@ -219,7 +219,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
      */
     public Boolean updateSpecificUserInteractionReceivedAmount(final String userID, final InteractionType type, final int amount)
     throws AuthorizationException, ResponseException, NotFoundException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.PATCH)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/interactions/receivers/" + userID)
                 .addParameter("type", type.toString().toLowerCase())
                 .addParameter("value", String.valueOf(amount))
@@ -239,7 +239,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
      */
     public boolean createUserInteractionsReceived(final String userID)
     throws AuthorizationException, ResponseException, ConflictException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/interactions/receivers/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -256,7 +256,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
      */
     public boolean deleteUserInteractionsReceived(final String userID)
     throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/interactions/receivers/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();

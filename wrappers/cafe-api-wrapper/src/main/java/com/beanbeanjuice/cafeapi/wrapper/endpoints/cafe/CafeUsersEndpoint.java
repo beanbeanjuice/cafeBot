@@ -31,7 +31,7 @@ public class CafeUsersEndpoint extends CafeEndpoint {
     throws AuthorizationException, ResponseException {
         ArrayList<CafeUser> cafeUsers = new ArrayList<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/cafe/users")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -51,7 +51,7 @@ public class CafeUsersEndpoint extends CafeEndpoint {
      */
     public CafeUser getCafeUser(final String userID)
     throws AuthorizationException, ResponseException, NotFoundException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/cafe/users/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -93,7 +93,7 @@ public class CafeUsersEndpoint extends CafeEndpoint {
             }
         }
 
-        RequestBuilder requestBuilder = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.PATCH)
+        RequestBuilder requestBuilder = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/cafe/users/" + userID)
                 .addParameter("type", type.getType())
                 .setAuthorization(apiKey);
@@ -116,7 +116,7 @@ public class CafeUsersEndpoint extends CafeEndpoint {
      */
     public boolean createCafeUser(final String userID)
     throws AuthorizationException, ResponseException, ConflictException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/cafe/users/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -133,7 +133,7 @@ public class CafeUsersEndpoint extends CafeEndpoint {
      */
     public boolean deleteCafeUser(String userID)
     throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/cafe/users/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();

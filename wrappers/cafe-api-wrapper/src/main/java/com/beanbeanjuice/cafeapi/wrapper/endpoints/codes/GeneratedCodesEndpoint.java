@@ -27,7 +27,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
     throws AuthorizationException, ResponseException {
         HashMap<String, String> codes = new HashMap<>();
 
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/codes")
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -47,7 +47,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
      */
     public String getUserGeneratedCode(final String userID)
     throws AuthorizationException, ResponseException, NotFoundException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.GET)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/codes/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
@@ -67,7 +67,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
      */
     public boolean updateUserGeneratedCode(final String userID, final String newCode)
     throws AuthorizationException, ResponseException, NotFoundException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.PATCH)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/codes/" + userID)
                 .addParameter("generated_code", newCode)
                 .setAuthorization(apiKey)
@@ -88,7 +88,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
      */
     public Boolean createUserGeneratedCode(final String userID, final String newCode)
     throws AuthorizationException, ResponseException, ConflictException, UndefinedVariableException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.POST)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/codes/" + userID)
                 .addParameter("generated_code", newCode)
                 .setAuthorization(apiKey)
@@ -106,7 +106,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
      */
     public Boolean deleteUserGeneratedCode(final String userID)
     throws AuthorizationException, ResponseException {
-        Request request = new RequestBuilder(RequestRoute.CAFEBOT, RequestType.DELETE)
+        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/codes/" + userID)
                 .setAuthorization(apiKey)
                 .build().orElseThrow();
