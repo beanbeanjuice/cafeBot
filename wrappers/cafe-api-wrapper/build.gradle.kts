@@ -15,7 +15,6 @@ dependencies {
     testImplementation("org.junit.jupiter", "junit-jupiter", "5.8.1")
 
     implementation("org.jetbrains", "annotations", "24.1.0")
-
 }
 
 tasks.withType<ShadowJar> {
