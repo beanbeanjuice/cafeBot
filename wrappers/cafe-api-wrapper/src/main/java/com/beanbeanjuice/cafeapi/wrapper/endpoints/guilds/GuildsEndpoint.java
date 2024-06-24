@@ -18,7 +18,7 @@ public class GuildsEndpoint extends CafeEndpoint {
                 .setRoute("/guilds")
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> {
+                .thenApplyAsync((request) -> {
                     HashMap<String, GuildInformation> guilds = new HashMap<>();
 
                     for (JsonNode guild : request.getData().get("guilds")) {
@@ -35,7 +35,7 @@ public class GuildsEndpoint extends CafeEndpoint {
                 .setRoute("/guilds/" + guildID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> parseGuildInformation(request.getData().get("guild")));
+                .thenApplyAsync((request) -> parseGuildInformation(request.getData().get("guild")));
     }
 
     public CompletableFuture<Boolean> createGuildInformation(final String guildID) {
@@ -43,7 +43,7 @@ public class GuildsEndpoint extends CafeEndpoint {
                 .setRoute("/guilds/" + guildID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 201);
+                .thenApplyAsync((request) -> request.getStatusCode() == 201);
     }
 
     public CompletableFuture<Boolean> updateGuildInformation(final String guildID, final GuildInformationType type, Object value) throws TeaPotException {
@@ -69,7 +69,7 @@ public class GuildsEndpoint extends CafeEndpoint {
                 .addParameter("value", value.toString())
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 200);
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
     public CompletableFuture<Boolean> deleteGuildInformation(final String guildID) {
@@ -77,7 +77,7 @@ public class GuildsEndpoint extends CafeEndpoint {
                 .setRoute("/guilds/" + guildID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 200);
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
     private GuildInformation parseGuildInformation(final JsonNode guild) {

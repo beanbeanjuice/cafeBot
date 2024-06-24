@@ -16,7 +16,7 @@ public class CountingEndpoint extends CafeEndpoint {
                 .setRoute("/counting/guilds")
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> {
+                .thenApplyAsync((request) -> {
                     HashMap<String, CountingInformation> guilds = new HashMap<>();
 
                     request.getData().get("guilds").forEach((guild) -> {
@@ -33,7 +33,7 @@ public class CountingEndpoint extends CafeEndpoint {
                 .setRoute("/counting/guilds/" + guildID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> parseCountingInformation(request.getData().get("counting_information")));
+                .thenApplyAsync((request) -> parseCountingInformation(request.getData().get("counting_information")));
     }
 
     public CompletableFuture<Boolean> updateGuildCountingInformation(final String guildID, final int highestNumber, final int lastNumber,
@@ -46,7 +46,7 @@ public class CountingEndpoint extends CafeEndpoint {
                 .addParameter("failure_role_id", failureRoleID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 200);
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
     public CompletableFuture<Boolean> updateGuildCountingInformation(final String guildID, final CountingInformation countingInformation) {
@@ -64,7 +64,7 @@ public class CountingEndpoint extends CafeEndpoint {
                 .setRoute("/counting/guilds/" + guildID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 201);
+                .thenApplyAsync((request) -> request.getStatusCode() == 201);
     }
 
     public CompletableFuture<Boolean> deleteGuildCountingInformation(final String guildID) {
@@ -72,7 +72,7 @@ public class CountingEndpoint extends CafeEndpoint {
                 .setRoute("/counting/guilds/" + guildID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 200);
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
     private CountingInformation parseCountingInformation(final JsonNode node) {
