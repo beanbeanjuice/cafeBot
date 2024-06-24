@@ -11,36 +11,43 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
-public class PollTest {
+public class PollsEndpointTests {
 
     @Test
     @DisplayName("Polls Endpoint Test")
-    public void testPollsEndpoint() {
+    public void testPollsEndpoint() throws ExecutionException, InterruptedException {
         CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
         long currentTime = System.currentTimeMillis();
         Timestamp currentTimestamp = CafeGeneric.parseTimestamp(new Timestamp(currentTime).toString()).orElse(null);
 
         // Makes sure the poll doesn't exist before starting the test.
-        Assertions.assertTrue(() -> cafeAPI.getPollsEndpoint().deletePoll("798830792938881024", "879519824424890438"));
+        Assertions.assertTrue(cafeAPI.getPollsEndpoint().deletePoll("798830792938881024", "879519824424890438").get());
 
         // Makes sure that the wrapper is able to create the poll.
-        Assertions.assertTrue(() -> cafeAPI.getPollsEndpoint().createPoll("798830792938881024", new Poll("879519824424890438", currentTimestamp)));
+        Assertions.assertTrue(cafeAPI.getPollsEndpoint().createPoll("798830792938881024", new Poll("879519824424890438", currentTimestamp)).get());
 
         // Makes sure that a ConflictException is thrown when the same poll is attempted to be created twice.
-        Assertions.assertThrows(ConflictException.class, () -> {
-            cafeAPI.getPollsEndpoint().createPoll("798830792938881024", new Poll("879519824424890438", currentTimestamp));
-        });
+        cafeAPI.getPollsEndpoint().createPoll("798830792938881024", new Poll("879519824424890438", currentTimestamp))
+                .thenAcceptAsync((isSuccess) -> Assertions.fail())
+                .exceptionallyAsync((exception) -> {
+                    Assertions.assertInstanceOf(ConflictException.class, exception.getCause());
+                    return null;
+                }).join();
 
         // Makes sure that the ending time retrieved from the API is the same as the one entered.
         Assertions.assertTrue(() -> {
-            ArrayList<Poll> polls = cafeAPI.getPollsEndpoint().getAllPolls().get("798830792938881024");
+            ArrayList<Poll> polls = null;
+            try {
+                polls = cafeAPI.getPollsEndpoint().getAllPolls().get().get("798830792938881024");
+            } catch (Exception e) {
+                Assertions.fail(e);
+            }
 
             for (Poll poll : polls) {
-                if (poll.getEndingTime().equals(currentTimestamp)) {
-                    return true;
-                }
+                if (poll.getEndingTime().equals(currentTimestamp)) return true;
             }
 
             return false;
@@ -48,19 +55,22 @@ public class PollTest {
 
         // Makes sure that the message ID retrieved from the API is the same as the one entered.
         Assertions.assertTrue(() -> {
-            ArrayList<Poll> polls = cafeAPI.getPollsEndpoint().getGuildPolls("798830792938881024");
+            ArrayList<Poll> polls = null;
+            try {
+                polls = cafeAPI.getPollsEndpoint().getGuildPolls("798830792938881024").get();
+            } catch (Exception e) {
+                Assertions.fail(e);
+            }
 
             for (Poll poll : polls) {
-                if (poll.getMessageID().equals("879519824424890438")) {
-                    return true;
-                }
+                if (poll.getMessageID().equals("879519824424890438")) return true;
             }
 
             return false;
         });
 
         // Makes sure a poll is able to be deleted from the API.
-        Assertions.assertTrue(() -> cafeAPI.getPollsEndpoint().deletePoll("798830792938881024", "879519824424890438"));
+        Assertions.assertTrue(cafeAPI.getPollsEndpoint().deletePoll("798830792938881024", "879519824424890438").get());
     }
 
 }
