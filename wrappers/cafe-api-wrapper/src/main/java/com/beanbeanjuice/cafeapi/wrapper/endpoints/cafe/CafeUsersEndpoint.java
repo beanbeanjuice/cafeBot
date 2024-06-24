@@ -20,7 +20,7 @@ public class CafeUsersEndpoint extends CafeEndpoint {
                 .setRoute("/cafe/users")
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> {
+                .thenApplyAsync((request) -> {
                     ArrayList<CafeUser> cafeUsers = new ArrayList<>();
                     request.getData().get("users").forEach((user) -> cafeUsers.add(parseCafeUser(user)));
                     return cafeUsers;
@@ -32,7 +32,7 @@ public class CafeUsersEndpoint extends CafeEndpoint {
                 .setRoute("/cafe/users/" + userID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> parseCafeUser(request.getData().get("cafe_user")));
+                .thenApplyAsync((request) -> parseCafeUser(request.getData().get("cafe_user")));
     }
 
     public CompletableFuture<Boolean> updateCafeUser(final String userID, final CafeType type, @Nullable final Object value)
@@ -64,7 +64,7 @@ public class CafeUsersEndpoint extends CafeEndpoint {
 
         return requestBuilder
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 200);
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
     public CompletableFuture<Boolean> createCafeUser(final String userID) {
@@ -72,7 +72,7 @@ public class CafeUsersEndpoint extends CafeEndpoint {
                 .setRoute("/cafe/users/" + userID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 201);
+                .thenApplyAsync((request) -> request.getStatusCode() == 201);
     }
 
     public CompletableFuture<Boolean> deleteCafeUser(final String userID) {
@@ -80,7 +80,7 @@ public class CafeUsersEndpoint extends CafeEndpoint {
                 .setRoute("/cafe/users/" + userID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 200);
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
     private CafeUser parseCafeUser(final JsonNode node) {

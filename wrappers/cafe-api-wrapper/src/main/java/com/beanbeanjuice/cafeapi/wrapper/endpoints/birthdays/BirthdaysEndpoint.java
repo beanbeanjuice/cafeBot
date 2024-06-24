@@ -1,6 +1,5 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.birthdays;
 
-import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
@@ -12,7 +11,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 
 public class BirthdaysEndpoint extends CafeEndpoint {
 
@@ -75,9 +73,7 @@ public class BirthdaysEndpoint extends CafeEndpoint {
                 .addParameter("time_zone", birthday.getTimeZone().getID())
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApplyAsync((request) -> {
-                    return request.getStatusCode() == 201;
-                });
+                .thenApplyAsync((request) -> request.getStatusCode() == 201);
     }
 
     public CompletableFuture<Boolean> removeUserBirthday(final String userID) {
@@ -85,9 +81,7 @@ public class BirthdaysEndpoint extends CafeEndpoint {
                 .setRoute("/birthdays/" + userID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApplyAsync((request) -> {
-                    return request.getStatusCode() == 200;
-                });
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
     private Optional<Birthday> parseBirthday(final JsonNode birthday) {
