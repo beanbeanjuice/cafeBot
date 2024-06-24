@@ -27,8 +27,7 @@ public class Birthday {
      * @param day The {@link Integer day} of the {@link Birthday}.
      * @param isAlreadyMentioned False, if the user's birthday has not been mentioned by cafeBot.
      */
-    public Birthday(final BirthdayMonth month, final int day, final String timeZone,
-                    final boolean isAlreadyMentioned) throws InvalidTimeZoneException, BirthdayOverfillException {
+    public Birthday(final BirthdayMonth month, final int day, final String timeZone, final boolean isAlreadyMentioned) {
         this.month = month;
         this.day = day;
 

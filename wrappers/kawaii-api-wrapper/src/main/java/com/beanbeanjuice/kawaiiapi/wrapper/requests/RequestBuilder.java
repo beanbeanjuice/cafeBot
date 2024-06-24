@@ -65,7 +65,7 @@ public class RequestBuilder {
      * Builds and runs the {@link Request}.
      * @return An {@link Optional} containing the {@link Request}.
      */
-    public Optional<Request> build() {
+    private Optional<Request> build() {
         try {
             SimpleHttpRequest httpRequest = SimpleRequestBuilder.get(apiURL).build();
             SimpleHttpResponse httpResponse = (SimpleHttpResponse) get(httpRequest);

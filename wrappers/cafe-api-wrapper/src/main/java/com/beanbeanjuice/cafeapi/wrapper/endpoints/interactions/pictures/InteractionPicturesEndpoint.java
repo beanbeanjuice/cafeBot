@@ -14,6 +14,8 @@ import com.beanbeanjuice.cafeapi.wrapper.exception.api.TeaPotException;
 import com.beanbeanjuice.cafeapi.wrapper.exception.api.CafeException;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 /**
  * A class used to retrieve random pictures from the {@link CafeAPI CafeAPI}.
@@ -35,24 +37,23 @@ public class InteractionPicturesEndpoint extends CafeEndpoint {
 
     /**
      * Retrieves a random {@link String interactionURL} for a specified {@link InteractionType}.
+     *
      * @param type The {@link InteractionType} specified.
-     * @return The {@link String url} to the {@link Interaction Interaction} image.
-     * @throws AuthorizationException Thrown when the {@link String apiKey} is invalid.
-     * @throws ResponseException Thrown when there is a generic server-side {@link CafeException CafeException}.
-     * @throws TeaPotException Thrown when an invalid {@link InteractionType} is entered.
+     * @return A {@link CompletableFuture} containing an {@link Optional} {@link String url}.
      */
-    public String getRandomInteractionPicture(final InteractionType type)
-    throws AuthorizationException, ResponseException, TeaPotException {
+    public CompletableFuture<Optional<String>> getRandomInteractionPicture(final InteractionType type) {
         Optional<String> potentialString = type.getKawaiiAPIString();
 
-        if (potentialString.isPresent()) return cafeAPI.getKawaiiAPI().getGifEndpoint().getGIF(potentialString.get()).orElseThrow();
+        if (potentialString.isPresent()) return cafeAPI.getKawaiiAPI().getGifEndpoint().getGIF(potentialString.get());
 
-        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
+        return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/interaction_pictures/" + type)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
-
-        return request.getData().get("url").asText();
+                .buildAsync()
+                .thenApplyAsync((optionalRequest) -> {
+                    if (optionalRequest.isPresent()) return Optional.of(optionalRequest.get().getData().get("url").asText());
+                    throw new CompletionException("Unable to get a random interaction picture. Request is empty.", null);
+                });
     }
 
 }
