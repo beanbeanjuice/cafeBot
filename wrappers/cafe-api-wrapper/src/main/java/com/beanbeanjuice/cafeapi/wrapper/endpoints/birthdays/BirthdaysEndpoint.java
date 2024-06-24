@@ -44,8 +44,8 @@ public class BirthdaysEndpoint extends CafeEndpoint {
                 .setAuthorization(apiKey)
                 .buildAsync()
                 .thenApplyAsync((optionalRequest) -> {
-                    if (optionalRequest.isPresent()) return requestToBirthdayMap(optionalRequest.get());
-                    throw new CompletionException("Error getting all birthdays. Request is empty.", null);
+                    if (optionalRequest.isEmpty()) throw new CompletionException("Error getting all birthdays. Request is empty.", null);
+                    return requestToBirthdayMap(optionalRequest.get());
                 });
     }
 
@@ -60,8 +60,8 @@ public class BirthdaysEndpoint extends CafeEndpoint {
                 .setAuthorization(apiKey)
                 .buildAsync()
                 .thenApplyAsync((optionalRequest) -> {
-                    if (optionalRequest.isPresent()) return parseBirthday(optionalRequest.get().getData().get("birthday"));
-                    throw new CompletionException("Error getting user birthday. Request is empty.", null);
+                    if (optionalRequest.isEmpty()) throw new CompletionException("Error getting user birthday. Request is empty.", null);
+                    return parseBirthday(optionalRequest.get().getData().get("birthday"));
                 });
     }
 
@@ -82,8 +82,8 @@ public class BirthdaysEndpoint extends CafeEndpoint {
                 .setAuthorization(apiKey)
                 .buildAsync()
                 .thenApplyAsync((optionalRequest) -> {
-                    if (optionalRequest.isPresent()) return optionalRequest.get().getStatusCode() == 200;
-                    throw new CompletionException("Error updating user birthday. Request is empty.", null);
+                    if (optionalRequest.isEmpty()) throw new CompletionException("Error updating user birthday. Request is empty.", null);
+                    return optionalRequest.get().getStatusCode() == 200;
                 });
     }
 
@@ -100,8 +100,8 @@ public class BirthdaysEndpoint extends CafeEndpoint {
                 .setAuthorization(apiKey)
                 .buildAsync()
                 .thenApplyAsync((optionalRequest) -> {
-                    if (optionalRequest.isPresent()) return optionalRequest.get().getStatusCode() == 200;
-                    throw new CompletionException("Error updating user mention. Request is empty.", null);
+                    if (optionalRequest.isEmpty()) throw new CompletionException("Error updating user mention. Request is empty.", null);
+                    return optionalRequest.get().getStatusCode() == 200;
                 });
     }
 
@@ -122,32 +122,22 @@ public class BirthdaysEndpoint extends CafeEndpoint {
                 .setAuthorization(apiKey)
                 .buildAsync()
                 .thenApplyAsync((optionalRequest) -> {
-                    if (optionalRequest.isPresent()) return optionalRequest.get().getStatusCode() == 201;
-                    throw new CompletionException("Error creating user birthday. Request is empty.", null);
+                    if (optionalRequest.isEmpty()) throw new CompletionException("Error creating user birthday. Request is empty.", null);
+                    return optionalRequest.get().getStatusCode() == 201;
                 });
     }
 
-    /**
-     * Removes a {@link Birthday} for a specified {@link String userID}.
-     * @param userID The specified {@link String userID}.
-     * @return True, if the {@link Birthday} has been successfully removed from the {@link CafeAPI CafeAPI}.
-     */
     public CompletableFuture<Boolean> removeUserBirthday(final String userID) {
         return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/birthdays/" + userID)
                 .setAuthorization(apiKey)
                 .buildAsync()
                 .thenApplyAsync((optionalRequest) -> {
-                    if (optionalRequest.isPresent()) return optionalRequest.get().getStatusCode() == 200;
-                    throw new CompletionException("Error removing user birthday. Request is empty.", null);
+                    if (optionalRequest.isEmpty()) throw new CompletionException("Error removing user birthday. Request is empty.", null);
+                    return optionalRequest.get().getStatusCode() == 200;
                 });
     }
 
-    /**
-     * Parses a {@link Birthday} from a {@link JsonNode}.
-     * @param birthday The {@link JsonNode} to parse.
-     * @return The parsed {@link Birthday}.
-     */
     private Optional<Birthday> parseBirthday(final JsonNode birthday) {
         String unformattedDate = birthday.get("birth_date").asText();
         String timeZoneString = birthday.get("time_zone").asText();
@@ -166,11 +156,6 @@ public class BirthdaysEndpoint extends CafeEndpoint {
         }
     }
 
-    /**
-     * Retrieves the {@link BirthdayMonth} from the {@link Integer index}.
-     * @param index The {@link Integer index} of the month. January is 0.
-     * @return The {@link BirthdayMonth} from the {@link Integer index}.
-     */
     private BirthdayMonth getBirthdayMonth(final int index) {
         for (BirthdayMonth month : BirthdayMonth.values()) {
             if (month.getMonthNumber() == index)
@@ -180,22 +165,11 @@ public class BirthdaysEndpoint extends CafeEndpoint {
         return BirthdayMonth.ERROR;
     }
 
-    /**
-     * Parses a number and adds a 0 to the {@link String}.
-     * @param number The {@link Integer number} to parse.
-     * @return The parsed {@link String number}. Double-digit numbers don't have a 0 added.
-     */
     private String parseNumber(final int number) {  // TODO: There MUST be a better way to do this.
         if (number <= 9) return "0" + number;
         return String.valueOf(number);
     }
 
-    /**
-     * Gets the birthday {@link String} to send to the {@link CafeAPI CafeAPI}.
-     * @param month The {@link BirthdayMonth montH} of the {@link Birthday}.
-     * @param day The {@link Integer day} in the {@link BirthdayMonth month} of the {@link Birthday}.
-     * @return The birthday {@link String} to send to the {@link CafeAPI CafeAPI}.
-     */
     private String getBirthdayString(final BirthdayMonth month, final int day) {
         return parseNumber(month.getMonthNumber()) + "-" + parseNumber(day);
     }
