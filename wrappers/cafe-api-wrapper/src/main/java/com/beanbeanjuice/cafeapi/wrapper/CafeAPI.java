@@ -132,7 +132,7 @@ public class CafeAPI {
                 .setRoute("/user/login")
                 .addParameter("username", username)
                 .addParameter("password", password)
-                .build().orElseThrow();
+                .build();
 
         return request.getData().get("api_key").textValue();
     }

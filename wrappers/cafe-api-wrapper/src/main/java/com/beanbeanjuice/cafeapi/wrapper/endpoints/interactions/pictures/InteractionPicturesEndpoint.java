@@ -50,10 +50,7 @@ public class InteractionPicturesEndpoint extends CafeEndpoint {
                 .setRoute("/interaction_pictures/" + type)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApplyAsync((optionalRequest) -> {
-                    if (optionalRequest.isPresent()) return Optional.of(optionalRequest.get().getData().get("url").asText());
-                    throw new CompletionException("Unable to get a random interaction picture. Request is empty.", null);
-                });
+                .thenApplyAsync((request) -> Optional.of(request.getData().get("url").asText()));
     }
 
 }

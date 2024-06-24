@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 
 /**
  * A class used to make {@link DonationUsersEndpoint} requests to the {@link CafeAPI CafeAPI}.
@@ -25,12 +24,10 @@ public class DonationUsersEndpoint extends CafeEndpoint {
                 .setRoute("/beanCoin/donation_users")
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((optionalRequest) -> {
+                .thenApply((request) -> {
                     HashMap<String, Timestamp> donationUsers = new HashMap<>();
 
-                    if (optionalRequest.isEmpty()) throw new CompletionException("Unable to get donation user times. Request is empty.", null);
-
-                    optionalRequest.get().getData().get("users").forEach((userNode) -> {
+                    request.getData().get("users").forEach((userNode) -> {
                         String userID = userNode.get("user_id").asText();
                         Timestamp timeUntilNextDonation = CafeGeneric.parseTimestampFromAPI(userNode.get("time_until_next_donation").asText()).orElse(null);
 
@@ -46,11 +43,7 @@ public class DonationUsersEndpoint extends CafeEndpoint {
                 .setRoute("/beanCoin/donation_users/" + userID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((optionalRequest) -> {
-                    if (optionalRequest.isEmpty()) throw new CompletionException("Unable to get user donation time. Request is empty.", null);
-
-                    return CafeGeneric.parseTimestampFromAPI(optionalRequest.get().getData().get("user").get("time_until_next_donation").asText());
-                });
+                .thenApply((request) -> CafeGeneric.parseTimestampFromAPI(request.getData().get("user").get("time_until_next_donation").asText()));
     }
 
     public CompletableFuture<Boolean> addDonationUser(final String userID, final Timestamp timeUntilNextDonation) {
@@ -59,11 +52,7 @@ public class DonationUsersEndpoint extends CafeEndpoint {
                 .addParameter("time_stamp", timeUntilNextDonation.toString())
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((optionalRequest) -> {
-                    if (optionalRequest.isEmpty()) throw new CompletionException("Unable to add donation user. Request is empty.", null);
-
-                    return optionalRequest.get().getStatusCode() == 201;
-                });
+                .thenApply((request) -> request.getStatusCode() == 201);
     }
 
     public CompletableFuture<Boolean> deleteDonationUser(final String userID) {
@@ -71,11 +60,7 @@ public class DonationUsersEndpoint extends CafeEndpoint {
                 .setRoute("/beanCoin/donation_users/" + userID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((optionalRequest) -> {
-                    if (optionalRequest.isEmpty()) throw new CompletionException("Unable to delete donation user. Request is empty.", null);
-
-                    return optionalRequest.get().getStatusCode() == 200;
-                });
+                .thenApply((request) -> request.getStatusCode() == 200);
     }
 
 }

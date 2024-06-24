@@ -37,7 +37,7 @@ public class RafflesEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/raffles")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         request.getData().get("raffles").forEach((raffle) -> {
             String guildID = raffle.get("guild_id").asText();
@@ -67,7 +67,7 @@ public class RafflesEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/raffles/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         request.getData().get("raffles").forEach((raffle) -> {
             String messageID = raffle.get("message_id").asText();
@@ -98,7 +98,7 @@ public class RafflesEndpoint extends CafeEndpoint {
                 .addParameter("ending_time", raffle.getEndingTime().toString())
                 .addParameter("winner_amount", String.valueOf(raffle.getWinnerAmount()))
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 201;
     }
@@ -132,7 +132,7 @@ public class RafflesEndpoint extends CafeEndpoint {
                 .setRoute("/raffles/" + guildID)
                 .addParameter("message_id", messageID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }

@@ -30,7 +30,7 @@ public class WinStreaksEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/minigames/win_streaks")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         request.getData().get("win_streaks").forEach((winStreak) -> {
             String userID = winStreak.get("user_id").asText();
@@ -55,7 +55,7 @@ public class WinStreaksEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/minigames/win_streaks/" + userID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         JsonNode winStreak = request.getData().get("win_streaks");
         int ticTacToeWins = winStreak.get("tic_tac_toe").asInt();
@@ -82,7 +82,7 @@ public class WinStreaksEndpoint extends CafeEndpoint {
                 .addParameter("type", type.getType())
                 .addParameter("value", String.valueOf(winstreak))
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }
@@ -101,7 +101,7 @@ public class WinStreaksEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/minigames/win_streaks/" + userID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 201;
     }
@@ -118,7 +118,7 @@ public class WinStreaksEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/minigames/win_streaks/" + userID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }

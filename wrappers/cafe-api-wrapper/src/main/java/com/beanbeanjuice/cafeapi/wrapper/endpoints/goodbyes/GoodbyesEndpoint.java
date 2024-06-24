@@ -28,7 +28,7 @@ public class GoodbyesEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/goodbyes")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         request.getData().get("goodbyes").forEach((guildGoodbye) -> guildGoodbyes.add(parseGuildGoodbye(guildGoodbye)));
 
@@ -48,7 +48,7 @@ public class GoodbyesEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/goodbyes/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         JsonNode guildGoodbye = request.getData().get("goodbye");
 
@@ -72,7 +72,7 @@ public class GoodbyesEndpoint extends CafeEndpoint {
                 .addParameter("image_url", guildGoodbye.getImageURL().orElse(null))
                 .addParameter("message", guildGoodbye.getMessage().orElse(null))
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }
@@ -95,7 +95,7 @@ public class GoodbyesEndpoint extends CafeEndpoint {
                 .addParameter("image_url", guildGoodbye.getImageURL().orElse(null))
                 .addParameter("message", guildGoodbye.getMessage().orElse(null))
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 201;
     }
@@ -112,7 +112,7 @@ public class GoodbyesEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/goodbyes/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }

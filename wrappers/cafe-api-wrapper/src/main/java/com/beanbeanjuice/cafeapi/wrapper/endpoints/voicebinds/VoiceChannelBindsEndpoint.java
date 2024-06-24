@@ -33,7 +33,7 @@ public class VoiceChannelBindsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/voice_binds")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         HashMap<String, ArrayList<VoiceChannelBind>> voiceBinds = new HashMap<>();
 
@@ -62,7 +62,7 @@ public class VoiceChannelBindsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/voice_binds/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         ArrayList<VoiceChannelBind> voiceChannelBinds = new ArrayList<>();
 
@@ -93,7 +93,7 @@ public class VoiceChannelBindsEndpoint extends CafeEndpoint {
                 .addParameter("voice_channel_id", voiceChannelBind.getVoiceChannelID())
                 .addParameter("role_id", voiceChannelBind.getRoleID())
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 201;
     }
@@ -114,7 +114,7 @@ public class VoiceChannelBindsEndpoint extends CafeEndpoint {
                 .addParameter("voice_channel_id", voiceChannelBind.getVoiceChannelID())
                 .addParameter("role_id", voiceChannelBind.getRoleID())
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }

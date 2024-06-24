@@ -31,7 +31,7 @@ public class CountingEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/counting/guilds")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         request.getData().get("guilds").forEach((guild) -> {
             String guildID = guild.get("guild_id").asText();
@@ -55,7 +55,7 @@ public class CountingEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/counting/guilds/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return parseCountingInformation(request.getData().get("counting_information"));
     }
@@ -82,7 +82,7 @@ public class CountingEndpoint extends CafeEndpoint {
                 .addParameter("last_user_id", lastUserID)
                 .addParameter("failure_role_id", failureRoleID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }
@@ -121,7 +121,7 @@ public class CountingEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/counting/guilds/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 201;
     }
@@ -138,7 +138,7 @@ public class CountingEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/counting/guilds/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }

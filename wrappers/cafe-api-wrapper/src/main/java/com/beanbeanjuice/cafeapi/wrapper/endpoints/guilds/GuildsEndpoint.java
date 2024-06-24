@@ -32,7 +32,7 @@ public class GuildsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/guilds")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         for (JsonNode guild : request.getData().get("guilds")) {
             String guildID = guild.get("guild_id").asText();
@@ -55,7 +55,7 @@ public class GuildsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/guilds/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return parseGuildInformation(request.getData().get("guild"));
     }
@@ -73,7 +73,7 @@ public class GuildsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/guilds/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 201;
     }
@@ -123,7 +123,7 @@ public class GuildsEndpoint extends CafeEndpoint {
                 .addParameter("type", type.getType())
                 .addParameter("value", value.toString())
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }
@@ -140,7 +140,7 @@ public class GuildsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/guilds/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }

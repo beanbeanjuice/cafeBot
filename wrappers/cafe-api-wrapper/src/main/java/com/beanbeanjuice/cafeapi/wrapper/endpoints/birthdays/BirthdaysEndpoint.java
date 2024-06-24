@@ -14,11 +14,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-/**
- * A class used for {@link Birthday} requests to the {@link CafeAPI CafeAPI}.
- *
- * @author beanbeanjuice
- */
 public class BirthdaysEndpoint extends CafeEndpoint {
 
     private HashMap<String, Birthday> requestToBirthdayMap(Request request) {
@@ -32,45 +27,22 @@ public class BirthdaysEndpoint extends CafeEndpoint {
         return birthdays;
     }
 
-    /**
-     * Retrieves all {@link Birthday} from the {@link CafeAPI CafeAPI}.
-     * @return A {@link HashMap} with keys of {@link String userID} and values of {@link Birthday}.
-     * @throws AuthorizationException Thrown when the {@link String apiKey} is invalid.
-     * @throws ResponseException Thrown when there is a generic server-side {@link CafeException}.
-     */
     public CompletableFuture<HashMap<String, Birthday>> getAllBirthdays() throws AuthorizationException, ResponseException {
         return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/birthdays")
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApplyAsync((optionalRequest) -> {
-                    if (optionalRequest.isEmpty()) throw new CompletionException("Error getting all birthdays. Request is empty.", null);
-                    return requestToBirthdayMap(optionalRequest.get());
-                });
+                .thenApplyAsync(this::requestToBirthdayMap);
     }
 
-    /**
-     * Retrieves the {@link Birthday} for a specified {@link String userID}.
-     * @param userID The specified {@link String userID}.
-     * @return The {@link Birthday} for the specified {@link String userID}.
-     */
     public CompletableFuture<Optional<Birthday>> getUserBirthday(final String userID) {
         return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/birthdays/" + userID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApplyAsync((optionalRequest) -> {
-                    if (optionalRequest.isEmpty()) throw new CompletionException("Error getting user birthday. Request is empty.", null);
-                    return parseBirthday(optionalRequest.get().getData().get("birthday"));
-                });
+                .thenApplyAsync((request) -> parseBirthday(request.getData().get("birthday")));
     }
 
-    /**
-     * Updates the {@link Birthday} for a specified {@link String userID}.
-     * @param userID The specified {@link String userID}.
-     * @param birthday The {@link Birthday} for the specified {@link String userID}.
-     * @return True, if the {@link Birthday} was successfully updated in the {@link CafeAPI CafeAPI}.
-     */
     public CompletableFuture<Boolean> updateUserBirthday(final String userID, final Birthday birthday) {
         BirthdayMonth month = birthday.getMonth();
         int day = birthday.getDay();
@@ -81,36 +53,18 @@ public class BirthdaysEndpoint extends CafeEndpoint {
                 .addParameter("time_zone", birthday.getTimeZone().getID())
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApplyAsync((optionalRequest) -> {
-                    if (optionalRequest.isEmpty()) throw new CompletionException("Error updating user birthday. Request is empty.", null);
-                    return optionalRequest.get().getStatusCode() == 200;
-                });
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
-    /**
-     * Updates the {@link Boolean alreadyMentioned} state for a {@link Birthday}.
-     * @param userID The specified {@link String userID}.
-     * @param alreadyMentioned The new {@link Boolean alreadyMentioned} state.
-     * @return True, if the {@link Birthday} was successfully updated in the {@link CafeAPI CafeAPI}.
-     */
     public CompletableFuture<Boolean> updateUserBirthdayMention(final String userID, final boolean alreadyMentioned) {
         return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/birthdays/" + userID + "/mention")
                 .addParameter("already_mentioned", String.valueOf(alreadyMentioned))
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApplyAsync((optionalRequest) -> {
-                    if (optionalRequest.isEmpty()) throw new CompletionException("Error updating user mention. Request is empty.", null);
-                    return optionalRequest.get().getStatusCode() == 200;
-                });
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
-    /**
-     * Creates a {@link Birthday} for a specified {@link String userID}.
-     * @param userID The specified {@link String userID}.
-     * @param birthday The {@link Birthday} specified for the {@link String userID}.
-     * @return True, if the {@link Birthday} was successfully created.
-     */
     public CompletableFuture<Boolean> createUserBirthday(final String userID, final Birthday birthday) {
         BirthdayMonth month = birthday.getMonth();
         int day = birthday.getDay();
@@ -121,9 +75,8 @@ public class BirthdaysEndpoint extends CafeEndpoint {
                 .addParameter("time_zone", birthday.getTimeZone().getID())
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApplyAsync((optionalRequest) -> {
-                    if (optionalRequest.isEmpty()) throw new CompletionException("Error creating user birthday. Request is empty.", null);
-                    return optionalRequest.get().getStatusCode() == 201;
+                .thenApplyAsync((request) -> {
+                    return request.getStatusCode() == 201;
                 });
     }
 
@@ -132,9 +85,8 @@ public class BirthdaysEndpoint extends CafeEndpoint {
                 .setRoute("/birthdays/" + userID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApplyAsync((optionalRequest) -> {
-                    if (optionalRequest.isEmpty()) throw new CompletionException("Error removing user birthday. Request is empty.", null);
-                    return optionalRequest.get().getStatusCode() == 200;
+                .thenApplyAsync((request) -> {
+                    return request.getStatusCode() == 200;
                 });
     }
 
