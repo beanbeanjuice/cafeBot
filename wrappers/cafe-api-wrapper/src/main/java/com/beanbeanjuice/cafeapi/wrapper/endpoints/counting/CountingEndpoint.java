@@ -1,12 +1,9 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.counting;
 
-import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
-import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestRoute;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestType;
-import com.beanbeanjuice.cafeapi.wrapper.exception.api.*;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.HashMap;
