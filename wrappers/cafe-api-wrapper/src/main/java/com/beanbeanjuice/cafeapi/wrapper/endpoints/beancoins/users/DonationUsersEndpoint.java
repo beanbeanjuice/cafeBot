@@ -24,7 +24,7 @@ public class DonationUsersEndpoint extends CafeEndpoint {
                 .setRoute("/beanCoin/donation_users")
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> {
+                .thenApplyAsync((request) -> {
                     HashMap<String, Timestamp> donationUsers = new HashMap<>();
 
                     request.getData().get("users").forEach((userNode) -> {
@@ -43,7 +43,7 @@ public class DonationUsersEndpoint extends CafeEndpoint {
                 .setRoute("/beanCoin/donation_users/" + userID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> CafeGeneric.parseTimestampFromAPI(request.getData().get("user").get("time_until_next_donation").asText()));
+                .thenApplyAsync((request) -> CafeGeneric.parseTimestampFromAPI(request.getData().get("user").get("time_until_next_donation").asText()));
     }
 
     public CompletableFuture<Boolean> addDonationUser(final String userID, final Timestamp timeUntilNextDonation) {
@@ -52,7 +52,7 @@ public class DonationUsersEndpoint extends CafeEndpoint {
                 .addParameter("time_stamp", timeUntilNextDonation.toString())
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 201);
+                .thenApplyAsync((request) -> request.getStatusCode() == 201);
     }
 
     public CompletableFuture<Boolean> deleteDonationUser(final String userID) {
@@ -60,7 +60,7 @@ public class DonationUsersEndpoint extends CafeEndpoint {
                 .setRoute("/beanCoin/donation_users/" + userID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 200);
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
 }
