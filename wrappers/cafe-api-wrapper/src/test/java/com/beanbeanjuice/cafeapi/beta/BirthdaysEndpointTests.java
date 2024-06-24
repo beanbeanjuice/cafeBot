@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-public class BirthdayTest {
+public class BirthdaysEndpointTests {
 
     @Test
     @DisplayName("Birthdays Endpoint Test")

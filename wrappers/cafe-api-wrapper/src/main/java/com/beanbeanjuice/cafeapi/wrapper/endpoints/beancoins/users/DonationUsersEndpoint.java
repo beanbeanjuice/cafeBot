@@ -3,16 +3,15 @@ package com.beanbeanjuice.cafeapi.wrapper.endpoints.beancoins.users;
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.generic.CafeGeneric;
-import com.beanbeanjuice.cafeapi.wrapper.requests.Request;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestBuilder;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestRoute;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestType;
-import com.beanbeanjuice.cafeapi.wrapper.exception.api.*;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 /**
  * A class used to make {@link DonationUsersEndpoint} requests to the {@link CafeAPI CafeAPI}.
@@ -21,85 +20,62 @@ import java.util.Optional;
  */
 public class DonationUsersEndpoint extends CafeEndpoint {
 
-    /**
-     * Retrieves all {@link Timestamp} from the {@link CafeAPI CafeAPI} containing when a specified {@link String userID} can be donated to again.
-     * @return A {@link HashMap} with keys of {@link String userID} and values of {@link Timestamp timeUntilNextDonation}.
-     * @throws AuthorizationException Thrown when the {@link String apiKey} is invalid.
-     * @throws ResponseException Thrown when there is a generic server-side {@link CafeException}.
-     */
-    public HashMap<String, Timestamp> getAllUserDonationTimes()
-    throws AuthorizationException, ResponseException {
-        HashMap<String, Timestamp> donationUsers = new HashMap<>();
-
-        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
+    public CompletableFuture<HashMap<String, Timestamp>> getAllUserDonationTimes() {
+        return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/beanCoin/donation_users")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .buildAsync()
+                .thenApply((optionalRequest) -> {
+                    HashMap<String, Timestamp> donationUsers = new HashMap<>();
 
-        for (JsonNode user : request.getData().get("users")) {
-            String userID = user.get("user_id").asText();
-            Timestamp timeUntilNextDonation = CafeGeneric.parseTimestampFromAPI(user.get("time_until_next_donation").asText()).orElse(null);
+                    if (optionalRequest.isEmpty()) throw new CompletionException("Unable to get donation user times. Request is empty.", null);
 
-            donationUsers.put(userID, timeUntilNextDonation);
-        }
+                    optionalRequest.get().getData().get("users").forEach((userNode) -> {
+                        String userID = userNode.get("user_id").asText();
+                        Timestamp timeUntilNextDonation = CafeGeneric.parseTimestampFromAPI(userNode.get("time_until_next_donation").asText()).orElse(null);
 
-        return donationUsers;
+                        donationUsers.put(userID, timeUntilNextDonation);
+                    });
+
+                    return donationUsers;
+                });
     }
 
-    /**
-     * Retrieves the {@link Timestamp timeUntilNextDonation} for a specified {@link String userID}.
-     * @param userID The specified {@link String userID}.
-     * @return The {@link Timestamp timeUntilNextDonation} for the specified {@link String userID}.
-     * @throws AuthorizationException Thrown when the {@link String apiKey} is invalid.
-     * @throws ResponseException Thrown when there is a generic server-side {@link CafeException}.
-     * @throws NotFoundException Thrown when the {@link Timestamp timeUntilNextDonation} does not exist for the specified {@link String userID}.
-     */
-    public Optional<Timestamp> getUserDonationTime(final String userID)
-    throws AuthorizationException, ResponseException, NotFoundException {
-        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
+    public CompletableFuture<Optional<Timestamp>> getUserDonationTime(final String userID) {
+        return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/beanCoin/donation_users/" + userID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .buildAsync()
+                .thenApply((optionalRequest) -> {
+                    if (optionalRequest.isEmpty()) throw new CompletionException("Unable to get user donation time. Request is empty.", null);
 
-        return CafeGeneric.parseTimestampFromAPI(request.getData().get("user").get("time_until_next_donation").asText());
+                    return CafeGeneric.parseTimestampFromAPI(optionalRequest.get().getData().get("user").get("time_until_next_donation").asText());
+                });
     }
 
-    /**
-     * Creates a new {@link Timestamp timeUntilNextDonation} for a specified {@link String userID}.
-     * @param userID The specified {@link String userID}.
-     * @param timeUntilNextDonation The new {@link Timestamp timeUntilNextDonation}.
-     * @return True, if the {@link Timestamp timeUntilNextDonation} was successfully created in the {@link CafeAPI CafeAPI}.
-     * @throws AuthorizationException Thrown when the {@link String apiKey} is invalid.
-     * @throws ResponseException Thrown when there is a generic server-side {@link CafeException}.
-     * @throws ConflictException Thrown when the {@link Timestamp timeUntilNextDonation} already exists for the specified {@link String userID}.
-     * @throws UndefinedVariableException Thrown when a variable is undefined.
-     */
-    public Boolean addDonationUser(final String userID, final Timestamp timeUntilNextDonation)
-    throws AuthorizationException, ResponseException, ConflictException, UndefinedVariableException {
-        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
+    public CompletableFuture<Boolean> addDonationUser(final String userID, final Timestamp timeUntilNextDonation) {
+        return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/beanCoin/donation_users/" + userID)
                 .addParameter("time_stamp", timeUntilNextDonation.toString())
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .buildAsync()
+                .thenApply((optionalRequest) -> {
+                    if (optionalRequest.isEmpty()) throw new CompletionException("Unable to add donation user. Request is empty.", null);
 
-        return request.getStatusCode() == 201;
+                    return optionalRequest.get().getStatusCode() == 201;
+                });
     }
 
-    /**
-     * Deletes a {@link Timestamp timeUntilNextDonation} for a specified {@link String userID}.
-     * @param userID The specified {@link String userID}.
-     * @return True, if the {@link Timestamp timeUntilNextDonation} was successfully deleted for the specified {@link String userID}.
-     * @throws AuthorizationException Thrown when the {@link String apiKey} is invalid.
-     * @throws ResponseException Thrown when there is a generic server-side {@link CafeException}.
-     */
-    public Boolean deleteDonationUser(final String userID)
-    throws AuthorizationException, ResponseException {
-        Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
+    public CompletableFuture<Boolean> deleteDonationUser(final String userID) {
+        return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/beanCoin/donation_users/" + userID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .buildAsync()
+                .thenApply((optionalRequest) -> {
+                    if (optionalRequest.isEmpty()) throw new CompletionException("Unable to delete donation user. Request is empty.", null);
 
-        return request.getStatusCode() == 200;
+                    return optionalRequest.get().getStatusCode() == 200;
+                });
     }
 
 }
