@@ -16,7 +16,7 @@ public class GoodbyesEndpoint extends CafeEndpoint {
                 .setRoute("/goodbyes")
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> {
+                .thenApplyAsync((request) -> {
                     ArrayList<GuildGoodbye> guildGoodbyes = new ArrayList<>();
                     request.getData().get("goodbyes").forEach((guildGoodbye) -> guildGoodbyes.add(parseGuildGoodbye(guildGoodbye)));
                     return guildGoodbyes;
@@ -28,7 +28,7 @@ public class GoodbyesEndpoint extends CafeEndpoint {
                 .setRoute("/goodbyes/" + guildID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> parseGuildGoodbye(request.getData().get("goodbye")));
+                .thenApplyAsync((request) -> parseGuildGoodbye(request.getData().get("goodbye")));
     }
 
     public CompletableFuture<Boolean> updateGuildGoodbye(final GuildGoodbye guildGoodbye) {
@@ -40,7 +40,7 @@ public class GoodbyesEndpoint extends CafeEndpoint {
                 .addParameter("message", guildGoodbye.getMessage().orElse(null))
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 200);
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
     public CompletableFuture<Boolean> createGuildGoodbye(final GuildGoodbye guildGoodbye) {
@@ -52,7 +52,7 @@ public class GoodbyesEndpoint extends CafeEndpoint {
                 .addParameter("message", guildGoodbye.getMessage().orElse(null))
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 201);
+                .thenApplyAsync((request) -> request.getStatusCode() == 201);
     }
 
     public CompletableFuture<Boolean> deleteGuildGoodbye(final String guildID) {
@@ -60,7 +60,7 @@ public class GoodbyesEndpoint extends CafeEndpoint {
                 .setRoute("/goodbyes/" + guildID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 200);
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
     private GuildGoodbye parseGuildGoodbye(final JsonNode node) {

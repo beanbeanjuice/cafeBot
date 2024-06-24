@@ -36,7 +36,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
                 .addParameter("generated_code", newCode)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 200);
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
     public CompletableFuture<Boolean> createUserGeneratedCode(final String userID, final String newCode) {
@@ -45,7 +45,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
                 .addParameter("generated_code", newCode)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 201);
+                .thenApplyAsync((request) -> request.getStatusCode() == 201);
     }
 
     public CompletableFuture<Boolean> deleteUserGeneratedCode(final String userID) {
@@ -53,7 +53,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
                 .setRoute("/codes/" + userID)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApply((request) -> request.getStatusCode() == 200);
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
     }
 
 }
