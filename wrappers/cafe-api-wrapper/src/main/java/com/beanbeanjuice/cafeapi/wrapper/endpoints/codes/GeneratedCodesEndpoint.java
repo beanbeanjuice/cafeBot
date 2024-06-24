@@ -30,7 +30,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/codes")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         request.getData().get("users").forEach((user) -> codes.put(user.get("user_id").asText(), user.get("generated_code").asText()));
 
@@ -50,7 +50,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/codes/" + userID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getData().get("generated_code").asText();
     }
@@ -71,7 +71,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
                 .setRoute("/codes/" + userID)
                 .addParameter("generated_code", newCode)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }
@@ -92,7 +92,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
                 .setRoute("/codes/" + userID)
                 .addParameter("generated_code", newCode)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 201;
     }
@@ -109,7 +109,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/codes/" + userID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }

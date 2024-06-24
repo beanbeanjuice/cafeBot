@@ -28,7 +28,7 @@ public class UsersEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFE, RequestType.GET)
                 .setRoute("/users")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         request.getData().get("users").forEach(user -> {
             int id = user.get("user_id").intValue();
@@ -51,7 +51,7 @@ public class UsersEndpoint extends CafeEndpoint {
                 .setRoute("/user/signup")
                 .addParameter("username", username)
                 .addParameter("password", password)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 201;
     }
@@ -67,7 +67,7 @@ public class UsersEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFE, RequestType.GET)
                 .setRoute("/user/" + username)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         int ID = request.getData().get("user").get("user_id").intValue();
         UserType userType = UserType.valueOf(request.getData().get("user").get("user_type").textValue());
@@ -82,7 +82,7 @@ public class UsersEndpoint extends CafeEndpoint {
     public boolean deleteUser(final String username) {
         Request request = RequestBuilder.create(RequestRoute.CAFE, RequestType.DELETE)
                 .setRoute("/user/" + username)
-                .setAuthorization(apiKey).build().orElseThrow();
+                .setAuthorization(apiKey).build();
         return request.getStatusCode() == 200;
     }
 

@@ -33,7 +33,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/interactions/senders")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         request.getData().get("interactions_sent").forEach((sender) -> {
             String userID = sender.get("user_id").asText();
@@ -56,7 +56,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/interactions/senders/" + userID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return parseInteraction(request.getData().get("interactions_sent"));
     }
@@ -77,7 +77,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
                 .setRoute("/interactions/senders/" + userID)
                 .addParameter("type", type.toString().toLowerCase())
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getData().get(type.getType()).asInt();
     }
@@ -100,7 +100,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
                 .addParameter("type", type.toString().toLowerCase())
                 .addParameter("value", String.valueOf(amount))
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }
@@ -118,7 +118,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/interactions/senders/" + userID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 201;
     }
@@ -135,7 +135,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/interactions/senders/" + userID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return  request.getStatusCode() == 200;
     }
@@ -157,7 +157,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/interactions/receivers")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         request.getData().get("interactions_received").forEach((receiver) -> {
             String userID = receiver.get("user_id").asText();
@@ -180,7 +180,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/interactions/receivers/" + userID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return parseInteraction(request.getData().get("interactions_received"));
     }
@@ -201,7 +201,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
                 .setRoute("/interactions/receivers/" + userID)
                 .addParameter("type", type.toString().toLowerCase())
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getData().get(type.getType()).asInt();
     }
@@ -224,7 +224,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
                 .addParameter("type", type.toString().toLowerCase())
                 .addParameter("value", String.valueOf(amount))
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }
@@ -242,7 +242,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
                 .setRoute("/interactions/receivers/" + userID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 201;
     }
@@ -259,7 +259,7 @@ public class InteractionsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/interactions/receivers/" + userID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return  request.getStatusCode() == 200;
     }

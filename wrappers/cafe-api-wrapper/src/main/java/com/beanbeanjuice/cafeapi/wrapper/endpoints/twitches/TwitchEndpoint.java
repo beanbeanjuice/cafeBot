@@ -39,7 +39,7 @@ public class TwitchEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/guilds/twitch")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         request.getData().get("guilds_twitch").forEach((guildTwitch) -> {
             String guildID = guildTwitch.get("guild_id").asText();
@@ -65,7 +65,7 @@ public class TwitchEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/guilds/twitch/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -95,7 +95,7 @@ public class TwitchEndpoint extends CafeEndpoint {
                 .setRoute("/guilds/twitch/" + guildID)
                 .addParameter("twitch_channel", twitchChannelName)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 201;
     }
@@ -115,7 +115,7 @@ public class TwitchEndpoint extends CafeEndpoint {
                 .setRoute("/guilds/twitch/" + guildID)
                 .addParameter("twitch_channel", twitchChannelName)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }

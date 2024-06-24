@@ -28,7 +28,7 @@ public class WordsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/words")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         ArrayList<Word> wordList = new ArrayList<>();
         request.getData()
@@ -49,7 +49,7 @@ public class WordsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/words/" + word)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return new Word(word, request.getData().get("word").get("uses").asInt());
     }
@@ -70,7 +70,7 @@ public class WordsEndpoint extends CafeEndpoint {
                 .setRoute("/words/" + word)
                 .addParameter("uses", String.valueOf(uses))
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }

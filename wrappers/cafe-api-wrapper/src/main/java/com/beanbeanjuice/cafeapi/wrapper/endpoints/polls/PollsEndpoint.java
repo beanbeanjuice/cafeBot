@@ -37,7 +37,7 @@ public class PollsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/polls")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         request.getData().get("polls").forEach((poll) -> {
             String guildID = poll.get("guild_id").asText();
@@ -66,7 +66,7 @@ public class PollsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/polls/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         request.getData().get("polls").forEach((poll) -> {
             String messageID = poll.get("message_id").asText();
@@ -95,7 +95,7 @@ public class PollsEndpoint extends CafeEndpoint {
                 .addParameter("message_id", poll.getMessageID())
                 .addParameter("ending_time", poll.getEndingTime().toString())
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 201;
     }
@@ -125,7 +125,7 @@ public class PollsEndpoint extends CafeEndpoint {
                 .setRoute("/polls/" + guildID)
                 .addParameter("message_id", messageID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }

@@ -30,7 +30,7 @@ public class VersionsEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/cafeBot")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return  request.getData().get("bot_information").get("version").asText();
     }
@@ -52,7 +52,7 @@ public class VersionsEndpoint extends CafeEndpoint {
                 .setRoute("/cafeBot")
                 .addParameter("version", versionNumber)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }

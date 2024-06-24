@@ -28,7 +28,7 @@ public class WelcomesEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/welcomes")
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         request.getData()
                 .get("welcomes")
@@ -50,7 +50,7 @@ public class WelcomesEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/welcomes/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         JsonNode guildWelcome = request.getData().get("welcome");
 
@@ -74,7 +74,7 @@ public class WelcomesEndpoint extends CafeEndpoint {
                 .addParameter("image_url", guildWelcome.getImageURL().orElse(null))
                 .addParameter("message", guildWelcome.getMessage().orElse(null))
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }
@@ -97,7 +97,7 @@ public class WelcomesEndpoint extends CafeEndpoint {
                 .addParameter("image_url", guildWelcome.getImageURL().orElse(null))
                 .addParameter("message", guildWelcome.getMessage().orElse(null))
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 201;
     }
@@ -114,7 +114,7 @@ public class WelcomesEndpoint extends CafeEndpoint {
         Request request = RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
                 .setRoute("/welcomes/" + guildID)
                 .setAuthorization(apiKey)
-                .build().orElseThrow();
+                .build();
 
         return request.getStatusCode() == 200;
     }

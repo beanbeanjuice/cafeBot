@@ -82,7 +82,7 @@ public class RequestBuilder {
     }
 
     // TODO: Change this to private.
-    public Optional<Request> build() {
+    public Request build() {
         try {
             URIBuilder uriBuilder = new URIBuilder(apiURL + route);
             parameters.forEach(uriBuilder::setParameter);
@@ -105,51 +105,18 @@ public class RequestBuilder {
                 case 500 -> throw new ResponseException(request);
             }
 
-            return Optional.of(request);
+            return request;
         } catch (URISyntaxException | ExecutionException | InterruptedException | IOException e) {
             Logger.getLogger(RequestBuilder.class.getName()).log(Level.WARNING, "Error queuing request: " + e.getMessage());
-            return Optional.empty();
+            throw new CompletionException(e);
         }
 
-//        try {
-//            httpClient = HttpClients.createDefault();
-//            uriBuilder = new URIBuilder(apiURL + route);
-//            parameters.forEach((key, value) -> {
-//                uriBuilder.setParameter(key, value);
-//            });
-//            authorization = new BasicHeader("Authorization", apiKey);
-//
-//            switch (requestType) {
-//                case GET -> httpResponse = get();
-//                case POST -> httpResponse = post();
-//                case PATCH -> httpResponse = patch();
-//                case DELETE -> httpResponse = delete();
-//            }
-//
-//            int statusCode = httpResponse.getStatusLine().getStatusCode();
-//            HttpEntity httpEntity = httpResponse.getEntity();
-//            try (InputStream inputStream = httpEntity.getContent()) {
-//                Request request = new Request(statusCode, new ObjectMapper().readTree(inputStream));
-//
-//                // Catching Status Codes
-//                if (request.getStatusCode() == 400) throw new UndefinedVariableException(request);
-//                if (request.getStatusCode() == 401) throw new AuthorizationException(request);
-//                if (request.getStatusCode() == 404) throw new NotFoundException(request);
-//                if (request.getStatusCode() == 409) throw new ConflictException(request);
-//                if (request.getStatusCode() == 418) throw new TeaPotException(request);
-//                if (request.getStatusCode() == 500) throw new ResponseException(request);
-//
-//                return Optional.of(request);
-//            }
-//        } catch (URISyntaxException | IOException e) {
-//            return Optional.empty();
-//        }
     }
 
     /**
      * Builds the {@link Request} asynchronously on a separate {@link Thread}.
      */
-    public CompletableFuture<Optional<Request>> buildAsync() {
+    public CompletableFuture<Request> buildAsync() {
         ExecutorService exec = Executors.newSingleThreadExecutor();
         return CompletableFuture.supplyAsync(this::build, exec);
     }
