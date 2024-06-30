@@ -1,30 +1,18 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.minigames.winstreaks;
 
-/**
- * An enum used for Minigame {@link WinStreak} types.
- *
- * @author beanbeanjuice
- */
+import lombok.Getter;
+
 public enum MinigameType {
 
-    TIC_TAC_TOE ("tic_tac_toe"),
-    CONNECT_FOUR ("connect_four");
+    TIC_TAC_TOE ("tic_tac_toe", "Tic-Tac-Toe"),
+    CONNECT_FOUR ("connect_four", "Connect-4");
 
-    private final String type;
+    @Getter private final String type;
+    @Getter private final String name;
 
-    /**
-     * Creates a {@link MinigameType} enum.
-     * @param type The {@link String type} of enum.
-     */
-    MinigameType(final String type) {
+    MinigameType(final String type, final String name) {
         this.type = type;
-    }
-
-    /**
-     * @return The {@link String type} of {@link MinigameType}.
-     */
-    public String getType() {
-        return type;
+        this.name = name;
     }
 
 }

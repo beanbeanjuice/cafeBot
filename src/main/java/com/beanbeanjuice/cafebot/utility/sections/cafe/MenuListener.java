@@ -39,7 +39,6 @@ public class MenuListener extends ListenerAdapter {
         if (event.getComponentId().startsWith("menu-entity:")) handlePurchase(event);
     }
 
-    // TODO: Component sometimes disappears.
     private void handleCategory(final StringSelectInteractionEvent event) {
         List<String> values = event.getValues(); // the values the user selected
         String value = values.getFirst();

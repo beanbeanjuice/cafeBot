@@ -21,9 +21,11 @@ public class WinStreaksEndpoint extends CafeEndpoint {
 
                     request.getData().get("win_streaks").forEach((winStreak) -> {
                         String userID = winStreak.get("user_id").asText();
-                        int ticTacToeWins = winStreak.get("tic_tac_toe").asInt();
-                        int connectFourWins = winStreak.get("connect_four").asInt();
-                        winStreaks.put(userID, new WinStreak(ticTacToeWins, connectFourWins));
+
+                        HashMap<MinigameType, Integer> wins = new HashMap<>();
+                        wins.put(MinigameType.TIC_TAC_TOE, winStreak.get("tic_tac_toe").asInt());
+                        wins.put(MinigameType.CONNECT_FOUR, winStreak.get("connect_four").asInt());
+                        winStreaks.put(userID, new WinStreak(wins));
                     });
 
                     return winStreaks;
@@ -37,11 +39,18 @@ public class WinStreaksEndpoint extends CafeEndpoint {
                 .buildAsync()
                 .thenApplyAsync((request) -> {
                     JsonNode winStreak = request.getData().get("win_streaks");
-                    int ticTacToeWins = winStreak.get("tic_tac_toe").asInt();
-                    int connectFourWins = winStreak.get("connect_four").asInt();
 
-                    return new WinStreak(ticTacToeWins, connectFourWins);
+                    HashMap<MinigameType, Integer> wins = new HashMap<>();
+                    wins.put(MinigameType.TIC_TAC_TOE, winStreak.get("tic_tac_toe").asInt());
+                    wins.put(MinigameType.CONNECT_FOUR, winStreak.get("connect_four").asInt());
+
+                    return new WinStreak(wins);
                 });
+    }
+
+    public CompletableFuture<WinStreak> getAndCreateUserWinStreak(final String userID) {
+        return this.getUserWinStreak(userID)
+                .exceptionallyComposeAsync((e) -> this.createUserWinStreak(userID).thenComposeAsync((ignored) -> this.getUserWinStreak(userID)));
     }
 
     public CompletableFuture<Boolean> updateUserWinStreak(final String userID, final MinigameType type, final int winstreak) {

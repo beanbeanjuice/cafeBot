@@ -67,7 +67,7 @@ public class ServeCommand extends Command implements ICommand {
                 .exceptionallyAsync((e) -> {
                     event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                             "Error Serving",
-                            String.format("There was an error serving %s. Is it a real word?", word)
+                            String.format("There was an error serving **%s**. Is it a real word?", word)
                     )).queue();
                     return null;
                 });

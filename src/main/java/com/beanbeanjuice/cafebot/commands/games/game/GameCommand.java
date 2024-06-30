@@ -1,4 +1,4 @@
-package com.beanbeanjuice.cafebot.commands.fun.rate;
+package com.beanbeanjuice.cafebot.commands.games.game;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
@@ -6,20 +6,20 @@ import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import net.dv8tion.jda.api.Permission;
 
-public class RateCommand extends Command implements ICommand {
+public class GameCommand extends Command implements ICommand {
 
-    public RateCommand(final CafeBot cafeBot) {
+    public GameCommand(final CafeBot cafeBot) {
         super(cafeBot);
     }
 
     @Override
     public String getName() {
-        return "rate";
+        return "game";
     }
 
     @Override
     public String getDescription() {
-        return "Rate something!";
+        return "Something to do with games!";
     }
 
     @Override
@@ -39,17 +39,13 @@ public class RateCommand extends Command implements ICommand {
 
     @Override
     public boolean allowDM() {
-        return true;
+        return false;
     }
 
     @Override
     public ISubCommand[] getSubCommands() {
         return new ISubCommand[] {
-                new RateCaffeinatedSubCommand(cafeBot),
-                new RateInsaneSubCommand(cafeBot),
-                new RatePoorSubCommand(cafeBot),
-                new RateSimpSubCommand(cafeBot),
-                new RateSmartSubCommand(cafeBot)
+                new DataSubCommand(cafeBot)
         };
     }
 }
