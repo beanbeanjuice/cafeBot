@@ -39,6 +39,11 @@ public class InteractionsEndpoint extends CafeEndpoint {
                 .thenApplyAsync((request) -> parseInteraction(request.getData().get("interactions_sent")));
     }
 
+    public CompletableFuture<Interaction> getAndCreateUserInteractionsSent(final String userID) {
+        return this.getUserInteractionsSent(userID)
+                .exceptionallyComposeAsync((e) -> this.createUserInteractionsSent(userID).thenComposeAsync((ignored) -> this.getUserInteractionsSent(userID)));
+    }
+
     public CompletableFuture<Integer> getSpecificUserInteractionSentAmount(final String userID, final InteractionType type) {
         return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.GET)
                 .setRoute("/interactions/senders/" + userID)
@@ -101,6 +106,11 @@ public class InteractionsEndpoint extends CafeEndpoint {
                 .setAuthorization(apiKey)
                 .buildAsync()
                 .thenApplyAsync((request) -> parseInteraction(request.getData().get("interactions_received")));
+    }
+
+    public CompletableFuture<Interaction> getAndCreateUserInteractionsReceived(final String userID) {
+        return this.getUserInteractionsReceived(userID)
+                .exceptionallyComposeAsync((e) -> this.createUserInteractionsReceived(userID).thenComposeAsync((ignored) -> this.getUserInteractionsReceived(userID)));
     }
 
     public CompletableFuture<Integer> getSpecificUserInteractionReceivedAmount(final String userID, final InteractionType type) {
