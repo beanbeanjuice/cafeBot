@@ -15,6 +15,10 @@ import com.beanbeanjuice.cafebot.commands.games.DiceRollCommand;
 import com.beanbeanjuice.cafebot.commands.games.game.GameCommand;
 import com.beanbeanjuice.cafebot.commands.generic.PingCommand;
 import com.beanbeanjuice.cafebot.commands.generic.*;
+import com.beanbeanjuice.cafebot.commands.interaction.AmazedCommand;
+import com.beanbeanjuice.cafebot.commands.interaction.AskCommand;
+import com.beanbeanjuice.cafebot.commands.interaction.BiteCommand;
+import com.beanbeanjuice.cafebot.commands.interaction.BlushCommand;
 import com.beanbeanjuice.cafebot.commands.social.MemberCountCommand;
 import com.beanbeanjuice.cafebot.commands.social.vent.VentCommand;
 import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
@@ -185,7 +189,13 @@ public class CafeBot {
 
                 // Social
                 new MemberCountCommand(this),
-                new VentCommand(this)
+                new VentCommand(this),
+
+                // Interactions
+                new AmazedCommand(this),
+                new AskCommand(this),
+                new BiteCommand(this),
+                new BlushCommand(this)
 
 //                new EmbedCommand(this)
         );
