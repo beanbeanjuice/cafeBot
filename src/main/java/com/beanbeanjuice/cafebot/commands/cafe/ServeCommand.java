@@ -67,7 +67,7 @@ public class ServeCommand extends Command implements ICommand {
                 .exceptionallyAsync((e) -> {
                     event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                             "Error Serving",
-                            "There was an error serving: " + e.getMessage()
+                            String.format("There was an error serving %s. Is it a real word?", word)
                     )).queue();
                     return null;
                 });
@@ -119,7 +119,7 @@ public class ServeCommand extends Command implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Serve some words to customers to earn some **bC** (beanCoins)!";
+        return "Serve some words to customers to earn some bC (beanCoins)!";
     }
 
     @Override
