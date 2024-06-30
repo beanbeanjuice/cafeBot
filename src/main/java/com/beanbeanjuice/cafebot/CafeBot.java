@@ -1,20 +1,22 @@
 package com.beanbeanjuice.cafebot;
 
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.guilds.GuildsEndpoint;
-import com.beanbeanjuice.cafebot.commands.basic.EmbedCommand;
 import com.beanbeanjuice.cafebot.commands.cafe.BalanceCommand;
 import com.beanbeanjuice.cafebot.commands.cafe.DonateCommand;
 import com.beanbeanjuice.cafebot.commands.cafe.MenuCommand;
 import com.beanbeanjuice.cafebot.commands.cafe.ServeCommand;
-import com.beanbeanjuice.cafebot.commands.fun.AvatarCommand;
-import com.beanbeanjuice.cafebot.commands.fun.BannerCommand;
-import com.beanbeanjuice.cafebot.commands.fun.JokeCommand;
+import com.beanbeanjuice.cafebot.commands.fun.*;
 import com.beanbeanjuice.cafebot.commands.fun.birthday.BirthdayCommand;
 import com.beanbeanjuice.cafebot.commands.fun.counting.CountingCommand;
 import com.beanbeanjuice.cafebot.commands.fun.meme.MemeCommand;
 import com.beanbeanjuice.cafebot.commands.fun.rate.RateCommand;
+import com.beanbeanjuice.cafebot.commands.games.CoinFlipCommand;
+import com.beanbeanjuice.cafebot.commands.games.DiceRollCommand;
+import com.beanbeanjuice.cafebot.commands.games.game.GameCommand;
 import com.beanbeanjuice.cafebot.commands.generic.PingCommand;
 import com.beanbeanjuice.cafebot.commands.generic.*;
+import com.beanbeanjuice.cafebot.commands.social.MemberCountCommand;
+import com.beanbeanjuice.cafebot.commands.social.vent.VentCommand;
 import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.listeners.BotAddListener;
@@ -173,7 +175,17 @@ public class CafeBot {
                 new MemeCommand(this),
                 new JokeCommand(this),
                 new CountingCommand(this),
-                new RateCommand(this)
+                new RateCommand(this),
+                new EightBallCommand(this),
+
+                // Games
+                new CoinFlipCommand(this),
+                new DiceRollCommand(this),
+                new GameCommand(this),
+
+                // Social
+                new MemberCountCommand(this),
+                new VentCommand(this)
 
 //                new EmbedCommand(this)
         );

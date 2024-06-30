@@ -108,40 +108,6 @@ public class Helper {
         }
     }
 
-    /**
-     * @return The SQL Server Error {@link MessageEmbed}.
-     */
-    @NotNull
-    public static MessageEmbed sqlServerError() {
-        return sqlServerError(null);
-    }
-
-    /**
-     * @param optionalMessage An optional message to add to the {@link MessageEmbed}.
-     * @return The SQL Server Error {@link MessageEmbed}.
-     */
-    @NotNull
-    public static MessageEmbed sqlServerError(@Nullable String optionalMessage) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setColor(Color.red);
-        embedBuilder.setTitle("Connection Error");
-
-        String description = "The bot is unable to connect to the SQL database. Please try again later.";
-
-        if (optionalMessage != null)
-            description += " - " + optionalMessage;
-
-        embedBuilder.setDescription(description);
-        return embedBuilder.build();
-    }
-
-    /**
-     * Creates an error {@link MessageEmbed}.
-     * @param title The title for the {@link MessageEmbed}.
-     * @param description The description for the {@link MessageEmbed}.
-     * @return The created {@link MessageEmbed}.
-     */
-    @NotNull
     public static MessageEmbed errorEmbed(@NotNull String title, @NotNull String description) {
         return new EmbedBuilder()
                 .setTitle(title)
@@ -153,6 +119,13 @@ public class Helper {
     public static MessageEmbed successEmbed(final String title, final String description) {
         return new EmbedBuilder()
                 .setTitle(title)
+                .setDescription(description)
+                .setColor(getRandomColor())
+                .build();
+    }
+
+    public static MessageEmbed descriptionEmbed(final String description) {
+        return new EmbedBuilder()
                 .setDescription(description)
                 .setColor(getRandomColor())
                 .build();

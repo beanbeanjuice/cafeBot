@@ -2,6 +2,8 @@ package com.beanbeanjuice.cafeapi.wrapper.endpoints.minigames.winstreaks;
 
 import lombok.Getter;
 
+import java.util.HashMap;
+
 /**
  * A class used for a user's {@link WinStreak}.
  *
@@ -9,17 +11,14 @@ import lombok.Getter;
  */
 public class WinStreak {
 
-    @Getter private final int ticTacToeWins;
-    @Getter private final int connectFourWins;
+    private final HashMap<MinigameType, Integer> wins;
 
-    /**
-     * Creates a new {@link WinStreak}.
-     * @param ticTacToeWins The {@link Integer amount} of {@link MinigameType TIC_TAC_TOE} wins.
-     * @param connectFourWins The {@link Integer amount} of {@link MinigameType CONNECT_FOUR} wins.
-     */
-    public WinStreak(final int ticTacToeWins, final int connectFourWins) {
-        this.ticTacToeWins = ticTacToeWins;
-        this.connectFourWins = connectFourWins;
+    public WinStreak(final HashMap<MinigameType, Integer> wins) {
+        this.wins = wins;
+    }
+
+    public int getWins(final MinigameType type) {
+        return wins.get(type);
     }
 
 }

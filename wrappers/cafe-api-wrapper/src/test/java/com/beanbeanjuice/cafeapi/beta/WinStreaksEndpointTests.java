@@ -43,14 +43,14 @@ public class WinStreaksEndpointTests {
                     return null;
                 }).join();
 
-        Assertions.assertEquals(0, cafeAPI.getWinStreaksEndpoint().getUserWinStreak("879310496002637824").get().getTicTacToeWins());
-        Assertions.assertEquals(0, cafeAPI.getWinStreaksEndpoint().getUserWinStreak("879310496002637824").get().getConnectFourWins());
+        Assertions.assertEquals(0, cafeAPI.getWinStreaksEndpoint().getUserWinStreak("879310496002637824").get().getWins(MinigameType.TIC_TAC_TOE));
+        Assertions.assertEquals(0, cafeAPI.getWinStreaksEndpoint().getUserWinStreak("879310496002637824").get().getWins(MinigameType.CONNECT_FOUR));
 
         Assertions.assertTrue(cafeAPI.getWinStreaksEndpoint().updateUserWinStreak("879310496002637824", MinigameType.CONNECT_FOUR, 20).get());
-        Assertions.assertEquals(20, cafeAPI.getWinStreaksEndpoint().getAllWinStreaks().get().get("879310496002637824").getConnectFourWins());
+        Assertions.assertEquals(20, cafeAPI.getWinStreaksEndpoint().getAllWinStreaks().get().get("879310496002637824").getWins(MinigameType.CONNECT_FOUR));
 
         Assertions.assertTrue(cafeAPI.getWinStreaksEndpoint().updateUserWinStreak("879310496002637824", MinigameType.TIC_TAC_TOE, 25).get());
-        Assertions.assertEquals(25, cafeAPI.getWinStreaksEndpoint().getUserWinStreak("879310496002637824").get().getTicTacToeWins());
+        Assertions.assertEquals(25, cafeAPI.getWinStreaksEndpoint().getUserWinStreak("879310496002637824").get().getWins(MinigameType.TIC_TAC_TOE));
 
         Assertions.assertTrue(cafeAPI.getWinStreaksEndpoint().deleteUserWinStreak("879310496002637824").get());
 
