@@ -1,5 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper.endpoints.guilds;
 
+import lombok.Getter;
+
 import java.util.HashMap;
 
 /**
@@ -9,7 +11,7 @@ import java.util.HashMap;
  */
 public class GuildInformation {
 
-    private final HashMap<GuildInformationType, String> guildSettings;
+    @Getter private final HashMap<GuildInformationType, String> guildSettings;
 
     /**
      * Creates a new {@link GuildInformation} object.

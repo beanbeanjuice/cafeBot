@@ -30,22 +30,33 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
                 .thenApplyAsync((request) -> request.getData().get("generated_code").asText());
     }
 
-    public CompletableFuture<Boolean> updateUserGeneratedCode(final String userID, final String newCode) {
-        return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
-                .setRoute("/codes/" + userID)
-                .addParameter("generated_code", newCode)
-                .setAuthorization(apiKey)
-                .buildAsync()
-                .thenApplyAsync((request) -> request.getStatusCode() == 200);
+    public CompletableFuture<String> updateUserGeneratedCodeIfExists(final String userID) {
+        return this.getUserGeneratedCode(userID)
+                .thenComposeAsync(existingCode -> {
+                    if (existingCode != null) return this.updateUserGeneratedCode(userID);
+                    else return this.createUserGeneratedCode(userID);
+                }).exceptionallyCompose((e) -> this.createUserGeneratedCode(userID));
     }
 
-    public CompletableFuture<Boolean> createUserGeneratedCode(final String userID, final String newCode) {
-        return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
+    public CompletableFuture<String> updateUserGeneratedCode(final String userID) {
+        String code = generateRandomCode();
+
+        return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.PATCH)
                 .setRoute("/codes/" + userID)
-                .addParameter("generated_code", newCode)
+                .addParameter("generated_code", code)
                 .setAuthorization(apiKey)
                 .buildAsync()
-                .thenApplyAsync((request) -> request.getStatusCode() == 201);
+                .thenApplyAsync((request) -> code);
+    }
+
+    public CompletableFuture<String> createUserGeneratedCode(final String userID) {
+        String code = generateRandomCode();
+        return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
+                .setRoute("/codes/" + userID)
+                .addParameter("generated_code", code)
+                .setAuthorization(apiKey)
+                .buildAsync()
+                .thenApplyAsync((request) -> code);
     }
 
     public CompletableFuture<Boolean> deleteUserGeneratedCode(final String userID) {
@@ -54,6 +65,18 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
                 .setAuthorization(apiKey)
                 .buildAsync()
                 .thenApplyAsync((request) -> request.getStatusCode() == 200);
+    }
+
+    private String generateRandomCode() {
+        String validCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "0123456789" + "abcdefghijklmnopqrstuvxyz";
+        StringBuilder sb = new StringBuilder(32);
+
+        for (int i = 0; i < 32; i++) {
+            int index = (int) (validCharacters.length() * Math.random());
+            sb.append(validCharacters.charAt(index));
+        }
+
+        return sb.toString();
     }
 
 }

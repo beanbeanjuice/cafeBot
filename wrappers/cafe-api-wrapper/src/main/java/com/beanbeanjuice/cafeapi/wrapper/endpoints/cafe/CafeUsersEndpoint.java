@@ -35,6 +35,11 @@ public class CafeUsersEndpoint extends CafeEndpoint {
                 .thenApplyAsync((request) -> parseCafeUser(request.getData().get("cafe_user")));
     }
 
+    public CompletableFuture<CafeUser> getAndCreateCafeUser(final String userID) {
+        return getCafeUser(userID)
+                .exceptionallyComposeAsync((e) -> this.createCafeUser(userID).thenComposeAsync((isValid) -> this.getCafeUser(userID)));
+    }
+
     public CompletableFuture<Boolean> updateCafeUser(final String userID, final CafeType type, @Nullable final Object value)
     throws TeaPotException {
 

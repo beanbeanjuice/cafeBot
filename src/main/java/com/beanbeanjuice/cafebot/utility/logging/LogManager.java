@@ -1,6 +1,6 @@
 package com.beanbeanjuice.cafebot.utility.logging;
 
-import com.beanbeanjuice.cafebot.Bot;
+import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.exception.WebhookException;
 import com.beanbeanjuice.cafebot.utility.webhook.Webhook;
@@ -38,14 +38,17 @@ public class LogManager {
     private String logFileTime;
     private boolean discordLogging = false;
 
+    private final CafeBot cafeBot;
+
     /**
      * Create a {@link LogManager LogManager} instance.
      * @param name The name for the {@link LogManager LogManager}.
      * @param guildID The {@link String guildID} to log to.
      * @param logChannelID The {@link String logChannelID} to log to.
      */
-    public LogManager(@NotNull String name, @NotNull String guildID, @NotNull String logChannelID,
-                      @NotNull String filePath) {
+    public LogManager(CafeBot cafeBot, String name, String guildID, String logChannelID, String filePath) {
+        this.cafeBot = cafeBot;
+
         time = new Time();
 
         this.name = name;
@@ -59,7 +62,7 @@ public class LogManager {
 
         log(LogManager.class, LogLevel.INFO, "Starting the Uncaught Exception Handler", true, false);
         Thread.setDefaultUncaughtExceptionHandler((thread, exception) -> {
-            this.log(thread.getClass(), LogLevel.WARN, "Unhandled Exception: " + exception.getMessage());
+            this.log(thread.getClass(), LogLevel.ERROR, "Unhandled Exception: " + exception.getMessage());
             this.logStackTrace(exception);
         });
     }
@@ -386,8 +389,8 @@ public class LogManager {
         embedBuilder.setTimestamp(new Date().toInstant());
 
         try {
-            Bot.getBot().getGuildById(guildID).getTextChannelById(logChannelID).sendMessageEmbeds(embedBuilder.build()).complete();
-        } catch (NullPointerException ignored) {}
+            cafeBot.getJDA().getGuildById(guildID).getTextChannelById(logChannelID).sendMessageEmbeds(embedBuilder.build()).complete();
+        } catch (NullPointerException ignored) { }
     }
 
     /**
