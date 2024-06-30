@@ -1,12 +1,7 @@
 package com.beanbeanjuice.cafebot.utility.helper;
 
-import com.beanbeanjuice.cafebot.Bot;
-import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.management.OperatingSystemMXBean;
-import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
-import com.beanbeanjuice.cafeapi.wrapper.requests.RequestLocation;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
@@ -17,11 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
-import java.util.Optional;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -31,74 +22,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class Helper {
 
-    /**
-     * Start an update {@link Timer} that sends the owner updates.
-     */
-    public static void startUpdateTimer() {
-        Timer updateTimer = new Timer();
-        TimerTask updateTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                User owner = getUser("690927484199370753").orElseThrow();
-
-                Bot.getBot().getRestPing().queue((ping) -> {
-                    pmUser(owner, getUpdateEmbed(ping, Bot.getBot().getGatewayPing()));
-                });
-            }
-        };
-        updateTimer.scheduleAtFixedRate(updateTimerTask, 0, TimeUnit.DAYS.toMillis(1));
-    }
-
-    /**
-     * Start a timer that updates the bio every so often.
-     */
-    public static void startBioUpdateTimer() {
-        String initialString = "/help | " + Bot.BOT_VERSION + " - ";
-
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                int num = getRandomNumber(1, 4);
-                String finalString = "";
-
-                switch (num) {
-                    case 1 -> finalString = "Currently in " + getTotalServers() + " cafés!";
-                    case 2 -> finalString = "Waiting " + getTotalChannels() + " tables!";
-                    case 3 -> finalString = "Serving " + getTotalUsers() + " customers!";
-                }
-
-                Bot.getBot().getPresence().setActivity(Activity.playing(initialString + finalString));
-            }
-        };
-        timer.scheduleAtFixedRate(timerTask, 0, TimeUnit.MINUTES.toMillis(1));
-    }
-
-    @NotNull
-    private static MessageEmbed getUpdateEmbed(@NotNull Long botPing, @NotNull Long gatewayPing) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        StringBuilder descriptionBuilder = new StringBuilder();
-        double cpuLoad = (double) Math.round((ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCpuLoad()*100) * 100) / 100;
-        long systemMemoryTotal = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getTotalMemorySize()/1048576;
-        long systemMemoryUsage = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCommittedVirtualMemorySize()/1048576;
-        long dedicatedMemoryTotal = Runtime.getRuntime().maxMemory()/1048576;
-        long dedicatedMemoryUsage = Runtime.getRuntime().totalMemory()/1048576;
-        embedBuilder.setTitle("Daily CafeBot Update");
-        descriptionBuilder.append("**__System Status__**: Online\n\n");
-        descriptionBuilder.append("**__Rest Ping__** - `").append(botPing).append("`\n")
-                .append("**__Gateway Ping__** - `").append(gatewayPing).append("`\n")
-                .append("**__Current Version__** - `").append(Bot.BOT_VERSION).append("`\n")
-                .append("**__CPU Usage__** - `").append(cpuLoad).append("%`\n")
-                .append("**__OS Memory Usage__** - `").append(systemMemoryUsage).append("` mb / `").append(systemMemoryTotal).append("` mb\n")
-                .append("**__Bot Memory Usage__** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
-                .append("**__Bot Uptime__** - `").append(formatTimeDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
-                .append("**__Commands Run (After Restart)__** - `").append(Bot.commandsRun).append("`\n");
-
-        embedBuilder.setDescription(descriptionBuilder.toString());
-        embedBuilder.setThumbnail(Bot.DISCORD_AVATAR_URL);
-        embedBuilder.setColor(Color.green);
-        return embedBuilder.build();
-    }
 
     /**
      * Formats the specified time, including days.
@@ -156,28 +79,6 @@ public class Helper {
         float g = random.nextFloat();
         float b = random.nextFloat();
         return new Color(r, g, b);
-    }
-
-    /**
-     * Updates the {@link CafeAPI} every hour.
-     */
-    public static void startCafeAPIRefreshTimer(@NotNull RequestLocation requestLocation) {
-        // TODO: There must be a way to do this. Somehow wait until cafeAPI is not null anymore.
-        Bot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), requestLocation));
-        Bot.getCafeAPI().setKawaiiAPI(System.getenv("KAWAII_API_TOKEN"));
-        Bot.getLogger().log(Helper.class, LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
-
-        Timer cafeAPITimer = new Timer();
-        TimerTask cafeAPITimerTask = new TimerTask() {
-
-            @Override
-            public void run() {
-                Bot.setCafeAPI(new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), requestLocation));
-                Bot.getCafeAPI().setKawaiiAPI(System.getenv("KAWAII_API_TOKEN"));
-                Bot.getLogger().log(Helper.class, LogLevel.INFO, "Updated the CafeAPI Token... Valid for 3600 Seconds", true, false);
-            }
-        };
-        cafeAPITimer.scheduleAtFixedRate(cafeAPITimerTask, TimeUnit.MINUTES.toMillis(55), TimeUnit.MINUTES.toMillis(55));
     }
 
     /**
@@ -249,14 +150,7 @@ public class Helper {
                 .build();
     }
 
-    /**
-     * Creates a success {@link MessageEmbed}.
-     * @param title The title for the {@link MessageEmbed}.
-     * @param description The description for the {@link MessageEmbed}.
-     * @return The created {@link MessageEmbed}.
-     */
-    @NotNull
-    public static MessageEmbed successEmbed(@NotNull String title, @NotNull String description) {
+    public static MessageEmbed successEmbed(final String title, final String description) {
         return new EmbedBuilder()
                 .setTitle(title)
                 .setDescription(description)
@@ -311,15 +205,12 @@ public class Helper {
         return Math.round(amount * 100.0) / 100.0;
     }
 
-    /**
-     * Get a random number.
-     * @param minimum The minimum {@link Integer}. Inclusive.
-     * @param maximum The maximum {@link Integer}. Exclusive.
-     * @return The random {@link Integer}.
-     */
-    @NotNull
-    public static Integer getRandomNumber(@NotNull Integer minimum, @NotNull Integer maximum) {
+    public static int getRandomInteger(final int minimum, final int maximum) {
         return (int) ((Math.random() * (maximum - minimum)) + minimum);
+    }
+
+    public static double getRandomDouble(final int minimum, final int maximum) {
+        return minimum + new Random().nextDouble() * maximum;
     }
 
     /**
@@ -331,31 +222,9 @@ public class Helper {
         user.openPrivateChannel().flatMap(channel -> channel.sendMessage(message)).queue();
     }
 
-    /**
-     * Private messages a specified {@link User}.
-     * @param user The {@link User} to be messaged.
-     * @param embed The {@link MessageEmbed} to be sent.
-     */
-    public static void pmUser(@NotNull User user, @NotNull MessageEmbed embed) {
-        user.openPrivateChannel().flatMap(channel -> channel.sendMessageEmbeds(embed)).queue();
-    }
 
-    /**
-     * Gets a {@link User} from the ID.
-     * @param userID The ID of the {@link User}.
-     * @return The {@link User}.
-     */
-    public static Optional<User> getUser(String userID) {
-        userID = userID.replace("<@!", "");
-        userID = userID.replace("<@", ""); // Edge Case for Mobile
-        userID = userID.replace(">", "");
 
-        try {
-            return Optional.ofNullable(Bot.getBot().getUserById(userID));
-        } catch (NullPointerException | NumberFormatException e) {
-            return Optional.empty();
-        }
-    }
+
 
     /**
      * Generates a Random Alpha-Numeric {@link String}.
@@ -402,29 +271,7 @@ public class Helper {
         );
     }
 
-    /**
-     * @return Get the {@link Integer total} channels the bot is responsible for.
-     */
-    @NotNull
-    public static Integer getTotalChannels() {
-        return Bot.getBot().getTextChannels().size();
-    }
 
-    /**
-     * @return Get the {@link Integer total} servers the bot is responsible for.
-     */
-    @NotNull
-    public static Integer getTotalServers() {
-        return Bot.getBot().getGuilds().size();
-    }
-
-    /**
-     * @return Get the {@link Integer total} users the bot is responsible for.
-     */
-    @NotNull
-    public static Integer getTotalUsers() {
-        return Bot.getBot().getUsers().size();
-    }
 
     /**
      * Check if a {@link MessageChannelUnion} is a {@link net.dv8tion.jda.api.entities.channel.concrete.TextChannel}.

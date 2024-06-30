@@ -29,27 +29,29 @@ public class GeneratedCodesEndpointTests {
         }
 
         // Makes sure a generated code can be created.
-        Assertions.assertTrue(cafeAPI.getGeneratedCodesEndpoint().createUserGeneratedCode("738590591767543921", "testCode").get());
+        String code = cafeAPI.getGeneratedCodesEndpoint().createUserGeneratedCode("738590591767543921").get();
+        Assertions.assertNotNull(code);
 
         // Makes sure a duplicate code can't be created.
         try {
-            cafeAPI.getGeneratedCodesEndpoint().createUserGeneratedCode("738590591767543921", "testCod#").get();
+            cafeAPI.getGeneratedCodesEndpoint().createUserGeneratedCode("738590591767543921").get();
             Assertions.fail();
         } catch (Exception e) {
             Assertions.assertInstanceOf(ConflictException.class, e.getCause());
         }
 
         // Makes sure the code retrieved is the one entered.
-        Assertions.assertEquals("testCode", cafeAPI.getGeneratedCodesEndpoint().getAllGeneratedCodes().get().get("738590591767543921"));
+        Assertions.assertEquals(code, cafeAPI.getGeneratedCodesEndpoint().getAllGeneratedCodes().get().get("738590591767543921"));
 
         // Makes sure the code retrieved from the hashmap is the one entered.
-        Assertions.assertEquals("testCode", cafeAPI.getGeneratedCodesEndpoint().getUserGeneratedCode("738590591767543921").get());
+        Assertions.assertEquals(code, cafeAPI.getGeneratedCodesEndpoint().getUserGeneratedCode("738590591767543921").get());
 
         // Makes sure the generated code can be updated.
-        Assertions.assertTrue(cafeAPI.getGeneratedCodesEndpoint().updateUserGeneratedCode("738590591767543921", "bruh_moment").get());
+        String updatedCode = cafeAPI.getGeneratedCodesEndpoint().updateUserGeneratedCode("738590591767543921").get();
+        Assertions.assertNotNull(updatedCode);
 
         // Makes sure the retrieved generated code is the same as the one entered.
-        Assertions.assertEquals("bruh_moment", cafeAPI.getGeneratedCodesEndpoint().getUserGeneratedCode("738590591767543921").get());
+        Assertions.assertEquals(updatedCode, cafeAPI.getGeneratedCodesEndpoint().getUserGeneratedCode("738590591767543921").get());
 
         // Makes sure the code can be deleted.
         Assertions.assertTrue(cafeAPI.getGeneratedCodesEndpoint().deleteUserGeneratedCode("738590591767543921").get());
@@ -61,6 +63,30 @@ public class GeneratedCodesEndpointTests {
         } catch (Exception e) {
             Assertions.assertInstanceOf(NotFoundException.class, e.getCause());
         }
+    }
+
+    @Test
+    @DisplayName("Generated Codes Endpoint Test - Testing Update")
+    public void testUpdate() throws ExecutionException, InterruptedException {
+        CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
+
+        // Makes sure the code doesn't exist beforehand.
+        Assertions.assertTrue(cafeAPI.getGeneratedCodesEndpoint().deleteUserGeneratedCode("738590591767543921").get());
+
+        // Making sure it can't be updated if it does not exist.
+        cafeAPI.getGeneratedCodesEndpoint().updateUserGeneratedCode("738590591767543921")
+                .thenAcceptAsync((code) -> Assertions.fail())
+                .exceptionallyAsync((e) -> {
+                    Assertions.assertInstanceOf(NotFoundException.class, e.getCause());
+                    return null;
+                }).join();
+
+        cafeAPI.getGeneratedCodesEndpoint().updateUserGeneratedCodeIfExists("738590591767543921")
+                .thenAcceptAsync(Assertions::assertNotNull)
+                .exceptionallyAsync(Assertions::fail)
+                .join();
+
+        Assertions.assertTrue(cafeAPI.getGeneratedCodesEndpoint().deleteUserGeneratedCode("738590591767543921").get());
     }
 
 }
