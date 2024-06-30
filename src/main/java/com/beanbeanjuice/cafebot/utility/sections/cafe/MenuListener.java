@@ -5,6 +5,7 @@ import com.beanbeanjuice.cafeapi.wrapper.endpoints.cafe.CafeUser;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.cafe.CafeUsersEndpoint;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
+import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.IMentionable;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -17,6 +18,7 @@ import net.dv8tion.jda.api.interactions.components.ActionRow;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class MenuListener extends ListenerAdapter {
 
@@ -37,6 +39,7 @@ public class MenuListener extends ListenerAdapter {
         if (event.getComponentId().startsWith("menu-entity:")) handlePurchase(event);
     }
 
+    // TODO: Component sometimes disappears.
     private void handleCategory(final StringSelectInteractionEvent event) {
         List<String> values = event.getValues(); // the values the user selected
         String value = values.getFirst();
@@ -45,11 +48,14 @@ public class MenuListener extends ListenerAdapter {
         boolean isHome = value.equalsIgnoreCase("all");
         MessageEmbed menuEmbed = isHome ? menuHandler.getAllMenuEmbed() : menuHandler.getCategoryMenuEmbed(CafeCategory.valueOf(value));
 
+        // TODO: Sometimes replaces after adding the components.
         event.editMessageEmbeds(menuEmbed).setReplace(true).queue((hook) -> {
             List<ActionRow> rows = new ArrayList<>();
             rows.add(ActionRow.of(menuHandler.getAllStringSelectMenu()));
             if (!isHome) rows.add(ActionRow.of(menuHandler.getItemStringSelectMenu(CafeCategory.valueOf(value))));
-            hook.editOriginalComponents(rows).queue();
+            hook.editOriginalComponents(rows).delay(1, TimeUnit.SECONDS).queue((ignored) -> { }, (e) -> {  // TODO: Check this.
+                cafeBot.getLogger().log(MenuListener.class, LogLevel.ERROR, "Error Adding Components: " + e, e);
+            });
         });
     }
 
@@ -65,7 +71,9 @@ public class MenuListener extends ListenerAdapter {
                         List<ActionRow> rows = new ArrayList<>();
                         rows.add(ActionRow.of(menuHandler.getAllStringSelectMenu()));
                         rows.add(ActionRow.of(menuHandler.getItemEntitySelectMenu(itemString)));
-                        hook.editOriginalComponents(rows).queue();
+                        hook.editOriginalComponents(rows).delay(1, TimeUnit.SECONDS).queue((ignored) -> { }, (e) -> {  // TODO: Check this.
+                            cafeBot.getLogger().log(MenuListener.class, LogLevel.ERROR, "Error Adding Components: " + e, e);
+                        });
                     });
                 });
     }

@@ -56,7 +56,7 @@ public class CountingStatisticsSubCommand extends Command implements ISubCommand
                 .toList();
 
         for (int i = 0; i < lastNumberArray.size(); i++) {
-            if (lastNumberArray.get(i).getValue() < information.getLastNumber()) return i;
+            if (lastNumberArray.get(i).getValue() < information.getLastNumber()) return i + 1;
         }
 
         return lastNumberArray.size();

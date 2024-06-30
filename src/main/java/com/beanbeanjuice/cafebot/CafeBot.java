@@ -12,6 +12,7 @@ import com.beanbeanjuice.cafebot.commands.fun.JokeCommand;
 import com.beanbeanjuice.cafebot.commands.fun.birthday.BirthdayCommand;
 import com.beanbeanjuice.cafebot.commands.fun.counting.CountingCommand;
 import com.beanbeanjuice.cafebot.commands.fun.meme.MemeCommand;
+import com.beanbeanjuice.cafebot.commands.fun.rate.RateCommand;
 import com.beanbeanjuice.cafebot.commands.generic.PingCommand;
 import com.beanbeanjuice.cafebot.commands.generic.*;
 import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
@@ -171,7 +172,8 @@ public class CafeBot {
                 new BirthdayCommand(this),
                 new MemeCommand(this),
                 new JokeCommand(this),
-                new CountingCommand(this)
+                new CountingCommand(this),
+                new RateCommand(this)
 
 //                new EmbedCommand(this)
         );
@@ -273,6 +275,7 @@ public class CafeBot {
         return this.JDA.getGuilds().size();
     }
 
+    // TODO: This is only getting cached users.
     public int getTotalUsers() {
         return this.JDA.getUsers().size();
     }

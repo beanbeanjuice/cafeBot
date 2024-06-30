@@ -23,6 +23,8 @@ public class CountingListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(final MessageReceivedEvent event) {
+        if (!event.isFromGuild()) return;
+
         String guildID = event.getGuild().getId();
         String channelID = event.getChannel().getId();
 

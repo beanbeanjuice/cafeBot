@@ -15,6 +15,7 @@ import java.util.Optional;
 
 public class DefineCommand extends Command implements ICommand {
 
+    // TODO: Check if other languages actually work.
     public DefineCommand(CafeBot cafeBot) {
         super(cafeBot);
     }
