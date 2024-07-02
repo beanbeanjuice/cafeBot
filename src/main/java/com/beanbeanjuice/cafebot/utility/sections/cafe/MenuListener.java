@@ -47,15 +47,13 @@ public class MenuListener extends ListenerAdapter {
         boolean isHome = value.equalsIgnoreCase("all");
         MessageEmbed menuEmbed = isHome ? menuHandler.getAllMenuEmbed() : menuHandler.getCategoryMenuEmbed(CafeCategory.valueOf(value));
 
-        // TODO: Sometimes replaces after adding the components.
-        event.editMessageEmbeds(menuEmbed).setReplace(true).queue((hook) -> {
-            List<ActionRow> rows = new ArrayList<>();
-            rows.add(ActionRow.of(menuHandler.getAllStringSelectMenu()));
-            if (!isHome) rows.add(ActionRow.of(menuHandler.getItemStringSelectMenu(CafeCategory.valueOf(value))));
-            hook.editOriginalComponents(rows).delay(1, TimeUnit.SECONDS).queue((ignored) -> { }, (e) -> {  // TODO: Check this.
-                cafeBot.getLogger().log(MenuListener.class, LogLevel.ERROR, "Error Adding Components: " + e, e);
-            });
-        });
+        List<ActionRow> rows = new ArrayList<>();
+        rows.add(ActionRow.of(menuHandler.getAllStringSelectMenu()));
+        if (!isHome) rows.add(ActionRow.of(menuHandler.getItemStringSelectMenu(CafeCategory.valueOf(value))));
+
+        event.editMessageEmbeds(menuEmbed)
+                .setComponents(rows)
+                .setReplace(true).queue();
     }
 
     private void handleItem(final StringSelectInteractionEvent event) {
@@ -66,14 +64,13 @@ public class MenuListener extends ListenerAdapter {
 
                     MenuHandler menuHandler = cafeBot.getMenuHandler();
 
-                    event.editMessageEmbeds(menuHandler.getItemEmbed(itemString, cafeUser)).setReplace(true).queue((hook) -> {
-                        List<ActionRow> rows = new ArrayList<>();
-                        rows.add(ActionRow.of(menuHandler.getAllStringSelectMenu()));
-                        rows.add(ActionRow.of(menuHandler.getItemEntitySelectMenu(itemString)));
-                        hook.editOriginalComponents(rows).delay(1, TimeUnit.SECONDS).queue((ignored) -> { }, (e) -> {  // TODO: Check this.
-                            cafeBot.getLogger().log(MenuListener.class, LogLevel.ERROR, "Error Adding Components: " + e, e);
-                        });
-                    });
+                    List<ActionRow> rows = new ArrayList<>();
+                    rows.add(ActionRow.of(menuHandler.getAllStringSelectMenu()));
+                    rows.add(ActionRow.of(menuHandler.getItemEntitySelectMenu(itemString)));
+
+                    event.editMessageEmbeds(menuHandler.getItemEmbed(itemString, cafeUser))
+                            .setComponents(rows)
+                            .setReplace(true).queue();
                 });
     }
 
