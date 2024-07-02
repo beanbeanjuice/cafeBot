@@ -45,7 +45,7 @@ public class CafeInteraction {
         Optional<String> additionalMessageOptional = messageMapping.map(OptionMapping::getAsString);
 
         CompletableFuture<Interaction> senderInteractionFuture = interactionsEndpoint.getAndCreateUserInteractionsSent(sender.getId());
-        CompletableFuture<Interaction> receiverInteractionFuture = interactionsEndpoint.getAndCreateUserInteractionsSent(receiver.getId());
+        CompletableFuture<Interaction> receiverInteractionFuture = interactionsEndpoint.getAndCreateUserInteractionsReceived(receiver.getId());
         CompletableFuture<Optional<String>> interactionPictureFuture = picturesEndpoint.getRandomInteractionPicture(this.type);
 
         senderInteractionFuture
