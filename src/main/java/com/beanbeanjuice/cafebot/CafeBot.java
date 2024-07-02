@@ -15,10 +15,7 @@ import com.beanbeanjuice.cafebot.commands.games.DiceRollCommand;
 import com.beanbeanjuice.cafebot.commands.games.game.GameCommand;
 import com.beanbeanjuice.cafebot.commands.generic.PingCommand;
 import com.beanbeanjuice.cafebot.commands.generic.*;
-import com.beanbeanjuice.cafebot.commands.interaction.AmazedCommand;
-import com.beanbeanjuice.cafebot.commands.interaction.AskCommand;
-import com.beanbeanjuice.cafebot.commands.interaction.BiteCommand;
-import com.beanbeanjuice.cafebot.commands.interaction.BlushCommand;
+import com.beanbeanjuice.cafebot.commands.interaction.*;
 import com.beanbeanjuice.cafebot.commands.social.MemberCountCommand;
 import com.beanbeanjuice.cafebot.commands.social.vent.VentCommand;
 import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
@@ -195,7 +192,41 @@ public class CafeBot {
                 new AmazedCommand(this),
                 new AskCommand(this),
                 new BiteCommand(this),
-                new BlushCommand(this)
+                new BlushCommand(this),
+                new BonkCommand(this),
+                new BoopCommand(this),
+                new CryCommand(this),
+                new CuddleCommand(this),
+                new DabCommand(this),
+                new DanceCommand(this),
+                new DieCommand(this),
+                new GreetCommand(this),
+                new HeadPatCommand(this),
+                new HmphCommand(this),
+                new HugCommand(this),
+                new KissCommand(this),
+                new LickCommand(this),
+                new LoveCommand(this),
+                new NomCommand(this),
+                new NoseBleedCommand(this),
+                new OkCommand(this),
+                new PokeCommand(this),
+                new PoutCommand(this),
+                new PunchCommand(this),
+                new RageCommand(this),
+                new ShootCommand(this),
+                new ShushCommand(this),
+                new SlapCommand(this),
+                new SleepCommand(this),
+                new SmileCommand(this),
+                new StabCommand(this),
+                new StareCommand(this),
+                new ThrowCommand(this),
+                new TickleCommand(this),
+                new UWUCommand(this),
+                new WaveCommand(this),
+                new WinkCommand(this),
+                new YellCommand(this)
 
 //                new EmbedCommand(this)
         );

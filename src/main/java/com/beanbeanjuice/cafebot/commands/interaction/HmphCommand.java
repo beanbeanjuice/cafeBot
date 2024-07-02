@@ -4,39 +4,38 @@ import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
-import com.beanbeanjuice.cafebot.utility.sections.interactions.CafeInteraction;
 import com.beanbeanjuice.cafebot.utility.sections.interactions.ICommandInteraction;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
-public class AmazedCommand extends Command implements ICommand, ICommandInteraction {
+public class HmphCommand extends Command implements ICommand, ICommandInteraction {
 
-    public AmazedCommand(final CafeBot cafeBot) {
+    public HmphCommand(final CafeBot cafeBot) {
         super(cafeBot);
     }
 
     @Override
     public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.AMAZED, event, cafeBot);
+        this.handleInteraction(InteractionType.HMPH, event, cafeBot);
     }
 
     @Override
     public String getName() {
-        return "amazed";
+        return "hmph";
     }
 
     @Override
     public String getDescription() {
-        return "Be amazed at something or someone!";
+        return "Hmph at someone~";
     }
 
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "Someone to be amazed at!"),
-                new OptionData(OptionType.STRING, "message", "An optional message to send.")
+                new OptionData(OptionType.USER, "user", "The user you want to hmph at!~"),
+                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
         };
     }
 
@@ -62,22 +61,22 @@ public class AmazedCommand extends Command implements ICommand, ICommandInteract
 
     @Override
     public String getSelfString() {
-        return "Wow... %s is **amazed** at themself... Ego much? <:cafeBot_angry:1171726164092518441>";
+        return "%s is **hmphing** all alone... sad... 🙄";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **amazed** at %s! <:flushed_open:841922879465455646>";
+        return "%s **hmphed** at %s! You might want to give them some attention... <:torsty2:1161620852295610429>";
     }
 
     @Override
     public String getBotString() {
-        return "I- I'm just doing my job! <:shy_shy:1161619101886722158>";
+        return "Why are you hmphing at me? What did I do?! <:when_AHHH:842062279372701737>";
     }
 
     @Override
     public String getFooterString() {
-        return "%s was amazed %d times. %s caused others to be amazed %d times.";
+        return "%s hmphed at others %d times. %s was hmphed at %d times.";
     }
 
 }

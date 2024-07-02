@@ -7,7 +7,6 @@ import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.users.Interactio
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -69,10 +68,10 @@ public class CafeInteraction {
                     if (!sender.getId().equalsIgnoreCase(receiver.getId())) {
                         embed.setFooter(footer);
                         interactionsEndpoint.updateSpecificUserInteractionSentAmount(sender.getId(), type, numSent);
-                        interactionsEndpoint.updateSpecificUserInteractionReceivedAmount(sender.getId(), type, numReceived);
+                        interactionsEndpoint.updateSpecificUserInteractionReceivedAmount(receiver.getId(), type, numReceived);
                     }
 
-                    event.getHook().sendMessage(message).addEmbeds(embed.build()).queue((hook) -> {
+                    event.getHook().sendMessage(message).mention(receiver).addEmbeds(embed.build()).queue((hook) -> {
                         if (!receiver.getId().equalsIgnoreCase(cafeBot.getJDA().getSelfUser().getId())) return;
                         hook.reply(botString).delay(1, TimeUnit.SECONDS).queue();
                     });

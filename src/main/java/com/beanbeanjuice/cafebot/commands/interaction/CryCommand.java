@@ -4,38 +4,37 @@ import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
-import com.beanbeanjuice.cafebot.utility.sections.interactions.CafeInteraction;
 import com.beanbeanjuice.cafebot.utility.sections.interactions.ICommandInteraction;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
-public class AmazedCommand extends Command implements ICommand, ICommandInteraction {
+public class CryCommand extends Command implements ICommand, ICommandInteraction {
 
-    public AmazedCommand(final CafeBot cafeBot) {
+    public CryCommand(final CafeBot cafeBot) {
         super(cafeBot);
     }
 
     @Override
     public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.AMAZED, event, cafeBot);
+        this.handleInteraction(InteractionType.CRY, event, cafeBot);
     }
 
     @Override
     public String getName() {
-        return "amazed";
+        return "cry";
     }
 
     @Override
     public String getDescription() {
-        return "Be amazed at something or someone!";
+        return "Cry because of someone... :(";
     }
 
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "Someone to be amazed at!"),
+                new OptionData(OptionType.USER, "user", "The user who made you cry... :("),
                 new OptionData(OptionType.STRING, "message", "An optional message to send.")
         };
     }
@@ -62,22 +61,22 @@ public class AmazedCommand extends Command implements ICommand, ICommandInteract
 
     @Override
     public String getSelfString() {
-        return "Wow... %s is **amazed** at themself... Ego much? <:cafeBot_angry:1171726164092518441>";
+        return "%s is **crying**! S- someone get a tissue! 😓";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **amazed** at %s! <:flushed_open:841922879465455646>";
+        return "%s is **crying** because of %s! What did you do?! <:cafeBot_angry:1171726164092518441>";
     }
 
     @Override
     public String getBotString() {
-        return "I- I'm just doing my job! <:shy_shy:1161619101886722158>";
+        return "D- did I do something wrong?! Don't cry please... <a:b_cry:1178932384436060220>";
     }
 
     @Override
     public String getFooterString() {
-        return "%s was amazed %d times. %s caused others to be amazed %d times.";
+        return "%s cried because of others %d times. %s was the reason for others crying %d times.";
     }
 
 }
