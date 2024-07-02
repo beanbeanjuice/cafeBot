@@ -4,7 +4,6 @@ import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
-import com.beanbeanjuice.cafebot.utility.sections.interactions.CafeInteraction;
 import com.beanbeanjuice.cafebot.utility.sections.interactions.ICommandInteraction;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
