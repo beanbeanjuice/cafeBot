@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.fun.rate;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import net.dv8tion.jda.api.Permission;
@@ -20,6 +21,11 @@ public class RateCommand extends Command implements ICommand {
     @Override
     public String getDescription() {
         return "Rate something!";
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.FUN;
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.beanbeanjuice.cafeapi.wrapper.endpoints.cafe.CafeUser;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.words.Word;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
@@ -120,6 +121,11 @@ public class ServeCommand extends Command implements ICommand {
     @Override
     public String getDescription() {
         return "Serve some words to customers to earn some bC (beanCoins)!";
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.CAFE;
     }
 
     @Override

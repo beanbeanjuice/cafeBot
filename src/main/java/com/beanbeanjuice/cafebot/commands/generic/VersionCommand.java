@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.generic;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.api.GitHubVersionEndpointWrapper;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
@@ -52,6 +53,11 @@ public class VersionCommand extends Command implements ICommand {
     @Override
     public String getDescription() {
         return "Get release notes for the any of the previous versions!";
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.GENERIC;
     }
 
     @Override

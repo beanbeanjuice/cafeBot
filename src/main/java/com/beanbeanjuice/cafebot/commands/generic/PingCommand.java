@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.generic;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.sun.management.OperatingSystemMXBean;
@@ -81,6 +82,11 @@ public class PingCommand extends Command implements ICommand {
     @Override
     public String getDescription() {
         return "Pong!";
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.GENERIC;
     }
 
     @Override

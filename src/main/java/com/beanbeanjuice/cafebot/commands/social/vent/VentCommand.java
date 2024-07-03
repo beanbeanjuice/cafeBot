@@ -1,10 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.social.vent;
 
 import com.beanbeanjuice.cafebot.CafeBot;
-import com.beanbeanjuice.cafebot.utility.commands.Command;
-import com.beanbeanjuice.cafebot.utility.commands.ICommand;
-import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
-import com.beanbeanjuice.cafebot.utility.commands.SubCommandGroup;
+import com.beanbeanjuice.cafebot.utility.commands.*;
 import net.dv8tion.jda.api.Permission;
 
 public class VentCommand extends Command implements ICommand {
@@ -21,6 +18,11 @@ public class VentCommand extends Command implements ICommand {
     @Override
     public String getDescription() {
         return "Anything to do with anonymous venting!";
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.SOCIAL;
     }
 
     @Override

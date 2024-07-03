@@ -9,9 +9,7 @@ import lombok.Getter;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.selections.EntitySelectMenu;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -161,21 +159,21 @@ public class MenuHandler {
     }
 
     public StringSelectMenu getAllStringSelectMenu() {
-        StringSelectMenu.Builder builder = StringSelectMenu.create("menu:id");
+        StringSelectMenu.Builder builder = StringSelectMenu.create("cafeBot:menu");
         builder.addOption("All", "ALL");
         Arrays.stream(CafeCategory.values()).forEach((category) -> builder.addOption(category.getTitle(), category.toString()));
         return builder.setPlaceholder("Choose Category").setMaxValues(1).setMinValues(1).build();
     }
 
     public StringSelectMenu getItemStringSelectMenu(final CafeCategory category) {
-        StringSelectMenu.Builder builder = StringSelectMenu.create("menu-item:id");
+        StringSelectMenu.Builder builder = StringSelectMenu.create("cafeBot:menu:item");
         menu.get(category).forEach((item) -> builder.addOption(item.getName(), item.getName()));
         return builder.setPlaceholder("Choose Item").setMaxValues(1).setMinValues(1).build();
     }
 
     public EntitySelectMenu getItemEntitySelectMenu(final String itemString) {
         int itemID = convertItemToIndex(itemString);
-        EntitySelectMenu.Builder builder = EntitySelectMenu.create("menu-entity:" + itemID, EntitySelectMenu.SelectTarget.USER);
+        EntitySelectMenu.Builder builder = EntitySelectMenu.create("cafeBot:menu:user:" + itemID, EntitySelectMenu.SelectTarget.USER);
         return builder.setPlaceholder("Select User to Order For").setMaxValues(1).build();  // TODO: Is there a way to select multiple users without firing the event?
     }
 

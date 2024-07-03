@@ -5,34 +5,31 @@ import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
-public class FeatureCommand extends Command implements ICommand {
+public class HelpCommand extends Command implements ICommand {
 
-    private final String FEATURE_REQUEST_URL = "https://github.com/beanbeanjuice/cafeBot/issues/new/choose";
-
-    public FeatureCommand(final CafeBot cafeBot) {
+    public HelpCommand(final CafeBot cafeBot) {
         super(cafeBot);
     }
 
     @Override
     public void handle(SlashCommandInteractionEvent event) {
-        event.getHook().sendMessageComponents(
-                ActionRow.of(Button.link(FEATURE_REQUEST_URL, "Feature Request").withEmoji(Emoji.fromFormatted("<:ticket:851426785203322992>")))
-        ).queue();
+        event.getHook()
+                .sendMessageEmbeds(cafeBot.getHelpHandler().getCategoriesEmbed())
+                .addComponents(ActionRow.of(cafeBot.getHelpHandler().getAllCategoriesSelectMenu(0)))
+                .queue();
     }
 
     @Override
     public String getName() {
-        return "feature";
+        return "help";
     }
 
     @Override
     public String getDescription() {
-        return "Request a new feature for me!";
+        return "Get help with some commands!";
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.beanbeanjuice.cafeapi.wrapper.endpoints.cafe.CafeUser;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.cafe.CafeUsersEndpoint;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
-import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.IMentionable;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -30,13 +29,13 @@ public class MenuListener extends ListenerAdapter {
 
     @Override
     public void onStringSelectInteraction(StringSelectInteractionEvent event) {
-        if (event.getComponentId().equals("menu:id")) handleCategory(event);
-        if (event.getComponentId().equals("menu-item:id")) handleItem(event);
+        if (event.getComponentId().equals("cafeBot:menu")) handleCategory(event);
+        if (event.getComponentId().equals("cafeBot:menu:item")) handleItem(event);
     }
 
     @Override
     public void onEntitySelectInteraction(EntitySelectInteractionEvent event) {
-        if (event.getComponentId().startsWith("menu-entity:")) handlePurchase(event);
+        if (event.getComponentId().startsWith("cafeBot:menu:user:")) handlePurchase(event);
     }
 
     private void handleCategory(final StringSelectInteractionEvent event) {
@@ -75,7 +74,7 @@ public class MenuListener extends ListenerAdapter {
     }
 
     private void handlePurchase(final EntitySelectInteractionEvent event) {
-        int itemID = Integer.parseInt(event.getComponentId().split(":")[1]);
+        int itemID = Integer.parseInt(event.getComponentId().split(":")[3]);
         MenuItem item = cafeBot.getMenuHandler().getAllItems().get(itemID);
 
         User sender = event.getUser();

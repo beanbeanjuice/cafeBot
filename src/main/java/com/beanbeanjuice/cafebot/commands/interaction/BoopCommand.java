@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.interaction;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.interactions.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.sections.interactions.ICommandInteraction;
 import net.dv8tion.jda.api.Permission;
@@ -29,6 +30,11 @@ public class BoopCommand extends Command implements ICommand, ICommandInteractio
     @Override
     public String getDescription() {
         return "Boop someone!";
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.INTERACTION;
     }
 
     @Override

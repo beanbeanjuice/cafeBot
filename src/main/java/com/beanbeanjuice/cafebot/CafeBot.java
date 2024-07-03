@@ -28,6 +28,8 @@ import com.beanbeanjuice.cafebot.utility.logging.LogManager;
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestLocation;
 import com.beanbeanjuice.cafebot.utility.sections.cafe.MenuHandler;
+import com.beanbeanjuice.cafebot.utility.sections.generic.HelpHandler;
+import com.beanbeanjuice.cafebot.utility.sections.generic.HelpListener;
 import com.sun.management.OperatingSystemMXBean;
 import lombok.Getter;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -71,6 +73,7 @@ public class CafeBot {
     // Handlers
     private CommandHandler commandHandler;
     @Getter private MenuHandler menuHandler;
+    @Getter private HelpHandler helpHandler;
 
     // Additional Items
     @Getter private int commandsRun = 0;
@@ -124,6 +127,7 @@ public class CafeBot {
         logger.log(CafeBot.class, LogLevel.INFO, "Adding commands...");
         setupCommands();
         this.menuHandler = new MenuHandler(this);
+
         setupListeners();
 
         this.JDA.getGuilds();
@@ -156,6 +160,7 @@ public class CafeBot {
                 new FeatureCommand(this),
                 new DefineCommand(this),
                 new GenerateCode(this),
+                new HelpCommand(this),
                 new PingCommand(this),
                 new InfoCommand(this),
                 new StatsCommand(this),
@@ -232,13 +237,15 @@ public class CafeBot {
         );
 
         this.JDA.addEventListener(commandHandler);
+        this.helpHandler = new HelpHandler(commandHandler);
     }
 
     private void setupListeners() {
         this.JDA.addEventListener(
                 new BotAddListener(this),
                 new BotRemoveListener(this),
-                new CountingListener(this)
+                new CountingListener(this),
+                new HelpListener(commandHandler, helpHandler)
         );
     }
 

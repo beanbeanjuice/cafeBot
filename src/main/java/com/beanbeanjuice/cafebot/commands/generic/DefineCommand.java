@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.generic;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.api.dictionary.DictionaryAPIWrapper;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
@@ -16,7 +17,7 @@ import java.util.Optional;
 public class DefineCommand extends Command implements ICommand {
 
     // TODO: Check if other languages actually work.
-    public DefineCommand(CafeBot cafeBot) {
+    public DefineCommand(final CafeBot cafeBot) {
         super(cafeBot);
     }
 
@@ -47,6 +48,11 @@ public class DefineCommand extends Command implements ICommand {
     @Override
     public String getDescription() {
         return "Define something!";
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.GENERIC;
     }
 
     @Override
