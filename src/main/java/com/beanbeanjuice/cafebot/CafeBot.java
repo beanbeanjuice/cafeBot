@@ -12,6 +12,7 @@ import com.beanbeanjuice.cafebot.commands.fun.meme.MemeCommand;
 import com.beanbeanjuice.cafebot.commands.fun.rate.RateCommand;
 import com.beanbeanjuice.cafebot.commands.games.CoinFlipCommand;
 import com.beanbeanjuice.cafebot.commands.games.DiceRollCommand;
+import com.beanbeanjuice.cafebot.commands.games.TicTacToeCommand;
 import com.beanbeanjuice.cafebot.commands.games.game.GameCommand;
 import com.beanbeanjuice.cafebot.commands.generic.PingCommand;
 import com.beanbeanjuice.cafebot.commands.generic.*;
@@ -28,6 +29,7 @@ import com.beanbeanjuice.cafebot.utility.logging.LogManager;
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestLocation;
 import com.beanbeanjuice.cafebot.utility.sections.cafe.MenuHandler;
+import com.beanbeanjuice.cafebot.utility.sections.game.TicTacToeListener;
 import com.beanbeanjuice.cafebot.utility.sections.generic.HelpHandler;
 import com.beanbeanjuice.cafebot.utility.sections.generic.HelpListener;
 import com.sun.management.OperatingSystemMXBean;
@@ -188,6 +190,7 @@ public class CafeBot {
                 new CoinFlipCommand(this),
                 new DiceRollCommand(this),
                 new GameCommand(this),
+                new TicTacToeCommand(this),
 
                 // Social
                 new MemberCountCommand(this),
@@ -245,7 +248,8 @@ public class CafeBot {
                 new BotAddListener(this),
                 new BotRemoveListener(this),
                 new CountingListener(this),
-                new HelpListener(commandHandler, helpHandler)
+                new HelpListener(commandHandler, helpHandler),
+                new TicTacToeListener(cafeAPI.getWinStreaksEndpoint())
         );
     }
 
