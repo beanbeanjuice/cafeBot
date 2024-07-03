@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.utility.commands;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
+import lombok.Getter;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -17,7 +18,7 @@ import java.util.*;
 public class CommandHandler extends ListenerAdapter {
 
     private final CafeBot cafeBot;
-    private final HashMap<String, ICommand> commands;
+    @Getter private final HashMap<String, ICommand> commands;
 
     public CommandHandler(final CafeBot cafeBot) {
         this.cafeBot = cafeBot;
@@ -226,6 +227,12 @@ public class CommandHandler extends ListenerAdapter {
                 .filter((choiceString) -> choiceString.startsWith(focusedOptionValue))
                 .map((string) -> new Choice(string, string))
                 .limit(25)
+                .toList();
+    }
+
+    public List<ICommand> getCommandsForCategory(final CommandCategory category) {
+        return commands.values().stream()
+                .filter((command) -> command.getCategory().equals(category))
                 .toList();
     }
 

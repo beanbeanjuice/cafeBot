@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.fun;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.api.RedditAPIWrapper;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
@@ -39,6 +40,11 @@ public class JokeCommand extends Command implements ICommand {
     @Override
     public String getDescription() {
         return "Get a random joke!";
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.FUN;
     }
 
     @Override

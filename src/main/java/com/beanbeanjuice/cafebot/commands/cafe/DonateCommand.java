@@ -6,6 +6,7 @@ import com.beanbeanjuice.cafeapi.wrapper.endpoints.cafe.CafeUser;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.cafe.CafeUsersEndpoint;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -169,6 +170,11 @@ public class DonateCommand extends Command implements ICommand {
     @Override
     public String getDescription() {
         return "Donate your beanCoins to another user!";
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.CAFE;
     }
 
     @Override

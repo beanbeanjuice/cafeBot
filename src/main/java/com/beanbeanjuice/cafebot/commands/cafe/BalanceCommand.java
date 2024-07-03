@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafeapi.wrapper.endpoints.cafe.CafeUser;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.cafe.CafeUsersEndpoint;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -60,6 +61,11 @@ public class BalanceCommand extends Command implements ICommand {
     @Override
     public String getDescription() {
         return "Get your balance!";
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.CAFE;
     }
 
     @Override

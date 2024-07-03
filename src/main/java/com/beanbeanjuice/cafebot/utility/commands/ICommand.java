@@ -16,27 +16,17 @@ public interface ICommand {
 
     String getName();
 
-    /**
-     * @return The description for the actual command.
-     */
     String getDescription();
 
-    /**
-     * @return The available parameters for the actual command.
-     */
+    CommandCategory getCategory();
+
     default OptionData[] getOptions() { return new OptionData[0]; }
     default HashMap<String, ArrayList<String>> getAutoComplete() { return null; }
 
     Permission[] getPermissions();
 
-    /**
-     * @return True if you should reply with a message only the user who ran the command can read.
-     */
     boolean isEphemeral();
 
-    /**
-     * @return True if the {@link ICommand} can only run in NSFW channels.
-     */
     boolean isNSFW();
 
     boolean allowDM();
