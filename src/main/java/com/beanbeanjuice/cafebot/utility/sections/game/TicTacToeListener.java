@@ -49,8 +49,8 @@ public class TicTacToeListener extends ListenerAdapter {
 
         Guild guild = event.getGuild();
         guild.retrieveMembersByIds(player1ID, player2ID).onSuccess((members) -> {
-            Member player1 = members.get(0);
-            Member player2 = members.get(1);
+            Member player1 = members.get(0).getId().equals(player1ID) ? members.get(0) : members.get(1);
+            Member player2 = members.get(1).getId().equals(player2ID) ? members.get(1) : members.get(0);
             boolean isPlayer1 = currentPerson.getId().equals(player1ID);
 
             if (player1 == null || player2 == null) {

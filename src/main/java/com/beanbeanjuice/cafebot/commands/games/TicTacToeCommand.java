@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
+import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
@@ -12,7 +13,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 public class TicTacToeCommand extends Command implements ICommand {
 
@@ -24,6 +24,14 @@ public class TicTacToeCommand extends Command implements ICommand {
     public void handle(SlashCommandInteractionEvent event) {
         // cafeBot:tictactoe:index:user1:user2
         User opponent = event.getOption("opponent").getAsUser();
+
+        if (opponent.isBot()) {
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                    "Cannot Play Against Bot",
+                    "What do you think you're even doing?"
+            )).queue();
+            return;
+        }
 
         String playerID = event.getUser().getId();
         String opponentID = opponent.getId();
