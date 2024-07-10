@@ -6,7 +6,6 @@ import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class MemberCountCommand extends Command implements ICommand {
@@ -17,13 +16,12 @@ public class MemberCountCommand extends Command implements ICommand {
 
     @Override
     public void handle(SlashCommandInteractionEvent event) {
-        Guild guild = event.getGuild();
-        int members = guild.getMemberCount();
-
-        event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                "Member Count",
-                String.format("There are %d people in this server!", members)
-        )).queue();
+        event.getGuild().retrieveMetaData().queue((metadata) -> {
+            event.getHook().sendMessageEmbeds(Helper.successEmbed(
+                    "Member Count",
+                    String.format("There are %d people in this server!", metadata.getApproximateMembers())
+            )).queue();
+        });
     }
 
     @Override
