@@ -19,6 +19,7 @@ import com.beanbeanjuice.cafebot.commands.generic.*;
 import com.beanbeanjuice.cafebot.commands.interaction.*;
 import com.beanbeanjuice.cafebot.commands.social.MemberCountCommand;
 import com.beanbeanjuice.cafebot.commands.social.vent.VentCommand;
+import com.beanbeanjuice.cafebot.commands.twitch.TwitchCommand;
 import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.listeners.BotAddListener;
@@ -32,6 +33,7 @@ import com.beanbeanjuice.cafebot.utility.sections.cafe.MenuHandler;
 import com.beanbeanjuice.cafebot.utility.sections.game.TicTacToeListener;
 import com.beanbeanjuice.cafebot.utility.sections.generic.HelpHandler;
 import com.beanbeanjuice.cafebot.utility.sections.generic.HelpListener;
+import com.beanbeanjuice.cafebot.utility.sections.twitch.TwitchHandler;
 import com.sun.management.OperatingSystemMXBean;
 import lombok.Getter;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -76,6 +78,7 @@ public class CafeBot {
     private CommandHandler commandHandler;
     @Getter private MenuHandler menuHandler;
     @Getter private HelpHandler helpHandler;
+    @Getter private TwitchHandler twitchHandler;
 
     // Additional Items
     @Getter private int commandsRun = 0;
@@ -192,10 +195,6 @@ public class CafeBot {
                 new GameCommand(this),
                 new TicTacToeCommand(this),
 
-                // Social
-                new MemberCountCommand(this),
-                new VentCommand(this),
-
                 // Interactions
                 new AmazedCommand(this),
                 new AskCommand(this),
@@ -234,13 +233,21 @@ public class CafeBot {
                 new UWUCommand(this),
                 new WaveCommand(this),
                 new WinkCommand(this),
-                new YellCommand(this)
+                new YellCommand(this),
+
+                // Social
+                new MemberCountCommand(this),
+                new VentCommand(this),
+
+                // Twitch
+                new TwitchCommand(this)
 
 //                new EmbedCommand(this)
         );
 
         this.JDA.addEventListener(commandHandler);
         this.helpHandler = new HelpHandler(commandHandler);
+        this.twitchHandler = new TwitchHandler(System.getenv("CAFEBOT_TWITCH_ACCESS_TOKEN"), this);
     }
 
     private void setupListeners() {

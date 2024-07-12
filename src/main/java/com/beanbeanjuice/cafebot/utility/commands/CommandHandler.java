@@ -209,15 +209,15 @@ public class CommandHandler extends ListenerAdapter {
 
     private void handleSubCommandAutoComplete(final ISubCommand subCommand, final String option, final CommandAutoCompleteInteractionEvent event) {
         List<Choice> options = getOptions(subCommand.getAutoComplete().get(option), event.getFocusedOption().getValue());
-        handleAUtoComplete(options, event);
+        handleAutoComplete(options, event);
     }
 
     private void handleCommandAutoComplete(final ICommand command, final String option, final CommandAutoCompleteInteractionEvent event) {
         List<Choice> options = getOptions(command.getAutoComplete().get(option), event.getFocusedOption().getValue());
-        handleAUtoComplete(options, event);
+        handleAutoComplete(options, event);
     }
 
-    private void handleAUtoComplete(final List<Choice> options, final CommandAutoCompleteInteractionEvent event) {
+    private void handleAutoComplete(final List<Choice> options, final CommandAutoCompleteInteractionEvent event) {
         event.replyChoices(options).queue();
     }
 
