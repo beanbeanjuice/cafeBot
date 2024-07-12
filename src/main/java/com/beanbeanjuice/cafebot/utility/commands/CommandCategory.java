@@ -9,6 +9,7 @@ public enum CommandCategory {
     GAME("Bored huh?", "https://cdn.beanbeanjuice.com/images/cafeBot/category_type/games.png"),
     GENERIC("Very basic...", "https://cdn.beanbeanjuice.com/images/cafeBot/category_type/generic.png"),
     INTERACTION("Hugs, waves, slaps, and more!", "https://cdn.beanbeanjuice.com/images/cafeBot/category_type/interaction.png"),
+    TWITCH("Commands used for twitch.", "https://cdn.beanbeanjuice.com/images/cafeBot/category_type/twitch.jpg"),
     SOCIAL("Hmm... I just need to let it out... you know?", "https://cdn.beanbeanjuice.com/images/cafeBot/category_type/social.gif");
 
     @Getter private final String description;

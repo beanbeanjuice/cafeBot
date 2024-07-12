@@ -5,6 +5,7 @@ import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -91,6 +92,9 @@ public class HelpHandler {
         String optionsString = this.getOptionsString(command.getOptions());
         optionsString = (optionsString.isBlank()) ? "*None*" : optionsString;
 
+        String permissionsString = this.getPermissionsString(command.getPermissions());
+        permissionsString = (permissionsString.isBlank()) ? "*None*" : permissionsString;
+
         String commandString = String.format(
                 """
                 # /%s
@@ -100,11 +104,14 @@ public class HelpHandler {
                 %s
                 ### Subcommands
                 %s
+                ### Required Permissions
+                %s
                 """,
                 command.getName(),
                 command.getDescription(),
                 optionsString,
-                subCommandsString
+                subCommandsString,
+                permissionsString
         );
 
         return new EmbedBuilder()
@@ -121,6 +128,10 @@ public class HelpHandler {
                     <%s:%s:%s>
                     """, option.getName(), option.getType().name(), requiredString);
         }).collect(Collectors.joining(" "));
+    }
+
+    public String getPermissionsString(final Permission[] permissions) {
+        return Arrays.stream(permissions).map((permission) -> String.format("`%s`", permission.getName())).collect(Collectors.joining(", "));
     }
 
     public StringSelectMenu getAllCategoriesSelectMenu(int index) {
