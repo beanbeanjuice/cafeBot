@@ -10,7 +10,8 @@ public enum CommandCategory {
     GENERIC("Very basic...", "https://cdn.beanbeanjuice.com/images/cafeBot/category_type/generic.png"),
     INTERACTION("Hugs, waves, slaps, and more!", "https://cdn.beanbeanjuice.com/images/cafeBot/category_type/interaction.png"),
     TWITCH("Commands used for twitch.", "https://cdn.beanbeanjuice.com/images/cafeBot/category_type/twitch.jpg"),
-    SOCIAL("Hmm... I just need to let it out... you know?", "https://cdn.beanbeanjuice.com/images/cafeBot/category_type/social.gif");
+    SOCIAL("Hmm... I just need to let it out... you know?", "https://cdn.beanbeanjuice.com/images/cafeBot/category_type/social.gif"),
+    MODERATION("Commands used for moderation.", "https://cdn.beanbeanjuice.com/images/cafeBot/category_type/moderation.png");
 
     @Getter private final String description;
     @Getter private final String link;
