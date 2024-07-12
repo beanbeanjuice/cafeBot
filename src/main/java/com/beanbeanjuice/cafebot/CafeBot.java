@@ -17,6 +17,7 @@ import com.beanbeanjuice.cafebot.commands.games.game.GameCommand;
 import com.beanbeanjuice.cafebot.commands.generic.PingCommand;
 import com.beanbeanjuice.cafebot.commands.generic.*;
 import com.beanbeanjuice.cafebot.commands.interaction.*;
+import com.beanbeanjuice.cafebot.commands.moderation.ClearChatCommand;
 import com.beanbeanjuice.cafebot.commands.social.MemberCountCommand;
 import com.beanbeanjuice.cafebot.commands.social.vent.VentCommand;
 import com.beanbeanjuice.cafebot.commands.twitch.TwitchCommand;
@@ -240,7 +241,10 @@ public class CafeBot {
                 new VentCommand(this),
 
                 // Twitch
-                new TwitchCommand(this)
+                new TwitchCommand(this),
+
+                // Moderation
+                new ClearChatCommand(this)
 
 //                new EmbedCommand(this)
         );
