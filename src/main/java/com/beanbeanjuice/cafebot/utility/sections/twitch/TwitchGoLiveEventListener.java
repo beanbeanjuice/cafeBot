@@ -8,7 +8,6 @@ import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.philippheuer.events4j.simple.domain.EventSubscriber;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
-import com.github.twitch4j.events.ChannelGoOfflineEvent;
 import com.github.twitch4j.helix.domain.GameList;
 import com.github.twitch4j.helix.domain.UserList;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -25,12 +24,12 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class TwitchLiveEventListener extends SimpleEventHandler {
+public class TwitchGoLiveEventListener extends SimpleEventHandler {
 
     private final TwitchClient twitchClient;
     private final CafeBot cafeBot;
 
-    public TwitchLiveEventListener(final TwitchClient twitchClient, final CafeBot cafeBot) {
+    public TwitchGoLiveEventListener(final TwitchClient twitchClient, final CafeBot cafeBot) {
         this.twitchClient = twitchClient;
         this.cafeBot = cafeBot;
     }
@@ -41,14 +40,14 @@ public class TwitchLiveEventListener extends SimpleEventHandler {
         String twitchID = event.getChannel().getId();
         String gameID = event.getStream().getGameId();
 
-        cafeBot.getLogger().log(TwitchLiveEventListener.class, LogLevel.DEBUG, "LIVE: " + event.getChannel().getName());
+        cafeBot.getLogger().log(TwitchGoLiveEventListener.class, LogLevel.DEBUG, "LIVE: " + event.getChannel().getName());
 
         CompletableFuture<UserList> userFuture = CompletableFuture.supplyAsync(() -> {
             try { return twitchClient.getHelix().getUsers(null, List.of(twitchID), null).queue().get(); }
             catch (InterruptedException | ExecutionException e) { throw new RuntimeException(e); }
         });
 
-        cafeBot.getLogger().log(TwitchLiveEventListener.class, LogLevel.DEBUG, "GAME ID: " + gameID);
+        cafeBot.getLogger().log(TwitchGoLiveEventListener.class, LogLevel.DEBUG, "GAME ID: " + gameID);
         if (gameID == null || gameID.isBlank()) {
             userFuture.thenAcceptAsync((users) -> {
                 handleLiveEvent(event, users.getUsers().getFirst().getProfileImageUrl(), null);
@@ -66,10 +65,6 @@ public class TwitchLiveEventListener extends SimpleEventHandler {
             return true;
         });
     }
-
-    // TODO: Add offline edit.
-    @EventSubscriber
-    public void onChannelGoOffline(final ChannelGoOfflineEvent event) { }
 
     private void handleLiveEvent(final ChannelGoLiveEvent event, final String profileImageURL, @Nullable final String boxArtURL) {
         String twitchName = event.getChannel().getName().toLowerCase();

@@ -1,6 +1,5 @@
 package com.beanbeanjuice.cafebot.utility.sections.twitch;
 
-import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
@@ -18,14 +17,10 @@ public class TwitchHandler {
         twitchClient = TwitchClientBuilder.builder()
                 .withEnableHelix(true)
                 .withDefaultAuthToken(new OAuth2Credential("twitch", token))
-//                .withDefaultEventHandler(TwitchLiveEventListener.class)
                 .build();
 
-//        twitchClient.getEventManager().registerEventHandler(new TwitchLiveEventListener(twitchClient, cafeBot));
         twitchClient.getEventManager().registerEventHandler(new SimpleEventHandler());
-        twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class).registerListener(new TwitchLiveEventListener(twitchClient, cafeBot));
-
-//        twitchClient.getEventManager().registerEventHandler(new SimpleEventHandler());  // TODO: CONFIRM THIS WORKS
+        twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class).registerListener(new TwitchGoLiveEventListener(twitchClient, cafeBot));
 
         handleStartup(cafeBot);
     }
