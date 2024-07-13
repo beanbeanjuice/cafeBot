@@ -41,6 +41,12 @@ public class PingCommand extends Command implements ICommand {
                 return;
             }
 
+            if (event.getUser().getId().equals("690927484199370753") && word.equalsIgnoreCase("ai")) {
+                cafeBot.getAiResponseListener().refreshMaps();
+                event.getHook().sendMessage("Successfully refreshed the AI!").queue();
+                return;
+            }
+
             event.getHook().sendMessage(word).queue();
         });
         numberOptionMapping.map(OptionMapping::getAsInt).ifPresent((number) -> event.getHook().sendMessage(String.valueOf(number)).queue());

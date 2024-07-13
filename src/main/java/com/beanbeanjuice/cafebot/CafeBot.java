@@ -23,6 +23,7 @@ import com.beanbeanjuice.cafebot.commands.social.vent.VentCommand;
 import com.beanbeanjuice.cafebot.commands.twitch.TwitchCommand;
 import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
+import com.beanbeanjuice.cafebot.utility.listeners.AIResponseListener;
 import com.beanbeanjuice.cafebot.utility.listeners.BotAddListener;
 import com.beanbeanjuice.cafebot.utility.listeners.BotRemoveListener;
 import com.beanbeanjuice.cafebot.utility.listeners.CountingListener;
@@ -74,6 +75,9 @@ public class CafeBot {
 
     // Internal Items
     @Getter private final LogManager logger;
+
+    // Listeners
+    @Getter private AIResponseListener aiResponseListener;
 
     // Handlers
     private CommandHandler commandHandler;
@@ -182,6 +186,7 @@ public class CafeBot {
 
                 // Fun
                 new AvatarCommand(this),
+                new AICommand(this),
                 new BannerCommand(this),
                 new BirthdayCommand(this),
                 new MemeCommand(this),
@@ -255,12 +260,14 @@ public class CafeBot {
     }
 
     private void setupListeners() {
+        this.aiResponseListener = new AIResponseListener(this);
         this.JDA.addEventListener(
                 new BotAddListener(this),
                 new BotRemoveListener(this),
                 new CountingListener(this),
                 new HelpListener(commandHandler, helpHandler),
-                new TicTacToeListener(cafeAPI.getWinStreaksEndpoint())
+                new TicTacToeListener(cafeAPI.getWinStreaksEndpoint()),
+                aiResponseListener
         );
     }
 
