@@ -12,7 +12,6 @@ import java.util.HashMap;
 public interface ICommand {
 
     default void handle(SlashCommandInteractionEvent event) { };
-    default void handleModal(ModalInteractionEvent event) { };
 
     String getName();
 
@@ -35,6 +34,5 @@ public interface ICommand {
     default SubCommandGroup[] getSubCommandGroups() { return new SubCommandGroup[0]; }
 
     default boolean isModal() { return false; }
-    default Modal getModal() { return null; }
 
 }

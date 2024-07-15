@@ -18,15 +18,14 @@ import com.beanbeanjuice.cafebot.commands.generic.PingCommand;
 import com.beanbeanjuice.cafebot.commands.generic.*;
 import com.beanbeanjuice.cafebot.commands.interaction.*;
 import com.beanbeanjuice.cafebot.commands.moderation.ClearChatCommand;
+import com.beanbeanjuice.cafebot.commands.settings.AICommand;
+import com.beanbeanjuice.cafebot.commands.settings.welcome.WelcomeCommand;
 import com.beanbeanjuice.cafebot.commands.social.MemberCountCommand;
 import com.beanbeanjuice.cafebot.commands.social.vent.VentCommand;
 import com.beanbeanjuice.cafebot.commands.twitch.TwitchCommand;
 import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
-import com.beanbeanjuice.cafebot.utility.listeners.AIResponseListener;
-import com.beanbeanjuice.cafebot.utility.listeners.BotAddListener;
-import com.beanbeanjuice.cafebot.utility.listeners.BotRemoveListener;
-import com.beanbeanjuice.cafebot.utility.listeners.CountingListener;
+import com.beanbeanjuice.cafebot.utility.listeners.*;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import com.beanbeanjuice.cafebot.utility.logging.LogManager;
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
@@ -45,6 +44,7 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CacheRestAction;
 import org.jetbrains.annotations.NotNull;
@@ -186,7 +186,6 @@ public class CafeBot {
 
                 // Fun
                 new AvatarCommand(this),
-                new AICommand(this),
                 new BannerCommand(this),
                 new BirthdayCommand(this),
                 new MemeCommand(this),
@@ -249,7 +248,11 @@ public class CafeBot {
                 new TwitchCommand(this),
 
                 // Moderation
-                new ClearChatCommand(this)
+                new ClearChatCommand(this),
+
+                // Settings
+                new AICommand(this),
+                new WelcomeCommand(this)
 
 //                new EmbedCommand(this)
         );
@@ -257,6 +260,10 @@ public class CafeBot {
         this.JDA.addEventListener(commandHandler);
         this.helpHandler = new HelpHandler(commandHandler);
         this.twitchHandler = new TwitchHandler(System.getenv("CAFEBOT_TWITCH_ACCESS_TOKEN"), this);
+    }
+
+    public void addEventListener(final ListenerAdapter listener) {
+        this.JDA.addEventListener(listener);
     }
 
     private void setupListeners() {
@@ -267,7 +274,8 @@ public class CafeBot {
                 new CountingListener(this),
                 new HelpListener(commandHandler, helpHandler),
                 new TicTacToeListener(cafeAPI.getWinStreaksEndpoint()),
-                aiResponseListener
+                aiResponseListener,
+                new WelcomeListener(this)
         );
     }
 
