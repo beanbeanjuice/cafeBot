@@ -1,4 +1,4 @@
-package com.beanbeanjuice.cafebot.commands.fun;
+package com.beanbeanjuice.cafebot.commands.settings;
 
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.guilds.GuildInformationType;
 import com.beanbeanjuice.cafebot.CafeBot;

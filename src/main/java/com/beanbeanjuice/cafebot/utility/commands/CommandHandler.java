@@ -118,24 +118,16 @@ public class CommandHandler extends ListenerAdapter {
     }
 
     private void handleSubCommand(final ISubCommand subCommand, final ICommand command, final SlashCommandInteractionEvent event) {
-        if (subCommand.isModal()) {
-            event.replyModal(subCommand.getModal()).queue();
-        } else {
-            event.deferReply(command.isEphemeral()).queue();
-            subCommand.handle(event);
-        }
+        if (!subCommand.isModal()) event.deferReply(command.isEphemeral()).queue();
 
+        subCommand.handle(event);
         cafeBot.increaseCommandsRun();
     }
 
     private void handleCommand(final ICommand command, final SlashCommandInteractionEvent event) {
-        if (command.isModal()) {
-            event.replyModal(command.getModal()).queue();
-        } else {
-            event.deferReply(command.isEphemeral()).queue();
-            command.handle(event);
-        }
+        if (!command.isModal()) event.deferReply(command.isEphemeral()).queue();
 
+        command.handle(event);
         cafeBot.increaseCommandsRun();
     }
 

@@ -6,12 +6,17 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
+import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
+import net.dv8tion.jda.api.interactions.modals.ModalMapping;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -186,18 +191,9 @@ public class Helper {
         return minimum + new Random().nextDouble() * maximum;
     }
 
-    /**
-     * Private message's a specified {@link User}.
-     * @param user The {@link User} to be messaged.
-     * @param message The contents of the message.
-     */
-    public static void pmUser(@NotNull User user, @NotNull String message) {
-        user.openPrivateChannel().flatMap(channel -> channel.sendMessage(message)).queue();
+    public static void pmUser(final User user, final MessageEmbed embed) {
+        user.openPrivateChannel().flatMap(channel -> channel.sendMessageEmbeds(embed)).queue();
     }
-
-
-
-
 
     /**
      * Generates a Random Alpha-Numeric {@link String}.
@@ -292,6 +288,12 @@ public class Helper {
      */
     public static String[] removeCommaSpace(String input) {
         return input.split(",\\s*");
+    }
+
+    public static Map<String, String> modalValuesToMap(final List<ModalMapping> mappings) {
+        Map<String, String> modalMap = new HashMap<>();
+        mappings.forEach((mapping) -> modalMap.put(mapping.getId(), mapping.getAsString()));
+        return modalMap;
     }
 
 }
