@@ -42,7 +42,27 @@ public class GitHubVersionEndpointWrapper {
         }
     }
 
-    private String parse(String responseBody) {
+    public CompletableFuture<String> getLatestVersionString() {
+        try (HttpClient client = HttpClient.newHttpClient()) {
+            HttpRequest request = HttpRequest.newBuilder().setHeader("User-Agent", cafeBot.getBotUserAgent()).uri(URI.create("https://api.github.com/repos/beanbeanjuice/cafeBot/tags")).build();
+
+            return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(HttpResponse::body)
+                    .thenApply(this::versionNumberFromResponse);
+        }
+    }
+
+    private String versionNumberFromResponse(final String responseBody) {
+        ObjectMapper defaultObjectMapper = new ObjectMapper();
+        try {
+            JsonNode node = defaultObjectMapper.readTree(responseBody);
+            return node.get(0).get("name").textValue();
+        } catch (JsonProcessingException e) {
+            throw new CompletionException(e);
+        }
+    }
+
+    private String parse(final String responseBody) {
         ObjectMapper defaultObjectMapper = new ObjectMapper();
         try {
             JsonNode node = defaultObjectMapper.readTree(responseBody);
