@@ -1,4 +1,4 @@
-package com.beanbeanjuice.cafebot.utility.listeners;
+package com.beanbeanjuice.cafebot.utility.listeners.ai;
 
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.guilds.GuildInformationType;
 import com.beanbeanjuice.cafebot.CafeBot;
@@ -22,7 +22,6 @@ public class AIResponseListener extends ListenerAdapter {
     public AIResponseListener(final CafeBot cafeBot) {
         this.cafeBot = cafeBot;
         this.messageMap = new HashMap<>();
-
         refreshMaps();
     }
 
@@ -76,6 +75,5 @@ public class AIResponseListener extends ListenerAdapter {
     private String parseMessage(final String message, final User user) {
         return message.replace("{user}", user.getAsMention());
     }
-
 
 }
