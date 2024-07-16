@@ -19,6 +19,7 @@ import com.beanbeanjuice.cafebot.commands.generic.*;
 import com.beanbeanjuice.cafebot.commands.interaction.*;
 import com.beanbeanjuice.cafebot.commands.moderation.ClearChatCommand;
 import com.beanbeanjuice.cafebot.commands.settings.AICommand;
+import com.beanbeanjuice.cafebot.commands.settings.goodbye.GoodbyeCommand;
 import com.beanbeanjuice.cafebot.commands.settings.welcome.WelcomeCommand;
 import com.beanbeanjuice.cafebot.commands.social.MemberCountCommand;
 import com.beanbeanjuice.cafebot.commands.social.vent.VentCommand;
@@ -252,7 +253,8 @@ public class CafeBot {
 
                 // Settings
                 new AICommand(this),
-                new WelcomeCommand(this)
+                new WelcomeCommand(this),
+                new GoodbyeCommand(this)
 
 //                new EmbedCommand(this)
         );
@@ -275,7 +277,8 @@ public class CafeBot {
                 new HelpListener(commandHandler, helpHandler),
                 new TicTacToeListener(cafeAPI.getWinStreaksEndpoint()),
                 aiResponseListener,
-                new WelcomeListener(this)
+                new WelcomeListener(this),
+                new GoodbyeListener(this)
         );
     }
 

@@ -52,11 +52,6 @@ public class WelcomeCommand extends Command implements ICommand {
     }
 
     @Override
-    public ISubCommand[] getSubCommands() {
-        return ICommand.super.getSubCommands();
-    }
-
-    @Override
     public SubCommandGroup[] getSubCommandGroups() {
         SubCommandGroup channelGroup = new SubCommandGroup("channel", "Edit the welcome channel.");
         channelGroup.addSubCommands(new ISubCommand[] {
