@@ -19,6 +19,7 @@ import com.beanbeanjuice.cafebot.commands.generic.*;
 import com.beanbeanjuice.cafebot.commands.interaction.*;
 import com.beanbeanjuice.cafebot.commands.moderation.ClearChatCommand;
 import com.beanbeanjuice.cafebot.commands.settings.AICommand;
+import com.beanbeanjuice.cafebot.commands.settings.CustomChannelsCommand;
 import com.beanbeanjuice.cafebot.commands.settings.daily.DailyCommand;
 import com.beanbeanjuice.cafebot.commands.settings.goodbye.GoodbyeCommand;
 import com.beanbeanjuice.cafebot.commands.settings.update.UpdateCommand;
@@ -26,12 +27,12 @@ import com.beanbeanjuice.cafebot.commands.settings.welcome.WelcomeCommand;
 import com.beanbeanjuice.cafebot.commands.social.MemberCountCommand;
 import com.beanbeanjuice.cafebot.commands.social.vent.VentCommand;
 import com.beanbeanjuice.cafebot.commands.twitch.TwitchCommand;
-import com.beanbeanjuice.cafebot.utility.api.GitHubVersionEndpointWrapper;
 import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
 import com.beanbeanjuice.cafebot.utility.helper.DailyChannelHelper;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.helper.UpdateCheckHelper;
 import com.beanbeanjuice.cafebot.utility.listeners.*;
+import com.beanbeanjuice.cafebot.utility.listeners.ai.AIResponseListener;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import com.beanbeanjuice.cafebot.utility.logging.LogManager;
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
@@ -264,7 +265,8 @@ public class CafeBot {
                 new WelcomeCommand(this),
                 new GoodbyeCommand(this),
                 new UpdateCommand(this),
-                new DailyCommand(this)
+                new DailyCommand(this),
+                new CustomChannelsCommand(this)
 
 //                new EmbedCommand(this)
         );

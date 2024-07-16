@@ -95,6 +95,8 @@ dependencies {
 
     testImplementation("junit", "junit", "4.13.2")
     testImplementation("org.junit.jupiter", "junit-jupiter", "5.8.1")
+
+    implementation("com.github.plexpt", "chatgpt", "4.4.0")
 }
 
 tasks.withType<ShadowJar> {
