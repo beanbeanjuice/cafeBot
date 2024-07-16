@@ -20,12 +20,15 @@ import com.beanbeanjuice.cafebot.commands.interaction.*;
 import com.beanbeanjuice.cafebot.commands.moderation.ClearChatCommand;
 import com.beanbeanjuice.cafebot.commands.settings.AICommand;
 import com.beanbeanjuice.cafebot.commands.settings.goodbye.GoodbyeCommand;
+import com.beanbeanjuice.cafebot.commands.settings.update.UpdateCommand;
 import com.beanbeanjuice.cafebot.commands.settings.welcome.WelcomeCommand;
 import com.beanbeanjuice.cafebot.commands.social.MemberCountCommand;
 import com.beanbeanjuice.cafebot.commands.social.vent.VentCommand;
 import com.beanbeanjuice.cafebot.commands.twitch.TwitchCommand;
+import com.beanbeanjuice.cafebot.utility.api.GitHubVersionEndpointWrapper;
 import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
+import com.beanbeanjuice.cafebot.utility.helper.UpdateCheckHelper;
 import com.beanbeanjuice.cafebot.utility.listeners.*;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import com.beanbeanjuice.cafebot.utility.logging.LogManager;
@@ -254,7 +257,8 @@ public class CafeBot {
                 // Settings
                 new AICommand(this),
                 new WelcomeCommand(this),
-                new GoodbyeCommand(this)
+                new GoodbyeCommand(this),
+                new UpdateCommand(this)
 
 //                new EmbedCommand(this)
         );
@@ -262,6 +266,9 @@ public class CafeBot {
         this.JDA.addEventListener(commandHandler);
         this.helpHandler = new HelpHandler(commandHandler);
         this.twitchHandler = new TwitchHandler(System.getenv("CAFEBOT_TWITCH_ACCESS_TOKEN"), this);
+
+        UpdateCheckHelper updateCheckHelper = new UpdateCheckHelper(this);
+        updateCheckHelper.checkUpdate();
     }
 
     public void addEventListener(final ListenerAdapter listener) {
@@ -289,7 +296,7 @@ public class CafeBot {
         try (InputStream resourceStream = loader.getResourceAsStream(resourceName)) { props.load(resourceStream); }
         catch (IOException e) { throw new RuntimeException(e); }
 
-        return props.get("version").toString();
+        return "v" + props.get("version").toString();
     }
 
     private void startUpdateTimer() {

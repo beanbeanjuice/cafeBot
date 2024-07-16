@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.beanbeanjuice"
-version = "v4.0.0"
+version = "4.0.0"
 
 allprojects {
     group = "com.beanbeanjuice"
