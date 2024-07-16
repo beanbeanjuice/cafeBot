@@ -19,6 +19,7 @@ import com.beanbeanjuice.cafebot.commands.generic.*;
 import com.beanbeanjuice.cafebot.commands.interaction.*;
 import com.beanbeanjuice.cafebot.commands.moderation.ClearChatCommand;
 import com.beanbeanjuice.cafebot.commands.settings.AICommand;
+import com.beanbeanjuice.cafebot.commands.settings.daily.DailyCommand;
 import com.beanbeanjuice.cafebot.commands.settings.goodbye.GoodbyeCommand;
 import com.beanbeanjuice.cafebot.commands.settings.update.UpdateCommand;
 import com.beanbeanjuice.cafebot.commands.settings.welcome.WelcomeCommand;
@@ -27,6 +28,7 @@ import com.beanbeanjuice.cafebot.commands.social.vent.VentCommand;
 import com.beanbeanjuice.cafebot.commands.twitch.TwitchCommand;
 import com.beanbeanjuice.cafebot.utility.api.GitHubVersionEndpointWrapper;
 import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
+import com.beanbeanjuice.cafebot.utility.helper.DailyChannelHelper;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.helper.UpdateCheckHelper;
 import com.beanbeanjuice.cafebot.utility.listeners.*;
@@ -82,6 +84,9 @@ public class CafeBot {
 
     // Listeners
     @Getter private AIResponseListener aiResponseListener;
+
+    // Helpers
+    private DailyChannelHelper dailyChannelHelper;
 
     // Handlers
     private CommandHandler commandHandler;
@@ -258,7 +263,8 @@ public class CafeBot {
                 new AICommand(this),
                 new WelcomeCommand(this),
                 new GoodbyeCommand(this),
-                new UpdateCommand(this)
+                new UpdateCommand(this),
+                new DailyCommand(this)
 
 //                new EmbedCommand(this)
         );
@@ -269,6 +275,9 @@ public class CafeBot {
 
         UpdateCheckHelper updateCheckHelper = new UpdateCheckHelper(this);
         updateCheckHelper.checkUpdate();
+
+        this.dailyChannelHelper = new DailyChannelHelper(this);
+        dailyChannelHelper.start();
     }
 
     public void addEventListener(final ListenerAdapter listener) {
