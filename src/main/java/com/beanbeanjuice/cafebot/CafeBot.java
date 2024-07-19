@@ -186,6 +186,7 @@ public class CafeBot {
                 new BugReportCommand(this),
                 new FeatureCommand(this),
                 new DefineCommand(this),
+                new EmbedCommand(this),
                 new GenerateCode(this),
                 new HelpCommand(this),
                 new PingCommand(this),
