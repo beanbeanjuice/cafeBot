@@ -1,4 +1,4 @@
-package com.beanbeanjuice.cafebot.commands.fun.birthday;
+package com.beanbeanjuice.cafebot.commands.fun.birthday.self;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
@@ -7,9 +7,9 @@ import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-public class RemoveBirthdaySubCommand extends Command implements ISubCommand {
+public class BirthdayRemoveSubCommand extends Command implements ISubCommand {
 
-    public RemoveBirthdaySubCommand(final CafeBot cafeBot) {
+    public BirthdayRemoveSubCommand(final CafeBot cafeBot) {
         super(cafeBot);
     }
 

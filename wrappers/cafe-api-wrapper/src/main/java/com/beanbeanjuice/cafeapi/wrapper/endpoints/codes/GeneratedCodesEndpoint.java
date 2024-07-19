@@ -35,7 +35,7 @@ public class GeneratedCodesEndpoint extends CafeEndpoint {
                 .thenComposeAsync(existingCode -> {
                     if (existingCode != null) return this.updateUserGeneratedCode(userID);
                     else return this.createUserGeneratedCode(userID);
-                }).exceptionallyCompose((e) -> this.createUserGeneratedCode(userID));
+                }).exceptionallyComposeAsync((e) -> this.createUserGeneratedCode(userID));
     }
 
     public CompletableFuture<String> updateUserGeneratedCode(final String userID) {

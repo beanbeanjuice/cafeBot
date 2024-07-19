@@ -1,4 +1,4 @@
-package com.beanbeanjuice.cafebot.commands.fun.birthday;
+package com.beanbeanjuice.cafebot.commands.fun.birthday.channel;
 
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.guilds.GuildInformationType;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.guilds.GuildsEndpoint;
@@ -10,9 +10,9 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-public class RemoveBirthdayChannelSubCommand extends Command implements ISubCommand {
+public class BirthdayChannelRemoveSubCommand extends Command implements ISubCommand {
 
-    public RemoveBirthdayChannelSubCommand(final CafeBot cafeBot) {
+    public BirthdayChannelRemoveSubCommand(final CafeBot cafeBot) {
         super(cafeBot);
     }
 

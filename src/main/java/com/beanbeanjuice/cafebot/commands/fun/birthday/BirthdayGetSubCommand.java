@@ -16,10 +16,9 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.Optional;
 
-// TODO: Birthday handler to send birthdays.
-public class GetBirthdaySubCommand extends Command implements ISubCommand {
+public class BirthdayGetSubCommand extends Command implements ISubCommand {
 
-    public GetBirthdaySubCommand(CafeBot cafeBot) {
+    public BirthdayGetSubCommand(final CafeBot cafeBot) {
         super(cafeBot);
     }
 
@@ -33,7 +32,7 @@ public class GetBirthdaySubCommand extends Command implements ISubCommand {
         cafeBot.getCafeAPI().getBirthdaysEndpoint().getUserBirthday(user.getId())
                 .thenAcceptAsync((birthdayOptional) -> birthdayOptional.ifPresent((birthday) -> sendBirthday(user, isSelf, birthday, event)))
                 .exceptionallyAsync((e) -> {
-                    cafeBot.getLogger().log(GetBirthdaySubCommand.class, LogLevel.DEBUG, "Error: " + e.getMessage(), e);
+                    cafeBot.getLogger().log(BirthdayGetSubCommand.class, LogLevel.DEBUG, "Error: " + e.getMessage(), e);
                     sendError(event);
                     return null;
                 });

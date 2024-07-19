@@ -13,8 +13,6 @@ public class WelcomeMessageSetSubCommand extends Command implements ISubCommand 
 
     public WelcomeMessageSetSubCommand(final CafeBot cafeBot) {
         super(cafeBot);
-
-        cafeBot.addEventListener(new WelcomeMessageModalListener(cafeBot.getCafeAPI().getWelcomesEndpoint()));
     }
 
     @Override

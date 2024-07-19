@@ -29,7 +29,7 @@ public class InfoCommand extends Command implements ICommand {
                 .addField("<a:wowowow:886217210010431508> Creator", "```@beanbeanjuice```", true)
                 .addField("<:html:1000241652444692530> Frameworks", "Built With: [Discord JDA](https://github.com/DV8FromTheWorld/JDA), " +
                         "[Twitch4J](https://github.com/twitch4j/twitch4j), [KawaiiAPI](https://kawaii.red/), " +
-                        "and [Maven](https://maven.apache.org/)!", true)
+                        "and [Gradle](https://gradle.org/)!", true)
                 .addField("<a:cafeBot:841945919926173707> About Me", "Hello! I'm cafeBot, a general/" +
                         "multipurpose bot that is used to do a multitude of things! You can do `/help` to see the " +
                         "list of my commands. I hope you enjoy me!", false)

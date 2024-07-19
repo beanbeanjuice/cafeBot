@@ -13,8 +13,6 @@ public class GoodbyeMessageSetSubCommand extends Command implements ISubCommand 
 
     public GoodbyeMessageSetSubCommand(final CafeBot cafeBot) {
         super(cafeBot);
-
-        cafeBot.addEventListener(new GoodbyeMessageModalListener(cafeBot.getCafeAPI().getGoodbyesEndpoint()));
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
 public class BirthdaysEndpointTests {
@@ -83,7 +84,9 @@ public class BirthdaysEndpointTests {
         });
 
         // Makes sure the changed day is the same.
-        Assertions.assertTrue(() -> {
+        {
+            TimeZone oldTimeZone = TimeZone.getDefault();
+            TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
             Optional<Birthday> optionalBirthday = null;
             try {
                 optionalBirthday = cafeAPI.getBirthdaysEndpoint().getUserBirthday("178272524533104642").get();
@@ -92,8 +95,9 @@ public class BirthdaysEndpointTests {
             }
             Assertions.assertNotNull(optionalBirthday);
             Assertions.assertTrue(optionalBirthday.isPresent());
-            return optionalBirthday.get().getDay() == 29;
-        });
+            Assertions.assertEquals(optionalBirthday.get().getDay(), 29);
+            TimeZone.setDefault(oldTimeZone);
+        }
 
         // Makes sure that alreadyMentioned is false by default.
         Assertions.assertFalse(() -> {

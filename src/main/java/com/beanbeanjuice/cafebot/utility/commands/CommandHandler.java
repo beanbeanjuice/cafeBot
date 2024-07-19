@@ -216,7 +216,7 @@ public class CommandHandler extends ListenerAdapter {
     private List<Choice> getOptions(final ArrayList<String> autoCompleteOptions, final String focusedOptionValue) {
         return autoCompleteOptions
                 .stream()
-                .filter((choiceString) -> choiceString.startsWith(focusedOptionValue))
+                .filter((choiceString) -> choiceString.toUpperCase().contains(focusedOptionValue.toUpperCase()))
                 .map((string) -> new Choice(string, string))
                 .limit(25)
                 .toList();

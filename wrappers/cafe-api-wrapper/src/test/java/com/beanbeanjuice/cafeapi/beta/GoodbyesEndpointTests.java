@@ -24,6 +24,17 @@ public class GoodbyesEndpointTests {
     public void testGoodbyesEndpoint() throws ExecutionException, InterruptedException {
         CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
+        // Makes sure there is at least one.
+        try {
+            cafeAPI.getGoodbyesEndpoint().createGuildGoodbye(new GuildGoodbye(
+                    "798830792938881024",
+                    "Goodbye... {user}... thanks for joining!",
+                    "https://i.pinimg.com/originals/3f/33/75/3f3375eaef9ed7529d0e1bb5b63a814a.gif",
+                    "https://i.pinimg.com/originals/3f/33/75/3f3375eaef9ed7529d0e1bb5b63a814a.gif",
+                    null
+            )).get();
+        } catch (Exception ignored) { }
+
         // Makes sure that the amount of guilds in the guild's goodbye is more than 0.
         Assertions.assertFalse(cafeAPI.getGoodbyesEndpoint().getAllGuildGoodbyes().get().isEmpty());
 
