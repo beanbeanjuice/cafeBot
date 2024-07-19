@@ -22,8 +22,10 @@ import com.beanbeanjuice.cafebot.commands.settings.AICommand;
 import com.beanbeanjuice.cafebot.commands.settings.CustomChannelsCommand;
 import com.beanbeanjuice.cafebot.commands.settings.daily.DailyCommand;
 import com.beanbeanjuice.cafebot.commands.settings.goodbye.GoodbyeCommand;
+import com.beanbeanjuice.cafebot.commands.settings.goodbye.message.GoodbyeMessageModalListener;
 import com.beanbeanjuice.cafebot.commands.settings.update.UpdateCommand;
 import com.beanbeanjuice.cafebot.commands.settings.welcome.WelcomeCommand;
+import com.beanbeanjuice.cafebot.commands.settings.welcome.message.WelcomeMessageModalListener;
 import com.beanbeanjuice.cafebot.commands.social.MemberCountCommand;
 import com.beanbeanjuice.cafebot.commands.social.vent.VentCommand;
 import com.beanbeanjuice.cafebot.commands.twitch.TwitchCommand;
@@ -38,6 +40,7 @@ import com.beanbeanjuice.cafebot.utility.logging.LogManager;
 import com.beanbeanjuice.cafeapi.wrapper.CafeAPI;
 import com.beanbeanjuice.cafeapi.wrapper.requests.RequestLocation;
 import com.beanbeanjuice.cafebot.utility.sections.cafe.MenuHandler;
+import com.beanbeanjuice.cafebot.utility.sections.fun.birthday.BirthdayHelper;
 import com.beanbeanjuice.cafebot.utility.sections.game.TicTacToeListener;
 import com.beanbeanjuice.cafebot.utility.sections.generic.HelpHandler;
 import com.beanbeanjuice.cafebot.utility.sections.generic.HelpListener;
@@ -49,11 +52,14 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CacheRestAction;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -88,6 +94,7 @@ public class CafeBot {
 
     // Helpers
     private DailyChannelHelper dailyChannelHelper;
+    @Getter private BirthdayHelper birthdayHelper;
 
     // Handlers
     private CommandHandler commandHandler;
@@ -130,8 +137,8 @@ public class CafeBot {
 //                .enableCache(
 //                        CacheFlag.EMOJI
 //                )
-//                .setMemberCachePolicy(MemberCachePolicy.ALL)
-//                .setChunkingFilter(ChunkingFilter.ALL)
+                .setMemberCachePolicy(MemberCachePolicy.ALL)  // ! - Needed for mutual guilds
+                .setChunkingFilter(ChunkingFilter.ALL)  // ! - Needed for mutual guilds
                 .build()
                 .awaitReady();
 
@@ -280,6 +287,9 @@ public class CafeBot {
 
         this.dailyChannelHelper = new DailyChannelHelper(this);
         dailyChannelHelper.start();
+
+        this.birthdayHelper = new BirthdayHelper(this);
+        this.birthdayHelper.startBirthdayChecker();
     }
 
     public void addEventListener(final ListenerAdapter listener) {
@@ -296,7 +306,10 @@ public class CafeBot {
                 new TicTacToeListener(cafeAPI.getWinStreaksEndpoint()),
                 aiResponseListener,
                 new WelcomeListener(this),
-                new GoodbyeListener(this)
+                new GoodbyeListener(this),
+
+                new WelcomeMessageModalListener(this.cafeAPI.getWelcomesEndpoint()),
+                new GoodbyeMessageModalListener(this.cafeAPI.getGoodbyesEndpoint())
         );
     }
 
@@ -317,7 +330,7 @@ public class CafeBot {
         TimerTask updateTimerTask = new TimerTask() {
             @Override
             public void run() {
-                bot.getLogger().log(CafeBot.class, LogLevel.DEBUG, "Sending bot status message...");
+                bot.getLogger().log(CafeBot.class, LogLevel.DEBUG, "Sending bot status message...", true, false);
 
                 bot.getUser("690927484199370753").queue((owner) -> {
                     bot.getJDA().getRestPing().queue((ping) -> {
@@ -386,9 +399,10 @@ public class CafeBot {
         return this.JDA.getGuilds().size();
     }
 
-    // TODO: This is only getting cached users.
     public int getTotalUsers() {
-        return this.JDA.getUsers().size();
+        int count = 0;
+        for (Guild guild : this.JDA.getGuilds()) count += guild.getMemberCount();
+        return count;
     }
 
     private CacheRestAction<User> getUser(String userID) {

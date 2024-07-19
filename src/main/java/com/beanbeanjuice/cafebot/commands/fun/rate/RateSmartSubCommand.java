@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class RateSmartSubCommand extends Command implements ISubCommand {
 
-    public RateSmartSubCommand(CafeBot cafeBot) {
+    public RateSmartSubCommand(final CafeBot cafeBot) {
         super(cafeBot);
     }
 

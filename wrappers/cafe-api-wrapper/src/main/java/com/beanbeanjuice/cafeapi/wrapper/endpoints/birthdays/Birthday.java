@@ -6,8 +6,13 @@ import com.beanbeanjuice.cafeapi.wrapper.utility.Time;
 import lombok.Getter;
 
 import java.text.ParseException;
+import java.time.Month;
+import java.time.Year;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A class used to house {@link Birthday}.
@@ -21,12 +26,6 @@ public class Birthday {
     @Getter private final TimeZone timeZone;
     @Getter private final boolean isAlreadyMentioned;
 
-    /**
-     * Creates a new {@link Birthday} object.
-     * @param month The {@link BirthdayMonth month} of the {@link Birthday}.
-     * @param day The {@link Integer day} of the {@link Birthday}.
-     * @param isAlreadyMentioned False, if the user's birthday has not been mentioned by cafeBot.
-     */
     public Birthday(final BirthdayMonth month, final int day, final String timeZone, final boolean isAlreadyMentioned) {
         this.month = month;
         this.day = day;
@@ -44,12 +43,29 @@ public class Birthday {
         this.isAlreadyMentioned = isAlreadyMentioned;
     }
 
-    /**
-     * @return The {@link Date} of the {@link Birthday} in {@link TimeZone UTC} time.
-     * @throws ParseException Thrown when the {@link Birthday} was unable to be parsed.
-     */
-    public Date getUTCDate() throws ParseException {
-        return Time.getFullDate(month.getMonthNumber() + "-" + day + "-2020", timeZone);
+    public Date getDate() throws ParseException {
+        int year = Year.now(timeZone.toZoneId()).getValue();
+        String dateString = convertToBirthdayDateString(month, day, year);
+        return Time.getFullDate(dateString, timeZone);
+    }
+
+    public boolean isBirthday() {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            Date now = calendar.getTime();
+
+            return this.getDate().getTime() == now.getTime();
+        } catch (ParseException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Error Checking if it is their birthday.", e);
+            return false;
+        }
+    }
+
+    public static String convertToBirthdayDateString(final BirthdayMonth month, final int day, final int year) {
+        return String.format("%s-%s-%d", month.getMonthNumber(), day, year);
     }
 
 }

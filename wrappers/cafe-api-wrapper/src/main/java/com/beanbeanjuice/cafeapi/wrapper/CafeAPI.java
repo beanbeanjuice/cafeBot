@@ -65,7 +65,7 @@ public class CafeAPI {
      * @param requestLocation The {@link RequestLocation requestLocation}.
      */
     public CafeAPI(String username, String password, RequestLocation requestLocation) {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+//        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         this.userAgent = username;
         CafeAPI.requestLocation = requestLocation;
 

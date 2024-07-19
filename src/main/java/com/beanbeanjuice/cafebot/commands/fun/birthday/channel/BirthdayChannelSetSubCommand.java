@@ -1,4 +1,4 @@
-package com.beanbeanjuice.cafebot.commands.fun.birthday;
+package com.beanbeanjuice.cafebot.commands.fun.birthday.channel;
 
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.guilds.GuildInformationType;
 import com.beanbeanjuice.cafebot.CafeBot;
@@ -15,9 +15,9 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.Optional;
 
-public class SetBirthdayChannelSubCommand extends Command implements ISubCommand {
+public class BirthdayChannelSetSubCommand extends Command implements ISubCommand {
 
-    public SetBirthdayChannelSubCommand(final CafeBot cafeBot) {
+    public BirthdayChannelSetSubCommand(final CafeBot cafeBot) {
         super(cafeBot);
     }
 

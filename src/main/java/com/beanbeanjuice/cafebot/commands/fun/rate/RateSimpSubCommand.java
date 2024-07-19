@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class RateSimpSubCommand extends Command implements ISubCommand {
 
-    public RateSimpSubCommand(CafeBot cafeBot) {
+    public RateSimpSubCommand(final CafeBot cafeBot) {
         super(cafeBot);
     }
 

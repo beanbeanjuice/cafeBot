@@ -26,11 +26,6 @@ public enum BirthdayMonth {
     @Getter private final int monthNumber;
     @Getter private final int daysInMonth;
 
-    /**
-     * Creates a new {@link BirthdayMonth} static class.
-     * @param monthNumber The {@link Integer monthNumber}.
-     * @param daysInMonth The amount of {@link Integer daysInMonth}.
-     */
     BirthdayMonth(final int monthNumber, final int daysInMonth) {
         this.monthNumber = monthNumber;
         this.daysInMonth = daysInMonth;

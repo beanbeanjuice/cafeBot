@@ -24,6 +24,17 @@ public class WelcomesEndpointTests {
     public void testWelcomesEndpoint() throws ExecutionException, InterruptedException {
         CafeAPI cafeAPI = new CafeAPI("beanbeanjuice", System.getenv("API_PASSWORD"), RequestLocation.BETA);
 
+        // Makes sure there is at least one welcome.
+        try {
+            cafeAPI.getWelcomesEndpoint().createGuildWelcome(new GuildWelcome(
+                    "798830792938881024",
+                    "Welcome, {user} to the bot testing server!\\nI hope you enjoy your stay! :heart:\\nMake sure to...\\n Check out #polls,\\nCheck out #logger,\\n and Check out #cafebot-beta-log!",
+                    "https://i.pinimg.com/originals/3f/33/75/3f3375eaef9ed7529d0e1bb5b63a814a.gif",
+                    "https://i.pinimg.com/originals/3f/33/75/3f3375eaef9ed7529d0e1bb5b63a814a.gif",
+                    null
+            )).get();
+        } catch (Exception ignored) { }
+
         // Makes sure that the amount of guilds in the guild's welcome is more than 0.
         Assertions.assertFalse(cafeAPI.getWelcomesEndpoint().getAllGuildWelcomes().get().isEmpty());
 

@@ -1,4 +1,4 @@
-package com.beanbeanjuice.cafebot.commands.fun.birthday;
+package com.beanbeanjuice.cafebot.commands.fun.birthday.self;
 
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.birthdays.Birthday;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.birthdays.BirthdayMonth;
@@ -12,13 +12,12 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.TimeZone;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
-public class SetBirthdaySubCommand extends Command implements ISubCommand {
+public class BirthdaySetSubCommand extends Command implements ISubCommand {
 
-    public SetBirthdaySubCommand(CafeBot cafeBot) {
+    public BirthdaySetSubCommand(final CafeBot cafeBot) {
         super(cafeBot);
     }
 
@@ -26,7 +25,7 @@ public class SetBirthdaySubCommand extends Command implements ISubCommand {
     public void handle(SlashCommandInteractionEvent event) {
         BirthdayMonth month = BirthdayMonth.valueOf(event.getOption("month").getAsString());
         int day = event.getOption("day").getAsInt();
-        TimeZone timezone = TimeZone.getTimeZone(event.getOption("timezone").getAsString());
+        TimeZone timeZone = TimeZone.getTimeZone(event.getOption("timezone").getAsString());
 
         if (month.getDaysInMonth() < day) {
             invalidMonthAndDayCombination(month, day, event);
@@ -35,18 +34,46 @@ public class SetBirthdaySubCommand extends Command implements ISubCommand {
 
         User user = event.getUser();
 
-        Birthday birthday = new Birthday(month, day, timezone.getID(), false);
+        if (!cafeBot.getBirthdayHelper().canChangeBirthday(user.getId())) {
+            long waitTime = this.cafeBot.getBirthdayHelper().getWaitTime();
+
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                    "Error Setting Birthday",
+                    String.format
+                            ("You can only change your birthday once a week. Remaining Time: **%s** hours.",
+                                    TimeUnit.MILLISECONDS.toHours(waitTime - this.cafeBot.getBirthdayHelper().getElapsedTime(user.getId()).orElse(waitTime))
+                            )
+            )).queue();
+            return;
+        }
+
+        updateUserBirthday(month, day, timeZone, event);
+    }
+
+
+
+    private void updateUserBirthday(final BirthdayMonth month, final int day, final TimeZone timeZone, final SlashCommandInteractionEvent event) {
+        User user = event.getUser();
+
+        Birthday birthday = new Birthday(month, day, timeZone.getID(), false);
         BirthdaysEndpoint birthdaysEndpoint = cafeBot.getCafeAPI().getBirthdaysEndpoint();
+
         birthdaysEndpoint.createUserBirthday(user.getId(), birthday)
-                .exceptionallyAsync((ignored) -> {
-                    birthdaysEndpoint.updateUserBirthday(user.getId(), birthday);
-                    return null;
-                })
-                .thenRunAsync(() -> {
+                .exceptionallyComposeAsync((e) -> birthdaysEndpoint.updateUserBirthday(user.getId(), birthday))
+                .thenAcceptAsync((ignored) -> {
+                    this.cafeBot.getBirthdayHelper().addUserCooldown(user.getId());
+
                     event.getHook().sendMessageEmbeds(Helper.successEmbed(
                             "Birthday Set",
-                            String.format("You have successfully set your birthday to **%s %d** on *%s*.", month, day, timezone.getDisplayName())
+                            String.format("You have successfully set your birthday to **%s %d** on *%s*.", month, day, timeZone.getDisplayName())
                     )).queue();
+                })
+                .exceptionallyAsync((e) -> {
+                    event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                            "Error Setting Birthday",
+                            String.format("There was an error setting your birthday: %s", e.getMessage())
+                    )).queue();
+                    return null;
                 });
     }
 

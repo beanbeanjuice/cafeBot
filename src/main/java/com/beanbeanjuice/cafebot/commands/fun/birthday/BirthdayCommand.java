@@ -1,6 +1,10 @@
 package com.beanbeanjuice.cafebot.commands.fun.birthday;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.commands.fun.birthday.channel.BirthdayChannelRemoveSubCommand;
+import com.beanbeanjuice.cafebot.commands.fun.birthday.channel.BirthdayChannelSetSubCommand;
+import com.beanbeanjuice.cafebot.commands.fun.birthday.self.BirthdayRemoveSubCommand;
+import com.beanbeanjuice.cafebot.commands.fun.birthday.self.BirthdaySetSubCommand;
 import com.beanbeanjuice.cafebot.utility.commands.*;
 import net.dv8tion.jda.api.Permission;
 
@@ -48,27 +52,21 @@ public class BirthdayCommand extends Command implements ICommand {
     @Override
     public ISubCommand[] getSubCommands() {
         return new ISubCommand[] {
-                new GetBirthdaySubCommand(cafeBot),
+                new BirthdayGetSubCommand(cafeBot),
+                new BirthdaySetSubCommand(cafeBot),
+                new BirthdayRemoveSubCommand(cafeBot)
         };
     }
 
     @Override
     public SubCommandGroup[] getSubCommandGroups() {
-        ISubCommand[] editBirthdaySubCommands = new ISubCommand[] {
-                new SetBirthdaySubCommand(cafeBot),
-                new RemoveBirthdaySubCommand(cafeBot)
-        };
-        SubCommandGroup editBirthdayGroup = new SubCommandGroup("edit", "Edit your birthday!");
-        editBirthdayGroup.addSubCommands(editBirthdaySubCommands);
+        SubCommandGroup editBirthdayChannelGroup = new SubCommandGroup("channel", "Edit the birthday channel!");
+        editBirthdayChannelGroup.addSubCommands(new ISubCommand[] {
+                new BirthdayChannelSetSubCommand(cafeBot),
+                new BirthdayChannelRemoveSubCommand(cafeBot)
+        });
 
-        ISubCommand[] editBirthdayChannelSubCommands = new ISubCommand[] {
-                new SetBirthdayChannelSubCommand(cafeBot),
-                new RemoveBirthdayChannelSubCommand(cafeBot)
-        };
-        SubCommandGroup editBirthdayChannelGroup = new SubCommandGroup("edit-channel", "Edit the birthday channel!");
-        editBirthdayChannelGroup.addSubCommands(editBirthdayChannelSubCommands);
-
-        return new SubCommandGroup[] { editBirthdayGroup, editBirthdayChannelGroup };
+        return new SubCommandGroup[] { editBirthdayChannelGroup };
     }
 
 }
