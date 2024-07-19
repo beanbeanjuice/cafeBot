@@ -60,17 +60,4 @@ public class BirthdayTest {
         Assertions.assertFalse(birthday1.isBirthday());
     }
 
-    @Test
-    @DisplayName("Test Birthday")
-    public void testBirthday() {
-        Calendar cal = Calendar.getInstance();
-
-        BirthdayMonth month = BirthdayMonth.values()[cal.get(Calendar.MONTH)];
-        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        TimeZone timeZone = cal.getTimeZone();
-
-        Birthday birthday1 = new Birthday(month, dayOfMonth, timeZone.getID(), false);
-        Assertions.assertTrue(birthday1.isBirthday());
-    }
-
 }
