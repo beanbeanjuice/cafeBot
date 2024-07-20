@@ -8,6 +8,12 @@ plugins {
 group = "com.beanbeanjuice"
 version = "4.0.0"
 
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "com.beanbeanjuice.cafebot.CafeBot"
+    }
+}
+
 allprojects {
     group = "com.beanbeanjuice"
 
@@ -54,7 +60,6 @@ allprojects {
     }
 
     tasks.withType<ShadowJar> {
-        minimize()
         archiveClassifier.set("")
         archiveBaseName.set(project.name)
         destinationDirectory.set(File(rootProject.projectDir, "libs"))
@@ -88,18 +93,20 @@ dependencies {
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
 
-    implementation("com.github.twitch4j", "twitch4j", "1.15.0")
+    implementation("com.github.twitch4j", "twitch4j", "1.21.0")
 
     compileOnly("org.projectlombok", "lombok", "1.18.32")
     annotationProcessor("org.projectlombok", "lombok", "1.18.32")
 
     testImplementation("junit", "junit", "4.13.2")
     testImplementation("org.junit.jupiter", "junit-jupiter", "5.8.1")
-
-    implementation("com.github.plexpt", "chatgpt", "4.4.0")
 }
 
 tasks.withType<ShadowJar> {
+    minimize {
+        exclude(dependency("io.github.xanthic.cache:.*:.*"))
+    }
+
     relocate("net.dv8tion", "com.beanbeanjuice.cafebot.libs.net.dv8tion")
     relocate("org.slf4j", "com.beanbeanjuice.cafebot.libs.org.slf4j")
     relocate("org.apache.logging.log4j", "com.beanbeanjuice.cafebot.libs.org.apache.logging.log4j")

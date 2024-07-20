@@ -15,7 +15,6 @@ public class TwitchHandler {
 
     public TwitchHandler(final String token, final CafeBot cafeBot) {
         twitchClient = TwitchClientBuilder.builder()
-                .withEnableHelix(true)
                 .withDefaultAuthToken(new OAuth2Credential("twitch", token))
                 .build();
 
