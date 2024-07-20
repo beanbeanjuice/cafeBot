@@ -29,6 +29,7 @@ import com.beanbeanjuice.cafebot.commands.settings.welcome.message.WelcomeMessag
 import com.beanbeanjuice.cafebot.commands.social.MemberCountCommand;
 import com.beanbeanjuice.cafebot.commands.social.vent.VentCommand;
 import com.beanbeanjuice.cafebot.commands.twitch.TwitchCommand;
+import com.beanbeanjuice.cafebot.utility.EnvironmentVariable;
 import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
 import com.beanbeanjuice.cafebot.utility.helper.DailyChannelHelper;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
@@ -110,22 +111,22 @@ public class CafeBot {
         this.logger = new LogManager(
                 this,
                 "cafeBot Logging System",
-                System.getenv("CAFEBOT_GUILD_ID"),
-                System.getenv("CAFEBOT_GUILD_LOG_CHANNEL_ID"),
+                EnvironmentVariable.CAFEBOT_GUILD_ID.getSystemVariable(),
+                EnvironmentVariable.CAFEBOT_GUILD_LOG_CHANNEL_ID.getSystemVariable(),
                 "logs/"
         );
         this.cafeAPI = new CafeAPI(
                 "beanbeanjuice",
-                System.getenv("API_PASSWORD"),
-                RequestLocation.valueOf(System.getenv("CAFEBOT_REQUEST_LOCATION"))
+                EnvironmentVariable.API_PASSWORD.getSystemVariable(),
+                RequestLocation.valueOf(EnvironmentVariable.CAFEBOT_REQUEST_LOCATION.getSystemVariable())
         );
-        this.cafeAPI.setKawaiiAPI(System.getenv("KAWAII_API_TOKEN"));
+        this.cafeAPI.setKawaiiAPI(EnvironmentVariable.KAWAII_API_TOKEN.getSystemVariable());
 
-        this.logger.addWebhookURL(System.getenv("CAFEBOT_GUILD_WEBHOOK_URL"));
+        this.logger.addWebhookURL(EnvironmentVariable.CAFEBOT_GUILD_WEBHOOK_URL.getSystemVariable());
         this.logger.log(CafeBot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
         this.JDA = JDABuilder
-                .createDefault(System.getenv("CAFEBOT_TOKEN"))
+                .createDefault(EnvironmentVariable.CAFEBOT_TOKEN.getSystemVariable())
                 .setActivity(Activity.playing("The barista is starting..."))
                 .setStatus(OnlineStatus.IDLE)
                 .enableIntents(
@@ -275,13 +276,11 @@ public class CafeBot {
                 new UpdateCommand(this),
                 new DailyCommand(this),
                 new CustomChannelsCommand(this)
-
-//                new EmbedCommand(this)
         );
 
         this.JDA.addEventListener(commandHandler);
         this.helpHandler = new HelpHandler(commandHandler);
-        this.twitchHandler = new TwitchHandler(System.getenv("CAFEBOT_TWITCH_ACCESS_TOKEN"), this);
+        this.twitchHandler = new TwitchHandler(EnvironmentVariable.CAFEBOT_TWITCH_ACCESS_TOKEN.getSystemVariable(), this);
 
         UpdateCheckHelper updateCheckHelper = new UpdateCheckHelper(this);
         updateCheckHelper.checkUpdate();
