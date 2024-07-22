@@ -19,12 +19,6 @@ import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-/**
- * A class used for logging.
- *
- * @author beanbeanjuice
- * @since v3.0.1
- */
 public class LogManager {
 
     private final Time time;
@@ -323,6 +317,7 @@ public class LogManager {
             checkFiles();
 
         Logger logger = org.apache.logging.log4j.LogManager.getLogger(c);
+//        Logger logger = LoggerFactory.getLogger(c);
 
         switch (logLevel) {
             case INFO, LOADING, OKAY -> logger.info(message);
