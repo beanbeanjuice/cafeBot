@@ -33,6 +33,9 @@ public class TwitchHandler {
                 this.addStream(channel);
                 cafeBot.getLogger().log(TwitchHandler.class, LogLevel.DEBUG, String.format("Adding Twitch Channel: %s", channel), false, false);
             });
+        }).exceptionallyAsync((e) -> {
+            cafeBot.getLogger().log(TwitchHandler.class, LogLevel.ERROR, String.format("Error Adding Twitch Channels: %s", e.getMessage()), e);
+            return null;
         });
     }
 

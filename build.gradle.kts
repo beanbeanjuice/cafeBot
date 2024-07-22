@@ -88,8 +88,7 @@ dependencies {
 
     implementation("org.apache.logging.log4j", "log4j-api", "2.23.1")
     implementation("org.apache.logging.log4j", "log4j-core", "2.23.1")
-    implementation("org.slf4j", "slf4j-reload4j", "2.0.13")
-    implementation("org.apache.logging.log4j", "log4j-slf4j18-impl", "2.18.0")  // JDA logs.
+    implementation("org.apache.logging.log4j", "log4j-slf4j2-impl", "2.23.1")  // JDA logging.
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
 
@@ -105,13 +104,9 @@ dependencies {
 tasks.withType<ShadowJar> {
     minimize {
         exclude(dependency("io.github.xanthic.cache:.*:.*"))
+        exclude(dependency("org.apache.logging.log4j:.*:.*"))
+        exclude(dependency("com.github.twitch4j:.*:.*"))
     }
-
-    relocate("net.dv8tion", "com.beanbeanjuice.cafebot.libs.net.dv8tion")
-    relocate("org.slf4j", "com.beanbeanjuice.cafebot.libs.org.slf4j")
-    relocate("org.apache.logging.log4j", "com.beanbeanjuice.cafebot.libs.org.apache.logging.log4j")
-    relocate("com.github.twitch4j", "com.beanbeanjuice.cafebot.libs.com.github.twitch4j")
-    relocate("com.fasterxml.jackson.core", "com.beanbeanjuice.cafebot.libs.com.fasterxml.jackson.core")
 }
 
 configure<ProcessResources>("processResources") {
