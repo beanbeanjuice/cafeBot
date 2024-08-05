@@ -365,13 +365,7 @@ public class LogManager {
         }
     }
 
-    /**
-     * Logs to the {@link TextChannel Discord Log Channel}.
-     * @param c The class that called the log.
-     * @param logLevel The current {@link LogLevel} of the log to be created.
-     * @param message The message contents for the log.
-     */
-    private void logToLogChannel(@NotNull Class<?> c, @NotNull LogLevel logLevel, @NotNull String message) {
+    private void logToLogChannel(final Class<?> c, final LogLevel logLevel, final String message) {
         if (!discordLogging)
             return;
 
@@ -384,21 +378,14 @@ public class LogManager {
         embedBuilder.setTimestamp(new Date().toInstant());
 
         try {
-            cafeBot.getJDA().getGuildById(guildID).getTextChannelById(logChannelID).sendMessageEmbeds(embedBuilder.build()).complete();
+            cafeBot.getShardManager().getGuildById(guildID).getTextChannelById(logChannelID).sendMessageEmbeds(embedBuilder.build()).complete();
         } catch (NullPointerException ignored) { }
     }
 
-    /**
-     * Add a {@link Webhook} URL that receives logs.
-     * @param url The link for the webhook.
-     */
-    public void addWebhookURL(@NotNull String url) {
+    public void addWebhookURL(final String url) {
         webhookURLs.add(url);
     }
 
-    /**
-     * Enables logging to the Discord {@link TextChannel log channel}.
-     */
     public void enableDiscordLogging() {
         discordLogging = true;
     }

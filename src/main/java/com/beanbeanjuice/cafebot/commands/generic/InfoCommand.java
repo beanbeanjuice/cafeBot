@@ -24,7 +24,7 @@ public class InfoCommand extends Command implements ICommand {
     private MessageEmbed infoEmbed() {
         return new EmbedBuilder()
                 .setColor(Helper.getRandomColor())
-                .setAuthor("Bot Information", null, cafeBot.getJDA().getSelfUser().getAvatarUrl())
+                .setAuthor("Bot Information", null, cafeBot.getSelfUser().getAvatarUrl())
                 .addField("⚙ Commands Run", "```" + cafeBot.getCommandsRun() + "```", true)
                 .addField("<a:wowowow:886217210010431508> Creator", "```@beanbeanjuice```", true)
                 .addField("<:html:1000241652444692530> Frameworks", "Built With: [Discord JDA](https://github.com/DV8FromTheWorld/JDA), " +

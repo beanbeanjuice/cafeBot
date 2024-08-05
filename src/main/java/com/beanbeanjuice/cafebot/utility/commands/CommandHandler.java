@@ -48,7 +48,9 @@ public class CommandHandler extends ListenerAdapter {
             cafeBot.getLogger().log(CommandHandler.class, LogLevel.INFO, "Adding command: /" + newCommand.getName(), false, false);
         });
 
-        cafeBot.getJDA()
+        cafeBot.getShardManager()
+                .getShards()
+                .getFirst()
                 .updateCommands()
                 .addCommands(slashCommands)
                 .queue((e) -> cafeBot.getLogger().log(

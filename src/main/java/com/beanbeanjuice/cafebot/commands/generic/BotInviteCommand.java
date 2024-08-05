@@ -24,7 +24,7 @@ public class BotInviteCommand extends Command implements ICommand {
     }
 
     private Button getInviteButton() {
-        return Button.link(URL.replace("{BOT_ID}", cafeBot.getJDA().getSelfUser().getId()), "Invite")
+        return Button.link(URL.replace("{BOT_ID}", cafeBot.getSelfUser().getId()), "Invite")
                 .withEmoji(Emoji.fromFormatted("<a:cafeBot:1119635469727191190>"));
     }
 

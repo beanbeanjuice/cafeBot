@@ -81,7 +81,7 @@ public class TwitchGoLiveEventListener extends SimpleEventHandler {
     }
 
     private void handleMessageToServers(final ChannelGoLiveEvent event, final String profileImageURL, @Nullable final String boxArtURL, final String twitchName, final String guildID, final GuildInformation information) {
-        Guild guild = cafeBot.getJDA().getGuildById(guildID);
+        Guild guild = cafeBot.getShardManager().getGuildById(guildID);
         if (guild ==  null) return;
 
         TextChannel channel = guild.getTextChannelById(information.getSetting(GuildInformationType.TWITCH_CHANNEL_ID));
