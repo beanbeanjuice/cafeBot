@@ -43,7 +43,7 @@ public class CountingStatisticsSubCommand extends Command implements ISubCommand
                     """
                     Your current place in the global server leaderboard is \
                     **%d/%d**.
-                    """, leaderboardPlace, cafeBot.getJDA().getGuilds().size()))
+                    """, leaderboardPlace, cafeBot.getShardManager().getGuilds().size()))
                 .setColor(Helper.getRandomColor())
                 .setFooter("These statistics are for the current server only.")
                 .build();

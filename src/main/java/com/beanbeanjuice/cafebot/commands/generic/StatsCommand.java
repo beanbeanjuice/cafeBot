@@ -24,7 +24,7 @@ public class StatsCommand extends Command implements ICommand {
     private MessageEmbed statsEmbed() {
         return new EmbedBuilder()
                 .setColor(Helper.getRandomColor())
-                .setAuthor("Bot Statistics", null, cafeBot.getJDA().getSelfUser().getAvatarUrl())
+                .setAuthor("Bot Statistics", null, cafeBot.getSelfUser().getAvatarUrl())
                 .addField("<a:cafeBot:1119635469727191190> Total Text Channels", "```" + cafeBot.getTotalChannels() + "```", true)
                 .addField("<:smartPeepo:1000248538376196280> Total Servers", "```" + cafeBot.getTotalServers() + "```", true)
                 .addField("⚙ Commands Run (After Restart)", "```" + cafeBot.getCommandsRun() + "```", true)

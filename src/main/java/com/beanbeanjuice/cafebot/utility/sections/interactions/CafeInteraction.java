@@ -72,7 +72,7 @@ public class CafeInteraction {
                     }
 
                     event.getHook().sendMessage(message).mention(receiver).addEmbeds(embed.build()).queue((hook) -> {
-                        if (!receiver.getId().equalsIgnoreCase(cafeBot.getJDA().getSelfUser().getId())) return;
+                        if (!receiver.getId().equalsIgnoreCase(cafeBot.getSelfUser().getId())) return;
                         hook.reply(botString).delay(1, TimeUnit.SECONDS).queue();
                     });
 

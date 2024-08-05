@@ -40,7 +40,7 @@ public class UpdateCheckHelper {
                 this.cafeBot.getCafeAPI().getVersionsEndpoint().updateCurrentCafeBotVersion(gitHubVersion);
 
                 this.githubVersionWrapper.getVersion(gitHubVersion).thenAcceptAsync((embed) -> {
-                    this.guildsToNotify.addAll(this.cafeBot.getJDA().getGuilds());
+                    this.guildsToNotify.addAll(this.cafeBot.getShardManager().getGuilds());
                     handleUpdateNotifications();
                 });
             });

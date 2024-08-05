@@ -50,18 +50,15 @@ import com.sun.management.OperatingSystemMXBean;
 import lombok.Getter;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.requests.restaction.CacheRestAction;
+import net.dv8tion.jda.api.requests.RestAction;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.io.IOException;
@@ -82,7 +79,7 @@ public class CafeBot {
     // Bot Items
     @Getter private final String botVersion = getVersion();
     @Getter private final String botUserAgent = "java:com.beanbeanjuice.cafeBot:" + botVersion;
-    @Getter private final JDA JDA;
+    @Getter private final ShardManager shardManager;
 
     // API
     @Getter private final CafeAPI cafeAPI;
@@ -125,7 +122,7 @@ public class CafeBot {
         this.logger.addWebhookURL(EnvironmentVariable.CAFEBOT_GUILD_WEBHOOK_URL.getSystemVariable());
         this.logger.log(CafeBot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
-        this.JDA = JDABuilder
+        this.shardManager = DefaultShardManagerBuilder
                 .createDefault(EnvironmentVariable.CAFEBOT_TOKEN.getSystemVariable())
                 .setActivity(Activity.playing("The barista is starting..."))
                 .setStatus(OnlineStatus.IDLE)
@@ -135,13 +132,9 @@ public class CafeBot {
                         GatewayIntent.DIRECT_MESSAGES,
                         GatewayIntent.MESSAGE_CONTENT
                 )
-//                .enableCache(
-//                        CacheFlag.EMOJI
-//                )
                 .setMemberCachePolicy(MemberCachePolicy.ALL)  // ! - Needed for mutual guilds
                 .setChunkingFilter(ChunkingFilter.ALL)  // ! - Needed for mutual guilds
-                .build()
-                .awaitReady();
+                .build();
 
         logger.log(CafeBot.class, LogLevel.INFO, "Checking servers...");
         this.checkGuilds();
@@ -149,7 +142,7 @@ public class CafeBot {
         this.logger.enableDiscordLogging();
         logger.log(CafeBot.class, LogLevel.INFO, "Enabled Discord Logging...", true, true);
 
-        JDA.getPresence().setStatus(OnlineStatus.ONLINE);
+        this.shardManager.setStatus(OnlineStatus.ONLINE);
         logger.log(CafeBot.class, LogLevel.OKAY, "The bot is online!");
 
         logger.log(CafeBot.class, LogLevel.INFO, "Adding commands...");
@@ -158,16 +151,15 @@ public class CafeBot {
 
         setupListeners();
 
-        this.JDA.getGuilds();
-
         this.startUpdateTimer();
         this.startBioUpdateTimer();
     }
 
+    // TODO: Does this only get it from cache?
     private void checkGuilds() {
         GuildsEndpoint guildsEndpoint = this.cafeAPI.getGuildsEndpoint();
         guildsEndpoint.getAllGuildInformation().thenAcceptAsync((information) -> {
-            this.JDA.getGuilds().forEach((guild) -> {
+            this.shardManager.getGuilds().forEach((guild) -> {
                 if (information.containsKey(guild.getId())) return;
 
                 guildsEndpoint.createGuildInformation(guild.getId());
@@ -278,7 +270,7 @@ public class CafeBot {
                 new CustomChannelsCommand(this)
         );
 
-        this.JDA.addEventListener(commandHandler);
+        this.shardManager.addEventListener(commandHandler);
         this.helpHandler = new HelpHandler(commandHandler);
         this.twitchHandler = new TwitchHandler(EnvironmentVariable.CAFEBOT_TWITCH_ACCESS_TOKEN.getSystemVariable(), this);
 
@@ -293,12 +285,12 @@ public class CafeBot {
     }
 
     public void addEventListener(final ListenerAdapter listener) {
-        this.JDA.addEventListener(listener);
+        this.shardManager.addEventListener(listener);
     }
 
     private void setupListeners() {
         this.aiResponseListener = new AIResponseListener(this);
-        this.JDA.addEventListener(
+        this.shardManager.addEventListener(
                 new BotAddListener(this),
                 new BotRemoveListener(this),
                 new CountingListener(this),
@@ -333,9 +325,7 @@ public class CafeBot {
                 bot.getLogger().log(CafeBot.class, LogLevel.DEBUG, "Sending bot status message...", true, false);
 
                 bot.getUser("690927484199370753").queue((owner) -> {
-                    bot.getJDA().getRestPing().queue((ping) -> {
-                        bot.pmUser(owner, getUpdateEmbed(ping, bot.getJDA().getGatewayPing()));
-                    });
+                    bot.pmUser(owner, getUpdateEmbed(bot.getShardManager().getAverageGatewayPing()));
                 });
             }
         };
@@ -360,58 +350,73 @@ public class CafeBot {
                     case 3 -> finalString = "Serving " + getTotalUsers() + " customers!";
                 }
 
-                bot.getJDA().getPresence().setActivity(Activity.playing(initialString + finalString));
+                bot.getShardManager().setActivity(Activity.customStatus(initialString + finalString));
             }
         };
         timer.scheduleAtFixedRate(timerTask, 0, TimeUnit.MINUTES.toMillis(1));
     }
 
-    private MessageEmbed getUpdateEmbed(@NotNull Long botPing, @NotNull Long gatewayPing) {
+    public MessageEmbed getUpdateEmbed(final double gatewayPing) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        StringBuilder descriptionBuilder = new StringBuilder();
         double cpuLoad = (double) Math.round((ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCpuLoad()*100) * 100) / 100;
         long systemMemoryTotal = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getTotalMemorySize()/1048576;
         long systemMemoryUsage = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCommittedVirtualMemorySize()/1048576;
         long dedicatedMemoryTotal = Runtime.getRuntime().maxMemory()/1048576;
         long dedicatedMemoryUsage = Runtime.getRuntime().totalMemory()/1048576;
-        embedBuilder.setTitle("Daily CafeBot Update");
-        descriptionBuilder.append("**__System Status__**: Online\n\n");
-        descriptionBuilder.append("**__Rest Ping__** - `").append(botPing).append("`\n")
-                .append("**__Gateway Ping__** - `").append(gatewayPing).append("`\n")
-                .append("**__Current Version__** - `").append(this.botVersion).append("`\n")
-                .append("**__CPU Usage__** - `").append(cpuLoad).append("%`\n")
-                .append("**__OS Memory Usage__** - `").append(systemMemoryUsage).append("` mb / `").append(systemMemoryTotal).append("` mb\n")
-                .append("**__Bot Memory Usage__** - `").append(dedicatedMemoryUsage).append("` mb / `").append(dedicatedMemoryTotal).append("` mb\n")
-                .append("**__Bot Uptime__** - `").append(Helper.formatTimeDays(ManagementFactory.getRuntimeMXBean().getUptime())).append("`\n")
-                .append("**__Commands Run (After Restart)__** - `").append(this.commandsRun).append("`\n");
 
-        embedBuilder.setDescription(descriptionBuilder.toString());
+        embedBuilder.setTitle("Daily CafeBot Update");
+
+        String description = String.format(
+                """
+                **__System Status__**: Online
+                
+                **__Current Version__** - `%s`
+                **__Shards__** - `%d`
+                **__Average Gateway Ping__** - `%.2f` ms
+                **__CPU Usage__** - `%.2f%%`
+                **__OS Memory Usage__** - `%d` mb / `%d` mb
+                **__ Bot Memory Usage__** - `%d` mb / `%d` mb
+                **__Bot Uptime__** - `%s`
+                **__Commands Run (Since Restart)__** - `%d`
+                """,
+                this.botVersion,
+                this.shardManager.getShardsTotal(),
+                gatewayPing,
+                cpuLoad,
+                systemMemoryUsage,
+                systemMemoryTotal,
+                dedicatedMemoryUsage,
+                dedicatedMemoryTotal,
+                Helper.formatTimeDays(ManagementFactory.getRuntimeMXBean().getUptime()),
+                this.commandsRun);
+
+        embedBuilder.setDescription(description);
         embedBuilder.setThumbnail(this.discordAvatarUrl);
         embedBuilder.setColor(Color.green);
         return embedBuilder.build();
     }
 
     public int getTotalChannels() {
-        return this.JDA.getTextChannels().size();
+        return this.shardManager.getTextChannels().size();
     }
 
     public int getTotalServers() {
-        return this.JDA.getGuilds().size();
+        return this.shardManager.getGuilds().size();
     }
 
     public int getTotalUsers() {
         int count = 0;
-        for (Guild guild : this.JDA.getGuilds()) count += guild.getMemberCount();
+        for (Guild guild : this.shardManager.getGuilds()) count += guild.getMemberCount();
         return count;
     }
 
-    private CacheRestAction<User> getUser(String userID) {
+    private RestAction<User> getUser(String userID) {
         userID = userID.replace("<@!", "");
         userID = userID.replace("<@", ""); // Edge Case for Mobile
         userID = userID.replace(">", "");
 
         try {
-            return this.JDA.retrieveUserById(userID);
+            return this.shardManager.retrieveUserById(userID);
         } catch (NullPointerException | NumberFormatException e) {
             this.logger.log(CafeBot.class, LogLevel.ERROR, "Error getting user from cache: " + e.getMessage());
             throw e;
@@ -424,6 +429,10 @@ public class CafeBot {
 
     public void increaseCommandsRun() {
         this.commandsRun++;
+    }
+
+    public SelfUser getSelfUser() {
+        return this.shardManager.getShards().getFirst().getSelfUser();
     }
 
     public static void main(String[] args) throws InterruptedException {

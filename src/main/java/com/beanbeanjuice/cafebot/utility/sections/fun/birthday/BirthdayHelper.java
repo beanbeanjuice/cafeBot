@@ -56,7 +56,7 @@ public class BirthdayHelper {
     }
 
     private void sendBirthdayWish(final String userID, final Birthday birthday) {
-        cafeBot.getJDA().retrieveUserById(userID).queue((user) -> {
+        cafeBot.getShardManager().retrieveUserById(userID).queue((user) -> {
             this.cafeBot.getLogger().log(BirthdayHelper.class, LogLevel.INFO, String.format("Sending Birthday Messages: %s", userID), true, false);
 
             user.openPrivateChannel().queue((privateChannel) -> {

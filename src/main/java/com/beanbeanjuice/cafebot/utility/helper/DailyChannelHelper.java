@@ -37,7 +37,7 @@ public class DailyChannelHelper {
             guildsMap.forEach((guildId, guildInfo) -> {
                 String dailyChannelID = guildInfo.getSetting(GuildInformationType.DAILY_CHANNEL_ID);
 
-                Guild guild = this.cafeBot.getJDA().getGuildById(guildId);
+                Guild guild = this.cafeBot.getShardManager().getGuildById(guildId);
                 if (guild == null) return;
 
                 TextChannel channel = guild.getTextChannelById(dailyChannelID);

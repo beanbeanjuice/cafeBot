@@ -30,7 +30,7 @@ public class MenuHandler {
         this.menu = new HashMap<>();
         this.allItems = new ArrayList<>();
         refreshMenu();
-        cafeBot.getJDA().addEventListener(new MenuListener(cafeBot));
+        cafeBot.getShardManager().addEventListener(new MenuListener(cafeBot));
     }
 
     public void refreshMenu() {
