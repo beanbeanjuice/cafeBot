@@ -52,7 +52,8 @@ public enum InteractionType {
     NOSEBLEED ("nosebleed_amount", "nosebleed"),
     OK ("ok_amount", "ok"),
     UWU ("uwu_amount", "uwu"),
-    WINK ("wink_amount", "wink");
+    WINK ("wink_amount", "wink"),
+    HIDE ("hide_amount", "hide");
 
     @Getter private final String type;
     private final String kawaiiAPIString;
