@@ -104,6 +104,7 @@ public class CafeBot {
     @Getter private int commandsRun = 0;
     @Getter private final String discordAvatarUrl = "https://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif";
 
+    // TODO: Store mutual guilds in database.
     public CafeBot() throws InterruptedException {
         this.logger = new LogManager(
                 this,
@@ -225,6 +226,7 @@ public class CafeBot {
                 new DieCommand(this),
                 new GreetCommand(this),
                 new HeadPatCommand(this),
+                new HideCommand(this),
                 new HmphCommand(this),
                 new HugCommand(this),
                 new KissCommand(this),
