@@ -69,11 +69,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-/**
- * The main {@link JDA bot} class.
- *
- * @author beanbeanjuice
- */
 public class CafeBot {
 
     // Bot Items
@@ -291,7 +286,7 @@ public class CafeBot {
     }
 
     private void setupListeners() {
-        this.aiResponseListener = new AIResponseListener(this, System.getenv("CAFEBOT_OPENAI_API_KEY"), System.getenv("CAFEBOT_OPENAI_ASSISTANT_ID"));
+        this.aiResponseListener = new AIResponseListener(this, EnvironmentVariable.CAFEBOT_OPENAI_API_KEY.getSystemVariable(), EnvironmentVariable.CAFEBOT_OPENAI_ASSISTANT_ID.getSystemVariable());
         this.shardManager.addEventListener(
                 new BotAddListener(this),
                 new BotRemoveListener(this),
