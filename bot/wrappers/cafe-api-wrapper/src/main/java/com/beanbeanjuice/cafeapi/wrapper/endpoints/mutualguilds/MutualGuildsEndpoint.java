@@ -32,4 +32,22 @@ public class MutualGuildsEndpoint extends CafeEndpoint {
                 });
     }
 
+    public CompletableFuture<Boolean> addMutualGuild(final String userID, final String guildID) {
+        return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.POST)
+                .setRoute("/mutual_guilds/" + userID)
+                .addParameter("guild_id", guildID)
+                .setAuthorization(apiKey)
+                .buildAsync()
+                .thenApplyAsync((request) -> request.getStatusCode() == 201);
+    }
+
+    public CompletableFuture<Boolean> removeMutualGuild(final String userID, final String guildID) {
+        return RequestBuilder.create(RequestRoute.CAFEBOT, RequestType.DELETE)
+                .setRoute("/mutual_guilds/" + userID)
+                .addParameter("guild_id", guildID)
+                .setAuthorization(apiKey)
+                .buildAsync()
+                .thenApplyAsync((request) -> request.getStatusCode() == 200);
+    }
+
 }
