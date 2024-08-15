@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafeapi.wrapper;
 
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.CafeEndpoint;
+import com.beanbeanjuice.cafeapi.wrapper.endpoints.mutualguilds.MutualGuildsEndpoint;
 import com.beanbeanjuice.kawaiiapi.wrapper.KawaiiAPI;
 import com.beanbeanjuice.cafeapi.wrapper.endpoints.goodbyes.GoodbyesEndpoint;
 import com.beanbeanjuice.cafeapi.wrapper.requests.*;
@@ -46,6 +47,7 @@ public class CafeAPI {
     @Getter private final RafflesEndpoint rafflesEndpoint;
     @Getter private final PollsEndpoint pollsEndpoint;
     @Getter private final WinStreaksEndpoint winStreaksEndpoint;
+    @Getter private final MutualGuildsEndpoint mutualGuildsEndpoint;
     @Getter private final InteractionsEndpoint interactionsEndpoint;
     @Getter private final TwitchEndpoint twitchEndpoint;
     @Getter private final GuildsEndpoint guildsEndpoint;
@@ -81,6 +83,7 @@ public class CafeAPI {
         rafflesEndpoint = new RafflesEndpoint();
         pollsEndpoint = new PollsEndpoint();
         winStreaksEndpoint = new WinStreaksEndpoint();
+        mutualGuildsEndpoint = new MutualGuildsEndpoint();
         interactionsEndpoint = new InteractionsEndpoint();
         twitchEndpoint = new TwitchEndpoint();
         guildsEndpoint = new GuildsEndpoint();
