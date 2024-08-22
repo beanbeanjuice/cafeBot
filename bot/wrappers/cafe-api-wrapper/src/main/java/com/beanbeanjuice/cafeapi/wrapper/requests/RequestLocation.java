@@ -4,8 +4,8 @@ import lombok.Getter;
 
 public enum RequestLocation {
 
-    RELEASE ("http://beanbeanjuice.com:5100"),
-    BETA ("http://beanbeanjuice.com:5101"),
+    RELEASE ("https://api.beanbeanjuice.com"),
+    BETA ("https://beta-api.beanbeanjuice.com"),
     LOCAL ("http://localhost:5101");
 
     @Getter private final String URL;

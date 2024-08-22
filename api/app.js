@@ -41,8 +41,10 @@ app.use((request, response, next) => {
 });
 
 const cafe_api_url = "/cafe/api/v1"
+const greeting_router = require('./routes/cafe/greeting.js');
 const cafe_user_router = require('./routes/cafe/user.js');
 app.use(cafe_api_url, cafe_user_router);
+app.use(cafe_api_url, greeting_router);
 
 const cafe_bot_api_url = "/cafeBot/api/v1";
 const beanCoins_router = require('./routes/cafeBot/beanCoins.js');

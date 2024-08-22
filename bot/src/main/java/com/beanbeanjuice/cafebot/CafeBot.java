@@ -49,7 +49,6 @@ import com.beanbeanjuice.cafebot.utility.sections.twitch.TwitchHandler;
 import com.sun.management.OperatingSystemMXBean;
 import lombok.Getter;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -59,14 +58,17 @@ import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
+import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
+import org.apache.hc.core5.http.Method;
+import org.apache.hc.core5.net.URIBuilder;
 
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.management.ManagementFactory;
-import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class CafeBot {
@@ -149,6 +151,37 @@ public class CafeBot {
 
         this.startUpdateTimer();
         this.startBioUpdateTimer();
+        this.startUptimeChecker();
+    }
+
+    private void startUptimeChecker() {
+        CafeBot bot = this;
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    String urlString = String.format(
+                            "%s?status=%s&msg=%s&ping=%d",
+                            System.getenv("CAFEBOT_KUMA_URL"),
+                            "up",
+                            "OK",
+                            (int) bot.getShardManager().getAverageGatewayPing()
+                    );
+                    URIBuilder uriBuilder = new URIBuilder(urlString);
+                    SimpleHttpRequest httpRequest = new SimpleHttpRequest(Method.GET, uriBuilder.build());
+
+                    CloseableHttpAsyncClient client = HttpAsyncClients.custom().build();
+                    client.start();
+                    client.execute(httpRequest, null).get();
+                    client.close();
+                } catch (Exception e) {
+                    bot.getLogger().log(CafeBot.class, LogLevel.ERROR, "Failed to check uptime check.", e);
+                }
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(task, 0, TimeUnit.SECONDS.toMillis(60));
     }
 
     // TODO: Does this only get it from cache?
