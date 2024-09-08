@@ -1,8 +1,5 @@
-# Testing Files
-/images
-
-# Build Files
-/libs
+# Environmente File
+.env
 
 # Compiled class file
 *.class
@@ -25,15 +22,12 @@
 *.tar.gz
 *.rar
 
-# Maven
-/target/
-
 # Gradle
 /build/
 /.gradle/
 /out/
 gradle.properties
-**/build/
+/node_modules/
 
 # IntelliJ IDEA
 /.idea/
@@ -46,11 +40,6 @@ gradle.properties
 .project
 .settings/
 /bin/
-
-# Files containing safety info
-.env
-beta.json
-release.json
 
 # Logging Stuff
 /logs/
