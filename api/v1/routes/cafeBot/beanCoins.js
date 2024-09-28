@@ -81,9 +81,16 @@ router.get("/beanCoin/donation_users/:user_id", check_authentication, check_admi
             return;
         }
 
+        if (!rows[0]) {
+            response.status(404).json({
+                message: "The user does not have an active donation time."
+            });
+            return;
+        }
+
         response.status(200).json({
             message: `Successfully retrieved time until next donation for user (${user_id}).`,
-            time_until_next_donation: rows[0] || "undefined"
+            time_until_next_donation: rows[0]
         });
     });
 });
