@@ -84,7 +84,7 @@ tasks.clean {
 dependencies {
     implementation(project(":wrappers:cafe-api-wrapper"))
 
-    implementation("net.dv8tion", "JDA", "5.2.1") { exclude(module = "opus-java") }
+    implementation("net.dv8tion", "JDA", "5.2.2") { exclude(module = "opus-java") }
 
     implementation("org.apache.logging.log4j", "log4j-api", "2.24.1")  // Logging - https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
     implementation("org.apache.logging.log4j", "log4j-core", "2.24.1")

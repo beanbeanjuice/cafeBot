@@ -66,7 +66,9 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.management.ManagementFactory;
+import java.net.UnknownHostException;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class CafeBot {
@@ -170,10 +172,18 @@ public class CafeBot {
 
                     CloseableHttpAsyncClient client = HttpAsyncClients.custom().build();
                     client.start();
-                    client.execute(httpRequest, null).get();
+                    try {
+                        client.execute(httpRequest, null).get();
+                    } catch (ExecutionException e) {
+                        if (e.getCause() instanceof UnknownHostException) {
+                            bot.getLogger().log(CafeBot.class, LogLevel.ERROR, "The bot appears to be offline.", false, false, e.getCause());
+                        } else {
+                            throw e;
+                        }
+                    }
                     client.close();
                 } catch (Exception e) {
-                    bot.getLogger().log(CafeBot.class, LogLevel.ERROR, "Failed to check uptime check.", e);
+                    bot.getLogger().log(CafeBot.class, LogLevel.ERROR, "Failed uptime check.", e);
                 }
             }
         };
