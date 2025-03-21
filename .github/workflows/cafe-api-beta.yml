@@ -6,6 +6,10 @@ on:
             - 'integration'
             - 'v4-integration'
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
 jobs:
     docker:
         runs-on: ubuntu-latest
