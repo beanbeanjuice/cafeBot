@@ -1,0 +1,72 @@
+package com.beanbeanjuice.cafebot.commands.generic;
+
+import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.ICommand;
+import com.beanbeanjuice.cafebot.utility.helper.Helper;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+
+public class StatsCommand extends Command implements ICommand {
+
+    public StatsCommand(final CafeBot cafeBot) {
+        super(cafeBot);
+    }
+
+    @Override
+    public void handle(SlashCommandInteractionEvent event) {
+        event.getHook().sendMessageEmbeds(statsEmbed()).queue();
+    }
+
+    private MessageEmbed statsEmbed() {
+        return new EmbedBuilder()
+                .setColor(Helper.getRandomColor())
+                .setAuthor("Bot Statistics", null, bot.getSelfUser().getAvatarUrl())
+                .addField("📝 Total Text Channels", "```" + bot.getTotalChannels() + "```", true)
+                .addField("<:smartPeepo:1000248538376196280> Total Servers", "```" + bot.getTotalServers() + "```", true)
+                .addField("⚙ Commands Run (After Restart)", "```" + bot.getCommandsRun() + "```", true)
+                .addField("<a:catpats:950514533875720232> Total Users", "```" + bot.getTotalUsers() + "```", true)
+                .addField("<a:cafeBot:1119635469727191190> Total Shards", String.format("```%d```", bot.getShardCount()), true)
+                .setFooter("If you are enjoying this bot, please consider using /bot-upvote!")
+                .build();
+    }
+
+    @Override
+    public String getName() {
+        return "stats";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Get statistics about the bot!";
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.GENERIC;
+    }
+
+    @Override
+    public Permission[] getPermissions() {
+        return new Permission[0];
+    }
+
+    @Override
+    public boolean isEphemeral() {
+        return true;
+    }
+
+    @Override
+    public boolean isNSFW() {
+        return false;
+    }
+
+    @Override
+    public boolean allowDM() {
+        return true;
+    }
+
+}

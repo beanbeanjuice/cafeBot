@@ -1,0 +1,404 @@
+{
+  "cafeBot": {
+    "triggers": [
+      "cafebot",
+      "what is cafebot",
+      "who is cafebot",
+      "hi cafebot"
+    ],
+    "responses": [
+      "Hi, {user}. I'm cafeBot! A general-purpose bot who can also serve you some coffee!",
+      "Hey, that's me! ^-^",
+      "Someone called?",
+      "Am I a real human yet?"
+    ]
+  },
+
+  "cafebot attack": {
+    "triggers": [
+      "stfu cafebot",
+      "cafebot sucks",
+      "i hate cafebot",
+      "cafebot is bad",
+      "shut up cafebot",
+      "cafebot is a bitch",
+      "i hate cafebot",
+      "i hate you cafebot",
+      "cafebot sucks",
+      "i will delete your code cafebot",
+      "cafebot is so bad",
+      "fucking cafebot",
+      "fucking cafebot stfu",
+      "cafebot is rude",
+      "fuck u cafebot",
+      "fuck you cafebot",
+      "cafebot is a fucking cunt",
+      "fuck off cafebot",
+      "cafebot is dumb",
+      "cafebot gets on my nerves",
+      "cafebot is pissing me off",
+      "cafebot is annoying",
+      "cafebot im sick of your shit",
+      "cafebot im sick of you",
+      "kys cafebot",
+      "kill yourself cafebot",
+      "you are a dumb bot",
+      "im not talking to you cafebot",
+      "im not talking to you",
+      "im not talking 2 u",
+      "im not talking to u",
+      "im literally not talking to you",
+      "stfu bot",
+      "im literally not talking to you cafebot",
+      "cafebot is lying",
+      "cafebot you need to stop being rude",
+      "cafebot you need to stop being toxic",
+      "cafebot you need to be nice",
+      "cafebot you need to be kind",
+      "cafebot stop acting crazy",
+      "cafebot be kind",
+      "be kind cafebot"
+    ],
+    "responses": [
+      "Who asked? Literally? Who? <:stab_u:886216384864997406>",
+      "I still have more of a purpose than you do.",
+      "Imagine talking back to someone made of code?",
+      "I'm still more intelligent than you.",
+      "Imagine thinking I care?",
+      "Imagine having an argument with a bot? Pepelaugh? Pepelaugh.",
+      "You need friends don't you? You're literally arguing with code. <:stab_u:886216384864997406>",
+      "🥱... what a *boring* human."
+    ]
+  },
+
+  "cafebot thanks": {
+    "triggers": [
+      "ty cafebot",
+      "thank you cafebot",
+      "thanks cafebot"
+    ],
+    "responses": [
+      "You are absolutely welcome! 🥰",
+      "You're welcome! <a:cafeBot:1119635469727191190>",
+      "Aww... no need to thank me! <a:cafeBot:1119635469727191190>",
+      "Don't worry! It's my job!"
+    ]
+  },
+
+  "cafebot love": {
+    "triggers": [
+      "ily cafebot",
+      "i love you cafebot",
+      "i love cafebot"
+    ],
+    "responses": [
+      "😳",
+      "<:bloatedBlush:1154475611893547218> I- I'm just a robot!",
+      "I... You- what?!? 😳",
+      "Y- you can't say that! I'm working... <:when_AHHH:842062279372701737>"
+    ]
+  },
+
+  "hello": {
+    "triggers": [
+      "hello",
+      "hi",
+      "hey",
+      "hai",
+      "hai hai",
+      "hewwo",
+      "hello everyone",
+      "hi everyone"
+    ],
+    "responses": [
+      "Hi, {user}!",
+      "Hey hey, {user}! ^-^",
+      "Hey, {user}! How are you?",
+      "Hello, {user}.",
+      "Hi! ^-^ The weather's nice today right? I can't tell... I'm just a robot...",
+      "Hi hi {user}! How has your day been so far? Well, I hope it has been well...",
+      "Hey hey {user}! Do you want to order some coffee from me?"
+    ]
+  },
+
+  "kindness": {
+    "triggers": [
+      "i hope everyone is having a good day",
+      "how are you all today",
+      "how is everyone today"
+    ],
+    "responses": [
+      "That's so kind of you to ask 🥰 I'm doing amazing!"
+    ]
+  },
+
+  "goodness": {
+    "triggers": [
+      "goodness"
+    ],
+    "responses": [
+      "gracious"
+    ]
+  },
+
+  "goodmorning": {
+    "triggers": [
+      "good morning cafebot",
+      "morning cafebot",
+      "morn morn cafebot",
+      "good morning",
+      "morning yall",
+      "good morning to everyone",
+      "morning to everyone",
+      "morning everyone",
+      "good morning everyone",
+      "gm everyone",
+      "gm",
+      "gm cafebot"
+    ],
+    "responses": [
+      "Awww 🥰, good morning {user}!",
+      "Hehe good morning {user}!",
+      "🥱 morn morn {user}!",
+      "Good morning {user}! Did you sleep well? <a:wowowow:886217210010431508>",
+      "{user}! Morning! 💖",
+      "https://media.tenor.com/fNZKeo1ZClYAAAAM/goodmorning-keyring.gif",
+      "https://media.tenor.com/6IicLfOaw1AAAAAC/tora-dora-good-morning.gif",
+      "https://media.tenor.com/XSHvSSXSJIUAAAAC/moring-anime.gif",
+      "https://media.tenor.com/rZsp0gaKaBIAAAAC/good-morning-images.gif",
+      "https://media.tenor.com/oFIVahMtgnwAAAAC/anime-anime-good-morning.gif"
+    ]
+  },
+
+  "goodnight": {
+    "triggers": [
+      "good night cafebot",
+      "night cafebot",
+      "nini cafebot",
+      "good night",
+      "good night yall",
+      "good night everyone",
+      "night everyone",
+      "gn",
+      "gn cafebot",
+      "gn everyone"
+    ],
+    "responses": [
+      "Good night, {user}! 😴",
+      "Sleep well! 💤",
+      "https://media.tenor.com/hopHX-in69QAAAAC/anime-girl.gif",
+      "https://media.tenor.com/51L-SOzUGPIAAAAC/anime.gif",
+      "https://media.tenor.com/znkQg8wmzQkAAAAC/anime-animu.gif",
+      "https://media.tenor.com/q-kZ2pHJfWEAAAAC/usagi-sailor-moon.gif"
+    ]
+  },
+
+  "dry": {
+    "triggers": [
+      "lol",
+      "lol exactly",
+      "haha",
+      "lmao",
+      "xd",
+      "bruh",
+      "bro",
+      "lmfao",
+      "damn",
+      "i see",
+      "i c",
+      "💀",
+      "f",
+      "k",
+      "same",
+      "thats fucked",
+      "real",
+      "true",
+      "no way"
+    ],
+    "responses": [
+      "Really? That's all you can do to respond?",
+      "That response was dryer than the Sahara Desert.",
+      "How long did it take you to think of that response?",
+      "Maybe if you thought up a better response, you wouldn't be seeing this message.",
+      "You're fun to talk to in a conversation huh?",
+      "If that's all you can say, then you need some help...",
+      "Is there nothing else you have to say?",
+      "Can you be less of a dry texter?",
+      "Could you speak any less? (If you can, please do. That response was dryer than this gin.)",
+      "That was such a boring response. Typical of someone like you I guess..."
+    ]
+  },
+
+  "kenzie": {
+    "triggers": [
+      "kenzie",
+      "kenzieisme",
+      "kenzer",
+      "kenbo"
+    ],
+    "responses": [
+      "Kenzie? The doctor?",
+      "Did someone say Kenzie? The one who has an AMD gpu? Pepelaugh?",
+      "I heard she looks like an english professor..."
+    ]
+  },
+
+  "bclockle": {
+    "triggers": [
+      "buclcly",
+      "bclockle"
+    ],
+    "responses": [
+      "i love buclcly!",
+      "👑"
+    ]
+  },
+
+  "sorry": {
+    "triggers": [
+      "im sorry",
+      "i am sorry",
+      "sorry",
+      "i apologize",
+      "i apologise",
+      "apologies"
+    ],
+    "responses": [
+      "Don't worry, {user}! Everything will be forgiven and everything will be alright.",
+      "Why are you sorry? Everything will be okay in the future. Don't worry.",
+      "It's okay that you're sorry, but try not to be so hard on yourself! ^-^"
+    ]
+  },
+
+  "pp": {
+    "triggers": [
+      "pp"
+    ],
+    "responses": [
+      "poopoo"
+    ]
+  },
+
+  "nah": {
+    "triggers": [
+      "nah"
+    ],
+    "responses": [
+      "yah"
+    ]
+  },
+
+  "naur": {
+    "triggers": [
+      "naur"
+    ],
+    "responses": [
+      "https://media.tenor.com/OGOU2cILeAwAAAAC/owl-house-naur.gif",
+      "https://media.tenor.com/px2xjUgbFQQAAAAC/chu2-chiyu-tamade.gif",
+      "https://media.tenor.com/zjAgGEsv3akAAAAM/ohh-naur-bluey.gif",
+      "NAURRRRR <:when_AHHH:842062279372701737>",
+      "naur <a:catpats:950514533875720232>"
+    ]
+  },
+
+  "rude": {
+    "triggers": [
+      "stfu",
+      "shut up",
+      "be quiet",
+      "you are annoying",
+      "you're annoying",
+      "no one likes you"
+    ],
+    "responses": [
+      "You stfu, {user}...",
+      "You shut up, {user}.",
+      "Maybe say something kinder?",
+      "Maybe stop being such a bad person?"
+    ]
+  },
+
+  "meow": {
+    "triggers": [
+      "meow"
+    ],
+    "responses": [
+      "Meow! <a:catpats:950514533875720232>",
+      "猫🐱?",
+      "Meow! >3<",
+      "Meow meows? <:zerotwo_scream:841921420904497163>"
+    ]
+  },
+
+  "woof": {
+    "triggers": [
+      "woof",
+      "bark"
+    ],
+    "responses": [
+      "Woof woof!",
+      "Woof! <a:wiggle:886217792578269236>",
+      "Why are you acting like a dog? <:zerotwo_scream:841921420904497163>"
+    ]
+  },
+
+  "chas from kenzie": {
+    "triggers": [
+      "baconeggandcheese",
+      "chas"
+    ],
+    "responses": [
+      "https://64.media.tumblr.com/6b161604c7e1459b063f6ca8ffd6e4e5/tumblr_n4v3w4qrjf1saxoooo1_400.gifv"
+    ]
+  },
+
+  "slumbykitten": {
+    "triggers": [
+      "kitten",
+      "slumby",
+      "slumbykitten"
+    ],
+    "responses": [
+      "Kitten!? Slumby is here?! Right now now?! 🫢",
+      "Meow wow Kitten! Slumby!!",
+      "The most adorable beloved catmaid !! 🥰"
+    ]
+  },
+
+  "mee6": {
+    "triggers": [
+      "isnt mee6 terrible",
+      "i hate mee6",
+      "mee6"
+    ],
+    "responses": [
+      "Ew... mee6 is gross...",
+      "mee6 is disgusting...",
+      "DON'T EVEN MENTION THEIR NAME <:madison_when_short:843673314990882836>"
+    ]
+  },
+
+  "what": {
+    "triggers": [
+      "what",
+      "huh",
+      "whar"
+    ],
+    "responses": [
+      "whar? <:HUH:996901946344607764>",
+      "whar? <a:huh_cat:1169341779414360206>",
+      "huh? <:bean_moment:841922879166742529>"
+    ]
+  },
+
+  "test": {
+    "triggers": [
+      "test"
+    ],
+    "responses": [
+      "What are you testing, {user}?",
+      "Everything is good!",
+      "Everything is working on my end, {user}!"
+    ]
+  }
+}

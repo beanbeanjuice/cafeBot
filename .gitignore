@@ -1,3 +1,6 @@
+# Output
+libs/
+
 # Node/NPM
 /node_modules/
 
@@ -20,7 +23,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -36,10 +38,13 @@
 /target/
 
 # Gradle
-/build/
+/build
+**/build
+**/build/**
 /.gradle/
 /out/
 gradle.properties
+!/gradle/*
 
 # JetBrains IDEA
 /.idea/
@@ -118,7 +123,6 @@ hs_err_pid*
 /cmake-build-debug/
 
 # Kernel Module Compile Results
-*.mod*
 *.cmd
 .tmp_versions/
 modules.order

@@ -1,0 +1,12 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "extra-files": [
+        "build.gradle.kts",
+        "modules/cafeBot-api-wrapper/build.gradle.kts",
+        "modules/meme-api-wrapper/build.gradle.kts"
+      ]
+    }
+  }
+}
