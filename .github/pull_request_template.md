@@ -4,11 +4,13 @@
 
 ## Description
 
-*Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change. Finally, add any photos if relevant.*
+[//]: # (Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change. Finally, add any photos if relevant.)
 
-Fixes (issue)
+*I've done... I've created... etc*
 
 [//]: # (For example, Fixes GH-222, or Fixes #222)
+
+Fixes (issue)
 
 ---
 
@@ -44,6 +46,5 @@ Fixes (issue)
 - [ ] A self-review of the code was performed on GitHub.
 - [ ] Appropriate comments and javadocs were added in your code.
 - [ ] Appropriate tests were added.
-- [ ] New and existing Gradle tests have passed.
 - [ ] Appropriate changes have been made to the documentation.
 - [ ] Appropriate changes have been made to the `README.md` file.
