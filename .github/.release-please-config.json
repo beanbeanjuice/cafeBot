@@ -6,33 +6,9 @@
         {
           "type": "generic",
           "path": "build.gradle.kts",
-          "glob": false,
-          "jsonpath": "$",
           "patterns": [
             {
-              "find": "version = \"([0-9.]+)\"",
-              "replace": "version = \"${version}\""
-            }
-          ]
-        },
-        {
-          "type": "generic",
-          "path": "modules/cafeBot-api-wrapper/build.gradle.kts",
-          "glob": false,
-          "patterns": [
-            {
-              "find": "version = \"([0-9.]+)\"",
-              "replace": "version = \"${version}\""
-            }
-          ]
-        },
-        {
-          "type": "generic",
-          "path": "modules/meme-api-wrapper/build.gradle.kts",
-          "glob": false,
-          "patterns": [
-            {
-              "find": "version = \"([0-9.]+)\"",
+              "find": "version = \"[0-9]+\\.[0-9]+\\.[0-9]+\"",
               "replace": "version = \"${version}\""
             }
           ]
