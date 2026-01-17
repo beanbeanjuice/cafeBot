@@ -1,0 +1,9 @@
+bot:
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/**
+
+wrapper:
+  - changed-files:
+      - any-glob-to-any-file:
+          - wrappers/**

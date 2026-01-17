@@ -1,8 +1,18 @@
-# Description
+# Pull Request
 
-*Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change.*
+---
 
-Fixes # (issue)
+## Description
+
+[//]: # (Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change. Finally, add any photos if relevant.)
+
+*I've done... I've created... etc*
+
+[//]: # (For example, Fixes GH-222, or Fixes #222)
+
+Fixes (issue)
+
+---
 
 ## Type of Change
 
@@ -19,24 +29,22 @@ Fixes # (issue)
 - [ ] Documentation
 - [ ] Other: _____
 
-**Test Configuration**:
+---
+
+## Test Configuration
 * Hardware:
-    - CPU: 
-    - GPU: 
-    - RAM: 
-* JDK: Java Oracle OpenJDK 16
+    - CPU: AMD Ryzen 7 5800x3D
+    - GPU: Nvidia RTX 3080
+    - RAM: 32 GB DDR4 @ 3600 Mhz
+* JDK: Java OpenJDK 21
 
-# Checklist:
+---
 
-- [ ] This pull request has been linked to the appropriate issue on GitHub. (Use the development section on the right.)
-- [ ] The code follows the style [guidelines](https://github.com/beanbeanjuice/cafeBot/blob/master/CONTRIBUTING.md).
+## Checklist
+
+- [ ] The code follows the style [guidelines](/CONTRIBUTING.md).
 - [ ] A self-review of the code was performed on GitHub.
 - [ ] Appropriate comments and javadocs were added in your code.
+- [ ] Appropriate tests were added.
 - [ ] Appropriate changes have been made to the documentation.
 - [ ] Appropriate changes have been made to the `README.md` file.
-- [ ] No warnings are produced when the code is run.
-- [ ] Appropriate tests exist for this pull request.
-- [ ] New and existing Maven CI tests have passed.
-- [ ] The pull request is properly merging into the correct branch.
-- [ ] All existing local code has been pushed to the GitHub repository.
-- [ ] Changes have been documented in the current draft [cafeBot Releases](https://github.com/beanbeanjuice/cafeBot/releases) update.

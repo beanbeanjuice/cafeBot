@@ -1,5 +1,7 @@
 package com.beanbeanjuice.utility.logging;
 
+import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
+import com.beanbeanjuice.cafebot.utility.logging.LogManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +18,7 @@ class LogLevelTest {
     @Test
     @DisplayName("Log Level Test")
     public void logLevelTest() {
-        assertEquals(LogLevel.INFO.formatCode(), "INFO......", "Test the formatting method.");
+        assertEquals("INFO......", LogLevel.INFO.formatCode(), "Test the formatting method.");
     }
 
 }

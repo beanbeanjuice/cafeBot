@@ -1,0 +1,142 @@
+package com.beanbeanjuice.cafebot.utility.listeners.ai;
+
+import com.beanbeanjuice.cafebot.api.wrapper.api.enums.GuildFlag;
+import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.utility.api.OpenAIAPIWrapper;
+import com.beanbeanjuice.cafebot.utility.helper.Helper;
+import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
+import com.fasterxml.jackson.databind.JsonNode;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+
+public class AIResponseListener extends ListenerAdapter {
+
+    private final CafeBot cafeBot;
+    private final HashMap<List<String>, List<String>> messageMap;
+    private final OpenAIAPIWrapper openAI;
+
+    // Map of guild IDs, containing a map of channel IDs with a list of messages
+    private final Map<String, Map<String, Queue<PreviousMessage>>> previousMessageMap;
+
+    public AIResponseListener(final CafeBot cafeBot, final String openAIAPIKey, final String openAIAssistantID) {
+        this.cafeBot = cafeBot;
+        this.messageMap = new HashMap<>();
+
+        previousMessageMap = new HashMap<>();
+        this.openAI = new OpenAIAPIWrapper(cafeBot, openAIAPIKey, openAIAssistantID, previousMessageMap);
+        this.openAI.setHeaders();
+        refreshMaps();
+    }
+
+    public void refreshMaps() {
+        this.messageMap.clear();
+
+        try {
+            createMaps();
+        } catch (IOException e) {
+            cafeBot.getLogger().log(AIResponseListener.class, LogLevel.ERROR, "Unable to refresh AI maps...", true, true, e);
+        }
+    }
+
+    private void createMaps() throws IOException {
+        for (JsonNode type : Helper.parseJson("ai.json")) {
+            List<String> triggers = new ArrayList<>();
+            List<String> responses = new ArrayList<>();
+
+            for (JsonNode trigger : type.get("triggers")) triggers.add(trigger.asText());
+            for (JsonNode response : type.get("responses")) responses.add(response.asText());
+
+            messageMap.put(triggers, responses);
+        }
+    }
+
+    private void addMessageToGuild(final MessageReceivedEvent event) {
+        previousMessageMap.putIfAbsent(event.getGuild().getId(), new HashMap<>());
+
+        Map<String, Queue<PreviousMessage>> previousMessageMapForGuild = previousMessageMap.get(event.getGuild().getId());
+        previousMessageMapForGuild.putIfAbsent(event.getChannel().getId(), new LinkedList<>());
+
+        String message = event.getMessage().getContentDisplay();
+        if (message.length() >= 500) {
+            message = message.substring(0, 500);
+            message = message + "... (more was shown but just try to ignore the rest)";
+        }
+
+        previousMessageMapForGuild.get(event.getChannel().getId()).offer(new PreviousMessage(message, event.getAuthor().getName()));
+
+        if (previousMessageMapForGuild.get(event.getChannel().getId()).size() > 10)
+            previousMessageMapForGuild.get(event.getChannel().getId()).poll();
+    }
+
+    private void handleOpenAIResponse(final MessageReceivedEvent event) {
+        try {
+            event.getChannel().sendTyping().queue();
+
+            cafeBot.getLogger().log(AIResponseListener.class, LogLevel.DEBUG, String.format("Running AI For User (%s) on Guild (%s): %s", event.getAuthor().getId(), event.getGuild().getId(), event.getMessage().getContentRaw()), true, false);
+            openAI.getResponse(event.getGuild().getId(), event.getChannel().getId())
+                    .thenAcceptAsync((response) -> event.getMessage().reply(response).queue());
+        } catch (URISyntaxException e) {
+            event.getMessage().reply(e.getMessage()).queue();
+        }
+    }
+
+    @Override
+    public void onMessageReceived(final MessageReceivedEvent event) {
+        if (!event.isFromGuild()) return;
+        if (event.getAuthor().isBot()) return;
+
+        String guildId = event.getGuild().getId();
+
+        CompletableFuture<Boolean> aiEnabledFuture = cafeBot.getCafeAPI().getGuildApi()
+                .getDiscordServerFlags(guildId)
+                .thenApply((flags) -> flags.get(GuildFlag.ADVANCED_AI));
+
+        cafeBot.getCafeAPI().getGuildApi().getDiscordServer(guildId).thenAcceptBoth(aiEnabledFuture, (discordServer, useAdvancedAi) -> {
+            if (!discordServer.isAiEnabled()) return;
+
+            this.addMessageToGuild(event);
+
+            if (useAdvancedAi) {
+                // For some reason this is breaking things.
+//                if (event.getMessage().getReferencedMessage().getAuthor().equals(this.cafeBot.getSelfUser())) {
+//                    this.handleOpenAIResponse(event);
+//                    return;
+//                }
+
+                // TODO: Currently feature flag locked.
+                if (event.getMessage().getMentions().isMentioned(this.cafeBot.getSelfUser())) {
+                    this.handleOpenAIResponse(event);
+                    return;
+                }
+            }
+
+            String message = event.getMessage().getContentRaw().replaceAll("[^\\sa-zA-Z0-9]", "").toLowerCase();
+
+            for (var entry : messageMap.entrySet()) {
+                List<String> commandTerms = entry.getKey();
+                List<String> commandResponses = entry.getValue();
+
+                if (commandTerms.stream().noneMatch(message::equalsIgnoreCase)) continue;
+
+                event.getMessage().reply(parseMessage(
+                        commandResponses.get(Helper.getRandomInteger(0, commandResponses.size())),
+                        event.getAuthor()
+                )).queue();
+                cafeBot.increaseCommandsRun();
+
+                break;
+            }
+        });
+    }
+
+    private String parseMessage(final String message, final User user) {
+        return message.replace("{user}", user.getAsMention());
+    }
+
+}

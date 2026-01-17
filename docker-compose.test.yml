@@ -1,0 +1,43 @@
+name: cafeBot
+
+services:
+  db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: cafeBot
+    ports:
+      - "5432:5432"
+    volumes:
+      - cafeBot_db_data:/var/lib/postgresql/18/docker
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d cafeBot"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    image: git.beanbeanjuice.dev/beanbeanjuice/cafebot-api:dev-latest
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5000/api/v4/hello" ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    volumes:
+      - ./packages/database/data/v3:/app/data/v3
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/cafeBot
+      KAWAII_API_TOKEN: anonymous
+      NODE_ENV: bot_testing
+
+volumes:
+  cafeBot_db_data:

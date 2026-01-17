@@ -1,4 +1,5 @@
 ---
+
 name: Improvement Request
 about: Suggest an improvement for this project.
 title: "[IMPROVEMENT] **DESCRIBE THE IMPROVEMENT YOU WANT AS SHORT AS POSSIBLE HERE**"
@@ -10,12 +11,12 @@ assignees: beanbeanjuice
 ## Improvement Description
 A clear and concise description of what you want to happen. Diagrams and drawings are welcome.
 
-___
+---
 
 ## Additional Context
 Add any other context or screenshots about the improvement request here.
 
-___
+---
 
 ## Checklist
 
