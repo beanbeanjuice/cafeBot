@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.1](https://github.com/beanbeanjuice/cafeBot/compare/v4.0.0...v4.0.1) (2026-01-17)
+
+
+### Bug Fixes
+
+* [GH-623] Fix Release Please ([#628](https://github.com/beanbeanjuice/cafeBot/issues/628)) ([77e5d92](https://github.com/beanbeanjuice/cafeBot/commit/77e5d92488eef5b2fa385d756febf4b7209c1976))
+* [GH-624] Fix Snipe Handler ([#626](https://github.com/beanbeanjuice/cafeBot/issues/626)) ([24d9685](https://github.com/beanbeanjuice/cafeBot/commit/24d968543b375d7a6d88393b7934068629e1c7a2))
+
 ## [4.0.0](https://github.com/beanbeanjuice/cafeBot/compare/v3.2.0...v4.0.0) (2026-01-17)
 
 
