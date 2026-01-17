@@ -51,6 +51,7 @@ public class RaffleListener extends ListenerAdapter {
     private void handleSubmission(GenericMessageReactionEvent event, boolean newStatus) {
         if (event.getUser() == null) return;
         if (event.getUser().isBot()) return;
+        if (!event.getEmoji().getType().equals(Emoji.Type.UNICODE)) return;
         if (!event.getEmoji().asUnicode().equals(Emoji.fromUnicode("✅"))) return;
 
         String guildId = event.getGuild().getId();
