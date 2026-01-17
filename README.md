@@ -139,6 +139,7 @@ Commands are separated by sections. Each section has a different set of commands
 * `/birthday` - Get someone's birthday, or set your own!
 * `/meme` - Get a meme!
 * `/rate` - Rate something!
+* `/snipe` - Snipe a recently deleted message!
 
 #### 3. Game Commands
 
