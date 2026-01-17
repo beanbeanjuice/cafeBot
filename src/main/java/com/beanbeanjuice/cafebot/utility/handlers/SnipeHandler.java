@@ -23,6 +23,7 @@ public class SnipeHandler {
 
     public void convertToSnipe(String messageId) {
         PotentialSnipeMessage snipeMessage = potentialMessages.remove(messageId);
+        if (snipeMessage == null) return;
         snipeMessages.put(snipeMessage.getChannelId(), snipeMessage);
     }
 
