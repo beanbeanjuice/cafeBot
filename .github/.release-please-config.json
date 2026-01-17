@@ -3,9 +3,40 @@
     ".": {
       "release-type": "simple",
       "extra-files": [
-        "build.gradle.kts",
-        "modules/cafeBot-api-wrapper/build.gradle.kts",
-        "modules/meme-api-wrapper/build.gradle.kts"
+        {
+          "type": "generic",
+          "path": "build.gradle.kts",
+          "glob": false,
+          "jsonpath": "$",
+          "patterns": [
+            {
+              "find": "version = \"([0-9.]+)\"",
+              "replace": "version = \"${version}\""
+            }
+          ]
+        },
+        {
+          "type": "generic",
+          "path": "modules/cafeBot-api-wrapper/build.gradle.kts",
+          "glob": false,
+          "patterns": [
+            {
+              "find": "version = \"([0-9.]+)\"",
+              "replace": "version = \"${version}\""
+            }
+          ]
+        },
+        {
+          "type": "generic",
+          "path": "modules/meme-api-wrapper/build.gradle.kts",
+          "glob": false,
+          "patterns": [
+            {
+              "find": "version = \"([0-9.]+)\"",
+              "replace": "version = \"${version}\""
+            }
+          ]
+        }
       ]
     }
   }
