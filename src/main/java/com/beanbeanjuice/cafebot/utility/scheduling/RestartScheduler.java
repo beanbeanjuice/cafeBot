@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 public class RestartScheduler extends CustomScheduler {
 
-    private static final int GUILDS_PER_SHARD_THRESHOLD = 1200;
+    private static final int GUILDS_PER_SHARD_THRESHOLD = 2000;
     private boolean restartScheduled = false;
 
     public RestartScheduler(CafeBot bot) {
