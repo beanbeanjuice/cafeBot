@@ -49,9 +49,13 @@ public class BotAddListener extends ListenerAdapter {
         embedBuilder.setColor(Color.pink);
         embedBuilder.setThumbnail(cafeBot.getDiscordAvatarUrl());
         String description = """
-                <a:cafeBot:1119635469727191190> Thank you for inviting me! I hope I'm not too much trouble. Please make sure I have the appropriate permissions!
+                <a:cafeBot:1119635469727191190> Thank you for inviting me! I hope I'm not too much trouble <:cafeBot_sad:1171726165040447518>. Please make sure I have the appropriate permissions!
 
                 For a list of commands, type **/help**!
+                
+                From minigames, cafe food, interactions -- I've got it all! I even have some moderation tools for those of you who may want to use them.
+                
+                Feel free to check my very own [website](https://www.cafebot.dev) for more details!
 
                 Also... be sure to report any bug reports or features you want to see!""";
         embedBuilder.setDescription(description);
