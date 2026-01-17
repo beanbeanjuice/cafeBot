@@ -10,6 +10,7 @@ import tools.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class InteractionsApi extends Api {
@@ -32,6 +33,71 @@ public class InteractionsApi extends Api {
                     .route(String.format("/api/v4/discord/users/interactions/image/%s", type.toString()))
                     .queue()
                     .thenApply((response) -> response.getBody().get("imageUrl").asString());
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid route: " + e.getMessage());
+        }
+    }
+
+    public CompletableFuture<List<String>> getBlockedUsers(String userId) {
+        try {
+            return RequestBuilder.builder()
+                    .method(Method.GET)
+                    .baseUrl(baseUrl)
+                    .token(token)
+                    .route(String.format("/api/v4/discord/users/interactions/%s/blocked", userId))
+                    .queue()
+                    .thenApply(this::parseBlocks);
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid route: " + e.getMessage());
+        }
+    }
+
+    public CompletableFuture<List<String>> blockUser(String userId, String blockedUserId) {
+        HashMap<String, String> body = new HashMap<>();
+        body.put("blockedUserId", blockedUserId);
+
+        try {
+            return RequestBuilder.builder()
+                    .method(Method.POST)
+                    .baseUrl(baseUrl)
+                    .token(token)
+                    .route(String.format("/api/v4/discord/users/interactions/%s/blocked", userId))
+                    .body(body)
+                    .queue()
+                    .thenApply(this::parseBlocks);
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid route: " + e.getMessage());
+        }
+    }
+
+    public CompletableFuture<Void> unBlockUser(String userId, String blockedUserId) {
+        HashMap<String, String> body = new HashMap<>();
+        body.put("blockedUserId", blockedUserId);
+
+        try {
+            return RequestBuilder.builder()
+                    .method(Method.DELETE)
+                    .baseUrl(baseUrl)
+                    .token(token)
+                    .route(String.format("/api/v4/discord/users/interactions/%s/blocked", userId))
+                    .body(body)
+                    .queue()
+                    .thenAccept((response) -> {});
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid route: " + e.getMessage());
+        }
+    }
+
+    public CompletableFuture<Boolean> setInteractionStatus(String userId, boolean status) {
+        try {
+            return RequestBuilder.builder()
+                    .method(Method.POST)
+                    .baseUrl(baseUrl)
+                    .token(token)
+                    .route(String.format("/api/v4/discord/users/interactions/%s?status=%s", userId, status))
+                    .queue()
+                    .thenApply(BasicResponse::getBody)
+                    .thenApply((body) -> body.get("interactionsAllowed").asBoolean());
         } catch (Exception e) {
             throw new RuntimeException("Invalid route: " + e.getMessage());
         }
@@ -162,6 +228,15 @@ public class InteractionsApi extends Api {
         }
 
         return interactions;
+    }
+
+    private List<String> parseBlocks(BasicResponse response) {
+        JsonNode body = response.getBody();
+        List<String> blocks = new ArrayList<>();
+
+        for (JsonNode node : body.get("blockedIds")) blocks.add(node.asString());
+
+        return blocks;
     }
 
     /**

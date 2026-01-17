@@ -18,12 +18,18 @@ public class InteractionsApiTest extends ApiTest {
     private String ID_2;
     private int ID_2_SENT;
 
+    private String ID_3;
+    private String ID_4;
+
     @BeforeEach
     public void generateFakeInteractions() throws ExecutionException, InterruptedException {
         ID_1 = generateSnowflake().toString();
         ID_1_SENT = 0;
         ID_2 = generateSnowflake().toString();
         ID_2_SENT = 0;
+
+        ID_3 = generateSnowflake().toString();
+        ID_4 = generateSnowflake().toString();
 
         boolean swap = false;
         List<CompletableFuture<?>> futures = new ArrayList<>();
@@ -42,6 +48,11 @@ public class InteractionsApiTest extends ApiTest {
             if (!swap) ID_1_SENT++;
             else ID_2_SENT++;
         }
+
+        CompletableFuture<?> future1 = cafeAPI.getInteractionsApi().blockUser(ID_1, ID_3);
+        CompletableFuture<?> future2 = cafeAPI.getInteractionsApi().blockUser(ID_1, ID_4);
+        futures.add(future1);
+        futures.add(future2);
 
         // Wait for all async calls to finish
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).get();
@@ -136,6 +147,50 @@ public class InteractionsApiTest extends ApiTest {
             Assertions.assertEquals(1, interaction.getNumSentFrom());
             Assertions.assertEquals(1, interaction.getNumSentTo());
         }
+    }
+
+    @Test
+    @DisplayName("can block user")
+    public void canBlockUser() throws ExecutionException, InterruptedException {
+        String newBlockedId = generateSnowflake().toString();
+
+        List<String> blocks = cafeAPI.getInteractionsApi().blockUser(ID_1, newBlockedId).get();
+        Assertions.assertEquals(3, blocks.size()); // 2 from before.
+        Assertions.assertTrue(blocks.contains(newBlockedId));
+    }
+
+    @Test
+    @DisplayName("can unblock user")
+    public void canUnblockUser() throws ExecutionException, InterruptedException {
+        cafeAPI.getInteractionsApi().unBlockUser(ID_1, ID_3).get();
+        List<String> blocks = cafeAPI.getInteractionsApi().getBlockedUsers(ID_1).get();
+        Assertions.assertEquals(1, blocks.size());
+        Assertions.assertFalse(blocks.contains(ID_3));
+    }
+
+    @Test
+    @DisplayName("can get blocked users")
+    public void canGetBlockedUsers() throws ExecutionException, InterruptedException {
+        List<String> blocks = cafeAPI.getInteractionsApi().getBlockedUsers(ID_1).get();
+        Assertions.assertEquals(2, blocks.size());
+        Assertions.assertTrue(blocks.contains(ID_3));
+        Assertions.assertTrue(blocks.contains(ID_4));
+    }
+
+    @Test
+    @DisplayName("can disable interactions")
+    public void canDisableInteractions() throws ExecutionException, InterruptedException {
+        boolean status = cafeAPI.getInteractionsApi().setInteractionStatus(ID_1, false).get();
+
+        Assertions.assertFalse(status);
+    }
+
+    @Test
+    @DisplayName("can enable interactions")
+    public void canEnableInteractions() throws ExecutionException, InterruptedException {
+        boolean status = cafeAPI.getInteractionsApi().setInteractionStatus(ID_1, true).get();
+
+        Assertions.assertTrue(status);
     }
 
 }

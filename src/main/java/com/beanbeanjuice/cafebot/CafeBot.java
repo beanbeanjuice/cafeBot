@@ -21,6 +21,7 @@ import com.beanbeanjuice.cafebot.commands.games.game.GameCommand;
 import com.beanbeanjuice.cafebot.commands.generic.*;
 import com.beanbeanjuice.cafebot.commands.generic.twitch.TwitchCommand;
 import com.beanbeanjuice.cafebot.commands.interaction.*;
+import com.beanbeanjuice.cafebot.commands.interaction.generic.InteractionCommand;
 import com.beanbeanjuice.cafebot.commands.moderation.ClearChatCommand;
 import com.beanbeanjuice.cafebot.commands.settings.airport.AirportMessageCommand;
 import com.beanbeanjuice.cafebot.commands.settings.bind.BindCommand;
@@ -192,6 +193,7 @@ public class CafeBot {
                 new TicTacToeCommand(this),
 
                 // Interactions
+                new InteractionCommand(this),
                 new AmazedCommand(this),
                 new AskCommand(this),
                 new BiteCommand(this),

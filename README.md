@@ -169,6 +169,7 @@ Commands are separated by sections. Each section has a different set of commands
 
 #### 5. Interaction Commands
 
+* `/interaction` - The generic command! Here you can block pesky people, or even completely disable interactions!
 * `/amaze` - Be amazed at someone!
 * `/ask` - Ask someone a question!
 * `/bite` - Bite someone!

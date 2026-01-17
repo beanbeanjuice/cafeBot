@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.interaction;
 
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
+import com.beanbeanjuice.cafebot.api.wrapper.api.exception.ApiRequestException;
 import com.beanbeanjuice.cafebot.api.wrapper.type.Interaction;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
@@ -9,9 +10,11 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 public interface IInteractionCommand {
 
@@ -28,6 +31,8 @@ public interface IInteractionCommand {
                 .getInteractionsApi().createInteraction(sender.getId(), receiver.getId(), type)
                 .exceptionally((ex) -> {
                     if (sender.getId().equals(receiver.getId())) return null; // ignore failure if its the same user
+
+                    if (ex.getCause() instanceof ApiRequestException) throw new CompletionException(ex.getCause()); // Escalate exception.
 
                     cafeBot.getLogger().log(this.getClass(), LogLevel.WARN, "Error creating interaction: " + ex.getMessage(), true, true);
                     return null; // failed, but tolerated. We want to continue even if we can't create an interaction.
@@ -49,7 +54,8 @@ public interface IInteractionCommand {
             embedBuilder.setImage(imageUrl);
 
             if (interaction != null) {
-                String footer = String.format(this.getFooterString(), sender.getName(), interaction.getNumSentFrom(), receiver.getName(), interaction.getNumSentTo());
+                String customFooter = String.format(this.getFooterString(), sender.getName(), interaction.getNumSentFrom(), receiver.getName(), interaction.getNumSentTo());
+                String footer = String.format("%s - Use \"/interaction block\" or \"/interaction status\" to disable interactions!", customFooter);
                 embedBuilder.setFooter(footer);
             }
 
@@ -62,8 +68,21 @@ public interface IInteractionCommand {
 
             return null;
         }).exceptionally((ex) -> {
+            if (ex.getCause() instanceof ApiRequestException apiRequestException) {
+                JsonNode errorBody = apiRequestException.getBody().get("error");
+
+                if (errorBody.has("to")) {
+                    event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                            "Can't Interact with User",
+                            errorBody.get("to").get(0).asString()
+                    )).queue();
+
+                    throw new CompletionException(ex);
+                }
+            }
+
             event.getHook().sendMessageEmbeds(Helper.errorEmbed("Error Interacting", "I'm sorry 🥺 there was a problem interacting...")).queue();
-            return null;
+            throw new CompletionException(ex);
         });
     }
 

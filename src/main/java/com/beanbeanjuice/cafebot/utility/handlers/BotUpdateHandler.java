@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.CustomChannelType;
 import com.beanbeanjuice.cafebot.api.wrapper.type.CustomChannel;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.api.GitHubVersionEndpointWrapper;
+import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -11,7 +12,6 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class BotUpdateHandler {
 
@@ -59,10 +59,16 @@ public class BotUpdateHandler {
 
     private void handleGuildUpdate(String guildId, String channelId, MessageEmbed versionEmbed) {
         Guild guild = this.cafeBot.getShardManager().getGuildById(guildId);
-        if (guild == null) return;
+        if (guild == null) return; // Bot no longer in guild.
 
         TextChannel channel = guild.getTextChannelById(channelId);
-        if (channel == null) return;
+        if (channel == null) {
+            this.cafeBot.getLogger().logToGuild(guild, Helper.errorEmbed(
+                    "Update Notification",
+                    "I tried to send an update notification, but it seems your update channel is improperly set. Please set it using `/channel set` or removing it by using `/channel remove`."
+            ));
+            return;
+        }
 
         sendVersionEmbed(guild, channel, versionEmbed);
     }
