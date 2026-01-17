@@ -29,21 +29,6 @@ allprojects {
         mavenCentral()
 
         maven {
-            name = "sonatype"
-            url = uri("https://oss.sonatype.org/content/groups/public/")
-        }
-
-        maven {
-            name = "OSSRH-snapshots"
-            url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-        }
-
-        maven {
-            name = "OSSRH-releases"
-            url = uri("https://s01.oss.sonatype.org/content/repositories/releases/")
-        }
-
-        maven {
             name = "jitpack"
             url = uri("https://jitpack.io")
         }
