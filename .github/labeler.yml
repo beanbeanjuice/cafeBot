@@ -1,9 +1,25 @@
 bot:
   - changed-files:
       - any-glob-to-any-file:
-          - src/**
+          - "src/**"
 
-wrapper:
+modules:
   - changed-files:
       - any-glob-to-any-file:
-          - wrappers/**
+          - "modules/**"
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "build.gradle.kts"
+          - "**/build.gradle.kts"
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**.md"
+
+workflow:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
