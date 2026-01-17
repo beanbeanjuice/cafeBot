@@ -5,11 +5,13 @@ import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import net.dv8tion.jda.api.entities.Activity;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 public class BioUpdateScheduler extends CustomScheduler {
 
@@ -17,25 +19,28 @@ public class BioUpdateScheduler extends CustomScheduler {
         super(bot, "Bio-Scheduler");
     }
 
+    private final List<Supplier<String>> statuses = List.of(
+            () -> String.format("Currently in %d cafés!", bot.getTotalServers()),
+            () -> String.format("Waiting %d tables!", bot.getTotalChannels()),
+            () -> String.format("Serving %d customers!", bot.getTotalUsers()),
+            () -> "Hmmm... I really want to go on break but my boss will get angry...",
+            () -> String.format("Ugh... I've been awake for over **%d** hours...", Helper.getUptimeInHours()),
+            () -> String.format("Wow... I had to deal with %d orders today...", bot.getCommandsRun().get()),
+            () -> String.format("I feel like... there's... %d of me...", bot.getShardCount()),
+            () -> "What can I get for you today?~",
+            () -> "Am I real yet?",
+            () -> "I wish I could taste coffee..."
+    );
+
     @Override
     protected void onStart() {
-        String initialString = "/help | v" + bot.getBotVersion() + " - ";
-
         this.scheduler.scheduleAtFixedRate(() -> {
             try {
-                int num = Helper.getRandomInteger(1, 7);  // (Inclusive, Exclusive)
-                String finalString = "";
+                int statusIndex = Helper.getRandomInteger(0, statuses.size());
+                String statusString = String.format("/help | v%s - %s", bot.getBotVersion(), statuses.get(statusIndex).get());
 
-                switch (num) {
-                    case 1 -> finalString = "Currently in " + bot.getTotalServers() + " cafés!";
-                    case 2 -> finalString = "Waiting " + bot.getTotalChannels() + " tables!";
-                    case 3 -> finalString = "Serving " + bot.getTotalUsers() + " customers!";
-                    case 4 -> finalString = "Hmmm... I really want to go on break but my boss will get angry...";
-                    case 5 -> finalString = "Wow... I had to deal with " + bot.getCommandsRun() + " orders today...";
-                    case 6 -> finalString = "I feel like there's only " + bot.getShardCount() + " of me...";
-                }
-
-                bot.getShardManager().setActivity(Activity.customStatus(initialString + finalString));
+                bot.getLogger().log(this.getClass(), LogLevel.INFO, "Updating Bio: " + statusString, false, false);
+                bot.getShardManager().setActivity(Activity.customStatus(statusString));
             } catch (Exception e) {
                 bot.getLogger().log(
                         this.getClass(),

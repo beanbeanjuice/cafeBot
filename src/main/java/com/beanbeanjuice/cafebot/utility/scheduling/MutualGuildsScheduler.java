@@ -53,14 +53,12 @@ public class MutualGuildsScheduler extends CustomScheduler {
     }
 
     public void addEntry(String userId, String guildId) {
-        bot.getLogger().log(this.getClass(), LogLevel.DEBUG, "Added to addition queue.");
         synchronized (additionQueue) {
             this.additionQueue.add(new MutualGuild(userId, guildId));
         }
     }
 
     public void removeEntry(String userId, String guildId) {
-        bot.getLogger().log(this.getClass(), LogLevel.DEBUG, "Added to removal queue.");
         synchronized (removalQueue) {
             this.removalQueue.add(new MutualGuild(userId, guildId));
         }

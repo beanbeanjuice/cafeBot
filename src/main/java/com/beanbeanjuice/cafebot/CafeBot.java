@@ -6,10 +6,7 @@ import com.beanbeanjuice.cafebot.commands.cafe.BalanceCommand;
 import com.beanbeanjuice.cafebot.commands.cafe.DonateCommand;
 import com.beanbeanjuice.cafebot.commands.cafe.MenuCommand;
 import com.beanbeanjuice.cafebot.commands.cafe.ServeCommand;
-import com.beanbeanjuice.cafebot.commands.fun.AiCommand;
-import com.beanbeanjuice.cafebot.commands.fun.AvatarCommand;
-import com.beanbeanjuice.cafebot.commands.fun.BannerCommand;
-import com.beanbeanjuice.cafebot.commands.fun.EightBallCommand;
+import com.beanbeanjuice.cafebot.commands.fun.*;
 import com.beanbeanjuice.cafebot.commands.fun.birthday.BirthdayCommand;
 import com.beanbeanjuice.cafebot.commands.fun.meme.MemeCommand;
 import com.beanbeanjuice.cafebot.commands.fun.rate.RateCommand;
@@ -80,7 +77,7 @@ public class CafeBot {
 
     // Schedulers
     private final List<CustomScheduler> schedulers = new ArrayList<>();
-    private MutualGuildsScheduler mutualGuildsScheduler;
+    @Getter private MutualGuildsScheduler mutualGuildsScheduler;
     @Getter private UpdateMessageScheduler updateMessageScheduler;
 
     // Handlers
@@ -91,6 +88,7 @@ public class CafeBot {
     @Getter private PollSessionHandler pollSessionHandler;
     @Getter private TicTacToeHandler ticTacToeHandler;
     @Getter private ConfessionHandler confessionHandler;
+    @Getter private SnipeHandler snipeHandler;
 
     // Additional Items
     @Getter private final AtomicInteger commandsRun = new AtomicInteger(0); // Atomic since can run across multiple shards.
@@ -184,6 +182,7 @@ public class CafeBot {
                 new AiCommand(this),
                 new RateCommand(this),
                 new EightBallCommand(this),
+                new SnipeCommand(this),
 
                 // Games
                 new CoinFlipCommand(this),
@@ -256,12 +255,13 @@ public class CafeBot {
         this.pollSessionHandler = new PollSessionHandler(this);
         this.ticTacToeHandler = new TicTacToeHandler(this);
         this.confessionHandler = new ConfessionHandler();
+        this.snipeHandler = new SnipeHandler();
     }
 
     private void setupSchedulers() {
         this.getLogger().log(this.getClass(), LogLevel.INFO, "Setting up schedulers...", true, false);
-        mutualGuildsScheduler = new MutualGuildsScheduler(this);
         updateMessageScheduler = new UpdateMessageScheduler(this);
+        mutualGuildsScheduler = new MutualGuildsScheduler(this);
 
         this.schedulers.addAll(List.of(
                 new DailyChannelScheduler(this),
@@ -272,7 +272,8 @@ public class CafeBot {
                 updateMessageScheduler,
                 new RaffleScheduler(this),
                 new PollScheduler(this),
-                new RestartScheduler(this)
+                new RestartScheduler(this),
+                new SnipeScheduler(this)
         ));
         this.schedulers.forEach(CustomScheduler::start);
     }
@@ -291,13 +292,14 @@ public class CafeBot {
                 new AIResponseListener(this, EnvironmentVariable.CAFEBOT_OPENAI_API_KEY.getSystemVariable(), EnvironmentVariable.CAFEBOT_OPENAI_ASSISTANT_ID.getSystemVariable()),
                 new AirportListener(this.getCafeAPI()),
                 new SetAirportMessageModalListener(this),
-                new MutualGuildsListener(this.mutualGuildsScheduler),
+                new MutualGuildsListener(this),
                 new RaffleListener(this),
                 new PollListener(this),
                 new PollModalListener(this),
                 new VoiceRoleBindListener(this),
                 new ConfessionBanListener(this),
-                new HoneypotListener(this)
+                new HoneypotListener(this),
+                new SnipeListener(this)
         );
     }
 

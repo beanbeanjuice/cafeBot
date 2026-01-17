@@ -1,6 +1,8 @@
 package com.beanbeanjuice.cafebot.utility.listeners;
 
+import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.scheduling.MutualGuildsScheduler;
+import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
@@ -11,13 +13,10 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+@RequiredArgsConstructor
 public class MutualGuildsListener extends ListenerAdapter {
 
-    private final MutualGuildsScheduler scheduler;
-
-    public MutualGuildsListener(MutualGuildsScheduler scheduler) {
-        this.scheduler = scheduler;
-    }
+    private final CafeBot bot;
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
@@ -27,7 +26,7 @@ public class MutualGuildsListener extends ListenerAdapter {
         String userId = event.getAuthor().getId();
         String guildId = event.getGuild().getId();
 
-        this.scheduler.addEntry(userId, guildId);
+        bot.getMutualGuildsScheduler().addEntry(guildId, userId);
     }
 
     @Override
@@ -43,7 +42,7 @@ public class MutualGuildsListener extends ListenerAdapter {
         String userId = member.getId();
         String guildId = guild.getId();
 
-        this.scheduler.addEntry(userId, guildId);
+        bot.getMutualGuildsScheduler().addEntry(userId, guildId);
     }
 
     @Override
@@ -58,7 +57,7 @@ public class MutualGuildsListener extends ListenerAdapter {
         String userId = event.getUser().getId();
         String guildId = event.getGuild().getId();
 
-        this.scheduler.addEntry(userId, guildId);
+        bot.getMutualGuildsScheduler().addEntry(userId, guildId);
     }
 
     @Override
@@ -72,7 +71,7 @@ public class MutualGuildsListener extends ListenerAdapter {
         String userId = event.getUser().getId();
         String guildId = event.getGuild().getId();
 
-        this.scheduler.addEntry(userId, guildId);
+        bot.getMutualGuildsScheduler().addEntry(userId, guildId);
     }
 
     @Override
@@ -82,7 +81,7 @@ public class MutualGuildsListener extends ListenerAdapter {
         String userId = event.getUser().getId();
         String guildId = event.getGuild().getId();
 
-        this.scheduler.removeEntry(userId, guildId);
+        bot.getMutualGuildsScheduler().removeEntry(userId, guildId);
     }
 
 }

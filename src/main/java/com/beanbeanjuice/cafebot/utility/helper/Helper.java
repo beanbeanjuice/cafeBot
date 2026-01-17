@@ -13,7 +13,9 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.text.BreakIterator;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -346,6 +348,13 @@ public class Helper {
                 || (codePoint >= 0xFE00 && codePoint <= 0xFE0F)   // Variation Selectors
                 || (codePoint >= 0x1F900 && codePoint <= 0x1F9FF) // Supplemental Symbols
                 || (codePoint >= 0x1F1E6 && codePoint <= 0x1F1FF); // Flags
+    }
+
+    public static long getUptimeInHours() {
+        long uptimeMillis = ManagementFactory.getRuntimeMXBean().getUptime();
+        Duration d = Duration.ofMillis(uptimeMillis);
+
+        return d.toHours();
     }
 
 }
