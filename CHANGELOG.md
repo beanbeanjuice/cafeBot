@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.2](https://github.com/beanbeanjuice/cafeBot/compare/v4.1.1...v4.1.2) (2026-01-18)
+
+
+### Bug Fixes
+
+* [GH-644] Update Handler ([#645](https://github.com/beanbeanjuice/cafeBot/issues/645)) ([f22af21](https://github.com/beanbeanjuice/cafeBot/commit/f22af210b1257c0a6d2af0332ecc7fbafab7f8e2))
+
 ## [4.1.1](https://github.com/beanbeanjuice/cafeBot/compare/v4.1.0...v4.1.1) (2026-01-18)
 
 
