@@ -128,7 +128,6 @@ public class CafeBot {
                 .setChunkingFilter(ChunkingFilter.NONE)
                 .setMemberCachePolicy(MemberCachePolicy.DEFAULT)
                 .addEventListeners(new BotAllShardsReadyListener(this), new BotUpdateMessageStartListener(this)) // Instantiate this before.
-                .setShardsTotal(5)
                 .build();
 
         this.logger.enableDiscordLogging();
