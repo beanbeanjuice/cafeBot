@@ -128,13 +128,11 @@ public class CafeBot {
                 )
                 .setChunkingFilter(ChunkingFilter.NONE)
                 .setMemberCachePolicy(MemberCachePolicy.DEFAULT)
+                .addEventListeners(new BotAllShardsReadyListener(this), new BotUpdateMessageStartListener(this)) // Instantiate this before.
                 .build();
 
         this.logger.enableDiscordLogging();
         logger.log(CafeBot.class, LogLevel.INFO, "Enabled Discord Logging...", true, false);
-
-        this.shardManager.setStatus(OnlineStatus.ONLINE);
-        this.shardManager.addEventListener(new BotStartListener(this));
 
         logger.log(CafeBot.class, LogLevel.INFO, "Adding commands...", true, false);
         setupCommands();
@@ -142,8 +140,6 @@ public class CafeBot {
         this.menuHandler = new MenuHandler(this);
 
         setupListeners();
-
-        new BotUpdateHandler(this).checkUpdate();
     }
 
     private void setupCommands() {

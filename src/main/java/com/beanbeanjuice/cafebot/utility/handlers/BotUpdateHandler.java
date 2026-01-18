@@ -14,47 +14,58 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class BotUpdateHandler {
 
     private final CafeBot cafeBot;
     private final GitHubVersionEndpointWrapper githubVersionWrapper;
 
-    public BotUpdateHandler(CafeBot cafeBot) {
+    private boolean hasUpdate;
+    private MessageEmbed updateEmbed;
+    private String githubVersion;
+
+    public BotUpdateHandler(CafeBot cafeBot) throws ExecutionException, InterruptedException {
         this.cafeBot = cafeBot;
         this.githubVersionWrapper = new GitHubVersionEndpointWrapper(this.cafeBot);
+
+        hasUpdate = false;
+        checkUpdate();
+
+        this.cafeBot.getLogger().log(this.getClass(), LogLevel.INFO, "Finished caching GitHub version.", false, false);
     }
 
-    public void checkUpdate() {
-        this.githubVersionWrapper.getLatestVersionString().thenAcceptAsync((gitHubVersion) -> {
-            if (!gitHubVersion.equals(this.cafeBot.getBotVersion())) {
-                this.cafeBot.getLogger().log(BotUpdateHandler.class, LogLevel.INFO, "No update found. Not sending update messages.");
-                return;
-            }
+    // We want to use blocking calls here because we need this data before the bot starts.
+    private void checkUpdate() throws ExecutionException, InterruptedException {
+        this.githubVersion = this.githubVersionWrapper.getLatestVersionString().get();
 
-            this.cafeBot.getCafeAPI().getBotSettingsApi().getBotVersion().thenAccept((dbVersion) -> {
-                if (dbVersion.equals(gitHubVersion)) {
-                    this.cafeBot.getLogger().log(BotUpdateHandler.class, LogLevel.INFO, "Versions match. Not sending update messages.");
-                    return;
-                }
+        if (!this.githubVersion.equals(this.cafeBot.getBotVersion())) {
+            this.cafeBot.getLogger().log(BotUpdateHandler.class, LogLevel.INFO, "No update found. Not sending update messages.");
+            return;
+        }
 
-                this.cafeBot.getLogger().log(BotUpdateHandler.class, LogLevel.WARN, String.format("There is an update (%s)... sending update messages.", gitHubVersion));
-                this.cafeBot.getCafeAPI().getBotSettingsApi().updateBotVersion(gitHubVersion);
+        String dbVersion = this.cafeBot.getCafeAPI().getBotSettingsApi().getBotVersion().get();
 
-                this.githubVersionWrapper.getVersion(gitHubVersion).thenAcceptAsync((embed) -> {
-                    handleUpdateNotifications();
-                });
-            });
-        });
+        if (dbVersion.equals(githubVersion)) {
+            this.cafeBot.getLogger().log(BotUpdateHandler.class, LogLevel.INFO, "Versions match. Not sending update messages.");
+            return;
+        }
+
+        this.cafeBot.getLogger().log(BotUpdateHandler.class, LogLevel.WARN, String.format("There is an update (%s)... queueing update messages.", this.githubVersion));
+        this.cafeBot.getCafeAPI().getBotSettingsApi().updateBotVersion(githubVersion);
+        this.updateEmbed = this.githubVersionWrapper.getVersion(this.githubVersion).get();
+        hasUpdate = true;
     }
 
-    private void handleUpdateNotifications() {
-        CompletableFuture<MessageEmbed> versionEmbedFuture = this.githubVersionWrapper.getVersion(this.cafeBot.getBotVersion());
+    public void sendUpdateNotifications(int shardId) {
+        if (!hasUpdate) return;
+
+        cafeBot.getLogger().log(this.getClass(), LogLevel.INFO, String.format("Sending Updates for Shard ID#%d", shardId), true, false);
+
         CompletableFuture<Map<String, CustomChannel>> customChannelsFuture = this.cafeBot.getCafeAPI().getCustomChannelApi().getCustomChannels(CustomChannelType.UPDATE_NOTIFICATIONS);
-
-        versionEmbedFuture.thenAcceptBoth(customChannelsFuture, (versionEmbed, customChannels) -> {
+        customChannelsFuture.thenAccept((customChannels) -> {
             customChannels.forEach((guildId, customChannel) -> {
-                handleGuildUpdate(guildId, customChannel.getChannelId(), versionEmbed);
+                handleGuildUpdate(guildId, customChannel.getChannelId(), updateEmbed);
             });
         });
     }
