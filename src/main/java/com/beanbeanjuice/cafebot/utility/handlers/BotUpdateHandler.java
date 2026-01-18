@@ -6,7 +6,9 @@ import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.api.GitHubVersionEndpointWrapper;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
@@ -74,8 +76,18 @@ public class BotUpdateHandler {
     }
 
     private void sendVersionEmbed(Guild guild, TextChannel channel, MessageEmbed embed) {
+        Member self = guild.getSelfMember();
+
+        if (!self.hasPermission(channel, Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND)) {
+            cafeBot.getLogger().log(this.getClass(), LogLevel.WARN, String.format("Error Sending Update Message to %s", guild.getName()), false, false);
+            cafeBot.getLogger().logToGuild(guild, Helper.errorEmbed("Error Sending Update", "There was an update, but I was unable to send it in the update channel. Use `/channel set` to set it up!"));
+            return;
+        }
+
         guild.retrieveOwner().queue((owner) -> {
-            channel.sendMessage(String.format("%s there was an update!", owner.getAsMention()))
+            if (owner == null) return;
+
+            channel.sendMessage(String.format("%s, there was an update!", owner.getAsMention()))
                     .addEmbeds(embed)
                     .queue();
         });
