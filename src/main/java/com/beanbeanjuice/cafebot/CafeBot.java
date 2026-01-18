@@ -78,7 +78,6 @@ public class CafeBot {
     // Schedulers
     private final List<CustomScheduler> schedulers = new ArrayList<>();
     @Getter private MutualGuildsScheduler mutualGuildsScheduler;
-    @Getter private UpdateMessageScheduler updateMessageScheduler;
 
     // Handlers
     private CommandHandler commandHandler;
@@ -129,6 +128,7 @@ public class CafeBot {
                 .setChunkingFilter(ChunkingFilter.NONE)
                 .setMemberCachePolicy(MemberCachePolicy.DEFAULT)
                 .addEventListeners(new BotAllShardsReadyListener(this), new BotUpdateMessageStartListener(this)) // Instantiate this before.
+                .setShardsTotal(5)
                 .build();
 
         this.logger.enableDiscordLogging();
@@ -256,7 +256,6 @@ public class CafeBot {
 
     private void setupSchedulers() {
         this.getLogger().log(this.getClass(), LogLevel.INFO, "Setting up schedulers...", true, false);
-        updateMessageScheduler = new UpdateMessageScheduler(this);
         mutualGuildsScheduler = new MutualGuildsScheduler(this);
 
         this.schedulers.addAll(List.of(
@@ -264,8 +263,6 @@ public class CafeBot {
                 mutualGuildsScheduler,
                 new BirthdayScheduler(this),
                 new UptimeScheduler(this),
-                new BioUpdateScheduler(this),
-                updateMessageScheduler,
                 new RaffleScheduler(this),
                 new PollScheduler(this),
                 new RestartScheduler(this),
@@ -274,8 +271,12 @@ public class CafeBot {
         this.schedulers.forEach(CustomScheduler::start);
     }
 
-    public void addEventListener(final ListenerAdapter listener) {
+    public void addEventListener(ListenerAdapter listener) {
         this.shardManager.addEventListener(listener);
+    }
+
+    public void addScheduler(CustomScheduler scheduler) {
+        this.schedulers.add(scheduler);
     }
 
     private void setupListeners() {
