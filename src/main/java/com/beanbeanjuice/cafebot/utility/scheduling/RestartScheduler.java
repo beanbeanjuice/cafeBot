@@ -30,7 +30,7 @@ public class RestartScheduler extends CustomScheduler {
                 if (numCurrentShards == 0) return;
 
                 double guildsPerShard = (double) totalGuilds / numCurrentShards;
-                int recommendedShards = Math.max(1, (totalGuilds / 1000) + 1);
+                int recommendedShards = Math.max(1, (totalGuilds / 1000));
 
                 boolean needsMoreShards = recommendedShards > numCurrentShards;
                 boolean exceedsThreshold = guildsPerShard > GUILDS_PER_SHARD_THRESHOLD;
