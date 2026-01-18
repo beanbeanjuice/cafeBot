@@ -34,6 +34,8 @@ public class BioUpdateScheduler extends CustomScheduler {
 
     @Override
     protected void onStart() {
+        bot.getLogger().log(this.getClass(), LogLevel.INFO, "Starting the bio update scheduler.", false, false);
+
         this.scheduler.scheduleAtFixedRate(() -> {
             try {
                 int statusIndex = Helper.getRandomInteger(0, statuses.size());

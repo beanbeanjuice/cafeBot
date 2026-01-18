@@ -26,7 +26,7 @@ public class UpdateMessageScheduler extends CustomScheduler {
                 bot.getLogger().log(CafeBot.class, LogLevel.DEBUG, "Sending bot status message...", true, false);
 
                 bot.getUser("690927484199370753").queue((owner) -> {
-                    bot.pmUser(owner, getUpdateEmbed(bot.getShardManager().getAverageGatewayPing()));
+                    bot.pmUser(owner, getUpdateEmbed(bot));
                 });
             } catch (Exception e) {
                 bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Sending Bot Status Message: " + e.getMessage(), true, true);
@@ -34,8 +34,9 @@ public class UpdateMessageScheduler extends CustomScheduler {
         }, 0, 1, TimeUnit.DAYS);
     }
 
-    public MessageEmbed getUpdateEmbed(double gatewayPing) {
+    public static MessageEmbed getUpdateEmbed(CafeBot bot) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
+        double gatewayPing = bot.getShardManager().getAverageGatewayPing();
         double cpuLoad = (double) Math.round((ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCpuLoad()*100) * 100) / 100;
         long systemMemoryTotal = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getTotalMemorySize()/1048576;
         long systemMemoryUsage = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class).getCommittedVirtualMemorySize()/1048576;

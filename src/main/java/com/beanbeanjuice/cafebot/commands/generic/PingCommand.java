@@ -5,6 +5,7 @@ import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
+import com.beanbeanjuice.cafebot.utility.scheduling.UpdateMessageScheduler;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -23,10 +24,9 @@ public class PingCommand extends Command implements ICommand {
 
     @Override
     public void handle(SlashCommandInteractionEvent event) {
-        double gatewayPing = this.bot.getShardManager().getAverageGatewayPing();
         int shardId = event.isFromGuild() ? event.getJDA().getShardInfo().getShardId() : -1;
 
-        event.getHook().sendMessageEmbeds(messageEmbed(gatewayPing, shardId)).queue();
+        event.getHook().sendMessageEmbeds(messageEmbed(shardId)).queue();
 
         Optional<OptionMapping> wordOptionMapping = Optional.ofNullable(event.getOption("word"));
         Optional<OptionMapping> numberOptionMapping = Optional.ofNullable(event.getOption("number"));
@@ -35,8 +35,8 @@ public class PingCommand extends Command implements ICommand {
         numberOptionMapping.map(OptionMapping::getAsInt).ifPresent((number) -> event.getHook().sendMessage(String.valueOf(number)).queue());
     }
 
-    private MessageEmbed messageEmbed(double gatewayPing, int shardId) {
-        EmbedBuilder embedBuilder = new EmbedBuilder(this.bot.getUpdateMessageScheduler().getUpdateEmbed(gatewayPing));
+    private MessageEmbed messageEmbed(int shardId) {
+        EmbedBuilder embedBuilder = new EmbedBuilder(UpdateMessageScheduler.getUpdateEmbed(this.bot));
 
         embedBuilder.setTitle("ping!", "https://www.beanbeanjuice.com/cafeBot.html");
         embedBuilder.appendDescription("\n\nHello!~ Would you like to order some coffee?");
