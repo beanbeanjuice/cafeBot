@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.1.1](https://github.com/beanbeanjuice/cafeBot/compare/v4.1.0...v4.1.1) (2026-01-18)
+
+
+### Bug Fixes
+
+* [GH-630] Fix Restart Scheduler ([#641](https://github.com/beanbeanjuice/cafeBot/issues/641)) ([f154f9d](https://github.com/beanbeanjuice/cafeBot/commit/f154f9d9e922a14ad2812af3c5b93596ccd058af))
+* [GH-633] Fix Update Message Error ([#642](https://github.com/beanbeanjuice/cafeBot/issues/642)) ([27914f3](https://github.com/beanbeanjuice/cafeBot/commit/27914f3a88793f8f0801b1cd194ce98f656a444e))
+
 ## [4.1.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.0.1...v4.1.0) (2026-01-17)
 
 
