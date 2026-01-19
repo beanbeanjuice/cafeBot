@@ -93,13 +93,18 @@ jobs:
           username: ${{ secrets.FORGEJO_USERNAME }}
           password: ${{ secrets.FORGEJO_TOKEN }}
       -
+        name: Read next BOT version from manifest
+        run: |
+          VERSION=$(jq -r '.["."]' .github/.release-please-manifest.json)
+          echo "TAG=$VERSION" >> $GITHUB_ENV
+      -
         name: Build and Push to Custom Registry
         uses: docker/build-push-action@v6
         with:
           push: true
           tags: |
-            ${{ secrets.FORGEJO_REGISTRY }}/${{ secrets.FORGEJO_USERNAME }}/cafebot-bot:unstable
-            ${{ secrets.FORGEJO_REGISTRY }}/${{ secrets.FORGEJO_USERNAME }}/cafebot-bot:pr-${{ github.event.pull_request.number }}
+            ${{ secrets.FORGEJO_REGISTRY }}/${{ secrets.FORGEJO_USERNAME }}/cafebot-bot:dev-latest
+            ${{ secrets.FORGEJO_REGISTRY }}/${{ secrets.FORGEJO_USERNAME }}/cafebot-bot:dev-${{ env.TAG }}
           provenance: true
           sbom: true
 
