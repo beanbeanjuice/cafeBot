@@ -1,0 +1,57 @@
+name: Gradle Test
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        required: false
+        type: string
+        default: '21'
+      gradle-version:
+        required: false
+        type: string
+        default: '8.14.3'
+    secrets:
+      FORGEJO_REGISTRY:
+        required: true
+      FORGEJO_USERNAME:
+        required: true
+      FORGEJO_TOKEN:
+        required: true
+
+jobs:
+  gradle-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+
+      - name: Set Up JDK ${{ inputs.java-version }}
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '${{ inputs.java-version }}'
+          cache: gradle
+
+      - name: Setup Gradle ${{ inputs.gradle-version }}
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          gradle-version: '${{ inputs.gradle-version}}'
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.FORGEJO_REGISTRY }}
+          username: ${{ secrets.FORGEJO_USERNAME }}
+          password: ${{ secrets.FORGEJO_TOKEN }}
+
+      - name: Start Docker Compose for Tests
+        run: docker compose -f docker-compose.test.yml up -d --wait
+
+      - name: Test with Gradle
+        run: gradle test
+        env:
+          CAFEBOT_API_URL: 'http://localhost:5000'
+
+      - name: Tear Down Docker Compose
+        run: docker compose -f docker-compose.test.yml down -v
