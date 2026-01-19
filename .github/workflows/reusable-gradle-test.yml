@@ -11,6 +11,13 @@ on:
         required: false
         type: string
         default: '8.14.3'
+    secrets:
+      FORGEJO_REGISTRY:
+        required: true
+      FORGEJO_USERNAME:
+        required: true
+      FORGEJO_TOKEN:
+        required: true
 
 jobs:
   gradle-test:

@@ -21,6 +21,10 @@ jobs:
     uses: ./.github/workflows/reusable-gradle-test.yml
     with:
       gradle-version: ${{ matrix.gradle-version }}
+    secrets:
+      FORGEJO_REGISTRY: ${{ secrets.FORGEJO_REGISTRY }}
+      FORGEJO_USERNAME: ${{ secrets.FORGEJO_USERNAME }}
+      FORGEJO_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
 
   docker-release:
     if: ${{ !startsWith(github.head_ref, 'dependabot/') }}
