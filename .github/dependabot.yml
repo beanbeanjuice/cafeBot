@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/"
+    target-branch: "master"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "11:00"
+      timezone: "UTC"
+    commit-message:
+      prefix: fix
+      prefix-development: fix
+      include: scope
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    target-branch: "master"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "11:00"
+      timezone: "UTC"
+    commit-message:
+      prefix: fix
+      prefix-development: fix
+      include: scope
