@@ -1,0 +1,35 @@
+name: Gradle Build
+
+on:
+  workflow_call:
+    inputs:
+      gradle-version:
+        required: false
+        type: string
+        default: '8.14.3'
+      java-version:
+        required: false
+        type: string
+        default: '21'
+
+jobs:
+  gradle-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+
+      - name: Set Up JDK ${{ inputs.java-version }}
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '${{ inputs.java-version }}'
+          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          gradle-version: '${{ inputs.gradle-version }}'
+
+      - name: Build with Gradle
+        run: gradle shadowJar

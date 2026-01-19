@@ -1,4 +1,4 @@
-name: "CodeQL and Maven CI"
+name: "CodeQL"
 
 on:
   push:
