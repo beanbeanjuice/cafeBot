@@ -55,9 +55,11 @@ public class BotAddListener extends ListenerAdapter {
                 
                 From minigames, cafe food, interactions -- I've got it all! I even have some moderation tools for those of you who may want to use them.
                 
+                I even have a way for you to setup custom channels! You can use `/channel list` for more information!
+                
                 Feel free to check my very own [website](https://www.cafebot.dev) for more details!
 
-                Also... be sure to report any bug reports or features you want to see!""";
+                Also... be sure to report any bugs or features you want to see!""";
         embedBuilder.setDescription(description);
         return embedBuilder.build();
     }
