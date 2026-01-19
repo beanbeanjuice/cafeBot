@@ -9,7 +9,7 @@ concurrency:
 jobs:
   gradle-build:
     name: Gradle Build
-    uses: ./.github/workflows/reusable/gradle-build.yml
+    uses: ./.github/workflows/reusable-gradle-build.yml
 
   gradle-test:
     name: Gradle (${{ matrix.gradle-version }}) Test
@@ -18,7 +18,7 @@ jobs:
       matrix:
         gradle-version: [8.14.3, 9.2.1]
 
-    uses: ./.github/workflows/reusable/gradle-test.yml
+    uses: ./.github/workflows/reusable-gradle-test.yml
     with:
       gradle-version: ${{ matrix.gradle-version }}
 
