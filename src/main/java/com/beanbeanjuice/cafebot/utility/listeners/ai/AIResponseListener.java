@@ -49,7 +49,7 @@ public class AIResponseListener extends ListenerAdapter {
             List<String> triggers = new ArrayList<>();
             List<String> responses = new ArrayList<>();
 
-            for (JsonNode trigger : type.get("triggers")) triggers.add(trigger.asText());
+            for (JsonNode trigger : type.get("triggers")) triggers.add(trigger.asText().replaceAll("[^a-zA-Z0-9]", ""));
             for (JsonNode response : type.get("responses")) responses.add(response.asText());
 
             messageMap.put(triggers, responses);
@@ -116,7 +116,7 @@ public class AIResponseListener extends ListenerAdapter {
                 }
             }
 
-            String message = event.getMessage().getContentRaw().replaceAll("[^\\sa-zA-Z0-9]", "").toLowerCase();
+            String message = event.getMessage().getContentRaw().replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
             for (var entry : messageMap.entrySet()) {
                 List<String> commandTerms = entry.getKey();
