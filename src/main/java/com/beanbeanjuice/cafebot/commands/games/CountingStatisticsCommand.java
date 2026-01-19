@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -49,7 +50,7 @@ public class CountingStatisticsCommand extends Command implements ICommand {
     }
 
     private int getCurrentGlobalRanking(Map<String, CountingStatistics> globalCountingMap, String guildId) {
-        Set<CountingStatistics> globalStatistics = (Set<CountingStatistics>) globalCountingMap.values();
+        Set<CountingStatistics> globalStatistics = new HashSet<>(globalCountingMap.values());
         globalStatistics = globalStatistics.stream().sorted((a, b) -> b.getCurrentCount() - a.getCurrentCount()).collect(Collectors.toCollection(LinkedHashSet::new));
 
         int ranking = 1;
@@ -63,7 +64,7 @@ public class CountingStatisticsCommand extends Command implements ICommand {
     }
 
     private int getHighestGlobalRanking(Map<String, CountingStatistics> globalCountingMap, String guildId) {
-        Set<CountingStatistics> globalStatistics = (Set<CountingStatistics>) globalCountingMap.values();
+        Set<CountingStatistics> globalStatistics = new HashSet<>(globalCountingMap.values());
         globalStatistics = globalStatistics.stream().sorted((a, b) -> b.getHighestCount() - a.getHighestCount()).collect(Collectors.toCollection(LinkedHashSet::new));
 
         int ranking = 1;
