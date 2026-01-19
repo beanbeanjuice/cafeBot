@@ -30,7 +30,7 @@ public class BirthdaySetSubCommand extends Command implements ISubCommand {
         int month = event.getOption("month").getAsInt();
         int day = event.getOption("day").getAsInt();
         Optional<Integer> yearOptional = Optional.ofNullable(event.getOption("year")).map(OptionMapping::getAsInt);
-        ZoneId zoneId = ZoneId.of(event.getOption("timezone").getAsString());
+        ZoneId zoneId = TimeZone.getTimeZone(event.getOption("timezone").getAsString()).toZoneId();
 
         Birthday birthday = new Birthday(userId, yearOptional.orElse(2000), month, day, zoneId);
 
