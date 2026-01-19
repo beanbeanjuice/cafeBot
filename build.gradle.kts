@@ -103,7 +103,7 @@ dependencies {
 
     implementation("org.apache.logging.log4j:log4j-api:2.25.3")  // Logging - https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
     implementation("org.apache.logging.log4j:log4j-core:2.25.3")
-    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:2.24.3")  // JDA logging.
+    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:2.25.3")  // JDA logging.
 
     implementation("com.github.twitch4j:twitch4j:1.25.0")  // Twitch - https://github.com/twitch4j/twitch4j
 
