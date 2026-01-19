@@ -14,7 +14,7 @@ RUN chmod +x ./gradlew
 RUN gradle shadowJar
 
 # Use a minimal OpenJDK runtime for the final image
-FROM eclipse-temurin:21-jre AS runtime
+FROM eclipse-temurin:25-jre AS runtime
 
 ARG UID=1001
 ARG GID=1001
