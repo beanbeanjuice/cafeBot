@@ -1,5 +1,24 @@
 # Changelog
 
+## [4.2.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.1.2...v4.2.0) (2026-01-19)
+
+
+### Features
+
+* [GH-647] Add Custom Channels to Join Message ([#677](https://github.com/beanbeanjuice/cafeBot/issues/677)) ([73fd869](https://github.com/beanbeanjuice/cafeBot/commit/73fd86957c9d6d308ddadf0ecaaa3ce91459f2cb))
+
+
+### Bug Fixes
+
+* [GH-596] Remove Whitespace for AI Messages ([#678](https://github.com/beanbeanjuice/cafeBot/issues/678)) ([7eafc77](https://github.com/beanbeanjuice/cafeBot/commit/7eafc77a6d972860397e10844d58b879780fad2f))
+* [GH-657] Removed Gradle Versions File ([#658](https://github.com/beanbeanjuice/cafeBot/issues/658)) ([599b0f5](https://github.com/beanbeanjuice/cafeBot/commit/599b0f54e2d099964f56d4e809ff191f3288781a))
+* [GH-665] Fix Counting Statistics Cast ([#675](https://github.com/beanbeanjuice/cafeBot/issues/675)) ([475dd46](https://github.com/beanbeanjuice/cafeBot/commit/475dd469aa0e35d6422701f0830dedb473fe51dc))
+* [GH-666] Fix Dev Bot Push ([#667](https://github.com/beanbeanjuice/cafeBot/issues/667)) ([2ceb45e](https://github.com/beanbeanjuice/cafeBot/commit/2ceb45e3def288657584194ae715d40effab9db9))
+* [GH-674] Invalid Timezone ID Error ([#676](https://github.com/beanbeanjuice/cafeBot/issues/676)) ([3c9f763](https://github.com/beanbeanjuice/cafeBot/commit/3c9f763ce72c9c448da7b71164ad8871f31cb613))
+* **deps:** bump eclipse-temurin from 21-jre to 25-jre ([#652](https://github.com/beanbeanjuice/cafeBot/issues/652)) ([43b93d7](https://github.com/beanbeanjuice/cafeBot/commit/43b93d7e7f333ce56bb839803041efe06940ab56))
+* **deps:** bump org.apache.logging.log4j:log4j-slf4j2-impl from 2.24.3 to 2.25.3 ([#654](https://github.com/beanbeanjuice/cafeBot/issues/654)) ([04346bd](https://github.com/beanbeanjuice/cafeBot/commit/04346bdd9629cec1be3a3105ed1652e69f61131a))
+* **deps:** bump tools.jackson.core:jackson-databind from 3.0.1 to 3.0.3 ([#656](https://github.com/beanbeanjuice/cafeBot/issues/656)) ([321aa1f](https://github.com/beanbeanjuice/cafeBot/commit/321aa1fc539f7631d9c67e4307436d2cca7328a6))
+
 ## [4.1.2](https://github.com/beanbeanjuice/cafeBot/compare/v4.1.1...v4.1.2) (2026-01-18)
 
 
