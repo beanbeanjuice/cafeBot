@@ -9,12 +9,9 @@ assignees: beanbeanjuice
 ---
 
 ## Improvement Description
-A clear and concise description of what you want to happen. Diagrams and drawings are welcome.
 
----
+[//]: # (A clear and concise description of what you want to happen. Diagrams and drawings are welcome.)
 
-## Additional Context
-Add any other context or screenshots about the improvement request here.
 
 ---
 
