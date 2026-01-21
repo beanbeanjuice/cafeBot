@@ -24,7 +24,7 @@ public class BioUpdateScheduler extends CustomScheduler {
             () -> String.format("Waiting %d tables!", bot.getTotalChannels()),
             () -> String.format("Serving %d customers!", bot.getTotalUsers()),
             () -> "Hmmm... I really want to go on break but my boss will get angry...",
-            () -> String.format("Ugh... I've been awake for over **%d** hours...", Helper.getUptimeInHours()),
+            () -> String.format("Ugh... I've been awake for over %d hours...", Helper.getUptimeInHours()),
             () -> String.format("Wow... I had to deal with %d orders today...", bot.getCommandsRun().get()),
             () -> String.format("I feel like... there's... %d of me...", bot.getShardCount()),
             () -> "What can I get for you today?~",
