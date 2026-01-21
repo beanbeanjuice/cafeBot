@@ -110,7 +110,7 @@ This is an example of how to list things you need to use the software and how to
 ### Installation
 
 1. Head over to [https://www.cafebot.dev](https://www.cafebot.dev).
-2. Click "Add Bot".
+2. Click "Add Bot". test
 
 ## Usage
 
