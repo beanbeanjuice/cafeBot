@@ -46,7 +46,7 @@ allprojects {
 
         implementation("io.github.cdimascio:java-dotenv:5.2.2") // https://mvnrepository.com/artifact/io.github.cdimascio/java-dotenv
 
-        testImplementation("org.junit.jupiter:junit-jupiter:6.0.1") // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+        testImplementation("org.junit.jupiter:junit-jupiter:6.0.2") // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
         implementation("org.jetbrains", "annotations", "24.1.0")
