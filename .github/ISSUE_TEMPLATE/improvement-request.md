@@ -4,7 +4,6 @@ name: Improvement Request
 about: Suggest an improvement for this project.
 title: "[IMPROVEMENT] **DESCRIBE THE IMPROVEMENT YOU WANT AS SHORT AS POSSIBLE HERE**"
 labels: improvement
-assignees: beanbeanjuice
 
 ---
 
