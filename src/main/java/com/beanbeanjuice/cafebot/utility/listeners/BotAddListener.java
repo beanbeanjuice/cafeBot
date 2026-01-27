@@ -58,6 +58,8 @@ public class BotAddListener extends ListenerAdapter {
                 I even have a way for you to setup custom channels! You can use `/channel list` for more information!
                 
                 Feel free to check my very own [website](https://www.cafebot.dev) for more details!
+                
+                I update frequently! If you want to receive update messages, just go to the channel you want to receive messages in and type `/channel set Update Notifications`!
 
                 Also... be sure to report any bugs or features you want to see!""";
         embedBuilder.setDescription(description);
