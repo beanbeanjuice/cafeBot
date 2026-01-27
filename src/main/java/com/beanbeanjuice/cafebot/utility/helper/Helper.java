@@ -15,11 +15,10 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.text.BreakIterator;
+import java.text.NumberFormat;
 import java.time.Duration;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -355,6 +354,10 @@ public class Helper {
         Duration d = Duration.ofMillis(uptimeMillis);
 
         return d.toHours();
+    }
+
+    public static String formatNumber(long number) {
+        return NumberFormat.getNumberInstance(Locale.US).format(number);
     }
 
 }
