@@ -20,13 +20,13 @@ public class BioUpdateScheduler extends CustomScheduler {
     }
 
     private final List<Supplier<String>> statuses = List.of(
-            () -> String.format("Currently in %d cafés!", bot.getTotalServers()),
-            () -> String.format("Waiting %d tables!", bot.getTotalChannels()),
-            () -> String.format("Serving %d customers!", bot.getTotalUsers()),
+            () -> String.format("Currently in %s cafés!", Helper.formatNumber(bot.getTotalServers())),
+            () -> String.format("Waiting %s tables!", Helper.formatNumber(bot.getTotalChannels())),
+            () -> String.format("Serving %s customers!", Helper.formatNumber(bot.getTotalUsers())),
             () -> "Hmmm... I really want to go on break but my boss will get angry...",
-            () -> String.format("Ugh... I've been awake for over %d hours...", Helper.getUptimeInHours()),
-            () -> String.format("Wow... I had to deal with %d orders today...", bot.getCommandsRun().get()),
-            () -> String.format("I feel like... there's... %d of me...", bot.getShardCount()),
+            () -> String.format("Ugh... I've been awake for over %s hours...", Helper.formatNumber(Helper.getUptimeInHours())),
+            () -> String.format("Wow... I had to deal with %s orders today...", Helper.formatNumber(bot.getCommandsRun().get())),
+            () -> String.format("I feel like... there's... %s of me...", Helper.formatNumber(bot.getShardCount())),
             () -> "What can I get for you today?~",
             () -> "Am I real yet?",
             () -> "I wish I could taste coffee..."
