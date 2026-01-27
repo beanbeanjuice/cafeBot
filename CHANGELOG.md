@@ -1,5 +1,23 @@
 # Changelog
 
+## [4.3.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.2.0...v4.3.0) (2026-01-27)
+
+
+### Features
+
+* [GH-694] Add Number Comma Helper ([#710](https://github.com/beanbeanjuice/cafeBot/issues/710)) ([a21cf7f](https://github.com/beanbeanjuice/cafeBot/commit/a21cf7f32ae14a3a82be405ffcd92bf1209a08e3))
+* [GH-695] Add Formatted Numbers to Bio ([#711](https://github.com/beanbeanjuice/cafeBot/issues/711)) ([5c4cd7c](https://github.com/beanbeanjuice/cafeBot/commit/5c4cd7c41c2575ecd486e44f8de54c7857396c9b))
+* [GH-702] Update Bot Join Message ([#705](https://github.com/beanbeanjuice/cafeBot/issues/705)) ([6f974c8](https://github.com/beanbeanjuice/cafeBot/commit/6f974c8848d5068d15a53a87f5a163bcb6c5bc7c))
+
+
+### Bug Fixes
+
+* [GH-681] Remove Bold Text From Bot Status ([#682](https://github.com/beanbeanjuice/cafeBot/issues/682)) ([9536b21](https://github.com/beanbeanjuice/cafeBot/commit/9536b21e71b9cddf0c01a77345b42551205c4839))
+* [GH-706] Log Schedulers to File During Startup ([#707](https://github.com/beanbeanjuice/cafeBot/issues/707)) ([64c4aac](https://github.com/beanbeanjuice/cafeBot/commit/64c4aac0045bcf44a08a23c10a2253b649898260))
+* **deps:** bump com.gradleup.shadow from 9.3.0 to 9.3.1 ([#699](https://github.com/beanbeanjuice/cafeBot/issues/699)) ([da64d14](https://github.com/beanbeanjuice/cafeBot/commit/da64d14af64ccd2c57f3c9ca441d09fd1182f409))
+* **deps:** bump org.junit.jupiter:junit-jupiter from 6.0.1 to 6.0.2 ([#697](https://github.com/beanbeanjuice/cafeBot/issues/697)) ([dccdfc0](https://github.com/beanbeanjuice/cafeBot/commit/dccdfc07ce32057a1bcd2678fc68e735f6ef916d))
+* **deps:** bump tools.jackson.core:jackson-core from 3.0.3 to 3.0.4 ([#696](https://github.com/beanbeanjuice/cafeBot/issues/696)) ([e8caa3b](https://github.com/beanbeanjuice/cafeBot/commit/e8caa3b0e64952bd63c337f59fd317dab3277733))
+
 ## [4.2.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.1.2...v4.2.0) (2026-01-19)
 
 
