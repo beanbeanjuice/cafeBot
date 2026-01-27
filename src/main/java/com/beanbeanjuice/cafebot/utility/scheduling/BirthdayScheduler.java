@@ -27,11 +27,11 @@ public class BirthdayScheduler extends CustomScheduler {
 
     @Override
     protected void onStart() {
-        bot.getLogger().log(this.getClass(), LogLevel.INFO, "Starting the birthday scheduler...", true, false);
+        bot.getLogger().log(this.getClass(), LogLevel.INFO, "Starting the birthday scheduler...", false, false);
 
         Runnable task = () -> {
             try {
-                bot.getLogger().log(BirthdayScheduler.class, LogLevel.INFO, "Checking birthdays...", true, false);
+                bot.getLogger().log(BirthdayScheduler.class, LogLevel.INFO, "Checking birthdays...", false, false);
                 handleBirthdays().thenAccept(count -> {
                             bot.getLogger().log(
                                     BirthdayScheduler.class,

@@ -35,7 +35,7 @@ public class PollScheduler extends CustomScheduler {
                 bot.getLogger().log(PollScheduler.class, LogLevel.INFO, "Checking polls...", false, false);
                 handlePolls();
             } catch (Exception e) {
-                bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Checking Polls: " + e.getMessage(), false, false);
+                bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Checking Polls: " + e.getMessage());
             }
         }, 1, 1, TimeUnit.MINUTES);
     }

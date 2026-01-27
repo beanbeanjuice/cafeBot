@@ -13,7 +13,7 @@ public class SnipeScheduler extends CustomScheduler {
 
     @Override
     protected void onStart() {
-        bot.getLogger().log(this.getClass(), LogLevel.INFO, "Starting the Snipe Message scheduler...", true, false);
+        bot.getLogger().log(this.getClass(), LogLevel.INFO, "Starting the Snipe Message scheduler...", false, false);
 
         this.scheduler.scheduleAtFixedRate(() -> {
             try {
@@ -21,7 +21,7 @@ public class SnipeScheduler extends CustomScheduler {
 
                 bot.getSnipeHandler().removeOldMessages();
             } catch (Exception e) {
-                bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Removing Old Snipe Messages: " + e.getMessage(), true, true);
+                bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Removing Old Snipe Messages: " + e.getMessage());
             }
         }, 1, 1, TimeUnit.MINUTES);
     }
