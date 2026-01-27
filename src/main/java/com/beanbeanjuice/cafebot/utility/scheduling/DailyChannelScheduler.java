@@ -16,11 +16,11 @@ public class DailyChannelScheduler extends CustomScheduler {
 
     @Override
     protected void onStart() {
-        bot.getLogger().log(this.getClass(), LogLevel.INFO, "Starting the daily channel scheduler...", true, false);
+        bot.getLogger().log(this.getClass(), LogLevel.INFO, "Starting the daily channel scheduler...", false, false);
 
         this.scheduler.scheduleAtFixedRate(() -> {
             try {
-                bot.getLogger().log(DailyChannelScheduler.class, LogLevel.INFO, "Resetting daily channels...");
+                bot.getLogger().log(DailyChannelScheduler.class, LogLevel.INFO, "Resetting daily channels...", false, false);
                 handleDailyResets();
             } catch (Exception e) {
                 bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Resetting Daily Channels: " + e.getMessage(), true, true);

@@ -47,9 +47,7 @@ public class BioUpdateScheduler extends CustomScheduler {
                 bot.getLogger().log(
                         this.getClass(),
                         LogLevel.WARN,
-                        "Error Updating Status: " + e.getMessage(),
-                        false,
-                        false
+                        "Error Updating Status: " + e.getMessage()
                 );
             }
         }, 0, 10, TimeUnit.MINUTES);

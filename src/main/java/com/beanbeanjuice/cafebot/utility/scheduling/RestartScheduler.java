@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.utility.scheduling;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import java.util.concurrent.TimeUnit;
 
@@ -15,7 +16,7 @@ public class RestartScheduler extends CustomScheduler {
 
     @Override
     protected void onStart() {
-        bot.getLogger().log(this.getClass(), LogLevel.INFO, "Starting restart scheduler!", true, false);
+        bot.getLogger().log(this.getClass(), LogLevel.INFO, "Starting restart scheduler!", false, false);
 
         this.scheduler.scheduleAtFixedRate(() -> {
             try {
@@ -38,7 +39,10 @@ public class RestartScheduler extends CustomScheduler {
                 if (needsMoreShards || exceedsThreshold) {
                     restartScheduled = true;
 
-                    bot.getLogger().log(this.getClass(), LogLevel.WARN, String.format("Restart imminent (1 hour)! %d shards for %d guilds (%.2f guilds/shard. Recommended %d shards.", numCurrentShards, totalGuilds, guildsPerShard, recommendedShards), true, true);
+                    bot.getLogger().log(this.getClass(), LogLevel.WARN, String.format("Restart imminent (1 hour)! %d shards for %d guilds (%.2f guilds/shard. Recommended %d shards.", numCurrentShards, totalGuilds, guildsPerShard, recommendedShards));
+                    bot.getUser("690927484199370753").queue((owner) -> {
+                        bot.pmUser(owner, Helper.errorEmbed("Restart Imminent", "The bot will restart in an hour."));
+                    });
                     return;
                 }
 

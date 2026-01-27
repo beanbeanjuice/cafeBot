@@ -23,13 +23,13 @@ public class UpdateMessageScheduler extends CustomScheduler {
     protected void onStart() {
         this.scheduler.scheduleAtFixedRate(() -> {
             try {
-                bot.getLogger().log(CafeBot.class, LogLevel.DEBUG, "Sending bot status message...", true, false);
+                bot.getLogger().log(CafeBot.class, LogLevel.DEBUG, "Sending bot status message...", false, false);
 
                 bot.getUser("690927484199370753").queue((owner) -> {
                     bot.pmUser(owner, getUpdateEmbed(bot));
                 });
             } catch (Exception e) {
-                bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Sending Bot Status Message: " + e.getMessage(), true, true);
+                bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Sending Bot Status Message: " + e.getMessage());
             }
         }, 0, 1, TimeUnit.DAYS);
     }

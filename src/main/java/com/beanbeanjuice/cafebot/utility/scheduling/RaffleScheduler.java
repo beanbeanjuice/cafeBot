@@ -31,7 +31,7 @@ public class RaffleScheduler extends CustomScheduler {
                 bot.getLogger().log(RaffleScheduler.class, LogLevel.INFO, "Checking raffles...", false, false);
                 handleRaffles();
             } catch (Exception e) {
-                bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Checking Raffles: " + e.getMessage(), false, false);
+                bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Checking Raffles: " + e.getMessage());
             }
         }, 1, 1, TimeUnit.MINUTES);
     }

@@ -20,11 +20,11 @@ public class MutualGuildsScheduler extends CustomScheduler {
 
     @Override
     protected void onStart() {
-        bot.getLogger().log(this.getClass(), LogLevel.INFO, "Starting the Mutual Guilds scheduler...", true, false);
+        bot.getLogger().log(this.getClass(), LogLevel.INFO, "Starting the Mutual Guilds scheduler...", false, false);
 
         this.scheduler.scheduleAtFixedRate(() -> {
             try {
-                bot.getLogger().log(MutualGuildsScheduler.class, LogLevel.INFO, "Updating mutual guilds...", true, false);
+                bot.getLogger().log(MutualGuildsScheduler.class, LogLevel.INFO, "Updating mutual guilds...", false, false);
 
                 List<MutualGuild> add;
                 List<MutualGuild> remove;
