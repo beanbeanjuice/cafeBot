@@ -4,7 +4,6 @@ name: Bug Report
 about: Create a bug report telling us exactly what is wrong.
 title: "[BUG] **DESCRIBE YOUR ISSUE AS SHORT AS POSSIBLE IN THIS BOX**"
 labels: bug
-assignees: beanbeanjuice
 
 ---
 
