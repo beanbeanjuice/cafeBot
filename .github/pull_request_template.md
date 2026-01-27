@@ -37,6 +37,7 @@ Fixes (issue)
     - GPU: Nvidia RTX 3080
     - RAM: 32 GB DDR4 @ 3600 Mhz
 * JDK: Java OpenJDK 21
+* Platform: Windows 11
 
 ---
 
