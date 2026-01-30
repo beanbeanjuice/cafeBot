@@ -25,7 +25,7 @@ public class BotUpdateMessageStartListener extends ListenerAdapter {
 
     @Override
     public void onReady(@NonNull ReadyEvent event) {
-        updateHandler.sendUpdateNotifications(event.getJDA().getShardInfo().getShardId());
+        updateHandler.sendUpdateNotifications(event.getJDA());
     }
 
 }

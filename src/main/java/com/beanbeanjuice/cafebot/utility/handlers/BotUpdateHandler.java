@@ -6,12 +6,14 @@ import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.api.GitHubVersionEndpointWrapper;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -57,16 +59,20 @@ public class BotUpdateHandler {
         hasUpdate = true;
     }
 
-    public void sendUpdateNotifications(int shardId) {
+    public void sendUpdateNotifications(JDA shard) {
         if (!hasUpdate) return;
 
+        int shardId = shard.getShardInfo().getShardId();
         cafeBot.getLogger().log(this.getClass(), LogLevel.INFO, String.format("Sending Updates for Shard ID#%d", shardId), true, false);
+        List<String> guildsInShard = shard.getGuildCache().stream().map(Guild::getId).toList();
 
         CompletableFuture<Map<String, CustomChannel>> customChannelsFuture = this.cafeBot.getCafeAPI().getCustomChannelApi().getCustomChannels(CustomChannelType.UPDATE_NOTIFICATIONS);
         customChannelsFuture.thenAccept((customChannels) -> {
-            customChannels.forEach((guildId, customChannel) -> {
-                handleGuildUpdate(guildId, customChannel.getChannelId(), updateEmbed);
-            });
+            customChannels.entrySet().stream()
+                    .filter((entry) -> guildsInShard.contains(entry.getKey()))
+                    .forEach((entry) -> {
+                        handleGuildUpdate(entry.getKey(), entry.getValue().getChannelId(), updateEmbed);
+                    });
         });
     }
 
