@@ -25,7 +25,7 @@ public class InfoCommand extends Command implements ICommand {
         return new EmbedBuilder()
                 .setColor(Helper.getRandomColor())
                 .setAuthor("Bot Information", null, bot.getSelfUser().getAvatarUrl())
-                .addField("⚙ Commands Run", "```" + bot.getCommandsRun() + "```", true)
+                .addField("⚙ Commands Run", String.format("```%s```", Helper.formatNumber(bot.getCommandsRun().get())), true)
                 .addField("<a:wowowow:886217210010431508> Creator", "```@beanbeanjuice```", true)
                 .addField("<:html:1000241652444692530> Frameworks", "Built With: [Discord JDA](https://github.com/DV8FromTheWorld/JDA), " +
                         "[Twitch4J](https://github.com/twitch4j/twitch4j), [KawaiiAPI](https://kawaii.red/), " +
