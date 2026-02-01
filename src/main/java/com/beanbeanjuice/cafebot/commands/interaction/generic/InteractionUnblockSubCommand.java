@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.interaction.generic;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.api.wrapper.api.exception.ApiRequestException;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
@@ -9,6 +10,7 @@ import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInterac
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import tools.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,9 +33,18 @@ public class InteractionUnblockSubCommand extends Command implements ISubCommand
                     "That user can now interact with you again!"
             )).queue();
         }).exceptionally((ex) -> {
+            if (ex.getCause() instanceof ApiRequestException apiRequestException) {
+                JsonNode errorNode = apiRequestException.getBody().get("error");
+
+                if (errorNode.has("blockedUserId")) {
+                    event.getHook().sendMessageEmbeds(Helper.errorEmbed("Invalid User ID", "Please only use the user ID that is in the auto complete list!")).queue();
+                }
+                throw new CompletionException(apiRequestException);
+            }
+
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                     "Error Unblocking User",
-                    "I... can't unblock them... please tell me boss..."
+                    "I... can't unblock them... please tell my boss..."
             )).queue();
 
             bot.getLogger().log(this.getClass(), LogLevel.WARN, String.format("Error Unblocking User: %s", ex.getMessage()), true, true);
