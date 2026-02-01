@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.4.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.3.0...v4.4.0) (2026-02-01)
+
+
+### Features
+
+* [GH-715] Add Commas to Stats and Info Commands ([#716](https://github.com/beanbeanjuice/cafeBot/issues/716)) ([a447c59](https://github.com/beanbeanjuice/cafeBot/commit/a447c5918d706b08225155f124df89af90f25113))
+
+
+### Bug Fixes
+
+* [GH-679] Double Update Messages ([#712](https://github.com/beanbeanjuice/cafeBot/issues/712)) ([1f48d10](https://github.com/beanbeanjuice/cafeBot/commit/1f48d10d3d2ba7c1dc704c6dc49fe02af3de1466))
+* [GH-701] Blocking Command ([#714](https://github.com/beanbeanjuice/cafeBot/issues/714)) ([97716e2](https://github.com/beanbeanjuice/cafeBot/commit/97716e26c8ee43c907fb28f56976b79aa09aa7ad))
+
 ## [4.3.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.2.0...v4.3.0) (2026-01-27)
 
 
