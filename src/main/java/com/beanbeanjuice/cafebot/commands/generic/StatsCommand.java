@@ -22,16 +22,26 @@ public class StatsCommand extends Command implements ICommand {
     }
 
     private MessageEmbed statsEmbed() {
+        String totalTextChannels = formatNumber(bot.getTotalChannels());
+        String totalServers = formatNumber(bot.getTotalServers());
+        String totalCommandsRun = formatNumber(bot.getCommandsRun().get());
+        String totalUsers = formatNumber(bot.getTotalUsers());
+        String totalShards = formatNumber(bot.getShardCount());
+
         return new EmbedBuilder()
                 .setColor(Helper.getRandomColor())
                 .setAuthor("Bot Statistics", null, bot.getSelfUser().getAvatarUrl())
-                .addField("📝 Total Text Channels", "```" + bot.getTotalChannels() + "```", true)
-                .addField("<:smartPeepo:1000248538376196280> Total Servers", "```" + bot.getTotalServers() + "```", true)
-                .addField("⚙ Commands Run (After Restart)", "```" + bot.getCommandsRun() + "```", true)
-                .addField("<a:catpats:950514533875720232> Total Users", "```" + bot.getTotalUsers() + "```", true)
-                .addField("<a:cafeBot:1119635469727191190> Total Shards", String.format("```%d```", bot.getShardCount()), true)
+                .addField("📝 Total Text Channels", totalTextChannels, true)
+                .addField("<:smartPeepo:1000248538376196280> Total Servers", totalServers, true)
+                .addField("⚙ Commands Run (After Restart)", totalCommandsRun, true)
+                .addField("<a:catpats:950514533875720232> Total Users", totalUsers, true)
+                .addField("<a:cafeBot:1119635469727191190> Total Shards", totalShards, true)
                 .setFooter("If you are enjoying this bot, please consider using /bot-upvote!")
                 .build();
+    }
+
+    private String formatNumber(int number) {
+        return String.format("```%s```", Helper.formatNumber(number));
     }
 
     @Override

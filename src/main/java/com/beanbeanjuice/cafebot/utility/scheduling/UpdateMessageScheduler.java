@@ -9,8 +9,6 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.awt.*;
 import java.lang.management.ManagementFactory;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class UpdateMessageScheduler extends CustomScheduler {
@@ -43,7 +41,7 @@ public class UpdateMessageScheduler extends CustomScheduler {
         long dedicatedMemoryTotal = Runtime.getRuntime().maxMemory()/1048576;
         long dedicatedMemoryUsage = Runtime.getRuntime().totalMemory()/1048576;
 
-        embedBuilder.setTitle("Daily CafeBot Update");
+        embedBuilder.setTitle("Daily cafeBot Update");
 
         String description = String.format(
                 """
