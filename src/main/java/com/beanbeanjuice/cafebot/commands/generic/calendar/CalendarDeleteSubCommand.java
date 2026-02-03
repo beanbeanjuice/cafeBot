@@ -15,7 +15,6 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
@@ -29,13 +28,18 @@ public class CalendarDeleteSubCommand extends Command implements ISubCommand {
     public void handle(SlashCommandInteractionEvent event) {
         String calendarId = event.getOption("id").getAsString().split("ID: ")[1];
 
-        if (type == OwnerType.GUILD && event.isFromGuild() && event.getMember() != null && !event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed("No Permission", "What are you doing back here?? Get **out**!")).queue();
-            return;
-        }
+        bot.getCafeAPI().getCalendarApi().getCalendar(calendarId).thenAccept(calendar -> {
+            if (calendar.getOwnerType() == OwnerType.GUILD && event.isFromGuild() && event.getMember() != null && !event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
+                event.getHook().sendMessageEmbeds(Helper.errorEmbed("No Permission", "What are you doing back here?? Get **out**!")).queue();
+                return;
+            }
 
-        bot.getCafeAPI().getCalendarApi().deleteCalendar(calendarId).thenAccept(result -> {
-            event.getHook().sendMessageEmbeds(Helper.successEmbed("Calendar Deleted!", "We won't see that pesky calendar any longer!")).queue();
+            bot.getCafeAPI().getCalendarApi().deleteCalendar(calendarId).thenAccept(result -> {
+                event.getHook().sendMessageEmbeds(Helper.successEmbed("Calendar Deleted!", "We won't see that pesky calendar any longer!")).queue();
+            }).exceptionally((ex) -> {
+                handleError(ex, event);
+                throw new CompletionException(ex.getCause());
+            });
         }).exceptionally((ex) -> {
             handleError(ex, event);
             throw new CompletionException(ex.getCause());
