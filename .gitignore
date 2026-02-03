@@ -64,6 +64,8 @@ gradle.properties
 
 # Files containing safety info
 .env
+.env.api
+.env.web
 beta.json
 release.json
 

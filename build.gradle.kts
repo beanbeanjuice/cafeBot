@@ -122,6 +122,7 @@ tasks.withType<ShadowJar> {
         exclude(dependency("io.github.xanthic.cache:.*:.*"))
         exclude(dependency("com.github.twitch4j:.*:.*"))
         exclude(dependency("com.squareup.okhttp3:.*:.*"))
+        exclude(dependency("org.mnode.ical4j:.*:.*"))
     }
 
     relocate("org.mnode.ical4j", "com.beanbeanjuice.libs.org.mnode.ical4j")
