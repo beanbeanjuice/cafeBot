@@ -69,6 +69,8 @@ allprojects {
             archiveVersion.set(project.version as String)
             println("Compiling: " + project.name + "-" + project.version + ".jar")
         }
+
+        mergeServiceFiles()
     }
 
     tasks.test {
@@ -123,6 +125,8 @@ tasks.withType<ShadowJar> {
     }
 
     relocate("org.mnode.ical4j", "com.beanbeanjuice.libs.org.mnode.ical4j")
+
+    mergeServiceFiles()
 }
 
 configure<ProcessResources>("processResources") {
