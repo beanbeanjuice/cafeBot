@@ -99,7 +99,7 @@ dependencies {
     implementation(project(":modules:cafeBot-api-wrapper"))
     implementation(project(":modules:meme-api-wrapper"))
 
-    implementation("net.dv8tion:JDA:6.2.0") { exclude(module = "opus-java") }
+    implementation("net.dv8tion:JDA:6.3.0") { exclude(module = "opus-java") }
 
     implementation("org.apache.logging.log4j:log4j-api:2.25.3")  // Logging - https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
     implementation("org.apache.logging.log4j:log4j-core:2.25.3")
