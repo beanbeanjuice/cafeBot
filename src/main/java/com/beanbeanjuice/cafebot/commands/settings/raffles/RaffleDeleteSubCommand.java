@@ -51,9 +51,9 @@ public class RaffleDeleteSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public CompletableFuture<HashMap<String, ArrayList<String>>> getAutoComplete(CommandAutoCompleteInteractionEvent event) {
+    public CompletableFuture<HashMap<String, List<String>>> getAutoComplete(CommandAutoCompleteInteractionEvent event) {
         return bot.getCafeAPI().getRaffleApi().getRaffles(event.getGuild().getId(), true, false).thenApply((raffles) -> {
-            HashMap<String, ArrayList<String>> autoCompleteMap = new HashMap<>();
+            HashMap<String, List<String>> autoCompleteMap = new HashMap<>();
 
             List<String> ids = raffles.stream().map(Raffle::getId).map(Object::toString).toList();
 

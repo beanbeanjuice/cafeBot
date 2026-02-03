@@ -14,6 +14,7 @@ import tools.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
@@ -70,9 +71,9 @@ public class InteractionUnblockSubCommand extends Command implements ISubCommand
     }
 
     @Override
-    public CompletableFuture<HashMap<String, ArrayList<String>>> getAutoComplete(CommandAutoCompleteInteractionEvent event) {
+    public CompletableFuture<HashMap<String, List<String>>> getAutoComplete(CommandAutoCompleteInteractionEvent event) {
         return bot.getCafeAPI().getInteractionsApi().getBlockedUsers(event.getUser().getId()).thenApply((blockList) -> {
-            HashMap<String, ArrayList<String>> map = new HashMap<>();
+            HashMap<String, List<String>> map = new HashMap<>();
             map.put("user-id", new ArrayList<>());
 
             for (String userId : blockList) map.get("user-id").add(userId);

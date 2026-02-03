@@ -167,6 +167,7 @@ Commands are separated by sections. Each section has a different set of commands
 * `/twitch` - Add or remove twitch channels to be notified for!
 * `/version` - Get the current bot version!
 * `/who` - Get some information about yourself or another user!
+* `/calendar` - Add, view, and parse calendars. You can now view your calendars through Discord!
 
 #### 5. Interaction Commands
 

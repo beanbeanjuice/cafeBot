@@ -105,6 +105,8 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-core:2.25.3")
     implementation("org.apache.logging.log4j:log4j-slf4j2-impl:2.25.3")  // JDA logging.
 
+    implementation("org.mnode.ical4j:ical4j:4.2.3")  // Calendar Stuff - https://mvnrepository.com/artifact/org.mnode.ical4j/ical4j
+
     implementation("com.github.twitch4j:twitch4j:1.25.0")  // Twitch - https://github.com/twitch4j/twitch4j
 
     compileOnly("org.projectlombok:lombok:1.18.42")
@@ -119,6 +121,8 @@ tasks.withType<ShadowJar> {
         exclude(dependency("com.github.twitch4j:.*:.*"))
         exclude(dependency("com.squareup.okhttp3:.*:.*"))
     }
+
+    relocate("org.mnode.ical4j", "com.beanbeanjuice.libs.org.mnode.ical4j")
 }
 
 configure<ProcessResources>("processResources") {
