@@ -36,7 +36,7 @@ public class CalendarAddSubCommand extends Command implements ISubCommand {
             return;
         }
 
-        if (event.isFromGuild() && event.getMember() != null && !event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
+        if (type == OwnerType.GUILD && event.isFromGuild() && event.getMember() != null && !event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed("No Permission", "What are you doing back here?? Get **out**!")).queue();
             return;
         }

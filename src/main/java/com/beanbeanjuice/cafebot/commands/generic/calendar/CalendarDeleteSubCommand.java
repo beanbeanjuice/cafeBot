@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.generic.calendar;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.api.wrapper.api.enums.OwnerType;
 import com.beanbeanjuice.cafebot.api.wrapper.type.calendar.Calendar;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
@@ -28,7 +29,7 @@ public class CalendarDeleteSubCommand extends Command implements ISubCommand {
     public void handle(SlashCommandInteractionEvent event) {
         String calendarId = event.getOption("id").getAsString().split("ID: ")[1];
 
-        if (event.isFromGuild() && event.getMember() != null && !event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
+        if (type == OwnerType.GUILD && event.isFromGuild() && event.getMember() != null && !event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed("No Permission", "What are you doing back here?? Get **out**!")).queue();
             return;
         }
