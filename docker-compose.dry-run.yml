@@ -1,0 +1,68 @@
+name: cafeBot
+
+services:
+  db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: cafeBot
+    ports:
+      - "5432:5432"
+    volumes:
+      - cafeBot_data:/var/lib/postgresql/18/docker
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d cafeBot"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    image: git.beanbeanjuice.dev/beanbeanjuice/cafebot-api:dev-latest
+    env_file:
+      - .env.api
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5000/api/v4/hello" ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/cafeBot # Override env file.
+      NODE_ENV: bot_testing
+
+  web:
+    image: git.beanbeanjuice.dev/beanbeanjuice/cafebot-web:dev-latest
+    env_file:
+      - .env.web
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/cafeBot # Override env file.
+
+  bot:
+    build:
+      context: .
+    env_file:
+      - .env
+    depends_on:
+      api:
+        condition: service_healthy
+    volumes:
+      - ./logs:/bot/logs
+    environment:
+      CAFEBOT_LOG_LEVEL: INFO
+      CAFEBOT_API_URL: http://api:5000
+    restart: unless-stopped
+
+volumes:
+  cafeBot_data:

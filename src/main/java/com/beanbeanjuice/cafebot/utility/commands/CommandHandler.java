@@ -225,7 +225,7 @@ public class CommandHandler extends ListenerAdapter {
         event.replyChoices(options).queue();
     }
 
-    private List<Choice> getOptions(final ArrayList<String> autoCompleteOptions, final String focusedOptionValue) {
+    private List<Choice> getOptions(final List<String> autoCompleteOptions, final String focusedOptionValue) {
         return autoCompleteOptions
                 .stream()
                 .filter((choiceString) -> choiceString.toUpperCase().contains(focusedOptionValue.toUpperCase()))

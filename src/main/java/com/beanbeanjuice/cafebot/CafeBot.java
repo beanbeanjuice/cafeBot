@@ -16,6 +16,7 @@ import com.beanbeanjuice.cafebot.commands.games.RollCommand;
 import com.beanbeanjuice.cafebot.commands.games.TicTacToeCommand;
 import com.beanbeanjuice.cafebot.commands.games.game.GameCommand;
 import com.beanbeanjuice.cafebot.commands.generic.*;
+import com.beanbeanjuice.cafebot.commands.generic.calendar.CalendarCommand;
 import com.beanbeanjuice.cafebot.commands.generic.twitch.TwitchCommand;
 import com.beanbeanjuice.cafebot.commands.interaction.*;
 import com.beanbeanjuice.cafebot.commands.interaction.generic.InteractionCommand;
@@ -162,6 +163,7 @@ public class CafeBot {
                 new SupportCommand(this),
                 new WhoCommand(this),
                 new TwitchCommand(this),
+                new CalendarCommand(this),
 
                 // Cafe
                 new BalanceCommand(this),

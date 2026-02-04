@@ -23,6 +23,21 @@ public class RequestBuilder {
     private Method method;
     private Object body;
 
+    private static final CloseableHttpAsyncClient CLIENT;
+
+    static {
+        CLIENT = HttpAsyncClients.custom().build();
+        CLIENT.start();
+    }
+
+    public static void shutdown() {
+        try {
+            CLIENT.close();
+        } catch (Exception e) {
+            // log if needed
+        }
+    }
+
     public static RequestBuilder builder() {
         return new RequestBuilder();
     }
@@ -65,9 +80,6 @@ public class RequestBuilder {
                 .setPath(route)
                 .build();
 
-        CloseableHttpAsyncClient client = HttpAsyncClients.custom().build();
-        client.start();
-
         JsonMapper mapper = new JsonMapper();
         CompletableFuture<BasicResponse> future = new CompletableFuture<>();
 
@@ -77,12 +89,11 @@ public class RequestBuilder {
                 request.setBody(json, ContentType.APPLICATION_JSON);
             } catch (Exception e) {
                 future.completeExceptionally(e);
-                closeClient(client);
                 return future;
             }
         }
 
-        client.execute(request, new FutureCallback<>() {
+        CLIENT.execute(request, new FutureCallback<>() {
             @Override
             public void completed(SimpleHttpResponse response) {
                 try {
@@ -108,39 +119,27 @@ public class RequestBuilder {
                                                 jsonNode.has("error") ? jsonNode.get("error").toPrettyString() : jsonNode.toPrettyString())
                                 )
                         );
+                        return;
                     }
 
                     future.complete(new BasicResponse(statusCode, jsonNode));
                 } catch (Exception e) {
                     future.completeExceptionally(e);
-                } finally {
-                    closeClient(client);
                 }
             }
 
             @Override
             public void failed(Exception ex) {
                 future.completeExceptionally(ex);
-                closeClient(client);
             }
 
             @Override
             public void cancelled() {
                 future.cancel(true);
-                closeClient(client);
             }
         });
 
         return future;
     }
-
-    private void closeClient(CloseableHttpAsyncClient client) {
-        try {
-            client.close();
-        } catch (Exception e) {
-            // Log or ignore
-        }
-    }
-
 
 }

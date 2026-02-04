@@ -1,5 +1,6 @@
 package com.beanbeanjuice.cafebot.api.wrapper;
 
+import com.beanbeanjuice.cafebot.api.wrapper.api.discord.CalendarApi;
 import com.beanbeanjuice.cafebot.api.wrapper.api.discord.MenuApi;
 import com.beanbeanjuice.cafebot.api.wrapper.api.discord.generic.BotSettingsApi;
 import com.beanbeanjuice.cafebot.api.wrapper.api.discord.server.*;
@@ -22,6 +23,7 @@ public class CafeAPI {
 
     // Discord APIs
     private final MenuApi menuApi;
+    private final CalendarApi calendarApi;
 
     // User APIs
     private final BirthdayApi birthdayApi;
@@ -51,12 +53,15 @@ public class CafeAPI {
      * @see <a href="https://docs.kawaii.red/">Kawaii API Documentation</a>
      */
     public CafeAPI(String baseUrl, String token) {
+        Runtime.getRuntime().addShutdownHook(new Thread(RequestBuilder::shutdown));
+
         // General APIs
         this.botSettingsApi = new BotSettingsApi(baseUrl, token);
         this.greetingApi = new GreetingApi(baseUrl, token);
 
         // Discord APIs
         this.menuApi = new MenuApi(baseUrl, token);
+        this.calendarApi = new CalendarApi(baseUrl, token);
 
         // User APIs
         this.birthdayApi = new BirthdayApi(baseUrl, token);

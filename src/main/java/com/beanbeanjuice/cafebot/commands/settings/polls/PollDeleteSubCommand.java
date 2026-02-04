@@ -51,9 +51,9 @@ public class PollDeleteSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public CompletableFuture<HashMap<String, ArrayList<String>>> getAutoComplete(CommandAutoCompleteInteractionEvent event) {
+    public CompletableFuture<HashMap<String, List<String>>> getAutoComplete(CommandAutoCompleteInteractionEvent event) {
         return bot.getCafeAPI().getPollApi().getPolls(event.getGuild().getId(), true, false).thenApply((polls) -> {
-            HashMap<String, ArrayList<String>> autoCompleteMap = new HashMap<>();
+            HashMap<String, List<String>> autoCompleteMap = new HashMap<>();
 
             List<String> ids = polls.stream().map(Poll::getId).map(Object::toString).toList();
 

@@ -94,8 +94,8 @@ public class BirthdaySetSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public CompletableFuture<HashMap<String, ArrayList<String>>> getAutoComplete(CommandAutoCompleteInteractionEvent event) {
-        HashMap<String, ArrayList<String>> autoCompleteMap = new HashMap<>();
+    public CompletableFuture<HashMap<String, List<String>>> getAutoComplete(CommandAutoCompleteInteractionEvent event) {
+        HashMap<String, List<String>> autoCompleteMap = new HashMap<>();
         autoCompleteMap.put("timezone", new ArrayList<>());
 
         for (String timezone : TimeZone.getAvailableIDs())

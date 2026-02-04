@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInterac
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface ISubCommand {
@@ -18,7 +18,7 @@ public interface ISubCommand {
 
     default OptionData[] getOptions() { return new OptionData[0]; }
 
-    default CompletableFuture<HashMap<String, ArrayList<String>>> getAutoComplete(CommandAutoCompleteInteractionEvent event) { return null; }
+    default CompletableFuture<HashMap<String, List<String>>> getAutoComplete(CommandAutoCompleteInteractionEvent event) { return null; }
 
     default boolean isModal() { return false; }
 
