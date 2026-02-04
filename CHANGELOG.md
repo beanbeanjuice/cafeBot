@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.4.1](https://github.com/beanbeanjuice/cafeBot/compare/v4.4.0...v4.4.1) (2026-02-04)
+
+
+### Bug Fixes
+
+* [GH-689] Creating Empty Embed ([#728](https://github.com/beanbeanjuice/cafeBot/issues/728)) ([4b47c3d](https://github.com/beanbeanjuice/cafeBot/commit/4b47c3d539b96a7033eca913e2bbf8ed2b88c2b0))
+* [GH-725] Daily Channel Not Resetting ([#726](https://github.com/beanbeanjuice/cafeBot/issues/726)) ([6a7dc3d](https://github.com/beanbeanjuice/cafeBot/commit/6a7dc3d114fb1961262952fa21b8287d29a6df50))
+
 ## [4.4.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.3.0...v4.4.0) (2026-02-04)
 
 
