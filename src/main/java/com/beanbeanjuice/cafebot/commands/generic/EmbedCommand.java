@@ -49,9 +49,18 @@ public class EmbedCommand extends Command implements ICommand {
             return;
         }
 
+        Optional<MessageEmbed> optionalEmbed = createEmbed(event);
+
+        if (optionalEmbed.isEmpty()) {
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed("Invalid Embed", "You're trying to create an invalid embed... I'm so sorry I can't let you do that...")).queue();
+            return;
+        }
+
+        MessageEmbed embed = optionalEmbed.get();
+
         messageOptional.ifPresentOrElse(
-                (message) -> channel.asTextChannel().sendMessage(message).addEmbeds(createEmbed(event)).queue(),
-                () -> channel.asTextChannel().sendMessageEmbeds(createEmbed(event)).queue()
+                (message) -> channel.asTextChannel().sendMessage(message).addEmbeds(embed).queue(),
+                () -> channel.asTextChannel().sendMessageEmbeds(embed).queue()
         );
 
         event.getHook().sendMessageEmbeds(Helper.successEmbed(
@@ -66,7 +75,7 @@ public class EmbedCommand extends Command implements ICommand {
         return true;
     }
 
-    private MessageEmbed createEmbed(final SlashCommandInteractionEvent event) {
+    private Optional<MessageEmbed> createEmbed(final SlashCommandInteractionEvent event) {
         Optional<String> titleOptional = Optional.ofNullable(event.getOption("title")).map(OptionMapping::getAsString);
         Optional<String> descriptionOptional = Optional.ofNullable(event.getOption("description")).map(OptionMapping::getAsString);
         Optional<String> authorOptional = Optional.ofNullable(event.getOption("author")).map(OptionMapping::getAsString);
@@ -94,7 +103,11 @@ public class EmbedCommand extends Command implements ICommand {
                 })
                 .ifPresent(embedBuilder::setColor);
 
-        return embedBuilder.build();
+        try {
+            return Optional.of(embedBuilder.build());
+        } catch (IllegalStateException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
