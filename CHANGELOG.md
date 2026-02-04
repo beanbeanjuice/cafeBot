@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.4.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.3.0...v4.4.0) (2026-02-04)
+
+
+### Features
+
+* [GH-715] Add Commas to Stats and Info Commands ([#716](https://github.com/beanbeanjuice/cafeBot/issues/716)) ([a447c59](https://github.com/beanbeanjuice/cafeBot/commit/a447c5918d706b08225155f124df89af90f25113))
+* [GH-722] Add Calendar Integration ([#724](https://github.com/beanbeanjuice/cafeBot/issues/724)) ([6fd2b07](https://github.com/beanbeanjuice/cafeBot/commit/6fd2b07186d206bc2dffc0910fe1d5b8dea18559))
+
+
+### Bug Fixes
+
+* [GH-679] Double Update Messages ([#712](https://github.com/beanbeanjuice/cafeBot/issues/712)) ([1f48d10](https://github.com/beanbeanjuice/cafeBot/commit/1f48d10d3d2ba7c1dc704c6dc49fe02af3de1466))
+* [GH-701] Blocking Command ([#714](https://github.com/beanbeanjuice/cafeBot/issues/714)) ([97716e2](https://github.com/beanbeanjuice/cafeBot/commit/97716e26c8ee43c907fb28f56976b79aa09aa7ad))
+* **deps:** bump net.dv8tion:JDA from 6.2.0 to 6.3.0 ([#718](https://github.com/beanbeanjuice/cafeBot/issues/718)) ([e78148c](https://github.com/beanbeanjuice/cafeBot/commit/e78148c2a2c69b4cd7b5ae15554a5e0b25aa747d))
+* **deps:** bump org.apache.httpcomponents.client5:httpclient5 from 5.3.1 to 5.6 ([#717](https://github.com/beanbeanjuice/cafeBot/issues/717)) ([3eedb4a](https://github.com/beanbeanjuice/cafeBot/commit/3eedb4aacdf1a8fbe6ab87746d385d16fde2b2e6))
+* **deps:** bump org.projectlombok:lombok from 1.18.32 to 1.18.42 ([#719](https://github.com/beanbeanjuice/cafeBot/issues/719)) ([d6f0c73](https://github.com/beanbeanjuice/cafeBot/commit/d6f0c739cbebc0786de782de88d4f0b2aedc5bf0))
+
 ## [4.3.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.2.0...v4.3.0) (2026-01-27)
 
 
