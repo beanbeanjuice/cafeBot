@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.generic.calendar;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.OwnerType;
+import com.beanbeanjuice.cafebot.api.wrapper.api.exception.ApiRequestException;
 import com.beanbeanjuice.cafebot.api.wrapper.type.calendar.Calendar;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
@@ -11,6 +12,7 @@ import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInterac
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import tools.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +36,9 @@ public class CalendarDeleteSubCommand extends Command implements ISubCommand {
                 return;
             }
 
-            bot.getCafeAPI().getCalendarApi().deleteCalendar(calendarId).thenAccept(result -> {
+            String callerId = (calendar.getOwnerType() == OwnerType.GUILD && event.isFromGuild()) ? event.getGuild().getId() : event.getUser().getId();
+
+            bot.getCafeAPI().getCalendarApi().deleteCalendar(calendarId, callerId).thenAccept(result -> {
                 event.getHook().sendMessageEmbeds(Helper.successEmbed("Calendar Deleted!", "We won't see that pesky calendar any longer!")).queue();
             }).exceptionally((ex) -> {
                 handleError(ex, event);
@@ -47,6 +51,15 @@ public class CalendarDeleteSubCommand extends Command implements ISubCommand {
     }
 
     private void handleError(Throwable ex, SlashCommandInteractionEvent event) {
+        if (ex.getCause() instanceof ApiRequestException apiRequestException) {
+            JsonNode errorNode = apiRequestException.getBody().get("error");
+
+            if (errorNode.has("callerId")) {
+                event.getHook().sendMessageEmbeds(Helper.errorEmbed("You're joking right?", "Oh well.. I thought you were smarter than that... since you tried to use an exploit I made sure to talk to my boss! <:cafeBot_angry:1171726164092518441>")).queue();
+                return;
+            }
+        }
+
         event.getHook().sendMessageEmbeds(Helper.errorEmbed("Error", "Could not delete the calendar!")).queue();
     }
 

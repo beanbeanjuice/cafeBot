@@ -93,13 +93,13 @@ public class CalendarApi extends Api {
         }
     }
 
-    public CompletableFuture<Void> deleteCalendar(String calendarId) {
+    public CompletableFuture<Void> deleteCalendar(String calendarId, String callerId) {
         try {
             return RequestBuilder.builder()
                     .method(Method.DELETE)
                     .baseUrl(baseUrl)
                     .token(token)
-                    .route(String.format("/api/v4/discord/calendars/%s", calendarId))
+                    .route(String.format("/api/v4/discord/calendars/%s?callerId=%s", calendarId, callerId))
                     .queue()
                     .thenApply((res) -> null);
         } catch (Exception e) {

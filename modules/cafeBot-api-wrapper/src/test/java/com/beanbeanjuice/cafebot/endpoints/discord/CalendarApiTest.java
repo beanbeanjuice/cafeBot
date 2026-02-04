@@ -103,7 +103,7 @@ public class CalendarApiTest extends ApiTest {
     @Test
     @DisplayName("can delete calendar")
     public void canDeleteCalendar() throws ExecutionException, InterruptedException {
-        cafeAPI.getCalendarApi().deleteCalendar(userCalendar.getId()).get();
+        cafeAPI.getCalendarApi().deleteCalendar(userCalendar.getId(), userCalendar.getOwnerId()).get();
 
         Assertions.assertThrows(ExecutionException.class, () -> {
             cafeAPI.getCalendarApi().getCalendar(userCalendar.getId()).get();

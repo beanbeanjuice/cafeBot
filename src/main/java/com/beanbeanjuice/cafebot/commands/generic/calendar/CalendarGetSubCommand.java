@@ -27,7 +27,8 @@ public class CalendarGetSubCommand extends Command implements ISubCommand {
 
     @Override
     public void handle(SlashCommandInteractionEvent event) {
-        String calendarId = event.getOption("id").getAsString().split("ID: ")[1];
+        String[] split = event.getOption("id").getAsString().split("ID: ");
+        String calendarId = (split.length == 2) ? split[1] : split[0];
         ZoneId zoneId = TimeZone.getTimeZone(event.getOption("timezone").getAsString()).toZoneId();
 
         bot.getCafeAPI().getCalendarApi().getCalendar(calendarId).thenAccept(calendar -> {
