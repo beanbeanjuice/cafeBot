@@ -25,7 +25,7 @@ public class DailyChannelScheduler extends CustomScheduler {
             } catch (Exception e) {
                 bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Resetting Daily Channels: " + e.getMessage(), true, true);
             }
-        }, 1, 1, TimeUnit.DAYS);
+        }, 1, 24, TimeUnit.HOURS);
     }
 
     private void handleDailyResets() {
