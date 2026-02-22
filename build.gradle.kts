@@ -109,7 +109,7 @@ dependencies {
 
     implementation("org.mnode.ical4j:ical4j:4.2.3")  // Calendar Stuff - https://mvnrepository.com/artifact/org.mnode.ical4j/ical4j
 
-    implementation("com.github.twitch4j:twitch4j:1.25.0")  // Twitch - https://github.com/twitch4j/twitch4j
+    implementation("com.github.twitch4j:twitch4j:1.26.0")  // Twitch - https://github.com/twitch4j/twitch4j
 
     compileOnly("org.projectlombok:lombok:1.18.42")
     annotationProcessor("org.projectlombok:lombok:1.18.42")
