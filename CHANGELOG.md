@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.4.1](https://github.com/beanbeanjuice/cafeBot/compare/v4.4.0...v4.4.1) (2026-02-28)
+
+
+### Bug Fixes
+
+* [GH-689] Creating Empty Embed ([#728](https://github.com/beanbeanjuice/cafeBot/issues/728)) ([4b47c3d](https://github.com/beanbeanjuice/cafeBot/commit/4b47c3d539b96a7033eca913e2bbf8ed2b88c2b0))
+* [GH-725] Daily Channel Not Resetting ([#726](https://github.com/beanbeanjuice/cafeBot/issues/726)) ([6a7dc3d](https://github.com/beanbeanjuice/cafeBot/commit/6a7dc3d114fb1961262952fa21b8287d29a6df50))
+* [GH-736] Ignore All-Day Events in Calendar Get Command ([#737](https://github.com/beanbeanjuice/cafeBot/issues/737)) ([151c2ce](https://github.com/beanbeanjuice/cafeBot/commit/151c2ce393867ecf9efeed71b801b59d12247f79))
+* **deps:** bump com.github.twitch4j:twitch4j from 1.25.0 to 1.26.0 ([#732](https://github.com/beanbeanjuice/cafeBot/issues/732)) ([13514da](https://github.com/beanbeanjuice/cafeBot/commit/13514da44d952c97b06159e022564c4dd078df18))
+* **deps:** bump net.dv8tion:JDA from 6.3.0 to 6.3.1 ([#734](https://github.com/beanbeanjuice/cafeBot/issues/734)) ([069113a](https://github.com/beanbeanjuice/cafeBot/commit/069113afa029df60368b3eee22d23b3c6a290af7))
+* **deps:** bump org.junit.jupiter:junit-jupiter from 6.0.2 to 6.0.3 ([#733](https://github.com/beanbeanjuice/cafeBot/issues/733)) ([a9a0ea7](https://github.com/beanbeanjuice/cafeBot/commit/a9a0ea7542668f1df60c33d9ab3f6166efcdf645))
+
 ## [4.4.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.3.0...v4.4.0) (2026-02-04)
 
 
