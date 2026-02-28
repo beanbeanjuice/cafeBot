@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.CustomRoleType;
 import com.beanbeanjuice.cafebot.api.wrapper.type.CustomRole;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.entities.Guild;
@@ -21,7 +22,7 @@ public class RoleListSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         Guild guild = event.getGuild();
 
         this.bot.getCafeAPI().getCustomRoleApi().getCustomRoles(guild.getId())
@@ -54,7 +55,7 @@ public class RoleListSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "List all custom roles for the server!";
     }
 

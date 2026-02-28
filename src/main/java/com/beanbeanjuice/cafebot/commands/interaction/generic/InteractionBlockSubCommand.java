@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.interaction.generic;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -19,7 +20,7 @@ public class InteractionBlockSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         User userToBlock = event.getOption("user").getAsUser(); // Should not be null.
 
         bot.getCafeAPI().getInteractionsApi().blockUser(event.getUser().getId(), userToBlock.getId()).thenAccept((blockList) -> {
@@ -44,7 +45,7 @@ public class InteractionBlockSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Someone being annoying? Block them! You won't receive any interactions from them anymore.";
     }
 

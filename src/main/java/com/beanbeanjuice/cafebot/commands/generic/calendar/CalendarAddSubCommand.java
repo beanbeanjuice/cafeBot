@@ -5,8 +5,8 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.OwnerType;
 import com.beanbeanjuice.cafebot.api.wrapper.api.exception.ApiRequestException;
 import com.beanbeanjuice.cafebot.api.wrapper.type.calendar.PartialCalendar;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
-import com.beanbeanjuice.cafebot.utility.handlers.calendar.CalendarHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -23,7 +23,7 @@ public class CalendarAddSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         OwnerType type = OwnerType.valueOf(event.getOption("type").getAsString());
         String name = event.getOption("name").getAsString();
         String url = event.getOption("url").getAsString();
@@ -88,7 +88,7 @@ public class CalendarAddSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Add a calendar!";
     }
 

@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.fun.rate;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.entities.User;
@@ -19,15 +20,19 @@ public class RateSmartSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         Optional<OptionMapping> userMapping = Optional.ofNullable(event.getOption("user"));
 
         User user = userMapping.map(OptionMapping::getAsUser).orElse(event.getUser());
         int percentage = Helper.getRandomInteger(0, 101);
 
+        String description = ctx.getGuildI18n().getString("command.rate.subcommand.smart.embed.description")
+                .replace("{user}", user.getAsMention())
+                .replace("{percent}", String.valueOf(percentage));
+
         event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                "<:smartPeepo:1000248538376196280> Smart Rating <:smartPeepo:1000248538376196280>",
-                String.format("%s is %d%% smart! %s", user.getAsMention(), percentage, "<:bloatedBlush:1154475611893547218>")
+                ctx.getGuildI18n().getString("command.rate.subcommand.smart.embed.title"),
+                description
         )).mention(user).queue();
     }
 
@@ -37,14 +42,14 @@ public class RateSmartSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Rate how smart someone is!";
+    public String getDescriptionPath() {
+        return "command.rate.subcommand.smart.description";
     }
 
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The person who's smart levels you want to see.")
+                new OptionData(OptionType.USER, "user", "command.rate.subcommand.smart.arguments.user.description")
         };
     }
 

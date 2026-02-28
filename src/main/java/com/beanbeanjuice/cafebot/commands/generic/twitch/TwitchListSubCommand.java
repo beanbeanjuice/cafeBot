@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.generic.twitch;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -18,7 +19,7 @@ public class TwitchListSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         bot.getCafeAPI().getTwitchChannelApi().getChannels(event.getGuild().getId())
                 .thenAccept((channels) -> event.getHook().sendMessageEmbeds(twitchChannelsEmbed(channels)).queue())
                 .exceptionally((ex) -> {
@@ -57,7 +58,7 @@ public class TwitchListSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Get a list of all twitch channels for this server!";
     }
 

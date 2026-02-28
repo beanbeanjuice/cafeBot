@@ -5,6 +5,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.OwnerType;
 import com.beanbeanjuice.cafebot.api.wrapper.api.exception.ApiRequestException;
 import com.beanbeanjuice.cafebot.api.wrapper.type.calendar.Calendar;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
@@ -27,7 +28,7 @@ public class CalendarDeleteSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         String calendarId = event.getOption("id").getAsString().split("ID: ")[1];
 
         bot.getCafeAPI().getCalendarApi().getCalendar(calendarId).thenAccept(calendar -> {
@@ -69,7 +70,7 @@ public class CalendarDeleteSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Delete a calendar!";
     }
 

@@ -19,8 +19,8 @@ public class MemeCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Get a meme!";
+    public String getDescriptionPath() {
+        return "command.meme.description";
     }
 
     @Override

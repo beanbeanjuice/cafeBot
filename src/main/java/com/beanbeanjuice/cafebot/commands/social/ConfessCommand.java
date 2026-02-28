@@ -22,7 +22,7 @@ public class ConfessCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         String guildID = event.getGuild().getId();
         String message = event.getOption("message").getAsString();
 
@@ -87,7 +87,7 @@ public class ConfessCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Confess something anonymously!~";
     }
 

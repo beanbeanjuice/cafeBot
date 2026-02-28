@@ -38,7 +38,7 @@ public class HelpListener extends ListenerAdapter {
         int index = Integer.parseInt(event.getComponentId().split(":")[5]);
         index = direction.equals("left") ? index - 1 : index + 1;
 
-        MessageEmbed categoryEmbed = helpHandler.getCategoryEmbed(category, index);
+        MessageEmbed categoryEmbed = helpHandler.getCategoryEmbed(category, event.getUserLocale(), index);
 
         List<ActionRow> rows = new ArrayList<>();
         rows.add(ActionRow.of(helpHandler.getAllCategoriesSelectMenu(0)));
@@ -59,7 +59,7 @@ public class HelpListener extends ListenerAdapter {
         int index = Integer.parseInt(event.getComponentId().split(":")[2]);
 
         boolean isHome = value.equalsIgnoreCase("all");
-        MessageEmbed categoryEmbed = isHome ? helpHandler.getCategoriesEmbed() : helpHandler.getCategoryEmbed(CommandCategory.valueOf(value), 0);
+        MessageEmbed categoryEmbed = isHome ? helpHandler.getCategoriesEmbed() : helpHandler.getCategoryEmbed(CommandCategory.valueOf(value), event.getUserLocale(), 0);
 
         List<ActionRow> rows = new ArrayList<>();
         rows.add(ActionRow.of(helpHandler.getAllCategoriesSelectMenu(0)));
@@ -83,7 +83,7 @@ public class HelpListener extends ListenerAdapter {
         List<ActionRow> rows = new ArrayList<>();
         rows.add(ActionRow.of(helpHandler.getAllCategoriesSelectMenu(0)));
 
-        event.editMessageEmbeds(helpHandler.getCommandEmbed(commandName))
+        event.editMessageEmbeds(helpHandler.getCommandEmbed(commandName, event.getUserLocale()))
                 .setComponents(rows)
                 .setReplace(true).queue();
     }

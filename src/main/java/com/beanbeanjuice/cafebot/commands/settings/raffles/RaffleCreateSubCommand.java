@@ -5,6 +5,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.exception.ApiRequestException;
 import com.beanbeanjuice.cafebot.api.wrapper.type.Raffle;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -27,7 +28,7 @@ public class RaffleCreateSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         String guildId = event.getGuild().getId();
 
         bot.getCafeAPI().getCustomChannelApi().getCustomChannel(guildId, CustomChannelType.RAFFLE)
@@ -104,7 +105,7 @@ public class RaffleCreateSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Create a raffle!";
     }
 

@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.generic.twitch;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -16,7 +17,7 @@ public class TwitchAddSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         String username = event.getOption("username").getAsString();  // Should not be null.
 
         bot.getCafeAPI().getTwitchChannelApi().addChannel(event.getGuild().getId(), username)
@@ -44,7 +45,7 @@ public class TwitchAddSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Add a twitch channel to get live notifications for!";
     }
 

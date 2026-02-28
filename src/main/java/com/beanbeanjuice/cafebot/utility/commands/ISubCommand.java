@@ -10,11 +10,11 @@ import java.util.concurrent.CompletableFuture;
 
 public interface ISubCommand {
 
-    void handle(SlashCommandInteractionEvent event);
+    void handle(SlashCommandInteractionEvent event, CommandContext ctx);
 
     String getName();
 
-    String getDescription();
+    String getDescriptionPath();
 
     default OptionData[] getOptions() { return new OptionData[0]; }
 

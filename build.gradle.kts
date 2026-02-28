@@ -100,6 +100,7 @@ tasks.clean {
 dependencies {
     implementation(project(":modules:cafeBot-api-wrapper"))
     implementation(project(":modules:meme-api-wrapper"))
+    implementation(project(":modules:i18n"))
 
     implementation("net.dv8tion:JDA:6.3.1") { exclude(module = "opus-java") }
 

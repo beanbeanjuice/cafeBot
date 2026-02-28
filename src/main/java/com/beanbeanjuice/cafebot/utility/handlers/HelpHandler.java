@@ -1,5 +1,7 @@
 package com.beanbeanjuice.cafebot.utility.handlers;
 
+import com.beanbeanjuice.cafebot.i18n.I18N;
+import com.beanbeanjuice.cafebot.i18n.YamlControl;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
@@ -12,6 +14,7 @@ import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.components.selections.StringSelectMenu.Builder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.*;
@@ -48,9 +51,11 @@ public class HelpHandler {
                 .build();
     }
 
-    public MessageEmbed getCategoryEmbed(CommandCategory category, int index) {
+    public MessageEmbed getCategoryEmbed(CommandCategory category, DiscordLocale discordLocale, int index) {
         int skipAmount = 25 * index;
         String description = String.format("# Commands for %s", category.name());
+
+        Locale locale = Locale.forLanguageTag(discordLocale.getLocale());
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
@@ -61,9 +66,11 @@ public class HelpHandler {
                 .skip(skipAmount)
                 .limit(25)
                 .forEach((command) -> {
+                    String commandDescription = I18N.getBundle(locale).getString(command.getDescriptionPath());
+
                     embedBuilder.addField(
                             String.format("**/%s**", command.getName()),
-                            String.format("> *%s*", command.getDescription()),
+                            String.format("> *%s*", commandDescription),
                             true
                     );
                 });
@@ -76,16 +83,21 @@ public class HelpHandler {
                 .build();
     }
 
-    public MessageEmbed getCommandEmbed(String commandName) {
+    public MessageEmbed getCommandEmbed(String commandName, DiscordLocale discordLocale) {
         ICommand command = commandHandler.getCommands().get(commandName);
 
+        Locale locale = Locale.forLanguageTag(discordLocale.getLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", locale, YamlControl.INSTANCE);
+
         String subCommandsString = Arrays.stream(command.getSubCommands()).map((subCommand) -> {
+            String subCommandDescription = I18N.getBundle(locale).getString(subCommand.getDescriptionPath());
+
             return String.format(
                     """
                     `%s %s`
                     > %s
                     
-                    """, subCommand.getName(), this.getOptionsString(subCommand.getOptions()), subCommand.getDescription()
+                    """, subCommand.getName(), this.getOptionsString(subCommand.getOptions()), subCommandDescription
             );
         }).collect(Collectors.joining("\n"));
         subCommandsString = (subCommandsString.isBlank()) ? "*None*" : subCommandsString;
@@ -95,6 +107,8 @@ public class HelpHandler {
 
         String permissionsString = this.getPermissionsString(command.getPermissions());
         permissionsString = (permissionsString.isBlank()) ? "*None*" : permissionsString;
+
+        String commandDescription = I18N.getBundle(locale).getString(command.getDescriptionPath());
 
         String commandString = String.format(
                 """
@@ -109,7 +123,7 @@ public class HelpHandler {
                 %s
                 """,
                 command.getName(),
-                command.getDescription(),
+                commandDescription,
                 optionsString,
                 subCommandsString,
                 permissionsString

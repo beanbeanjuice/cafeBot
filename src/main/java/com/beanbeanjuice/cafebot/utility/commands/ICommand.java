@@ -1,8 +1,6 @@
 package com.beanbeanjuice.cafebot.utility.commands;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -13,11 +11,11 @@ import java.util.concurrent.CompletableFuture;
 
 public interface ICommand {
 
-    default void handle(SlashCommandInteractionEvent event) { }
+    default void handle(SlashCommandInteractionEvent event, CommandContext ctx) { }
 
     String getName();
 
-    String getDescription();
+    String getDescriptionPath();
 
     CommandCategory getCategory();
 

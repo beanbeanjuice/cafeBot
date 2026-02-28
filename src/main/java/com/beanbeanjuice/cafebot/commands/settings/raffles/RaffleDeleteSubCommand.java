@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.settings.raffles;
 import com.beanbeanjuice.cafebot.api.wrapper.type.Raffle;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
@@ -22,7 +23,7 @@ public class RaffleDeleteSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         int raffleId = Integer.valueOf(event.getOption("id").getAsString());
 
         bot.getCafeAPI().getRaffleApi().deleteRaffle(raffleId).thenRun(() -> {
@@ -39,7 +40,7 @@ public class RaffleDeleteSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Delete a raffle!";
     }
 

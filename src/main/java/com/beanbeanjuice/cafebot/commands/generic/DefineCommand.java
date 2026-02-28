@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.api.dictionary.DictionaryAPIWrapper;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
@@ -21,7 +22,7 @@ public class DefineCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         String word = event.getOption("word").getAsString();
 
         Optional<OptionMapping> languageCodeMapping = Optional.ofNullable(event.getOption("languageCode"));
@@ -45,7 +46,7 @@ public class DefineCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Define something!";
     }
 

@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.settings.channels;
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.CustomChannelType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -23,7 +24,7 @@ public class ChannelSetSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         CustomChannelType type = CustomChannelType.valueOf(event.getOption("type").getAsString());
         Optional<OptionMapping> channelMapping = Optional.ofNullable(event.getOption("channel"));
         GuildChannelUnion channel = channelMapping.map(OptionMapping::getAsChannel).orElse((GuildChannelUnion) event.getChannel());
@@ -62,7 +63,7 @@ public class ChannelSetSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Set a custom channel!";
     }
 

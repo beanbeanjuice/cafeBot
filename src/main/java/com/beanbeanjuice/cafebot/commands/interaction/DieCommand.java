@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,7 +18,7 @@ public class DieCommand extends Command implements ICommand, IInteractionCommand
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         this.handleInteraction(InteractionType.DIE, event, bot);
     }
 
@@ -27,7 +28,7 @@ public class DieCommand extends Command implements ICommand, IInteractionCommand
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Die because of someone...";
     }
 

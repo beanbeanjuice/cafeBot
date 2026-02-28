@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.generic;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -27,7 +28,7 @@ public class EmbedCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         GuildChannelUnion channel = event.getOption("channel").getAsChannel();  // Should not be null.
         Optional<String> messageOptional = Optional.ofNullable(event.getOption("message")).map(OptionMapping::getAsString);
         Optional<Message.Attachment> thumbnailOptional = Optional.ofNullable(event.getOption("thumbnail")).map(OptionMapping::getAsAttachment);
@@ -116,7 +117,7 @@ public class EmbedCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Create a beautiful embed!";
     }
 

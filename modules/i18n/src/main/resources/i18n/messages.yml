@@ -1,0 +1,177 @@
+#bot:
+#  name: "cafeBot"
+#  greeting: "Hello, world!"
+#  discord-locale: ENGLISH_US
+#
+#error:
+#  uncaught:
+#    title: "Uncaught Error!"
+#    message: |
+#      I-... something went... seriously wrong... <:cafeBot_sad:1171726165040447518>
+#
+#      I tried to do that and short-circuited... this is the error I got...
+#
+#      ```
+#      {uncaught_error}
+#      ```
+#  generic:
+#    title: "Error"
+#    message: "There was an error! I... I'll try to let me boss know... please try again later and make a report on the GitHub if it is not fixed soon with `/bug`!"
+#
+#command:
+#
+#  menu:
+#    description: "Hungry? Check the menu out!"
+#
+#  serve:
+#    description: "Serve some words to customers to earn some Cafe Coins!"
+#    embed:
+#      success:
+#        title: "Order up!"
+#        description: "{user} has served {word} for **{reward}** CC! They now have **{balance}**!"
+#        description_other: "{user} has served {word} to {customer} for **{reward}** CC! They now have **{balance}**!"
+#        footer: "Type \"/serve\" to get some money!"
+#      error:
+#        word:
+#          title: "Invalid Word"
+#          description: "Umm... I don't think that's a real word... make sure you use a real, single, **non-banned** english word."
+#        time:
+#          title: "Cannot serve!"
+#          description: |
+#            You last served a word at <t:{time}:R>.
+#
+#            You need to wait an hour before you last served in order to serve again.
+#
+#    arguments:
+#      word:
+#        description: "Any english word!"
+#      customer:
+#        description: "The user you want to serve the word to!"
+#
+#  ping:
+#    description: "Pong!"
+#    embed:
+#      description: "Hello!~ Would you like to order some coffee?"
+#      shard: "Your shard ID is {SHARD_ID}! Keep note of this in case you need some help..."
+#      author: "Author: beanbeanjuice - https://github.com/beanbeanjuice/cafeBot"
+#    arguments:
+#      word:
+#        description: "Any word you want repeated back to you."
+#      number:
+#        description: "An integer to repeat back to you."
+#
+#  birthday:
+#    description: "Get someone's birthday or change your own!"
+#    subcommand:
+#      get:
+#        description: "Get someone's birthday!"
+#        embed:
+#          other:
+#            title: "🎂 {user}'s Birthday"
+#            description: "Their birthday is on **{month} {day}** ({timezone})."
+#          self:
+#            title: "🎂 Your Birthday"
+#            description: "Your birthday is on **{month} {day}** ({timezone})."
+#          error:
+#            title: "Error Getting Birthday"
+#            description: "<:cafeBot_sad:1171726165040447518> Sorry... there was an error getting their birthday. It might not be set, you should tell them to set it with `/birthday`!"
+#        arguments:
+#          user:
+#            description: "The user who's birthday you want to see."
+#
+#      set:
+#        description: "Edit your birthday!"
+#        embed:
+#          error:
+#            title: "Error Setting Birthday"
+#            description: "I... I don't know what happened... the computer's not letting me put your birthday in!"
+#          success:
+#            title: "🎂 Birthday Set"
+#            description: "You have successfully set your birthday to **{month} {day}** ({timezone})."
+#        arguments:
+#          month:
+#            description: "The month you were born!"
+#          day:
+#            description: "The day you were born!"
+#          timezone:
+#            description: "Your current timezone! Start typing to see available options."
+#          year:
+#            description: "The year you were born in!"
+#
+#      remove:
+#        description: "Remove your birthday... :c"
+#        embed:
+#          title: "Birthday Removed 🥺"
+#          description: "<:cafeBot_sad:1171726165040447518> Your birthday has been removed... but I know it's sometimes better to keep things private..."
+#
+#  meme:
+#    description: "Get a meme!"
+#    error:
+#      embed:
+#        title: "Failed Getting Meme"
+#        description: "I... I'm so sorry... I tripped and fell when getting your meme..."
+#    subcommand:
+#      coffee:
+#        description: "Get a coffee meme!"
+#      random:
+#        description: "Get a random meme!"
+#      tea:
+#        description: "Get a tea meme!"
+#
+#  rate:
+#    description: "Rate something!"
+#    subcommand:
+#      caffeinated:
+#        description: "Rate how caffeinated you, or someone else, is!"
+#        embed:
+#          title: "☕ Caffeine Rating ☕"
+#          description: "{user} is {percent}% caffeinated! <a:yayaya:954426079177744445>"
+#        arguments:
+#          user:
+#            description: "The person who's caffeine levels you want to see."
+#
+#      gay:
+#        description: "Rate how ✨ gay ✨ someone is!"
+#        embed:
+#          title: "🏳️‍🌈 Gay Rating 🌈"
+#          description: "{user} is {percent}% gay! <:bloatedBlush:1154475611893547218>"
+#        arguments:
+#          user:
+#            description: "The person who's gayness you want to see."
+#
+#      insane:
+#        description: "See how insane someone is!"
+#        embed:
+#          title: "‼️ Insane Rating ‼️"
+#          description: "{user} is {percent}% insane! <a:schizo:1087762654677970954>"
+#        arguments:
+#          user:
+#            description: "The person who's insanity you want to see."
+#
+#      poor:
+#        description: "Rate how poor someone is!"
+#        embed:
+#          title: "💸 Poor Rating 💸️"
+#          description: "{user} is {percent}% poor! 🤢"
+#        arguments:
+#          user:
+#            description: "The person who's poor level you want to see."
+#
+#      simp:
+#        description: "Rate how much of a simp someone is!"
+#        embed:
+#          title: "😍 Simp Rating 😍"
+#          description: "{user} is {percent}% simp! <:flushed_nervous:841923862202548224>"
+#        arguments:
+#          user:
+#            description: "The person who's simp level you want to see."
+#
+#      smart:
+#        description: "Rate how smart someone is!"
+#        embed:
+#          title: "<:smartPeepo:1000248538376196280> Smart Rating <:smartPeepo:1000248538376196280>"
+#          description: "{user} is {percent}% smart! 👩‍🎓"
+#        arguments:
+#          user:
+#            description: "The person who's smart levels you want to see."
+#
