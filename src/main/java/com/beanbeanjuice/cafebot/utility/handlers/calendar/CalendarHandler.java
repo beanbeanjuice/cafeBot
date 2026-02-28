@@ -4,40 +4,57 @@ import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
+import net.fortuna.ical4j.model.Parameter;
 import net.fortuna.ical4j.model.Period;
 import net.fortuna.ical4j.model.component.CalendarComponent;
 import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.parameter.Value;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.Instant;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class CalendarHandler {
 
-    private static List<CalendarEvent> getEvents(String calendarUrl) throws MalformedURLException {
-        URL url = new URL(calendarUrl);
+    private static List<CalendarEvent> getEvents(String calendarUrl) throws MalformedURLException, URISyntaxException {
+        URL url = new URI(calendarUrl).toURL();
         try (InputStream in = url.openStream()) {
             CalendarBuilder builder = new CalendarBuilder();
             Calendar calendar = builder.build(in);
 
-            ZonedDateTime now = ZonedDateTime.now();
-            ZonedDateTime nextWeek = now.plusWeeks(1);
+            Instant now = Instant.now();
+            Instant nextWeek = now.plus(7, ChronoUnit.DAYS);
 
-            Period<ZonedDateTime> period = new Period<>(now, nextWeek);
+            Period<ZonedDateTime> period = new Period<>(
+                    now.atZone(ZoneOffset.UTC),
+                    nextWeek.atZone(ZoneOffset.UTC)
+            );
 
             List<CalendarEvent> events = new ArrayList<>();
 
             for (CalendarComponent component : calendar.getComponents(Component.VEVENT)) {
                 VEvent event = (VEvent) component;
+
+                // Skip all-day events (DTSTART is DATE, not DATE-TIME)
+                boolean isAllDay = event.getDateTimeStart()
+                        .getParameter(Parameter.VALUE)
+                        .map(Value.DATE::equals)
+                        .orElse(false);
+                if (isAllDay) continue;
+
                 Set<Period<ZonedDateTime>> occurrences =
                         event.calculateRecurrenceSet(period);
-
 
                 for (Period<ZonedDateTime> occurrence : occurrences) {
 
@@ -61,7 +78,7 @@ public class CalendarHandler {
 
         try {
             events = getEvents(calendarUrl);
-        } catch (MalformedURLException ex) {
+        } catch (MalformedURLException | URISyntaxException ex) {
             return "Error Getting Calendar";
         }
 

@@ -60,7 +60,7 @@ public class CalendarGetSubCommand extends Command implements ISubCommand {
     public OptionData[] getOptions() {
         return new OptionData[] {
                 new OptionData(OptionType.STRING, "id", "The ID of the calendar you want to view!", true, true),
-                new OptionData(OptionType.STRING, "timezone", "The timezone you want the calendar in", true, true)
+                new OptionData(OptionType.STRING, "timezone", "The timezone you want the calendar in.", true, true)
         };
     }
 
