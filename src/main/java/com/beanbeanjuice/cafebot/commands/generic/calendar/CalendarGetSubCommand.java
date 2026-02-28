@@ -6,6 +6,7 @@ import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.handlers.calendar.CalendarHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
+import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -42,6 +43,7 @@ public class CalendarGetSubCommand extends Command implements ISubCommand {
 
     private void handleError(Throwable ex, SlashCommandInteractionEvent event) {
         event.getHook().sendMessageEmbeds(Helper.errorEmbed("Error Getting Calendar", "I... couldn't find the calendar... is this an error??")).queue();
+        bot.getLogger().log(this.getClass(), LogLevel.WARN, ex.getMessage(), true, false, ex);
     }
 
     @Override
