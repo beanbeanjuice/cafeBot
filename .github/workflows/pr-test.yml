@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        gradle-version: [8.14.3, current]
+        gradle-version: [wrapper, current]
 
     uses: ./.github/workflows/reusable-gradle-test.yml
     with:
