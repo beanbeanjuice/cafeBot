@@ -1,0 +1,4 @@
+bot:
+  name: "cafeBot"
+  greeting: "Hello, world!"
+  discord-locale: ENGLISH_US

@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.fun.birthday;
 import com.beanbeanjuice.cafebot.api.wrapper.type.Birthday;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -17,6 +18,7 @@ import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 public class BirthdaySetSubCommand extends Command implements ISubCommand {
 
@@ -25,7 +27,7 @@ public class BirthdaySetSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         String userId = event.getUser().getId();
         int month = event.getOption("month").getAsInt();
         int day = event.getOption("day").getAsInt();
@@ -36,25 +38,28 @@ public class BirthdaySetSubCommand extends Command implements ISubCommand {
 
         bot.getCafeAPI().getBirthdayApi().setBirthday(userId, birthday)
                 .thenAccept((newBirthday) -> {
+                    String description = ctx.getUserI18n().getString("command.birthday.subcommand.set.embed.success.description")
+                            .replace("{month}", Month.of(month).getDisplayName(TextStyle.FULL, Locale.ENGLISH))
+                            .replace("{day}", String.valueOf(day))
+                            .replace("{timezone}", zoneId.getId());
                     event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                            "🎂 Birthday Set",
-                            String.format(
-                                    "You have successfully set your birthday to **%s %d** (%s).",
-                                    Month.of(month).getDisplayName(TextStyle.FULL, Locale.ENGLISH),
-                                    day,
-                                    zoneId.getId()
-                            )
+                            ctx.getUserI18n().getString("command.birthday.subcommand.set.embed.success.title"),
+                            description
                     )).queue();
                 })
                 .exceptionally((ex) -> {
-                    event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                            "Error Setting Birthday",
-                            "I... I don't know what happened... the computer's not letting me put your birthday in!"
-                    )).queue();
-
-                    bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Setting Birthday: " + ex.getMessage(), true, true);
-                    return null;
+                    handleError(ex, event, ctx);
+                    throw new CompletionException(ex.getCause());
                 });
+    }
+
+    private void handleError(Throwable ex, SlashCommandInteractionEvent event, CommandContext ctx) {
+        event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                ctx.getUserI18n().getString("command.birthday.subcommand.set.embed.error.title"),
+                ctx.getUserI18n().getString("command.birthday.subcommand.set.embed.error.description")
+        )).queue();
+
+        bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Setting Birthday: " + ex.getMessage(), true, true);
     }
 
     @Override
@@ -63,14 +68,14 @@ public class BirthdaySetSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Edit your birthday!";
+    public String getDescriptionPath() {
+        return "command.birthday.subcommand.set.description";
     }
 
     @Override
     public OptionData[] getOptions() {
         return new OptionData[]{
-                new OptionData(OptionType.INTEGER, "month", "The month you were born!", true)
+                new OptionData(OptionType.INTEGER, "month", "command.birthday.subcommand.set.arguments.month.description", true)
                         .addChoice("1 - January", 1)
                         .addChoice("2 - February", 2)
                         .addChoice("3 - March", 3)
@@ -84,12 +89,12 @@ public class BirthdaySetSubCommand extends Command implements ISubCommand {
                         .addChoice("11 - November", 11)
                         .addChoice("12 - December", 12),
 
-                new OptionData(OptionType.INTEGER, "day", "The day you were born in the specified month!", true)
+                new OptionData(OptionType.INTEGER, "day", "command.birthday.subcommand.set.arguments.day.description", true)
                         .setRequiredRange(1, 31),
 
-                new OptionData(OptionType.STRING, "timezone", "Start typing to see available options!", true, true),
+                new OptionData(OptionType.STRING, "timezone", "command.birthday.subcommand.set.arguments.timezone.description", true, true),
 
-                new OptionData(OptionType.INTEGER, "year", "The year you were born in!", false)
+                new OptionData(OptionType.INTEGER, "year", "command.birthday.subcommand.set.arguments.year.description", false)
         };
     }
 

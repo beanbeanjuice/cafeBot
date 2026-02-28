@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.games;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
@@ -15,7 +16,7 @@ public class CoinFlipCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         boolean isHeads = (Helper.getRandomInteger(0, 2) == 1);
         String coin = (isHeads) ? "HEADS" : "TAILS";
         event.getHook().sendMessageEmbeds(Helper.descriptionEmbed(String.format("The coin is **%s**!", coin))).queue();
@@ -27,7 +28,7 @@ public class CoinFlipCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Flip a coin!";
     }
 

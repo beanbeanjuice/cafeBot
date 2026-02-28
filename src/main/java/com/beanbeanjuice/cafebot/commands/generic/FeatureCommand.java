@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.generic;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
@@ -19,7 +20,7 @@ public class FeatureCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         event.getHook().sendMessageComponents(
                 ActionRow.of(Button.link(FEATURE_REQUEST_URL, "Feature Request").withEmoji(Emoji.fromFormatted("<:ticket:851426785203322992>")))
         ).queue();
@@ -31,7 +32,7 @@ public class FeatureCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Request a new feature for me!";
     }
 

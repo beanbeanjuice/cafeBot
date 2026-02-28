@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.generic;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
@@ -18,7 +19,7 @@ public class SupportCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         String SUPPORT_URL = "https://discord.gg/KrUFw3uHST";
         event.getHook().sendMessageEmbeds(Helper.successEmbed(
                 "Support",
@@ -32,7 +33,7 @@ public class SupportCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Something wrong with me? Get some support!";
     }
 

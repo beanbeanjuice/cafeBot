@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.generic;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -28,7 +29,7 @@ public class WhoCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         Optional<OptionMapping> userMapping = Optional.ofNullable(event.getOption("user"));
 
         if (event.isFromGuild()) handleFromGuild(event);
@@ -86,7 +87,7 @@ public class WhoCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "See stats about yourself or another user!";
     }
 

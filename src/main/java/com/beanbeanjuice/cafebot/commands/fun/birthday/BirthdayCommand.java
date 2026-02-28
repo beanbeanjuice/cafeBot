@@ -16,8 +16,8 @@ public class BirthdayCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Get someone's birthday or change your own!";
+    public String getDescriptionPath() {
+        return "command.birthday.description";
     }
 
     @Override

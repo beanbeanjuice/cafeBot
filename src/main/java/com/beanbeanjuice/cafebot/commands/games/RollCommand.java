@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.games;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
@@ -20,7 +21,7 @@ public class RollCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         Optional<OptionMapping> sizeMapping = Optional.ofNullable(event.getOption("size"));
         int size = sizeMapping.map(OptionMapping::getAsInt).orElse(6);
         int roll = Helper.getRandomInteger(1, size + 1);
@@ -33,7 +34,7 @@ public class RollCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Roll a pair of dice!";
     }
 

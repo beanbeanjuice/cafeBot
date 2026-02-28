@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.generic.calendar;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.api.wrapper.type.calendar.Calendar;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.handlers.calendar.CalendarHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
@@ -13,10 +14,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
@@ -27,7 +25,7 @@ public class CalendarGetSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         String[] split = event.getOption("id").getAsString().split("ID: ");
         String calendarId = (split.length == 2) ? split[1] : split[0];
         ZoneId zoneId = TimeZone.getTimeZone(event.getOption("timezone").getAsString()).toZoneId();
@@ -52,7 +50,7 @@ public class CalendarGetSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Get your calendars!";
     }
 

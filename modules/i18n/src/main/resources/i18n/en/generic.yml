@@ -1,0 +1,14 @@
+error:
+  uncaught:
+    title: "Uncaught Error!"
+    message: |
+      I-... something went... seriously wrong... <:cafeBot_sad:1171726165040447518>
+      
+      I tried to do that and short-circuited... this is the error I got...
+      
+      ```
+      {uncaught_error}
+      ```
+  generic:
+    title: "Error"
+    message: "There was an error! I... I'll try to let me boss know... please try again later and make a report on the GitHub if it is not fixed soon with `/bug`!"

@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.interaction.generic;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,7 +18,7 @@ public class InteractionStatusSubCommand extends Command implements ISubCommand 
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         boolean status = event.getOption("status").getAsBoolean(); // Should not be null.
         bot.getCafeAPI().getInteractionsApi().setInteractionStatus(event.getUser().getId(), status).thenAccept(response -> {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
@@ -40,7 +41,7 @@ public class InteractionStatusSubCommand extends Command implements ISubCommand 
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Enable or disable the ability to send interactions to you!";
     }
 

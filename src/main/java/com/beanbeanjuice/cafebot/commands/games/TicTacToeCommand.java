@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.games;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.handlers.games.TicTacToeHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
@@ -26,7 +27,7 @@ public class TicTacToeCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         int wager = Optional.ofNullable(event.getOption("wager")).map(OptionMapping::getAsInt).orElse(0);
 
         User opponent = event.getOption("opponent").getAsUser();
@@ -59,7 +60,7 @@ public class TicTacToeCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Play tic-tac-toe with someone!";
     }
 
