@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.4.2](https://github.com/beanbeanjuice/cafeBot/compare/v4.4.1...v4.4.2) (2026-03-01)
+
+
+### Bug Fixes
+
+* **deps:** bump com.gradleup.shadow from 9.3.1 to 9.3.2 ([#741](https://github.com/beanbeanjuice/cafeBot/issues/741)) ([92c198c](https://github.com/beanbeanjuice/cafeBot/commit/92c198c0290a74b451a4293c145f952459cb1a1e))
+
 ## [4.4.1](https://github.com/beanbeanjuice/cafeBot/compare/v4.4.0...v4.4.1) (2026-02-28)
 
 
