@@ -26,8 +26,8 @@ public class MemeRandomSubCommand extends Command implements IMemeSubCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Get a random meme!";
+    public String getDescriptionPath() {
+        return "command.meme.subcommand.random.description";
     }
 
 }

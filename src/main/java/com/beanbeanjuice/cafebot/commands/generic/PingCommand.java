@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.generic;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.scheduling.UpdateMessageScheduler;
@@ -15,6 +16,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class PingCommand extends Command implements ICommand {
 
@@ -23,10 +25,10 @@ public class PingCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         int shardId = event.isFromGuild() ? event.getJDA().getShardInfo().getShardId() : -1;
 
-        event.getHook().sendMessageEmbeds(messageEmbed(shardId)).queue();
+        event.getHook().sendMessageEmbeds(messageEmbed(shardId, ctx.getUserI18n())).queue();
 
         Optional<OptionMapping> wordOptionMapping = Optional.ofNullable(event.getOption("word"));
         Optional<OptionMapping> numberOptionMapping = Optional.ofNullable(event.getOption("number"));
@@ -35,16 +37,23 @@ public class PingCommand extends Command implements ICommand {
         numberOptionMapping.map(OptionMapping::getAsInt).ifPresent((number) -> event.getHook().sendMessage(String.valueOf(number)).queue());
     }
 
-    private MessageEmbed messageEmbed(int shardId) {
+    private MessageEmbed messageEmbed(int shardId, ResourceBundle bundle) {
         EmbedBuilder embedBuilder = new EmbedBuilder(UpdateMessageScheduler.getUpdateEmbed(this.bot));
 
         embedBuilder.setTitle("ping!", "https://www.beanbeanjuice.com/cafeBot.html");
-        embedBuilder.appendDescription("\n\nHello!~ Would you like to order some coffee?");
+        embedBuilder
+                .appendDescription("\n\n")
+                .appendDescription(bundle.getString("command.ping.embed.description"));
 
-        if (shardId > -1) embedBuilder.appendDescription(String.format("\n\nYour shard ID is %d!", shardId));
+        if (shardId > -1) {
+            String shardIdString = bundle.getString("command.ping.embed.shard").replace("{SHARD_ID}", String.valueOf(shardId));
+            embedBuilder
+                    .appendDescription("\n\n")
+                    .appendDescription(shardIdString);
+        }
 
         embedBuilder
-                .setFooter("Author: beanbeanjuice - " + "https://github.com/beanbeanjuice/cafeBot")
+                .setFooter(bundle.getString("command.ping.embed.author"))
                 .setThumbnail(this.bot.getDiscordAvatarUrl())
                 .setColor(Helper.getRandomColor());
         return embedBuilder.build();
@@ -56,8 +65,8 @@ public class PingCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Pong!";
+    public String getDescriptionPath() {
+        return "commands.ping.description";
     }
 
     @Override
@@ -68,8 +77,8 @@ public class PingCommand extends Command implements ICommand {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.STRING, "word", "A word to repeat back to you.", false, false),
-                new OptionData(OptionType.INTEGER, "number", "An integer to repeat back to you.", false, false)
+                new OptionData(OptionType.STRING, "word", "command.ping.arguments.word.description", false, false),
+                new OptionData(OptionType.INTEGER, "number", "command.ping.arguments.number.description", false, false)
                         .addChoice("One", 1)
                         .addChoice("2", 2)
         };

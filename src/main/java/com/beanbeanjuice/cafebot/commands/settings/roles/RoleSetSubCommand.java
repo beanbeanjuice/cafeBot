@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.settings.roles;
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.CustomRoleType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -20,7 +21,7 @@ public class RoleSetSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         CustomRoleType type = CustomRoleType.valueOf(event.getOption("type").getAsString());
         Role role = event.getOption("role").getAsRole();
 
@@ -51,7 +52,7 @@ public class RoleSetSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Set a custom role!";
     }
 

@@ -19,8 +19,8 @@ public class RateCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Rate something!";
+    public String getDescriptionPath() {
+        return "command.rate.description";
     }
 
     @Override

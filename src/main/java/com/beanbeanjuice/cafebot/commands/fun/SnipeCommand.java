@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.fun;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.types.PotentialSnipeMessage;
@@ -11,8 +12,6 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-import java.awt.*;
-
 public class SnipeCommand extends Command implements ICommand {
 
     public SnipeCommand(CafeBot bot) {
@@ -20,7 +19,7 @@ public class SnipeCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         bot.getSnipeHandler().popLastMessage(event.getChannelId()).ifPresentOrElse(
                 (snipedMessage) -> event.getHook().sendMessageEmbeds(this.getSnipedMessageEmbed(snipedMessage)).queue(),
                 () -> event.getHook().sendMessageEmbeds(this.getNoSnipeMessageEmbed()).queue()
@@ -55,7 +54,7 @@ public class SnipeCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Snipe a recently deleted message!";
     }
 

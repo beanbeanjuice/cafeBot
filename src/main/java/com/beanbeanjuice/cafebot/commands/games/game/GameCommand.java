@@ -19,7 +19,7 @@ public class GameCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Something to do with games!";
     }
 

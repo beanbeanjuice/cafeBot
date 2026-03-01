@@ -23,8 +23,8 @@ public class MemeTeaSubCommand extends Command implements IMemeSubCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Get a tea meme!";
+    public String getDescriptionPath() {
+        return "command.meme.subcommand.tea.description";
     }
 
 }

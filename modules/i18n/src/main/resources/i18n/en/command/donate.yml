@@ -1,0 +1,28 @@
+description: "Donate your cafeCoins to another user!"
+embed:
+  donation:
+    title: "Money up!"
+    description: |
+      Aww!~ <a:wowowow:886217210010431508>
+
+      {donator} just donated **{amount} bC** to {donatee}!
+    footer: "If you want to donate too, do \"/donate!\""
+  cooldown:
+    title: "Donation Cooldown"
+    description: That user was last donated to at <t:{timestamp}>. You need to wait before they are able to receive another donation.
+    footer: "They can only be donated to once per hour!"
+  balance:
+    title: "Not Enough Cafe Coins!"
+    description: |
+      Umm.. you only have {balance} which is *not* enough to donate {payment}.
+
+      If you don't have money to pay then why are you even trying to donate? Do you even have money to order from the store? Ugh... I guess I might give you some money if you serve some customers...
+    footer: "To get some money, do \"/serve\"!"
+  self:
+    title: "Self Donation"
+    description: "You're joking... right? You can't donate to yourself. <:cafeBot_angry:1171726164092518441>"
+arguments:
+  user:
+    description: "The user you want to donate to."
+  amount:
+    description: "The amount of cafeCoins you want to donate!"

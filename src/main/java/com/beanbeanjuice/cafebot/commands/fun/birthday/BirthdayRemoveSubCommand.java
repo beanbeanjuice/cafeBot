@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.fun.birthday;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.entities.User;
@@ -14,14 +15,14 @@ public class BirthdayRemoveSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         User user = event.getUser();
 
         bot.getCafeAPI().getBirthdayApi().deleteBirthday(user.getId())
                 .thenRun(() -> {
                     event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                            "Birthday Removed 🥺",
-                            "<:cafeBot_sad:1171726165040447518> Your birthday has been removed... but I know it's sometimes better to keep things private..."
+                            ctx.getUserI18n().getString("command.birthday.subcommand.remove.embed.title"),
+                            ctx.getUserI18n().getString("command.birthday.subcommand.remove.embed.description")
                     )).queue();
                 });
     }
@@ -32,8 +33,8 @@ public class BirthdayRemoveSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Remove your birthday.";
+    public String getDescriptionPath() {
+        return "command.birthday.subcommand.remove.description";
     }
 
 }

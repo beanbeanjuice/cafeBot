@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.type.DiscordServer;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -19,7 +20,7 @@ public class AiCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         String guildId = event.getGuild().getId();
         boolean status = event.getOption("status").getAsBoolean();
 
@@ -48,7 +49,7 @@ public class AiCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Want a sassy AI that will serve you some coffee?";
     }
 

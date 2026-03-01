@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.settings.airport;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.AirportMessageType;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -19,7 +20,7 @@ public class AirportMessageRemoveSubCommand extends Command implements ISubComma
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         AirportMessageType type = AirportMessageType.valueOf(event.getOption("type").getAsString());
 
         String guildId = event.getGuild().getId();
@@ -44,7 +45,7 @@ public class AirportMessageRemoveSubCommand extends Command implements ISubComma
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Set the airport message back to the default!";
     }
 

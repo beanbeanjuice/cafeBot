@@ -114,6 +114,18 @@ public class Helper {
         }
     }
 
+    public static MessageEmbed uncaughtErrorEmbed(ResourceBundle i18n, String error) {
+        String title = i18n.getString("generic.error.uncaught.title");
+        String description = i18n.getString("generic.error.uncaught.message")
+                .replace("{uncaught_error}", error);
+
+        return new EmbedBuilder()
+                .setTitle(title)
+                .setDescription(description)
+                .setColor(Color.RED)
+                .build();
+    }
+
     public static MessageEmbed errorEmbed(@NotNull String title, @NotNull String description) {
         return new EmbedBuilder()
                 .setTitle(title)

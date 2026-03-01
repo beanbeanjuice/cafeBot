@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.social;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
@@ -15,7 +16,7 @@ public class MemberCountCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         event.getGuild().retrieveMetaData().queue((metadata) -> {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
                     "Member Count",
@@ -30,7 +31,7 @@ public class MemberCountCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Get the member count for your server!";
     }
 

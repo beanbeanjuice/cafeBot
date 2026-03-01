@@ -1,5 +1,6 @@
 package com.beanbeanjuice.cafebot.commands.fun.meme;
 
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.meme.api.wrapper.MemeAPI;
@@ -14,15 +15,15 @@ public interface IMemeSubCommand extends ISubCommand {
 
     String[] getSubreddits();
 
-    default void handle(SlashCommandInteractionEvent event) {
+    default void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         int subredditIndex = Helper.getRandomInteger(0, this.getSubreddits().length);
 
         MemeAPI.get(this.getSubreddits()[subredditIndex])
                 .thenAccept((redditMeme) -> event.getHook().sendMessageEmbeds(this.getMessageEmbed(redditMeme)).queue())
                 .exceptionally((ex) -> {
                     event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                            "Failed Getting Meme",
-                            "I... I'm so sorry... I tripped and fell when getting your meme..."
+                            ctx.getUserI18n().getString("command.meme.description.error.embed.title"),
+                            ctx.getUserI18n().getString("command.meme.description.error.embed.description")
                     )).queue();
                     throw new CompletionException(ex);
                 });

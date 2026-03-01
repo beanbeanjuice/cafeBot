@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.interaction.generic;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.api.wrapper.api.exception.ApiRequestException;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -25,7 +26,7 @@ public class InteractionUnblockSubCommand extends Command implements ISubCommand
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         String unblockedUser = event.getOption("user-id").getAsString();
 
         bot.getCafeAPI().getInteractionsApi().unBlockUser(event.getUser().getId(), unblockedUser).thenRun(() -> {
@@ -59,7 +60,7 @@ public class InteractionUnblockSubCommand extends Command implements ISubCommand
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "Unblocks a user you have previously blocked.";
     }
 

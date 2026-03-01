@@ -24,8 +24,8 @@ public class MemeCoffeeSubCommand extends Command implements IMemeSubCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Get a coffee meme!";
+    public String getDescriptionPath() {
+        return "command.meme.subcommand.coffee.description";
     }
 
 }

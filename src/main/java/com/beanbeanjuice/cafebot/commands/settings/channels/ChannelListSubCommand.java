@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.CustomChannelType;
 import com.beanbeanjuice.cafebot.api.wrapper.type.CustomChannel;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -12,11 +13,9 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.CompletionException;
-import java.util.stream.Collectors;
 
 public class ChannelListSubCommand extends Command implements ISubCommand {
 
@@ -25,7 +24,7 @@ public class ChannelListSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         Guild guild = event.getGuild();
 
         this.bot.getCafeAPI().getCustomChannelApi().getCustomChannels(guild.getId())
@@ -64,7 +63,7 @@ public class ChannelListSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
+    public String getDescriptionPath() {
         return "List all custom channels for the server!";
     }
 
