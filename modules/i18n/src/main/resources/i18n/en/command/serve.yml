@@ -1,24 +1,23 @@
-serve:
-  description: "Serve some words to customers to earn some Cafe Coins!"
-  embed:
-    success:
-      title: "Order up!"
-      description: "{user} has served {word} for **{reward}** CC! They now have **{balance}**!"
-      description_other: "{user} has served {word} to {customer} for **{reward}** CC! They now have **{balance}**!"
-      footer: "Type \"/serve\" to get some money!"
-    error:
-      word:
-        title: "Invalid Word"
-        description: "Umm... I don't think that's a real word... make sure you use a real, single, **non-banned** english word."
-      time:
-        title: "Cannot serve!"
-        description: |
-          You last served a word at <t:{time}:R>.
-
-          You need to wait an hour before you last served in order to serve again.
-
-  arguments:
+description: "Serve some words to customers to earn some Cafe Coins!"
+embed:
+  success:
+    title: "Order up!"
+    description: "{user} has served {word} for **{reward}** CC! They now have **{balance}**!"
+    description_other: "{user} has served {word} to {customer} for **{reward}** CC! They now have **{balance}**!"
+    footer: "Type \"/serve\" to get some money!"
+  error:
     word:
-      description: "Any English word!"
-    customer:
-      description: "The user you want to serve the word to!"
+      title: "Invalid Word"
+      description: "Umm... I don't think that's a real word... make sure you use a real, single, **non-banned** english word."
+    time:
+      title: "Cannot serve!"
+      description: |
+        You last served a word at <t:{time}:R>.
+
+        You need to wait an hour before you last served in order to serve again.
+
+arguments:
+  word:
+    description: "Any English word!"
+  customer:
+    description: "The user you want to serve the word to!"

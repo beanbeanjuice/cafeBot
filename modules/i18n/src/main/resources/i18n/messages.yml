@@ -19,19 +19,6 @@
 #    message: "There was an error! I... I'll try to let me boss know... please try again later and make a report on the GitHub if it is not fixed soon with `/bug`!"
 #
 #command:
-#
-#  ping:
-#    description: "Pong!"
-#    embed:
-#      description: "Hello!~ Would you like to order some coffee?"
-#      shard: "Your shard ID is {SHARD_ID}! Keep note of this in case you need some help..."
-#      author: "Author: beanbeanjuice - https://github.com/beanbeanjuice/cafeBot"
-#    arguments:
-#      word:
-#        description: "Any word you want repeated back to you."
-#      number:
-#        description: "An integer to repeat back to you."
-#
 #  birthday:
 #    description: "Get someone's birthday or change your own!"
 #    subcommand:

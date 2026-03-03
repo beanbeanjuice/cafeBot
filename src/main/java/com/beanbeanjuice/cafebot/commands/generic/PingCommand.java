@@ -40,7 +40,7 @@ public class PingCommand extends Command implements ICommand {
     private MessageEmbed messageEmbed(int shardId, ResourceBundle bundle) {
         EmbedBuilder embedBuilder = new EmbedBuilder(UpdateMessageScheduler.getUpdateEmbed(this.bot));
 
-        embedBuilder.setTitle("ping!", "https://www.beanbeanjuice.com/cafeBot.html");
+        embedBuilder.setTitle("ping!", "https://www.cafebot.dev");
         embedBuilder
                 .appendDescription("\n\n")
                 .appendDescription(bundle.getString("command.ping.embed.description"));
@@ -66,7 +66,7 @@ public class PingCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "commands.ping.description";
+        return "command.ping.description";
     }
 
     @Override
