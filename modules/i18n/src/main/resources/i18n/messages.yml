@@ -19,49 +19,6 @@
 #    message: "There was an error! I... I'll try to let me boss know... please try again later and make a report on the GitHub if it is not fixed soon with `/bug`!"
 #
 #command:
-#  birthday:
-#    description: "Get someone's birthday or change your own!"
-#    subcommand:
-#      get:
-#        description: "Get someone's birthday!"
-#        embed:
-#          other:
-#            title: "🎂 {user}'s Birthday"
-#            description: "Their birthday is on **{month} {day}** ({timezone})."
-#          self:
-#            title: "🎂 Your Birthday"
-#            description: "Your birthday is on **{month} {day}** ({timezone})."
-#          error:
-#            title: "Error Getting Birthday"
-#            description: "<:cafeBot_sad:1171726165040447518> Sorry... there was an error getting their birthday. It might not be set, you should tell them to set it with `/birthday`!"
-#        arguments:
-#          user:
-#            description: "The user who's birthday you want to see."
-#
-#      set:
-#        description: "Edit your birthday!"
-#        embed:
-#          error:
-#            title: "Error Setting Birthday"
-#            description: "I... I don't know what happened... the computer's not letting me put your birthday in!"
-#          success:
-#            title: "🎂 Birthday Set"
-#            description: "You have successfully set your birthday to **{month} {day}** ({timezone})."
-#        arguments:
-#          month:
-#            description: "The month you were born!"
-#          day:
-#            description: "The day you were born!"
-#          timezone:
-#            description: "Your current timezone! Start typing to see available options."
-#          year:
-#            description: "The year you were born in!"
-#
-#      remove:
-#        description: "Remove your birthday... :c"
-#        embed:
-#          title: "Birthday Removed 🥺"
-#          description: "<:cafeBot_sad:1171726165040447518> Your birthday has been removed... but I know it's sometimes better to keep things private..."
 #
 #  meme:
 #    description: "Get a meme!"
