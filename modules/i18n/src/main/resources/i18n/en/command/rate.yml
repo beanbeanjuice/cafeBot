@@ -1,0 +1,55 @@
+description: "Rate something!"
+subcommand:
+  caffeinated:
+    description: "Rate how caffeinated you, or someone else, is!"
+    embed:
+      title: "☕ Caffeine Rating ☕"
+      description: "{user} is {percent}% caffeinated! <a:yayaya:954426079177744445>"
+    arguments:
+      user:
+        description: "The person who's caffeine levels you want to see."
+
+  gay:
+    description: "Rate how ✨ gay ✨ someone is!"
+    embed:
+      title: "🏳️‍🌈 Gay Rating 🌈"
+      description: "{user} is {percent}% gay! <:bloatedBlush:1154475611893547218>"
+    arguments:
+      user:
+        description: "The person who's gayness you want to see."
+
+  insane:
+    description: "See how insane someone is!"
+    embed:
+      title: "‼️ Insane Rating ‼️"
+      description: "{user} is {percent}% insane! <a:schizo:1087762654677970954>"
+    arguments:
+      user:
+        description: "The person who's insanity you want to see."
+
+  poor:
+    description: "Rate how poor someone is!"
+    embed:
+      title: "💸 Poor Rating 💸️"
+      description: "{user} is {percent}% poor! 🤢"
+    arguments:
+      user:
+        description: "The person who's poor level you want to see."
+
+  simp:
+    description: "Rate how much of a simp someone is!"
+    embed:
+      title: "😍 Simp Rating 😍"
+      description: "{user} is {percent}% simp! <:flushed_nervous:841923862202548224>"
+    arguments:
+      user:
+        description: "The person who's simp level you want to see."
+
+  smart:
+    description: "Rate how smart someone is!"
+    embed:
+      title: "<:smartPeepo:1000248538376196280> Smart Rating <:smartPeepo:1000248538376196280>"
+      description: "{user} is {percent}% smart! 👩‍🎓"
+    arguments:
+      user:
+        description: "The person who's smart levels you want to see."
