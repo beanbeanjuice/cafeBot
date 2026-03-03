@@ -20,8 +20,6 @@
 #
 #command:
 #
-#  menu:
-#    description: "Hungry? Check the menu out!"
 #
 #  serve:
 #    description: "Serve some words to customers to earn some Cafe Coins!"
