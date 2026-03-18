@@ -1,0 +1,11 @@
+description: "Want a sassy AI that will serve you some coffee?"
+embed:
+  title: "AI Response Changed"
+  enabled: "Status: Enabled ✅"
+  disabled: "Status: Disabled ❌"
+error:
+  title: "Error Changing AI Response"
+  description: "There was an error changing the AI response... I'm so sorry..."
+arguments:
+  status:
+    description: "Whether to enable or disable the \"AI\"."
