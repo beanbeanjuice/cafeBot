@@ -6,11 +6,11 @@ on:
       gradle-version:
         required: false
         type: string
-        default: '8.14.3'
+        default: '9.4.0'
       java-version:
         required: false
         type: string
-        default: '21'
+        default: '25'
 
 jobs:
   gradle-build:

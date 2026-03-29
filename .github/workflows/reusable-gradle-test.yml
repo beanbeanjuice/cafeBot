@@ -6,11 +6,11 @@ on:
       java-version:
         required: false
         type: string
-        default: '21'
+        default: '25'
       gradle-version:
         required: false
         type: string
-        default: '8.14.3'
+        default: '9.4.0'
     secrets:
       FORGEJO_REGISTRY:
         required: true
@@ -49,7 +49,7 @@ jobs:
         run: docker compose -f docker-compose.test.yml up -d --wait
 
       - name: Test with Gradle
-        run: gradle test
+        run: gradle clean test
         env:
           CAFEBOT_API_URL: 'http://localhost:5000'
 
