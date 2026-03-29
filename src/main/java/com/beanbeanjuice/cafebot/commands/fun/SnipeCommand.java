@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.fun;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
@@ -21,29 +22,38 @@ public class SnipeCommand extends Command implements ICommand {
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         bot.getSnipeHandler().popLastMessage(event.getChannelId()).ifPresentOrElse(
-                (snipedMessage) -> event.getHook().sendMessageEmbeds(this.getSnipedMessageEmbed(snipedMessage)).queue(),
-                () -> event.getHook().sendMessageEmbeds(this.getNoSnipeMessageEmbed()).queue()
+                (snipedMessage) -> event.getHook().sendMessageEmbeds(this.getSnipedMessageEmbed(snipedMessage, ctx.getGuildI18n())).queue(),
+
+                () -> event.getHook().sendMessageEmbeds(this.getNoSnipeMessageEmbed(ctx.getGuildI18n())).queue()
         );
     }
 
-    private MessageEmbed getSnipedMessageEmbed(PotentialSnipeMessage snipe) {
+    private MessageEmbed getSnipedMessageEmbed(PotentialSnipeMessage snipe, I18N guildBundle) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
-        embedBuilder.setTitle("Snipe!");
+        String title = guildBundle.getString("command.snipe.embed.snipe.title");
+        String description = guildBundle.getString("command.snipe.embed.snipe.description")
+                .replace("{user}", snipe.getUser().getAsMention())
+                .replace("{message}", snipe.getMessage());
+
+        embedBuilder.setTitle(title);
         embedBuilder.setAuthor(snipe.getUser().getName(), null, snipe.getUser().getAvatarUrl());
         embedBuilder.setColor(Helper.getRandomColor());
-        embedBuilder.setDescription(String.format("%s said \"%s\"", snipe.getUser().getAsMention(), snipe.getMessage()));
+        embedBuilder.setDescription(description);
         embedBuilder.setTimestamp(snipe.getCreatedAt());
 
         return embedBuilder.build();
     }
 
-    private MessageEmbed getNoSnipeMessageEmbed() {
+    private MessageEmbed getNoSnipeMessageEmbed(I18N guildBundle) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
-        embedBuilder.setTitle("No Snipe Found!");
+        String title = guildBundle.getString("command.snipe.embed.none.title");
+        String description = guildBundle.getString("command.snipe.embed.none.description");
+
+        embedBuilder.setTitle(title);
         embedBuilder.setColor(Helper.getRandomColor());
-        embedBuilder.setDescription("No one has deleted any messages in this channel recently...");
+        embedBuilder.setDescription(description);
 
         return embedBuilder.build();
     }
@@ -55,7 +65,7 @@ public class SnipeCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Snipe a recently deleted message!";
+        return "command.snipe.description";
     }
 
     @Override

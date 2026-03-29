@@ -103,6 +103,31 @@ public class I18NResourceVerificationTest {
     }
 
     @Test
+    @DisplayName("Verify Valid YAML Files")
+    public void verifyValidYamlFiles() throws URISyntaxException {
+        Set<String> paths = getLanguageFilePaths("i18n"); // en/info.yml
+
+        for (String path : paths) {
+            String fullPath = "i18n\\" + path; // i18n/en/info.yml
+
+            URL resource = I18NResourceVerificationTest.class.getClassLoader().getResource(fullPath);
+            if (resource == null) Assertions.fail("Resource not found: " + fullPath);
+
+            try (InputStream is = this.getClass().getClassLoader().getResourceAsStream(fullPath)) {
+
+                try {
+                    Yaml yaml = new Yaml();
+                    Map<String, Object> map = yaml.load(is);
+                } catch (Exception e) {
+                    Assertions.fail(e);
+                }
+            } catch (IOException e) {
+                Assertions.fail(e);
+            }
+        }
+    }
+
+    @Test
     @DisplayName("Verify Foreign Files are Subset of English Files")
     @Disabled
     public void testForeignFilesAreSubsetOfEnglishFiles() {
