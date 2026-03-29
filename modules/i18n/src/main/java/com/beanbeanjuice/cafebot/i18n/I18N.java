@@ -1,228 +1,187 @@
 package com.beanbeanjuice.cafebot.i18n;
 
-import org.jetbrains.annotations.NotNull;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class I18N extends ResourceBundle {
+public class I18N {
 
-    private final Map<String, Map<String, Object>> loadedFiles = new HashMap<>();
     private final Locale locale;
-    private final ClassLoader classLoader;
-    private final Yaml yaml = new Yaml();
 
-    public I18N(Locale locale, ClassLoader classLoader) {
+    private static final Map<String, Map<String, Object>> YAML_CACHE = new ConcurrentHashMap<>();
+    private static final Map<String, Optional<String>> FILE_PATH_CACHE = new ConcurrentHashMap<>();
+
+    public I18N() {
+        this.locale = Locale.ENGLISH;
+    }
+
+    public I18N(Locale locale) {
         this.locale = locale;
-        this.classLoader = classLoader;
     }
 
-    @Override
-    protected Object handleGetObject(@NotNull String key) {
-        // Parse the key: "commands.help.description"
-        // -> file: "commands/help", nested key: "description"
+    public String getString(String key) {
+        return getString(key, this.locale);
+    }
 
-        int lastDotIndex = key.lastIndexOf('.');
-        if (lastDotIndex == -1) {
-            // Try to load from root level files
-            Object result = loadFromFile(key, "");
-            if (result != null) {
-                return result;
+    public List<String> getStringArray(String key) {
+        return getStringArray(key, this.locale);
+    }
+
+    private static String getString(String key, Locale locale) {
+        // There are 2 paths we need to find. First, the path to the file. Next, the path within the file.
+        // For example, i18n/en/command/ai.yml, and command.ai.description
+        // Then we know command.ai is the file path, and description is the path within the file.
+        // Question is... how do we do this? There might be a dynamic number of folders.
+        Optional<String> filePath = findFilePath(key, locale)
+                .or(() -> findFilePath(key, Locale.ENGLISH));
+
+        if (filePath.isEmpty()) return key;
+
+        /*
+        Now we need to remove the overlap from the key and the filePath.
+        For example, the filePath might be i18n/en/command/ai.yml and
+        the key might be command.ai.description
+
+        This means we need to remove "command.ai."
+         */
+
+        String pathInFile = parseKey(filePath.get(), key);
+        Map<String, Object> map = loadYaml(filePath.get());
+
+        if (map.isEmpty()) return key;
+
+        Optional<String> flattenedString = getFlattenedString(map, pathInFile);
+
+        // If the string wasn't found, and the current locale is English, then it truly does not exist.
+        if (flattenedString.isEmpty() && locale.equals(Locale.ENGLISH)) return key;
+
+        return flattenedString.orElseGet(() -> getString(key, Locale.ENGLISH));
+    }
+
+    private static List<String> getStringArray(String key, Locale locale) {
+        Optional<String> filePath = findFilePath(key, locale)
+                .or(() -> findFilePath(key, Locale.ENGLISH));
+
+        if (filePath.isEmpty()) return new ArrayList<>();
+
+        /*
+        Now we need to remove the overlap from the key and the filePath.
+        For example, the filePath might be i18n/en/command/ai.yml and
+        the key might be command.ai.description
+
+        This means we need to remove "command.ai."
+         */
+
+        String pathInFile = parseKey(filePath.get(), key);
+        Map<String, Object> map = loadYaml(filePath.get());
+        if (map.isEmpty()) return new ArrayList<>();
+
+        List<String> flattenedStringArray = getFlattenedStringArray(map, pathInFile);
+
+        // If the string wasn't found, and the current locale is English, then it truly does not exist.
+        if (flattenedStringArray.isEmpty() && locale.equals(Locale.ENGLISH)) return flattenedStringArray;
+
+        if (!flattenedStringArray.isEmpty()) return flattenedStringArray;
+        return getStringArray(key, Locale.ENGLISH);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Optional<String> getFlattenedString(Map<String, Object> map, String key) {
+        String[] split = key.split("\\.");
+
+        for (int i = 0; i < split.length - 1; i++) {
+            if (!map.containsKey(split[i])) return Optional.empty();
+
+            map = (Map<String, Object>) map.get(split[i]);
+        }
+
+        String finalKey = split[split.length - 1];
+        return (map.containsKey(finalKey)) ? ((String) map.get(finalKey)).describeConstable() : Optional.empty();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List<String> getFlattenedStringArray(Map<String, Object> map, String key) {
+        String[] split = key.split("\\.");
+
+        for (int i = 0; i < split.length - 1; i++) {
+            if (!map.containsKey(split[i])) return new ArrayList<>();
+
+            map = (Map<String, Object>) map.get(split[i]);
+        }
+
+        String finalKey = split[split.length - 1];
+        return (map.containsKey(finalKey)) ? ((List<String>) map.get(finalKey)) : new ArrayList<>();
+    }
+
+    private static String parseKey(String filePath, String key) {
+        String[] splitFilePath = filePath              // i18n/en/command/ai.yml
+                .replace(".yml", "") // i18n/en/command/ai
+                .split("/");                    // ["i18n", "en", "command", "ai"]
+
+        String[] splitKey = key.split("\\.");   // ["ai", "embed", "title"]
+
+        // Two pointer approach
+        int fileIndex = 0;
+        int keyIndex = 0;
+
+        while (fileIndex < splitFilePath.length && keyIndex < splitKey.length) {
+            if (!splitFilePath[fileIndex].equals(splitKey[keyIndex])) {
+                fileIndex++;
+                continue;
             }
-        } else {
-            String filePath = key.substring(0, lastDotIndex);
-            String nestedKey = key.substring(lastDotIndex + 1);
 
-            // Try to resolve as nested path first
-            Object result = loadFromFile(filePath, nestedKey);
-            if (result != null) {
-                return result;
+            fileIndex++;
+            keyIndex++;
+        }
+
+        // Key starts at keyIndex
+        return String.join(".", Arrays.copyOfRange(splitKey, keyIndex, splitKey.length));
+    }
+
+    private static Optional<String> findFilePathUncached(String key, Locale locale) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("i18n/").append(locale.toString()).append("/"); // i18n/en/
+
+        String[] splitKey = key.split("\\.");
+
+        for (String split : splitKey) {
+            sb.append(split); // i18n/en/command
+
+            URL resource = I18N.class.getClassLoader().getResource(sb.toString());
+            if (resource == null) {
+                // Directory with that name not found. Does a .yml exist in current directory?
+                resource = I18N.class.getClassLoader().getResource(sb + ".yml");
+                if (resource == null && locale.equals(Locale.ENGLISH)) return Optional.empty(); // if english, and not found, it doesn't exist.
+                if (resource == null) return findFilePath(key, Locale.ENGLISH); // default to english.
+                return Optional.of(sb.append(".yml").toString());
             }
 
-            // If not found, try moving more parts to the file path
-            // e.g., if "commands.help" didn't work, try "commands" with "help.description"
-            int previousDotIndex = filePath.lastIndexOf('.');
-            while (previousDotIndex != -1) {
-                filePath = filePath.substring(0, previousDotIndex);
-                nestedKey = key.substring(previousDotIndex + 1);
-                result = loadFromFile(filePath, nestedKey);
-                if (result != null) {
-                    return result;
-                }
-                previousDotIndex = filePath.lastIndexOf('.');
-            }
-
-            // Try root level with full key as nested path
-            result = loadFromFile("", key);
-            if (result != null) {
-                return result;
-            }
+            sb.append("/");
         }
 
-        // Not found in this locale
-        // If we have a parent (fallback), return null to let parent handle it
-        if (parent != null) {
-            return null;
-        }
-
-        // We're the root bundle (English) and key not found - return the key itself
-        return key;
+        return Optional.empty();
     }
 
-    private Object loadFromFile(String filePath, String nestedKey) {
-        // Convert dot notation to folder path
-        String folderPath = filePath.replace('.', '/');
-
-        // Build locale string: "en_GB", "en_US", or just "en"
-        String localeString = locale.getLanguage();
-        if (!locale.getCountry().isEmpty()) {
-            localeString += "_" + locale.getCountry();
-        }
-
-        // Include locale in cache key to avoid conflicts
-        String fileKey = localeString + ":" + (folderPath.isEmpty() ? "" : folderPath);
-
-        // Check if file is already loaded
-        Map<String, Object> fileData = loadedFiles.get(fileKey);
-
-        if (fileData == null) {
-            // Try to load the file: "i18n/en_GB/info.yml"
-            String resourcePath = "i18n/" + localeString + "/" +
-                    (folderPath.isEmpty() ? "" : folderPath + ".yml");
-
-            fileData = loadYamlFile(resourcePath);
-
-            if (fileData == null && !folderPath.isEmpty()) {
-                // Maybe it's in a parent directory file
-                // e.g., "commands.yml" contains "help" section
-                int lastSlash = folderPath.lastIndexOf('/');
-                if (lastSlash != -1) {
-                    String parentPath = folderPath.substring(0, lastSlash);
-                    String section = folderPath.substring(lastSlash + 1);
-                    resourcePath = "i18n/" + localeString + "/" + parentPath + ".yml";
-                    Map<String, Object> parentData = loadYamlFile(resourcePath);
-                    if (parentData != null && parentData.containsKey(section)) {
-                        Object sectionData = parentData.get(section);
-                        if (sectionData instanceof Map) {
-                            fileData = flatten((Map<String, Object>) sectionData);
-                        }
-                    }
-                }
-            }
-
-            if (fileData != null) {
-                loadedFiles.put(fileKey, fileData);
-            } else {
-                loadedFiles.put(fileKey, Collections.emptyMap()); // Cache miss
-            }
-        }
-
-        if (fileData == null || fileData.isEmpty()) {
-            return null;
-        }
-
-        // Get nested key from flattened data
-        return fileData.get(nestedKey);
+    private static Optional<String> findFilePath(String key, Locale locale) {
+        String cacheKey = locale + ":" + key;
+        return FILE_PATH_CACHE.computeIfAbsent(cacheKey, k -> findFilePathUncached(key, locale));
     }
 
-    private Map<String, Object> loadYamlFile(String resourcePath) {
-        try (InputStream stream = classLoader.getResourceAsStream(resourcePath)) {
-            if (stream == null) {
-                return null;
-            }
-            Map<String, Object> raw = yaml.load(stream);
-            return flatten(raw);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @Override
-    public @NotNull Enumeration<String> getKeys() {
-        // This is complex with lazy loading - for now return empty or loaded keys
-        Set<String> keys = new HashSet<>();
-
-        for (Map.Entry<String, Map<String, Object>> entry : loadedFiles.entrySet()) {
-            String prefix = entry.getKey().replace('/', '.');
-            for (String key : entry.getValue().keySet()) {
-                if (prefix.isEmpty()) {
-                    keys.add(key);
-                } else {
-                    keys.add(prefix + "." + key);
-                }
-            }
-        }
-
-        if (parent != null) {
-            parent.getKeys().asIterator().forEachRemaining(keys::add);
-        }
-
-        return Collections.enumeration(keys);
-    }
-
-    private Map<String, Object> flatten(Map<String, Object> source) {
-        Map<String, Object> result = new HashMap<>();
-        flatten("", source, result);
-        return result;
-    }
-
-    private void flatten(String prefix, Map<String, Object> source, Map<String, Object> result) {
-        for (var entry : source.entrySet()) {
-            String key = prefix.isEmpty() ? entry.getKey() : prefix + "." + entry.getKey();
-            Object value = entry.getValue();
-
-            if (value instanceof Map<?, ?> map) {
-                flatten(key, (Map<String, Object>) map, result);
-            } else {
-                result.put(key, value.toString());
-            }
-        }
-    }
-
-    /**
-     * Gets the I18N bundle for the specified locale.
-     * @param locale The {@link Locale} to get the bundle for.
-     * @return The {@link I18N} bundle instance.
-     */
-    public static I18N getBundle(Locale locale) {
-        return (I18N) ResourceBundle.getBundle("messages", locale, YamlControl.INSTANCE);
-    }
-
-    /**
-     * Gets the I18N bundle for English (default).
-     * @return The {@link I18N} bundle instance.
-     */
-    public static I18N getBundle() {
-        return getBundle(Locale.ENGLISH);
-    }
-
-    /**
-     * Gets the description based on the language file and path.
-     * @param path The {@link String path} to search for.
-     * @return The proper {@link String description} or the {@link String path} if not found.
-     */
-    public static String getStringFromLanguageFile(String path) {
-        try {
-            return getStringFromLanguageFile(Locale.ENGLISH, path);
-        } catch (MissingResourceException e) {
-            return path;
-        }
-    }
-
-    /**
-     * Gets the description based on the language file and path.
-     * @param locale The {@link Locale} specifying which language file to use. If not found, defaults to {@link Locale english}.
-     * @param path The {@link String path} to search for.
-     * @return The proper {@link String description} or the {@link String path} if not found.
-     */
-    public static String getStringFromLanguageFile(Locale locale, String path) {
-        try {
-            ResourceBundle bundle = ResourceBundle.getBundle("messages", locale, YamlControl.INSTANCE);
-            return bundle.getString(path);
-        } catch (MissingResourceException e) {
-            return path;
-        }
+    private static Map<String, Object> loadYaml(String filePath) {
+        return YAML_CACHE.computeIfAbsent(filePath, path -> {
+            try (InputStream is = I18N.class.getClassLoader().getResourceAsStream(path)) {
+                return new Yaml().load(is);
+            } catch (IOException e) { return Map.of(); }
+        });
     }
 
 }

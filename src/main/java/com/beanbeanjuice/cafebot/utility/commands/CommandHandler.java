@@ -2,7 +2,6 @@ package com.beanbeanjuice.cafebot.utility.commands;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.i18n.I18N;
-import com.beanbeanjuice.cafebot.i18n.YamlControl;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import lombok.Getter;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
@@ -64,14 +63,17 @@ public class CommandHandler extends ListenerAdapter {
     }
 
     private SlashCommandData getCommandData(ICommand command) {
-        String originalDescription = I18N.getBundle().getString(command.getDescriptionPath());
+        I18N defaultI18n = new I18N(Locale.ENGLISH);
+
+        String originalDescription = defaultI18n.getString(command.getDescriptionPath());
         SlashCommandData commandData = Commands.slash(command.getName(), originalDescription);
 
         Locale.availableLocales().forEach((locale) -> {
-            ResourceBundle i18n = ResourceBundle.getBundle("messages", locale, YamlControl.INSTANCE);
-            DiscordLocale discordLocale = DiscordLocale.valueOf(i18n.getString("info.bot.discord-locale"));
+            I18N localeI18n = new I18N(locale);
 
-            String localizedDescription = I18N.getBundle(locale).getString(command.getDescriptionPath());
+            DiscordLocale discordLocale = DiscordLocale.valueOf(localeI18n.getString("info.bot.discord-locale"));
+
+            String localizedDescription = localeI18n.getString(command.getDescriptionPath());
             commandData.setDescriptionLocalization(discordLocale, localizedDescription);
         });
 
@@ -80,20 +82,21 @@ public class CommandHandler extends ListenerAdapter {
         commandOptions = Arrays.stream(commandOptions).peek((commandOption) -> {
             // Set original (english)
             String path = commandOption.getDescription();  // Description is originally the path.
-            String originalCommandOptionDescription = I18N.getBundle().getString(commandOption.getDescription());
+            String originalCommandOptionDescription = defaultI18n.getString(commandOption.getDescription());
             commandOption.setDescription(originalCommandOptionDescription);
 
             // Set localization
             // Loop through all locales, map to discord locale, set localized description
             Locale.availableLocales().map((locale) -> {
-                ResourceBundle i18n = ResourceBundle.getBundle("messages", locale, YamlControl.INSTANCE);
+                I18N localeI18n = new I18N(locale);
 
-                try { return DiscordLocale.valueOf(i18n.getString("info.bot.discord-locale")); }
+                try { return DiscordLocale.valueOf(localeI18n.getString("info.bot.discord-locale")); }
                 catch (MissingResourceException e) { return null; }
             }).forEach((locale) -> {
                 if (locale == null) return;
 
-                String localizedCommandOptionDescription = I18N.getBundle(locale.toLocale()).getString(path);
+                I18N localeI18n = new I18N(locale.toLocale());
+                String localizedCommandOptionDescription = localeI18n.getString(path);
                 commandOption.setDescriptionLocalization(locale, localizedCommandOptionDescription);
             });
 
@@ -112,14 +115,15 @@ public class CommandHandler extends ListenerAdapter {
     }
 
     private SubcommandData getSubcommandData(ISubCommand command, ICommand parent) {
-        String originalDescription = I18N.getBundle().getString(command.getDescriptionPath());
+        I18N defaultI18n = new I18N(Locale.ENGLISH);
+        String originalDescription = defaultI18n.getString(command.getDescriptionPath());
         SubcommandData subcommandData = new SubcommandData(command.getName(), originalDescription);
 
         Locale.availableLocales().forEach((locale) -> {
-            ResourceBundle i18n = ResourceBundle.getBundle("messages", locale, YamlControl.INSTANCE);
-            DiscordLocale discordLocale = DiscordLocale.valueOf(i18n.getString("info.bot.discord-locale"));
+            I18N localeI18n = new I18N(locale);
+            DiscordLocale discordLocale = DiscordLocale.valueOf(localeI18n.getString("info.bot.discord-locale"));
 
-            String localizedDescription = I18N.getBundle(locale).getString(command.getDescriptionPath());
+            String localizedDescription = localeI18n.getString(command.getDescriptionPath());
             subcommandData.setDescriptionLocalization(discordLocale, localizedDescription);
         });
 
@@ -128,20 +132,21 @@ public class CommandHandler extends ListenerAdapter {
         commandOptions = Arrays.stream(commandOptions).peek((commandOption) -> {
             // Set original (english)
             String path = commandOption.getDescription();  // Description is originally the path.
-            String originalCommandOptionDescription = I18N.getBundle().getString(commandOption.getDescription());
+            String originalCommandOptionDescription = defaultI18n.getString(commandOption.getDescription());
             commandOption.setDescription(originalCommandOptionDescription);
 
             // Set localization
             // Loop through all locales, map to discord locale, set localized description
             Locale.availableLocales().map((locale) -> {
-                ResourceBundle i18n = ResourceBundle.getBundle("messages", locale, YamlControl.INSTANCE);
+                I18N localeI18n = new I18N(locale);
 
-                try { return DiscordLocale.valueOf(i18n.getString("info.bot.discord-locale")); }
+                try { return DiscordLocale.valueOf(localeI18n.getString("info.bot.discord-locale")); }
                 catch (MissingResourceException e) { return null; }
             }).forEach((locale) -> {
                 if (locale == null) return;
 
-                String localizedCommandOptionDescription = I18N.getBundle(locale.toLocale()).getString(path);
+                I18N localeI18n = new I18N(locale.toLocale());
+                String localizedCommandOptionDescription = localeI18n.getString(path);
                 commandOption.setDescriptionLocalization(locale, localizedCommandOptionDescription);
             });
 
@@ -197,10 +202,11 @@ public class CommandHandler extends ListenerAdapter {
         if (!subCommand.isModal()) event.deferReply(command.isEphemeral()).queue();
 
         Locale guildLocale = event.isFromGuild() ? event.getGuildLocale().toLocale() : event.getUserLocale().toLocale(); // Use user locale if not from guild
-        ResourceBundle guildBundle = ResourceBundle.getBundle("messages", guildLocale, YamlControl.INSTANCE);
-        ResourceBundle userBundle = ResourceBundle.getBundle("messages", event.getUserLocale().toLocale(), YamlControl.INSTANCE);
 
-        subCommand.handle(event, new CommandContext(guildBundle, userBundle));
+        I18N guildBundle = new I18N(guildLocale);
+        I18N userBundle = new I18N(event.getUserLocale().toLocale());
+
+        subCommand.handle(event, new CommandContext(guildBundle, userBundle, event.isFromGuild()));
         cafeBot.increaseCommandsRun();
     }
 
@@ -208,10 +214,12 @@ public class CommandHandler extends ListenerAdapter {
         if (!command.isModal()) event.deferReply(command.isEphemeral()).queue();
 
         Locale guildLocale = event.isFromGuild() ? event.getGuildLocale().toLocale() : event.getUserLocale().toLocale(); // Use user locale if not from guild
-        ResourceBundle guildBundle = ResourceBundle.getBundle("messages", guildLocale, YamlControl.INSTANCE);
-        ResourceBundle userBundle = ResourceBundle.getBundle("messages", event.getUserLocale().toLocale(), YamlControl.INSTANCE);
 
-        command.handle(event, new CommandContext(guildBundle, userBundle));
+
+        I18N guildBundle = new I18N(guildLocale);
+        I18N userBundle = new I18N(event.getUserLocale().toLocale());
+
+        command.handle(event, new CommandContext(guildBundle, userBundle, event.isFromGuild()));
         cafeBot.increaseCommandsRun();
     }
 

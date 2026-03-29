@@ -44,6 +44,8 @@ public class RaffleListener extends ListenerAdapter {
         bot.getCafeAPI().getRaffleApi().getRaffles(event.getGuild().getId(), true, false).thenAccept((raffles) -> {
             for (Raffle raffle : raffles) {
                 bot.getCafeAPI().getRaffleApi().setSubmission(raffle.getId(), event.getUser().getId(), false);
+
+                CafeBot.increaseCommandsRun();
             }
         });
     }
@@ -69,6 +71,8 @@ public class RaffleListener extends ListenerAdapter {
             bot.getCafeAPI().getRaffleApi().setSubmission(raffle.getId(), userId, newStatus).thenRun(() -> {
                 Helper.pmUser(event.getUser(), getVoteMessage(raffle, newStatus));
             });
+
+            CafeBot.increaseCommandsRun();
         });
     }
 

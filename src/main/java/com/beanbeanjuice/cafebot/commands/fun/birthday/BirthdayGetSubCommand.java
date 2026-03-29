@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.fun.birthday;
 import com.beanbeanjuice.cafebot.api.wrapper.api.exception.ApiRequestException;
 import com.beanbeanjuice.cafebot.api.wrapper.type.Birthday;
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
@@ -12,6 +13,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -21,7 +23,6 @@ import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.concurrent.CompletionException;
 
 public class BirthdayGetSubCommand extends Command implements ISubCommand {
@@ -61,7 +62,7 @@ public class BirthdayGetSubCommand extends Command implements ISubCommand {
         bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Getting Birthday: " + ex.getMessage());
     }
 
-    private void sendError(SlashCommandInteractionEvent event, ResourceBundle i18n) {
+    private void sendError(SlashCommandInteractionEvent event, I18N i18n) {
         event.getHook().sendMessageEmbeds(Helper.errorEmbed(
                 i18n.getString("command.birthday.subcommand.get.embed.error.title"),
                 i18n.getString("command.birthday.subcommand.get.embed.error.description")
@@ -73,7 +74,7 @@ public class BirthdayGetSubCommand extends Command implements ISubCommand {
         event.getHook().sendMessageEmbeds(embed).queue();
     }
 
-    private MessageEmbed selfBirthdayEmbed(Birthday birthday, ResourceBundle i18n) {
+    private MessageEmbed selfBirthdayEmbed(Birthday birthday, I18N i18n) {
         String description = i18n.getString("command.birthday.subcommand.get.embed.self.description")
                 .replace("{month}", Month.of(birthday.getMonth()).getDisplayName(TextStyle.FULL, Locale.ENGLISH))
                 .replace("{day}", String.valueOf(birthday.getDay()))
@@ -86,7 +87,7 @@ public class BirthdayGetSubCommand extends Command implements ISubCommand {
                 .build();
     }
 
-    private MessageEmbed birthdayEmbed(User user, Birthday birthday, ResourceBundle i18n) {
+    private MessageEmbed birthdayEmbed(User user, Birthday birthday, I18N i18n) {
         String title = i18n.getString("command.birthday.subcommand.get.embed.other.title")
                 .replace("{user}", user.getName());
 

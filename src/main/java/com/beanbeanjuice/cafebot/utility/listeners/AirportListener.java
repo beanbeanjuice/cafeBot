@@ -1,5 +1,6 @@
 package com.beanbeanjuice.cafebot.utility.listeners;
 
+import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.api.wrapper.CafeAPI;
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.AirportMessageType;
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.CustomChannelType;
@@ -66,6 +67,7 @@ public class AirportListener extends ListenerAdapter {
                     () -> channel.sendMessageEmbeds(getAirportEmbed(airportMessage, user)).queue()
             );
 
+            CafeBot.increaseCommandsRun();
             return true;
         }));
     }

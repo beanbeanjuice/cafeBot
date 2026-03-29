@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.generic;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
@@ -16,7 +17,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 public class PingCommand extends Command implements ICommand {
 
@@ -37,7 +37,7 @@ public class PingCommand extends Command implements ICommand {
         numberOptionMapping.map(OptionMapping::getAsInt).ifPresent((number) -> event.getHook().sendMessage(String.valueOf(number)).queue());
     }
 
-    private MessageEmbed messageEmbed(int shardId, ResourceBundle bundle) {
+    private MessageEmbed messageEmbed(int shardId, I18N bundle) {
         EmbedBuilder embedBuilder = new EmbedBuilder(UpdateMessageScheduler.getUpdateEmbed(this.bot));
 
         embedBuilder.setTitle("ping!", "https://www.cafebot.dev");

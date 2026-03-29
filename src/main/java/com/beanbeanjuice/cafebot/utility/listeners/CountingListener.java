@@ -39,6 +39,8 @@ public class CountingListener extends ListenerAdapter {
         String number = event.getMessage().getContentRaw().split(" ")[0];
         if (!Helper.isNumber(number)) return;
 
+        CafeBot.increaseCommandsRun();
+
         checkNumber(event, Integer.parseInt(number));
     }
 

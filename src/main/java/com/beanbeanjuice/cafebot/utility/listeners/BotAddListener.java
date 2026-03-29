@@ -36,11 +36,11 @@ public class BotAddListener extends ListenerAdapter {
                 else if (channel.getType() == ChannelType.NEWS)
                     channel.asNewsChannel().sendMessageEmbeds(guildJoinEmbed()).queue();
 
-                cafeBot.increaseCommandsRun();
             } catch (InsufficientPermissionException ignored) {}
         });
 
         this.cafeBot.getLogger().log(BotAddListener.class, LogLevel.INFO, "**" + event.getGuild().getName() + "** has added me! :blush:", false, true);
+        CafeBot.increaseCommandsRun();
     }
 
     private MessageEmbed guildJoinEmbed() {

@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.cafe;
 import com.beanbeanjuice.cafebot.api.wrapper.type.DiscordUser;
 import com.beanbeanjuice.cafebot.api.wrapper.type.MenuOrder;
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
@@ -36,7 +37,7 @@ public class BalanceCommand extends Command implements ICommand {
         CompletableFuture<DiscordUser> f1 = bot.getCafeAPI().getUserApi().getUser(user.getId());
         CompletableFuture<MenuOrder[]> f2 = bot.getCafeAPI().getOrderApi().getOrders(user.getId());
 
-        ResourceBundle bundle = ctx.getUserI18n();
+        I18N bundle = ctx.getUserI18n();
 
         f1.thenAcceptBoth(f2, (discordUser, orders) -> {
             event.getHook().sendMessageEmbeds(balanceEmbed(user, discordUser, orders, bundle)).queue();
@@ -49,7 +50,7 @@ public class BalanceCommand extends Command implements ICommand {
         });
     }
 
-    public MessageEmbed balanceEmbed(User user, DiscordUser cafeUser, MenuOrder[] orders, ResourceBundle bundle) {
+    public MessageEmbed balanceEmbed(User user, DiscordUser cafeUser, MenuOrder[] orders, I18N bundle) {
         long ordersBought = Arrays.stream(orders).filter((order) -> order.getFromId().equals(user.getId())).count();
         long ordersReceived = Arrays.stream(orders).filter((order) -> order.getToId().equals(user.getId())).count();
 

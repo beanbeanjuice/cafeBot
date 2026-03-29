@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.fun;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
@@ -17,7 +18,6 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.awt.*;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 public class BannerCommand extends Command implements ICommand {
 
@@ -41,7 +41,7 @@ public class BannerCommand extends Command implements ICommand {
         });
     }
 
-    private MessageEmbed bannerEmbed(String username, String avatarURL, String bannerURL, Color accent, ResourceBundle i18n) {
+    private MessageEmbed bannerEmbed(String username, String avatarURL, String bannerURL, Color accent, I18N i18n) {
         String title = i18n.getString("command.banner.embed.title").replace("{user}", username);
 
         EmbedBuilder embedBuilder = new EmbedBuilder()
@@ -53,7 +53,7 @@ public class BannerCommand extends Command implements ICommand {
         return embedBuilder.build();
     }
 
-    private MessageEmbed noBannerError(ResourceBundle i18n) {
+    private MessageEmbed noBannerError(I18N i18n) {
         String title = i18n.getString("command.banner.error.title");
         String description = i18n.getString("command.banner.error.description");
 

@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.fun;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
@@ -17,7 +18,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 public class AvatarCommand extends Command implements ICommand {
 
@@ -50,7 +50,7 @@ public class AvatarCommand extends Command implements ICommand {
         );
     }
 
-    private MessageEmbed avatarEmbed(String name, String avatarURL, ResourceBundle i18n) {
+    private MessageEmbed avatarEmbed(String name, String avatarURL, I18N i18n) {
         String title = i18n.getString("command.avatar.embed.title").replace("{user}", name);
         return new EmbedBuilder()
                 .setTitle(title)
@@ -59,13 +59,13 @@ public class AvatarCommand extends Command implements ICommand {
                 .build();
     }
 
-    private MessageEmbed missingErrorEmbed(ResourceBundle i18n) {
+    private MessageEmbed missingErrorEmbed(I18N i18n) {
         String title = i18n.getString("command.avatar.error.missing.title");
         String description = i18n.getString("command.avatar.error.missing.description");
         return Helper.errorEmbed(title, description);
     }
 
-    private MessageEmbed serverErrorEmbed(ResourceBundle i18n) {
+    private MessageEmbed serverErrorEmbed(I18N i18n) {
         String title = i18n.getString("command.avatar.error.server.title");
         String description = i18n.getString("command.avatar.error.server.description");
         return Helper.errorEmbed(title, description);

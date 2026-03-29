@@ -91,7 +91,7 @@ public class CafeBot {
     @Getter private SnipeHandler snipeHandler;
 
     // Additional Items
-    @Getter private final AtomicInteger commandsRun = new AtomicInteger(0); // Atomic since can run across multiple shards.
+    @Getter private static final AtomicInteger commandsRun = new AtomicInteger(0); // Atomic since can run across multiple shards.
     @Getter private final String discordAvatarUrl = "https://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif";
 
     public CafeBot() throws InterruptedException, ExecutionException {
@@ -352,8 +352,8 @@ public class CafeBot {
         user.openPrivateChannel().flatMap(channel -> channel.sendMessageEmbeds(embed)).queue();
     }
 
-    public void increaseCommandsRun() {
-        this.commandsRun.incrementAndGet();
+    public static void increaseCommandsRun() {
+        commandsRun.incrementAndGet();
     }
 
     public SelfUser getSelfUser() {

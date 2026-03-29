@@ -1,7 +1,6 @@
 package com.beanbeanjuice.cafebot.utility.handlers;
 
 import com.beanbeanjuice.cafebot.i18n.I18N;
-import com.beanbeanjuice.cafebot.i18n.YamlControl;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandHandler;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
@@ -56,6 +55,7 @@ public class HelpHandler {
         String description = String.format("# Commands for %s", category.name());
 
         Locale locale = Locale.forLanguageTag(discordLocale.getLocale());
+        I18N i18n = new I18N(locale);
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
@@ -66,7 +66,7 @@ public class HelpHandler {
                 .skip(skipAmount)
                 .limit(25)
                 .forEach((command) -> {
-                    String commandDescription = I18N.getBundle(locale).getString(command.getDescriptionPath());
+                    String commandDescription = i18n.getString(command.getDescriptionPath());
 
                     embedBuilder.addField(
                             String.format("**/%s**", command.getName()),
@@ -87,10 +87,10 @@ public class HelpHandler {
         ICommand command = commandHandler.getCommands().get(commandName);
 
         Locale locale = Locale.forLanguageTag(discordLocale.getLocale());
-        ResourceBundle bundle = ResourceBundle.getBundle("messages", locale, YamlControl.INSTANCE);
+        I18N i18n = new I18N(locale);
 
         String subCommandsString = Arrays.stream(command.getSubCommands()).map((subCommand) -> {
-            String subCommandDescription = I18N.getBundle(locale).getString(subCommand.getDescriptionPath());
+            String subCommandDescription = i18n.getString(subCommand.getDescriptionPath());
 
             return String.format(
                     """
@@ -108,7 +108,7 @@ public class HelpHandler {
         String permissionsString = this.getPermissionsString(command.getPermissions());
         permissionsString = (permissionsString.isBlank()) ? "*None*" : permissionsString;
 
-        String commandDescription = I18N.getBundle(locale).getString(command.getDescriptionPath());
+        String commandDescription = i18n.getString(command.getDescriptionPath());
 
         String commandString = String.format(
                 """

@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.cafe;
 
 import com.beanbeanjuice.cafebot.api.wrapper.api.exception.ApiRequestException;
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
@@ -13,6 +14,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -20,7 +22,6 @@ import tools.jackson.databind.JsonNode;
 
 import java.time.Instant;
 import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.concurrent.CompletionException;
 
 public class DonateCommand extends Command implements ICommand {
@@ -81,13 +82,13 @@ public class DonateCommand extends Command implements ICommand {
         bot.getLogger().log(DonateCommand.class, LogLevel.WARN, "There was an error donating to a user: " + e.getMessage(), e.getCause());
     }
 
-    private void sendNotEnoughCoinsEmbed(SlashCommandInteractionEvent event, String userId, double amount, ResourceBundle i18n) {
+    private void sendNotEnoughCoinsEmbed(SlashCommandInteractionEvent event, String userId, double amount, I18N i18n) {
         bot.getCafeAPI().getUserApi().getUser(userId).thenAccept((user) -> {
             event.getHook().sendMessageEmbeds(notEnoughCoinsEmbed(user.getBalance(), amount, i18n)).queue();
         });
     }
 
-    private void sendNeedToWaitEmbed(SlashCommandInteractionEvent event, String userId, ResourceBundle i18n) {
+    private void sendNeedToWaitEmbed(SlashCommandInteractionEvent event, String userId, I18N i18n) {
         bot.getCafeAPI().getUserApi().getUser(userId).thenAccept((user) -> {
             event.getHook().sendMessageEmbeds(needToWaitEmbed(user.getLastDonationTime().orElse(Instant.now()), i18n)).queue();
         });
@@ -97,11 +98,11 @@ public class DonateCommand extends Command implements ICommand {
         event.getHook().sendMessageEmbeds(successEmbed(receiver)).queue();
     }
 
-    private void sendDonationEmbed(SlashCommandInteractionEvent event, User sender, User receiver, double amount, ResourceBundle i18n) {
+    private void sendDonationEmbed(SlashCommandInteractionEvent event, User sender, User receiver, double amount, I18N i18n) {
         event.getChannel().sendMessageEmbeds(donationEmbed(sender, receiver, amount, i18n)).mention(receiver).queue();
     }
 
-    private MessageEmbed notEnoughCoinsEmbed(double balance, double amount, ResourceBundle i18n) {
+    private MessageEmbed notEnoughCoinsEmbed(double balance, double amount, I18N i18n) {
         String description = i18n.getString("command.donate.embed.balance.description")
                 .replace("{balance}", String.format("%.2f", balance))
                 .replace("{payment}", String.format("%.2f", amount));
@@ -115,7 +116,7 @@ public class DonateCommand extends Command implements ICommand {
         return embedBuilder.build();
     }
 
-    private MessageEmbed needToWaitEmbed(Instant lastDonationTime, ResourceBundle i18n) {
+    private MessageEmbed needToWaitEmbed(Instant lastDonationTime, I18N i18n) {
         String description = i18n.getString("command.donate.embed.cooldown.description")
                 .replace("{timestamp}", String.valueOf(lastDonationTime.getEpochSecond()));
 
@@ -135,7 +136,7 @@ public class DonateCommand extends Command implements ICommand {
         );
     }
 
-    private MessageEmbed donationEmbed(User sender, User receiver, double amount, ResourceBundle i18n) {
+    private MessageEmbed donationEmbed(User sender, User receiver, double amount, I18N i18n) {
         String description = i18n.getString("command.donate.embed.donation.description")
                 .replace("{donator}", sender.getAsMention())
                 .replace("{donatee}", receiver.getAsMention())

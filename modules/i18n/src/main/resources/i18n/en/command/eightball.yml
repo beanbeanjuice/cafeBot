@@ -1,0 +1,24 @@
+description: "Have a question? Well I have an answer..."
+embed:
+  field_title: "My Mystical Answer"
+  field_description: "*{answer}*"
+answers:
+  positive:
+    - "It is likely..."
+    - "Probably."
+    - "Without a doubt."
+    - "Of course."
+    - "More than likely."
+    - "YES ABSOLUTELY."
+    - "Hmmm... I think so."
+  negative:
+    - "Of course not."
+    - "Probably not."
+    - "It is not likely..."
+    - "There is some doubt..."
+    - "Less than likely."
+    - "ABSOLUTELY NOT."
+    - "Are you kidding? No!"
+arguments:
+  question:
+    description: "The question you want to ask me!"

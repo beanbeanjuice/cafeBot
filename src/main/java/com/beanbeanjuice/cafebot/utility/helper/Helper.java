@@ -1,5 +1,6 @@
 package com.beanbeanjuice.cafebot.utility.helper;
 
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -114,7 +115,7 @@ public class Helper {
         }
     }
 
-    public static MessageEmbed uncaughtErrorEmbed(ResourceBundle i18n, String error) {
+    public static MessageEmbed uncaughtErrorEmbed(I18N i18n, String error) {
         String title = i18n.getString("generic.error.uncaught.title");
         String description = i18n.getString("generic.error.uncaught.message")
                 .replace("{uncaught_error}", error);

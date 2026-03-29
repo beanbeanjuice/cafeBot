@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.cafe;
 
 import com.beanbeanjuice.cafebot.api.wrapper.api.exception.ApiRequestException;
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
@@ -21,7 +22,6 @@ import tools.jackson.databind.JsonNode;
 
 import java.time.Instant;
 import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.concurrent.CompletionException;
 
 public class ServeCommand extends Command implements ICommand {
@@ -75,7 +75,7 @@ public class ServeCommand extends Command implements ICommand {
         bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Serving Word: " + e.getMessage(), true, true);
     }
 
-    private MessageEmbed cannotServeEmbed(Instant lastServeTime, ResourceBundle i18n) {
+    private MessageEmbed cannotServeEmbed(Instant lastServeTime, I18N i18n) {
         String description = i18n.getString("command.serve.embed.error.time.description")
                 .replace("{time}", String.valueOf(lastServeTime.getEpochSecond()));
 
@@ -85,7 +85,7 @@ public class ServeCommand extends Command implements ICommand {
         );
     }
 
-    private MessageEmbed serveEmbed(User user, @Nullable User receiver, String word, float reward, float newBalance, ResourceBundle i18n) {
+    private MessageEmbed serveEmbed(User user, @Nullable User receiver, String word, float reward, float newBalance, I18N i18n) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
         embedBuilder.setTitle(i18n.getString("command.serve.embed.success.title"));

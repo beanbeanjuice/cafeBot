@@ -15,6 +15,7 @@ public interface ICommand {
 
     String getName();
 
+    // We want to get the path at runtime because it may be different depending on who sends it.
     String getDescriptionPath();
 
     CommandCategory getCategory();
