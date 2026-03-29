@@ -1,0 +1,15 @@
+description: "All the games you could ever need!"
+
+subcommands:
+  stats:
+    description: "Get someone's game stats!"
+    embed:
+      title: "{user}'s Game Statistics"
+      fields:
+        total:
+          name: "**Totals** 🎯"
+      stats: "**Wins**: {wins}\n**Losses**: {losses}\n**Played**: {played}"
+      footer: "Do you want to play a game?~"
+    arguments:
+      user:
+        description: "The person who's game data you want to see."

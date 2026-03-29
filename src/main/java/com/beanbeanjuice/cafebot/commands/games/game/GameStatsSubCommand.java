@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.games.game;
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.GameStatusType;
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.GameType;
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
@@ -65,7 +66,7 @@ public class GameStatsSubCommand extends Command implements ISubCommand {
                 gameLosses.put(game.getType(), currentLosses);
             });
 
-            event.getHook().sendMessageEmbeds(gameStatisticsEmbed(user, gamesPlayed, gamesWon, gamesLost, gamesPlayedByType, gameWins, gameLosses)).queue();
+            event.getHook().sendMessageEmbeds(gameStatisticsEmbed(user, gamesPlayed, gamesWon, gamesLost, gamesPlayedByType, gameWins, gameLosses, ctx.getGuildI18n())).queue();
 
         });
 
@@ -78,23 +79,38 @@ public class GameStatsSubCommand extends Command implements ISubCommand {
             int gamesLost,
             HashMap<GameType, Integer> gameTotals,
             HashMap<GameType, Integer> gameWins,
-            HashMap<GameType, Integer> gameLosses
+            HashMap<GameType, Integer> gameLosses,
+            I18N bundle
     ) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor(String.format("%s's Game Statistics", user.getName()), null, user.getAvatarUrl());
+        String title = bundle.getString("command.game.subcommands.stats.embed.title").replace("{user}", user.getName());
+        String description = bundle.getString("command.game.subcommands.stats.embed.stats");
 
-        embedBuilder.addField("**Totals** 🎯", String.format("**Wins**: %s\n**Losses**: %s\n**Played**: %s", gamesWon, gamesLost, gamesPlayed), true);
+        String totalsTitle = bundle.getString("command.game.subcommands.stats.embed.fields.total.name");
+        String totalsDescription = description
+                .replace("{wins}", String.valueOf(gamesWon))
+                .replace("{losses}", String.valueOf(gamesLost))
+                .replace("{played}", String.valueOf(gamesPlayed));
+
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor(title, null, user.getAvatarUrl());
+
+        embedBuilder.addField(totalsTitle, totalsDescription, true);
 
         Arrays.stream(GameType.values()).forEach((type) -> {
+            String gameDescription = description
+                    .replace("{wins}", String.valueOf(gameWins.get(type)))
+                    .replace("{losses}", String.valueOf(gameLosses.get(type)))
+                    .replace("{played}", String.valueOf(gameTotals.get(type)));
+
             embedBuilder.addField(
                     String.format("**%s**", type.getFriendlyName()),
-                    String.format("**Wins**: %s\n**Losses**: %s\n**Played**: %s", gameWins.get(type), gameLosses.get(type), gameTotals.get(type)),
+                    gameDescription,
                     true
             );
         });
 
         embedBuilder.setColor(Helper.getRandomColor());
-        embedBuilder.setFooter("Do you want to play a game?~");
+        embedBuilder.setFooter(bundle.getString("command.game.subcommands.stats.embed.footer"));
 
         return embedBuilder.build();
     }
@@ -106,13 +122,13 @@ public class GameStatsSubCommand extends Command implements ISubCommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Get someone's game stats!";
+        return "command.game.subcommands.stats.description";
     }
 
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The person who's game data you want to see.", false)
+                new OptionData(OptionType.USER, "user", "command.game.subcommands.stats.arguments.user.description", false)
         };
     }
 

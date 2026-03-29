@@ -6,8 +6,3 @@ embed:
   snipe:
     title: "Snipe!"
     description: "{user} said \"{message}\""
-arguments:
-  word:
-    description: "Any word you want repeated back to you."
-  number:
-    description: "An integer to repeat back to you."
