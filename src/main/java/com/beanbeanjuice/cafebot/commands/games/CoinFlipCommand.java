@@ -18,8 +18,13 @@ public class CoinFlipCommand extends Command implements ICommand {
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         boolean isHeads = (Helper.getRandomInteger(0, 2) == 1);
-        String coin = (isHeads) ? "HEADS" : "TAILS";
-        event.getHook().sendMessageEmbeds(Helper.descriptionEmbed(String.format("The coin is **%s**!", coin))).queue();
+
+        String path = "command.coinflip.coin." + (isHeads ? "heads" : "tails");
+        String coin = ctx.getGuildI18n().getString(path);
+
+        String description = ctx.getGuildI18n().getString("command.coinflip.embed.description").replace("{side}", coin);
+
+        event.getHook().sendMessageEmbeds(Helper.descriptionEmbed(description)).queue();
     }
 
     @Override
@@ -29,7 +34,7 @@ public class CoinFlipCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Flip a coin!";
+        return "command.coinflip.description";
     }
 
     @Override

@@ -1,0 +1,17 @@
+description: "Get the server's global counting statistics!"
+embed:
+  stats:
+    title: "Global Counting Statistics ➕"
+    description: |
+      ***Highest Ranking***: {highest}/{num_guilds}
+      *This is the ranking for your* ***highest*** *number.*
+
+      ***Current Ranking***: {current}/{num_guilds}
+      *This is the ranking for your* ***current*** *number.*
+    extended-description: |
+      
+      Your highest number is **{highest}**!
+      Your current number is **{current}**! This means your next number should be **{next}**...
+  error:
+    title: "Counting Statistics Error"
+    description: "I... I'm really sorry... I'm having trouble getting the global counting statistics..."
