@@ -1,0 +1,5 @@
+description: "Roll dice!"
+roll: "You rolled a **{number}**!"
+arguments:
+  size:
+    description: "The size of the dice."
