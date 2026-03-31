@@ -1,0 +1,13 @@
+description: "Play tic-tac-toe with someone!"
+embeds:
+  bot:
+    title: "Cannot Play Against Bot"
+    description: "What do you think you're even doing? <:cafeBot_angry:1171726164092518441> I refuse to play against you."
+  consent:
+    title: "Waiting for Consent"
+    description: "{player1}, do you accept the challenge from {player2} for **{wager} cC** (cafeCoins)? Once accepted, games will be automatically closed after 24 hours."
+arguments:
+  opponent:
+    description: "The person you want to play against."
+  wager:
+    description: "The amount you want to wager for this game."
