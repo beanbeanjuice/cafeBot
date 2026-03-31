@@ -23,16 +23,19 @@ public class TwitchAddSubCommand extends Command implements ISubCommand {
         bot.getCafeAPI().getTwitchChannelApi().addChannel(event.getGuild().getId(), username)
                 .thenRun(() -> {
                     bot.getTwitchHandler().addStream(username);
-                    event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                            "Added Channel",
-                            String.format("Successfully added **%s**.", username)
-                    )).queue();
+
+                    String title = ctx.getUserI18n().getString("command.twitch.subcommands.add.success.title");
+                    String description = ctx.getUserI18n().getString("command.twitch.subcommands.add.success.description")
+                            .replace("{channel}", username);
+
+                    event.getHook().sendMessageEmbeds(Helper.successEmbed(title, description)).queue();
                 })
                 .exceptionally((ex) -> {
-                    event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                            "Error Adding Channel",
-                            String.format("There was an error adding **%s**.", username)
-                    )).queue();
+                    String title = ctx.getUserI18n().getString("command.twitch.subcommands.add.error.title");
+                    String description = ctx.getUserI18n().getString("command.twitch.subcommands.add.error.description")
+                            .replace("{channel}", username);
+
+                    event.getHook().sendMessageEmbeds(Helper.errorEmbed(title, description)).queue();
 
                     bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Adding Twitch Channel: " + ex.getMessage());
                     return null;
@@ -46,13 +49,13 @@ public class TwitchAddSubCommand extends Command implements ISubCommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Add a twitch channel to get live notifications for!";
+        return "command.twitch.subcommands.add.description";
     }
 
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.STRING, "username", "Their twitch username.", true)
+                new OptionData(OptionType.STRING, "username", "command.twitch.subcommands.add.arguments.username.description", true)
         };
     }
 
