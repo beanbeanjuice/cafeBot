@@ -115,6 +115,17 @@ public class Helper {
         }
     }
 
+    public static MessageEmbed noPermissionEmbed(I18N i18n) {
+        String title = i18n.getString("generic.error.permission.title");
+        String description = i18n.getString("generic.error.permission.message");
+
+        return new EmbedBuilder()
+                .setTitle(title)
+                .setDescription(description)
+                .setColor(Color.RED)
+                .build();
+    }
+
     public static MessageEmbed uncaughtErrorEmbed(I18N i18n, String error) {
         String title = i18n.getString("generic.error.uncaught.title");
         String description = i18n.getString("generic.error.uncaught.message")
@@ -135,8 +146,16 @@ public class Helper {
                 .build();
     }
 
+    @Deprecated(since = "4.4.1")
     public static MessageEmbed defaultErrorEmbed() {
         return errorEmbed("Uncaught Error", "There was an error... and I don't know what's wrong... if this persists please submit a support ticket!");
+    }
+
+    public static MessageEmbed defaultErrorEmbed(I18N i18n) {
+        String title = i18n.getString("generic.error.generic.title");
+        String description = i18n.getString("generic.error.generic.description");
+
+        return errorEmbed(title, description);
     }
 
     public static MessageEmbed successEmbed(final String title, final String description) {
