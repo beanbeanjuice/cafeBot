@@ -35,7 +35,7 @@ public class BotInviteCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Want to invite this bot to a server? Use this command!";
+        return "command.bot-invite.description";
     }
 
     @Override

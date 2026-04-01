@@ -22,14 +22,10 @@ public class BotUpvoteCommand extends Command implements ICommand {
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                "Voting List",
-                """
-                        Upvoting helps me serve coffee to more people! \
-                        If you're enjoying my service, please consider doing so! \
-                        Any and all support is welcome!
-                        """
-        )).setComponents(ActionRow.of(getButtons())).queue();
+        String title = ctx.getUserI18n().getString("command.bot-upvote.embed.title");
+        String description = ctx.getUserI18n().getString("command.bot-upvote.embed.description");
+
+        event.getHook().sendMessageEmbeds(Helper.successEmbed(title, description)).setComponents(ActionRow.of(getButtons())).queue();
     }
 
     private ArrayList<Button> getButtons() {
@@ -51,7 +47,7 @@ public class BotUpvoteCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Upvote the bot!";
+        return "command.bot-upvote.description";
     }
 
     @Override

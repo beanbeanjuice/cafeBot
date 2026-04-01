@@ -19,9 +19,11 @@ public class BugReportCommand extends Command implements ICommand {
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        String label = ctx.getUserI18n().getString("command.bug.button.label");
+
         String BUG_REPORT_URL = "https://github.com/beanbeanjuice/cafeBot/issues/new/choose";
         event.getHook().sendMessageComponents(
-                ActionRow.of(Button.link(BUG_REPORT_URL, "Bug Report").withEmoji(Emoji.fromFormatted("<:bean_moment:841922879166742529>")))
+                ActionRow.of(Button.link(BUG_REPORT_URL, label).withEmoji(Emoji.fromFormatted("<:bean_moment:841922879166742529>")))
         ).queue();
     }
 
@@ -32,7 +34,7 @@ public class BugReportCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Discovered a bug with me?";
+        return "command.bug.description";
     }
 
     @Override

@@ -94,6 +94,15 @@ public class CafeBot {
     @Getter private static final AtomicInteger commandsRun = new AtomicInteger(0); // Atomic since can run across multiple shards.
     @Getter private final String discordAvatarUrl = "https://cdn.beanbeanjuice.com/images/cafeBot/cafeBot.gif";
 
+    private void checkApiConnection() {
+        try {
+            Greeting greeting = cafeAPI.getGreetingApi().getAdminHello().get();
+            if (greeting == null || greeting.getMessage() == null) throw new Exception("Greeting not found!");
+        } catch (Exception e) {
+            this.logger.log(CafeBot.class, LogLevel.ERROR, "Connection to the API is invalid...", true, true);
+        }
+    }
+
     public CafeBot() throws InterruptedException, ExecutionException {
         this.logger = new LogManager(
                 this,
@@ -110,10 +119,7 @@ public class CafeBot {
         this.logger.addWebhookURL(EnvironmentVariable.CAFEBOT_GUILD_WEBHOOK_URL.getSystemVariable());
         this.logger.log(CafeBot.class, LogLevel.OKAY, "Starting bot!", true, false);
 
-        Greeting greeting = cafeAPI.getGreetingApi().getAdminHello().get();
-        if (greeting == null || greeting.getMessage() == null) {
-            this.logger.log(CafeBot.class, LogLevel.ERROR, "Connection to the API is invalid...", true, true);
-        }
+        this.checkApiConnection();
 
         this.shardManager = DefaultShardManagerBuilder
                 .createDefault(EnvironmentVariable.CAFEBOT_TOKEN.getSystemVariable())
