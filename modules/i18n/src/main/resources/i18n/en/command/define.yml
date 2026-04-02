@@ -1,0 +1,12 @@
+description: "Define something!"
+
+error:
+  unknown:
+    title: "Unknown Word"
+    description: "<:cafeBot_sad:1171726165040447518> I-... I don't know that word... I swear I'll learn it someday!"
+
+arguments:
+  word:
+    description: "The word to define."
+  language_code:
+    description: "The language code to define."
