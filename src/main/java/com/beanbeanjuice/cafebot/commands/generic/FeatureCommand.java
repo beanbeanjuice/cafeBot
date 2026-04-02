@@ -33,7 +33,7 @@ public class FeatureCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Request a new feature for me!";
+        return "command.feature.description";
     }
 
     @Override

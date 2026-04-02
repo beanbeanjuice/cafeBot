@@ -1,0 +1,27 @@
+description: "Create a beautiful embed!"
+
+success:
+  title: "Embed Created"
+  description: "Your embed has been successfully created in {channel}!"
+
+error:
+  attachment:
+    title: "Invalid Attachments"
+    description: "Attachments must be images."
+  channel:
+    title: "Invalid Channel"
+    description: "{channel} is not a text channel."
+  invalid:
+    title: "Invalid Embed"
+    description: "You're trying to create an invalid embed... I'm so sorry I can't let you do that..."
+
+arguments:
+  channel: "The channel to send the embed in."
+  title: "Title for the embed."
+  description: "The message that goes INSIDE the embed."
+  author: "The author of the embed."
+  message: "The message that goes outside of the embed."
+  footer: "A message to add at the bottom of the embed."
+  thumbnail: "A thumbnail url to add to the embed."
+  image: "An image url to add to the image."
+  color: "Color hex code. Example: #FFC0CB"

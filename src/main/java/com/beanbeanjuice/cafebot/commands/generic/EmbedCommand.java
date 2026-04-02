@@ -35,25 +35,29 @@ public class EmbedCommand extends Command implements ICommand {
         Optional<Message.Attachment> imageOptional = Optional.ofNullable(event.getOption("image")).map(OptionMapping::getAsAttachment);
 
         if (!checkValidImages(thumbnailOptional.orElse(null), imageOptional.orElse(null))) {
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Invalid Attachments",
-                    "Attachments must be images."
-            )).queue();
+            String title = ctx.getUserI18n().getString("command.embed.error.attachment.title");
+            String description = ctx.getUserI18n().getString("command.embed.error.attachment.description");
+
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(title, description)).queue();
             return;
         }
 
         if (!channel.getType().equals(ChannelType.TEXT)) {
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Invalid Channel",
-                    String.format("%s is not a text channel.", channel.getAsMention())
-            )).queue();
+            String title = ctx.getUserI18n().getString("command.embed.error.channel.title");
+            String description = ctx.getUserI18n().getString("command.embed.error.channel.description")
+                    .replace("{channel}", channel.getAsMention());
+
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(title, description)).queue();
             return;
         }
 
         Optional<MessageEmbed> optionalEmbed = createEmbed(event);
 
         if (optionalEmbed.isEmpty()) {
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed("Invalid Embed", "You're trying to create an invalid embed... I'm so sorry I can't let you do that...")).queue();
+            String title = ctx.getUserI18n().getString("command.embed.error.invalid.title");
+            String description = ctx.getUserI18n().getString("command.embed.error.invalid.description");
+
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(title, description)).queue();
             return;
         }
 
@@ -64,10 +68,11 @@ public class EmbedCommand extends Command implements ICommand {
                 () -> channel.asTextChannel().sendMessageEmbeds(embed).queue()
         );
 
-        event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                "Embed Created",
-                String.format("Your embed has been successfully created in %s!", channel.getAsMention())
-        )).queue();
+        String title = ctx.getUserI18n().getString("command.embed.success.title");
+        String description = ctx.getUserI18n().getString("command.embed.success.description")
+                .replace("{channel}", channel.getAsMention());
+
+        event.getHook().sendMessageEmbeds(Helper.successEmbed(title, description)).queue();
     }
 
     private boolean checkValidImages(final @Nullable Message.Attachment thumbnail, final @Nullable Message.Attachment image) {
@@ -118,7 +123,7 @@ public class EmbedCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Create a beautiful embed!";
+        return "command.embed.description";
     }
 
     @Override
@@ -129,15 +134,15 @@ public class EmbedCommand extends Command implements ICommand {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.CHANNEL, "channel", "The channel to send the embed in.", true),
-                new OptionData(OptionType.STRING, "title", "Title for the embed.", false),
-                new OptionData(OptionType.STRING, "description", "The message that goes INSIDE the embed.", false),
-                new OptionData(OptionType.STRING, "author", "The author of the embed.", false),
-                new OptionData(OptionType.STRING, "message", "The message that goes outside of the embed.", false),
-                new OptionData(OptionType.STRING, "footer", "A message to add at the bottom of the embed.", false),
-                new OptionData(OptionType.ATTACHMENT, "thumbnail", "A thumbnail url to add to the embed.", false),
-                new OptionData(OptionType.ATTACHMENT, "image", "An image url to add to the image.", false),
-                new OptionData(OptionType.STRING, "color", "Color hex code. Example: #FFC0CB", false)
+                new OptionData(OptionType.CHANNEL, "channel", "command.embed.arguments.channel", true),
+                new OptionData(OptionType.STRING, "title", "command.embed.arguments.title", false),
+                new OptionData(OptionType.STRING, "description", "command.embed.arguments.description", false),
+                new OptionData(OptionType.STRING, "author", "command.embed.arguments.author", false),
+                new OptionData(OptionType.STRING, "message", "command.embed.arguments.message", false),
+                new OptionData(OptionType.STRING, "footer", "command.embed.arguments.footer", false),
+                new OptionData(OptionType.ATTACHMENT, "thumbnail", "command.embed.arguments.thumbnail", false),
+                new OptionData(OptionType.ATTACHMENT, "image", "command.embed.arguments.image", false),
+                new OptionData(OptionType.STRING, "color", "command.embed.arguments.color", false)
         };
     }
 
