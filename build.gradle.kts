@@ -103,9 +103,9 @@ dependencies {
 
     implementation("net.dv8tion:JDA:6.3.1") { exclude(module = "opus-java") }
 
-    implementation("org.apache.logging.log4j:log4j-api:2.25.3")  // Logging - https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-    implementation("org.apache.logging.log4j:log4j-core:2.25.3")
-    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:2.25.3")  // JDA logging.
+    implementation("org.apache.logging.log4j:log4j-api:2.25.4")  // Logging - https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+    implementation("org.apache.logging.log4j:log4j-core:2.25.4")
+    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:2.25.4")  // JDA logging.
 
     implementation("org.mnode.ical4j:ical4j:4.2.3")  // Calendar Stuff - https://mvnrepository.com/artifact/org.mnode.ical4j/ical4j
 
