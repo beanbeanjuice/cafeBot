@@ -1,7 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
-    id("com.gradleup.shadow") version "9.4.0"
+    id("com.gradleup.shadow") version "9.4.1"
     id("java")
 }
 
@@ -36,13 +36,13 @@ allprojects {
 
     dependencies {
         // Lombok
-        compileOnly("org.projectlombok:lombok:1.18.42")
-        annotationProcessor("org.projectlombok:lombok:1.18.42")
+        compileOnly("org.projectlombok:lombok:1.18.44")
+        annotationProcessor("org.projectlombok:lombok:1.18.44")
 
         implementation("org.apache.httpcomponents.client5:httpclient5:5.6")  // HTTP Requests
 
-        implementation("tools.jackson.core:jackson-core:3.1.0") // https://mvnrepository.com/artifact/tools.jackson.core/jackson-core
-        implementation("tools.jackson.core:jackson-databind:3.1.0") // https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind
+        implementation("tools.jackson.core:jackson-core:3.1.1") // https://mvnrepository.com/artifact/tools.jackson.core/jackson-core
+        implementation("tools.jackson.core:jackson-databind:3.1.1") // https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind
 
         implementation("io.github.cdimascio:java-dotenv:5.2.2") // https://mvnrepository.com/artifact/io.github.cdimascio/java-dotenv
 
@@ -102,18 +102,18 @@ dependencies {
     implementation(project(":modules:meme-api-wrapper"))
     implementation(project(":modules:i18n"))
 
-    implementation("net.dv8tion:JDA:6.3.1") { exclude(module = "opus-java") }
+    implementation("net.dv8tion:JDA:6.4.0") { exclude(module = "opus-java") }
 
-    implementation("org.apache.logging.log4j:log4j-api:2.25.3")  // Logging - https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-    implementation("org.apache.logging.log4j:log4j-core:2.25.3")
-    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:2.25.3")  // JDA logging.
+    implementation("org.apache.logging.log4j:log4j-api:2.25.4")  // Logging - https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+    implementation("org.apache.logging.log4j:log4j-core:2.25.4")
+    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:2.25.4")  // JDA logging.
 
-    implementation("org.mnode.ical4j:ical4j:4.2.3")  // Calendar Stuff - https://mvnrepository.com/artifact/org.mnode.ical4j/ical4j
+    implementation("org.mnode.ical4j:ical4j:4.2.4")  // Calendar Stuff - https://mvnrepository.com/artifact/org.mnode.ical4j/ical4j
 
     implementation("com.github.twitch4j:twitch4j:1.26.0")  // Twitch - https://github.com/twitch4j/twitch4j
 
-    compileOnly("org.projectlombok:lombok:1.18.42")
-    annotationProcessor("org.projectlombok:lombok:1.18.42")
+    compileOnly("org.projectlombok:lombok:1.18.44")
+    annotationProcessor("org.projectlombok:lombok:1.18.44")
 }
 
 tasks.withType<ShadowJar> {
