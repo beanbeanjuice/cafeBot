@@ -4,12 +4,29 @@ I welcome contributions from everyone, so please feel free to contribute!
 
 ## Getting Started
 
+### Prerequisites
+
+> Note: I recommend installing most things via a package manager. For Windows I recommend [scoop](https://scoop.sh).
+
+* **An IDE** -- I personally recommend [IntelliJ IDEA](https://www.jetbrains.com/idea/). They have a free community version.
+* **JDK 25** -- You can install this via scoop with `scoop install openjdk25`.
+* **API Access** -- Sign into the [staging api](https://staging.cafebot.dev) then send me a message on Discord (beanbeanjuice) requesting access to the API.
+
+### Instructions
+
 1. Determine which [issue](https://www.github.com/beanbeanjuice/cafeBot/issues) you want to work on. If an issue does not yet exist, please make it.
 2. Leave a comment on the issue that you will be working on, that you have claimed it.
 3. First, create a fork of the repository.
-4. Create your edits.
-5. Make a PR with your fork, and merge it into the `master` branch!
-6. Finally, fill out the PR template. If you do not fill it out properly, I will let you know.
+4. Copy `.env.example` to a new file called `.env`.
+    * Change the `CAFEBOT_API_URL` to https://api-staging.cafebot.dev.
+    * Change `CAFEBOT_API_TOKEN` to the token you receive on https://staging.cafebot.dev.
+    * Keep `CAFEBOT_KUMA_URL` blank, or use your own if you want.
+    * Change the `CAFEBOT_GUILD_ID`, `CAFEBOT_GUILD_LOG_CHANNEL_ID`, and `CAFEBOT_GUILD_WEBHOOK_URL` to your personal development guild and channel IDs and webhook URL.
+    * For `TWITCH_ACCESS_TOKEN` generate a custom scoped token [here](https://twitchtokengenerator.com/). Give it the scopes so cafeBot can know when a twitch channel is live.
+    * You can use your own API keys for OpenAI, but it is not required.
+5. Create your edits.
+6. Make a PR with your fork, and merge it into the `master` branch!
+7. Finally, fill out the PR template. If you do not fill it out properly, I will let you know.
 
 ## Pull Request Etiquette
 
