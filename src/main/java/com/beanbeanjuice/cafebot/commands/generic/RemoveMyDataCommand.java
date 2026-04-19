@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.generic;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
@@ -20,10 +21,11 @@ public class RemoveMyDataCommand extends Command implements ICommand {
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        final I18N bundle = ctx.getUserI18n();
         String FORM_URL = "https://dashboard.cafebot.dev";
         event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                "Data Removal",
-                "You can remove/download your data on website dashboard. Please click the button below and sign in with your Discord account."
+                bundle.getString("command.remove-my-data.embed.title"),
+                bundle.getString("command.remove-my-data.embed.description")
         )).addComponents(ActionRow.of(Button.link(FORM_URL, "Remove Data").withEmoji(Emoji.fromFormatted("<:html:1000241652444692530>")))).queue();
     }
 
@@ -34,7 +36,7 @@ public class RemoveMyDataCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Remove your data from this bot.";
+        return "command.remove-my-data.description";
     }
 
     @Override

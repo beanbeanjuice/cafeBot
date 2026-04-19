@@ -1,0 +1,40 @@
+description: "All things to do with custom channels!"
+subcommand:
+  set:
+    description: "Set a custom channel!"
+    arguments:
+      type:
+        description: "The channel type you want to set."
+      channel:
+        description: "The channel you want to set."
+    embed:
+      success:
+        title: "{type} Channel Set"
+        description: "Channel has been set to {channel}!\n\n{channelDescription}"
+      error:
+        invalid-channel:
+          title: "Invalid Channel"
+          description: "I-... I'm sorry... we don't do substitutions here... please use a text channel."
+        title: "Error Setting {type} Channel"
+        description: "There was an error setting the channel... I'm so sorry.. \U0001F97A"
+  remove:
+    description: "Remove a custom channel!"
+    arguments:
+      type:
+        description: "The channel type you want to remove."
+    embed:
+      success:
+        title: "{type} Channel Removed"
+        description: "The {type} channel has been successfully removed."
+      error:
+        title: "Error Removing {type} Channel"
+        description: "There was a problem removing the channel \U0001F97A please try again later..."
+  list:
+    description: "List all custom channels for the server!"
+    embed:
+      title: "Custom Channels"
+      footer: "You can set channels with \"/channel set!\""
+      unset: "*Unset*"
+      error:
+        title: "Error Listing Custom Channels"
+        description: "For some reason I had a problem checking the list... I've notified my boss!"

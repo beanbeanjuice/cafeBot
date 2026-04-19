@@ -1,0 +1,16 @@
+description: "Confess something anonymously!~"
+arguments:
+  message:
+    description: "The message you want to anonymously confess."
+embed:
+  title: "Anonymous Confession"
+  footer: "Get an admin to react with \U0001F528 to ban the user for rule violations! (Only works for new confessions)"
+  sent:
+    title: "Confession Sent"
+    description: "Your anonymous confession has been successfully sent to {channel}. Admins can still choose to ban you if your message violates their rules!"
+  error:
+    title: "Confession Error"
+    description: "This server may not have a confession channel set... You can talk to me if you'd like! <a:cafeBot:1119635469727191190>"
+  guild-error:
+    title: "Confession Error"
+    description: "A user tried to confess, but your confessions channel is not set!"

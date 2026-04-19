@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.api.wrapper.api.exception.ApiRequestException;
 import com.beanbeanjuice.cafebot.api.wrapper.type.Interaction;
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -18,7 +19,7 @@ import java.util.concurrent.CompletionException;
 
 public interface IInteractionCommand {
 
-    default void handleInteraction(final InteractionType type, final SlashCommandInteractionEvent event, final CafeBot cafeBot) {
+    default void handleInteraction(final InteractionType type, final SlashCommandInteractionEvent event, final CafeBot cafeBot, final I18N bundle) {
         Optional<OptionMapping> userMapping = Optional.ofNullable(event.getOption("user"));
         User sender = event.getUser();
         User receiver = userMapping.map(OptionMapping::getAsUser).orElse(event.getUser());
@@ -42,11 +43,11 @@ public interface IInteractionCommand {
             // Interaction may be null, but imageUrl should exist here.
             boolean isSelf = sender.getId().equals(receiver.getId());
 
-            String rawMessage = (isSelf) ? this.getSelfString() : this.getOtherString();
+            String rawMessage = bundle.getString(isSelf ? this.getSelfString() : this.getOtherString());
             String message;
 
-            if (isSelf) message = String.format(rawMessage, sender.getAsMention());
-            else message = String.format(rawMessage, sender.getAsMention(), receiver.getAsMention());
+            if (isSelf) message = rawMessage.replace("{sender}", sender.getAsMention());
+            else message = rawMessage.replace("{sender}", sender.getAsMention()).replace("{receiver}", receiver.getAsMention());
 
             EmbedBuilder embedBuilder = new EmbedBuilder();
 
@@ -54,16 +55,21 @@ public interface IInteractionCommand {
             embedBuilder.setImage(imageUrl);
 
             if (interaction != null) {
-                String customFooter = String.format(this.getFooterString(), sender.getName(), interaction.getNumSentFrom(), receiver.getName(), interaction.getNumSentTo());
-                String footer = String.format("%s - Use \"/interaction block\" or \"/interaction status\" to disable interactions!", customFooter);
+                String customFooter = bundle.getString(this.getFooterString())
+                        .replace("{sender}", sender.getName())
+                        .replace("{senderCount}", String.valueOf(interaction.getNumSentFrom()))
+                        .replace("{receiver}", receiver.getName())
+                        .replace("{receiverCount}", String.valueOf(interaction.getNumSentTo()));
+                String footer = customFooter + bundle.getString("command.interaction.common.footer-suffix");
                 embedBuilder.setFooter(footer);
             }
 
             embedBuilder.setColor(Helper.getRandomColor());
 
+            String botReply = bundle.getString(this.getBotString());
             event.getHook().sendMessage(message).addEmbeds(embedBuilder.build()).queue((interactionMessage) -> {
                 if (!receiver.getId().equals(cafeBot.getSelfUser().getId())) return;
-                interactionMessage.reply(this.getBotString()).queue();
+                interactionMessage.reply(botReply).queue();
             });
 
             return null;
@@ -81,7 +87,7 @@ public interface IInteractionCommand {
                 }
             }
 
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed("Error Interacting", "I'm sorry 🥺 there was a problem interacting...")).queue();
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed("Error Interacting", "I'm sorry \uD83E\uDD7A there was a problem interacting...")).queue();
             throw new CompletionException(ex);
         });
     }

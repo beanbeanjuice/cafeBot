@@ -19,7 +19,7 @@ public class CuddleCommand extends Command implements ICommand, IInteractionComm
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.CUDDLE, event, bot);
+        this.handleInteraction(InteractionType.CUDDLE, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class CuddleCommand extends Command implements ICommand, IInteractionComm
 
     @Override
     public String getDescriptionPath() {
-        return "Cuddle someone!";
+        return "command.interaction.cuddle.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class CuddleCommand extends Command implements ICommand, IInteractionComm
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to cuddle!~"),
-                new OptionData(OptionType.STRING, "message", "An optional message you want to send")
+                new OptionData(OptionType.USER, "user", "command.interaction.cuddle.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class CuddleCommand extends Command implements ICommand, IInteractionComm
 
     @Override
     public String getSelfString() {
-        return "%s is **cuddling** themself... um.. that's sad... <:you_are_embarassing:1081417389532528660>";
+        return "command.interaction.cuddle.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **cuddling** %s~ Awww <a:aww_dance:1257143681044054066>";
+        return "command.interaction.cuddle.other";
     }
 
     @Override
     public String getBotString() {
-        return "Ugh. Only a few people are allowed to touch me and you're not one of them. Don't touch me. <:disgusted:1257142116539301909>";
+        return "command.interaction.cuddle.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s cuddled others %d times. %s was cuddled %d times.";
+        return "command.interaction.cuddle.footer";
     }
 
 }

@@ -1,0 +1,19 @@
+description: "Set or remove an airport message!"
+subcommand:
+  set:
+    description: "Set the airport message."
+    arguments:
+      type:
+        description: "The message type you want to set."
+  remove:
+    description: "Reset the airport message to the default!"
+    arguments:
+      type:
+        description: "The message type you want to reset."
+    embed:
+      success:
+        title: "Airport Message Removed"
+        description: "Don't worry! I removed the airport message. You'll still get notifications, so if you want to remove that too, make sure you unset the airport channel with `/channel`!"
+      error:
+        title: "Error Removing Airport Message"
+        description: "I... can't remove it for some reason... Can you let my boss know? I'm scared to tell him myself..."

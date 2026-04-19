@@ -1,0 +1,10 @@
+description: "See stats about yourself or another user!"
+embed:
+  registered: "Registered"
+  joined: "Joined"
+  roles: "Roles [{count}]"
+  permissions: "Permissions"
+  id-footer: "ID: {id}"
+arguments:
+  user:
+    description: "The person to get stats about."

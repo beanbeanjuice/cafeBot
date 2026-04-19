@@ -20,7 +20,7 @@ public class RaffleCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "All things to do with raffles!";
+        return "command.raffle.description";
     }
 
     @Override

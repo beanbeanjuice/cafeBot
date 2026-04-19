@@ -19,7 +19,7 @@ public class HmphCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.HMPH, event, bot);
+        this.handleInteraction(InteractionType.HMPH, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class HmphCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getDescriptionPath() {
-        return "Hmph at someone~";
+        return "command.interaction.hmph.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class HmphCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to hmph at!~"),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.hmph.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class HmphCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s is **hmphing** all alone... sad... 🙄";
+        return "command.interaction.hmph.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **hmphed** at %s! You might want to give them some attention... <:torsty2:1161620852295610429>";
+        return "command.interaction.hmph.other";
     }
 
     @Override
     public String getBotString() {
-        return "Why are you hmphing at me? What did I do?! <:when_AHHH:842062279372701737>";
+        return "command.interaction.hmph.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s hmphed at others %d times. %s was hmphed at %d times.";
+        return "command.interaction.hmph.footer";
     }
 
 }

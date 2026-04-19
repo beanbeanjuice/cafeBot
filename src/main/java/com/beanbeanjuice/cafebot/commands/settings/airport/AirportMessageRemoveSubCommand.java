@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.settings.airport;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.AirportMessageType;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
@@ -21,19 +22,19 @@ public class AirportMessageRemoveSubCommand extends Command implements ISubComma
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        I18N bundle = ctx.getUserI18n();
         AirportMessageType type = AirportMessageType.valueOf(event.getOption("type").getAsString());
-
         String guildId = event.getGuild().getId();
 
         bot.getCafeAPI().getAirportApi().deleteAirportMessage(guildId, type).thenRun(() -> {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                    "Airport Message Removed",
-                    "Don't worry! I removed the airport message. You'll still get notifications, so if you want to remove that too, make sure you unset the airport channel with `/channel`!"
+                    bundle.getString("command.airport.subcommand.remove.embed.success.title"),
+                    bundle.getString("command.airport.subcommand.remove.embed.success.description")
             )).queue();
         }).exceptionally((ex) -> {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Error Removing Airport Message",
-                    "I... can't remove it for some reason... Can you let me boss know? I'm scared to tell him myself..."
+                    bundle.getString("command.airport.subcommand.remove.embed.error.title"),
+                    bundle.getString("command.airport.subcommand.remove.embed.error.description")
             )).queue();
             throw new CompletionException(ex);
         });
@@ -46,12 +47,12 @@ public class AirportMessageRemoveSubCommand extends Command implements ISubComma
 
     @Override
     public String getDescriptionPath() {
-        return "Set the airport message back to the default!";
+        return "command.airport.subcommand.remove.description";
     }
 
     @Override
     public OptionData[] getOptions() {
-        OptionData channelTypeData = new OptionData(OptionType.STRING, "type", "The message type you want to set", true);
+        OptionData channelTypeData = new OptionData(OptionType.STRING, "type", "command.airport.subcommand.remove.arguments.type.description", true);
 
         Arrays.stream(AirportMessageType.values()).forEach((type) -> channelTypeData.addChoice(type.name(), type.name()));
 

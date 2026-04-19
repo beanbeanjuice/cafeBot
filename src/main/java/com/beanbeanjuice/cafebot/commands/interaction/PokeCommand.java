@@ -19,7 +19,7 @@ public class PokeCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.POKE, event, bot);
+        this.handleInteraction(InteractionType.POKE, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class PokeCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getDescriptionPath() {
-        return "Poke someone!";
+        return "command.interaction.poke.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class PokeCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to poke."),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.poke.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class PokeCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s **poked** themself... why? Checking if you're alive? <:zerotwo_facepalm:843672933176311808>";
+        return "command.interaction.poke.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **poked** %s!";
+        return "command.interaction.poke.other";
     }
 
     @Override
     public String getBotString() {
-        return "Please *do not* do that. Especially while I'm working. <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.poke.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s poked others %d times. %s was poked %d times.";
+        return "command.interaction.poke.footer";
     }
 
 }

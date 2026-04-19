@@ -18,9 +18,11 @@ public class MemberCountCommand extends Command implements ICommand {
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         event.getGuild().retrieveMetaData().queue((metadata) -> {
+            String description = ctx.getDefaultBundle().getString("command.membercount.embed.description")
+                    .replace("{count}", String.valueOf(metadata.getApproximateMembers()));
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                    "Member Count",
-                    String.format("There are %d people in this server!", metadata.getApproximateMembers())
+                    ctx.getDefaultBundle().getString("command.membercount.embed.title"),
+                    description
             )).queue();
         });
     }
@@ -32,7 +34,7 @@ public class MemberCountCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Get the member count for your server!";
+        return "command.membercount.description";
     }
 
     @Override

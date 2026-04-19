@@ -1,0 +1,7 @@
+description: "Get release notes for the any of the previous versions!"
+error:
+  title: "Version Error"
+  description: "Error getting bot version: {version}"
+arguments:
+  version:
+    description: "The bot version you want to get release notes for."

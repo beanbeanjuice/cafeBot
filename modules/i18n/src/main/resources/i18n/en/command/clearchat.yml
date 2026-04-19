@@ -1,0 +1,10 @@
+description: "Clear the chat!"
+deleting:
+  title: "Deleting Messages..."
+  description: "Attempting to delete **{amount}** messages."
+deleted:
+  title: "Messages Deleted"
+  description: "**{amount}** messages have been successfully deleted."
+arguments:
+  amount:
+    description: "The amount of messages you want to clear."

@@ -19,7 +19,7 @@ public class CryCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.CRY, event, bot);
+        this.handleInteraction(InteractionType.CRY, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class CryCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public String getDescriptionPath() {
-        return "Cry because of someone... :(";
+        return "command.interaction.cry.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class CryCommand extends Command implements ICommand, IInteractionCommand
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user who made you cry... :("),
-                new OptionData(OptionType.STRING, "message", "An optional message to send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.cry.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class CryCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public String getSelfString() {
-        return "%s is **crying**! S- someone get a tissue! 😓";
+        return "command.interaction.cry.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **crying** because of %s! What did you do?! <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.cry.other";
     }
 
     @Override
     public String getBotString() {
-        return "D- did I do something wrong?! Don't cry please... <a:b_cry:1178932384436060220>";
+        return "command.interaction.cry.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s cried because of others %d times. %s was the reason for others crying %d times.";
+        return "command.interaction.cry.footer";
     }
 
 }

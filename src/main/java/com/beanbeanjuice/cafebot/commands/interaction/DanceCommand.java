@@ -19,7 +19,7 @@ public class DanceCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.DANCE, event, bot);
+        this.handleInteraction(InteractionType.DANCE, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class DanceCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getDescriptionPath() {
-        return "Dance with someone!";
+        return "command.interaction.dance.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class DanceCommand extends Command implements ICommand, IInteractionComma
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to dance with!"),
-                new OptionData(OptionType.STRING, "message", "An optional message you want to send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.dance.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class DanceCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getSelfString() {
-        return "%s is **dancing** all alone... how pathetic. <:disgusted:1257142116539301909>";
+        return "command.interaction.dance.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **dancing** with %s! Everyone join in! <a:wiggle:886217792578269236>";
+        return "command.interaction.dance.other";
     }
 
     @Override
     public String getBotString() {
-        return "DANCE PARTY!!! <a:Dance:1140048902301679666><a:Dance:1140048902301679666><a:Dance:1140048902301679666>";
+        return "command.interaction.dance.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s danced %d times. %s was danced with %d times.";
+        return "command.interaction.dance.footer";
     }
 
 }

@@ -19,7 +19,7 @@ public class BonkCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.BONK, event, bot);
+        this.handleInteraction(InteractionType.BONK, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class BonkCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getDescriptionPath() {
-        return "Bonk someone!";
+        return "command.interaction.bonk.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class BonkCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The person you want to bonk!"),
-                new OptionData(OptionType.STRING, "message", "An optional message to send!")
+                new OptionData(OptionType.USER, "user", "command.interaction.bonk.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class BonkCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s just... **bonked** themself. <:disgusted:1257142116539301909>";
+        return "command.interaction.bonk.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s just **bonked** %s?! <:gasp:1257142832230170674>";
+        return "command.interaction.bonk.other";
     }
 
     @Override
     public String getBotString() {
-        return "Ow! Th- that.. that hurt! <:cafeBot_sad:1171726165040447518>";
+        return "command.interaction.bonk.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s bonked others %d times. %s was bonked %d times.";
+        return "command.interaction.bonk.footer";
     }
 
 }

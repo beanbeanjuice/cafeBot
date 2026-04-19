@@ -19,7 +19,7 @@ public class NomCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.NOM, event, bot);
+        this.handleInteraction(InteractionType.NOM, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class NomCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public String getDescriptionPath() {
-        return "Nom on someone!";
+        return "command.interaction.nom.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class NomCommand extends Command implements ICommand, IInteractionCommand
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to nom on!"),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.nom.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class NomCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public String getSelfString() {
-        return "%s just **nommed** themself... uhh- <a:huh_cat:1169341779414360206>";
+        return "command.interaction.nom.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s just **nommed** %s!";
+        return "command.interaction.nom.other";
     }
 
     @Override
     public String getBotString() {
-        return "Um... now I have to go wash my hands...";
+        return "command.interaction.nom.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s nommed others %d times. %s was nommed %d times.";
+        return "command.interaction.nom.footer";
     }
 
 }

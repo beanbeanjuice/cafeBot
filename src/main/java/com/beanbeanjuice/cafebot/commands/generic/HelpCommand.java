@@ -30,7 +30,7 @@ public class HelpCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Get help with some commands!";
+        return "command.help.description";
     }
 
     @Override

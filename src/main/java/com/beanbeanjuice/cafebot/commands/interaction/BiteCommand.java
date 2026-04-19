@@ -19,7 +19,7 @@ public class BiteCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.BITE, event, bot);
+        this.handleInteraction(InteractionType.BITE, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class BiteCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getDescriptionPath() {
-        return "Bite someone!";
+        return "command.interaction.bite.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class BiteCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to bite! :3"),
-                new OptionData(OptionType.STRING, "message", "An optional message you want to add!")
+                new OptionData(OptionType.USER, "user", "command.interaction.bite.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class BiteCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s just **bit** themself. Wh- why would you do that?!?! <:when_AHHH:842062279372701737>";
+        return "command.interaction.bite.self";
     }
 
     @Override
     public String getOtherString() {
-        return "Did- did %s just **bite** %s?! <:cat_shy:1161619110204031046>";
+        return "command.interaction.bite.other";
     }
 
     @Override
     public String getBotString() {
-        return "You *do* know I'm made of metal right? 🤦🏻‍♀️";
+        return "command.interaction.bite.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s bit others %d times. %s was bitten %d times.";
+        return "command.interaction.bite.footer";
     }
 
 }

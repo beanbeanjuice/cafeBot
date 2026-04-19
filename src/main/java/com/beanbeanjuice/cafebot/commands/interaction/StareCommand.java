@@ -19,7 +19,7 @@ public class StareCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.STARE, event, bot);
+        this.handleInteraction(InteractionType.STARE, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class StareCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getDescriptionPath() {
-        return "Stare at someone!";
+        return "command.interaction.stare.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class StareCommand extends Command implements ICommand, IInteractionComma
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to stare at."),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.stare.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class StareCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getSelfString() {
-        return "%s is **staring** off into space... <a:schizo:1087762654677970954>";
+        return "command.interaction.stare.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **staring** at %s! <a:PeepoStare:1094187079732305930>";
+        return "command.interaction.stare.other";
     }
 
     @Override
     public String getBotString() {
-        return "<a:PeepoStare:1094187079732305930> Yes? Can I help you?";
+        return "command.interaction.stare.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s stared at others %d times. %s was stared at %d times.";
+        return "command.interaction.stare.footer";
     }
 
 }

@@ -19,7 +19,7 @@ public class DabCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.DAB, event, bot);
+        this.handleInteraction(InteractionType.DAB, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class DabCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public String getDescriptionPath() {
-        return "Dab! Why?";
+        return "command.interaction.dab.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class DabCommand extends Command implements ICommand, IInteractionCommand
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to dab toward."),
-                new OptionData(OptionType.STRING, "message", "An optional message you want to send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.dab.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class DabCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public String getSelfString() {
-        return "%s is **dabbing** at themself... wow... 🙄";
+        return "command.interaction.dab.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **dabbing** at %s... what is this... 2015?? <:disgusted:1257142116539301909>";
+        return "command.interaction.dab.other";
     }
 
     @Override
     public String getBotString() {
-        return "Yeah... umm... please don't do that. <:disgusted:1257142116539301909>";
+        return "command.interaction.dab.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s dabbed %d times. %s was dabbed at %d times.";
+        return "command.interaction.dab.footer";
     }
 
 }

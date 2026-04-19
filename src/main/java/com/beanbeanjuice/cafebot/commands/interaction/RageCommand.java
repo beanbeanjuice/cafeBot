@@ -19,7 +19,7 @@ public class RageCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.RAGE, event, bot);
+        this.handleInteraction(InteractionType.RAGE, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class RageCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getDescriptionPath() {
-        return "Rage at someone!";
+        return "command.interaction.rage.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class RageCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to rage at."),
-                new OptionData(OptionType.STRING, "message", "An optional message you want to send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.rage.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class RageCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s is **raging**! CALM DOWN! <:pissed:842061821774004304>";
+        return "command.interaction.rage.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **raging** at %s! What did they do?! <a:man_scream:841921434732724224>";
+        return "command.interaction.rage.other";
     }
 
     @Override
     public String getBotString() {
-        return "I'm going to have to ask you to leave. 😊";
+        return "command.interaction.rage.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s raged %d times. %s was raged at %d times.";
+        return "command.interaction.rage.footer";
     }
 
 }

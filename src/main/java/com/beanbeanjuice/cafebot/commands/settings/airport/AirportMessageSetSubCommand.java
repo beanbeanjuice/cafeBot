@@ -87,7 +87,7 @@ public class AirportMessageSetSubCommand extends Command implements ISubCommand 
 
     @Override
     public String getDescriptionPath() {
-        return "Set the airport message.";
+        return "command.airport.subcommand.set.description";
     }
 
     @Override
@@ -97,7 +97,7 @@ public class AirportMessageSetSubCommand extends Command implements ISubCommand 
 
     @Override
     public OptionData[] getOptions() {
-        OptionData channelTypeData = new OptionData(OptionType.STRING, "type", "The message type you want to set", true);
+        OptionData channelTypeData = new OptionData(OptionType.STRING, "type", "command.airport.subcommand.set.arguments.type.description", true);
 
         Arrays.stream(AirportMessageType.values()).forEach((type) -> channelTypeData.addChoice(type.name(), type.name()));
 

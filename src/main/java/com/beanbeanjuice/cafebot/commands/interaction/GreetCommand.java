@@ -19,7 +19,7 @@ public class GreetCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.WELCOME, event, bot);
+        this.handleInteraction(InteractionType.WELCOME, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class GreetCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getDescriptionPath() {
-        return "Greet someone!";
+        return "command.interaction.greet.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class GreetCommand extends Command implements ICommand, IInteractionComma
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to greet!"),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.greet.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class GreetCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getSelfString() {
-        return "%s **welcomed** themself... <:disgusted:1257142116539301909>";
+        return "command.interaction.greet.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **welcomed** %s!~ <a:wowowow:886217210010431508>";
+        return "command.interaction.greet.other";
     }
 
     @Override
     public String getBotString() {
-        return "Thank you!~ <:gasp:1257142832230170674>";
+        return "command.interaction.greet.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s welcomed %d people. %s was welcomed %d times.";
+        return "command.interaction.greet.footer";
     }
 
 }

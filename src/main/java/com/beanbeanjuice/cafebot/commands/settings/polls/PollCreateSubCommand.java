@@ -31,7 +31,7 @@ public class PollCreateSubCommand extends Command implements ISubCommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Create a poll!";
+        return "command.poll.subcommand.create.description";
     }
 
     @Override
@@ -42,7 +42,7 @@ public class PollCreateSubCommand extends Command implements ISubCommand {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[]{
-                new OptionData(OptionType.INTEGER, "duration", "The duration the poll will run (in minutes).", true)
+                new OptionData(OptionType.INTEGER, "duration", "command.poll.subcommand.create.arguments.duration.description", true)
                         .setMinValue(1)
         };
     }

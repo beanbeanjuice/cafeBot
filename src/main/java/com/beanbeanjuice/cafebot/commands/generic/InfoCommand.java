@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.generic;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
@@ -19,22 +20,18 @@ public class InfoCommand extends Command implements ICommand {
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        event.getHook().sendMessageEmbeds(infoEmbed()).queue();
+        event.getHook().sendMessageEmbeds(infoEmbed(ctx.getUserI18n())).queue();
     }
 
-    private MessageEmbed infoEmbed() {
+    private MessageEmbed infoEmbed(final I18N bundle) {
         return new EmbedBuilder()
                 .setColor(Helper.getRandomColor())
-                .setAuthor("Bot Information", null, bot.getSelfUser().getAvatarUrl())
-                .addField("⚙ Commands Run", String.format("```%s```", Helper.formatNumber(bot.getCommandsRun().get())), true)
-                .addField("<a:wowowow:886217210010431508> Creator", "```@beanbeanjuice```", true)
-                .addField("<:html:1000241652444692530> Frameworks", "Built With: [Discord JDA](https://github.com/DV8FromTheWorld/JDA), " +
-                        "[Twitch4J](https://github.com/twitch4j/twitch4j), [KawaiiAPI](https://kawaii.red/), " +
-                        "and [Gradle](https://gradle.org/)!", true)
-                .addField("<a:cafeBot:1119635469727191190> About Me", "Hello! I'm cafeBot, a general/" +
-                        "multipurpose bot that is used to do a multitude of things! You can do `/help` to see the " +
-                        "list of my commands. I hope you enjoy me!", false)
-                .setFooter("If you want to upvote me, please do so with /bot-upvote!")
+                .setAuthor(bundle.getString("command.info.embed.author"), null, bot.getSelfUser().getAvatarUrl())
+                .addField(bundle.getString("command.info.embed.commands-run"), String.format("```%s```", Helper.formatNumber(bot.getCommandsRun().get())), true)
+                .addField(bundle.getString("command.info.embed.creator"), bundle.getString("command.info.embed.creator-value"), true)
+                .addField(bundle.getString("command.info.embed.frameworks"), bundle.getString("command.info.embed.frameworks-value"), true)
+                .addField(bundle.getString("command.info.embed.about"), bundle.getString("command.info.embed.about-description"), false)
+                .setFooter(bundle.getString("command.info.embed.footer"))
                 .build();
     }
 
@@ -45,7 +42,7 @@ public class InfoCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Get information about the bot!";
+        return "command.info.description";
     }
 
     @Override

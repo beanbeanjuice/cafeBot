@@ -28,8 +28,8 @@ public class PollDeleteSubCommand extends Command implements ISubCommand {
 
         bot.getCafeAPI().getPollApi().deletePoll(pollId).thenRun(() -> {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                    "Poll Deleted!",
-                    "The poll has been successfully deleted! Feel free to delete the original poll message."
+                    ctx.getUserI18n().getString("command.poll.subcommand.delete.embed.success.title"),
+                    ctx.getUserI18n().getString("command.poll.subcommand.delete.embed.success.description")
             )).queue();
         });
     }
@@ -41,13 +41,13 @@ public class PollDeleteSubCommand extends Command implements ISubCommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Delete a poll!";
+        return "command.poll.subcommand.delete.description";
     }
 
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.STRING, "id", "The ID of the poll you want to delete.", true, true)
+                new OptionData(OptionType.STRING, "id", "command.poll.subcommand.delete.arguments.id.description", true, true)
         };
     }
 

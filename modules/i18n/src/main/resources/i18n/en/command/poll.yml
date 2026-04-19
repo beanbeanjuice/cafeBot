@@ -1,0 +1,16 @@
+description: "All things to do with polls!"
+subcommand:
+  create:
+    description: "Create a poll!"
+    arguments:
+      duration:
+        description: "The duration the poll will run (in minutes)."
+  delete:
+    description: "Delete a poll!"
+    arguments:
+      id:
+        description: "The ID of the poll you want to delete."
+    embed:
+      success:
+        title: "Poll Deleted!"
+        description: "The poll has been successfully deleted! Feel free to delete the original poll message."

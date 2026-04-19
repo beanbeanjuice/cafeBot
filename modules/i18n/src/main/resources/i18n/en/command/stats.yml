@@ -1,0 +1,9 @@
+description: "Get statistics about the bot!"
+embed:
+  author: "Bot Statistics"
+  channels: "\U0001F4DD Total Text Channels"
+  servers: "<:smartPeepo:1000248538376196280> Total Servers"
+  commands: "\u2699 Commands Run (After Restart)"
+  users: "<a:catpats:950514533875720232> Total Users"
+  shards: "<a:cafeBot:1119635469727191190> Total Shards"
+  footer: "If you are enjoying this bot, please consider using /bot-upvote!"

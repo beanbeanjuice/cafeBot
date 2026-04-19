@@ -19,7 +19,7 @@ public class BlushCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.BLUSH, event, bot);
+        this.handleInteraction(InteractionType.BLUSH, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class BlushCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getDescriptionPath() {
-        return "Blush at someone!";
+        return "command.interaction.blush.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class BlushCommand extends Command implements ICommand, IInteractionComma
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to blush at!"),
-                new OptionData(OptionType.STRING, "message", "An optional message you want to add!")
+                new OptionData(OptionType.USER, "user", "command.interaction.blush.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class BlushCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getSelfString() {
-        return "%s just **blushed** at themself... umm.. ok... weird.. <:zerotwo_facepalm:843672933176311808>";
+        return "command.interaction.blush.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **blushing** at %s!~ Aww! <a:wowowow:886217210010431508>";
+        return "command.interaction.blush.other";
     }
 
     @Override
     public String getBotString() {
-        return "Why... why are you looking at me like that? <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.blush.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s blushed at others %d times. %s was blushed at %d times.";
+        return "command.interaction.blush.footer";
     }
 
 }

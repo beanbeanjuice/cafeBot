@@ -19,7 +19,7 @@ public class HeadPatCommand extends Command implements ICommand, IInteractionCom
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.HEADPAT, event, bot);
+        this.handleInteraction(InteractionType.HEADPAT, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class HeadPatCommand extends Command implements ICommand, IInteractionCom
 
     @Override
     public String getDescriptionPath() {
-        return "Headpat someone!";
+        return "command.interaction.headpat.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class HeadPatCommand extends Command implements ICommand, IInteractionCom
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to headpat."),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.headpat.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class HeadPatCommand extends Command implements ICommand, IInteractionCom
 
     @Override
     public String getSelfString() {
-        return "%s is **headpatting** themself... okay? <:disgusted:1257142116539301909>\n";
+        return "command.interaction.headpat.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **headpat** %s~ Aww! <:aww:1257143681878593727>\n";
+        return "command.interaction.headpat.other";
     }
 
     @Override
     public String getBotString() {
-        return "I love headpats <:pleading_blush:1257143682776432731>... wait- I have to get back to work! <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.headpat.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s headpat others %d times. %s was headpat %d times.";
+        return "command.interaction.headpat.footer";
     }
 
 }

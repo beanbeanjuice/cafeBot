@@ -19,7 +19,7 @@ public class KissCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.KISS, event, bot);
+        this.handleInteraction(InteractionType.KISS, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class KissCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getDescriptionPath() {
-        return "Kiss someone!";
+        return "command.interaction.kiss.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class KissCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to hug!"),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.kiss.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class KissCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s just **kissed** themself.. That's... really sad. <:disgusted2:1257151393857409216>";
+        return "command.interaction.kiss.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **kissed** %s~ Awww love is so precious! <a:b_blush:1178932381185495070>";
+        return "command.interaction.kiss.other";
     }
 
     @Override
     public String getBotString() {
-        return "*slaps* Excuse me?! <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.kiss.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s kissed others %d times. %s was kissed %d times.";
+        return "command.interaction.kiss.footer";
     }
 
 }

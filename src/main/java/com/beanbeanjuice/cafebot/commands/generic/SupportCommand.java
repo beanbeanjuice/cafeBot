@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.generic;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
@@ -20,10 +21,11 @@ public class SupportCommand extends Command implements ICommand {
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        final I18N bundle = ctx.getUserI18n();
         String SUPPORT_URL = "https://discord.gg/KrUFw3uHST";
         event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                "Support",
-                "Click the button below to get some support with the bot!"
+                bundle.getString("command.support.embed.title"),
+                bundle.getString("command.support.embed.description")
         )).addComponents(ActionRow.of(Button.link(SUPPORT_URL, "Support Discord").withEmoji(Emoji.fromFormatted("<a:cafeBot:1119635469727191190>")))).queue();
     }
 
@@ -34,7 +36,7 @@ public class SupportCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Something wrong with me? Get some support!";
+        return "command.support.description";
     }
 
     @Override

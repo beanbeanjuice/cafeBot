@@ -19,7 +19,7 @@ public class TickleCommand extends Command implements ICommand, IInteractionComm
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.TICKLE, event, bot);
+        this.handleInteraction(InteractionType.TICKLE, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class TickleCommand extends Command implements ICommand, IInteractionComm
 
     @Override
     public String getDescriptionPath() {
-        return "Tickle someone!";
+        return "command.interaction.tickle.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class TickleCommand extends Command implements ICommand, IInteractionComm
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to tickle!"),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.tickle.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class TickleCommand extends Command implements ICommand, IInteractionComm
 
     @Override
     public String getSelfString() {
-        return "%s **tickled** themself... um.. weird... <:disgusted:1257142116539301909>";
+        return "command.interaction.tickle.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **tickled** %s! Hehe~ <a:twiddle_shy2:1161619106387197962>";
+        return "command.interaction.tickle.other";
     }
 
     @Override
     public String getBotString() {
-        return "Hehehe s- stop that! I need to get back to work! <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.tickle.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s tickled others %d times. %s was tickled %d times.";
+        return "command.interaction.tickle.footer";
     }
 
 }

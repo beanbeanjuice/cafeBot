@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.social;
 
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.CustomChannelType;
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.*;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -23,6 +24,7 @@ public class ConfessCommand extends Command implements ICommand {
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        I18N bundle = ctx.getUserI18n();
         String guildID = event.getGuild().getId();
         String message = event.getOption("message").getAsString();
 
@@ -32,51 +34,53 @@ public class ConfessCommand extends Command implements ICommand {
                     Optional<TextChannel> channelOptional = Optional.ofNullable(event.getGuild().getChannelById(TextChannel.class, channelId));
 
                     channelOptional.ifPresentOrElse(
-                            (channel) -> sendVent(message, channel, event),
+                            (channel) -> sendVent(message, channel, event, bundle),
                             () -> {
-                                sendFailure(event);
+                                sendFailure(event, bundle);
 
                                 this.bot.getLogger().logToGuild(event.getGuild(), Helper.errorEmbed(
-                                        "Confession Error",
-                                        "A user tried to confess, but your confessions channel is not set!"
+                                        bundle.getString("command.confess.embed.guild-error.title"),
+                                        bundle.getString("command.confess.embed.guild-error.description")
                                 ));
                             }
                     );
                 })
                 .exceptionally((ex) -> {
-                    sendFailure(event);
+                    sendFailure(event, bundle);
                     return null;
                 });
     }
 
-    private void sendVent(final String message, final TextChannel channel, final SlashCommandInteractionEvent event) {
-        channel.sendMessageEmbeds(getVentEmbed(message)).queue((confessionMessage) -> {
+    private void sendVent(final String message, final TextChannel channel, final SlashCommandInteractionEvent event, final I18N bundle) {
+        channel.sendMessageEmbeds(getVentEmbed(message, bundle)).queue((confessionMessage) -> {
             bot.getConfessionHandler().addConfession(confessionMessage.getId(), event.getUser().getId());
         });
 
+        String sentDescription = bundle.getString("command.confess.embed.sent.description")
+                .replace("{channel}", channel.getAsMention());
         event.getHook().sendMessageEmbeds(
                 Helper.successEmbed(
-                        "Confession Sent",
-                        String.format("Your anonymous confession has been successfully sent to %s. Admins can still choose to ban you if your message violates their rules!", channel.getAsMention())
+                        bundle.getString("command.confess.embed.sent.title"),
+                        sentDescription
                 )
         ).queue();
     }
 
-    private MessageEmbed getVentEmbed(final String message) {
+    private MessageEmbed getVentEmbed(final String message, final I18N bundle) {
         return new EmbedBuilder()
-                .setTitle("Anonymous Confession")
+                .setTitle(bundle.getString("command.confess.embed.title"))
                 .setColor(Helper.getRandomColor())
                 .setDescription(message)
                 .setTimestamp(Instant.now())
-                .setFooter("Get an admin to react with 🔨 to ban the user for rule violations! (Only works for new confessions)")
+                .setFooter(bundle.getString("command.confess.embed.footer"))
                 .build();
     }
 
-    private void sendFailure(final SlashCommandInteractionEvent event) {
+    private void sendFailure(final SlashCommandInteractionEvent event, final I18N bundle) {
         event.getHook().sendMessageEmbeds(
                 Helper.errorEmbed(
-                        "Confession Error",
-                        "This server may not have a confession channel set... You can talk to me if you'd like! <a:cafeBot:1119635469727191190>"
+                        bundle.getString("command.confess.embed.error.title"),
+                        bundle.getString("command.confess.embed.error.description")
                 )
         ).queue();
     }
@@ -88,7 +92,7 @@ public class ConfessCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Confess something anonymously!~";
+        return "command.confess.description";
     }
 
     @Override
@@ -121,7 +125,7 @@ public class ConfessCommand extends Command implements ICommand {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.STRING, "message", "The message you want to anonymously confess.", true)
+                new OptionData(OptionType.STRING, "message", "command.confess.arguments.message.description", true)
         };
     }
 

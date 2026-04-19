@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.moderation;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
@@ -22,19 +23,20 @@ public class ClearChatCommand extends Command implements ICommand {
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        final I18N bundle = ctx.getUserI18n();
         int amount = event.getOption("amount").getAsInt();
         MessageChannel channel = event.getChannel();
 
         channel.getHistory().retrievePast(amount).queue((messages) -> {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                    "Deleting Messages...",
-                    String.format("Attempting to delete **%d** messages.", amount)
+                    bundle.getString("command.clearchat.deleting.title"),
+                    bundle.getString("command.clearchat.deleting.description").replace("{amount}", String.valueOf(amount))
             )).queue();
 
             CompletableFuture.allOf(channel.purgeMessages(messages).toArray(new CompletableFuture[0])).thenAcceptAsync((ignored) -> {
                 event.getHook().editOriginalEmbeds(Helper.successEmbed(
-                        "Messages Deleted",
-                        String.format("**%d** messages have been successfully deleted.", amount)
+                        bundle.getString("command.clearchat.deleted.title"),
+                        bundle.getString("command.clearchat.deleted.description").replace("{amount}", String.valueOf(amount))
                 )).setReplace(true).queue();
             });
         });
@@ -47,7 +49,7 @@ public class ClearChatCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Clear the chat!";
+        return "command.clearchat.description";
     }
 
     @Override
@@ -58,7 +60,7 @@ public class ClearChatCommand extends Command implements ICommand {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.INTEGER, "amount", "The amount of messages you want to clear.", true)
+                new OptionData(OptionType.INTEGER, "amount", "command.clearchat.arguments.amount.description", true)
                         .setRequiredRange(1, 100)
         };
     }

@@ -19,7 +19,7 @@ public class PunchCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.PUNCH, event, bot);
+        this.handleInteraction(InteractionType.PUNCH, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class PunchCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getDescriptionPath() {
-        return "Punch someone!";
+        return "command.interaction.punch.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class PunchCommand extends Command implements ICommand, IInteractionComma
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to punch."),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.punch.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class PunchCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getSelfString() {
-        return "%s **punched** themself?! WHY?! <:zerotwo_scream2:843673314990882836>";
+        return "command.interaction.punch.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **punched** %s!? DON'T FIGHT! <:zerotwo_scream2:843673314990882836>";
+        return "command.interaction.punch.other";
     }
 
     @Override
     public String getBotString() {
-        return "Well.. I'm made of metal so... your fist is broken. <:stab_u:886216384864997406>";
+        return "command.interaction.punch.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s punched others %d times. %s was punched %d times.";
+        return "command.interaction.punch.footer";
     }
 
 }

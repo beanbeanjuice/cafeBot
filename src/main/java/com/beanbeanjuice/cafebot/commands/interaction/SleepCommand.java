@@ -19,7 +19,7 @@ public class SleepCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.SLEEP, event, bot);
+        this.handleInteraction(InteractionType.SLEEP, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class SleepCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getDescriptionPath() {
-        return "Sleep with someone~";
+        return "command.interaction.sleep.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class SleepCommand extends Command implements ICommand, IInteractionComma
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to sleep with."),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.sleep.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class SleepCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getSelfString() {
-        return "%s is **sleeping**~ goodnight! <:pillow_shy:1161619112284405830>";
+        return "command.interaction.sleep.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **sleeping** with %s. Aww! A sleepover! <:pillow_shy:1161619112284405830>";
+        return "command.interaction.sleep.other";
     }
 
     @Override
     public String getBotString() {
-        return "I don't sleep. https://tenor.com/view/kurt-angle-gif-15112361227290036695";
+        return "command.interaction.sleep.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s has slept %d times. %s has slept with others %d times.";
+        return "command.interaction.sleep.footer";
     }
 
 }

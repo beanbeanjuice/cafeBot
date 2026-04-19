@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.settings.roles;
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.CustomRoleType;
 import com.beanbeanjuice.cafebot.api.wrapper.type.CustomRole;
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
@@ -23,7 +24,9 @@ public class RoleListSubCommand extends Command implements ISubCommand {
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        I18N bundle = ctx.getDefaultBundle();
         Guild guild = event.getGuild();
+        String unsetText = bundle.getString("command.role.subcommand.list.embed.unset");
 
         this.bot.getCafeAPI().getCustomRoleApi().getCustomRoles(guild.getId())
                 .thenAccept((customRoles) -> {
@@ -33,13 +36,13 @@ public class RoleListSubCommand extends Command implements ISubCommand {
                                 .map(guild::getRoleById)
                                 .orElse(null);
 
-                        String mention = (role == null) ? "*Unset*" : role.getAsMention();
+                        String mention = (role == null) ? unsetText : role.getAsMention();
 
                         return String.format("**%s** - %s", type.getFriendlyName(), mention);
                     }).collect(Collectors.joining("\n"));
 
                     event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                            "Custom Roles",
+                            bundle.getString("command.role.subcommand.list.embed.title"),
                             description
                     )).queue();
                 })
@@ -56,7 +59,7 @@ public class RoleListSubCommand extends Command implements ISubCommand {
 
     @Override
     public String getDescriptionPath() {
-        return "List all custom roles for the server!";
+        return "command.role.subcommand.list.description";
     }
 
 }

@@ -19,7 +19,7 @@ public class NoseBleedCommand extends Command implements ICommand, IInteractionC
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.NOSEBLEED, event, bot);
+        this.handleInteraction(InteractionType.NOSEBLEED, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class NoseBleedCommand extends Command implements ICommand, IInteractionC
 
     @Override
     public String getDescriptionPath() {
-        return "Tell someone you caused them to have a nosebleed!";
+        return "command.interaction.nosebleed.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class NoseBleedCommand extends Command implements ICommand, IInteractionC
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user that caused your nosebleed."),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.nosebleed.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class NoseBleedCommand extends Command implements ICommand, IInteractionC
 
     @Override
     public String getSelfString() {
-        return "%s has a **nosebleed** Someone help! <a:man_scream:841921434732724224>";
+        return "command.interaction.nosebleed.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s has a **nosebleed** because of %s!";
+        return "command.interaction.nosebleed.other";
     }
 
     @Override
     public String getBotString() {
-        return "Clean that up. I *just* cleaned, it's your turn now.";
+        return "command.interaction.nosebleed.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s had %d nosebleeds. %s gave others nosebleeds %d times.";
+        return "command.interaction.nosebleed.footer";
     }
 
 }

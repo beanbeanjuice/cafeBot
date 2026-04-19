@@ -19,7 +19,7 @@ public class ShootCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.SHOOT, event, bot);
+        this.handleInteraction(InteractionType.SHOOT, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class ShootCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getDescriptionPath() {
-        return "Shoot someone! 🔫";
+        return "command.interaction.shoot.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class ShootCommand extends Command implements ICommand, IInteractionComma
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to shoot."),
-                new OptionData(OptionType.STRING, "message", "An optional message you want to send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.shoot.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class ShootCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getSelfString() {
-        return "%s **shot** themself?! SOMEONE HEAL THEM! <:zerotwo_scream:841921420904497163>";
+        return "command.interaction.shoot.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **shot** %s!";
+        return "command.interaction.shoot.other";
     }
 
     @Override
     public String getBotString() {
-        return "Are you going to pay for the repairs? Huh? <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.shoot.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s shot others %d times. %s was shot %d times.";
+        return "command.interaction.shoot.footer";
     }
 
 }

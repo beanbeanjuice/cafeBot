@@ -19,7 +19,7 @@ public class SmileCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.SMILE, event, bot);
+        this.handleInteraction(InteractionType.SMILE, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class SmileCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getDescriptionPath() {
-        return "Smile at someone!";
+        return "command.interaction.smile.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class SmileCommand extends Command implements ICommand, IInteractionComma
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to smile at."),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.smile.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class SmileCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getSelfString() {
-        return "%s is **smiling** at themself. Uh... creepy... <:disgusted2:1257151393857409216>";
+        return "command.interaction.smile.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **smiling** at %s!";
+        return "command.interaction.smile.other";
     }
 
     @Override
     public String getBotString() {
-        return "Please don't stare... <:pleading_blush:1257143682776432731>";
+        return "command.interaction.smile.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s smiled %d times. %s was smiled at %d times.";
+        return "command.interaction.smile.footer";
     }
 
 }

@@ -22,8 +22,8 @@ public interface IMemeSubCommand extends ISubCommand {
                 .thenAccept((redditMeme) -> event.getHook().sendMessageEmbeds(this.getMessageEmbed(redditMeme)).queue())
                 .exceptionally((ex) -> {
                     event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                            ctx.getUserI18n().getString("command.meme.description.error.embed.title"),
-                            ctx.getUserI18n().getString("command.meme.description.error.embed.description")
+                            ctx.getDefaultBundle().getString("command.meme.error.embed.title"),
+                            ctx.getDefaultBundle().getString("command.meme.error.embed.description")
                     )).queue();
                     throw new CompletionException(ex);
                 });

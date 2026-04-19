@@ -1,5 +1,6 @@
 # Output
 libs/
+.claude/
 
 # Node/NPM
 /node_modules/

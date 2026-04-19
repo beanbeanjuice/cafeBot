@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.generic;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
@@ -30,34 +31,33 @@ public class WhoCommand extends Command implements ICommand {
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        Optional<OptionMapping> userMapping = Optional.ofNullable(event.getOption("user"));
-
-        if (event.isFromGuild()) handleFromGuild(event);
-        else handleOther(event);
+        final I18N bundle = ctx.getUserI18n();
+        if (event.isFromGuild()) handleFromGuild(event, bundle);
+        else handleOther(event, bundle);
     }
 
-    private void handleFromGuild(SlashCommandInteractionEvent event) {
+    private void handleFromGuild(SlashCommandInteractionEvent event, final I18N bundle) {
         Optional<OptionMapping> memberMapping = Optional.ofNullable(event.getOption("user"));
         Member member = memberMapping.map(OptionMapping::getAsMember).orElse(event.getMember());
 
-        event.getHook().sendMessageEmbeds(memberInfoEmbed(member)).queue();
+        event.getHook().sendMessageEmbeds(memberInfoEmbed(member, bundle)).queue();
     }
 
-    private void handleOther(SlashCommandInteractionEvent event) {
+    private void handleOther(SlashCommandInteractionEvent event, final I18N bundle) {
         Optional<OptionMapping> userMapping = Optional.ofNullable(event.getOption("user"));
         User user = userMapping.map(OptionMapping::getAsUser).orElse(event.getUser());
 
-        event.getHook().sendMessageEmbeds(userInfoEmbed(user)).queue();
+        event.getHook().sendMessageEmbeds(userInfoEmbed(user, bundle)).queue();
     }
 
-    private MessageEmbed userInfoEmbed(User user) {
+    private MessageEmbed userInfoEmbed(User user, final I18N bundle) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy @ h:mma");
 
         return new EmbedBuilder()
                 .setThumbnail(user.getAvatarUrl())
                 .setTitle(user.getName())
-                .addField("Registered", user.getTimeCreated().format(formatter), true)
-                .setFooter("ID: " + user.getId())
+                .addField(bundle.getString("command.who.embed.registered"), user.getTimeCreated().format(formatter), true)
+                .setFooter(bundle.getString("command.who.embed.id-footer").replace("{id}", user.getId()))
                 .setColor(Helper.getRandomColor())
                 .setAuthor(user.getName(), null, user.getAvatarUrl())
                 .setDescription(user.getAsMention())
@@ -65,19 +65,20 @@ public class WhoCommand extends Command implements ICommand {
                 .build();
     }
 
-    private MessageEmbed memberInfoEmbed(Member member) {
+    private MessageEmbed memberInfoEmbed(Member member, final I18N bundle) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy @ h:mma");
-        EmbedBuilder embedBuilder = new EmbedBuilder(userInfoEmbed(member.getUser()));
+        EmbedBuilder embedBuilder = new EmbedBuilder(userInfoEmbed(member.getUser(), bundle));
         embedBuilder
-                .addField("Joined", member.getTimeJoined().format(formatter), true)
+                .addField(bundle.getString("command.who.embed.joined"), member.getTimeJoined().format(formatter), true)
                 .setAuthor(member.getEffectiveName(), null, member.getUser().getAvatarUrl());
 
         String roleString = member.getRoles().stream().map(Role::getAsMention).collect(Collectors.joining(" "));
         String permissionString = member.getPermissions().stream().map(Permission::getName).collect(Collectors.joining(", "));
+        String rolesHeader = bundle.getString("command.who.embed.roles").replace("{count}", String.valueOf(member.getRoles().size()));
 
         embedBuilder
-                .addField("Roles [" + member.getRoles().size() + "]", roleString, false)
-                .addField("Permissions", permissionString, false);
+                .addField(rolesHeader, roleString, false)
+                .addField(bundle.getString("command.who.embed.permissions"), permissionString, false);
         return embedBuilder.build();
     }
 
@@ -88,7 +89,7 @@ public class WhoCommand extends Command implements ICommand {
 
     @Override
     public String getDescriptionPath() {
-        return "See stats about yourself or another user!";
+        return "command.who.description";
     }
 
     @Override
@@ -99,7 +100,7 @@ public class WhoCommand extends Command implements ICommand {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The person to get stats about.", false)
+                new OptionData(OptionType.USER, "user", "command.who.arguments.user.description", false)
         };
     }
 

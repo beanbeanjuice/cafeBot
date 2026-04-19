@@ -19,7 +19,7 @@ public class DieCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.DIE, event, bot);
+        this.handleInteraction(InteractionType.DIE, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class DieCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public String getDescriptionPath() {
-        return "Die because of someone...";
+        return "command.interaction.die.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class DieCommand extends Command implements ICommand, IInteractionCommand
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user that caused your death.. :("),
-                new OptionData(OptionType.STRING, "message", "An optional message to send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.die.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class DieCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public String getSelfString() {
-        return "%s **died**... Like.. just straight up... fell over and **died**... <:bean_moment:841922879166742529>";
+        return "command.interaction.die.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **died** because of %s?! What happened?! <:zerotwo_scream2:843673314990882836>";
+        return "command.interaction.die.other";
     }
 
     @Override
     public String getBotString() {
-        return "Wh- why are you blaming me?! <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.die.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s died %d times. %s caused %d deaths.";
+        return "command.interaction.die.footer";
     }
 
 }

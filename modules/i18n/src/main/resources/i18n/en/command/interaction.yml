@@ -1,0 +1,394 @@
+description: "Block, unblock, and enable/disable interactions!"
+block:
+  description: "Someone being annoying? Block them! You won't receive any interactions from them anymore."
+  success:
+    title: "Successful Block"
+    description: "You'll no longer receive interactions from {user}. You have {count} blocked users. To unblock, type `/interactions unblock`!"
+  error:
+    title: "Error Blocking User"
+    description: "I'm sorry... I wasn't able to remove them from the establishment... try again later?"
+  arguments:
+    user:
+      description: "The user you want to block."
+status:
+  description: "Enable or disable the ability to send interactions to you!"
+  success:
+    title: "Interaction Status Changed"
+    enabled: "You've changed your interaction status to enabled. Users can now interact with you."
+    disabled: "You've changed your interaction status to disabled. Users can no longer interact with you."
+  error:
+    title: "Error Changing Interaction Status"
+    description: "I... don't know why I can't change it right now... try asking me later?"
+  arguments:
+    status:
+      description: "Set to \"true\" to enable interactions."
+unblock:
+  description: "Unblocks a user you have previously blocked."
+  success:
+    title: "Unblocked User"
+    description: "That user can now interact with you again!"
+  error:
+    title: "Error Unblocking User"
+    description: "I... can't unblock them... please tell my boss..."
+  error-invalid:
+    title: "Invalid User ID"
+    description: "Please only use the user ID that is in the auto complete list!"
+  arguments:
+    user-id:
+      description: "The id of the user you want to unblock."
+common:
+  footer-suffix: " - Use \"/interaction block\" or \"/interaction status\" to disable interactions!"
+  arguments:
+    message:
+      description: "An optional message to send."
+amazed:
+  description: "Be amazed at something or someone!"
+  self: "Wow... {sender} is **amazed** at themself... Ego much? <:cafeBot_angry:1171726164092518441>"
+  other: "{sender} is **amazed** at {receiver}! <:flushed_open:841922879465455646>"
+  bot: "I- I'm just doing my job! <:shy_shy:1161619101886722158>"
+  footer: "{sender} was amazed {senderCount} times. {receiver} caused others to be amazed {receiverCount} times."
+  arguments:
+    user:
+      description: "Someone to be amazed at!"
+ask:
+  description: "Ask someone something!"
+  self: "{sender} just... **asked** themself a question? Okay then... \U0001F644"
+  other: "{sender} **asked** {receiver} a question! Hopefully they answer... \U0001F97A"
+  bot: "Hmm? What is it? <:kuromi_question:841921649132568576>"
+  footer: "{sender} asked someone something {senderCount} times. {receiver} was asked something {receiverCount} times."
+  arguments:
+    user:
+      description: "The person who you want to ask a question to."
+bite:
+  description: "Bite someone!"
+  self: "{sender} just **bit** themself. Wh- why would you do that?!?! <:when_AHHH:842062279372701737>"
+  other: "Did- did {sender} just **bite** {receiver}?! <:cat_shy:1161619110204031046>"
+  bot: "You *do* know I'm made of metal right? \U0001F926\U0001F3FB\u200D\u2640\uFE0F"
+  footer: "{sender} bit others {senderCount} times. {receiver} was bitten {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to bite!"
+blush:
+  description: "Blush at someone!"
+  self: "{sender} just **blushed** at themself... umm.. ok... weird.. <:zerotwo_facepalm:843672933176311808>"
+  other: "{sender} is **blushing** at {receiver}!~ Aww! <a:wowowow:886217210010431508>"
+  bot: "Why... why are you looking at me like that? <:cafeBot_angry:1171726164092518441>"
+  footer: "{sender} blushed at others {senderCount} times. {receiver} was blushed at {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to blush at!"
+bonk:
+  description: "Bonk someone!"
+  self: "{sender} just... **bonked** themself. <:disgusted:1257142116539301909>"
+  other: "{sender} just **bonked** {receiver}?! <:gasp:1257142832230170674>"
+  bot: "Ow! Th- that.. that hurt! <:cafeBot_sad:1171726165040447518>"
+  footer: "{sender} bonked others {senderCount} times. {receiver} was bonked {receiverCount} times."
+  arguments:
+    user:
+      description: "The person you want to bonk!"
+boop:
+  description: "Boop someone!"
+  self: "{sender} just **booped** themself... \U0001F62D"
+  other: "{sender} just **booped** {receiver}! Awww~ <:aww:1257143681878593727>"
+  bot: "hehe~ what do you need? <:pleading_blush:1257143682776432731>"
+  footer: "{sender} booped others {senderCount} times. {receiver} was booped {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to boop!"
+cry:
+  description: "Cry because of someone... :("
+  self: "{sender} is **crying**! S- someone get a tissue! \U0001F613"
+  other: "{sender} is **crying** because of {receiver}! What did you do?! <:cafeBot_angry:1171726164092518441>"
+  bot: "D- did I do something wrong?! Don't cry please... <a:b_cry:1178932384436060220>"
+  footer: "{sender} cried because of others {senderCount} times. {receiver} was the reason for others crying {receiverCount} times."
+  arguments:
+    user:
+      description: "The person who made you cry."
+cuddle:
+  description: "Cuddle someone!"
+  self: "{sender} is **cuddling** themself... um.. that's sad... <:you_are_embarassing:1081417389532528660>"
+  other: "{sender} is **cuddling** {receiver}~ Awww <a:aww_dance:1257143681044054066>"
+  bot: "Ugh. Only a few people are allowed to touch me and you're not one of them. Don't touch me. <:disgusted:1257142116539301909>"
+  footer: "{sender} cuddled others {senderCount} times. {receiver} was cuddled {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to cuddle!"
+dab:
+  description: "Dab! Why?"
+  self: "{sender} is **dabbing** at themself... wow... \U0001F644"
+  other: "{sender} is **dabbing** at {receiver}... what is this... 2015?? <:disgusted:1257142116539301909>"
+  bot: "Yeah... umm... please don't do that. <:disgusted:1257142116539301909>"
+  footer: "{sender} dabbed {senderCount} times. {receiver} was dabbed at {receiverCount} times."
+  arguments:
+    user:
+      description: "The person you want to dab at!"
+dance:
+  description: "Dance with someone!"
+  self: "{sender} is **dancing** all alone... how pathetic. <:disgusted:1257142116539301909>"
+  other: "{sender} is **dancing** with {receiver}! Everyone join in! <a:wiggle:886217792578269236>"
+  bot: "DANCE PARTY!!! <a:Dance:1140048902301679666><a:Dance:1140048902301679666><a:Dance:1140048902301679666>"
+  footer: "{sender} danced {senderCount} times. {receiver} was danced with {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to dance with!"
+die:
+  description: "Die because of someone..."
+  self: "{sender} **died**... Like.. just straight up... fell over and **died**... <:bean_moment:841922879166742529>"
+  other: "{sender} **died** because of {receiver}?! What happened?! <:zerotwo_scream2:843673314990882836>"
+  bot: "Wh- why are you blaming me?! <:cafeBot_angry:1171726164092518441>"
+  footer: "{sender} died {senderCount} times. {receiver} caused {receiverCount} deaths."
+  arguments:
+    user:
+      description: "The person who caused you to die."
+greet:
+  description: "Greet someone!"
+  self: "{sender} **welcomed** themself... <:disgusted:1257142116539301909>"
+  other: "{sender} **welcomed** {receiver}!~ <a:wowowow:886217210010431508>"
+  bot: "Thank you!~ <:gasp:1257142832230170674>"
+  footer: "{sender} welcomed {senderCount} people. {receiver} was welcomed {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to greet!"
+headpat:
+  description: "Headpat someone!"
+  self: "{sender} is **headpatting** themself... okay? <:disgusted:1257142116539301909>\n"
+  other: "{sender} **headpat** {receiver}~ Aww! <:aww:1257143681878593727>\n"
+  bot: "I love headpats <:pleading_blush:1257143682776432731>... wait- I have to get back to work! <:cafeBot_angry:1171726164092518441>"
+  footer: "{sender} headpat others {senderCount} times. {receiver} was headpat {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to headpat!"
+hide:
+  description: "Hide from someone... ;^;"
+  self: "{sender} is **hiding** for... no reason? What? <:kuromi_question:841921649132568576>"
+  other: "{sender} is **hiding** from {receiver}! Um... what did you do? <:kuromi_question:841921649132568576>"
+  bot: "Why are you hiding from me?! Come back! <:cafeBot_angry:1171726164092518441>"
+  footer: "{sender} hid from others {senderCount} times. {receiver} caused others to hide {receiverCount} times."
+  arguments:
+    user:
+      description: "The person you are hiding from."
+hmph:
+  description: "Hmph at someone~"
+  self: "{sender} is **hmphing** all alone... sad... \U0001F644"
+  other: "{sender} **hmphed** at {receiver}! You might want to give them some attention... <:torsty2:1161620852295610429>"
+  bot: "Why are you hmphing at me? What did I do?! <:when_AHHH:842062279372701737>"
+  footer: "{sender} hmphed at others {senderCount} times. {receiver} was hmphed at {receiverCount} times."
+  arguments:
+    user:
+      description: "The person you want to hmph at."
+hug:
+  description: "Hug someone!"
+  self: "{sender} just **hugged** themself... <:disgusted:1257142116539301909>"
+  other: "{sender} **hugged** {receiver}! How cute~ <a:twiddle_shy2:1161619106387197962>"
+  bot: "Excuse me... I need to get back to work! <:cafeBot_angry:1171726164092518441>"
+  footer: "{sender} hugged others {senderCount} times. {receiver} was hugged {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to hug!~"
+kiss:
+  description: "Kiss someone!"
+  self: "{sender} just **kissed** themself.. That's... really sad. <:disgusted2:1257151393857409216>"
+  other: "{sender} **kissed** {receiver}~ Awww love is so precious! <a:b_blush:1178932381185495070>"
+  bot: "*slaps* Excuse me?! <:cafeBot_angry:1171726164092518441>"
+  footer: "{sender} kissed others {senderCount} times. {receiver} was kissed {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to kiss!"
+lick:
+  description: "Lick someone!"
+  self: "{sender} just **licked** themself... <:disgusted:1257142116539301909>"
+  other: "{sender} just **licked** {receiver}~ <:bloatedBlush:1154475611893547218>"
+  bot: "Umm.. please don't lick me. <:cafeBot_angry:1171726164092518441>"
+  footer: "{sender} licked others {senderCount} times. {receiver} was licked {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to lick!"
+love:
+  description: "Love someone!~ <3"
+  self: "{sender} **loves** themself... ego much? <:disgusted:1257142116539301909>"
+  other: "{sender} **loves** {receiver}! <:aww:1257143681878593727>"
+  bot: "I-... don't feel the same way... <:cafeBot_sad:1171726165040447518>"
+  footer: "{sender} loved others {senderCount} times. {receiver} was loved {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to love!"
+nom:
+  description: "Nom on someone!"
+  self: "{sender} just **nommed** themself... uhh- <a:huh_cat:1169341779414360206>"
+  other: "{sender} just **nommed** {receiver}!"
+  bot: "Um... now I have to go wash my hands..."
+  footer: "{sender} nommed others {senderCount} times. {receiver} was nommed {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to nom!"
+nosebleed:
+  description: "Tell someone you caused them to have a nosebleed!"
+  self: "{sender} has a **nosebleed** Someone help! <a:man_scream:841921434732724224>"
+  other: "{sender} has a **nosebleed** because of {receiver}!"
+  bot: "Clean that up. I *just* cleaned, it's your turn now."
+  footer: "{sender} had {senderCount} nosebleeds. {receiver} gave others nosebleeds {receiverCount} times."
+  arguments:
+    user:
+      description: "The person who gave you a nosebleed."
+ok:
+  description: "Be \"ok\" with something."
+  self: "{sender} is **ok**..."
+  other: "{sender} is **ok** toward {receiver}..."
+  bot: "Okay? And? What do you want? \U0001F644"
+  footer: "{sender} was okay {senderCount} times. {receiver} was \"okayed\" at {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you are ok with."
+poke:
+  description: "Poke someone!"
+  self: "{sender} **poked** themself... why? Checking if you're alive? <:zerotwo_facepalm:843672933176311808>"
+  other: "{sender} **poked** {receiver}!"
+  bot: "Please *do not* do that. Especially while I'm working. <:cafeBot_angry:1171726164092518441>"
+  footer: "{sender} poked others {senderCount} times. {receiver} was poked {receiverCount} times."
+  arguments:
+    user:
+      description: "The person you want to poke!"
+pout:
+  description: "Pout at someone!"
+  self: "{sender} is **pouting**. What's wrong?! "
+  other: "{sender} is **pouting** at {receiver}!"
+  bot: "Okay... and? Pouting won't do much. <:disgusted:1257142116539301909>"
+  footer: "{sender} pouted {senderCount} times. {receiver} was pouted at {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to pout at."
+punch:
+  description: "Punch someone!"
+  self: "{sender} **punched** themself?! WHY?! <:zerotwo_scream2:843673314990882836>"
+  other: "{sender} **punched** {receiver}!? DON'T FIGHT! <:zerotwo_scream2:843673314990882836>"
+  bot: "Well.. I'm made of metal so... your fist is broken. <:stab_u:886216384864997406>"
+  footer: "{sender} punched others {senderCount} times. {receiver} was punched {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to punch!"
+rage:
+  description: "Rage at someone!"
+  self: "{sender} is **raging**! CALM DOWN! <:pissed:842061821774004304>"
+  other: "{sender} is **raging** at {receiver}! What did they do?! <a:man_scream:841921434732724224>"
+  bot: "I'm going to have to ask you to leave. \U0001F60A"
+  footer: "{sender} raged {senderCount} times. {receiver} was raged at {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you are raging at."
+shoot:
+  description: "Shoot someone! \U0001F52B"
+  self: "{sender} **shot** themself?! SOMEONE HEAL THEM! <:zerotwo_scream:841921420904497163>"
+  other: "{sender} **shot** {receiver}!"
+  bot: "Are you going to pay for the repairs? Huh? <:cafeBot_angry:1171726164092518441>"
+  footer: "{sender} shot others {senderCount} times. {receiver} was shot {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to shoot!"
+shush:
+  description: "Shush someone!"
+  self: "{sender} just **shushed** themself..."
+  other: "{sender} just **shushed** {receiver}..."
+  bot: "Don't you *dare* tell me to be quiet. <:moon_stare:1165826168428183562>"
+  footer: "{sender} shushed others {senderCount} times. {receiver} was shushed {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to shush!"
+slap:
+  description: "Slap someone!"
+  self: "{sender} just **slapped** themself?! <:disgusted2:1257151393857409216>"
+  other: "{sender} just **slapped** {receiver}?! Be kind! <:zerotwo_scream:841921420904497163>"
+  bot: "Wh- why would you do that?! <:when_AHHH:842062279372701737>"
+  footer: "{sender} slapped others {senderCount} times. {receiver} was slapped {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to slap!"
+sleep:
+  description: "Sleep with someone~"
+  self: "{sender} is **sleeping**~ goodnight! <:pillow_shy:1161619112284405830>"
+  other: "{sender} is **sleeping** with {receiver}. Aww! A sleepover! <:pillow_shy:1161619112284405830>"
+  bot: "I don't sleep. https://tenor.com/view/kurt-angle-gif-15112361227290036695"
+  footer: "{sender} has slept {senderCount} times. {receiver} has slept with others {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to sleep with!"
+smile:
+  description: "Smile at someone!"
+  self: "{sender} is **smiling** at themself. Uh... creepy... <:disgusted2:1257151393857409216>"
+  other: "{sender} is **smiling** at {receiver}!"
+  bot: "Please don't stare... <:pleading_blush:1257143682776432731>"
+  footer: "{sender} smiled {senderCount} times. {receiver} was smiled at {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to smile at!"
+stab:
+  description: "Stab someone."
+  self: "{sender} just **stabbed** themself?! Help?! <:zerotwo_scream:841921420904497163>"
+  other: "{sender} just **stabbed** {receiver}!?"
+  bot: "I'm literally made of metal.. <:zerotwo_facepalm:843672933176311808>"
+  footer: "{sender} stabbed others {senderCount} times. {receiver} was stabbed {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to stab."
+stare:
+  description: "Stare at someone!"
+  self: "{sender} is **staring** off into space... <a:schizo:1087762654677970954>"
+  other: "{sender} is **staring** at {receiver}! <a:PeepoStare:1094187079732305930>"
+  bot: "<a:PeepoStare:1094187079732305930> Yes? Can I help you?"
+  footer: "{sender} stared at others {senderCount} times. {receiver} was stared at {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to stare at."
+throw:
+  description: "Throw someone!"
+  self: "{sender}... **threw**... themself? <:kuromi_question:841921649132568576>"
+  other: "{sender} **threw** {receiver}! Someone catch them! <:zerotwo_scream2:843673314990882836>"
+  bot: "H- how were you able to pick me up? <:jett_moan:841916896563429386>"
+  footer: "{sender} threw others {senderCount} times. {receiver} was thrown {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to throw!"
+tickle:
+  description: "Tickle someone!"
+  self: "{sender} **tickled** themself... um.. weird... <:disgusted:1257142116539301909>"
+  other: "{sender} **tickled** {receiver}! Hehe~ <a:twiddle_shy2:1161619106387197962>"
+  bot: "Hehehe s- stop that! I need to get back to work! <:cafeBot_angry:1171726164092518441>"
+  footer: "{sender} tickled others {senderCount} times. {receiver} was tickled {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to tickle!"
+uwu:
+  description: "UWU at someone!~"
+  self: "{sender} just did an **UWU**~"
+  other: "{sender} **UWU**'d toward {receiver}!"
+  bot: "Ew. <:disgusted:1257142116539301909>"
+  footer: "{sender} UWU'd {senderCount} times. {receiver} was UWU'd at {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to UWU at!"
+wave:
+  description: "Wave at someone!"
+  self: "{sender} is **waving**... at no one... <:bean_moment:841922879166742529>"
+  other: "{sender} is waving at {receiver}!~"
+  bot: "Oh- hello there! <a:cafeBot:1119635469727191190>"
+  footer: "{sender} waved at {senderCount} people. {receiver} was waved at {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to wave at!"
+wink:
+  description: "Wink at someone! ;)"
+  self: "{sender} **winked** at themself... <:disgusted:1257142116539301909>"
+  other: "{sender} **winked** at {receiver}! <:pleading_blush:1257143682776432731>"
+  bot: "Gross. <:disgusted:1257142116539301909>"
+  footer: "{sender} winked at {senderCount} people. {receiver} was winked at {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to wink at!"
+yell:
+  description: "Yell at someone!"
+  self: "{sender} is **yelling**! Please no yelling in the store... <:cafeBot_angry:1171726164092518441>"
+  other: "{sender} is **yelling** at {receiver}! <a:man_scream:841921434732724224>"
+  bot: "Excuse me? Please stop. <:cafeBot_angry:1171726164092518441>"
+  footer: "{sender} yelled {senderCount} times. {receiver} was yelled at {receiverCount} times."
+  arguments:
+    user:
+      description: "The user you want to yell at!"

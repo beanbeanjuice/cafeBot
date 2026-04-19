@@ -19,7 +19,7 @@ public class LickCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
-        this.handleInteraction(InteractionType.LICK, event, bot);
+        this.handleInteraction(InteractionType.LICK, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -29,7 +29,7 @@ public class LickCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getDescriptionPath() {
-        return "Lick someone!";
+        return "command.interaction.lick.description";
     }
 
     @Override
@@ -40,8 +40,8 @@ public class LickCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to lick..."),
-                new OptionData(OptionType.STRING, "message", "An optional message you want to send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.lick.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -67,22 +67,22 @@ public class LickCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s just **licked** themself... <:disgusted:1257142116539301909>";
+        return "command.interaction.lick.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s just **licked** %s~ <:bloatedBlush:1154475611893547218>";
+        return "command.interaction.lick.other";
     }
 
     @Override
     public String getBotString() {
-        return "Umm.. please don't lick me. <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.lick.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s licked others %d times. %s was licked %d times.";
+        return "command.interaction.lick.footer";
     }
 
 }

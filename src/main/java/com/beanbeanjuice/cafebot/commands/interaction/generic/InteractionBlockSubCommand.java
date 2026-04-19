@@ -1,6 +1,7 @@
 package com.beanbeanjuice.cafebot.commands.interaction.generic;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
@@ -21,17 +22,21 @@ public class InteractionBlockSubCommand extends Command implements ISubCommand {
 
     @Override
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        final I18N bundle = ctx.getUserI18n();
         User userToBlock = event.getOption("user").getAsUser(); // Should not be null.
 
         bot.getCafeAPI().getInteractionsApi().blockUser(event.getUser().getId(), userToBlock.getId()).thenAccept((blockList) -> {
+            String description = bundle.getString("command.interaction.block.success.description")
+                    .replace("{user}", userToBlock.getAsMention())
+                    .replace("{count}", String.valueOf(blockList.size()));
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                    "Successful Block",
-                    String.format("You'll no longer receive interactions from %s. You have %d blocked users. To unblock, type `/interactions unblock`!", userToBlock.getAsMention(), blockList.size())
+                    bundle.getString("command.interaction.block.success.title"),
+                    description
             )).queue();
         }).exceptionally((ex) -> {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Error Blocking User",
-                    "I'm sorry... I wasn't able to remove them from the establishment... try again later?"
+                    bundle.getString("command.interaction.block.error.title"),
+                    bundle.getString("command.interaction.block.error.description")
             )).queue();
 
             bot.getLogger().log(this.getClass(), LogLevel.WARN, String.format("Error Blocking User: %s", ex.getMessage()), true, true);
@@ -46,13 +51,13 @@ public class InteractionBlockSubCommand extends Command implements ISubCommand {
 
     @Override
     public String getDescriptionPath() {
-        return "Someone being annoying? Block them! You won't receive any interactions from them anymore.";
+        return "command.interaction.block.description";
     }
 
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to block", true)
+                new OptionData(OptionType.USER, "user", "command.interaction.block.arguments.user.description", true)
         };
     }
 
