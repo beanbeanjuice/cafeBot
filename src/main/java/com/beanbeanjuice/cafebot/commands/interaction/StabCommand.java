@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class StabCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.STAB, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.STAB, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class StabCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public String getDescription() {
-        return "Stab someone.";
+    public String getDescriptionPath() {
+        return "command.interaction.stab.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class StabCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to stab."),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.stab.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class StabCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s just **stabbed** themself?! Help?! <:zerotwo_scream:841921420904497163>";
+        return "command.interaction.stab.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s just **stabbed** %s!?";
+        return "command.interaction.stab.other";
     }
 
     @Override
     public String getBotString() {
-        return "I'm literally made of metal.. <:zerotwo_facepalm:843672933176311808>";
+        return "command.interaction.stab.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s stabbed others %d times. %s was stabbed %d times.";
+        return "command.interaction.stab.footer";
     }
 
 }

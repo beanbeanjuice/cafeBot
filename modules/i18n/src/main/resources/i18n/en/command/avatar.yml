@@ -1,0 +1,15 @@
+description: "Get someone's avatar!"
+embed:
+  title: "{user}'s Avatar"
+error:
+  missing:
+    title: "No User Avatar"
+    description: "The specified user does not have a Discord avatar."
+  server:
+    title: "Must Be In Server"
+    description: "You must be in a Discord server to get a server avatar!"
+arguments:
+  user:
+    description: "Get their user avatar!"
+  server:
+    description: "Get their server avatar!"

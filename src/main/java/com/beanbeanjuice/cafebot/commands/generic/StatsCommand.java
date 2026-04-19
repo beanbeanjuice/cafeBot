@@ -1,8 +1,10 @@
 package com.beanbeanjuice.cafebot.commands.generic;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -17,11 +19,11 @@ public class StatsCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        event.getHook().sendMessageEmbeds(statsEmbed()).queue();
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        event.getHook().sendMessageEmbeds(statsEmbed(ctx.getUserI18n())).queue();
     }
 
-    private MessageEmbed statsEmbed() {
+    private MessageEmbed statsEmbed(final I18N bundle) {
         String totalTextChannels = formatNumber(bot.getTotalChannels());
         String totalServers = formatNumber(bot.getTotalServers());
         String totalCommandsRun = formatNumber(bot.getCommandsRun().get());
@@ -30,13 +32,13 @@ public class StatsCommand extends Command implements ICommand {
 
         return new EmbedBuilder()
                 .setColor(Helper.getRandomColor())
-                .setAuthor("Bot Statistics", null, bot.getSelfUser().getAvatarUrl())
-                .addField("📝 Total Text Channels", totalTextChannels, true)
-                .addField("<:smartPeepo:1000248538376196280> Total Servers", totalServers, true)
-                .addField("⚙ Commands Run (After Restart)", totalCommandsRun, true)
-                .addField("<a:catpats:950514533875720232> Total Users", totalUsers, true)
-                .addField("<a:cafeBot:1119635469727191190> Total Shards", totalShards, true)
-                .setFooter("If you are enjoying this bot, please consider using /bot-upvote!")
+                .setAuthor(bundle.getString("command.stats.embed.author"), null, bot.getSelfUser().getAvatarUrl())
+                .addField(bundle.getString("command.stats.embed.channels"), totalTextChannels, true)
+                .addField(bundle.getString("command.stats.embed.servers"), totalServers, true)
+                .addField(bundle.getString("command.stats.embed.commands"), totalCommandsRun, true)
+                .addField(bundle.getString("command.stats.embed.users"), totalUsers, true)
+                .addField(bundle.getString("command.stats.embed.shards"), totalShards, true)
+                .setFooter(bundle.getString("command.stats.embed.footer"))
                 .build();
     }
 
@@ -50,8 +52,8 @@ public class StatsCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Get statistics about the bot!";
+    public String getDescriptionPath() {
+        return "command.stats.description";
     }
 
     @Override

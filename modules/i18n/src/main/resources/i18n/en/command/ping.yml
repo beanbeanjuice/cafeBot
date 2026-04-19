@@ -1,0 +1,10 @@
+description: "Pong! (US EDITION)"
+embed:
+  description: "Hello!~ Would you like to order some coffee?"
+  shard: "Your shard ID is {SHARD_ID}! Keep note of this in case you need some help..."
+  author: "Author: beanbeanjuice - https://github.com/beanbeanjuice/cafeBot"
+arguments:
+  word:
+    description: "Any word you want repeated back to you."
+  number:
+    description: "An integer to repeat back to you."

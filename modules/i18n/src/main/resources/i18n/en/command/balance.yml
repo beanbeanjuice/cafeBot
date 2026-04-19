@@ -1,0 +1,14 @@
+description: "Get your balance!"
+error:
+  title: "Error Getting Balance"
+  description: "There was some sort of error getting your coin balance."
+embed:
+  title: "cafeCoin Balance"
+  orders:
+    bought: "Orders Bought"
+    received: "Orders Received"
+  description: "{user} has a current balance of `{balance}` cC (cafeCoins)!"
+  footer: "To learn how to make money, do /help!"
+arguments:
+  user:
+    description: "The user you want to get the balance of."

@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class OkCommand extends Command implements ICommand, IInteractionCommand 
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.OK, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.OK, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class OkCommand extends Command implements ICommand, IInteractionCommand 
     }
 
     @Override
-    public String getDescription() {
-        return "Be \"ok\" with something.";
+    public String getDescriptionPath() {
+        return "command.interaction.ok.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class OkCommand extends Command implements ICommand, IInteractionCommand 
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to be okay with."),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.ok.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class OkCommand extends Command implements ICommand, IInteractionCommand 
 
     @Override
     public String getSelfString() {
-        return "%s is **ok**...";
+        return "command.interaction.ok.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **ok** toward %s...";
+        return "command.interaction.ok.other";
     }
 
     @Override
     public String getBotString() {
-        return "Okay? And? What do you want? 🙄";
+        return "command.interaction.ok.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s was okay %d times. %s was \"okayed\" at %d times.";
+        return "command.interaction.ok.footer";
     }
 
 }

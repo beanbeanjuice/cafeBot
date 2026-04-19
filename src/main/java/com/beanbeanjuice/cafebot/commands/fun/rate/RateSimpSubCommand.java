@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.fun.rate;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.entities.User;
@@ -19,15 +20,19 @@ public class RateSimpSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         Optional<OptionMapping> userMapping = Optional.ofNullable(event.getOption("user"));
 
         User user = userMapping.map(OptionMapping::getAsUser).orElse(event.getUser());
         int percentage = Helper.getRandomInteger(0, 101);
 
+        String description = ctx.getGuildI18n().getString("command.rate.subcommand.simp.embed.description")
+                .replace("{user}", user.getAsMention())
+                .replace("{percent}", String.valueOf(percentage));
+
         event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                "😍 Simp Rating 😍",
-                String.format("%s is %d%% simp! %s", user.getAsMention(), percentage, "<:flushed_nervous:841923862202548224>")
+                ctx.getGuildI18n().getString("command.rate.subcommand.simp.embed.title"),
+                description
         )).mention(user).queue();
     }
 
@@ -37,14 +42,14 @@ public class RateSimpSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Rate how much of a simp someone is!";
+    public String getDescriptionPath() {
+        return "command.rate.subcommand.simp.description";
     }
 
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The person who's simp level you want to see.")
+                new OptionData(OptionType.USER, "user", "command.rate.subcommand.simp.arguments.user.description")
         };
     }
 

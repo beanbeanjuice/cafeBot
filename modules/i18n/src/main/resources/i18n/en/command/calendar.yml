@@ -1,0 +1,62 @@
+description: "All things to do with calendars!"
+
+subcommands:
+  add:
+    description: "Add a calendar!"
+    success:
+      title: "Calendar Added!"
+      description: "Successfully added your calendar! Use `/calender get` to preview your calendar!"
+    error:
+      count:
+        title: "Too Many Calendars!"
+        description: "You have added too many calendars... You can only have 3 active ones!"
+      url:
+        title: "Invalid URL"
+        description: "You must use a *valid* calendar URL!"
+      server:
+        title: "Invalid Command!"
+        description: "In order to set a server calendar, you need to use this command in a Discord server!"
+      generic:
+        title: "Error Adding Calendar"
+        description: "I'm sorry... I don't know *what* went wrong..."
+    arguments:
+      type:
+        description: "The type of calendar you want to add."
+      name:
+        description: "The calendar name!"
+      url:
+        description: "The calendar url! Make sure it ends in \".ics\"!"
+
+  get:
+    description: "Get your calendars!"
+    error:
+      title: "Error Getting Calendar"
+      description: "I... couldn't find the calendar... is this an error??"
+    arguments:
+      id:
+        description: "The ID of the calendar you want to view!"
+      timezone:
+        description: "The timezone you want the calendar in."
+
+  list:
+    description: "List all of the calendars for a specific user!"
+    success:
+      title: "Calendar List"
+      footer: "You can view guild calendars by typing /calendar get!"
+      empty: "No calendars found!"
+    arguments:
+      user:
+        description: "The user you want to see the calendar of!"
+
+  delete:
+    description: "Delete a calendar!"
+    error:
+      exploit:
+        title: "You're joking right?"
+        description: "Oh well.. I thought you were smarter than that... since you tried to use an exploit I made sure to talk to my boss! <:cafeBot_angry:1171726164092518441>"
+    success:
+      title: "Calendar Deleted!"
+      description: "We won't see that pesky calendar any longer!"
+    arguments:
+      id:
+        description: "The ID of the calendar you want to delete!"

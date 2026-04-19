@@ -19,8 +19,8 @@ public class RoleCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "All things to do with custom roles!";
+    public String getDescriptionPath() {
+        return "command.role.description";
     }
 
     @Override

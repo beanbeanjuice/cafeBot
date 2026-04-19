@@ -19,8 +19,8 @@ public class CalendarCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "All things to do with calendars!";
+    public String getDescriptionPath() {
+        return "command.calendar.description";
     }
 
     @Override

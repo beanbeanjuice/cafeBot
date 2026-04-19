@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.settings.airport;
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.AirportMessageType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import net.dv8tion.jda.api.components.label.Label;
 import net.dv8tion.jda.api.components.textinput.TextInput;
@@ -21,7 +22,7 @@ public class AirportMessageSetSubCommand extends Command implements ISubCommand 
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         AirportMessageType type = AirportMessageType.valueOf(event.getOption("type").getAsString());
 
 //        TextDisplay instructions = TextDisplay.of("""
@@ -85,8 +86,8 @@ public class AirportMessageSetSubCommand extends Command implements ISubCommand 
     }
 
     @Override
-    public String getDescription() {
-        return "Set the airport message.";
+    public String getDescriptionPath() {
+        return "command.airport.subcommand.set.description";
     }
 
     @Override
@@ -96,7 +97,7 @@ public class AirportMessageSetSubCommand extends Command implements ISubCommand 
 
     @Override
     public OptionData[] getOptions() {
-        OptionData channelTypeData = new OptionData(OptionType.STRING, "type", "The message type you want to set", true);
+        OptionData channelTypeData = new OptionData(OptionType.STRING, "type", "command.airport.subcommand.set.arguments.type.description", true);
 
         Arrays.stream(AirportMessageType.values()).forEach((type) -> channelTypeData.addChoice(type.name(), type.name()));
 

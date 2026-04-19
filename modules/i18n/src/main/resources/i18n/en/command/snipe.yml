@@ -1,0 +1,8 @@
+description: "Snipe a recently deleted message!"
+embed:
+  none:
+    title: "No Snipe Found!"
+    description: "No one has deleted any messages in this channel recently..."
+  snipe:
+    title: "Snipe!"
+    description: "{user} said \"{message}\""

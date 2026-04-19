@@ -1,8 +1,10 @@
 package com.beanbeanjuice.cafebot.commands.fun;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -24,7 +26,7 @@ public class BannerCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         Optional<OptionMapping> userOption = Optional.ofNullable(event.getOption("user"));
 
         User user = userOption.map(OptionMapping::getAsUser).orElse(event.getUser());
@@ -33,23 +35,29 @@ public class BannerCommand extends Command implements ICommand {
             Optional<String> urlOptional = Optional.ofNullable(profile.getBannerUrl());
 
             urlOptional.ifPresentOrElse(
-                    (url) -> event.getHook().sendMessageEmbeds(bannerEmbed(user.getName(), user.getAvatarUrl(), url, profile.getAccentColor())).queue(),
-                    () -> event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                            "No User Banner",
-                            "The specified user does not have a Discord banner."
-                    )).queue()
+                    (url) -> event.getHook().sendMessageEmbeds(bannerEmbed(user.getName(), user.getAvatarUrl(), url, profile.getAccentColor(), ctx.getUserI18n())).queue(),
+                    () -> event.getHook().sendMessageEmbeds(noBannerError(ctx.getUserI18n())).queue()
             );
         });
     }
 
-    private MessageEmbed bannerEmbed(final String username, final String avatarURL, final String bannerURL, final Color accent) {
+    private MessageEmbed bannerEmbed(String username, String avatarURL, String bannerURL, Color accent, I18N i18n) {
+        String title = i18n.getString("command.banner.embed.title").replace("{user}", username);
+
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setColor(accent)
-                .setAuthor(username + "'s Banner", null, avatarURL);
+                .setAuthor(title, null, avatarURL);
 
         embedBuilder.setImage(bannerURL + "?size=600");
 
         return embedBuilder.build();
+    }
+
+    private MessageEmbed noBannerError(I18N i18n) {
+        String title = i18n.getString("command.banner.error.title");
+        String description = i18n.getString("command.banner.error.description");
+
+        return Helper.errorEmbed(title, description);
     }
 
     @Override
@@ -58,8 +66,8 @@ public class BannerCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Get someone's banner!";
+    public String getDescriptionPath() {
+        return "command.banner.description";
     }
 
     @Override
@@ -70,7 +78,7 @@ public class BannerCommand extends Command implements ICommand {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The person you want to get the banner of.", false),
+                new OptionData(OptionType.USER, "user", "command.banner.arguments.user.description", false),
         };
     }
 

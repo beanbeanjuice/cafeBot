@@ -19,8 +19,8 @@ public class ChannelCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "All things to do with custom channels!";
+    public String getDescriptionPath() {
+        return "command.channel.description";
     }
 
     @Override

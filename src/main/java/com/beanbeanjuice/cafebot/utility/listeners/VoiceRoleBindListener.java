@@ -48,6 +48,8 @@ public class VoiceRoleBindListener extends ListenerAdapter {
                             "There was an error setting a voice role bind... " + error.getMessage()
                     ));
                 });
+
+                CafeBot.increaseCommandsRun();
             });
         });
     }
@@ -69,6 +71,8 @@ public class VoiceRoleBindListener extends ListenerAdapter {
                             "There was an error removing a voice role bind... " + error.getMessage()
                     ));
                 });
+
+                CafeBot.increaseCommandsRun();
             });
         });
     }

@@ -97,7 +97,8 @@ public class TwitchGoLiveEventListener extends SimpleEventHandler {
                     channel.sendMessage(liveMessage).addEmbeds(liveEmbed(event, profileImageURL, boxArtURL, twitchName)).queue();
                     return null;
                 });
-        cafeBot.increaseCommandsRun();
+
+        CafeBot.increaseCommandsRun();
     }
 
     public MessageEmbed liveEmbed(ChannelGoLiveEvent event, String profileImageURL, @Nullable String boxArtURL, String twitchName) {

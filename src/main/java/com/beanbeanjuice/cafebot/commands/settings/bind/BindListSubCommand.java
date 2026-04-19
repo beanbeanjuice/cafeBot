@@ -2,7 +2,9 @@ package com.beanbeanjuice.cafebot.commands.settings.bind;
 
 import com.beanbeanjuice.cafebot.api.wrapper.type.VoiceRole;
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -24,13 +26,14 @@ public class BindListSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        I18N bundle = ctx.getUserI18n();
         bot.getCafeAPI().getVoiceRoleApi().getVoiceRoles(event.getGuild().getId()).thenAccept((voiceRoles) -> {
-            handleVoiceRolesEmbed(event, voiceRoles);
+            handleVoiceRolesEmbed(event, voiceRoles, bundle);
         }).exceptionally((ex) -> {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Error Getting Roles",
-                    "I'm not sure why, but there was a problem... if it's like this in an hour please report it using `/bug`... <:cafeBot_sad:1171726165040447518>"
+                    bundle.getString("command.bind.subcommand.list.embed.error.title"),
+                    bundle.getString("command.bind.subcommand.list.embed.error.description")
             )).queue();
 
             bot.getLogger().log(this.getClass(), LogLevel.WARN, String.format("Error Getting Voice Roles: %s", ex.getMessage()), true, false);
@@ -38,14 +41,14 @@ public class BindListSubCommand extends Command implements ISubCommand {
         });
     }
 
-    private void handleVoiceRolesEmbed(SlashCommandInteractionEvent event, List<VoiceRole> voiceRoles) {
-        event.getHook().sendMessage("Here's your voice role binds! <:cafeBot_thumbs_up:1457847525280321577>")
-                .addEmbeds(getVoiceRolesEmbed(event.getGuild(), voiceRoles)).queue();
+    private void handleVoiceRolesEmbed(SlashCommandInteractionEvent event, List<VoiceRole> voiceRoles, I18N bundle) {
+        event.getHook().sendMessage(bundle.getString("command.bind.subcommand.list.embed.header"))
+                .addEmbeds(getVoiceRolesEmbed(event.getGuild(), voiceRoles, bundle)).queue();
     }
 
-    private MessageEmbed getVoiceRolesEmbed(Guild guild, List<VoiceRole> voiceRoleList) {
+    private MessageEmbed getVoiceRolesEmbed(Guild guild, List<VoiceRole> voiceRoleList, I18N bundle) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle("Voice Channel <-> Role Binds");
+        embedBuilder.setTitle(bundle.getString("command.bind.subcommand.list.embed.title"));
 
         String description = voiceRoleList.stream().map((voiceRole) -> {
             VoiceChannel channel = guild.getVoiceChannelById(voiceRole.getChannelId());
@@ -68,8 +71,8 @@ public class BindListSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "List all of the voice channel-role binds!";
+    public String getDescriptionPath() {
+        return "command.bind.subcommand.list.description";
     }
 
 }

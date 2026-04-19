@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class SlapCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.SLAP, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.SLAP, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class SlapCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public String getDescription() {
-        return "Slap someone!";
+    public String getDescriptionPath() {
+        return "command.interaction.slap.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class SlapCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to slap."),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.slap.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class SlapCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s just **slapped** themself?! <:disgusted2:1257151393857409216>";
+        return "command.interaction.slap.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s just **slapped** %s?! Be kind! <:zerotwo_scream:841921420904497163>";
+        return "command.interaction.slap.other";
     }
 
     @Override
     public String getBotString() {
-        return "Wh- why would you do that?! <:when_AHHH:842062279372701737>";
+        return "command.interaction.slap.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s slapped others %d times. %s was slapped %d times.";
+        return "command.interaction.slap.footer";
     }
 
 }

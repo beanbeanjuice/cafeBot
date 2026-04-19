@@ -2,6 +2,7 @@ package com.beanbeanjuice.cafebot.commands.settings.polls;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.listeners.modals.polls.PollModalListener;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -15,7 +16,7 @@ public class PollCreateSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         String userId = event.getUser().getId();
         int duration = event.getOption("duration").getAsInt();
 
@@ -29,8 +30,8 @@ public class PollCreateSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Create a poll!";
+    public String getDescriptionPath() {
+        return "command.poll.subcommand.create.description";
     }
 
     @Override
@@ -41,7 +42,7 @@ public class PollCreateSubCommand extends Command implements ISubCommand {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[]{
-                new OptionData(OptionType.INTEGER, "duration", "The duration the poll will run (in minutes).", true)
+                new OptionData(OptionType.INTEGER, "duration", "command.poll.subcommand.create.arguments.duration.description", true)
                         .setMinValue(1)
         };
     }

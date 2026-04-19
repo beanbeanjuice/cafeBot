@@ -1,0 +1,12 @@
+description: "Get a meme!"
+error:
+  embed:
+    title: "Failed Getting Meme"
+    description: "I... I'm so sorry... I tripped and fell when getting your meme..."
+subcommand:
+  coffee:
+    description: "Get a coffee meme!"
+  random:
+    description: "Get a random meme!"
+  tea:
+    description: "Get a tea meme!"

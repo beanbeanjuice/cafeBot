@@ -19,8 +19,8 @@ public class PollCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "All things to do with polls!";
+    public String getDescriptionPath() {
+        return "command.poll.description";
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.beanbeanjuice.cafebot.commands.fun;
 
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -24,47 +26,49 @@ public class AvatarCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         Optional<OptionMapping> userOption = Optional.ofNullable(event.getOption("user"));
         Optional<OptionMapping> serverOption = Optional.ofNullable(event.getOption("server"));
 
         User user = userOption.map(OptionMapping::getAsUser).orElse(event.getUser());
-        Member member = userOption.map(OptionMapping::getAsMember).orElse(event.getMember());
+        Member member = userOption.map(OptionMapping::getAsMember).orElseGet(event::getMember);
         boolean useServer = serverOption.map(OptionMapping::getAsBoolean).orElse(false);
 
         if (useServer && !event.isFromGuild()) {
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Must Be In Server",
-                    "You must be in a Discord server to use the server avatar!"
-            )).queue();
+            event.getHook().sendMessageEmbeds(serverErrorEmbed(ctx.getUserI18n())).queue();
             return;
         }
 
-        Optional<String> urlOptional = (useServer) ? getServerAvatarURL(member) : getUserAvatarURL(user);
+        Optional<String> urlOptional = Optional.ofNullable(member)
+                .filter(m -> useServer)
+                .map(Member::getAvatarUrl)
+                .or(() -> Optional.ofNullable(user.getAvatarUrl()));
 
         urlOptional.ifPresentOrElse(
-                (url) -> event.getHook().sendMessageEmbeds(avatarEmbed(user.getName(), url)).queue(),
-                () -> event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                        "No User Avatar",
-                        "The specified user does not have a Discord avatar."
-                )).queue()
+                (url) -> event.getHook().sendMessageEmbeds(avatarEmbed(user.getName(), url, ctx.getUserI18n())).queue(),
+                () -> event.getHook().sendMessageEmbeds(missingErrorEmbed(ctx.getUserI18n())).queue()
         );
     }
 
-    private Optional<String> getUserAvatarURL(final User user) {
-        return Optional.ofNullable(user.getAvatarUrl());
-    }
-
-    private Optional<String> getServerAvatarURL(final Member member) {
-        return Optional.ofNullable(member.getAvatarUrl());
-    }
-
-    private MessageEmbed avatarEmbed(final String name, final String avatarURL) {
+    private MessageEmbed avatarEmbed(String name, String avatarURL, I18N i18n) {
+        String title = i18n.getString("command.avatar.embed.title").replace("{user}", name);
         return new EmbedBuilder()
-                .setTitle(name + "'s Avatar")
+                .setTitle(title)
                 .setImage(avatarURL + "?size=512")
                 .setColor(Helper.getRandomColor())
                 .build();
+    }
+
+    private MessageEmbed missingErrorEmbed(I18N i18n) {
+        String title = i18n.getString("command.avatar.error.missing.title");
+        String description = i18n.getString("command.avatar.error.missing.description");
+        return Helper.errorEmbed(title, description);
+    }
+
+    private MessageEmbed serverErrorEmbed(I18N i18n) {
+        String title = i18n.getString("command.avatar.error.server.title");
+        String description = i18n.getString("command.avatar.error.server.description");
+        return Helper.errorEmbed(title, description);
     }
 
     @Override
@@ -73,8 +77,8 @@ public class AvatarCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Get someone's avatar!";
+    public String getDescriptionPath() {
+        return "command.avatar.description";
     }
 
     @Override
@@ -85,8 +89,8 @@ public class AvatarCommand extends Command implements ICommand {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to get the avatar of.", false),
-                new OptionData(OptionType.BOOLEAN, "server", "Whether to get their server or user avatar.", false)
+                new OptionData(OptionType.USER, "user", "command.avatar.arguments.user.description", false),
+                new OptionData(OptionType.BOOLEAN, "server", "command.avatar.arguments.server.description", false)
         };
     }
 

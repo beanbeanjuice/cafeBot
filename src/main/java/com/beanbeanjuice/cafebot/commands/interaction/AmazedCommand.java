@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class AmazedCommand extends Command implements ICommand, IInteractionComm
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.AMAZED, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.AMAZED, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class AmazedCommand extends Command implements ICommand, IInteractionComm
     }
 
     @Override
-    public String getDescription() {
-        return "Be amazed at something or someone!";
+    public String getDescriptionPath() {
+        return "command.interaction.amazed.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class AmazedCommand extends Command implements ICommand, IInteractionComm
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "Someone to be amazed at!"),
-                new OptionData(OptionType.STRING, "message", "An optional message to send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.amazed.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class AmazedCommand extends Command implements ICommand, IInteractionComm
 
     @Override
     public String getSelfString() {
-        return "Wow... %s is **amazed** at themself... Ego much? <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.amazed.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **amazed** at %s! <:flushed_open:841922879465455646>";
+        return "command.interaction.amazed.other";
     }
 
     @Override
     public String getBotString() {
-        return "I- I'm just doing my job! <:shy_shy:1161619101886722158>";
+        return "command.interaction.amazed.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s was amazed %d times. %s caused others to be amazed %d times.";
+        return "command.interaction.amazed.footer";
     }
 
 }

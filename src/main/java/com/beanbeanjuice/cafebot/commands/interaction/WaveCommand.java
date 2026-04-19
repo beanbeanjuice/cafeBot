@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class WaveCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.WAVE, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.WAVE, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class WaveCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public String getDescription() {
-        return "Wave at someone!";
+    public String getDescriptionPath() {
+        return "command.interaction.wave.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class WaveCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to wave at!"),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.wave.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class WaveCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s is **waving**... at no one... <:bean_moment:841922879166742529>";
+        return "command.interaction.wave.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is waving at %s!~";
+        return "command.interaction.wave.other";
     }
 
     @Override
     public String getBotString() {
-        return "Oh- hello there! <a:cafeBot:1119635469727191190>";
+        return "command.interaction.wave.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s waved at %d people. %s was waved at %d times.";
+        return "command.interaction.wave.footer";
     }
 
 }

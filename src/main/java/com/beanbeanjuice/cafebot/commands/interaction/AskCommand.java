@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class AskCommand extends Command implements ICommand, IInteractionCommand
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.ASK, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.ASK, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class AskCommand extends Command implements ICommand, IInteractionCommand
     }
 
     @Override
-    public String getDescription() {
-        return "Ask someone something!";
+    public String getDescriptionPath() {
+        return "command.interaction.ask.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class AskCommand extends Command implements ICommand, IInteractionCommand
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The person who you want to ask a question to."),
-                new OptionData(OptionType.STRING, "message", "An optional message you want to add!")
+                new OptionData(OptionType.USER, "user", "command.interaction.ask.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class AskCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public String getSelfString() {
-        return "%s just... **asked** themself a question? Okay then... 🙄";
+        return "command.interaction.ask.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **asked** %s a question! Hopefully they answer... 🥺";
+        return "command.interaction.ask.other";
     }
 
     @Override
     public String getBotString() {
-        return "Hmm? What is it? <:kuromi_question:841921649132568576>";
+        return "command.interaction.ask.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s asked someone something %d times. %s was asked something %d times.";
+        return "command.interaction.ask.footer";
     }
 
 }

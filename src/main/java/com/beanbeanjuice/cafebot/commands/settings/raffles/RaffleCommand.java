@@ -19,8 +19,8 @@ public class RaffleCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "All things to do with raffles!";
+    public String getDescriptionPath() {
+        return "command.raffle.description";
     }
 
     @Override

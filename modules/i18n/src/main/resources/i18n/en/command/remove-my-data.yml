@@ -1,0 +1,4 @@
+description: "Remove your data from this bot."
+embed:
+  title: "Data Removal"
+  description: "You can remove/download your data on website dashboard. Please click the button below and sign in with your Discord account."

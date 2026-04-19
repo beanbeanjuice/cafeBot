@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class BoopCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.BOOP, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.BOOP, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class BoopCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public String getDescription() {
-        return "Boop someone!";
+    public String getDescriptionPath() {
+        return "command.interaction.boop.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class BoopCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The person you want to boop! :3"),
-                new OptionData(OptionType.STRING, "message", "An optional message you want to send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.boop.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class BoopCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s just **booped** themself... 😭";
+        return "command.interaction.boop.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s just **booped** %s! Awww~ <:aww:1257143681878593727>";
+        return "command.interaction.boop.other";
     }
 
     @Override
     public String getBotString() {
-        return "hehe~ what do you need? <:pleading_blush:1257143682776432731>";
+        return "command.interaction.boop.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s booped others %d times. %s was booped %d times.";
+        return "command.interaction.boop.footer";
     }
 
 }

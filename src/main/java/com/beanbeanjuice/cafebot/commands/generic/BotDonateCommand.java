@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.generic;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
@@ -15,17 +16,11 @@ public class BotDonateCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        event.getHook().sendMessageEmbeds(
-                Helper.successEmbed(
-                        "Donations!",
-                        """
-                        Donations are absolutely optional, but they help keep me alive! \
-                        You can donate [here](https://buymeacoffee.com/beanbeanjuice)! \
-                        Thank you so much... <a:twiddle_shy:1161619104659153018>
-                        """
-                )
-        ).queue();
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        String title = ctx.getDefaultBundle().getString("command.bot-donate.success.title");
+        String description = ctx.getDefaultBundle().getString("command.bot-donate.success.description");
+
+        event.getHook().sendMessageEmbeds(Helper.successEmbed(title, description)).queue();
     }
 
     @Override
@@ -34,8 +29,8 @@ public class BotDonateCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Donate to keep the bot up!";
+    public String getDescriptionPath() {
+        return "command.bot-donate.description";
     }
 
     @Override

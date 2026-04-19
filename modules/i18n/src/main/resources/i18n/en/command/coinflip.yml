@@ -1,0 +1,6 @@
+description: "Flip a coin!"
+coin:
+  heads: "HEADS"
+  tails: "TAILS"
+embed:
+  description: "The coin is **{side}**!"

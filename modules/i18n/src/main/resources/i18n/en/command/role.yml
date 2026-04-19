@@ -1,0 +1,33 @@
+description: "All things to do with custom roles!"
+subcommand:
+  set:
+    description: "Set a custom role!"
+    arguments:
+      type:
+        description: "The role type you want to set."
+      role:
+        description: "The discord role you want to bind to."
+    embed:
+      success:
+        title: "{type} Role Set"
+        description: "Role has been set to {role}! Please make sure I have a higher role permission than the role you're trying to set \U0001F97A!"
+      error:
+        title: "Error Setting {type} Role"
+        description: "There was an error setting the role... I'm so sorry.. \U0001F97A"
+  remove:
+    description: "Remove a custom role!"
+    arguments:
+      type:
+        description: "The role type you want to remove."
+    embed:
+      success:
+        title: "{type} Role Removed"
+        description: "The {type} role has been successfully removed."
+      error:
+        title: "Error Removing {type} Role"
+        description: "There was a problem removing the role \U0001F97A please try again later..."
+  list:
+    description: "List all custom roles for the server!"
+    embed:
+      title: "Custom Roles"
+      unset: "*Unset*"

@@ -1,0 +1,38 @@
+description: "All things to do with binding a role to a voice channel!"
+subcommand:
+  set:
+    description: "Bind a role to a voice channel!"
+    arguments:
+      channel:
+        description: "The voice channel you want to bind."
+      role:
+        description: "The role to give when joining the channel."
+    embed:
+      success:
+        title: "Role Bound!"
+        description: "<:cafeBot_thumbs_up:1457847525280321577> Hi there!~ I bound {role} to {channel}! Whenever someone joins that channel, they'll be given that role. The role will also be removed when they leave!"
+      error:
+        title: "Error Binding Role"
+        description: "I'm... not sure why, but my boss said you can't do that..."
+  remove:
+    description: "Remove a bound role from a voice channel."
+    arguments:
+      channel:
+        description: "The voice channel you want to use."
+      role:
+        description: "The role binding you want to remove."
+    embed:
+      success:
+        title: "Role Removed!"
+        description: "Hi there!~ I unbound {role} from {channel}!"
+      error:
+        title: "Error Removing Bound Role"
+        description: "I'm... not sure why, but my boss said you can't do that..."
+  list:
+    description: "List all voice channel-role binds!"
+    embed:
+      header: "Here's your voice role binds! <:cafeBot_thumbs_up:1457847525280321577>"
+      title: "Voice Channel <-> Role Binds"
+      error:
+        title: "Error Getting Roles"
+        description: "I'm not sure why, but there was a problem... if it's like this in an hour please report it using `/bug`... <:cafeBot_sad:1171726165040447518>"

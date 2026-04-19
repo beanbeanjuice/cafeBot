@@ -37,6 +37,7 @@ public class ConfessionBanListener extends ListenerAdapter {
             member.ban(0, TimeUnit.MINUTES).reason(
                     String.format("cafeBot: Banned by %s (%s) for confession content violation.", admin.getUser().getName(), admin.getId())
             ).queue((success) -> event.retrieveMessage().queue((message) -> message.delete().queue()));
+            CafeBot.increaseCommandsRun();
         });
     }
 

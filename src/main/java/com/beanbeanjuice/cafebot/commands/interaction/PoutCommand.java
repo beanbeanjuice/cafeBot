@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class PoutCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.POUT, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.POUT, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class PoutCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public String getDescription() {
-        return "Pout at someone!";
+    public String getDescriptionPath() {
+        return "command.interaction.pout.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class PoutCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The person you want to pout at!"),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.pout.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class PoutCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s is **pouting**. What's wrong?! ";
+        return "command.interaction.pout.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **pouting** at %s!";
+        return "command.interaction.pout.other";
     }
 
     @Override
     public String getBotString() {
-        return "Okay... and? Pouting won't do much. <:disgusted:1257142116539301909>";
+        return "command.interaction.pout.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s pouted %d times. %s was pouted at %d times.";
+        return "command.interaction.pout.footer";
     }
 
 }

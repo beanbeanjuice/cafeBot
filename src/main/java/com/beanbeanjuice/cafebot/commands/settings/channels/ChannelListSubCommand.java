@@ -3,7 +3,9 @@ package com.beanbeanjuice.cafebot.commands.settings.channels;
 import com.beanbeanjuice.cafebot.api.wrapper.api.enums.CustomChannelType;
 import com.beanbeanjuice.cafebot.api.wrapper.type.CustomChannel;
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -12,11 +14,9 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.CompletionException;
-import java.util.stream.Collectors;
 
 public class ChannelListSubCommand extends Command implements ISubCommand {
 
@@ -25,15 +25,18 @@ public class ChannelListSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        I18N bundle = ctx.getUserI18n();
         Guild guild = event.getGuild();
 
         this.bot.getCafeAPI().getCustomChannelApi().getCustomChannels(guild.getId())
                 .thenAccept((customChannels) -> {
                     EmbedBuilder embedBuilder = new EmbedBuilder();
-                    embedBuilder.setTitle("Custom Channels");
+                    embedBuilder.setTitle(bundle.getString("command.channel.subcommand.list.embed.title"));
                     embedBuilder.setColor(Helper.getRandomColor());
-                    embedBuilder.setFooter("You can set channels with \"/channel set!\"");
+                    embedBuilder.setFooter(bundle.getString("command.channel.subcommand.list.embed.footer"));
+
+                    String unsetText = bundle.getString("command.channel.subcommand.list.embed.unset");
 
                     Arrays.stream(CustomChannelType.values()).forEach((type) -> {
                         TextChannel channel = Optional.ofNullable(customChannels.get(type))
@@ -41,7 +44,7 @@ public class ChannelListSubCommand extends Command implements ISubCommand {
                                 .map(guild::getTextChannelById)
                                 .orElse(null);
 
-                        String mention = (channel == null) ? "*Unset*" : channel.getAsMention();
+                        String mention = (channel == null) ? unsetText : channel.getAsMention();
 
                         embedBuilder.addField(String.format("**%s** - %s", type.getFriendlyName(), mention), type.getDescription(), true);
                     });
@@ -49,8 +52,8 @@ public class ChannelListSubCommand extends Command implements ISubCommand {
                     event.getHook().sendMessageEmbeds(embedBuilder.build()).queue();
                 }).exceptionally((ex) -> {
                     event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                            "Error Listing Custom Channels",
-                            "For some reason I had a problem checking the list... I've notified my boss!"
+                            bundle.getString("command.channel.subcommand.list.embed.error.title"),
+                            bundle.getString("command.channel.subcommand.list.embed.error.description")
                     )).queue();
                     bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Listing Channels: " + ex.getMessage());
 
@@ -64,8 +67,8 @@ public class ChannelListSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "List all custom channels for the server!";
+    public String getDescriptionPath() {
+        return "command.channel.subcommand.list.description";
     }
 
 }

@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.games;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.handlers.games.TicTacToeHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
@@ -26,16 +27,16 @@ public class TicTacToeCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         int wager = Optional.ofNullable(event.getOption("wager")).map(OptionMapping::getAsInt).orElse(0);
 
         User opponent = event.getOption("opponent").getAsUser();
 
         if (opponent.isBot()) {
-            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Cannot Play Against Bot",
-                    "What do you think you're even doing? <:cafeBot_angry:1171726164092518441>"
-            )).queue();
+            String title = ctx.getUserI18n().getString("command.tictactoe.embeds.bot.title");
+            String description = ctx.getUserI18n().getString("command.tictactoe.embeds.bot.description");
+
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(title, description)).queue();
             return;
         }
 
@@ -43,12 +44,14 @@ public class TicTacToeCommand extends Command implements ICommand {
         String playerId = player.getId();
         String opponentId = opponent.getId();
 
-        event.getHook().sendMessageEmbeds(
-                Helper.successEmbed(
-                        "Waiting for Consent",
-                        String.format("%s, do you accept the challenge from %s for **%d cC** (cafeCoins)? Once accepted, games will be automatically closed after 24 hours.", opponent.getAsMention(), player.getAsMention(), wager)
-                        )
-                )
+        String title = ctx.getUserI18n().getString("command.tictactoe.embeds.consent.title");
+        String description = ctx.getUserI18n().getString("command.tictactoe.embeds.consent.description")
+                .replace("{player1}", opponent.getAsMention())
+                .replace("{player2}", player.getAsMention())
+                .replace("{wager}", String.valueOf(wager));
+
+        event.getHook()
+                .sendMessageEmbeds(Helper.successEmbed(title, description))
                 .addComponents(ActionRow.of(Button.primary(String.format(TicTacToeHandler.CONSENT_BUTTON_ID_FULL, playerId, opponentId, wager), Emoji.fromUnicode("🤝"))))
                 .queue();
     }
@@ -59,8 +62,8 @@ public class TicTacToeCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Play tic-tac-toe with someone!";
+    public String getDescriptionPath() {
+        return "command.tictactoe.description";
     }
 
     @Override
@@ -71,8 +74,8 @@ public class TicTacToeCommand extends Command implements ICommand {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "opponent", "The person you want to play against.", true),
-                new OptionData(OptionType.INTEGER, "wager", "The amount you want to wager for this game.", false)
+                new OptionData(OptionType.USER, "opponent", "command.tictactoe.arguments.opponent.description", true),
+                new OptionData(OptionType.INTEGER, "wager", "command.tictactoe.arguments.wager.description", false)
                         .setMinValue(1)
         };
     }

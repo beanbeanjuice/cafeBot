@@ -19,8 +19,8 @@ public class InteractionCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Block, unblock, and enable/disable interactions!";
+    public String getDescriptionPath() {
+        return "command.interaction.description";
     }
 
     @Override

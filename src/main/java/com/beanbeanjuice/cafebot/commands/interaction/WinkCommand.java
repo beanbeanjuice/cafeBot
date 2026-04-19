@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class WinkCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.WINK, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.WINK, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class WinkCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public String getDescription() {
-        return "Wink at someone! ;)";
+    public String getDescriptionPath() {
+        return "command.interaction.wink.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class WinkCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to wink at."),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.wink.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class WinkCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s **winked** at themself... <:disgusted:1257142116539301909>";
+        return "command.interaction.wink.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **winked** at %s! <:pleading_blush:1257143682776432731>";
+        return "command.interaction.wink.other";
     }
 
     @Override
     public String getBotString() {
-        return "Gross. <:disgusted:1257142116539301909>";
+        return "command.interaction.wink.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s winked at %d people. %s was winked at %d times.";
+        return "command.interaction.wink.footer";
     }
 
 }

@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class ThrowCommand extends Command implements ICommand, IInteractionComma
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.THROW, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.THROW, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class ThrowCommand extends Command implements ICommand, IInteractionComma
     }
 
     @Override
-    public String getDescription() {
-        return "Throw someone!";
+    public String getDescriptionPath() {
+        return "command.interaction.throw.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class ThrowCommand extends Command implements ICommand, IInteractionComma
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to throw!"),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.throw.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class ThrowCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getSelfString() {
-        return "%s... **threw**... themself? <:kuromi_question:841921649132568576>";
+        return "command.interaction.throw.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **threw** %s! Someone catch them! <:zerotwo_scream2:843673314990882836>";
+        return "command.interaction.throw.other";
     }
 
     @Override
     public String getBotString() {
-        return "H- how were you able to pick me up? <:jett_moan:841916896563429386>";
+        return "command.interaction.throw.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s threw others %d times. %s was thrown %d times.";
+        return "command.interaction.throw.footer";
     }
 
 }

@@ -1,0 +1,35 @@
+description: "Add or remove channels/notification channels."
+
+subcommands:
+  add:
+    description: "Add a twitch channel to get live notifications for!"
+    success:
+      title: "Added Channel"
+      description: "Successfully added **{channel}**."
+    error:
+      title: "Error Adding Channel"
+      description: "There was an error adding **{channel}**."
+    arguments:
+      username:
+        description: "Their twitch username."
+
+  list:
+    description: "Get a list of all twitch channels for this server!"
+    success:
+      title: "Twitch Channels"
+      description: |
+        These are the following channels that have been added for this server:
+        
+        {channels}
+
+  remove:
+    description: "Remove a twitch channel!"
+    success:
+      title: "Twitch Channel Removed"
+      description: "They were successfully removed. You should no longer receive live notifications from them."
+    error:
+      title: "Error Removing Twitch Channel"
+      description: "There was an error removing them, you may still receive live notifications for their channel."
+    arguments:
+      username:
+        description: "The username you want to remove."

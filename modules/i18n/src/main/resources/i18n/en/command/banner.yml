@@ -1,0 +1,9 @@
+description: "Get someone's banner!"
+embed:
+  title: "{user}'s Banner"
+error:
+  title: "No User Banner"
+  description: "The specified user does not have a Discord banner."
+arguments:
+  user:
+    description: "Get their banner!"

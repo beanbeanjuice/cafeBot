@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class YellCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.YELL, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.YELL, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class YellCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public String getDescription() {
-        return "Yell at someone!";
+    public String getDescriptionPath() {
+        return "command.interaction.yell.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class YellCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to yell at!"),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.yell.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class YellCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s is **yelling**! Please no yelling in the store... <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.yell.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **yelling** at %s! <a:man_scream:841921434732724224>";
+        return "command.interaction.yell.other";
     }
 
     @Override
     public String getBotString() {
-        return "Excuse me? Please stop. <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.yell.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s yelled %d times. %s was yelled at %d times.";
+        return "command.interaction.yell.footer";
     }
 
 }

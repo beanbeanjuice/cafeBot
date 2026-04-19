@@ -51,6 +51,8 @@ public class HoneypotListener extends ListenerAdapter {
             try {
                 guild.ban(member.getUser(), 1, TimeUnit.DAYS).reason("cafeBot: Message or reaction sent in honeypot channel.").queue();
                 bot.getLogger().logToGuild(guild, Helper.successEmbed("Honeypot", String.format("A pesky bot tried to grab some honey! %s - **%s** (%s) was banned.", member.getAsMention(), member.getUser().getName(), member.getId())));
+
+                CafeBot.increaseCommandsRun();
             } catch (Exception e) {
                 bot.getLogger().logToGuild(guild, Helper.errorEmbed("Honeypot Error", "Error Banning User in Honeypot Channel: " + e.getMessage()));
             }

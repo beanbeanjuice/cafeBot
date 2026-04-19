@@ -2,7 +2,9 @@ package com.beanbeanjuice.cafebot.commands.generic.calendar;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.api.wrapper.type.calendar.Calendar;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.handlers.calendar.CalendarHandler;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
@@ -13,10 +15,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
@@ -27,7 +26,7 @@ public class CalendarGetSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         String[] split = event.getOption("id").getAsString().split("ID: ");
         String calendarId = (split.length == 2) ? split[1] : split[0];
         ZoneId zoneId = TimeZone.getTimeZone(event.getOption("timezone").getAsString()).toZoneId();
@@ -36,13 +35,16 @@ public class CalendarGetSubCommand extends Command implements ISubCommand {
             String message = CalendarHandler.getCalendarMessage(calendar.getUrl(), zoneId);
             event.getHook().sendMessage(message).queue();
         }).exceptionally((ex) -> {
-            handleError(ex, event);
+            handleError(ex, event, ctx.getUserI18n());
             throw new CompletionException(ex.getCause());
         });
     }
 
-    private void handleError(Throwable ex, SlashCommandInteractionEvent event) {
-        event.getHook().sendMessageEmbeds(Helper.errorEmbed("Error Getting Calendar", "I... couldn't find the calendar... is this an error??")).queue();
+    private void handleError(Throwable ex, SlashCommandInteractionEvent event, I18N userBundle) {
+        String title = userBundle.getString("command.calendar.subcommands.get.error.title");
+        String description = userBundle.getString("command.calendar.subcommands.get.error.description");
+
+        event.getHook().sendMessageEmbeds(Helper.errorEmbed(title, description)).queue();
         bot.getLogger().log(this.getClass(), LogLevel.WARN, ex.getMessage(), true, false, ex);
     }
 
@@ -52,15 +54,15 @@ public class CalendarGetSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Get your calendars!";
+    public String getDescriptionPath() {
+        return "command.calendar.subcommands.get.description";
     }
 
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.STRING, "id", "The ID of the calendar you want to view!", true, true),
-                new OptionData(OptionType.STRING, "timezone", "The timezone you want the calendar in.", true, true)
+                new OptionData(OptionType.STRING, "id", "command.calendar.subcommands.get.arguments.id.description", true, true),
+                new OptionData(OptionType.STRING, "timezone", "command.calendar.subcommands.get.arguments.timezone.description", true, true)
         };
     }
 

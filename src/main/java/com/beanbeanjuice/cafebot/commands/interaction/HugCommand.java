@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class HugCommand extends Command implements ICommand, IInteractionCommand
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.HUG, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.HUG, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class HugCommand extends Command implements ICommand, IInteractionCommand
     }
 
     @Override
-    public String getDescription() {
-        return "Hug someone!";
+    public String getDescriptionPath() {
+        return "command.interaction.hug.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class HugCommand extends Command implements ICommand, IInteractionCommand
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to hug!~"),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.hug.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class HugCommand extends Command implements ICommand, IInteractionCommand
 
     @Override
     public String getSelfString() {
-        return "%s just **hugged** themself... <:disgusted:1257142116539301909>";
+        return "command.interaction.hug.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **hugged** %s! How cute~ <a:twiddle_shy2:1161619106387197962>";
+        return "command.interaction.hug.other";
     }
 
     @Override
     public String getBotString() {
-        return "Excuse me... I need to get back to work! <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.hug.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s hugged others %d times. %s was hugged %d times.";
+        return "command.interaction.hug.footer";
     }
 
 }

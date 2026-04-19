@@ -1,0 +1,35 @@
+description: "All things to do with raffles!"
+subcommand:
+  create:
+    description: "Create a raffle!"
+    arguments:
+      title:
+        description: "The raffle title."
+      winners:
+        description: "The number of people who can win the raffle."
+      time:
+        description: "The number of minutes to run the raffle for."
+      description:
+        description: "The raffle description."
+    embed:
+      field:
+        winners: "Total Winners"
+        ends-at: "Ends At"
+      success:
+        title: "Raffle Created!"
+        description: "Hai!~ Your raffle has been created here: {channel}"
+      error:
+        no-channel:
+          title: "Raffle Channel Not Set"
+          description: "I-... I can't do that... you don't have a raffle channel set \U0001F97A. Try using `/channel set`!"
+        title: "Error Creating Raffle"
+        description: "I... I couldn't create a raffle for some reason... My boss said this: `{error}`."
+  delete:
+    description: "Delete a raffle!"
+    arguments:
+      id:
+        description: "The ID of the raffle you want to delete."
+    embed:
+      success:
+        title: "Raffle Deleted!"
+        description: "The raffle has been successfully deleted! Feel free to delete the original raffle message."

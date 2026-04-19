@@ -2,7 +2,9 @@ package com.beanbeanjuice.cafebot.commands.interaction.generic;
 
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.api.wrapper.api.exception.ApiRequestException;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -25,27 +27,31 @@ public class InteractionUnblockSubCommand extends Command implements ISubCommand
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        final I18N bundle = ctx.getUserI18n();
         String unblockedUser = event.getOption("user-id").getAsString();
 
         bot.getCafeAPI().getInteractionsApi().unBlockUser(event.getUser().getId(), unblockedUser).thenRun(() -> {
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                    "Unblocked User",
-                    "That user can now interact with you again!"
+                    bundle.getString("command.interaction.unblock.success.title"),
+                    bundle.getString("command.interaction.unblock.success.description")
             )).queue();
         }).exceptionally((ex) -> {
             if (ex.getCause() instanceof ApiRequestException apiRequestException) {
                 JsonNode errorNode = apiRequestException.getBody().get("error");
 
                 if (errorNode.has("blockedUserId")) {
-                    event.getHook().sendMessageEmbeds(Helper.errorEmbed("Invalid User ID", "Please only use the user ID that is in the auto complete list!")).queue();
+                    event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                            bundle.getString("command.interaction.unblock.error-invalid.title"),
+                            bundle.getString("command.interaction.unblock.error-invalid.description")
+                    )).queue();
                 }
                 throw new CompletionException(apiRequestException);
             }
 
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Error Unblocking User",
-                    "I... can't unblock them... please tell my boss..."
+                    bundle.getString("command.interaction.unblock.error.title"),
+                    bundle.getString("command.interaction.unblock.error.description")
             )).queue();
 
             bot.getLogger().log(this.getClass(), LogLevel.WARN, String.format("Error Unblocking User: %s", ex.getMessage()), true, true);
@@ -59,14 +65,14 @@ public class InteractionUnblockSubCommand extends Command implements ISubCommand
     }
 
     @Override
-    public String getDescription() {
-        return "Unblocks a user you have previously blocked.";
+    public String getDescriptionPath() {
+        return "command.interaction.unblock.description";
     }
 
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.STRING, "user-id", "The id of the user you want to unblock.", true, true)
+                new OptionData(OptionType.STRING, "user-id", "command.interaction.unblock.arguments.user-id.description", true, true)
         };
     }
 

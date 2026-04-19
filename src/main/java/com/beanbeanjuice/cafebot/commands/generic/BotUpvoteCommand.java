@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.generic;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
@@ -20,15 +21,11 @@ public class BotUpvoteCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                "Voting List",
-                """
-                        Upvoting helps me serve coffee to more people! \
-                        If you're enjoying my service, please consider doing so! \
-                        Any and all support is welcome!
-                        """
-        )).setComponents(ActionRow.of(getButtons())).queue();
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        String title = ctx.getUserI18n().getString("command.bot-upvote.embed.title");
+        String description = ctx.getUserI18n().getString("command.bot-upvote.embed.description");
+
+        event.getHook().sendMessageEmbeds(Helper.successEmbed(title, description)).setComponents(ActionRow.of(getButtons())).queue();
     }
 
     private ArrayList<Button> getButtons() {
@@ -49,8 +46,8 @@ public class BotUpvoteCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Upvote the bot!";
+    public String getDescriptionPath() {
+        return "command.bot-upvote.description";
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.beanbeanjuice.cafebot.commands.games;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import net.dv8tion.jda.api.Permission;
@@ -20,11 +21,14 @@ public class RollCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         Optional<OptionMapping> sizeMapping = Optional.ofNullable(event.getOption("size"));
         int size = sizeMapping.map(OptionMapping::getAsInt).orElse(6);
         int roll = Helper.getRandomInteger(1, size + 1);
-        event.getHook().sendMessageEmbeds(Helper.descriptionEmbed(String.format("You rolled a **%d**!", roll))).queue();
+
+        String description = ctx.getGuildI18n().getString("command.roll.roll").replace("{number}", String.valueOf(roll));
+
+        event.getHook().sendMessageEmbeds(Helper.descriptionEmbed(description)).queue();
     }
 
     @Override
@@ -33,8 +37,8 @@ public class RollCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Roll a pair of dice!";
+    public String getDescriptionPath() {
+        return "command.roll.description";
     }
 
     @Override
@@ -45,8 +49,8 @@ public class RollCommand extends Command implements ICommand {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.INTEGER, "size", "The size of the die.", false)
-                        .setRequiredRange(1, 10000)
+                new OptionData(OptionType.INTEGER, "size", "command.roll.arguments.size.description", false)
+                        .setRequiredRange(1, Integer.MAX_VALUE)
         };
     }
 

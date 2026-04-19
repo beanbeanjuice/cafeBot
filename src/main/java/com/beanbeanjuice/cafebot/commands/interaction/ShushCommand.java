@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class ShushCommand extends Command implements ICommand, IInteractionComma
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.SHUSH, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.SHUSH, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class ShushCommand extends Command implements ICommand, IInteractionComma
     }
 
     @Override
-    public String getDescription() {
-        return "Shush someone!";
+    public String getDescriptionPath() {
+        return "command.interaction.shush.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class ShushCommand extends Command implements ICommand, IInteractionComma
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to shush."),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.shush.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class ShushCommand extends Command implements ICommand, IInteractionComma
 
     @Override
     public String getSelfString() {
-        return "%s just **shushed** themself...";
+        return "command.interaction.shush.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s just **shushed** %s...";
+        return "command.interaction.shush.other";
     }
 
     @Override
     public String getBotString() {
-        return "Don't you *dare* tell me to be quiet. <:moon_stare:1165826168428183562>";
+        return "command.interaction.shush.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s shushed others %d times. %s was shushed %d times.";
+        return "command.interaction.shush.footer";
     }
 
 }

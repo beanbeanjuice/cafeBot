@@ -1,0 +1,4 @@
+description: "Get the member count for your server!"
+embed:
+  title: "Member Count"
+  description: "There are {count} people in this server!"

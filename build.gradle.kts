@@ -21,8 +21,8 @@ allprojects {
     apply(plugin = "com.gradleup.shadow")
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_25
+        targetCompatibility = JavaVersion.VERSION_25
     }
 
     repositories {
@@ -100,6 +100,7 @@ tasks.clean {
 dependencies {
     implementation(project(":modules:cafeBot-api-wrapper"))
     implementation(project(":modules:meme-api-wrapper"))
+    implementation(project(":modules:i18n"))
 
     implementation("net.dv8tion:JDA:6.4.0") { exclude(module = "opus-java") }
 

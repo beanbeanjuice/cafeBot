@@ -19,8 +19,8 @@ public class GameCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Something to do with games!";
+    public String getDescriptionPath() {
+        return "command.game.description";
     }
 
     @Override

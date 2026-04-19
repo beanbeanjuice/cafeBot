@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.type.DiscordServer;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -19,22 +20,28 @@ public class AiCommand extends Command implements ICommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         String guildId = event.getGuild().getId();
         boolean status = event.getOption("status").getAsBoolean();
 
-        String statusString = (status) ? "Enabled ✅" : "Disabled ❌";
-
         // TODO: Update syntax for this later
         bot.getCafeAPI().getGuildApi().updateDiscordServer(guildId, new DiscordServer(null, 0, status)).thenRun(() -> {
+            String title = ctx.getUserI18n().getString("command.ai.embed.title");
+            String enabledString = ctx.getUserI18n().getString("command.ai.embed.enabled");
+            String disabledString = ctx.getUserI18n().getString("command.ai.embed.disabled");
+            String statusString = (status) ? enabledString : disabledString;
+
             event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                    "AI Response Changed",
-                    String.format("Status: %s", statusString)
+                    title,
+                    statusString
             )).queue();
         }).exceptionally((ex) -> {
+            String title = ctx.getUserI18n().getString("command.ai.error.title");
+            String description = ctx.getUserI18n().getString("command.ai.error.description");
+
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                    "Error Changing AI Response",
-                    "There was an error changing the AI response... I'm so sorry..."
+                    title,
+                    description
             )).queue();
 
             bot.getLogger().log(this.getClass(), LogLevel.WARN, "Error Updating AI Response: " + ex.getMessage(), true, false);
@@ -48,8 +55,8 @@ public class AiCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Want a sassy AI that will serve you some coffee?";
+    public String getDescriptionPath() {
+        return "command.ai.description";
     }
 
     @Override
@@ -60,7 +67,7 @@ public class AiCommand extends Command implements ICommand {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.BOOLEAN, "status", "Whether to enable or disable the \"AI\".", true)
+                new OptionData(OptionType.BOOLEAN, "status", "command.ai.arguments.status.description", true)
         };
     }
 

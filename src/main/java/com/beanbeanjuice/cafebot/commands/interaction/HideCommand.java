@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class HideCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.HIDE, event, this.bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.HIDE, event, this.bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class HideCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public String getDescription() {
-        return "Hide from someone... ;^;";
+    public String getDescriptionPath() {
+        return "command.interaction.hide.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class HideCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to hide from..."),
-                new OptionData(OptionType.STRING, "message", "An optional message you can send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.hide.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class HideCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s is **hiding** for... no reason? What? <:kuromi_question:841921649132568576>";
+        return "command.interaction.hide.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s is **hiding** from %s! Um... what did you do? <:kuromi_question:841921649132568576>";
+        return "command.interaction.hide.other";
     }
 
     @Override
     public String getBotString() {
-        return "Why are you hiding from me?! Come back! <:cafeBot_angry:1171726164092518441>";
+        return "command.interaction.hide.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s hid from others %d times. %s caused others to hide %d times.";
+        return "command.interaction.hide.footer";
     }
 
 }

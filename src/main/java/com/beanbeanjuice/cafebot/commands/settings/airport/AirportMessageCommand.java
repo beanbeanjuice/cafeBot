@@ -19,8 +19,8 @@ public class AirportMessageCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Set or remove an airport message!";
+    public String getDescriptionPath() {
+        return "command.airport.description";
     }
 
     @Override

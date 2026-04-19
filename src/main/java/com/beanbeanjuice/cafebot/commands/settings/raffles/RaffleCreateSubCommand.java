@@ -4,7 +4,9 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.CustomChannelType;
 import com.beanbeanjuice.cafebot.api.wrapper.api.exception.ApiRequestException;
 import com.beanbeanjuice.cafebot.api.wrapper.type.Raffle;
 import com.beanbeanjuice.cafebot.CafeBot;
+import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ISubCommand;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
 import com.beanbeanjuice.cafebot.utility.logging.LogLevel;
@@ -27,7 +29,8 @@ public class RaffleCreateSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        I18N bundle = ctx.getUserI18n();
         String guildId = event.getGuild().getId();
 
         bot.getCafeAPI().getCustomChannelApi().getCustomChannel(guildId, CustomChannelType.RAFFLE)
@@ -38,18 +41,18 @@ public class RaffleCreateSubCommand extends Command implements ISubCommand {
                         throw new IllegalStateException("Raffle channel missing");
                     }
 
-                    handleRaffleCreations(event, channel);
+                    handleRaffleCreations(event, channel, bundle);
                 })
                 .exceptionally((ex) -> {
                     event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                            "Raffle Channel Not Set",
-                            "I-... I can't do that... you don't have a raffle channel set 🥺. Try using `/channel set`!"
+                            bundle.getString("command.raffle.subcommand.create.embed.error.no-channel.title"),
+                            bundle.getString("command.raffle.subcommand.create.embed.error.no-channel.description")
                     )).queue();
                     return null;
                 });
     }
 
-    private void handleRaffleCreations(SlashCommandInteractionEvent event, TextChannel raffleChannel) {
+    private void handleRaffleCreations(SlashCommandInteractionEvent event, TextChannel raffleChannel, I18N bundle) {
         String guildId = event.getGuild().getId();
         String title = event.getOption("title").getAsString();
         Optional<String> description = Optional.ofNullable(event.getOption("description")).map(OptionMapping::getAsString);
@@ -61,7 +64,7 @@ public class RaffleCreateSubCommand extends Command implements ISubCommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Helper.getRandomColor());
         embedBuilder.setTitle(title);
-        embedBuilder.addField("Total Winners", String.format("`%d`", winners), false);
+        embedBuilder.addField(bundle.getString("command.raffle.subcommand.create.embed.field.winners"), String.format("`%d`", winners), false);
         description.ifPresent(embedBuilder::setDescription);
 
         raffleChannel.sendMessageEmbeds(embedBuilder.build()).queue((message) -> {
@@ -71,12 +74,14 @@ public class RaffleCreateSubCommand extends Command implements ISubCommand {
                     .thenAccept((newRaffle) -> {
                         embedBuilder.setFooter(String.format("Raffle ID: %d", newRaffle.getId()));
                         embedBuilder.setTimestamp(newRaffle.getEndsAt());
-                        embedBuilder.addField("Ends At", String.format("<t:%s>", newRaffle.getEndsAt().getEpochSecond()), true);
+                        embedBuilder.addField(bundle.getString("command.raffle.subcommand.create.embed.field.ends-at"), String.format("<t:%s>", newRaffle.getEndsAt().getEpochSecond()), true);
                         message.editMessageEmbeds(embedBuilder.build()).queue((finalMessage) -> finalMessage.addReaction(Emoji.fromUnicode("✅")).queue());
 
+                        String successDescription = bundle.getString("command.raffle.subcommand.create.embed.success.description")
+                                .replace("{channel}", message.getChannel().getAsMention());
                         event.getHook().sendMessageEmbeds(Helper.successEmbed(
-                                "Raffle Created!",
-                                String.format("Hai!~ Your raffle has been created here: %s", message.getChannel().getAsMention())
+                                bundle.getString("command.raffle.subcommand.create.embed.success.title"),
+                                successDescription
                         )).queue();
                     })
                     .exceptionally((ex) -> {
@@ -85,9 +90,11 @@ public class RaffleCreateSubCommand extends Command implements ISubCommand {
                         if (ex.getCause() instanceof ApiRequestException apiRequestException) {
                             String error = apiRequestException.getBody().get("error").get("raffles").get(0).asString();
 
+                            String errorDescription = bundle.getString("command.raffle.subcommand.create.embed.error.description")
+                                    .replace("{error}", error);
                             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
-                                    "Error Creating Raffle",
-                                    String.format("I... I couldn't create a raffle for some reason... My boss said this: `%s`.", error)
+                                    bundle.getString("command.raffle.subcommand.create.embed.error.title"),
+                                    errorDescription
                             )).queue();
                             return null;
                         }
@@ -104,18 +111,18 @@ public class RaffleCreateSubCommand extends Command implements ISubCommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Create a raffle!";
+    public String getDescriptionPath() {
+        return "command.raffle.subcommand.create.description";
     }
 
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.STRING, "title", "The raffle title.", true),
-                new OptionData(OptionType.INTEGER, "winners", "The number of people who can win the raffle.", true)
+                new OptionData(OptionType.STRING, "title", "command.raffle.subcommand.create.arguments.title.description", true),
+                new OptionData(OptionType.INTEGER, "winners", "command.raffle.subcommand.create.arguments.winners.description", true)
                         .setMinValue(1),
-                new OptionData(OptionType.INTEGER, "time", "The number of minutes to run the raffle for.", true),
-                new OptionData(OptionType.STRING, "description", "The raffle description.", false)
+                new OptionData(OptionType.INTEGER, "time", "command.raffle.subcommand.create.arguments.time.description", true),
+                new OptionData(OptionType.STRING, "description", "command.raffle.subcommand.create.arguments.description.description", false)
         };
     }
 

@@ -4,6 +4,7 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.InteractionType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.utility.commands.Command;
 import com.beanbeanjuice.cafebot.utility.commands.CommandCategory;
+import com.beanbeanjuice.cafebot.utility.commands.CommandContext;
 import com.beanbeanjuice.cafebot.utility.commands.ICommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,8 +18,8 @@ public class LoveCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public void handle(SlashCommandInteractionEvent event) {
-        this.handleInteraction(InteractionType.LOVE, event, bot);
+    public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
+        this.handleInteraction(InteractionType.LOVE, event, bot, ctx.getDefaultBundle());
     }
 
     @Override
@@ -27,8 +28,8 @@ public class LoveCommand extends Command implements ICommand, IInteractionComman
     }
 
     @Override
-    public String getDescription() {
-        return "Love someone!~ <3";
+    public String getDescriptionPath() {
+        return "command.interaction.love.description";
     }
 
     @Override
@@ -39,8 +40,8 @@ public class LoveCommand extends Command implements ICommand, IInteractionComman
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.USER, "user", "The user you want to express your love to."),
-                new OptionData(OptionType.STRING, "message", "An optional message you want to send.")
+                new OptionData(OptionType.USER, "user", "command.interaction.love.arguments.user.description"),
+                new OptionData(OptionType.STRING, "message", "command.interaction.common.arguments.message.description")
         };
     }
 
@@ -66,22 +67,22 @@ public class LoveCommand extends Command implements ICommand, IInteractionComman
 
     @Override
     public String getSelfString() {
-        return "%s **loves** themself... ego much? <:disgusted:1257142116539301909>";
+        return "command.interaction.love.self";
     }
 
     @Override
     public String getOtherString() {
-        return "%s **loves** %s! <:aww:1257143681878593727>";
+        return "command.interaction.love.other";
     }
 
     @Override
     public String getBotString() {
-        return "I-... don't feel the same way... <:cafeBot_sad:1171726165040447518>";
+        return "command.interaction.love.bot";
     }
 
     @Override
     public String getFooterString() {
-        return "%s loved others %d times. %s was loved %d times.";
+        return "command.interaction.love.footer";
     }
 
 }

@@ -16,8 +16,8 @@ public class TwitchCommand extends Command implements ICommand {
     }
 
     @Override
-    public String getDescription() {
-        return "Add or remove channels/notification channels.";
+    public String getDescriptionPath() {
+        return "command.twitch.description";
     }
 
     @Override
