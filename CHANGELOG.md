@@ -1,5 +1,32 @@
 # Changelog
 
+## [4.5.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.4.1...v4.5.0) (2026-04-19)
+
+
+### Features
+
+* [GH-723] Add i18n ([#740](https://github.com/beanbeanjuice/cafeBot/issues/740)) ([e6d356c](https://github.com/beanbeanjuice/cafeBot/commit/e6d356cf15ef5a590e97a9d88b542ed040967cbb))
+* [GH-756] Add Local Development Instructions ([#757](https://github.com/beanbeanjuice/cafeBot/issues/757)) ([14fef6d](https://github.com/beanbeanjuice/cafeBot/commit/14fef6dda6b89fca129ea26af09e3b0d64599a83))
+
+
+### Bug Fixes
+
+* [GH-763] Update CI ([#764](https://github.com/beanbeanjuice/cafeBot/issues/764)) ([0edff35](https://github.com/beanbeanjuice/cafeBot/commit/0edff358eb39ec7603e4683bcd408ec38b6e6b79))
+* **deps:** bump com.gradleup.shadow from 9.3.1 to 9.3.2 ([#741](https://github.com/beanbeanjuice/cafeBot/issues/741)) ([92c198c](https://github.com/beanbeanjuice/cafeBot/commit/92c198c0290a74b451a4293c145f952459cb1a1e))
+* **deps:** bump com.gradleup.shadow from 9.3.2 to 9.4.0 ([#745](https://github.com/beanbeanjuice/cafeBot/issues/745)) ([07df047](https://github.com/beanbeanjuice/cafeBot/commit/07df0470e6d1dc9ab3b86381fdca329e1b758f1e))
+* **deps:** bump com.gradleup.shadow from 9.4.0 to 9.4.1 ([#751](https://github.com/beanbeanjuice/cafeBot/issues/751)) ([9ae14cc](https://github.com/beanbeanjuice/cafeBot/commit/9ae14ccc28a199aebd0e5f4934393a9e1b8e9d05))
+* **deps:** bump gradle-wrapper from 8.14.3 to 9.4.0 ([#743](https://github.com/beanbeanjuice/cafeBot/issues/743)) ([1419871](https://github.com/beanbeanjuice/cafeBot/commit/141987158dd7d5e689dc71ee9d2d2a14b2b8f537))
+* **deps:** bump gradle-wrapper from 9.4.0 to 9.4.1 ([#747](https://github.com/beanbeanjuice/cafeBot/issues/747)) ([bf7d315](https://github.com/beanbeanjuice/cafeBot/commit/bf7d315b8463828fb35a58ed8d7a6d255b250742))
+* **deps:** bump net.dv8tion:JDA from 6.3.1 to 6.4.0 ([#752](https://github.com/beanbeanjuice/cafeBot/issues/752)) ([6a6eb8c](https://github.com/beanbeanjuice/cafeBot/commit/6a6eb8c48e7e33e1a12e421ae32af7df45ae6121))
+* **deps:** bump net.dv8tion:JDA from 6.4.0 to 6.4.1 ([#762](https://github.com/beanbeanjuice/cafeBot/issues/762)) ([82ee048](https://github.com/beanbeanjuice/cafeBot/commit/82ee048a3a2e0483e3c888a740851a01eb916171))
+* **deps:** bump org.apache.httpcomponents.client5:httpclient5 from 5.6 to 5.6.1 ([#760](https://github.com/beanbeanjuice/cafeBot/issues/760)) ([cc2c6d6](https://github.com/beanbeanjuice/cafeBot/commit/cc2c6d63cd830a319fdf24d7a3b49d3a00c5262c))
+* **deps:** bump org.apache.logging.log4j:log4j-core from 2.25.3 to 2.25.4 ([#755](https://github.com/beanbeanjuice/cafeBot/issues/755)) ([5dd8965](https://github.com/beanbeanjuice/cafeBot/commit/5dd8965f2525a179e78256d1d939deb0c66ed071))
+* **deps:** bump org.mnode.ical4j:ical4j from 4.2.3 to 4.2.4 ([#749](https://github.com/beanbeanjuice/cafeBot/issues/749)) ([46b20c3](https://github.com/beanbeanjuice/cafeBot/commit/46b20c3ad1d151f21e8476cb105d7abe0dded1c6))
+* **deps:** bump org.mnode.ical4j:ical4j from 4.2.4 to 4.2.5 ([#759](https://github.com/beanbeanjuice/cafeBot/issues/759)) ([3295b14](https://github.com/beanbeanjuice/cafeBot/commit/3295b143a59a3217d22663727ba3c8a4a18d8bbb))
+* **deps:** bump org.projectlombok:lombok from 1.18.42 to 1.18.44 ([#744](https://github.com/beanbeanjuice/cafeBot/issues/744)) ([da04471](https://github.com/beanbeanjuice/cafeBot/commit/da0447105d748b5e8830eff837c1264862a4f01d))
+* **deps:** bump tools.jackson.core:jackson-core from 3.1.0 to 3.1.1 ([#753](https://github.com/beanbeanjuice/cafeBot/issues/753)) ([ff5908a](https://github.com/beanbeanjuice/cafeBot/commit/ff5908a7c4ea32c1d02ae1f416a70ba01d59fd3f))
+* **deps:** bump tools.jackson.core:jackson-databind from 3.1.1 to 3.1.2 ([#761](https://github.com/beanbeanjuice/cafeBot/issues/761)) ([d6c9ab2](https://github.com/beanbeanjuice/cafeBot/commit/d6c9ab20b45c05e60385001d31ea932183bbdb03))
+
 ## [4.4.1](https://github.com/beanbeanjuice/cafeBot/compare/v4.4.0...v4.4.1) (2026-02-28)
 
 
