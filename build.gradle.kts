@@ -107,7 +107,7 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-core:2.25.4")
     implementation("org.apache.logging.log4j:log4j-slf4j2-impl:2.25.4")  // JDA logging.
 
-    implementation("org.mnode.ical4j:ical4j:4.2.4")  // Calendar Stuff - https://mvnrepository.com/artifact/org.mnode.ical4j/ical4j
+    implementation("org.mnode.ical4j:ical4j:4.2.5")  // Calendar Stuff - https://mvnrepository.com/artifact/org.mnode.ical4j/ical4j
 
     implementation("com.github.twitch4j:twitch4j:1.26.0")  // Twitch - https://github.com/twitch4j/twitch4j
 
