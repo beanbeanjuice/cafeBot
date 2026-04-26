@@ -36,8 +36,8 @@ allprojects {
 
     dependencies {
         // Lombok
-        compileOnly("org.projectlombok:lombok:1.18.44")
-        annotationProcessor("org.projectlombok:lombok:1.18.44")
+        compileOnly("org.projectlombok:lombok:1.18.46")
+        annotationProcessor("org.projectlombok:lombok:1.18.46")
 
         implementation("org.apache.httpcomponents.client5:httpclient5:5.6.1")  // HTTP Requests
 
@@ -112,8 +112,8 @@ dependencies {
 
     implementation("com.github.twitch4j:twitch4j:1.26.0")  // Twitch - https://github.com/twitch4j/twitch4j
 
-    compileOnly("org.projectlombok:lombok:1.18.44")
-    annotationProcessor("org.projectlombok:lombok:1.18.44")
+    compileOnly("org.projectlombok:lombok:1.18.46")
+    annotationProcessor("org.projectlombok:lombok:1.18.46")
 }
 
 tasks.withType<ShadowJar> {
