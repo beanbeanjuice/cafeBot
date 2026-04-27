@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.5.1](https://github.com/beanbeanjuice/cafeBot/compare/v4.5.0...v4.5.1) (2026-04-27)
+
+
+### Bug Fixes
+
+* **deps:** bump org.projectlombok:lombok from 1.18.44 to 1.18.46 ([#767](https://github.com/beanbeanjuice/cafeBot/issues/767)) ([472b3af](https://github.com/beanbeanjuice/cafeBot/commit/472b3af907437ceff5f479216f3e23ef0a654cfe))
+* **deps:** bump org.yaml:snakeyaml from 2.5 to 2.6 ([#766](https://github.com/beanbeanjuice/cafeBot/issues/766)) ([8bef37e](https://github.com/beanbeanjuice/cafeBot/commit/8bef37e87d617277f001564819fab42cd2cb452b))
+
 ## [4.5.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.4.1...v4.5.0) (2026-04-19)
 
 
