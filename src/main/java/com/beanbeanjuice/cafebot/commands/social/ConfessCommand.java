@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -58,6 +59,7 @@ public class ConfessCommand extends Command implements ICommand {
 
         String sentDescription = bundle.getString("command.confess.embed.sent.description")
                 .replace("{channel}", channel.getAsMention());
+
         event.getHook().sendMessageEmbeds(
                 Helper.successEmbed(
                         bundle.getString("command.confess.embed.sent.title"),

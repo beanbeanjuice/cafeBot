@@ -15,6 +15,9 @@ on:
 jobs:
   gradle-build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      dependency-graph: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v6
@@ -30,6 +33,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
         with:
           gradle-version: '${{ inputs.gradle-version }}'
+          dependency-graph: generate-and-submit
 
       - name: Build with Gradle
         run: gradle shadowJar
