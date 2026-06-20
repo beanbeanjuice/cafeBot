@@ -102,7 +102,7 @@ dependencies {
     implementation(project(":modules:meme-api-wrapper"))
     implementation(project(":modules:i18n"))
 
-    implementation("net.dv8tion:JDA:6.4.1") { exclude(module = "opus-java") }
+    implementation("net.dv8tion:JDA:6.4.2") { exclude(module = "opus-java") }
 
     implementation("org.apache.logging.log4j:log4j-api:2.26.0")  // Logging - https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
     implementation("org.apache.logging.log4j:log4j-core:2.26.0")
