@@ -14,6 +14,7 @@ public class TicTacToeConsentListener extends ListenerAdapter {
 
     private final CafeBot bot;
 
+    // Consent button.
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event) {
         if (event.getUser().isBot()) return;
@@ -27,6 +28,7 @@ public class TicTacToeConsentListener extends ListenerAdapter {
         parseEvent(event);
     }
 
+    // Start Game
     private void parseEvent(ButtonInteractionEvent event) {
         String[] splitId = event.getComponentId().replace(TicTacToeHandler.CONSENT_BUTTON_ID, "").split(":");
         String player1Id = splitId[0];
@@ -35,7 +37,7 @@ public class TicTacToeConsentListener extends ListenerAdapter {
 
         Guild guild = event.getGuild();
         Member player2 = event.getMember(); // Person who clicked event must be player2.
-        Member player1 = guild.getMemberById(player1Id);
+        Member player1 = guild.retrieveMemberById(player1Id).complete();
 
         if (player1 == null || player2 == null) {
             event.getHook().sendMessageEmbeds(Helper.errorEmbed(
