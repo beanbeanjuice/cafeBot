@@ -4,6 +4,8 @@ import com.beanbeanjuice.cafebot.CafeBot;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.entities.emoji.UnicodeEmoji;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -14,6 +16,8 @@ public class ConfessionBanListener extends ListenerAdapter {
 
     private final CafeBot bot;
 
+    private static final UnicodeEmoji BAN_EMOJI = Emoji.fromUnicode("🔨");
+
     public ConfessionBanListener(CafeBot bot) {
         this.bot = bot;
     }
@@ -21,7 +25,9 @@ public class ConfessionBanListener extends ListenerAdapter {
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
         if (!event.isFromGuild()) return;
+        if (event.getUser() != null && event.getUser().isBot()) return;
         if (event.getMember() == null) return;
+        if (!event.getEmoji().equals(BAN_EMOJI)) return;
 
         Member admin = event.getMember();
         if (admin.getUser().isBot()) return;

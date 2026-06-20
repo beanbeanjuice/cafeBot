@@ -1,6 +1,7 @@
 # Output
 libs/
 .claude/
+CLAUDE.md
 
 # Node/NPM
 /node_modules/
