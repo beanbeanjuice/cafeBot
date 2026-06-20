@@ -1,5 +1,27 @@
 # Changelog
 
+## [4.5.1](https://github.com/beanbeanjuice/cafeBot/compare/v4.5.0...v4.5.1) (2026-06-20)
+
+
+### Bug Fixes
+
+* [GH-783] Invisible TicTacToe User ([#786](https://github.com/beanbeanjuice/cafeBot/issues/786)) ([46411b8](https://github.com/beanbeanjuice/cafeBot/commit/46411b85044b1e4f803bcfea82b3a9351ccdec55))
+* [GH-784] Fix Confession Reaction ([#785](https://github.com/beanbeanjuice/cafeBot/issues/785)) ([025670e](https://github.com/beanbeanjuice/cafeBot/commit/025670e3f9ba255e62dafb3458a224758fa428de))
+* **deps:** bump com.gradleup.shadow from 9.4.1 to 9.4.2 ([#778](https://github.com/beanbeanjuice/cafeBot/issues/778)) ([71ebcfe](https://github.com/beanbeanjuice/cafeBot/commit/71ebcfe729e74227bea6bcc8f28486ffe7a4bd4c))
+* **deps:** bump gradle-wrapper from 9.4.1 to 9.5.0 ([#771](https://github.com/beanbeanjuice/cafeBot/issues/771)) ([2c2e48f](https://github.com/beanbeanjuice/cafeBot/commit/2c2e48fc6f98c40a3a42c2a75a2fcf9b66b051a3))
+* **deps:** bump gradle-wrapper from 9.5.0 to 9.5.1 ([#775](https://github.com/beanbeanjuice/cafeBot/issues/775)) ([ee2cf63](https://github.com/beanbeanjuice/cafeBot/commit/ee2cf63cf782ca228e9d56d04aabe249afb490ef))
+* **deps:** bump net.dv8tion:JDA from 6.4.1 to 6.4.2 ([#780](https://github.com/beanbeanjuice/cafeBot/issues/780)) ([ba916b9](https://github.com/beanbeanjuice/cafeBot/commit/ba916b90d06f7e453a79a4adf21ecf0542a70fe8))
+* **deps:** bump org.apache.logging.log4j:log4j-api from 2.25.4 to 2.26.0 ([#774](https://github.com/beanbeanjuice/cafeBot/issues/774)) ([76b4589](https://github.com/beanbeanjuice/cafeBot/commit/76b45896df9282e2fc4a9bc374cefd9ab1530628))
+* **deps:** bump org.apache.logging.log4j:log4j-core from 2.25.4 to 2.26.0 ([#773](https://github.com/beanbeanjuice/cafeBot/issues/773)) ([b7aa603](https://github.com/beanbeanjuice/cafeBot/commit/b7aa60306508c61d60a6a9ca165988e8f2481b09))
+* **deps:** bump org.apache.logging.log4j:log4j-slf4j2-impl from 2.25.4 to 2.26.0 ([#772](https://github.com/beanbeanjuice/cafeBot/issues/772)) ([09bee33](https://github.com/beanbeanjuice/cafeBot/commit/09bee33277d9a775c782776d9ff9aa2059cafca8))
+* **deps:** bump org.junit.jupiter:junit-jupiter from 6.0.3 to 6.1.0 ([#776](https://github.com/beanbeanjuice/cafeBot/issues/776)) ([b8915b4](https://github.com/beanbeanjuice/cafeBot/commit/b8915b46b9c15e64b736c03f25943ae24edce832))
+* **deps:** bump org.projectlombok:lombok from 1.18.44 to 1.18.46 ([#767](https://github.com/beanbeanjuice/cafeBot/issues/767)) ([472b3af](https://github.com/beanbeanjuice/cafeBot/commit/472b3af907437ceff5f479216f3e23ef0a654cfe))
+* **deps:** bump org.yaml:snakeyaml from 2.5 to 2.6 ([#766](https://github.com/beanbeanjuice/cafeBot/issues/766)) ([8bef37e](https://github.com/beanbeanjuice/cafeBot/commit/8bef37e87d617277f001564819fab42cd2cb452b))
+* **deps:** bump tools.jackson.core:jackson-core from 3.1.2 to 3.1.3 ([#769](https://github.com/beanbeanjuice/cafeBot/issues/769)) ([ae7008e](https://github.com/beanbeanjuice/cafeBot/commit/ae7008eef7222e3e3315eea622fe54f3516e1c72))
+* **deps:** bump tools.jackson.core:jackson-core from 3.1.3 to 3.2.0 ([#782](https://github.com/beanbeanjuice/cafeBot/issues/782)) ([263f11c](https://github.com/beanbeanjuice/cafeBot/commit/263f11cf2526f52b80fc978605bb6a4f82993ccc))
+* **deps:** bump tools.jackson.core:jackson-databind from 3.1.2 to 3.1.3 ([#770](https://github.com/beanbeanjuice/cafeBot/issues/770)) ([667749c](https://github.com/beanbeanjuice/cafeBot/commit/667749ce75b73294daa118b6b360842563d8f202))
+* **deps:** bump tools.jackson.core:jackson-databind from 3.1.3 to 3.2.0 ([#781](https://github.com/beanbeanjuice/cafeBot/issues/781)) ([6bbdbbe](https://github.com/beanbeanjuice/cafeBot/commit/6bbdbbe68154483c6a76653ca6380430f8f43385))
+
 ## [4.5.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.4.1...v4.5.0) (2026-04-19)
 
 
