@@ -89,6 +89,7 @@ public class CafeBot {
     @Getter private TicTacToeHandler ticTacToeHandler;
     @Getter private ConfessionHandler confessionHandler;
     @Getter private SnipeHandler snipeHandler;
+    private ConfessionRelayListener confessionRelayListener;
 
     // Additional Items
     @Getter private static final AtomicInteger commandsRun = new AtomicInteger(0); // Atomic since can run across multiple shards.
@@ -252,6 +253,13 @@ public class CafeBot {
                 new BindCommand(this)
         );
 
+        // Message-context ("Apps" menu) commands. These share the same updateCommands()
+        // call as slash commands, so they must be registered before pushCommands().
+        this.confessionRelayListener = new ConfessionRelayListener(this);
+        this.commandHandler.addMessageCommands(this.confessionRelayListener);
+
+        this.commandHandler.pushCommands();
+
         this.shardManager.addEventListener(commandHandler);
         this.helpHandler = new HelpHandler(commandHandler);
         this.twitchHandler = new TwitchHandler(EnvironmentVariable.CAFEBOT_TWITCH_ACCESS_TOKEN.getSystemVariable(), this);
@@ -302,6 +310,7 @@ public class CafeBot {
                 new PollModalListener(this),
                 new VoiceRoleBindListener(this),
                 new ConfessionBanListener(this),
+                this.confessionRelayListener,
                 new HoneypotListener(this),
                 new SnipeListener(this)
         );

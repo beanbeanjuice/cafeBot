@@ -4,20 +4,24 @@ import com.beanbeanjuice.cafebot.api.wrapper.api.enums.CustomChannelType;
 import com.beanbeanjuice.cafebot.CafeBot;
 import com.beanbeanjuice.cafebot.i18n.I18N;
 import com.beanbeanjuice.cafebot.utility.commands.*;
+import com.beanbeanjuice.cafebot.utility.handlers.ConfessionEmbedBuilder;
 import com.beanbeanjuice.cafebot.utility.helper.Helper;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.utils.FileUpload;
 
-import java.time.Instant;
 import java.util.Optional;
 
 public class ConfessCommand extends Command implements ICommand {
+
+    // Discord's file-upload cap for non-boosted servers.
+    private static final long MAX_ATTACHMENT_SIZE_BYTES = 25L * 1024 * 1024;
 
     public ConfessCommand(final CafeBot cafeBot) {
         super(cafeBot);
@@ -27,7 +31,26 @@ public class ConfessCommand extends Command implements ICommand {
     public void handle(SlashCommandInteractionEvent event, CommandContext ctx) {
         I18N bundle = ctx.getUserI18n();
         String guildID = event.getGuild().getId();
-        String message = event.getOption("message").getAsString();
+
+        Optional<String> messageOptional = Optional.ofNullable(event.getOption("message")).map(OptionMapping::getAsString);
+        Optional<Message.Attachment> attachmentOptional = Optional.ofNullable(event.getOption("attachment")).map(OptionMapping::getAsAttachment);
+
+        // At least one of {message, attachment} is required.
+        if (messageOptional.isEmpty() && attachmentOptional.isEmpty()) {
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                    bundle.getString("command.confess.embed.empty-error.title"),
+                    bundle.getString("command.confess.embed.empty-error.description")
+            )).queue();
+            return;
+        }
+
+        if (attachmentOptional.isPresent() && attachmentOptional.get().getSize() > MAX_ATTACHMENT_SIZE_BYTES) {
+            event.getHook().sendMessageEmbeds(Helper.errorEmbed(
+                    bundle.getString("command.confess.embed.attachment-too-large.title"),
+                    bundle.getString("command.confess.embed.attachment-too-large.description")
+            )).queue();
+            return;
+        }
 
         bot.getCafeAPI().getCustomChannelApi().getCustomChannel(guildID, CustomChannelType.CONFESSIONS)
                 .thenAccept((customChannel) -> {
@@ -35,7 +58,7 @@ public class ConfessCommand extends Command implements ICommand {
                     Optional<TextChannel> channelOptional = Optional.ofNullable(event.getGuild().getChannelById(TextChannel.class, channelId));
 
                     channelOptional.ifPresentOrElse(
-                            (channel) -> sendVent(message, channel, event, bundle),
+                            (channel) -> sendVent(messageOptional.orElse(null), attachmentOptional.orElse(null), channel, event, bundle),
                             () -> {
                                 sendFailure(event, bundle);
 
@@ -52,11 +75,36 @@ public class ConfessCommand extends Command implements ICommand {
                 });
     }
 
-    private void sendVent(final String message, final TextChannel channel, final SlashCommandInteractionEvent event, final I18N bundle) {
-        channel.sendMessageEmbeds(getVentEmbed(message, bundle)).queue((confessionMessage) -> {
-            bot.getConfessionHandler().addConfession(confessionMessage.getId(), event.getUser().getId());
-        });
+    private void sendVent(final String message,
+                          final Message.Attachment attachment,
+                          final TextChannel channel,
+                          final SlashCommandInteractionEvent event,
+                          final I18N bundle) {
+        MessageEmbed embed = ConfessionEmbedBuilder.build(message, attachment != null, bundle);
+        String userId = event.getUser().getId();
 
+        if (attachment == null) {
+            channel.sendMessageEmbeds(embed).queue(
+                    (confessionMessage) -> bot.getConfessionHandler().addConfession(confessionMessage.getId(), userId)
+            );
+            sendSuccess(channel, event, bundle);
+            return;
+        }
+
+        // Must be re-uploaded as a real attachment
+        attachment.getProxy().download().thenAccept((inputStream) -> {
+            FileUpload upload = FileUpload.fromData(inputStream, attachment.getFileName());
+            channel.sendMessageEmbeds(embed).addFiles(upload).queue(
+                    (confessionMessage) -> bot.getConfessionHandler().addConfession(confessionMessage.getId(), userId)
+            );
+            sendSuccess(channel, event, bundle);
+        }).exceptionally((ex) -> {
+            sendFailure(event, bundle);
+            return null;
+        });
+    }
+
+    private void sendSuccess(final TextChannel channel, final SlashCommandInteractionEvent event, final I18N bundle) {
         String sentDescription = bundle.getString("command.confess.embed.sent.description")
                 .replace("{channel}", channel.getAsMention());
 
@@ -66,16 +114,6 @@ public class ConfessCommand extends Command implements ICommand {
                         sentDescription
                 )
         ).queue();
-    }
-
-    private MessageEmbed getVentEmbed(final String message, final I18N bundle) {
-        return new EmbedBuilder()
-                .setTitle(bundle.getString("command.confess.embed.title"))
-                .setColor(Helper.getRandomColor())
-                .setDescription(message)
-                .setTimestamp(Instant.now())
-                .setFooter(bundle.getString("command.confess.embed.footer"))
-                .build();
     }
 
     private void sendFailure(final SlashCommandInteractionEvent event, final I18N bundle) {
@@ -127,7 +165,8 @@ public class ConfessCommand extends Command implements ICommand {
     @Override
     public OptionData[] getOptions() {
         return new OptionData[] {
-                new OptionData(OptionType.STRING, "message", "command.confess.arguments.message.description", true)
+                new OptionData(OptionType.STRING, "message", "command.confess.arguments.message.description", false),
+                new OptionData(OptionType.ATTACHMENT, "attachment", "command.confess.arguments.attachment.description", false)
         };
     }
 

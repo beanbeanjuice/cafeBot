@@ -20,13 +20,18 @@ public class CommandHandler extends ListenerAdapter {
     private final CafeBot cafeBot;
     @Getter private final HashMap<String, ICommand> commands;
 
+    // All slash + message-context command data accumulated via addCommands / addMessageCommands.
+    // Discord's updateCommands() replaces the entire command set, so both are kind of pushed
+    // together in a single call via pushCommands().
+    private final List<CommandData> pendingCommandData;
+
     public CommandHandler(final CafeBot cafeBot) {
         this.cafeBot = cafeBot;
         commands = new HashMap<>();
+        pendingCommandData = new ArrayList<>();
     }
 
     public void addCommands(final ICommand... commands) {
-        ArrayList<SlashCommandData> slashCommands = new ArrayList<>();
         Arrays.stream(commands).forEach((newCommand) -> {
             SlashCommandData commandData = getCommandData(newCommand);
 
@@ -42,21 +47,53 @@ public class CommandHandler extends ListenerAdapter {
                     .toArray(SubcommandGroupData[]::new);
             commandData.addSubcommandGroups(groupDataArray);
 
-            slashCommands.add(commandData);
+            pendingCommandData.add(commandData);
             this.commands.put(newCommand.getName(), newCommand);
 
             cafeBot.getLogger().log(CommandHandler.class, LogLevel.INFO, "Adding command: /" + newCommand.getName(), false, false);
         });
+    }
 
+    /**
+     * Adds message-context ("Apps" menu) commands. These are not dispatched through
+     * {@link #onSlashCommandInteraction(SlashCommandInteractionEvent)} -- their handlers
+     * are expected to be {@link ListenerAdapter}s registered separately on the shard
+     * manager. This method only handles the Discord-side registration metadata.
+     */
+    public void addMessageCommands(final IMessageCommand... messageCommands) {
+        Arrays.stream(messageCommands).forEach((cmd) -> {
+            CommandData data = Commands.message(cmd.getName());
+
+            ArrayList<InteractionContextType> contexts = new ArrayList<>();
+            if (cmd.allowGuild()) contexts.add(InteractionContextType.GUILD);
+            if (cmd.allowDM()) contexts.add(InteractionContextType.BOT_DM);
+            if (contexts.isEmpty()) contexts.add(InteractionContextType.GUILD); // fail-safe; Discord requires at least one
+            data.setContexts(contexts);
+
+            data.setNSFW(cmd.isNSFW());
+            data.setDefaultPermissions(DefaultMemberPermissions.enabledFor(cmd.getPermissions()));
+
+            pendingCommandData.add(data);
+            cafeBot.getLogger().log(CommandHandler.class, LogLevel.INFO, "Adding message command: " + cmd.getName(), false, false);
+        });
+    }
+
+    /**
+     * Push every buffered slash + message-context command to Discord in a single
+     * {@code updateCommands()} call. Must be called after all {@code addCommands} and
+     * {@code addMessageCommands} invocations, because {@code updateCommands()} replaces
+     * the entire application-command set.
+     */
+    public void pushCommands() {
         cafeBot.getShardManager()
                 .getShards()
                 .getFirst()
                 .updateCommands()
-                .addCommands(slashCommands)
+                .addCommands(pendingCommandData)
                 .queue((e) -> cafeBot.getLogger().log(
                         this.getClass(),
                         LogLevel.INFO,
-                        "Waiting for slash commands to propagate.",
+                        "Waiting for commands to propagate.",
                         false,
                         false)
                 );

@@ -120,6 +120,9 @@ This is an example of how to list things you need to use the software and how to
 
 Commands are separated by sections. Each section has a different set of commands.
 
+### Built-In Applications
+
+* `DM Confessions` - Simply send a DM containing an audio message (or any file) to the bot in a DM, then long press (or right click) on it, go to **Apps** -> **Confess** and select the server you would like to confess your audio message to!
 
 ### Command List
 
@@ -214,7 +217,7 @@ Commands are separated by sections. Each section has a different set of commands
 
 #### 6. Social Commands
 
-* `/confess` - Confess something! This only works if the server has a confession channel set-up!
+* `/confess` - Confess something! This only works if the server has a confession channel set-up! You can also add optional attachments!
 * `/membercount` - Get the member count for the server!
 
 #### 7. Moderation Commands

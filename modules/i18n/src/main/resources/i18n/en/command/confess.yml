@@ -2,9 +2,12 @@ description: "Confess something anonymously!~"
 arguments:
   message:
     description: "The message you want to anonymously confess."
+  attachment:
+    description: "An optional file (photo, audio clip, etc.) to attach to your confession."
 embed:
   title: "Anonymous Confession"
   footer: "Get an admin to react with \U0001F528 to ban the user for rule violations! (Only works for new confessions)"
+  attachment-warning: "⚠️ This attachment is not associated with or scanned by cafeBot -- open it at your own risk!"
   sent:
     title: "Confession Sent"
     description: "Your anonymous confession has been successfully sent to {channel}. Admins can still choose to ban you if your message violates their rules!"
@@ -14,3 +17,39 @@ embed:
   guild-error:
     title: "Confession Error"
     description: "A user tried to confess, but your confessions channel is not set!"
+  empty-error:
+    title: "Nothing To Confess"
+    description: "You need to send a message, an attachment, or both. I can't confess an empty thought for you!"
+  attachment-too-large:
+    title: "Attachment Too Large"
+    description: "That file is too large for me to send (max 25MB). Try a smaller or more compressed file."
+relay:
+  picker:
+    title: "Pick a Server"
+    description: "Choose a server to send this confession to. Only servers you and I share that have a confessions channel are listed."
+    placeholder: "Select a server..."
+  error:
+    not-dm:
+      title: "DM Only"
+      description: "You can only use \"Confess\" on a message inside your DMs with me."
+    not-your-message:
+      title: "Not Your Message"
+      description: "I can only relay messages that you sent to me."
+    empty:
+      title: "Nothing To Confess"
+      description: "That message doesn't have any text or attachments for me to send!"
+    too-large:
+      title: "Attachment Too Large"
+      description: "One of the attachments on that message is too large for me to relay (max 25MB per file)."
+    no-guilds:
+      title: "No Eligible Servers"
+      description: "I couldn't find any servers we share that have a confessions channel set up."
+    no-access:
+      title: "Server Unavailable"
+      description: "I couldn't reach that server's confessions channel. Maybe you left, or the channel was removed?"
+    lookup:
+      title: "Confession Error"
+      description: "Something went wrong while looking up eligible servers. Please try again in a moment!"
+    generic:
+      title: "Confession Error"
+      description: "Something went wrong while sending your confession. Please try again in a moment!"
