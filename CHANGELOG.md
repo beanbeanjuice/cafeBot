@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.6.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.5.1...v4.6.0) (2026-07-12)
+
+
+### Features
+
+* [GH-795] Confession Attachments ([#796](https://github.com/beanbeanjuice/cafeBot/issues/796)) ([3a623b2](https://github.com/beanbeanjuice/cafeBot/commit/3a623b2f31f29aeae6056f00ed9ddd2f29fb8447))
+
+
+### Bug Fixes
+
+* **deps:** bump com.gradleup.shadow from 9.4.2 to 9.4.3 ([#791](https://github.com/beanbeanjuice/cafeBot/issues/791)) ([4e17e54](https://github.com/beanbeanjuice/cafeBot/commit/4e17e54d84e5c41b37687df1cbdff7963a1590d5))
+* **deps:** bump gradle-wrapper from 9.5.1 to 9.6.1 ([#788](https://github.com/beanbeanjuice/cafeBot/issues/788)) ([cb982d3](https://github.com/beanbeanjuice/cafeBot/commit/cb982d330d032541372a6bab55e338e7877d5715))
+* **deps:** bump org.apache.logging.log4j:log4j-api from 2.26.0 to 2.26.1 ([#793](https://github.com/beanbeanjuice/cafeBot/issues/793)) ([05dc808](https://github.com/beanbeanjuice/cafeBot/commit/05dc808b2a81f031f6950392d85ca011d53a5fd4))
+* **deps:** bump org.junit.jupiter:junit-jupiter from 6.1.0 to 6.1.1 ([#789](https://github.com/beanbeanjuice/cafeBot/issues/789)) ([4d75ab3](https://github.com/beanbeanjuice/cafeBot/commit/4d75ab356db57b67ff4da33047f514a7f6e939d5))
+* **deps:** bump org.mnode.ical4j:ical4j from 4.2.5 to 4.3.0 ([#790](https://github.com/beanbeanjuice/cafeBot/issues/790)) ([351fe35](https://github.com/beanbeanjuice/cafeBot/commit/351fe353588ba8ef687095fb7acc4fd6993c19d8))
+
 ## [4.5.1](https://github.com/beanbeanjuice/cafeBot/compare/v4.5.0...v4.5.1) (2026-06-20)
 
 
