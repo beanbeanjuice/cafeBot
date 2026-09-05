@@ -39,7 +39,7 @@ allprojects {
         compileOnly("org.projectlombok:lombok:1.18.46")
         annotationProcessor("org.projectlombok:lombok:1.18.46")
 
-        implementation("org.apache.httpcomponents.client5:httpclient5:5.6.3")  // HTTP Requests
+        implementation("org.apache.httpcomponents.client5:httpclient5:5.6.4")  // HTTP Requests
 
         implementation("tools.jackson.core:jackson-core:3.2.1") // https://mvnrepository.com/artifact/tools.jackson.core/jackson-core
         implementation("tools.jackson.core:jackson-databind:3.2.1") // https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind
