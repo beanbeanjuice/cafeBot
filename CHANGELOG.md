@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.6.1](https://github.com/beanbeanjuice/cafeBot/compare/v4.6.0...v4.6.1) (2026-09-05)
+
+
+### Bug Fixes
+
+* **deps:** bump net.dv8tion:JDA from 6.4.2 to 6.5.0 ([#800](https://github.com/beanbeanjuice/cafeBot/issues/800)) ([f71f945](https://github.com/beanbeanjuice/cafeBot/commit/f71f945f3b50c21417f94e5f329caf4ca6ea57ac))
+* **deps:** bump org.apache.httpcomponents.client5:httpclient5 from 5.6.1 to 5.6.3 ([#804](https://github.com/beanbeanjuice/cafeBot/issues/804)) ([58ab9cd](https://github.com/beanbeanjuice/cafeBot/commit/58ab9cd8c5ac2ae49d07a1a6cad41156b68f03f6))
+* **deps:** bump tools.jackson.core:jackson-databind from 3.2.0 to 3.2.1 ([#803](https://github.com/beanbeanjuice/cafeBot/issues/803)) ([d36dcc3](https://github.com/beanbeanjuice/cafeBot/commit/d36dcc38815bc3e76b6e3e885280bf404acec5a8))
+
 ## [4.6.0](https://github.com/beanbeanjuice/cafeBot/compare/v4.5.1...v4.6.0) (2026-07-12)
 
 
