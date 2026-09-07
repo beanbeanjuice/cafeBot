@@ -31,14 +31,14 @@ public class PollApiTest extends ApiTest {
                 "Example Title",
                 "Example Description",
                 true,
-                Instant.now().plus(1, ChronoUnit.SECONDS).toString(),
+                Instant.now().plus(2, ChronoUnit.SECONDS).toString(),
                 options.toArray(new PartialPollOption[0])
         );
 
         Poll poll = cafeAPI.getPollApi().createPoll(guildId, messageId, partialPoll).get();
         poll = cafeAPI.getPollApi().toggleVote(poll.getId(), poll.getOptions()[0].getId(), user1).get();
 
-        Thread.sleep(Duration.of(1, ChronoUnit.SECONDS).toMillis());
+        Thread.sleep(Duration.of(2, ChronoUnit.SECONDS).toMillis());
 
         return poll;
     }
