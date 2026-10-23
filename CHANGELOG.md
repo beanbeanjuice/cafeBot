@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.6.2](https://github.com/beanbeanjuice/cafeBot/compare/v4.6.1...v4.6.2) (2026-10-19)
+
+
+### Bug Fixes
+
+* **deps:** bump gradle-wrapper from 9.7.1 to 9.8.0 ([#820](https://github.com/beanbeanjuice/cafeBot/issues/820)) ([134afbe](https://github.com/beanbeanjuice/cafeBot/commit/134afbed46473f6c376a940fd35a06afafaa1385))
+* **deps:** bump gradle-wrapper from 9.8.0 to 9.8.1 ([#823](https://github.com/beanbeanjuice/cafeBot/issues/823)) ([4297c89](https://github.com/beanbeanjuice/cafeBot/commit/4297c899650be3a7486254329541c45390cfc1df))
+* **deps:** bump net.dv8tion:JDA from 6.5.0 to 6.7.0 ([#815](https://github.com/beanbeanjuice/cafeBot/issues/815)) ([27f88de](https://github.com/beanbeanjuice/cafeBot/commit/27f88de5fbcf0149993cd3e1dc81e7d9ebd15452))
+* **deps:** bump org.apache.httpcomponents.client5:httpclient5 from 5.6.4 to 5.6.5 ([#821](https://github.com/beanbeanjuice/cafeBot/issues/821)) ([8ab8ea4](https://github.com/beanbeanjuice/cafeBot/commit/8ab8ea437e130451d28db21215f2275c5aa1a814))
+* **deps:** bump org.mnode.ical4j:ical4j from 4.3.0 to 4.4.0 ([#822](https://github.com/beanbeanjuice/cafeBot/issues/822)) ([3585163](https://github.com/beanbeanjuice/cafeBot/commit/35851635ba932e95676bdde1ca45a3cd860380be))
+* **deps:** bump org.yaml:snakeyaml from 2.6 to 2.7 ([#813](https://github.com/beanbeanjuice/cafeBot/issues/813)) ([42170db](https://github.com/beanbeanjuice/cafeBot/commit/42170db51ed6c272ab8be9a9ff06815e41a5e3d0))
+* **deps:** bump tools.jackson.core:jackson-core from 3.2.2 to 3.2.3 ([#817](https://github.com/beanbeanjuice/cafeBot/issues/817)) ([2e73357](https://github.com/beanbeanjuice/cafeBot/commit/2e73357625bbfddf9102b260ff9bb76a8ebdf741))
+
 ## [4.6.1](https://github.com/beanbeanjuice/cafeBot/compare/v4.6.0...v4.6.1) (2026-09-08)
 
 
