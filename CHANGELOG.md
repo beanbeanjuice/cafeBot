@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.6.3](https://github.com/beanbeanjuice/cafeBot/compare/v4.6.2...v4.6.3) (2026-10-26)
+
+
+### Bug Fixes
+
+* [GH-824] Update Fake cafeBot AI ([#825](https://github.com/beanbeanjuice/cafeBot/issues/825)) ([743bbe9](https://github.com/beanbeanjuice/cafeBot/commit/743bbe91f6213ece30ddb44cf06853be94d426de))
+* **deps:** bump gradle-wrapper from 9.8.1 to 9.8.2 ([#827](https://github.com/beanbeanjuice/cafeBot/issues/827)) ([e250780](https://github.com/beanbeanjuice/cafeBot/commit/e25078080d2a07c6119b75c6b34e1559c159abbf))
+* **deps:** bump tools.jackson.core:jackson-core from 3.2.3 to 3.2.4 ([#829](https://github.com/beanbeanjuice/cafeBot/issues/829)) ([a0cda85](https://github.com/beanbeanjuice/cafeBot/commit/a0cda8589d98f3f4a15369e677445d57107514e3))
+* **deps:** bump tools.jackson.core:jackson-databind from 3.2.3 to 3.2.4 ([#828](https://github.com/beanbeanjuice/cafeBot/issues/828)) ([1037411](https://github.com/beanbeanjuice/cafeBot/commit/1037411adef2af315c89518693b43673d19c5e90))
+
 ## [4.6.2](https://github.com/beanbeanjuice/cafeBot/compare/v4.6.1...v4.6.2) (2026-10-19)
 
 

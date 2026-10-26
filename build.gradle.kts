@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.beanbeanjuice"
-version = "4.6.2" // x-release-please-version
+version = "4.6.3" // x-release-please-version
 
 tasks.withType<Jar> {
     manifest {
