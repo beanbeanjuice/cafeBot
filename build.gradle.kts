@@ -42,7 +42,7 @@ allprojects {
         implementation("org.apache.httpcomponents.client5:httpclient5:5.6.5")  // HTTP Requests
 
         implementation("tools.jackson.core:jackson-core:3.2.4") // https://mvnrepository.com/artifact/tools.jackson.core/jackson-core
-        implementation("tools.jackson.core:jackson-databind:3.2.4") // https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind
+        implementation("tools.jackson.core:jackson-databind:3.3.0") // https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind
 
         implementation("io.github.cdimascio:java-dotenv:5.2.2") // https://mvnrepository.com/artifact/io.github.cdimascio/java-dotenv
 
